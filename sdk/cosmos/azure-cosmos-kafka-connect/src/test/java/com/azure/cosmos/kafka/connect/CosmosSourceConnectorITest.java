@@ -26,6 +26,7 @@ import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -148,6 +149,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being...");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -350,6 +352,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being...");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -419,6 +422,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being...");
         }
 
         // Create topic ahead of time
@@ -534,7 +538,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             // Create items in all containers
             logger.info("Creating items in multiple containers");
             Map<String, List<String>> createdItemsByContainer = new HashMap<>();
-            
+
             // Create items in single partition container
             List<String> singleContainerItems = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
@@ -581,7 +585,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
             Map<String, List<ConsumerRecord<String, JsonNode>>> recordsByTopic = new HashMap<>();
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
-            
+
             // Calculate expected metadata records based on storage type and number of containers
             int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 4; // 1 containers metadata + 3 feed ranges metadata
             int totalExpectedRecords = createdItemsByContainer.values().stream().mapToInt(List::size).sum();
@@ -597,11 +601,11 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                             recordsByTopic.computeIfAbsent(topic, k -> new ArrayList<>()).add(consumerRecord);
                         }
                     });
-                
+
                 int currentTotalRecords = recordsByTopic.values().stream()
                     .mapToInt(List::size)
                     .sum();
-                
+
                 return metadataRecords.size() >= expectedMetadataRecordsCount &&
                        currentTotalRecords >= totalExpectedRecords;
             });
@@ -618,7 +622,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)).isNotNull();
                 assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME).textValue())
                     .isEqualTo(MetadataEntityTypes.CONTAINERS_METADATA_V1);
-                
+
                 JsonNode jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
                 assertThat(jsonValueNode).isNotNull();
                 String jsonValue = jsonValueNode.textValue();
