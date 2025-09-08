@@ -259,6 +259,7 @@
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
+    <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
     <module>sdk/vision</module>
