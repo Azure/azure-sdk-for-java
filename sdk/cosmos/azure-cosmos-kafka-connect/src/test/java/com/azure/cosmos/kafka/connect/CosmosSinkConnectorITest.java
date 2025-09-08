@@ -93,7 +93,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             sinkConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
-            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being...");
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See issue - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         // Create topic ahead of time
@@ -174,7 +174,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             sinkConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
-            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being...");
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See issue - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         // Create topic ahead of time
@@ -230,7 +230,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             sinkConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sinkConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
-            throw new SkipException("ServicePrincipal-based auth has been diabled in the live tests for the time-being...");
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See issue - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         // Create topic ahead of time
