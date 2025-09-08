@@ -107,7 +107,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk18on</artifactId>
-      <version>1.78.1</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk18on;external_dependency} -->
+      <version>1.81</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk18on;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -117,7 +117,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

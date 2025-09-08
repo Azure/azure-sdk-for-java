@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Playwright Testing Management</name>
-  <description>This package contains Microsoft Azure SDK for Playwright Testing Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft.AzurePlaywrightService Resource Provider Management API.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 02/09/2026. We encourage you to upgrade to the replacement package, azure-resourcemanager-playwright, to continue receiving updates. Refer to the migration guide https://aka.ms/mpt/migration-guidance for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. This package contains Microsoft Azure SDK for Playwright Testing Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft.AzurePlaywrightService Resource Provider Management API.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -80,13 +80,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

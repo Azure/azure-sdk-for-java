@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerservicesafeguards</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Safeguards Management</name>

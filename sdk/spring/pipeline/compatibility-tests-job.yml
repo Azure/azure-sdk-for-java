@@ -46,6 +46,8 @@ jobs:
             - 'sdk/monitor'
             - 'sdk/msi/azure-resourcemanager-msi'
             - 'sdk/network'
+            - 'sdk/privatedns/azure-resourcemanager-privatedns'
+            - 'sdk/redis/azure-resourcemanager-redis'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/parents/azure-client-sdk-parent'
@@ -57,6 +59,7 @@ jobs:
             - 'sdk/servicebus'
             - 'sdk/storage'
             - 'sdk/tools'
+            - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:

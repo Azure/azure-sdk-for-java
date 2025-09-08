@@ -16,13 +16,10 @@
     <module>azure-resourcemanager-eventhubs</module>
     <module>azure-resourcemanager-monitor</module>
     <module>azure-resourcemanager-perf</module>
-    <module>azure-resourcemanager-privatedns</module>
     <module>azure-resourcemanager-resources</module>
-    <module>azure-resourcemanager-redis</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-servicebus</module>
     <module>azure-resourcemanager-sql</module>
-    <module>azure-resourcemanager-trafficmanager</module>
     <module>azure-resourcemanager-test</module>
   </modules>
 </project>
