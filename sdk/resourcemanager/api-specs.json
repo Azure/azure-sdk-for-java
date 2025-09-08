@@ -286,7 +286,7 @@
     "args": "--tag=package-subscriptions-2016-06 --name-for-ungrouped-operations=ResourceName --stream-style-serialization=false --enable-sync-stack=false"
   },
   "trafficmanager": {
-    "dir": "azure-resourcemanager-trafficmanager",
+    "dir": "../trafficmanager/azure-resourcemanager-trafficmanager",
     "source": "specification/trafficmanager/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.trafficmanager",
     "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes --enable-sync-stack=false"
