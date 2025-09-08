@@ -4,40 +4,41 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import org.junit.jupiter.api.Test;
-import java.io.IOException;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StorageImplUtilsTests {
 
-    @Test
-    public void sendRequestThrowsTimeoutException() throws IOException {
-        // These are all of the types of Exceptions that can be thrown by Future.get()
-        List<Class<? extends Exception>> exceptions = Arrays.asList(TimeoutException.class, RuntimeException.class,
-            ExecutionException.class, InterruptedException.class);
+    @ParameterizedTest
+    @MethodSource("exceptionTypes")
+    public void sendRequestThrowsException(Class<? extends Exception> exception) {
 
-        for (Class<? extends Exception> exception : exceptions) {
-            try {
-                //Arrange
-                Supplier<?> timeoutExceptionSupplier = generateSupplier(exception);
-                CallableExceptionOperation operation = new CallableExceptionOperation(timeoutExceptionSupplier);
+        try {
+            //Arrange
+            Supplier<?> timeoutExceptionSupplier = generateSupplier(exception);
+            CallableExceptionOperation operation = new CallableExceptionOperation(timeoutExceptionSupplier);
 
-                // Act
-                StorageImplUtils.sendRequest(operation, Duration.ofSeconds(120), BlobStorageException.class);
-            } catch (RuntimeException e) {
-                //Assert
-                assertNotNull(e.getCause());
-                assertInstanceOf(exception, e.getCause());
-            }
+            // Act
+            StorageImplUtils.sendRequest(operation, Duration.ofSeconds(120), BlobStorageException.class);
+        } catch (RuntimeException e) {
+            //Assert
+            assertNotNull(e.getCause());
+            assertInstanceOf(exception, e.getCause());
         }
+    }
+
+    private static Stream<Class<? extends Exception>> exceptionTypes() {
+        return Stream.of(TimeoutException.class, RuntimeException.class, ExecutionException.class,
+            InterruptedException.class);
     }
 
     private static class CallableExceptionOperation implements Callable<Object> {
