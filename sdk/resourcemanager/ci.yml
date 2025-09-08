@@ -18,7 +18,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
@@ -45,7 +44,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
@@ -76,10 +74,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagermonitor
   displayName: 'azure-resourcemanager-monitor'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerredis
-  displayName: 'azure-resourcemanager-redis'
   type: boolean
   default: true
 - name: release_azureresourcemanagerresources
@@ -132,10 +126,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
         releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
-      - name: azure-resourcemanager-redis
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerredis
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerredis }}
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources

@@ -166,7 +166,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-redis</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
+      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
