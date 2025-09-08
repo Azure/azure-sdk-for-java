@@ -7229,7 +7229,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Mono
             .firstWithValue(monoList)
             .flatMap(nonTransientResult -> {
-                logger.warn("L7216 - mergeContext - nonTransientResult: {}", nonTransientResult);
                 diagnosticsFactory.merge(nonNullRequestOptions);
                 if (nonTransientResult.isError()) {
                     return Mono.error(nonTransientResult.exception);
@@ -7802,6 +7801,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
 
         this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
+        this.diagnosticsClientConfig.withIsPerPartitionAutomaticFailoverEnabled(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled());
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
@@ -8008,7 +8008,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         public void merge(RequestOptions requestOptions) {
-            logger.warn("L7995 - merge - ScopedDiagnosticsFactory - merge(RequestOptions requestOptions)");
             CosmosDiagnosticsContext knownCtx = null;
 
             if (requestOptions != null) {
@@ -8044,8 +8043,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
-                logger.warn("L8031 - merge - (in loop) ScopedDiagnosticsFactory - merging diagnostics: {}", diagnostics);
-                logger.warn("L8032 - merge - (in loop) ScopedDiagnosticsFactory - merging diagnostics  {} - - is empty : {}", diagnostics, diagnosticsAccessor.isNotEmpty(diagnostics));
                 if (diagnostics.getDiagnosticsContext() == null && diagnosticsAccessor.isNotEmpty(diagnostics)) {
                     if (this.shouldCaptureAllFeedDiagnostics &&
                         diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics) != null) {

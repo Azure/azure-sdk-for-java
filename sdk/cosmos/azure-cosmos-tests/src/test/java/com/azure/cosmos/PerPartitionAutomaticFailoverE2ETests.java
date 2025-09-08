@@ -94,12 +94,123 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * End-to-end test suite validating Per-Partition Automatic Failover (PPAF) behavior in the Azure Cosmos DB Java SDK.
+ *
+ * <p>This suite exercises and verifies:
+ * <ul>
+ *   <li>Automatic failover and hedged routing at the granularity of a single physical partition (PK range).</li>
+ *   <li>Dynamic enablement and disablement of PPAF at runtime by reflecting and overriding
+ *       {@code GlobalEndpointManager}'s {@code DatabaseAccountManagerInternal} owner to toggle
+ *       {@code DatabaseAccount#isPerPartitionFailoverBehaviorEnabled}.</li>
+ *   <li>Write operation failover (Create, Replace, Upsert, Delete, Patch, Batch) under multiple failover‑eligible
+ *       status/sub-status combinations (410/21005, 503/21008, 403/3, 408/*, gateway read timeouts).</li>
+ *   <li>Non-write hedging behavior (point Read and Query variants) under region-scoped transient faults:
+ *       <ul>
+ *         <li>DIRECT mode: simulated server-generated 410 (sub-status 21005) scoped to a specific partition key range.</li>
+ *         <li>GATEWAY mode: injected RESPONSE_DELAY faults via fault injection rules (query plan + query + read item).</li>
+ *       </ul>
+ *   </li>
+ *   <li>Interaction with end-to-end latency policies (E2E timeout) as a gating mechanism for enabling failover logic.</li>
+ * </ul>
+ *
+ * <p><strong>Connection Modes Covered</strong>:
+ * <ul>
+ *   <li>DIRECT: Uses a mocked {@code TransportClient} to selectively throw {@code CosmosException} for a targeted
+ *       (region + PK range) while returning success for others.</li>
+ *   <li>GATEWAY: Uses a mocked {@code HttpClient} (or fault injection framework) to simulate service errors, network
+ *       timeouts (socket/read), regional delays, or success responses.</li>
+ * </ul>
+ *
+ * <p><strong>Phased Validation Patterns</strong>:
+ * <ul>
+ *   <li><em>Pre-failover / Hedging Window</em>: Verifies retries or region hedging (multi-region contacts) before
+ *       PPCB-enforced failover, optionally repeated to satisfy E2E timeout activation thresholds.</li>
+ *   <li><em>Post-failover / Stabilized</em>: Ensures subsequent operations route directly to a healthy region
+ *       (single-region contact, zero retries) unless query semantics (e.g., query plan retrieval) require multi-region access.</li>
+ *   <li><em>Dynamic Enablement Toggle</em>: For selected 503 scenarios, validates behavior transitions
+ *       Disabled → Enabled → Disabled, confirming routing and diagnostics adapt immediately after
+ *       {@code refreshLocationAsync(true)}.</li>
+ * </ul>
+ *
+ * <p><strong>Diagnostics Assertions</strong>:
+ * Each test inspects {@code CosmosDiagnostics} to assert:
+ * <ul>
+ *   <li>Contacted region count (hedged vs stabilized).</li>
+ *   <li>Retry count bounds (min/max) aligned with scenario expectations.</li>
+ *   <li>Final HTTP status classification (success vs expected failure when failover gated).</li>
+ *   <li>Consistency across response types (item, batch, feed, or exception paths).</li>
+ * </ul>
+ *
+ * <p><strong>Key Internal Mechanisms</strong>:
+ * <ul>
+ *   <li>Reflection-based access to internal SDK components (e.g., {@code RxDocumentClientImpl},
+ *       {@code StoreReader}, {@code ConsistencyWriter}) to inject mocked transport layers.</li>
+ *   <li>Custom delegating {@code DatabaseAccountManagerInternal} wrapper that conditionally sets
+ *       the per-partition failover flag on retrieved {@code DatabaseAccount} snapshots.</li>
+ *   <li>Fault injection rules in GATEWAY mode to apply controlled latency (RESPONSE_DELAY) per region and operation type.</li>
+ *   <li>Reusable operation dispatch via a functional resolver mapping {@code OperationType} to execution lambdas
+ *       returning a uniform {@code ResponseWrapper} abstraction.</li>
+ * </ul>
+ *
+ * <p><strong>Query Variants (QueryFlavor)</strong>:
+ * <ul>
+ *   <li>{@code NONE}: Point read (readItem).</li>
+ *   <li>{@code READ_ALL}: {@code readAllItems} over a single partition key.</li>
+ *   <li>{@code READ_MANY}: {@code readMany} with one or more item identities.</li>
+ *   <li>{@code QUERY_ITEMS}: Standard SQL query; may still contact original region for query plan acquisition even
+ *       after stabilization (thus dual-region diagnostics may persist).</li>
+ * </ul>
+ *
+ * <p><strong>End-to-End Latency Policy Integration</strong>:
+ * Tests optionally apply a short-circuit latency policy to:
+ * <ul>
+ *   <li>Simulate threshold-based activation (e.g., property {@code COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF}).</li>
+ *   <li>Differentiate pre-threshold (no failover) vs post-threshold (failover enabled) diagnostics for the same fault.</li>
+ * </ul>
+ *
+ * <p><strong>Batch Operation Coverage</strong>:
+ * Batch scenarios ensure that failover and diagnostics behaviors remain consistent with single-item operations,
+ * including mock batch response materialization and hedging logic validation.</p>
+ *
+ * <p><strong>Safety & Cleanup</strong>:
+ * Each scenario ensures:
+ * <ul>
+ *   <li>System properties used to gate PPAF or E2E behaviors are cleared in {@code finally} blocks.</li>
+ *   <li>Clients are safely disposed to avoid cross-test interference.</li>
+ * </ul>
+ *
+ * <p><strong>Usage Notes</strong>:
+ * This suite relies on internal APIs and reflection hooks not intended for production use. It is crafted specifically
+ * for validation of resilience, routing, and diagnostics fidelity across complex multi-region and transient-fault
+ * conditions. Adjustments to internal SDK contracts may require corresponding test maintenance.</p>
+ *
+ * <p><strong>Failure Interpretation</strong>:
+ * A test failure typically indicates one of:
+ * <ul>
+ *   <li>Unexpected retry amplification or suppression.</li>
+ *   <li>Incorrect region routing (e.g., failover not triggered or not stabilized).</li>
+ *   <li>Diagnostics context regression (missing region names, status codes, or retry metrics).</li>
+ *   <li>Latency policy mis-integration (threshold not honored).</li>
+ * </ul>
+ *
+ * <p><strong>Extensibility</strong>:
+ * Additional scenarios (e.g., new fault types, new operation categories, multi-partition batch coverage, or read feed streaming)
+ * can be added by:
+ * <ol>
+ *   <li>Extending the appropriate {@code @DataProvider} with new parameter rows.</li>
+ *   <li>Enhancing {@code resolveDataPlaneOperation} for new operation abstractions.</li>
+ *   <li>Adding new fault injection builders or transport client predicates.</li>
+ * </ol>
+ *
+ * <p>All validations aim to ensure that PPAF delivers predictable, minimal-latency routing under regional fault pressure
+ * while preserving observability through {@code CosmosDiagnostics}.</p>
+ */
 public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     private CosmosAsyncDatabase sharedDatabase;
@@ -1110,17 +1221,33 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         };
     }
 
-    // testPpafWithWriteFailoverWithEligibleErrorStatusCodes does the following:
-    // for DIRECT connection mode,
-    //  an availability failure (410, 503, 408) or write forbidden failure (403/3) is injected
-    //  for a given partitionKeyRange and region through mocking
-    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s & 408s (not e2e timeout hit) are retried and e2e time out hit (408:20008) just see the operation fail)
-    //  the second operation execution should see the request go straight away to the failed over region - caveat is when e2e timeout is hit, only after x failures does a failover happen
-    // for GATEWAY connection mode,
-    //  an availability failure (503, 408), write forbidden failure (403/3) and I/O failures are injected
-    //  for a given region through mocking
-    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s & 408s (not e2e timeout hit) are retried and e2e time out hit (408:20008) just see the operation fail)
-    //  the second operation execution should see the request go straight away to the failed over region - caveat is when e2e timeout is hit, only after x failures does a failover happen
+    /**
+     * End-to-end validation of Per-Partition Automatic Failover (PPAF) for write operations
+     * (Create, Replace, Upsert, Delete, Patch, Batch) when a failover-eligible fault is injected
+     * for one partition key range in the first preferred region.
+     *
+     * <p>Phases:</p>
+     * <ul>
+     *   <li>Pre-failover: injected error surfaces; request retries and/or hedges (unless gated by E2E timeout threshold).</li>
+     *   <li>Post-failover: subsequent request routes directly to healthy region (single region, zero retries) unless
+     *       E2E timeout gating still accumulating threshold.</li>
+     * </ul>
+     *
+     * <p>Mechanics:</p>
+     * <ul>
+     *   <li>DIRECT: TransportClient mocked; targeted (region + PK range) throws configured CosmosException.</li>
+     *   <li>GATEWAY: HttpClient mocked; targeted region URI throws CosmosException or network exception (read/socket timeout) or delayed fault.</li>
+     *   <li>GlobalEndpointManager owner replaced with delegating manager to surface dynamic PPAF enablement flag.</li>
+     *   <li>E2E latency policy optionally applied; threshold (COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF) controls activation.</li>
+     * </ul>
+     *
+     * <p>Assertions:</p>
+     * <ul>
+     *   <li>Regions contacted count (before vs after failover).</li>
+     *   <li>Retry count bounds.</li>
+     *   <li>Success vs failure based on phase and configuration.</li>
+     * </ul>
+     */
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
@@ -1154,8 +1281,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 if (shouldUseE2ETimeout) {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
-
-                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
 
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
@@ -1209,6 +1334,17 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     regionalRoutingContextWithIssues,
                     cosmosException);
 
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
                 TestItem testItem = TestItem.createNewItem();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
@@ -1255,8 +1391,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
 
-                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
-
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
@@ -1280,6 +1414,16 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
                 DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
 
                 assertThat(preferredRegions).isNotNull();
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
@@ -1729,7 +1873,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     throw new SkipException("DIRECT path only supports SERVER_GENERATED_GONE for this test.");
                 }
 
-                // Inject 410/1002 for unhealthy region
+                // Inject 410/21005 for unhealthy region
                 CosmosException cosmosException = createCosmosException(
                     HttpConstants.StatusCodes.GONE,
                     HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
@@ -1949,9 +2093,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return delegate.getDatabaseAccountFromEndpoint(endpoint)
                 .map(dbAccount -> {
                     Boolean enabled = ppafEnabledRef.get();
-                    if (enabled != null) {
-                        dbAccount.setIsPerPartitionFailoverBehaviorEnabled(enabled);
-                    }
+                    dbAccount.setIsPerPartitionFailoverBehaviorEnabled(enabled);
                     return dbAccount;
                 });
         }
@@ -2494,11 +2636,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
         public FeedRange feedRangeForQuery;
-    public String querySql;
-    // For QueryFlavor.READ_ALL
-    public PartitionKey readAllPartitionKey;
-    // For QueryFlavor.READ_MANY
-    public List<CosmosItemIdentity> readManyIdentities;
+        public String querySql;
+        // For QueryFlavor.READ_ALL
+        public PartitionKey readAllPartitionKey;
+        // For QueryFlavor.READ_MANY
+        public List<CosmosItemIdentity> readManyIdentities;
     }
 
     private static class ExpectedResponseCharacteristics {
