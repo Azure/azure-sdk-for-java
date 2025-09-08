@@ -14,7 +14,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageImplUtilsTests {
 
@@ -22,18 +24,15 @@ public class StorageImplUtilsTests {
     @MethodSource("exceptionTypes")
     public void sendRequestThrowsException(Class<? extends Exception> exception) {
 
-        try {
-            //Arrange
-            Supplier<?> timeoutExceptionSupplier = generateSupplier(exception);
-            CallableExceptionOperation operation = new CallableExceptionOperation(timeoutExceptionSupplier);
+        Supplier<?> timeoutExceptionSupplier = generateSupplier(exception);
+        CallableExceptionOperation operation = new CallableExceptionOperation(timeoutExceptionSupplier);
 
-            // Act
+        RuntimeException e = assertThrows(RuntimeException.class, () -> {
             StorageImplUtils.sendRequest(operation, Duration.ofSeconds(120), BlobStorageException.class);
-        } catch (RuntimeException e) {
-            //Assert
-            assertNotNull(e.getCause());
-            assertInstanceOf(exception, e.getCause());
-        }
+        });
+
+        assertNotNull(e.getCause());
+        assertInstanceOf(exception, e.getCause());
     }
 
     private static Stream<Class<? extends Exception>> exceptionTypes() {
