@@ -38,7 +38,6 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -1345,7 +1344,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
                 globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
 
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
@@ -1447,7 +1446,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     shouldThrowReadTimeoutExceptionWhenNetworkError,
                     shouldUseE2ETimeout);
 
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
@@ -1600,7 +1599,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     regionalRoutingContextWithIssues,
                     cosmosException);
 
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
@@ -1699,7 +1698,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     shouldThrowReadTimeoutExceptionWhenNetworkError,
                     shouldUseE2ETimeout);
 
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
@@ -1885,7 +1884,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     cosmosException);
 
                 // Prepare operation invocation
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation =
                     resolveDataPlaneOperation(operationType);
 
@@ -2031,7 +2030,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     .block();
 
                 // Seed item for read/readMany scenarios
-                TestItem testItem = TestItem.createNewItem();
+                TestObject testItem = TestObject.create();
                 asyncContainer.createItem(testItem).block();
 
                 // Prepare params + operation
@@ -2342,7 +2341,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = paramsWrapper.createdTestItem;
+                    TestObject createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
@@ -2369,12 +2368,12 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = paramsWrapper.createdTestItem;
+                    TestObject createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestItem> upsertItemResponse = asyncContainer.upsertItem(
+                        CosmosItemResponse<TestObject> upsertItemResponse = asyncContainer.upsertItem(
                                 createdTestObject,
                                 new PartitionKey(createdTestObject.getMypk()),
                                 itemRequestOptions)
@@ -2395,12 +2394,12 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = TestItem.createNewItem();
+                    TestObject createdTestObject = TestObject.create();
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestItem> createItemResponse = asyncContainer.createItem(
+                        CosmosItemResponse<TestObject> createItemResponse = asyncContainer.createItem(
                                 createdTestObject,
                                 new PartitionKey(createdTestObject.getMypk()),
                                 itemRequestOptions)
@@ -2421,7 +2420,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = paramsWrapper.createdTestItem;
+                    TestObject createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
@@ -2447,19 +2446,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = paramsWrapper.createdTestItem;
+                    TestObject createdTestObject = paramsWrapper.createdTestItem;
                     CosmosPatchItemRequestOptions patchItemRequestOptions = (CosmosPatchItemRequestOptions) paramsWrapper.patchItemRequestOptions;
 
                     CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/number", 555);
 
                     try {
 
-                        CosmosItemResponse<TestItem> patchItemResponse = asyncContainer.patchItem(
+                        CosmosItemResponse<TestObject> patchItemResponse = asyncContainer.patchItem(
                                 createdTestObject.getId(),
                                 new PartitionKey(createdTestObject.getMypk()),
                                 patchOperations,
                                 patchItemRequestOptions,
-                                TestItem.class)
+                                TestObject.class)
                             .block();
 
                         return new ResponseWrapper<>(patchItemResponse);
@@ -2519,12 +2518,12 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestItem createdTestObject = paramsWrapper.createdTestItem;
+                    TestObject createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestItem> deleteItemResponse = asyncContainer.replaceItem(
+                        CosmosItemResponse<TestObject> deleteItemResponse = asyncContainer.replaceItem(
                                 createdTestObject,
                                 createdTestObject.getId(),
                                 new PartitionKey(createdTestObject.getId()),
@@ -2545,7 +2544,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             case Batch:
                 return (paramsWrapper) -> {
 
-                    TestItem testObject = TestItem.createNewItem();
+                    TestObject testObject = TestObject.create();
                     CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(testObject.getId()));
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
 
@@ -2570,9 +2569,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                     try {
 
-                        FeedResponse<TestItem> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
+                        FeedResponse<TestObject> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
                                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(paramsWrapper.feedRangeToDrainForChangeFeed == null ? FeedRange.forFullRange() : paramsWrapper.feedRangeToDrainForChangeFeed),
-                                TestItem.class)
+                                TestObject.class)
                             .byPage()
                             .blockLast();
 
@@ -2630,7 +2629,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     private static class OperationInvocationParamsWrapper {
         public CosmosAsyncContainer asyncContainer;
-        public TestItem createdTestItem;
+        public TestObject createdTestItem;
         public CosmosItemRequestOptions itemRequestOptions;
         public CosmosQueryRequestOptions queryRequestOptions;
         public CosmosItemRequestOptions patchItemRequestOptions;
@@ -2761,7 +2760,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         QUERY_ITEMS  // Arbitrary filter
     }
 
-    private void applyQueryFlavor(OperationInvocationParamsWrapper params, QueryFlavor flavor, TestItem seed) {
+    private void applyQueryFlavor(OperationInvocationParamsWrapper params, QueryFlavor flavor, TestObject seed) {
         if (flavor == QueryFlavor.NONE) {
             // Do not set CosmosQueryRequestOptions explicitly
             params.querySql = null;
