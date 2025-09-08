@@ -3,7 +3,6 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpResponse;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,7 +27,7 @@ public class StorageImplUtilsTests {
         CallableExceptionOperation operation = new CallableExceptionOperation(timeoutExceptionSupplier);
 
         RuntimeException e = assertThrows(RuntimeException.class, () -> {
-            StorageImplUtils.sendRequest(operation, Duration.ofSeconds(120), BlobStorageException.class);
+            StorageImplUtils.sendRequest(operation, Duration.ofSeconds(120), HttpResponseException.class);
         });
 
         assertNotNull(e.getCause());
@@ -87,12 +86,5 @@ public class StorageImplUtilsTests {
                 throw new RuntimeException("Failed to create exception instance", e);
             }
         };
-    }
-
-    private static final class BlobStorageException extends HttpResponseException {
-
-        BlobStorageException(HttpResponse response) {
-            super(response);
-        }
     }
 }
