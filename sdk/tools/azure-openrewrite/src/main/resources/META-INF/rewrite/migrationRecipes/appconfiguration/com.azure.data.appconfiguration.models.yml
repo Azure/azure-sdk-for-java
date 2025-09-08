@@ -73,7 +73,9 @@ recipeList:
   # SecretReferenceConfigurationSetting
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting
 
   # --------------------------------------------------------------------
   # SettingFields

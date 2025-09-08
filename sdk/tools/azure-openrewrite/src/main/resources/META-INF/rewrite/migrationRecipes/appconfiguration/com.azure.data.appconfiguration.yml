@@ -29,7 +29,9 @@ recipeList:
   # ConfigurationClientBuilder
   # --------------------------------------------------------------------
 
-
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.ConfigurationClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.ConfigurationClientBuilder
 
 
   # --------------------------------------------------------------------
