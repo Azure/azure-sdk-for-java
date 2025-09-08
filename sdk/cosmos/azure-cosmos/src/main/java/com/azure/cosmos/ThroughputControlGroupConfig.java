@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.util.Beta;
 
 /**
  * Throughput control group configuration.
@@ -13,6 +14,7 @@ public final class ThroughputControlGroupConfig {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final PriorityLevel priorityLevel;
+    private final Integer throughputBucket;
     private final boolean isDefault;
     private final boolean continueOnInitError;
 
@@ -21,12 +23,14 @@ public final class ThroughputControlGroupConfig {
             Integer targetThroughput,
             Double targetThroughputThreshold,
             PriorityLevel priorityLevel,
+            Integer throughputBucket,
             boolean isDefault,
             boolean continueOnInitError) {
        this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.priorityLevel = priorityLevel;
+       this.throughputBucket = throughputBucket;
        this.isDefault = isDefault;
        this.continueOnInitError = continueOnInitError;
     }
@@ -75,6 +79,20 @@ public final class ThroughputControlGroupConfig {
      * @return the priority level of the throughput control group.
      */
     public PriorityLevel getPriorityLevel() { return this.priorityLevel; }
+
+
+    /***
+     * Get the throughput bucket.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @return the throughput bucket of the throughput control group.
+     */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Integer getThroughputBucket() {
+        return this.throughputBucket;
+    }
 
     /**
      * Get whether this throughput control group will be used by default.

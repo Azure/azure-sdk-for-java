@@ -28,6 +28,13 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
     public static final VectorFilterMode PRE_FILTER = fromString("preFilter");
 
     /**
+     * The filter will be applied after the global top-k candidate set of vector results is returned. This will result
+     * in fewer results than requested by the parameter 'k'.
+     */
+    @Generated
+    public static final VectorFilterMode STRICT_POST_FILTER = fromString("strictPostFilter");
+
+    /**
      * Creates a new instance of VectorFilterMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

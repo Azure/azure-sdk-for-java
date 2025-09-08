@@ -124,14 +124,6 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getApplicableWriteRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
-    public List<URI> getAvailableReadEndpoints() {
-        return this.locationCache.getAvailableReadEndpoints();
-    }
-
-    public List<URI> getAvailableWriteEndpoints() {
-        return this.locationCache.getAvailableWriteEndpoints();
-    }
-
     public List<RegionalRoutingContext> getAvailableReadRoutingContexts() {
         return this.locationCache.getAvailableReadRegionalRoutingContexts();
     }
@@ -164,13 +156,13 @@ public class GlobalEndpointManager implements AutoCloseable {
         RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
             // TODO: integrate thin client into fault injection
-            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayRegionalEndpoint());
+            request.faultInjectionRequestContext.setRegionalRoutingContextToRoute(serviceEndpoints);
         }
 
         return serviceEndpoints;
     }
 
-    public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
+    public RegionalRoutingContext resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
         return this.locationCache.resolveFaultInjectionEndpoint(region, writeOnly);
     }
 

@@ -40,6 +40,13 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     private SearchIndexerDataSourceType type;
 
     /*
+     * A specific type of the data source, in case the resource is capable of different modalities. For example,
+     * 'MongoDb' for certain 'cosmosDb' accounts.
+     */
+    @Generated
+    private String subType;
+
+    /*
      * Credentials for the datasource.
      */
     @Generated
@@ -157,6 +164,17 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     public SearchIndexerDataSourceConnection setType(SearchIndexerDataSourceType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Get the subType property: A specific type of the data source, in case the resource is capable of different
+     * modalities. For example, 'MongoDb' for certain 'cosmosDb' accounts.
+     *
+     * @return the subType value.
+     */
+    @Generated
+    public String getSubType() {
+        return this.subType;
     }
 
     /**
@@ -370,6 +388,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
             String name = null;
             String description = null;
             SearchIndexerDataSourceType type = null;
+            String subType = null;
             DataSourceCredentials credentials = null;
             SearchIndexerDataContainer container = null;
             SearchIndexerDataIdentity identity = null;
@@ -388,6 +407,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     description = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = SearchIndexerDataSourceType.fromString(reader.getString());
+                } else if ("subType".equals(fieldName)) {
+                    subType = reader.getString();
                 } else if ("credentials".equals(fieldName)) {
                     credentials = DataSourceCredentials.fromJson(reader);
                 } else if ("container".equals(fieldName)) {
@@ -414,6 +435,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     = new SearchIndexerDataSourceConnection(name);
                 deserializedSearchIndexerDataSourceConnection.description = description;
                 deserializedSearchIndexerDataSourceConnection.type = type;
+                deserializedSearchIndexerDataSourceConnection.subType = subType;
                 deserializedSearchIndexerDataSourceConnection.credentials = credentials;
                 deserializedSearchIndexerDataSourceConnection.container = container;
                 deserializedSearchIndexerDataSourceConnection.identity = identity;

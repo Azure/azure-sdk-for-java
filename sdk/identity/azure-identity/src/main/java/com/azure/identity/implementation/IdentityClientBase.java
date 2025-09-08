@@ -918,6 +918,52 @@ public abstract class IdentityClientBase {
         return this.httpPipeline;
     }
 
+    String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
+
+        // Properly escape the claims content for shell safety
+        String escapedClaims = shellEscape(request.getClaims());
+        azLoginCommand.append("\"").append(escapedClaims).append("\"");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            azLoginCommand.append(" --tenant ").append(shellEscape(tenant));
+        }
+
+        // Add scopes if available
+        if (request.getScopes() != null && !request.getScopes().isEmpty()) {
+            azLoginCommand.append(" --scope");
+            for (String scope : request.getScopes()) {
+                azLoginCommand.append(" ").append(shellEscape(scope));
+            }
+        }
+
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzureCliCredential. Run %s to handle the claims challenge.",
+            azLoginCommand.toString());
+    }
+
+    /**
+     * Properly escape a string for shell command usage.
+     */
+    private String shellEscape(String input) {
+        if (input == null) {
+            return "";
+        }
+
+        return input.replace("\\", "\\\\")    // Escape backslashes first
+            .replace("\"", "\\\"")     // Escape double quotes
+            .replace("'", "\\'")       // Escape single quotes
+            .replace("`", "\\`")       // Escape backticks
+            .replace("$", "\\$")       // Escape dollar signs
+            .replace(";", "\\;")       // Escape semicolons
+            .replace("&", "\\&")       // Escape ampersands
+            .replace("|", "\\|")       // Escape pipes
+            .replace("<", "\\<")       // Escape input redirection
+            .replace(">", "\\>");      // Escape output redirection
+    }
+
     private byte[] getCertificateBytes() throws IOException {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));

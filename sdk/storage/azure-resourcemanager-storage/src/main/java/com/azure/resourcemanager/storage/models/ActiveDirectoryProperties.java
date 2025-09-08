@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,61 +18,42 @@ import java.io.IOException;
 @Fluent
 public final class ActiveDirectoryProperties implements JsonSerializable<ActiveDirectoryProperties> {
     /*
-     * Specifies the primary domain that the AD DNS server is authoritative for. This property is required if
-     * directoryServiceOptions is set to AD (AD DS authentication). If directoryServiceOptions is set to AADDS (Entra DS
-     * authentication), providing this property is optional, as it will be inferred automatically if omitted. If
-     * directoryServiceOptions is set to AADKERB (Entra authentication), this property is optional; it is needed to
-     * support configuration of directory- and file-level permissions via Windows File Explorer, but is not required for
-     * authentication.
+     * Specifies the primary domain that the AD DNS server is authoritative for.
      */
     private String domainName;
 
     /*
-     * Specifies the NetBIOS domain name. If directoryServiceOptions is set to AD (AD DS authentication), this property
-     * is required. Otherwise, it can be omitted.
+     * Specifies the NetBIOS domain name.
      */
     private String netBiosDomainName;
 
     /*
-     * Specifies the Active Directory forest to get. If directoryServiceOptions is set to AD (AD DS authentication),
-     * this property is required. Otherwise, it can be omitted.
+     * Specifies the Active Directory forest to get.
      */
     private String forestName;
 
     /*
-     * Specifies the domain GUID. If directoryServiceOptions is set to AD (AD DS authentication), this property is
-     * required. If directoryServiceOptions is set to AADDS (Entra DS authentication), this property can be omitted. If
-     * directoryServiceOptions is set to AADKERB (Entra authentication), this property is optional; it is needed to
-     * support configuration of directory- and file-level permissions via Windows File Explorer, but is not required for
-     * authentication.
+     * Specifies the domain GUID.
      */
     private String domainGuid;
 
     /*
-     * Specifies the security identifier (SID) of the AD domain. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is required. Otherwise, it can be omitted.
+     * Specifies the security identifier (SID).
      */
     private String domainSid;
 
     /*
-     * Specifies the security identifier (SID) for Azure Storage. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is required. Otherwise, it can be omitted.
+     * Specifies the security identifier (SID) for Azure Storage.
      */
     private String azureStorageSid;
 
     /*
-     * Specifies the Active Directory SAMAccountName for Azure Storage. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is optional. If provided, accountType should also be provided. For
-     * directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property can be
-     * omitted.
+     * Specifies the Active Directory SAMAccountName for Azure Storage.
      */
     private String samAccountName;
 
     /*
-     * Specifies the Active Directory account type for Azure Storage. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is optional. If provided, samAccountName should also be provided. For
-     * directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property can be
-     * omitted.
+     * Specifies the Active Directory account type for Azure Storage.
      */
     private ActiveDirectoryPropertiesAccountType accountType;
 
@@ -82,12 +64,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for. This
-     * property is required if directoryServiceOptions is set to AD (AD DS authentication). If directoryServiceOptions
-     * is set to AADDS (Entra DS authentication), providing this property is optional, as it will be inferred
-     * automatically if omitted. If directoryServiceOptions is set to AADKERB (Entra authentication), this property is
-     * optional; it is needed to support configuration of directory- and file-level permissions via Windows File
-     * Explorer, but is not required for authentication.
+     * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
      * 
      * @return the domainName value.
      */
@@ -96,12 +73,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the domainName property: Specifies the primary domain that the AD DNS server is authoritative for. This
-     * property is required if directoryServiceOptions is set to AD (AD DS authentication). If directoryServiceOptions
-     * is set to AADDS (Entra DS authentication), providing this property is optional, as it will be inferred
-     * automatically if omitted. If directoryServiceOptions is set to AADKERB (Entra authentication), this property is
-     * optional; it is needed to support configuration of directory- and file-level permissions via Windows File
-     * Explorer, but is not required for authentication.
+     * Set the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
      * 
      * @param domainName the domainName value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -112,8 +84,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the netBiosDomainName property: Specifies the NetBIOS domain name. If directoryServiceOptions is set to AD
-     * (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Get the netBiosDomainName property: Specifies the NetBIOS domain name.
      * 
      * @return the netBiosDomainName value.
      */
@@ -122,8 +93,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the netBiosDomainName property: Specifies the NetBIOS domain name. If directoryServiceOptions is set to AD
-     * (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Set the netBiosDomainName property: Specifies the NetBIOS domain name.
      * 
      * @param netBiosDomainName the netBiosDomainName value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -134,8 +104,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the forestName property: Specifies the Active Directory forest to get. If directoryServiceOptions is set to
-     * AD (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Get the forestName property: Specifies the Active Directory forest to get.
      * 
      * @return the forestName value.
      */
@@ -144,8 +113,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the forestName property: Specifies the Active Directory forest to get. If directoryServiceOptions is set to
-     * AD (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Set the forestName property: Specifies the Active Directory forest to get.
      * 
      * @param forestName the forestName value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -156,11 +124,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the domainGuid property: Specifies the domain GUID. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is required. If directoryServiceOptions is set to AADDS (Entra DS authentication),
-     * this property can be omitted. If directoryServiceOptions is set to AADKERB (Entra authentication), this property
-     * is optional; it is needed to support configuration of directory- and file-level permissions via Windows File
-     * Explorer, but is not required for authentication.
+     * Get the domainGuid property: Specifies the domain GUID.
      * 
      * @return the domainGuid value.
      */
@@ -169,11 +133,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the domainGuid property: Specifies the domain GUID. If directoryServiceOptions is set to AD (AD DS
-     * authentication), this property is required. If directoryServiceOptions is set to AADDS (Entra DS authentication),
-     * this property can be omitted. If directoryServiceOptions is set to AADKERB (Entra authentication), this property
-     * is optional; it is needed to support configuration of directory- and file-level permissions via Windows File
-     * Explorer, but is not required for authentication.
+     * Set the domainGuid property: Specifies the domain GUID.
      * 
      * @param domainGuid the domainGuid value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -184,8 +144,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the domainSid property: Specifies the security identifier (SID) of the AD domain. If directoryServiceOptions
-     * is set to AD (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Get the domainSid property: Specifies the security identifier (SID).
      * 
      * @return the domainSid value.
      */
@@ -194,8 +153,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the domainSid property: Specifies the security identifier (SID) of the AD domain. If directoryServiceOptions
-     * is set to AD (AD DS authentication), this property is required. Otherwise, it can be omitted.
+     * Set the domainSid property: Specifies the security identifier (SID).
      * 
      * @param domainSid the domainSid value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -206,9 +164,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is required. Otherwise, it can be
-     * omitted.
+     * Get the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
      * 
      * @return the azureStorageSid value.
      */
@@ -217,9 +173,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is required. Otherwise, it can be
-     * omitted.
+     * Set the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
      * 
      * @param azureStorageSid the azureStorageSid value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -230,10 +184,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is optional. If provided, accountType
-     * should also be provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra
-     * authentication), this property can be omitted.
+     * Get the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
      * 
      * @return the samAccountName value.
      */
@@ -242,10 +193,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is optional. If provided, accountType
-     * should also be provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra
-     * authentication), this property can be omitted.
+     * Set the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
      * 
      * @param samAccountName the samAccountName value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -256,10 +204,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Get the accountType property: Specifies the Active Directory account type for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is optional. If provided,
-     * samAccountName should also be provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB
-     * (Entra authentication), this property can be omitted.
+     * Get the accountType property: Specifies the Active Directory account type for Azure Storage.
      * 
      * @return the accountType value.
      */
@@ -268,10 +213,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     }
 
     /**
-     * Set the accountType property: Specifies the Active Directory account type for Azure Storage. If
-     * directoryServiceOptions is set to AD (AD DS authentication), this property is optional. If provided,
-     * samAccountName should also be provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB
-     * (Entra authentication), this property can be omitted.
+     * Set the accountType property: Specifies the Active Directory account type for Azure Storage.
      * 
      * @param accountType the accountType value to set.
      * @return the ActiveDirectoryProperties object itself.
@@ -287,7 +229,19 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (domainName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model ActiveDirectoryProperties"));
+        }
+        if (domainGuid() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainGuid in model ActiveDirectoryProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActiveDirectoryProperties.class);
 
     /**
      * {@inheritDoc}
@@ -296,9 +250,9 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("domainGuid", this.domainGuid);
         jsonWriter.writeStringField("netBiosDomainName", this.netBiosDomainName);
         jsonWriter.writeStringField("forestName", this.forestName);
-        jsonWriter.writeStringField("domainGuid", this.domainGuid);
         jsonWriter.writeStringField("domainSid", this.domainSid);
         jsonWriter.writeStringField("azureStorageSid", this.azureStorageSid);
         jsonWriter.writeStringField("samAccountName", this.samAccountName);
@@ -312,6 +266,7 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
      * @param jsonReader The JsonReader being read.
      * @return An instance of ActiveDirectoryProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ActiveDirectoryProperties.
      */
     public static ActiveDirectoryProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -323,12 +278,12 @@ public final class ActiveDirectoryProperties implements JsonSerializable<ActiveD
 
                 if ("domainName".equals(fieldName)) {
                     deserializedActiveDirectoryProperties.domainName = reader.getString();
+                } else if ("domainGuid".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.domainGuid = reader.getString();
                 } else if ("netBiosDomainName".equals(fieldName)) {
                     deserializedActiveDirectoryProperties.netBiosDomainName = reader.getString();
                 } else if ("forestName".equals(fieldName)) {
                     deserializedActiveDirectoryProperties.forestName = reader.getString();
-                } else if ("domainGuid".equals(fieldName)) {
-                    deserializedActiveDirectoryProperties.domainGuid = reader.getString();
                 } else if ("domainSid".equals(fieldName)) {
                     deserializedActiveDirectoryProperties.domainSid = reader.getString();
                 } else if ("azureStorageSid".equals(fieldName)) {

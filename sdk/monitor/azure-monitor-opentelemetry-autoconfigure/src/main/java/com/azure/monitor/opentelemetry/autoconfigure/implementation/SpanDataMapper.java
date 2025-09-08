@@ -890,7 +890,15 @@ public final class SpanDataMapper {
     static void applyCommonTags(MappingsBuilder mappingsBuilder) {
         mappingsBuilder.exact(SemanticAttributes.ENDUSER_ID.getKey(), (telemetryBuilder, value) -> {
             if (value instanceof String) {
+                telemetryBuilder.addTag(ContextTagKeys.AI_USER_AUTH_USER_ID.toString(), (String) value);
+            }
+        }).exact(SemanticAttributes.ENDUSER_PSEUDO_ID.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof String) {
                 telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
+            }
+        }).exact(SemanticAttributes.SESSION_ID.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof String) {
+                telemetryBuilder.addTag(ContextTagKeys.AI_SESSION_ID.toString(), (String) value);
             }
         }).exact(AiSemanticAttributes.PREVIEW_APPLICATION_VERSION.getKey(), (telemetryBuilder, value) -> {
             if (value instanceof String) {

@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Azure HTTP client implementation dependencies -->
@@ -76,22 +76,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
     </dependency>
 
     <!-- Common external testing dependencies -->
@@ -105,17 +105,17 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
     </dependency>
 
     <!-- Used to unpack the tar.gz files of Test Proxy server -->
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.14</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
+      <version>1.10.15</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -133,17 +133,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
-                <include>org.junit.jupiter:junit-jupiter-api:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-engine:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-params:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-engine:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-params:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
                 <include>io.projectreactor:reactor-test:[3.7.8]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
-                <include>org.apache.ant:ant:[1.10.14]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
+                <include>org.apache.ant:ant:[1.10.15]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

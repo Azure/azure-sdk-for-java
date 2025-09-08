@@ -129,13 +129,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -147,7 +147,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.8.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -189,7 +189,7 @@
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
-      <version>3.9.1</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
+      <version>3.16.0</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -199,7 +199,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -211,7 +211,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.43.0]</include> <!-- {x-include-update;otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.43.0]</include> <!-- {x-include-update;otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
                 <include>io.opentelemetry.semconv:opentelemetry-semconv-incubating:[1.26.0-alpha]</include> <!-- {x-include-update;otel_exporter_deprecated_io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
-                <include>com.squareup.okio:okio:[3.9.1]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
+                <include>com.squareup.okio:okio:[3.16.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

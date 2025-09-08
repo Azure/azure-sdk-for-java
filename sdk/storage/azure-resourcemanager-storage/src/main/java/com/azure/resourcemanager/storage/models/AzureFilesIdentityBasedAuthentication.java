@@ -24,9 +24,7 @@ public final class AzureFilesIdentityBasedAuthentication
     private DirectoryServiceOptions directoryServiceOptions;
 
     /*
-     * Additional information about the directory service. Required if directoryServiceOptions is AD (AD DS
-     * authentication). Optional for directoryServiceOptions AADDS (Entra DS authentication) and AADKERB (Entra
-     * authentication).
+     * Required if directoryServiceOptions are AD, optional if they are AADKERB.
      */
     private ActiveDirectoryProperties activeDirectoryProperties;
 
@@ -34,11 +32,6 @@ public final class AzureFilesIdentityBasedAuthentication
      * Default share permission for users using Kerberos authentication if RBAC role is not assigned.
      */
     private DefaultSharePermission defaultSharePermission;
-
-    /*
-     * Required for Managed Identities access using OAuth over SMB.
-     */
-    private SmbOAuthSettings smbOAuthSettings;
 
     /**
      * Creates an instance of AzureFilesIdentityBasedAuthentication class.
@@ -70,9 +63,8 @@ public final class AzureFilesIdentityBasedAuthentication
     }
 
     /**
-     * Get the activeDirectoryProperties property: Additional information about the directory service. Required if
-     * directoryServiceOptions is AD (AD DS authentication). Optional for directoryServiceOptions AADDS (Entra DS
-     * authentication) and AADKERB (Entra authentication).
+     * Get the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      * 
      * @return the activeDirectoryProperties value.
      */
@@ -81,9 +73,8 @@ public final class AzureFilesIdentityBasedAuthentication
     }
 
     /**
-     * Set the activeDirectoryProperties property: Additional information about the directory service. Required if
-     * directoryServiceOptions is AD (AD DS authentication). Optional for directoryServiceOptions AADDS (Entra DS
-     * authentication) and AADKERB (Entra authentication).
+     * Set the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      * 
      * @param activeDirectoryProperties the activeDirectoryProperties value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
@@ -118,26 +109,6 @@ public final class AzureFilesIdentityBasedAuthentication
     }
 
     /**
-     * Get the smbOAuthSettings property: Required for Managed Identities access using OAuth over SMB.
-     * 
-     * @return the smbOAuthSettings value.
-     */
-    public SmbOAuthSettings smbOAuthSettings() {
-        return this.smbOAuthSettings;
-    }
-
-    /**
-     * Set the smbOAuthSettings property: Required for Managed Identities access using OAuth over SMB.
-     * 
-     * @param smbOAuthSettings the smbOAuthSettings value to set.
-     * @return the AzureFilesIdentityBasedAuthentication object itself.
-     */
-    public AzureFilesIdentityBasedAuthentication withSmbOAuthSettings(SmbOAuthSettings smbOAuthSettings) {
-        this.smbOAuthSettings = smbOAuthSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,9 +121,6 @@ public final class AzureFilesIdentityBasedAuthentication
         }
         if (activeDirectoryProperties() != null) {
             activeDirectoryProperties().validate();
-        }
-        if (smbOAuthSettings() != null) {
-            smbOAuthSettings().validate();
         }
     }
 
@@ -169,7 +137,6 @@ public final class AzureFilesIdentityBasedAuthentication
         jsonWriter.writeJsonField("activeDirectoryProperties", this.activeDirectoryProperties);
         jsonWriter.writeStringField("defaultSharePermission",
             this.defaultSharePermission == null ? null : this.defaultSharePermission.toString());
-        jsonWriter.writeJsonField("smbOAuthSettings", this.smbOAuthSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -199,9 +166,6 @@ public final class AzureFilesIdentityBasedAuthentication
                 } else if ("defaultSharePermission".equals(fieldName)) {
                     deserializedAzureFilesIdentityBasedAuthentication.defaultSharePermission
                         = DefaultSharePermission.fromString(reader.getString());
-                } else if ("smbOAuthSettings".equals(fieldName)) {
-                    deserializedAzureFilesIdentityBasedAuthentication.smbOAuthSettings
-                        = SmbOAuthSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
