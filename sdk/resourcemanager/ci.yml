@@ -23,7 +23,6 @@ trigger:
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 pr:
   branches:
@@ -49,7 +48,6 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 parameters:
 - name: release_azureresourcemanager
@@ -86,10 +84,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagersql
   displayName: 'azure-resourcemanager-sql'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagertrafficmanager
-  displayName: 'azure-resourcemanager-trafficmanager'
   type: boolean
   default: true
 - name: release_azureresourcemanagertest
@@ -138,10 +132,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql
         releaseInBatch: ${{ parameters.release_azureresourcemanagersql }}
-      - name: azure-resourcemanager-trafficmanager
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagertrafficmanager
-        releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
       - name: azure-resourcemanager-test
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertest

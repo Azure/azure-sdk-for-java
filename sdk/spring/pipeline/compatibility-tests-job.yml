@@ -59,6 +59,7 @@ jobs:
             - 'sdk/servicebus'
             - 'sdk/storage'
             - 'sdk/tools'
+            - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:

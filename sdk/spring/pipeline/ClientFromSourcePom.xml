@@ -57,7 +57,7 @@
     <module>../../resourcemanager/azure-resourcemanager-sql/pom.xml</module>
     <module>../../storage/azure-resourcemanager-storage/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-test/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-trafficmanager/pom.xml</module>
+    <module>../../trafficmanager/azure-resourcemanager-trafficmanager/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager/pom.xml</module>
     <module>../../serialization/azure-json/pom.xml</module>
     <module>../../serialization/azure-xml/pom.xml</module>
