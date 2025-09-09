@@ -49,6 +49,7 @@ class UserPrincipalManagerAudienceTests {
     private UserPrincipalManager userPrincipalManager;
 
     @BeforeEach
+    @SuppressWarnings("deprecation")
     void setupKeys() throws NoSuchAlgorithmException {
         final KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);

@@ -95,6 +95,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnBean(ResourceRetriever.class)
     @ConditionalOnMissingBean(JWKSetSource.class)
+    @SuppressWarnings("deprecation")
     JWKSetSource<SecurityContext> jwkSetSource(ResourceRetriever resourceRetriever) {
         long timeToLive = properties.getJwkSetSourceTimeToLive().toMillis();
         long cacheRefreshTimeout = properties.getJwkSetSourceCacheRefreshTimeout().toMillis();
