@@ -2,6 +2,25 @@
 # (Unreleased)
 Upgrade Spring Boot dependencies version to 3.5.5 and Spring Cloud dependencies version to 2025.0.0
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `ServiceBusJmsConnectionFactoryCustomizer.customize(ServiceBusJmsConnectionFactory factory)`.
+- Remove deprecated APIs `AzureEventHubsKafkaAutoConfiguration.eventHubsKafkaConnectionString(Environment environment)`, `AzureEventHubsKafkaAutoConfiguration.kafkaPropertiesBeanPostProcessor()`.
+
+### Spring Azure Resource Manager
+This section includes changes in `spring-cloud-azure-resourcemanager` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `provisionQueue(String namespace, String queue)`, `provisionTopic(String namespace, String topic)`, `provisionSubscription(String namespace, String topic, String subscription)`.
+
+### Spring Cloud Stream Service Bus Binder Core
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus-core` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type)`, `validateOrCreateForProducer(String name, ServiceBusEntityType type)`.
+
 ## 5.23.0 (2025-08-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.4, 3.4.0-3.4.8, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.5.x (x>4) and 3.4.y (y>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0, 2024.0.0-2024.0.2, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2025.0.x(x>0) and 2024.0.y (y>2) should be supported, but they aren't tested with this release.)
