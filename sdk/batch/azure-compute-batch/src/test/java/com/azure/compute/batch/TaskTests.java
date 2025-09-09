@@ -3,6 +3,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchApplicationPackageReference;
+import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchErrorSourceCategory;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
@@ -480,7 +481,7 @@ public class TaskTests extends BatchClientTestBase {
                 e.printStackTrace();
             }
             Assertions.fail("Expected RequestBodyTooLarge error");
-        } catch (HttpResponseException err) {
+        } catch (BatchErrorException err) {
             // DELETE
             try {
                 SyncPoller<BatchJob, Void> deletePoller
@@ -549,7 +550,7 @@ public class TaskTests extends BatchClientTestBase {
                 e.printStackTrace();
             }
             Assertions.fail("Expected RequestBodyTooLarge error");
-        } catch (HttpResponseException err) {
+        } catch (BatchErrorException err) {
             // DELETE
             try {
                 SyncPoller<BatchJob, Void> deletePoller
