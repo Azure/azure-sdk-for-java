@@ -27,7 +27,6 @@ import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.compute.batch.models.UserIdentity;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.SyncAsyncTest;
