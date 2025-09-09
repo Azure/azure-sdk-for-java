@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.source.JWKSetSource;
 import com.nimbusds.jose.proc.BadJOSEException;
-import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,21 +54,20 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
-     * @param resourceRetriever the resource retriever
-     * @param restTemplateBuilder the restTemplateBuilder
+     * @param restTemplateBuilder the RestTemplateBuilder
+     * @param jwkSetSource the JWK set source
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever,
+                                   JWKSetSource<com.nimbusds.jose.proc.SecurityContext> jwkSetSource,
                                    RestTemplateBuilder restTemplateBuilder) {
         this(
             aadAuthenticationProperties,
             endpoints,
             new UserPrincipalManager(
-                endpoints,
                 aadAuthenticationProperties,
-                resourceRetriever,
-                false
+                false,
+                jwkSetSource
             ),
             restTemplateBuilder
         );

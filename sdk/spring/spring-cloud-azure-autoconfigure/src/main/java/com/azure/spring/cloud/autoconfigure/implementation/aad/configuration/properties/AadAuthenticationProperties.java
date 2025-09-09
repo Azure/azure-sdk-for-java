@@ -89,14 +89,14 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * The lifespan (duration) of the cached JWK set before it expires.
+     * The default time to live of cached JWK sets, in milliseconds. Set to 5 minutes.
      */
-    private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
+    private Duration jwkSetSourceTimeToLive = Duration.ofMinutes(5);
 
     /**
-     * The refresh time (duration) of the cached JWK set before it expires.
+     * The default refresh timeout of cached JWK sets, in milliseconds. Set to 15 seconds.
      */
-    private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
+    private Duration jwkSetSourceCacheRefreshTimeout = Duration.ofMillis(15);
 
     /**
      * The redirect uri after logout. For instance, 'http://localhost:8080/'.
@@ -250,20 +250,20 @@ public class AadAuthenticationProperties implements InitializingBean {
         return authenticateAdditionalParameters;
     }
 
-    public Duration getJwkSetCacheLifespan() {
-        return jwkSetCacheLifespan;
+    public Duration getJwkSetSourceTimeToLive() {
+        return jwkSetSourceTimeToLive;
     }
 
-    public void setJwkSetCacheLifespan(Duration jwkSetCacheLifespan) {
-        this.jwkSetCacheLifespan = jwkSetCacheLifespan;
+    public void setJwkSetSourceTimeToLive(Duration jwkSetSourceTimeToLive) {
+        this.jwkSetSourceTimeToLive = jwkSetSourceTimeToLive;
     }
 
-    public Duration getJwkSetCacheRefreshTime() {
-        return jwkSetCacheRefreshTime;
+    public Duration getJwkSetSourceCacheRefreshTimeout() {
+        return jwkSetSourceCacheRefreshTimeout;
     }
 
-    public void setJwkSetCacheRefreshTime(Duration jwkSetCacheRefreshTime) {
-        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
+    public void setJwkSetSourceCacheRefreshTimeout(Duration jwkSetSourceCacheRefreshTimeout) {
+        this.jwkSetSourceCacheRefreshTimeout = jwkSetSourceCacheRefreshTimeout;
     }
 
     public String getPostLogoutRedirectUri() {

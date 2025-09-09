@@ -12,6 +12,9 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.JWKSetSource;
+import com.nimbusds.jose.jwk.source.URLBasedJWKSetSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -19,6 +22,8 @@ import com.nimbusds.jwt.SignedJWT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -38,9 +43,8 @@ class UserPrincipalManagerAudienceTests {
 
     private JWSSigner signer;
     private String jwkString;
-    private ResourceRetriever resourceRetriever;
+    private JWKSetSource<SecurityContext> jwkSetSource;
 
-    private AadAuthorizationServerEndpoints endpoints;
     private AadAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
@@ -61,13 +65,18 @@ class UserPrincipalManagerAudienceTests {
         final JWKSet jwkSet = new JWKSet(rsaJWK);
         jwkString = jwkSet.toString();
 
-        resourceRetriever = url -> new Resource(jwkString, "application/json");
+        ResourceRetriever resourceRetriever = url -> new Resource(jwkString, "application/json");
 
-        endpoints = mock(AadAuthorizationServerEndpoints.class);
+        AadAuthorizationServerEndpoints endpoints = mock(AadAuthorizationServerEndpoints.class);
         properties = new AadAuthenticationProperties();
         properties.getCredential().setClientId(FAKE_CLIENT_ID);
         properties.setAppIdUri(FAKE_APPLICATION_URI);
         when(endpoints.getJwkSetEndpoint()).thenReturn("file://dummy");
+        try {
+            jwkSetSource = new URLBasedJWKSetSource<>(new URL(endpoints.getJwkSetEndpoint()), resourceRetriever);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Should not happen in UT", e);
+        }
     }
 
     @Test
@@ -82,8 +91,7 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(properties, true, jwkSetSource);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
     }
@@ -100,8 +108,7 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(properties, true, jwkSetSource);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
     }
@@ -118,8 +125,7 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(properties, true, jwkSetSource);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .hasMessageContaining("Invalid token audience.");
     }
@@ -138,8 +144,7 @@ class UserPrincipalManagerAudienceTests {
         final String orderTwo = signedJWT.serialize();
         final String invalidToken = orderTwo.substring(0, orderTwo.length() - 5);
 
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(properties, true, jwkSetSource);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(invalidToken))
             .hasMessageContaining("JWT rejected: Invalid signature");
     }

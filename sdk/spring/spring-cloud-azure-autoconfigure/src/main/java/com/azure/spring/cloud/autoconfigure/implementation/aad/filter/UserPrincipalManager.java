@@ -9,13 +9,13 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properti
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource;
+import com.nimbusds.jose.jwk.source.JWKSetSource;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -26,8 +26,6 @@ import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,8 +44,6 @@ public class UserPrincipalManager {
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
-
-    private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI = "Failed to parse active directory key discovery uri.";
 
     private final JWKSource<SecurityContext> keySource;
     private final AadAuthenticationProperties aadAuthenticationProperties;
@@ -70,18 +66,13 @@ public class UserPrincipalManager {
     /**
      * Create a new {@link UserPrincipalManager} based of the
      * {@link AadAuthorizationServerEndpoints#getJwkSetEndpoint()}
-     *
-     * @param endpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
-     * @param resourceRetriever - configures the retrieved resource.
      * @param explicitAudienceCheck Whether explicitly check the audience.
-     * @throws IllegalArgumentException If AAD key discovery URI is malformed.
+     * @param jwkSetSource - JSON Web Key (JWK) set source.
      */
-    @SuppressWarnings("deprecation")
-    public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
-                                AadAuthenticationProperties aadAuthenticationProperties,
-                                ResourceRetriever resourceRetriever,
-                                boolean explicitAudienceCheck) {
+    public UserPrincipalManager(AadAuthenticationProperties aadAuthenticationProperties,
+                                boolean explicitAudienceCheck,
+                                JWKSetSource<SecurityContext> jwkSetSource) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
@@ -90,13 +81,7 @@ public class UserPrincipalManager {
             // app id uri for client credentials flow (server to server communication)
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
-        try {
-            String jwkSetEndpoint =
-                endpoints.getJwkSetEndpoint();
-            keySource = JWKSourceBuilder.create(new URL(jwkSetEndpoint), resourceRetriever).cache(true).build();
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
-        }
+        keySource = new JWKSetBasedJWKSource<>(jwkSetSource);
     }
 
     /**
