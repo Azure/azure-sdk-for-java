@@ -5,7 +5,9 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -83,6 +85,8 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecodingStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1174,6 +1178,51 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Reads a range of bytes from a blob with content validation options. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>{@code
+     * BlobRange range = new BlobRange(1024, 2048L);
+     * DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+     * DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+     *     .setStructuredMessageValidationEnabled(true);
+     *
+     * client.downloadStreamWithResponse(range, options, null, false, validationOptions).subscribe(response -> {
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+     *     response.getValue().subscribe(piece -> {
+     *         try {
+     *             downloadData.write(piece.array());
+     *         } catch (IOException ex) {
+     *             throw new UncheckedIOException(ex);
+     *         }
+     *     });
+     * });
+     * }</pre>
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param contentValidationOptions {@link DownloadContentValidationOptions} options for content validation
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, DownloadContentValidationOptions contentValidationOptions) {
+        try {
+            return withContext(
+                context -> downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, contentValidationOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
      * PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1209,6 +1258,57 @@ public class BlobAsyncClientBase {
                 .flatMap(r -> BinaryData.fromFlux(r.getValue())
                     .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                         data, r.getDeserializedHeaders()))));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Reads the entire blob with content validation options. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>{@code
+     * DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+     * DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+     *     .setStructuredMessageValidationEnabled(true);
+     *
+     * client.downloadContentWithResponse(options, null, validationOptions).subscribe(response -> {
+     *     BinaryData content = response.getValue();
+     *     System.out.println(content.toString());
+     * });
+     * }</pre>
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, DownloadContentValidationOptions)}
+     * to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param contentValidationOptions {@link DownloadContentValidationOptions} options for content validation
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, DownloadContentValidationOptions contentValidationOptions) {
+        try {
+            return withContext(context -> {
+                if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
+                    return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                                data, r.getDeserializedHeaders())));
+                } else {
+                    return downloadStreamWithResponse(null, options, requestConditions, false, context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                                data, r.getDeserializedHeaders())));
+                }
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1278,6 +1378,114 @@ public class BlobAsyncClientBase {
                 };
 
                 return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
+            });
+    }
+
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, DownloadContentValidationOptions contentValidationOptions, Context context) {
+        // For backward compatibility, if no content validation options are provided, use the original method
+        if (contentValidationOptions == null || (!contentValidationOptions.isStructuredMessageValidationEnabled() && !contentValidationOptions.isMd5ValidationEnabled())) {
+            return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context);
+        }
+
+        BlobRange finalRange = range == null ? new BlobRange(0) : range;
+        Boolean getMD5 = getRangeContentMd5 || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()) ? true : null;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
+
+        // The first range should eagerly convert headers as they'll be used to create response types.
+        Context firstRangeContext = context == null
+            ? new Context("azure-eagerly-convert-headers", true)
+            : context.addData("azure-eagerly-convert-headers", true);
+
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
+            firstRangeContext).map(response -> {
+                BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
+                String eTag = blobsDownloadHeaders.getETag();
+                BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
+                    ModelHelper.getErrorCode(response.getHeaders()));
+
+                /*
+                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+                 * from the response for better book-keeping towards the end.
+                 */
+                long finalCount;
+                long initialOffset = finalRange.getOffset();
+                if (finalRange.getCount() == null) {
+                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
+                    finalCount = blobLength - initialOffset;
+                } else {
+                    finalCount = finalRange.getCount();
+                }
+
+                // Apply structured message decoding if enabled
+                Flux<ByteBuffer> decodedStream = response.getValue();
+                if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                    // Use the content length from headers to determine expected length for structured message decoding
+                    Long contentLength = blobDownloadHeaders.getContentLength();
+                    decodedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(response.getValue(), contentLength, contentValidationOptions);
+                }
+
+                // The resume function takes throwable and offset at the destination.
+                // I.e. offset is relative to the starting point.
+                BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
+                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                        return Mono.error(throwable);
+                    }
+
+                    long newCount = finalCount - offset;
+
+                    /*
+                     * It's possible that the network stream will throw an error after emitting all data but before
+                     * completing. Issuing a retry at this stage would leave the download in a bad state with
+                     * incorrect count and offset values. Because we have read the intended amount of data, we can
+                     * ignore the error at the end of the stream.
+                     */
+                    if (newCount == 0) {
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
+                            + "but before stream signaled completion. Returning success as all data was downloaded. "
+                            + "Exception message: " + throwable.getMessage());
+                        return Mono.empty();
+                    }
+
+                    try {
+                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
+                            eTag, getMD5, context);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                };
+
+                // Create a new response with the decoded stream
+                StreamResponse decodedResponse = new StreamResponse() {
+                    @Override
+                    public int getStatusCode() {
+                        return response.getStatusCode();
+                    }
+
+                    @Override
+                    public HttpHeaders getHeaders() {
+                        return response.getHeaders();
+                    }
+
+                    @Override
+                    public Flux<ByteBuffer> getValue() {
+                        return decodedStream;
+                    }
+
+                    @Override
+                    public HttpRequest getRequest() {
+                        return response.getRequest();
+                    }
+
+                    @Override
+                    public void close() {
+                        response.close();
+                    }
+                };
+
+                return BlobDownloadAsyncResponseConstructorProxy.create(decodedResponse, onDownloadErrorResume, finalOptions);
             });
     }
 
@@ -1503,7 +1711,7 @@ public class BlobAsyncClientBase {
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context))
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), options.getContentValidationOptions(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1518,7 +1726,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        Context context) {
+        DownloadContentValidationOptions contentValidationOptions, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1528,8 +1736,15 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
-            = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, context);
+            = (range, conditions) -> {
+                if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
+                    return this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
+                        rangeGetContentMd5, contentValidationOptions, context);
+                } else {
+                    return this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
+                        rangeGetContentMd5, context);
+                }
+            };
 
         return ChunkedDownloadUtils
             .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,

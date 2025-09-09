@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -18,6 +19,7 @@ public final class BlobSeekableByteChannelReadOptions {
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
+    private DownloadContentValidationOptions contentValidationOptions;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -106,6 +108,26 @@ public final class BlobSeekableByteChannelReadOptions {
      */
     public BlobSeekableByteChannelReadOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Gets the {@link DownloadContentValidationOptions}.
+     *
+     * @return {@link DownloadContentValidationOptions}
+     */
+    public DownloadContentValidationOptions getContentValidationOptions() {
+        return contentValidationOptions;
+    }
+
+    /**
+     * Sets the {@link DownloadContentValidationOptions}.
+     *
+     * @param contentValidationOptions {@link DownloadContentValidationOptions}
+     * @return The updated options.
+     */
+    public BlobSeekableByteChannelReadOptions setContentValidationOptions(DownloadContentValidationOptions contentValidationOptions) {
+        this.contentValidationOptions = contentValidationOptions;
         return this;
     }
 }

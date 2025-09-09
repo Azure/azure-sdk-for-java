@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 
 import java.nio.file.OpenOption;
 import java.util.Set;
@@ -25,6 +26,7 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
+    private DownloadContentValidationOptions contentValidationOptions;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -101,6 +103,15 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link DownloadContentValidationOptions}.
+     *
+     * @return {@link DownloadContentValidationOptions}
+     */
+    public DownloadContentValidationOptions getContentValidationOptions() {
+        return contentValidationOptions;
+    }
+
+    /**
      * Sets the {@link BlobRange}.
      *
      * @param range {@link BlobRange}
@@ -163,6 +174,17 @@ public class BlobDownloadToFileOptions {
      */
     public BlobDownloadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link DownloadContentValidationOptions}.
+     *
+     * @param contentValidationOptions {@link DownloadContentValidationOptions}
+     * @return The updated options.
+     */
+    public BlobDownloadToFileOptions setContentValidationOptions(DownloadContentValidationOptions contentValidationOptions) {
+        this.contentValidationOptions = contentValidationOptions;
         return this;
     }
 }
