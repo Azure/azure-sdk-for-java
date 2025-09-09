@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.UsernamePasswordCredential;
 import com.azure.spring.cloud.core.implementation.factory.AzureServiceClientBuilderFactory;
 import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.verification.VerificationMode;
 
 import static org.mockito.Mockito.times;
 
+@SuppressWarnings("deprecation")
 public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends AzureSdkProperties,
                                                                   F extends AzureServiceClientBuilderFactory<B>>
     extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
@@ -47,6 +49,15 @@ public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends Azu
         buildClient(builder);
 
         verifyCredentialCalled(builder, ClientCertificateCredential.class, times(1));
+    }
+
+    @Test
+    void usernamePasswordTokenCredentialConfigured() {
+        final F factory = factoryWithUsernamePasswordTokenCredentialConfigured(createMinimalServiceProperties());
+        B builder = factory.build();
+        buildClient(builder);
+
+        verifyCredentialCalled(builder, UsernamePasswordCredential.class, times(1));
     }
 
     @Test

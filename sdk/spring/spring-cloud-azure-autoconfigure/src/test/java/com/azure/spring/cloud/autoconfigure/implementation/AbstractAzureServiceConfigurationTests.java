@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
@@ -22,6 +23,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractAzureServiceClientBuilderFactory<?>,
         P extends AzureProperties> {
 
@@ -66,6 +68,24 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             ))
             .run(context -> {
                 assertSovereignCloudsSetInCredential(context, ClientCertificateCredential.class);
+            });
+    }
+
+    @Test
+    protected void usGovCloudShouldWorkWithUsernamePasswordCredential() {
+        getMinimalContextRunner()
+            .withPropertyValues(
+                getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
+                getPropertyPrefix() + ".credential.client-id=fakeClientIdPlaceholder",
+                getPropertyPrefix() + ".credential.username=fakeNamePlaceholder",
+                getPropertyPrefix() + ".credential.password=fakePasswordPlaceholder"
+            )
+            .withConfiguration(AutoConfigurations.of(
+                AzureTokenCredentialAutoConfiguration.class,
+                AzureGlobalPropertiesAutoConfiguration.class
+            ))
+            .run(context -> {
+                assertSovereignCloudsSetInCredential(context, UsernamePasswordCredential.class);
             });
     }
 
