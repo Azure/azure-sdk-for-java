@@ -255,7 +255,7 @@
     "note": "1. Replace `CoreUtils.durationToStringWithDays` with `DurationSerializer.serialize` in `toJson` method of class 'SBTopicProperties', 'SBQueueProperties', 'SBSubscriptionProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
   },
   "sql": {
-    "dir": "azure-resourcemanager-sql",
+    "dir": "../sql/azure-resourcemanager-sql",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
     "args": "--tag=package-2021-11 --modelerfour.lenient-model-deduplication=true --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState --enable-sync-stack=false",
