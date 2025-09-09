@@ -16,13 +16,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchError;
+import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCreateResult;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskGroup;
 import com.azure.compute.batch.models.CreateTasksErrorException;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -105,8 +105,8 @@ public class TaskManager {
                         }
                     }
                 }
-            } catch (HttpResponseException e) {
-                handleHttpException(e, taskList);
+            } catch (BatchErrorException e) {
+                handleBatchException(e, taskList);
             } catch (RuntimeException e) {
                 exception = e;
                 pendingList.addAll(taskList);
@@ -117,13 +117,13 @@ public class TaskManager {
         }
 
         /**
-         * Handles HttpResponseException that may occur during task submission. This includes
+         * Handles BatchErrorException that may occur during task submission. This includes
          * reducing task chunk size and reattempting submission if the error is due to request body size.
          *
-         * @param e The HttpResponseException encountered.
+         * @param e The BatchErrorException encountered.
          * @param taskList The list of tasks that were being submitted when the exception occurred.
          */
-        private void handleHttpException(HttpResponseException e, List<BatchTaskCreateParameters> taskList) {
+        private void handleBatchException(BatchErrorException e, List<BatchTaskCreateParameters> taskList) {
             // Split on payload too large (413) if chunk > 1
             if (e.getResponse() != null && e.getResponse().getStatusCode() == 413 && taskList.size() > 1) {
                 int midpoint = taskList.size() / 2;
@@ -279,8 +279,8 @@ public class TaskManager {
         // Handle exceptions and failures
         if (innerException != null) {
             // If an exception happened in any of the threads, throw it.
-            if (innerException instanceof HttpResponseException) {
-                throw logger.logExceptionAsError((HttpResponseException) innerException);
+            if (innerException instanceof BatchErrorException) {
+                throw logger.logExceptionAsError((BatchErrorException) innerException);
             } else if (innerException instanceof RuntimeException) {
                 // WorkingThread will only catch and store a BatchErrorException or a
                 // RuntimeException in its run() method.

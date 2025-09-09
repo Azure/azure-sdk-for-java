@@ -5,6 +5,7 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchError;
+import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskCreateResult;
@@ -184,7 +185,7 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
                     return Mono.just("");
                 }
             };
-            throw LOGGER.logExceptionAsError(new HttpResponseException("RequestBodyTooLarge", resp, null));
+            throw LOGGER.logExceptionAsError(new BatchErrorException("RequestBodyTooLarge", resp, null));
         }
 
         final List<BatchTaskCreateResult> results = new ArrayList<>(tasks.size());
