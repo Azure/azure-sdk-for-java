@@ -9,7 +9,9 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.filter.UserPrinci
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
-import com.nimbusds.jose.jwk.source.*;
+import com.nimbusds.jose.jwk.source.CachingJWKSetSource;
+import com.nimbusds.jose.jwk.source.JWKSetSource;
+import com.nimbusds.jose.jwk.source.URLBasedJWKSetSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
