@@ -19,7 +19,6 @@
     <module>azure-resourcemanager-resources</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-servicebus</module>
-    <module>azure-resourcemanager-sql</module>
     <module>azure-resourcemanager-test</module>
   </modules>
 </project>

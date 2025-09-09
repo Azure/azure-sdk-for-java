@@ -57,6 +57,7 @@ jobs:
             - 'sdk/search/azure-resourcemanager-search'
             - 'sdk/serialization'
             - 'sdk/servicebus'
+            - 'sdk/sql/azure-resourcemanager-sql'
             - 'sdk/storage'
             - 'sdk/tools'
             - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
