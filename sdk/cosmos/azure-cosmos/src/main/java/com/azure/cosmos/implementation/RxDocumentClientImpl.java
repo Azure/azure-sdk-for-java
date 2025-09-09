@@ -539,7 +539,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (tokenCredential != null) {
                     String scopeOverride = Configs.getAadScopeOverride();
                     String accountScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
-                    String cosmosScope  = "https://cosmos.azure.com/.default";
 
                     if (scopeOverride != null && !scopeOverride.isEmpty()) {
                         // Use only the override scope; no fallback.
@@ -557,7 +556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         });
                     } else {
                         // Account scope with fallback to default scope on AADSTS500011 error
-                        this.tokenCredentialScopes = new String[] { accountScope, cosmosScope };
+                        this.tokenCredentialScopes = new String[] { accountScope, Constants.AAD_DEFAULT_SCOPE };
 
                         this.tokenCredentialCache = new SimpleTokenCache(() -> {
                             final String primaryScope  = this.tokenCredentialScopes[0];

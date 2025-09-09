@@ -292,4 +292,5 @@ public final class Constants {
     }
 
     public static final int QUERYPLAN_CACHE_SIZE = 5000;
+    public static final String AAD_DEFAULT_SCOPE = "https://cosmos.azure.com/.default";
 }
