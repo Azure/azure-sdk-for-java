@@ -221,6 +221,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
     @ResourceLock("ServiceProperties")
     @Test
+    @PlaybackOnly
     public void setPropsMin() {
         DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
         DataLakeAnalyticsLogging logging
