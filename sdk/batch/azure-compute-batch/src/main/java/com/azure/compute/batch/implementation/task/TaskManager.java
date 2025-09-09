@@ -85,7 +85,7 @@ public class TaskManager {
                         }
 
                         if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
-                            // Requeue this single task for retry
+                            // Server error will be retried
                             String id = result.getTaskId();
                             if (id != null) {
                                 for (BatchTaskCreateParameters p : taskList) {
@@ -99,6 +99,7 @@ public class TaskManager {
                             BatchError err = result.getError();
                             String code = (err != null) ? err.getCode() : null;
                             if (!"TaskExists".equalsIgnoreCase(code)) {
+                                // Client error will be recorded
                                 failures.add(result);
                             }
                         }
@@ -213,8 +214,6 @@ public class TaskManager {
                     activeThreadCounter.incrementAndGet(); // Increment before starting the thread to ensure activeThreadCounter accurately reflects the number of active threads
                     thread.start();
                     threads.put(thread, worker);
-                    // Loop again; we may still have capacity or more work
-                    continue;
                 } else {
 
                     // Only wait if there are active threads that can notify us
