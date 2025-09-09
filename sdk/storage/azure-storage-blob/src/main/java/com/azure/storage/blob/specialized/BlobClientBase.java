@@ -91,6 +91,7 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -511,7 +512,14 @@ public class BlobClientBase {
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (chunkRange,
-            conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
+            conditions) -> {
+                DownloadContentValidationOptions contentValidationOptions = options.getContentValidationOptions();
+                if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
+                    return client.downloadStreamWithResponse(chunkRange, null, conditions, false, contentValidationOptions, contextFinal);
+                } else {
+                    return client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
+                }
+            };
         return ChunkedDownloadUtils
             .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
@@ -586,9 +594,22 @@ public class BlobClientBase {
         BlobProperties properties;
         BlobDownloadResponse response;
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
-            response = this.downloadStreamWithResponse(dstStream,
-                new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
-                options.getRequestConditions(), false, null, context);
+            DownloadContentValidationOptions contentValidationOptions = options.getContentValidationOptions();
+            if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
+                BlobDownloadAsyncResponse asyncResponse = this.client.downloadStreamWithResponse(
+                    new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
+                    options.getRequestConditions(), false, contentValidationOptions, context).block();
+                if (asyncResponse != null) {
+                    // Convert async response to sync response with structured message decoding applied
+                    response = new BlobDownloadResponse(asyncResponse);
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Download response was null"));
+                }
+            } else {
+                response = this.downloadStreamWithResponse(dstStream,
+                    new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
+                    options.getRequestConditions(), false, null, context);
+            }
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));

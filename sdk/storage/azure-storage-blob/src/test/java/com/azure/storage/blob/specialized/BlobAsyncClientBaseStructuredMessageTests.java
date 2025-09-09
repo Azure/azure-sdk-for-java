@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
@@ -103,6 +104,19 @@ public class BlobAsyncClientBaseStructuredMessageTests {
         byte[] decodedBytes = new byte[decodedData.remaining()];
         decodedData.get(decodedBytes);
         assertArrayEquals(originalData, decodedBytes);
+    }
+
+    @Test
+    public void testBlobInputStreamOptionsWithContentValidation() {
+        // Test setting content validation options on BlobInputStreamOptions
+        DownloadContentValidationOptions contentValidationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+            
+        BlobInputStreamOptions options = new BlobInputStreamOptions()
+            .setContentValidationOptions(contentValidationOptions);
+        
+        assertNotNull(options.getContentValidationOptions());
+        assertTrue(options.getContentValidationOptions().isStructuredMessageValidationEnabled());
     }
 
     @Test

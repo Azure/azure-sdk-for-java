@@ -1263,6 +1263,57 @@ public class BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Reads the entire blob with content validation options. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <pre>{@code
+     * DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+     * DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+     *     .setStructuredMessageValidationEnabled(true);
+     *
+     * client.downloadContentWithResponse(options, null, validationOptions).subscribe(response -> {
+     *     BinaryData content = response.getValue();
+     *     System.out.println(content.toString());
+     * });
+     * }</pre>
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, DownloadContentValidationOptions)}
+     * to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param contentValidationOptions {@link DownloadContentValidationOptions} options for content validation
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, DownloadContentValidationOptions contentValidationOptions) {
+        try {
+            return withContext(context -> {
+                if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
+                    return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                                data, r.getDeserializedHeaders())));
+                } else {
+                    return downloadStreamWithResponse(null, options, requestConditions, false, context)
+                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                                data, r.getDeserializedHeaders())));
+                }
+            });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
