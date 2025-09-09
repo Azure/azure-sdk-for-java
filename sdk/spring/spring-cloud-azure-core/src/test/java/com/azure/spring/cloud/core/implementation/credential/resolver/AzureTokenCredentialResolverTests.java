@@ -7,6 +7,7 @@ import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
@@ -14,6 +15,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("deprecation")
 class AzureTokenCredentialResolverTests {
 
 
@@ -59,6 +61,16 @@ class AzureTokenCredentialResolverTests {
     }
 
     @Test
+    void shouldResolveUsernamePasswordTokenCredential() {
+        AzureTestProperties properties = new AzureTestProperties();
+        properties.getCredential().setUsername("test-username");
+        properties.getCredential().setPassword("test-password");
+        properties.getCredential().setClientId("test-client-id");
+
+        Assertions.assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
+    }
+
+    @Test
     void azurePropertiesShouldResolve() {
         AzureTestProperties properties = new AzureTestProperties();
         Assertions.assertTrue(resolver.isResolvable(properties));
@@ -93,6 +105,20 @@ class AzureTokenCredentialResolverTests {
     }
 
     @Test
+    void usGovCloudShouldResolveWithUsernamePasswordCredential() {
+        AzureTestProperties properties = new AzureTestProperties();
+        properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setUsername("test-username");
+        properties.getCredential().setPassword("test-password");
+
+        UsernamePasswordCredential tokenCredential = (UsernamePasswordCredential) resolver.resolve(properties);
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(UsernamePasswordCredential.class, "identityClient",
+            tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+    }
+
+    @Test
     void nullAzurePropertiesShouldNotResolve() {
         Assertions.assertTrue(resolver.isResolvable(null));
     }
@@ -100,5 +126,5 @@ class AzureTokenCredentialResolverTests {
     private static class AzureTestProperties extends AzureAmqpSdkProperties {
 
     }
-
+    
 }

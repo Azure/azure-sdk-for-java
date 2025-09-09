@@ -12,6 +12,7 @@ import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
@@ -75,6 +76,17 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
 
                 return builder.build();
             }
+        }
+
+        if (isClientIdSet && StringUtils.hasText(properties.getUsername())
+            && StringUtils.hasText(properties.getPassword())) {
+            return new UsernamePasswordCredentialBuilderFactory(azureProperties)
+                .build()
+                .username(properties.getUsername())
+                .password(properties.getPassword())
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         if (properties.isManagedIdentityEnabled()) {
