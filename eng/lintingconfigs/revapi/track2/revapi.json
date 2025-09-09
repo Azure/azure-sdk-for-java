@@ -336,11 +336,6 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
-          "code" : "java.method.removed",
-          "old" : "method void com.azure.spring.data.cosmos.core.query.CosmosQuery::setLimit(int)",
-          "justification" : "Remove deprecated method"
-        },
-        {
           "code" : "java.class.removed",
           "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
           "justification" : "Remove deprecated method"

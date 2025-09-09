@@ -12,7 +12,9 @@ import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressReposit
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,6 +42,10 @@ public class ApplicationContextEventReactiveIT {
     private CosmosTemplate template;
     @Autowired
     private SimpleCosmosMappingEventListener simpleCosmosMappingEventListener;
+
+    @SuppressWarnings("deprecation")
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {

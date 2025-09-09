@@ -205,6 +205,7 @@ public enum CriteriaType {
      * @return CriteriaType
      * @throws UnsupportedOperationException for unsupported part type
      */
+    @SuppressWarnings("")
     public static CriteriaType toCriteriaType(@NonNull Part.Type partType) {
         final CriteriaType criteriaType = PART_TREE_TYPE_TO_CRITERIA.get(partType);
 

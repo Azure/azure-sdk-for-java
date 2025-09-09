@@ -53,14 +53,14 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
-    @SuppressWarnings("removal")
+    @SuppressWarnings({"deprecation", "removal"})
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
         org.springframework.data.repository.query.QueryMethodEvaluationContextProvider evaluationContextProvider) {
         return Optional.of(new ReactiveCosmosQueryLookupStrategy(cosmosOperations,
             evaluationContextProvider));
     }
 
-    @SuppressWarnings("removal")
+    @SuppressWarnings({"deprecation", "removal"})
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 

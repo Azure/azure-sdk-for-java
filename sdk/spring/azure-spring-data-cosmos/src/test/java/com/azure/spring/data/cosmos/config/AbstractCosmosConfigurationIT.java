@@ -12,7 +12,9 @@ import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -27,6 +29,10 @@ import java.lang.reflect.Field;
 import static org.junit.Assert.assertNotNull;
 
 public class AbstractCosmosConfigurationIT {
+
+    @SuppressWarnings("deprecation")
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void containsExpressionResolver() {

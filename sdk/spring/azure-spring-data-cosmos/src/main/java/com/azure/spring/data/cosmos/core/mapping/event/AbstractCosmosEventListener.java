@@ -32,7 +32,7 @@ public abstract class AbstractCosmosEventListener<E> implements ApplicationListe
      * (non-Javadoc)
      * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void onApplicationEvent(CosmosMappingEvent<?> event) {
         if (event instanceof AfterLoadEvent) {

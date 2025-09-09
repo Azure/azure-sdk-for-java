@@ -387,6 +387,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return toDomainObject(domainType, response.getItem());
     }
 
+    @SuppressWarnings("unchecked")
     private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
         CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
         if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {

@@ -13,7 +13,9 @@ import com.azure.spring.data.cosmos.repository.repository.PersistableEntityRepos
 import com.azure.spring.data.cosmos.repository.repository.ReactivePersistableEntityRepository;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,6 +45,10 @@ public class PersistableIT {
 
     @Autowired
     private CosmosTemplate template;
+
+    @SuppressWarnings("deprecation")
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
