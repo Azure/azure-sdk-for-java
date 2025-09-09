@@ -37,6 +37,7 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -735,23 +736,25 @@ public abstract class IdentityClientBase {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
 
-                    if (redactedOutput.contains("unknown flag: --claims") || 
-                        redactedOutput.contains("flag provided but not defined: -claims")) {
+                    if (redactedOutput.contains("unknown flag: --claims")
+                        || redactedOutput.contains("flag provided but not defined: -claims")) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException("Claims challenges are not supported by the " +
-                                "currently installed Azure Developer CLI. Please update to azd CLI version 1.18.1 or higher " +
-                                "to support claims challenges."));
+                            new CredentialUnavailableException("Claims challenges are not supported by the "
+                                + "currently installed Azure Developer CLI. Please update to azd CLI version 1.18.1 or higher "
+                                + "to support claims challenges."));
                     }
-        
+
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
+                        if (azdCommand.toString().contains("claims")) {
+                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                            if (userFriendlyError != null) {
+                                throw LOGGER
+                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
+                            }
+                        }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
                                 + " Please run 'azd auth login' to set up account."));
-                    }
-
-                    String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
-                    if (userFriendlyError != null) {
-                        throw LOGGER.logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
@@ -787,51 +790,129 @@ public abstract class IdentityClientBase {
     }
 
     /**
-     * Extracts user-friendly error messages from AZD CLI JSON output.
-     * Prioritizes "Suggestion" messages over other error types.
-     * 
-     * @param azdOutput The raw output from azd CLI command
-     * @return User-friendly error message or null if no structured error found
+     * Extract a single, user-friendly message from azd consoleMessage JSON output.
+     *
+     * @param output The output from the Azure Developer CLI command.
+     * @return A user-friendly error message if found, otherwise null.
+     *
+     * Preference order:
+     * 1) A message containing "Suggestion" (case-insensitive)
+     * 2) The second message if multiple are present
+     * 3) The first message if only one exists
+     * Returns null if no messages can be parsed.
      */
-    private String extractUserFriendlyErrorFromAzdOutput(String azdOutput) {
-        try (JsonReader reader = JsonProviders.createReader(azdOutput)) {
-            reader.nextToken();
-            if (reader.currentToken() == JsonToken.START_OBJECT) {
-                Map<String, Object> errorObject = reader.readMap(JsonReader::readUntyped);
-                
-                // Look for suggestion messages first (highest priority)
-                Object suggestion = errorObject.get("Suggestion");
-                if (suggestion != null) {
-                    if (suggestion instanceof List) {
-                        List<?> suggestions = (List<?>) suggestion;
-                        if (!suggestions.isEmpty()) {
-                            return "Azure Developer CLI error: " + suggestions.get(0).toString();
+    private String extractUserFriendlyErrorFromAzdOutput(String output) {
+        if (output == null || output.isEmpty()) {
+            return null;
+        }
+
+        List<String> messages = new ArrayList<>();
+
+        for (String line : output.split("\\R")) { // split on any line break
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            // Handle multiple JSON objects in a single line
+            try (JsonReader reader = JsonProviders.createReader(trimmed)) {
+                while (reader.nextToken() != null) {
+                    if (reader.currentToken() == JsonToken.START_OBJECT) {
+                        Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
+
+                        // check "data.message"
+                        Object data = obj.get("data");
+                        if (data instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> dataMap = (Map<String, Object>) data;
+                            Object message = dataMap.get("message");
+                            if (message instanceof String) {
+                                String msg = ((String) message).trim();
+                                if (!msg.isEmpty()) {
+                                    messages.add(msg);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        // check "message"
+                        Object message = obj.get("message");
+                        if (message instanceof String) {
+                            String msg = ((String) message).trim();
+                            if (!msg.isEmpty()) {
+                                messages.add(msg);
+                            }
                         }
                     } else {
-                        return "Azure Developer CLI error: " + suggestion.toString();
+                        break; // Not a JSON object, stop processing this line
                     }
                 }
-                
-                // Look for other error message fields
-                for (String field : Arrays.asList("Message", "message", "Error", "error")) {
-                    Object errorMsg = errorObject.get(field);
-                    if (errorMsg != null) {
-                        if (errorMsg instanceof List) {
-                            List<?> messages = (List<?>) errorMsg;
-                            if (!messages.isEmpty()) {
-                                return "Azure Developer CLI error: " + messages.get(0).toString();
-                            }
-                        } else {
-                            return "Azure Developer CLI error: " + errorMsg.toString();
-                        }
+            } catch (IOException e) {
+                // not JSON -> ignore
+            }
+        }
+
+        if (messages.isEmpty()) {
+            return null;
+        }
+
+        // Prefer the suggestion line if present
+        for (String msg : messages) {
+            if (msg.toLowerCase().contains("suggestion")) {
+                return sanitizeOutput(msg);
+            }
+        }
+
+        // If more than one message exists, return the last one
+        if (messages.size() > 1) {
+            return sanitizeOutput(messages.get(messages.size() - 1));
+        }
+
+        return sanitizeOutput(messages.get(0));
+    }
+
+    /**
+     * Redacts tokens from CLI output to prevent error messages revealing them.
+     * 
+     * @param output The output of the Azure Developer CLI command
+     * @return The output with tokens redacted
+     */
+    private String sanitizeOutput(String output) {
+        if (output == null) {
+            return "";
+        }
+
+        // Find and redact token values without using regex
+        StringBuilder result = new StringBuilder();
+        String[] lines = output.split("\\r?\\n");
+
+        for (String line : lines) {
+            String processedLine = line;
+
+            // Look for "token": " pattern and redact the value
+            int tokenIndex = processedLine.indexOf("\"token\":");
+            if (tokenIndex >= 0) {
+                int valueStart = processedLine.indexOf("\"", tokenIndex + 8); // Skip past "token":
+                if (valueStart >= 0) {
+                    int valueEnd = processedLine.indexOf("\"", valueStart + 1);
+                    if (valueEnd >= 0) {
+                        // Replace the token value with ****
+                        processedLine
+                            = processedLine.substring(0, valueStart + 1) + "****" + processedLine.substring(valueEnd);
+                    } else {
+                        // Handle case where quote is at end of string/line
+                        processedLine = processedLine.substring(0, valueStart + 1) + "****";
                     }
                 }
             }
-        } catch (IOException e) {
-            // If JSON parsing fails, return null to fall back to original error handling
-            LOGGER.verbose("Failed to parse AZD CLI error output as JSON: " + e.getMessage());
+
+            if (result.length() > 0) {
+                result.append("\n");
+            }
+            result.append(processedLine);
         }
-        return null;
+
+        return result.toString();
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
@@ -983,8 +1064,9 @@ public abstract class IdentityClientBase {
     String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
         StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
 
-        // Properly escape the claims content for shell safety
-        String escapedClaims = shellEscape(request.getClaims());
+        // Use IdentityUtil.ensureBase64Encoded and then escape for shell safety
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        String escapedClaims = shellEscape(encodedClaims);
         azLoginCommand.append("\"").append(escapedClaims).append("\"");
 
         // Add tenant if available
@@ -1009,7 +1091,7 @@ public abstract class IdentityClientBase {
     /**
      * Properly escape a string for shell command usage.
      */
-    private String shellEscape(String input) {
+    String shellEscape(String input) {
         if (input == null) {
             return "";
         }

@@ -431,7 +431,8 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
-            azdCommand.append(" --claims ").append(shellEscape(request.getClaims()));
+            String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+            azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
         }
 
         try {
