@@ -475,7 +475,7 @@ com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-connectedcache;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
@@ -501,7 +501,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensio
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
