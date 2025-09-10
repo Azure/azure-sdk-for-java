@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Playwright quota names.
+ * Available Playwright quota types.
  */
 public final class QuotaName extends ExpandableStringEnum<QuotaName> {
     /**

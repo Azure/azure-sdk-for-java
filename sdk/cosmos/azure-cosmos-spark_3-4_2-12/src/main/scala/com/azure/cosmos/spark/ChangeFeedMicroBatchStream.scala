@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.guava25.collect.{HashBiMap, Maps}
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, UUIDs}
+import com.azure.cosmos.changeFeedMetrics.{ChangeFeedMetricsListener, ChangeFeedMetricsTracker}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -12,7 +14,12 @@ import org.apache.spark.sql.connector.read.{InputPartition, PartitionReaderFacto
 import org.apache.spark.sql.types.StructType
 
 import java.time.Duration
-import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // scala style rule flaky - even complaining on partial log messages
 // scalastyle:off multiple.string.literals
@@ -59,6 +66,17 @@ private class ChangeFeedMicroBatchStream
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
+  private val partitionIndex = new AtomicLong(0)
+  private val partitionIndexMap = Maps.synchronizedBiMap(HashBiMap.create[NormalizedRange, Long]())
+  private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+
+  if (changeFeedConfig.performanceMonitoringEnabled) {
+    log.logInfo("ChangeFeed performance monitoring is enabled, registering ChangeFeedMetricsListener")
+    session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  } else {
+    log.logInfo("ChangeFeed performance monitoring is disabled")
+  }
+
   override def latestOffset(): Offset = {
     // For Spark data streams implementing SupportsAdmissionControl trait
     // latestOffset(Offset, ReadLimit) is called instead
@@ -101,11 +119,15 @@ private class ChangeFeedMicroBatchStream
     end
       .inputPartitions
       .get
-      .map(partition => partition
-        .withContinuationState(
-          SparkBridgeImplementationInternal
+      .map(partition => {
+        val index = partitionIndexMap.asScala.getOrElseUpdate(partition.feedRange, partitionIndex.incrementAndGet())
+        partition
+         .withContinuationState(
+           SparkBridgeImplementationInternal
             .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
-          clearEndLsn = false))
+           clearEndLsn = false)
+         .withIndex(index)
+      })
   }
 
   /**
@@ -152,7 +174,8 @@ private class ChangeFeedMicroBatchStream
       this.containerConfig,
       this.partitioningConfig,
       this.defaultParallelism,
-      this.container
+      this.container,
+      Some(this.partitionMetricsMap)
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {

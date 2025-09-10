@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.1.4 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `netty-codec-http` from `4.1.118.Final` to version `4.1.124.Final`.
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+
+
 ## 1.1.3 (2025-07-29)
 
 ### Other Changes
