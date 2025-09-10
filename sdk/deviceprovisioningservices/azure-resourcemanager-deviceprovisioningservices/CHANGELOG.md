@@ -1,14 +1,118 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-09-10)
 
-### Features Added
+- Azure Resource Manager DeviceProvisioningServices client library for Java. This package contains Microsoft Azure SDK for DeviceProvisioningServices Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package api-version 2025-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ProvisioningServiceDescriptionListResult` was removed
 
-### Other Changes
+#### `models.PrivateLinkResources` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.CertificateListDescription` was removed
+
+#### `models.IotDpsSkuDefinitionListResult` was removed
+
+#### `models.SharedAccessSignatureAuthorizationRuleListResult` was removed
+
+#### `IotDpsManager` was removed
+
+#### `IotDpsManager$Configurable` was removed
+
+#### `models.SharedAccessSignatureAuthorizationRule` was removed
+
+#### `models.GroupIdInformationProperties` was modified
+
+* `withRequiredZoneNames(java.util.List)` was removed
+* `withRequiredMembers(java.util.List)` was removed
+* `withGroupId(java.lang.String)` was removed
+
+#### `models.IotDpsPropertiesDescription` was modified
+
+* `deviceProvisioningHostname()` was removed
+* `serviceOperationsHostname()` was removed
+
+#### `models.VerificationCodeResponseProperties` was modified
+
+* `withSubject(java.lang.String)` was removed
+* `withExpiry(java.lang.String)` was removed
+* `withThumbprint(java.lang.String)` was removed
+* `withVerificationCode(java.lang.String)` was removed
+* `withUpdated(java.lang.String)` was removed
+* `withCertificate(byte[])` was removed
+* `withIsVerified(java.lang.Boolean)` was removed
+* `withCreated(java.lang.String)` was removed
+
+#### `models.DpsCertificates` was modified
+
+* `models.CertificateListDescription list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.SharedAccessSignatureAuthorizationRule listKeysForKeyName(java.lang.String,java.lang.String,java.lang.String)` -> `models.SharedAccessSignatureAuthorizationRuleAccessRightsDescription listKeysForKeyName(java.lang.String,java.lang.String,java.lang.String)`
+* `models.PrivateLinkResources listPrivateLinkResources(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listPrivateLinkResources(java.lang.String,java.lang.String)`
+
+#### `models.ErrorMessage` was modified
+
+* `withMessage(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `withDetails(java.lang.String)` was removed
+
+### Features Added
+
+* `models.DeviceRegistryNamespaceDescription` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.SharedAccessSignatureAuthorizationRuleAccessRightsDescription` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `DeviceProvisioningServicesManager` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.DeviceRegistryNamespaceAuthenticationType` was added
+
+* `DeviceProvisioningServicesManager$Configurable` was added
+
+#### `models.GroupIdInformation` was modified
+
+* `systemData()` was added
+
+#### `models.IotDpsPropertiesDescription` was modified
+
+* `deviceRegistryNamespace()` was added
+* `withPortalOperationsHostName(java.lang.String)` was added
+* `withDeviceRegistryNamespace(models.DeviceRegistryNamespaceDescription)` was added
+* `portalOperationsHostName()` was added
+* `serviceOperationsHostName()` was added
+* `deviceProvisioningHostName()` was added
+
+#### `models.ProvisioningServiceDescription` was modified
+
+* `subscriptionid()` was added
+* `resourcegroup()` was added
+* `identity()` was added
+
+#### `models.DpsCertificates` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ProvisioningServiceDescription$Definition` was modified
+
+* `withSubscriptionid(java.lang.String)` was added
+* `withResourcegroup(java.lang.String)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.1.0 (2025-01-03)
 
