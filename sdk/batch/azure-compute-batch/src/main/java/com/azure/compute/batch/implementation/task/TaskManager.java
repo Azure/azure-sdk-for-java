@@ -75,6 +75,12 @@ public class TaskManager {
          */
         private void submitChunk(List<BatchTaskCreateParameters> taskList) {
             try {
+                // Build a Task ID to Task map
+                Map<String, BatchTaskCreateParameters> taskIdMap = new HashMap<>(taskList.size());
+                for (BatchTaskCreateParameters p : taskList) {
+                    taskIdMap.putIfAbsent(p.getId(), p);
+                }
+
                 BatchCreateTaskCollectionResult response
                     = taskSubmitter.submitTasks(jobId, new BatchTaskGroup(taskList));
 
@@ -88,11 +94,9 @@ public class TaskManager {
                             // Server error will be retried
                             String id = result.getTaskId();
                             if (id != null) {
-                                for (BatchTaskCreateParameters p : taskList) {
-                                    if (id.equals(p.getId())) {
-                                        pendingList.add(p);
-                                        break;
-                                    }
+                                BatchTaskCreateParameters p = taskIdMap.get(id);
+                                if (p != null) {
+                                    pendingList.add(p);
                                 }
                             }
                         } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR) {
