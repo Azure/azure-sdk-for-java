@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
@@ -152,6 +153,52 @@ public final class CveResourceInner extends ProxyResource {
      */
     public String cveName() {
         return this.innerProperties() == null ? null : this.innerProperties().cveName();
+    }
+
+    /**
+     * Get the component property: Legacy property for what is now componentName.
+     * 
+     * @return the component value.
+     */
+    public CveComponent component() {
+        return this.innerProperties() == null ? null : this.innerProperties().component();
+    }
+
+    /**
+     * Get the cvssScore property: Legacy property for the effective CVE score.
+     * 
+     * @return the cvssScore value.
+     */
+    public String cvssScore() {
+        return this.innerProperties() == null ? null : this.innerProperties().cvssScore();
+    }
+
+    /**
+     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * 
+     * @return the cvssV2Score value.
+     */
+    public String cvssV2Score() {
+        return this.innerProperties() == null ? null : this.innerProperties().cvssV2Score();
+    }
+
+    /**
+     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * 
+     * @return the cvssV3Score value.
+     */
+    public String cvssV3Score() {
+        return this.innerProperties() == null ? null : this.innerProperties().cvssV3Score();
+    }
+
+    /**
+     * Get the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
+     * property.
+     * 
+     * @return the cvssVersion value.
+     */
+    public String cvssVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().cvssVersion();
     }
 
     /**

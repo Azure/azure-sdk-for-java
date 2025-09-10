@@ -5,8 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
@@ -1142,7 +1142,7 @@ public class SearchTests extends SearchTestBase {
             assertEquals(1, documents.size());
 
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 
@@ -1176,7 +1176,7 @@ public class SearchTests extends SearchTestBase {
 
             assertEquals(1, documents.size());
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 
