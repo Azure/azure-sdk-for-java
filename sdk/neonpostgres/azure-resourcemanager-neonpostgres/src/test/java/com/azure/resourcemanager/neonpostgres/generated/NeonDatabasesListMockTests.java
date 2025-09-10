@@ -22,7 +22,7 @@ public final class NeonDatabasesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"entityId\":\"siuorinikcedpk\",\"entityName\":\"iwm\",\"createdAt\":\"mqr\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"vyczyayubt\",\"value\":\"mbxiqahra\"},{\"name\":\"pxmib\",\"value\":\"lnupoyryefqmw\"}],\"branchId\":\"yztxlno\",\"ownerName\":\"pbjceegvy\"},\"id\":\"ztkutnj\",\"name\":\"llukkreh\",\"type\":\"htmjo\"}]}";
+            = "{\"value\":[{\"properties\":{\"entityId\":\"ejexfdlhuhd\",\"entityName\":\"bgywadrklpdye\",\"createdAt\":\"rwcflvxbocayw\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"zmolhve\",\"value\":\"lngsfmh\"},{\"name\":\"dxqupyml\",\"value\":\"klmnjqzmqynhitr\"}],\"branchId\":\"qgqrbthbfpiq\",\"ownerName\":\"jo\",\"databaseName\":\"gwfv\",\"lastUpdated\":\"wzrqeia\"},\"id\":\"pkhuvnlmdcnut\",\"name\":\"exmizunzbq\",\"type\":\"ioynctfqhhvv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class NeonDatabasesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<NeonDatabase> response
-            = manager.neonDatabases().list("bsat", "oiauesugmocpcj", "cboe", "rgttw", com.azure.core.util.Context.NONE);
+        PagedIterable<NeonDatabase> response = manager.neonDatabases()
+            .list("htvagwnnw", "nv", "nyldjdkjvd", "yknkxioxhnrjlq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iwm", response.iterator().next().properties().entityName());
-        Assertions.assertEquals("vyczyayubt", response.iterator().next().properties().attributes().get(0).name());
-        Assertions.assertEquals("mbxiqahra", response.iterator().next().properties().attributes().get(0).value());
-        Assertions.assertEquals("yztxlno", response.iterator().next().properties().branchId());
-        Assertions.assertEquals("pbjceegvy", response.iterator().next().properties().ownerName());
+        Assertions.assertEquals("bgywadrklpdye", response.iterator().next().properties().entityName());
+        Assertions.assertEquals("zmolhve", response.iterator().next().properties().attributes().get(0).name());
+        Assertions.assertEquals("lngsfmh", response.iterator().next().properties().attributes().get(0).value());
+        Assertions.assertEquals("qgqrbthbfpiq", response.iterator().next().properties().branchId());
+        Assertions.assertEquals("jo", response.iterator().next().properties().ownerName());
+        Assertions.assertEquals("gwfv", response.iterator().next().properties().databaseName());
     }
 }

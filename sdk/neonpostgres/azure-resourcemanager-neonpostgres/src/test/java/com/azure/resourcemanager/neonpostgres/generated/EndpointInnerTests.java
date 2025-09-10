@@ -6,20 +6,54 @@ package com.azure.resourcemanager.neonpostgres.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.neonpostgres.fluent.models.EndpointInner;
+import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.AutoscalingSize;
+import com.azure.resourcemanager.neonpostgres.models.EndpointProperties;
 import com.azure.resourcemanager.neonpostgres.models.EndpointType;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class EndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"entityId\":\"e\",\"entityName\":\"ej\",\"createdAt\":\"iuxegth\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"awlpjfelqerpp\",\"value\":\"cbgqnzmnhiil\"},{\"name\":\"alwcjgckbb\",\"value\":\"ccgzpraoxnyu\"},{\"name\":\"fa\",\"value\":\"sgftipwc\"},{\"name\":\"byubhiqdxyurnpn\",\"value\":\"hza\"}],\"projectId\":\"cnuhiigbylbuigv\",\"branchId\":\"atvcrkdlbnbq\",\"endpointType\":\"read_only\"},\"id\":\"syhzlwx\",\"name\":\"eaovurexdnds\",\"type\":\"dwead\"}")
+            "{\"properties\":{\"entityId\":\"u\",\"entityName\":\"fogxhcxnw\",\"createdAt\":\"pfdzxcouzfwofw\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"kdt\",\"value\":\"xsoednlw\"},{\"name\":\"li\",\"value\":\"ezomu\"},{\"name\":\"mqgisnion\",\"value\":\"tb\"}],\"projectId\":\"rdpuenxkgtlzl\",\"branchId\":\"rlxcznnhz\",\"endpointType\":\"read_only\",\"endpointId\":\"mxlxmwtygeq\",\"computeName\":\"sito\",\"status\":\"active\",\"lastActive\":\"fsgbjmlreesrf\",\"size\":{\"autoscalingLimitMinCu\":91.31100770410394,\"autoscalingLimitMaxCu\":90.87229828817398}},\"id\":\"wliso\",\"name\":\"ntfxxcrqmipfjwfo\",\"type\":\"gizmshxxbaizabu\"}")
             .toObject(EndpointInner.class);
-        Assertions.assertEquals("ej", model.properties().entityName());
-        Assertions.assertEquals("awlpjfelqerpp", model.properties().attributes().get(0).name());
-        Assertions.assertEquals("cbgqnzmnhiil", model.properties().attributes().get(0).value());
-        Assertions.assertEquals("cnuhiigbylbuigv", model.properties().projectId());
-        Assertions.assertEquals("atvcrkdlbnbq", model.properties().branchId());
+        Assertions.assertEquals("fogxhcxnw", model.properties().entityName());
+        Assertions.assertEquals("kdt", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("xsoednlw", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("rdpuenxkgtlzl", model.properties().projectId());
+        Assertions.assertEquals("rlxcznnhz", model.properties().branchId());
         Assertions.assertEquals(EndpointType.READ_ONLY, model.properties().endpointType());
+        Assertions.assertEquals("mxlxmwtygeq", model.properties().endpointId());
+        Assertions.assertEquals("sito", model.properties().computeName());
+        Assertions.assertEquals(91.31100770410394, model.properties().size().autoscalingLimitMinCu());
+        Assertions.assertEquals(90.87229828817398, model.properties().size().autoscalingLimitMaxCu());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EndpointInner model = new EndpointInner().withProperties(new EndpointProperties().withEntityName("fogxhcxnw")
+            .withAttributes(Arrays.asList(new Attributes().withName("kdt").withValue("xsoednlw"),
+                new Attributes().withName("li").withValue("ezomu"),
+                new Attributes().withName("mqgisnion").withValue("tb")))
+            .withProjectId("rdpuenxkgtlzl")
+            .withBranchId("rlxcznnhz")
+            .withEndpointType(EndpointType.READ_ONLY)
+            .withEndpointId("mxlxmwtygeq")
+            .withComputeName("sito")
+            .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(91.31100770410394)
+                .withAutoscalingLimitMaxCu(90.87229828817398)));
+        model = BinaryData.fromObject(model).toObject(EndpointInner.class);
+        Assertions.assertEquals("fogxhcxnw", model.properties().entityName());
+        Assertions.assertEquals("kdt", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("xsoednlw", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("rdpuenxkgtlzl", model.properties().projectId());
+        Assertions.assertEquals("rlxcznnhz", model.properties().branchId());
+        Assertions.assertEquals(EndpointType.READ_ONLY, model.properties().endpointType());
+        Assertions.assertEquals("mxlxmwtygeq", model.properties().endpointId());
+        Assertions.assertEquals("sito", model.properties().computeName());
+        Assertions.assertEquals(91.31100770410394, model.properties().size().autoscalingLimitMinCu());
+        Assertions.assertEquals(90.87229828817398, model.properties().size().autoscalingLimitMaxCu());
     }
 }

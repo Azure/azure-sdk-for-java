@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PgVersionsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PgVersionsResultInner model = BinaryData.fromString(
-            "{\"versions\":[{\"version\":1249312895},{\"version\":817960606},{\"version\":1877475187},{\"version\":1370883610}]}")
+        PgVersionsResultInner model = BinaryData
+            .fromString("{\"versions\":[{\"version\":504276200},{\"version\":598830152},{\"version\":1413290916}]}")
             .toObject(PgVersionsResultInner.class);
-        Assertions.assertEquals(1249312895, model.versions().get(0).version());
+        Assertions.assertEquals(504276200, model.versions().get(0).version());
     }
 }

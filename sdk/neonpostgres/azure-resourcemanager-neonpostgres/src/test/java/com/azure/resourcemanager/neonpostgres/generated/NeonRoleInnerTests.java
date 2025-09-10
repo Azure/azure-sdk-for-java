@@ -6,19 +6,44 @@ package com.azure.resourcemanager.neonpostgres.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner;
+import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.NeonRoleProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class NeonRoleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeonRoleInner model = BinaryData.fromString(
-            "{\"properties\":{\"entityId\":\"sycljsel\",\"entityName\":\"pbafvafhlbylc\",\"createdAt\":\"evxrhyz\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"ofpltdbm\",\"value\":\"irrhv\"},{\"name\":\"fnrac\",\"value\":\"npq\"}],\"branchId\":\"tuujwouh\",\"permissions\":[\"s\",\"grbjbxsjybvitvqk\",\"y\"],\"isSuperUser\":false},\"id\":\"mtggmu\",\"name\":\"dchozfnkfexl\",\"type\":\"xn\"}")
+            "{\"properties\":{\"entityId\":\"jizqfsg\",\"entityName\":\"dxze\",\"createdAt\":\"q\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"rxipmlnfyzav\",\"value\":\"rbypi\"},{\"name\":\"dbkp\",\"value\":\"jtaqhsmqazpdg\"},{\"name\":\"njhx\",\"value\":\"h\"},{\"name\":\"hmgpczqulpt\",\"value\":\"bvcpxtzhi\"}],\"branchId\":\"qbtimpk\",\"permissions\":[\"o\",\"nsihqhudsm\",\"suaawj\"],\"isSuperUser\":false,\"roleName\":\"jnfczmnniixy\",\"lastUpdated\":\"qban\",\"owns\":\"jtgirnb\"},\"id\":\"gm\",\"name\":\"dorgmynltw\",\"type\":\"p\"}")
             .toObject(NeonRoleInner.class);
-        Assertions.assertEquals("pbafvafhlbylc", model.properties().entityName());
-        Assertions.assertEquals("ofpltdbm", model.properties().attributes().get(0).name());
-        Assertions.assertEquals("irrhv", model.properties().attributes().get(0).value());
-        Assertions.assertEquals("tuujwouh", model.properties().branchId());
-        Assertions.assertEquals("s", model.properties().permissions().get(0));
+        Assertions.assertEquals("dxze", model.properties().entityName());
+        Assertions.assertEquals("rxipmlnfyzav", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("rbypi", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("qbtimpk", model.properties().branchId());
+        Assertions.assertEquals("o", model.properties().permissions().get(0));
         Assertions.assertFalse(model.properties().isSuperUser());
+        Assertions.assertEquals("jnfczmnniixy", model.properties().roleName());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NeonRoleInner model = new NeonRoleInner().withProperties(new NeonRoleProperties().withEntityName("dxze")
+            .withAttributes(Arrays.asList(new Attributes().withName("rxipmlnfyzav").withValue("rbypi"),
+                new Attributes().withName("dbkp").withValue("jtaqhsmqazpdg"),
+                new Attributes().withName("njhx").withValue("h"),
+                new Attributes().withName("hmgpczqulpt").withValue("bvcpxtzhi")))
+            .withBranchId("qbtimpk")
+            .withPermissions(Arrays.asList("o", "nsihqhudsm", "suaawj"))
+            .withIsSuperUser(false)
+            .withRoleName("jnfczmnniixy"));
+        model = BinaryData.fromObject(model).toObject(NeonRoleInner.class);
+        Assertions.assertEquals("dxze", model.properties().entityName());
+        Assertions.assertEquals("rxipmlnfyzav", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("rbypi", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("qbtimpk", model.properties().branchId());
+        Assertions.assertEquals("o", model.properties().permissions().get(0));
+        Assertions.assertFalse(model.properties().isSuperUser());
+        Assertions.assertEquals("jnfczmnniixy", model.properties().roleName());
     }
 }

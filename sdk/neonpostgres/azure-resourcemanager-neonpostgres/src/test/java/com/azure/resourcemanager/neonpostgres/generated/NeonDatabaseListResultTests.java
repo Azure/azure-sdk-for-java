@@ -12,13 +12,14 @@ public final class NeonDatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeonDatabaseListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"entityId\":\"ulehurqlr\",\"entityName\":\"fawey\",\"createdAt\":\"kphyjdxrav\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"rxmrgchbapx\",\"value\":\"iyfjjkbajbuscg\"},{\"name\":\"uusioycblev\",\"value\":\"mclujyxkyxlzgs\"}],\"branchId\":\"kzzltafhbzf\",\"ownerName\":\"vwmbjlzqsczpg\"},\"id\":\"wnapfdq\",\"name\":\"owftptnuwjtks\",\"type\":\"h\"}],\"nextLink\":\"gqy\"}")
+            "{\"value\":[{\"properties\":{\"entityId\":\"chtvsnvlaqd\",\"entityName\":\"yzawatu\",\"createdAt\":\"kokb\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"ymgobll\",\"value\":\"snwgwimaa\"},{\"name\":\"eakhtmhobcya\",\"value\":\"rfvqtvkhgvo\"},{\"name\":\"gxkfnaoaqymhccto\",\"value\":\"uowyrnskbyhqu\"}],\"branchId\":\"zygxvha\",\"ownerName\":\"xecxqnwh\",\"databaseName\":\"ozawmvgxsmpk\",\"lastUpdated\":\"wirfljf\"},\"id\":\"xqou\",\"name\":\"xudnmckap\",\"type\":\"hknqiijge\"}],\"nextLink\":\"d\"}")
             .toObject(NeonDatabaseListResult.class);
-        Assertions.assertEquals("fawey", model.value().get(0).properties().entityName());
-        Assertions.assertEquals("rxmrgchbapx", model.value().get(0).properties().attributes().get(0).name());
-        Assertions.assertEquals("iyfjjkbajbuscg", model.value().get(0).properties().attributes().get(0).value());
-        Assertions.assertEquals("kzzltafhbzf", model.value().get(0).properties().branchId());
-        Assertions.assertEquals("vwmbjlzqsczpg", model.value().get(0).properties().ownerName());
-        Assertions.assertEquals("gqy", model.nextLink());
+        Assertions.assertEquals("yzawatu", model.value().get(0).properties().entityName());
+        Assertions.assertEquals("ymgobll", model.value().get(0).properties().attributes().get(0).name());
+        Assertions.assertEquals("snwgwimaa", model.value().get(0).properties().attributes().get(0).value());
+        Assertions.assertEquals("zygxvha", model.value().get(0).properties().branchId());
+        Assertions.assertEquals("xecxqnwh", model.value().get(0).properties().ownerName());
+        Assertions.assertEquals("ozawmvgxsmpk", model.value().get(0).properties().databaseName());
+        Assertions.assertEquals("d", model.nextLink());
     }
 }

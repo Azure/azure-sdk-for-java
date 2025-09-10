@@ -28,7 +28,8 @@ public final class BranchesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.branches()
-            .deleteWithResponse("glhphzwx", "tej", "iilhvtozyagj", "nxkbylhyyxgf", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rzjv", "sunhaevlah", "czywywuahwc", "rewcnnaaxqjfda",
+                com.azure.core.util.Context.NONE);
 
     }
 }
