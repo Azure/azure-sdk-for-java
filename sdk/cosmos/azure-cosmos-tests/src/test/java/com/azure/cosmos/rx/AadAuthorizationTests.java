@@ -203,7 +203,8 @@ public class AadAuthorizationTests extends TestSuiteBase {
         CosmosAsyncClient client = null;
         ScopeRecorder.clear();
 
-        final String overrideScope = "https://my.custom.scope/.default";
+        java.net.URI ep = new java.net.URI(TestConfigurations.HOST);
+        final String overrideScope = ep.getScheme() + "://" + ep.getHost() + "/.default";
         setEnv(Configs.AAD_SCOPE_OVERRIDE_VARIABLE, overrideScope);
 
         try {
@@ -238,12 +239,12 @@ public class AadAuthorizationTests extends TestSuiteBase {
         try {
             TokenCredential cred = new AlwaysFail500011Credential();
 
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .credential(cred)
-                .buildAsyncClient();
-
             try {
+                client = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .credential(cred)
+                    .buildAsyncClient();
+
                 client.readAllDatabases().byPage().blockFirst();
                 assert false : "Expected an auth failure with override scope";
             } catch (Exception ex) {
