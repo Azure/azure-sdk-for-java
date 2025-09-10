@@ -1,127 +1,14 @@
 # Release History
 
-## 1.1.0 (2025-05-13)
+## 1.1.0-beta.1 (Unreleased)
 
-- Azure Resource Manager Neon Postgres client library for Java. This package contains Microsoft Azure SDK for Neon Postgres Management SDK.  Package api-version 2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+### Features Added
 
 ### Breaking Changes
 
-#### `models.NeonDatabase$Definition` was removed
+### Bugs Fixed
 
-#### `models.NeonRole$DefinitionStages` was removed
-
-#### `models.Compute$DefinitionStages` was removed
-
-#### `models.Endpoint$DefinitionStages` was removed
-
-#### `models.Endpoint$Definition` was removed
-
-#### `models.Endpoint$Update` was removed
-
-#### `models.NeonDatabase$Update` was removed
-
-#### `models.Compute$Definition` was removed
-
-#### `models.Compute$Update` was removed
-
-#### `models.NeonRole$Definition` was removed
-
-#### `models.NeonDatabase$UpdateStages` was removed
-
-#### `models.NeonRole$Update` was removed
-
-#### `models.NeonDatabase$DefinitionStages` was removed
-
-#### `models.Compute$UpdateStages` was removed
-
-#### `models.Endpoint$UpdateStages` was removed
-
-#### `models.NeonRole$UpdateStages` was removed
-
-#### `models.NeonRoles` was modified
-
-* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteById(java.lang.String)` was removed
-* `define(java.lang.String)` was removed
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `getById(java.lang.String)` was removed
-
-#### `models.NeonDatabases` was modified
-
-* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `define(java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteById(java.lang.String)` was removed
-* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-
-#### `models.Computes` was modified
-
-* `define(java.lang.String)` was removed
-* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteById(java.lang.String)` was removed
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
-
-#### `models.Endpoint` was modified
-
-* `resourceGroupName()` was removed
-* `update()` was removed
-* `refresh(com.azure.core.util.Context)` was removed
-* `refresh()` was removed
-
-#### `models.NeonDatabase` was modified
-
-* `update()` was removed
-* `refresh()` was removed
-* `resourceGroupName()` was removed
-* `refresh(com.azure.core.util.Context)` was removed
-
-#### `models.NeonRole` was modified
-
-* `refresh()` was removed
-* `refresh(com.azure.core.util.Context)` was removed
-* `update()` was removed
-* `resourceGroupName()` was removed
-
-#### `models.Endpoints` was modified
-
-* `getById(java.lang.String)` was removed
-* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `define(java.lang.String)` was removed
-* `deleteById(java.lang.String)` was removed
-* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-
-#### `models.Compute` was modified
-
-* `resourceGroupName()` was removed
-* `refresh(com.azure.core.util.Context)` was removed
-* `update()` was removed
-* `refresh()` was removed
-
-#### `models.ComputeProperties` was modified
-
-* `withCpuCores(java.lang.Integer)` was removed
-* `withRegion(java.lang.String)` was removed
-* `withAttributes(java.util.List)` was removed
-* `withMemory(java.lang.Integer)` was removed
-* `withStatus(java.lang.String)` was removed
-* `withEntityName(java.lang.String)` was removed
+### Other Changes
 
 ## 1.0.0 (2025-04-21)
 
