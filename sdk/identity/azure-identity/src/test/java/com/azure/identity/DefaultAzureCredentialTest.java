@@ -130,7 +130,7 @@ public class DefaultAzureCredentialTest {
                 when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
                 when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
                 when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             });
             MockedConstruction<IntelliJCredential> ijcredential
                 = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
@@ -167,7 +167,7 @@ public class DefaultAzureCredentialTest {
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
                 when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
                 when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
             // test
             String clientId = "dummy-client-id";

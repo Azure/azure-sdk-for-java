@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
@@ -47,7 +48,7 @@ public class WorkloadIdentityCredentialTest {
 
         // Create a temporary token file
         Path tokenFile = tempDir.resolve("token.txt");
-        Files.write(tokenFile, "dummy-token".getBytes());
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock
@@ -70,7 +71,7 @@ public class WorkloadIdentityCredentialTest {
         }
     }
 
-        @Test
+    @Test
     public void testWorkloadIdentityFlowSync(@TempDir Path tempDir) throws IOException {
         // setup
         String endpoint = "https://localhost";
@@ -82,7 +83,7 @@ public class WorkloadIdentityCredentialTest {
 
         // Create a temporary token file
         Path tokenFile = tempDir.resolve("token.txt");
-        Files.write(tokenFile, "dummy-token".getBytes());
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
 
         // mock
         try (MockedConstruction<IdentitySyncClient> identitySyncClientMock
