@@ -59,6 +59,7 @@ public class MetricDataMapper {
     private final boolean captureHttpServer4xxAsError;
 
     private final boolean otlpExporterEnabledForAKS;
+    private final boolean metricsToLAEnabled;
 
     static {
         // HTTP unstable metrics to be excluded via Otel auto instrumentation
@@ -77,6 +78,9 @@ public class MetricDataMapper {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
         this.otlpExporterEnabledForAKS = otlpExporterEnabledForAKS;
+
+        String metricsToLAEnvVar = System.getenv("APPLICATIONINSIGHTS_METRICS_TO_LOGANALYTICS_ENABLED");
+        this.metricsToLAEnabled = metricsToLAEnvVar == null || "true".equalsIgnoreCase(metricsToLAEnvVar);
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
@@ -84,7 +88,7 @@ public class MetricDataMapper {
         if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric
                 = OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            if (isPreAggregatedStandardMetric) {
+            if (isPreAggregatedStandardMetric) { // we want standard metrics to always be sent to Breeze
                 List<TelemetryItem> preAggregatedStandardMetrics
                     = convertOtelMetricToAzureMonitorMetric(metricData, true);
                 preAggregatedStandardMetrics.forEach(consumer::accept);
@@ -96,8 +100,11 @@ public class MetricDataMapper {
                 && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
                 return;
             }
-            List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
-            stableOtelMetrics.forEach(consumer::accept);
+
+            if (metricsToLAEnabled && !isPreAggregatedStandardMetric) {
+                List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
+                stableOtelMetrics.forEach(consumer::accept);
+            }
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
