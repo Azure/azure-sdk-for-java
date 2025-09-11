@@ -59,7 +59,7 @@ public class KeyVaultClientTest {
         String keyVaultUri = "https://keyvault.vault.azure.net";
 
         clientStore = new AppConfigurationSecretClientManager(keyVaultUri, null, null, secretClientBuilderFactoryMock,
-            false, 60);
+            false);
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         when(secretClientBuilderFactoryMock.build()).thenReturn(builderMock);
@@ -82,7 +82,7 @@ public class KeyVaultClientTest {
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
         clientStore = new AppConfigurationSecretClientManager(keyVaultUri, null, null, secretClientBuilderFactoryMock,
-            false, 60);
+            false);
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         when(secretClientBuilderFactoryMock.build()).thenReturn(builderMock);
@@ -105,7 +105,7 @@ public class KeyVaultClientTest {
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
         clientStore = new AppConfigurationSecretClientManager(keyVaultUri, null, new TestSecretResolver(),
-            secretClientBuilderFactoryMock, false, 60);
+            secretClientBuilderFactoryMock, false);
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         when(secretClientBuilderFactoryMock.build()).thenReturn(builderMock);

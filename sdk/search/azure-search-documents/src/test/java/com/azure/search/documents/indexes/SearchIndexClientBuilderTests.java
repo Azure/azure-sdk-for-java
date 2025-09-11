@@ -37,6 +37,7 @@ import java.time.Duration;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -159,7 +160,7 @@ public class SearchIndexClientBuilderTests {
                 return Mono.error(new IOException("IOException!"));
             }
 
-            assert !firstDate.equals(convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
+            assertNotEquals(firstDate, convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
             return Mono.just(new MockHttpResponse(request, 200));
         }
 

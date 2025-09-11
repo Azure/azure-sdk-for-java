@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 public final class VolumesAuthorizeReplicationSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Volumes_AuthorizeReplication.
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_AuthorizeReplication.
      * json
      */
     /**

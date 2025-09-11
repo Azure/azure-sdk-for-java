@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -59,7 +59,7 @@ import static org.testng.AssertJUnit.fail;
 public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionTestBase {
 
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
-    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionEndpoint mismatch";
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionalRoutingContext mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
 
     private CosmosAsyncClient client;
@@ -194,7 +194,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                     .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(this.cosmosAsyncContainer.getId());
 
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             container.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -251,7 +251,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                     .getContainer(cosmosAsyncContainer.getId());
 
             for (int i = 0; i < 10; i++) {
-                testContainer.createItem(TestItem.createNewItem()).block();
+                testContainer.createItem(TestObject.create()).block();
             }
 
             // getting one item from each feedRange
@@ -261,10 +261,10 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             String query = "select * from c";
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             cosmosQueryRequestOptions.setFeedRange(feedRanges.get(0));
-            TestItem itemOnFeedRange0 = testContainer.queryItems(query, cosmosQueryRequestOptions, TestItem.class).blockFirst();
+            TestObject itemOnFeedRange0 = testContainer.queryItems(query, cosmosQueryRequestOptions, TestObject.class).blockFirst();
 
             cosmosQueryRequestOptions.setFeedRange(feedRanges.get(1));
-            TestItem itemOnFeedRange1 = testContainer.queryItems(query, cosmosQueryRequestOptions, TestItem.class).blockFirst();
+            TestObject itemOnFeedRange1 = testContainer.queryItems(query, cosmosQueryRequestOptions, TestObject.class).blockFirst();
 
             // set rule by feed range
             String feedRangeRuleId = "ServerErrorRule-FeedRange-" + UUID.randomUUID();
@@ -350,12 +350,12 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
 
             // create a new item to be used by read operations
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             this.cosmosAsyncContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(timeoutRule)).block();
-            CosmosItemResponse<TestItem> itemResponse =
-                this.cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+            CosmosItemResponse<TestObject> itemResponse =
+                this.cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class).block();
 
             assertThat(timeoutRule.getHitCount()).isEqualTo(1);
             this.validateHitCount(timeoutRule, 1, OperationType.Read, ResourceType.Document);
@@ -398,7 +398,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
 
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverConnectionDelayRule)).block();
-            CosmosItemResponse<TestItem> itemResponse = this.cosmosAsyncContainer.createItem(TestItem.createNewItem()).block();
+            CosmosItemResponse<TestObject> itemResponse = this.cosmosAsyncContainer.createItem(TestObject.create()).block();
 
             assertThat(serverConnectionDelayRule.getHitCount()).isEqualTo(1l);
             this.validateFaultInjectionRuleApplied(
@@ -449,7 +449,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                 .build();
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             cosmosAsyncContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
@@ -459,7 +459,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                 try {
                     cosmosDiagnostics =
                         cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
+                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class)
                             .block()
                             .getDiagnostics();
                 } catch (Exception exception) {
@@ -469,7 +469,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                 try {
                     cosmosDiagnostics =
                         cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
+                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class)
                             .block()
                             .getDiagnostics();
                     fail("Request should fail, but succeeded");
@@ -499,7 +499,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
         cosmosAsyncContainer.createItem(createdItem).block();
 
         // set rule by feed range

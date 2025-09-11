@@ -73,7 +73,6 @@ public final class OperationJobExtendedInfoInner extends OperationExtendedInfo {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

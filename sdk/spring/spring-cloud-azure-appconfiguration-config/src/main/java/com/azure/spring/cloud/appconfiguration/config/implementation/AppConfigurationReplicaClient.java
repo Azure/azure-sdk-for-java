@@ -22,16 +22,24 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
+ * 
+ * The client automatically retries retryable HTTP errors (429, 408, 5xx) and implements backoff logic to prevent
+ * overwhelming failing replicas.
  */
 class AppConfigurationReplicaClient {
+    private static final long INITIAL_BACKOFF_OFFSET_MS = 1L;
+
+    /** HTTP status code for "Not Modified" responses */
+    private static final int HTTP_NOT_MODIFIED = 304;
 
     private final String endpoint;
+
+    private final String originClient;
 
     private final ConfigurationClient client;
 
@@ -39,19 +47,18 @@ class AppConfigurationReplicaClient {
 
     private int failedAttempts;
 
-    private final TracingInfo tracingInfo;
-
     /**
      * Holds Configuration Client and info needed to manage backoff.
      * @param endpoint client endpoint
+     * @param originClient origin client identifier
      * @param client Configuration Client to App Configuration store
      */
-    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client, TracingInfo tracingInfo) {
+    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client) {
         this.endpoint = endpoint;
+        this.originClient = originClient;
         this.client = client;
-        this.backoffEndTime = Instant.now().minusMillis(1);
+        this.backoffEndTime = Instant.now().minusMillis(INITIAL_BACKOFF_OFFSET_MS);
         this.failedAttempts = 0;
-        this.tracingInfo = tracingInfo;
     }
 
     /**
@@ -85,17 +92,25 @@ class AppConfigurationReplicaClient {
     }
 
     /**
+     * @return originClient
+     */
+    String getOriginClient() {
+        return originClient;
+    }
+
+    /**
      * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
      * retry-after-ms header.
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
+     * @param context Azure SDK context for request correlation
      * @return The first returned configuration.
+     * @throws HttpResponseException if the request fails
      */
-    ConfigurationSetting getWatchKey(String key, String label, Boolean isRefresh)
+    ConfigurationSetting getWatchKey(String key, String label, Context context)
         throws HttpResponseException {
         try {
-            Context context = new Context("refresh", isRefresh);
             ConfigurationSetting selector = new ConfigurationSetting().setKey(key).setLabel(label);
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(
@@ -103,7 +118,7 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -113,13 +128,14 @@ class AppConfigurationReplicaClient {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
+     * @param context Azure SDK context for request correlation
      * @return List of Configuration Settings.
+     * @throws HttpResponseException if the request fails
      */
-    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Boolean isRefresh)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            Context context = new Context("refresh", isRefresh);
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector, context);
             settings.forEach(setting -> {
                 configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
@@ -128,17 +144,25 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return configurationSettings;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Boolean isRefresh) throws HttpResponseException {
+    /**
+     * Lists feature flags from the Azure App Configuration store.
+     * 
+     * @param settingSelector selector criteria for feature flags
+     * @param context Azure SDK context for request correlation
+     * @return FeatureFlags containing the retrieved feature flags and match conditions
+     * @throws HttpResponseException if the request fails
+     */
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Context context)
+        throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
-            Context context = new Context("refresh", isRefresh);
             client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
                 checks.add(
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
@@ -153,16 +177,27 @@ class AppConfigurationReplicaClient {
             settingSelector.setMatchConditions(checks);
             return new FeatureFlags(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
-    List<ConfigurationSetting> listSettingSnapshot(String snapshotName) {
+    /**
+     * Lists configuration settings from a specific snapshot.
+     * 
+     * @param snapshotName the name of the snapshot to retrieve settings from
+     * @param context Azure SDK context for request correlation
+     * @return list of configuration settings from the snapshot
+     * @throws IllegalArgumentException if the snapshot is not of type KEY
+     * @throws HttpResponseException if the request fails
+     */
+    List<ConfigurationSetting> listSettingSnapshot(String snapshotName, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            ConfigurationSnapshot snapshot = client.getSnapshot(snapshotName);
+            // Because Spring always refreshes all we still have to load snapshots on refresh to build the property
+            // sources.
+            ConfigurationSnapshot snapshot = client.getSnapshotWithResponse(snapshotName, null, context).getValue();
             if (!SnapshotComposition.KEY.equals(snapshot.getSnapshotComposition())) {
                 throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
             }
@@ -172,16 +207,16 @@ class AppConfigurationReplicaClient {
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
-    Boolean checkWatchKeys(SettingSelector settingSelector, Boolean isRefresh) {
-        Context context = new Context("refresh", isRefresh);
-        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
-            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
+    boolean checkWatchKeys(SettingSelector settingSelector, Context context) {
+        List<PagedResponse<ConfigurationSetting>> results = client
+            .listConfigurationSettings(settingSelector, context)
+            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != HTTP_NOT_MODIFIED).toList();
         return results.size() > 0;
     }
 
@@ -195,7 +230,14 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    private HttpResponseException hanndleHttpResponseException(HttpResponseException e) {
+    /**
+     * Handles HTTP response exceptions by determining if they are retryable.
+     * 
+     * @param e the HTTP response exception to handle
+     * @return an AppConfigurationStatusException for retryable errors, or the original exception for non-retryable
+     * errors
+     */
+    private HttpResponseException handleHttpResponseException(HttpResponseException e) {
         if (e.getResponse() != null) {
             int statusCode = e.getResponse().getStatusCode();
 
@@ -206,10 +248,6 @@ class AppConfigurationReplicaClient {
             }
         }
         return e;
-    }
-
-    TracingInfo getTracingInfo() {
-        return tracingInfo;
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.Arrays;
 public final class BackupPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/PolicyCRUD/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2025-07-01/examples/PolicyCRUD/
      * CreateOrUpdateBackupPolicy.json
      */
     /**

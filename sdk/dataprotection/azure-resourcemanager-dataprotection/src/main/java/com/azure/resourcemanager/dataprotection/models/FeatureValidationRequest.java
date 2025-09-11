@@ -93,7 +93,6 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

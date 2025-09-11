@@ -154,5 +154,3 @@ workloads/Microsoft.Workloads/SAPDiscoverySites:
   service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:
   service: workloadssapvirtualinstance
-search:
-  suffix: generated

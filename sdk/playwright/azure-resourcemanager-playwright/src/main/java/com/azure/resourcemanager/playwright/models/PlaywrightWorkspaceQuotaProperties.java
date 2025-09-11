@@ -17,7 +17,7 @@ import java.io.IOException;
 @Immutable
 public final class PlaywrightWorkspaceQuotaProperties implements JsonSerializable<PlaywrightWorkspaceQuotaProperties> {
     /*
-     * The Playwright workspace quota resource free-trial properties.
+     * The Playwright workspace quota free trial properties.
      */
     private PlaywrightWorkspaceFreeTrialProperties freeTrial;
 
@@ -33,7 +33,7 @@ public final class PlaywrightWorkspaceQuotaProperties implements JsonSerializabl
     }
 
     /**
-     * Get the freeTrial property: The Playwright workspace quota resource free-trial properties.
+     * Get the freeTrial property: The Playwright workspace quota free trial properties.
      * 
      * @return the freeTrial value.
      */

@@ -13,7 +13,6 @@ import org.apache.spark.sql.types.StructType
 
 import java.nio.file.Paths
 import java.time.Duration
-import java.util.UUID
 
 private class ChangeFeedBatch
 (
@@ -194,6 +193,7 @@ private class ChangeFeedBatch
             SparkBridgeImplementationInternal
               .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
             clearEndLsn = !hasBatchCheckpointLocation))
+        .map(_.asInstanceOf[InputPartition])
 
       log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
       inputPartitions

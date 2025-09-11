@@ -24,9 +24,9 @@ public final class VolumePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchProperties model = BinaryData.fromString(
-            "{\"serviceLevel\":\"Premium\",\"usageThreshold\":7500274521983784453,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1729730350,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":false,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"ckcb\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"},{\"ruleIndex\":714963203,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":true,\"allowedClients\":\"rq\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"}]},\"protocolTypes\":[\"luszdtmhrkwof\",\"yvoqa\"],\"throughputMibps\":69.76196,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"btgiwbwoenwas\",\"policyEnforced\":false,\"backupVaultId\":\"tkcnqxwb\"},\"snapshot\":{\"snapshotPolicyId\":\"ulpiuj\"}},\"isDefaultQuotaEnabled\":false,\"defaultUserQuotaInKiBs\":6495974274819449912,\"defaultGroupQuotaInKiBs\":741204342979784260,\"unixPermissions\":\"byuqerpqlp\",\"coolAccess\":true,\"coolnessPeriod\":929911976,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"SnapshotOnly\",\"snapshotDirectoryVisible\":false,\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Enabled\"}")
+            "{\"serviceLevel\":\"Ultra\",\"usageThreshold\":7500274521983784453,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1729730350,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":false,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"ckcb\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"},{\"ruleIndex\":714963203,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":true,\"allowedClients\":\"rq\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"}]},\"protocolTypes\":[\"luszdtmhrkwof\",\"yvoqa\"],\"throughputMibps\":69.76196,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"btgiwbwoenwas\",\"policyEnforced\":false,\"backupVaultId\":\"tkcnqxwb\"},\"snapshot\":{\"snapshotPolicyId\":\"ulpiuj\"}},\"isDefaultQuotaEnabled\":false,\"defaultUserQuotaInKiBs\":6495974274819449912,\"defaultGroupQuotaInKiBs\":741204342979784260,\"unixPermissions\":\"byuqerpqlp\",\"coolAccess\":true,\"coolnessPeriod\":929911976,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"SnapshotOnly\",\"snapshotDirectoryVisible\":false,\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Enabled\"}")
             .toObject(VolumePatchProperties.class);
-        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(7500274521983784453L, model.usageThreshold());
         Assertions.assertEquals(1729730350, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).unixReadOnly());
@@ -64,7 +64,7 @@ public final class VolumePatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumePatchProperties model = new VolumePatchProperties().withServiceLevel(ServiceLevel.PREMIUM)
+        VolumePatchProperties model = new VolumePatchProperties().withServiceLevel(ServiceLevel.ULTRA)
             .withUsageThreshold(7500274521983784453L)
             .withExportPolicy(new VolumePatchPropertiesExportPolicy().withRules(Arrays.asList(
                 new ExportPolicyRule().withRuleIndex(1729730350)
@@ -116,7 +116,7 @@ public final class VolumePatchPropertiesTests {
             .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
             .withSmbNonBrowsable(SmbNonBrowsable.ENABLED);
         model = BinaryData.fromObject(model).toObject(VolumePatchProperties.class);
-        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(7500274521983784453L, model.usageThreshold());
         Assertions.assertEquals(1729730350, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).unixReadOnly());

@@ -26,11 +26,11 @@ public final class VolumePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatch model = BinaryData.fromString(
-            "{\"properties\":{\"serviceLevel\":\"StandardZRS\",\"usageThreshold\":411911013999749991,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1702938248,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":false,\"allowedClients\":\"sdyhtozfikdowwq\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1319405146,\"unixReadOnly\":false,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"jnkaljutiiswacff\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1157139188,\"unixReadOnly\":false,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":false,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"hdlxyjrxsagafcn\",\"hasRootAccess\":false,\"chownMode\":\"Unrestricted\"}]},\"protocolTypes\":[\"nedgfbc\",\"kcvqvpke\"],\"throughputMibps\":71.283,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"hvoodsotbobzd\",\"policyEnforced\":false,\"backupVaultId\":\"wvnhdldwmgx\"},\"snapshot\":{\"snapshotPolicyId\":\"slpmutwuo\"}},\"isDefaultQuotaEnabled\":false,\"defaultUserQuotaInKiBs\":5722379398974283920,\"defaultGroupQuotaInKiBs\":3859577697194270181,\"unixPermissions\":\"yqsluic\",\"coolAccess\":true,\"coolnessPeriod\":1810528552,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"Auto\",\"snapshotDirectoryVisible\":true,\"smbAccessBasedEnumeration\":\"Enabled\",\"smbNonBrowsable\":\"Disabled\"},\"location\":\"modfvuefywsbpfvm\",\"tags\":{\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}")
+            "{\"properties\":{\"serviceLevel\":\"Flexible\",\"usageThreshold\":411911013999749991,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1702938248,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":false,\"allowedClients\":\"sdyhtozfikdowwq\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1319405146,\"unixReadOnly\":false,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":false,\"allowedClients\":\"jnkaljutiiswacff\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":1157139188,\"unixReadOnly\":false,\"unixReadWrite\":true,\"kerberos5ReadOnly\":false,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":false,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"hdlxyjrxsagafcn\",\"hasRootAccess\":false,\"chownMode\":\"Unrestricted\"}]},\"protocolTypes\":[\"nedgfbc\",\"kcvqvpke\"],\"throughputMibps\":71.283,\"dataProtection\":{\"backup\":{\"backupPolicyId\":\"hvoodsotbobzd\",\"policyEnforced\":false,\"backupVaultId\":\"wvnhdldwmgx\"},\"snapshot\":{\"snapshotPolicyId\":\"slpmutwuo\"}},\"isDefaultQuotaEnabled\":false,\"defaultUserQuotaInKiBs\":5722379398974283920,\"defaultGroupQuotaInKiBs\":3859577697194270181,\"unixPermissions\":\"yqsluic\",\"coolAccess\":true,\"coolnessPeriod\":1810528552,\"coolAccessRetrievalPolicy\":\"Never\",\"coolAccessTieringPolicy\":\"Auto\",\"snapshotDirectoryVisible\":true,\"smbAccessBasedEnumeration\":\"Enabled\",\"smbNonBrowsable\":\"Disabled\"},\"location\":\"modfvuefywsbpfvm\",\"tags\":{\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}")
             .toObject(VolumePatch.class);
         Assertions.assertEquals("modfvuefywsbpfvm", model.location());
         Assertions.assertEquals("rfouyftaakcpw", model.tags().get("yzvqt"));
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
+        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
         Assertions.assertEquals(411911013999749991L, model.usageThreshold());
         Assertions.assertEquals(1702938248, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).unixReadOnly());
@@ -70,7 +70,7 @@ public final class VolumePatchTests {
     public void testSerialize() throws Exception {
         VolumePatch model = new VolumePatch().withLocation("modfvuefywsbpfvm")
             .withTags(mapOf("yzvqt", "rfouyftaakcpw", "zksmondj", "nubexk"))
-            .withServiceLevel(ServiceLevel.STANDARD_ZRS)
+            .withServiceLevel(ServiceLevel.FLEXIBLE)
             .withUsageThreshold(411911013999749991L)
             .withExportPolicy(new VolumePatchPropertiesExportPolicy().withRules(Arrays.asList(
                 new ExportPolicyRule().withRuleIndex(1702938248)
@@ -139,7 +139,7 @@ public final class VolumePatchTests {
         model = BinaryData.fromObject(model).toObject(VolumePatch.class);
         Assertions.assertEquals("modfvuefywsbpfvm", model.location());
         Assertions.assertEquals("rfouyftaakcpw", model.tags().get("yzvqt"));
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
+        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
         Assertions.assertEquals(411911013999749991L, model.usageThreshold());
         Assertions.assertEquals(1702938248, model.exportPolicy().rules().get(0).ruleIndex());
         Assertions.assertTrue(model.exportPolicy().rules().get(0).unixReadOnly());
