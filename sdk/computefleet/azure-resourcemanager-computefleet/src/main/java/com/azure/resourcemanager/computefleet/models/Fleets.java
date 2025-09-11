@@ -130,6 +130,58 @@ public interface Fleets {
         Context context);
 
     /**
+     * List VirtualMachine resources of an instance Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Fleet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachine> listVirtualMachines(String resourceGroupName, String name);
+
+    /**
+     * List VirtualMachine resources of an instance Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Fleet.
+     * @param filter Filter expression to filter the virtual machines.
+     * @param skiptoken Skip token for pagination. Uses the token from a previous response to fetch the next page of
+     * results.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachine> listVirtualMachines(String resourceGroupName, String name, String filter,
+        String skiptoken, Context context);
+
+    /**
+     * Cancels an instance Fleet creation that is in progress.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Compute Fleet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void cancel(String resourceGroupName, String fleetName);
+
+    /**
+     * Cancels an instance Fleet creation that is in progress.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Compute Fleet.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void cancel(String resourceGroupName, String fleetName, Context context);
+
+    /**
      * Get a Fleet.
      * 
      * @param id the resource ID.

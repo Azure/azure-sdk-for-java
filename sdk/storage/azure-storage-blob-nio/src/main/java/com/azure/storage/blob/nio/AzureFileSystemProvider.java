@@ -496,7 +496,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         /*
         Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
         caught in instantiating the stream below.
-        
         Possible optimization later is to save the result of the list call to use as the first list call inside the
         stream rather than a list call for checking the status and a list call for listing.
          */
@@ -733,7 +732,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         /*
         More path validation
-        
         Check that the parent for the destination exists. We only need to perform this check if there is nothing
         currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
@@ -746,7 +744,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         /*
         Try to copy the resource at the source path.
-        
         There is an optimization here where we try to do the copy first and only check for a virtual directory if
         there's a 404. In the cases of files and concrete directories, this only requires one request. For virtual
         directories, however, this requires three requests: failed copy, check status, create directory. Depending on
@@ -775,10 +772,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
     }
 
-    // Used for checking the status of the root directory. To be implemented later when needed.
-    /*int checkRootDirStatus(BlobContainerClient rootClient) {
-    
-    }*/
+    /*
+    Used for checking the status of the root directory. To be implemented later when needed.
+    int checkRootDirStatus(BlobContainerClient rootClient) { }
+     */
 
     /**
      * Unsupported.

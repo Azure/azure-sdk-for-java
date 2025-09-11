@@ -17,32 +17,31 @@ public final class DatastorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatastoreProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"netAppVolume\":{\"id\":\"rz\"},\"diskPoolVolume\":{\"targetId\":\"leosjswsrms\",\"lunName\":\"yzrpzbchckqqzq\",\"mountOption\":\"MOUNT\",\"path\":\"ysuiizynkedya\"},\"elasticSanVolume\":{\"targetId\":\"wyhqmibzyhwits\"},\"pureStorageVolume\":{\"storagePoolId\":\"pyy\",\"sizeGb\":1903484882},\"status\":\"Detached\"}")
+            "{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"e\"},\"diskPoolVolume\":{\"targetId\":\"a\",\"lunName\":\"a\",\"mountOption\":\"MOUNT\",\"path\":\"ayvvtpgvdf\"},\"elasticSanVolume\":{\"targetId\":\"otkftutqxlngx\"},\"pureStorageVolume\":{\"storagePoolId\":\"fgugnxkrxdqmid\",\"sizeGb\":676012519},\"status\":\"DeadOrError\"}")
             .toObject(DatastoreProperties.class);
-        Assertions.assertEquals("rz", model.netAppVolume().id());
-        Assertions.assertEquals("leosjswsrms", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.diskPoolVolume().lunName());
+        Assertions.assertEquals("e", model.netAppVolume().id());
+        Assertions.assertEquals("a", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("a", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
-        Assertions.assertEquals("wyhqmibzyhwits", model.elasticSanVolume().targetId());
-        Assertions.assertEquals("pyy", model.pureStorageVolume().storagePoolId());
-        Assertions.assertEquals(1903484882, model.pureStorageVolume().sizeGb());
+        Assertions.assertEquals("otkftutqxlngx", model.elasticSanVolume().targetId());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(676012519, model.pureStorageVolume().sizeGb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreProperties model = new DatastoreProperties().withNetAppVolume(new NetAppVolume().withId("rz"))
-            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("leosjswsrms")
-                .withLunName("yzrpzbchckqqzq")
-                .withMountOption(MountOptionEnum.MOUNT))
-            .withElasticSanVolume(new ElasticSanVolume().withTargetId("wyhqmibzyhwits"))
-            .withPureStorageVolume(new PureStorageVolume().withStoragePoolId("pyy").withSizeGb(1903484882));
+        DatastoreProperties model = new DatastoreProperties().withNetAppVolume(new NetAppVolume().withId("e"))
+            .withDiskPoolVolume(
+                new DiskPoolVolume().withTargetId("a").withLunName("a").withMountOption(MountOptionEnum.MOUNT))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("otkftutqxlngx"))
+            .withPureStorageVolume(new PureStorageVolume().withStoragePoolId("fgugnxkrxdqmid").withSizeGb(676012519));
         model = BinaryData.fromObject(model).toObject(DatastoreProperties.class);
-        Assertions.assertEquals("rz", model.netAppVolume().id());
-        Assertions.assertEquals("leosjswsrms", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.diskPoolVolume().lunName());
+        Assertions.assertEquals("e", model.netAppVolume().id());
+        Assertions.assertEquals("a", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("a", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
-        Assertions.assertEquals("wyhqmibzyhwits", model.elasticSanVolume().targetId());
-        Assertions.assertEquals("pyy", model.pureStorageVolume().storagePoolId());
-        Assertions.assertEquals(1903484882, model.pureStorageVolume().sizeGb());
+        Assertions.assertEquals("otkftutqxlngx", model.elasticSanVolume().targetId());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(676012519, model.pureStorageVolume().sizeGb());
     }
 }

@@ -92,6 +92,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl_requestOptions(OperationType operationType) {
+        logger.info("Starting test throughputLocalControl_requestOptions with operationType: {}", operationType);
         this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =

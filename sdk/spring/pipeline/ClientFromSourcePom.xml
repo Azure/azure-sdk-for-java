@@ -36,7 +36,7 @@
     <module>../../parents/azure-sdk-parent/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-appplatform/pom.xml</module>
     <module>../../appservice/azure-resourcemanager-appservice/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-authorization/pom.xml</module>
+    <module>../../authorization/azure-resourcemanager-authorization/pom.xml</module>
     <module>../../cdn/azure-resourcemanager-cdn/pom.xml</module>
     <module>../../compute/azure-resourcemanager-compute/pom.xml</module>
     <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
@@ -54,7 +54,7 @@
     <module>../../resourcemanager/azure-resourcemanager-resources/pom.xml</module>
     <module>../../search/azure-resourcemanager-search/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-servicebus/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-sql/pom.xml</module>
+    <module>../../sql/azure-resourcemanager-sql/pom.xml</module>
     <module>../../storage/azure-resourcemanager-storage/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-test/pom.xml</module>
     <module>../../trafficmanager/azure-resourcemanager-trafficmanager/pom.xml</module>

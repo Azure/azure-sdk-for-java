@@ -23,7 +23,7 @@ public final class PublicCloudConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"dvstkw\",\"excludedAccounts\":[\"chea\",\"mfmtdaaygdvw\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"wxrt\"},\"location\":\"dxepxgyq\",\"tags\":{\"wi\":\"rvmnpkukghimdblx\",\"rey\":\"fnjhfjxwmszkkfo\",\"elpcirelsfeaenwa\":\"kzikfjawneaivxwc\",\"xbjhwuaanozjosph\":\"fatkld\"},\"id\":\"oulpjrv\",\"name\":\"ag\",\"type\":\"rvimjwosytxitcsk\"}]}";
+            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"wiipfpub\",\"excludedAccounts\":[\"wwiftohqkvpuv\",\"sgplsakn\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"jphuopxodlqi\"},\"location\":\"torzih\",\"tags\":{\"yzrpzbchckqqzq\":\"sjswsrms\",\"ysuiizynkedya\":\"ox\"},\"id\":\"rwyhqmibzyhwitsm\",\"name\":\"pyy\",\"type\":\"pcdpumnz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,12 @@ public final class PublicCloudConnectorsListMockTests {
         PagedIterable<PublicCloudConnector> response
             = manager.publicCloudConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dxepxgyq", response.iterator().next().location());
-        Assertions.assertEquals("rvmnpkukghimdblx", response.iterator().next().tags().get("wi"));
-        Assertions.assertEquals("dvstkw", response.iterator().next().properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("chea",
+        Assertions.assertEquals("torzih", response.iterator().next().location());
+        Assertions.assertEquals("sjswsrms", response.iterator().next().tags().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("wiipfpub", response.iterator().next().properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("wwiftohqkvpuv",
             response.iterator().next().properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(true,
-            response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertTrue(response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, response.iterator().next().properties().hostType());
     }
 }
