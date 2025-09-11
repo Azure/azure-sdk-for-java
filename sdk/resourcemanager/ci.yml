@@ -13,7 +13,6 @@ trigger:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -37,7 +36,6 @@ pr:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
@@ -54,10 +52,6 @@ parameters:
   default: true
 - name: release_azureresourcemanagerappplatform
   displayName: 'azure-resourcemanager-appplatform'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerauthorization
-  displayName: 'azure-resourcemanager-authorization'
   type: boolean
   default: true
 - name: release_azureresourcemanagercosmos
@@ -98,10 +92,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappplatform
         releaseInBatch: ${{ parameters.release_azureresourcemanagerappplatform }}
-      - name: azure-resourcemanager-authorization
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerauthorization
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
       - name: azure-resourcemanager-cosmos
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos

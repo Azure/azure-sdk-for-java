@@ -29,6 +29,7 @@ jobs:
             - 'sdk/appconfiguration/azure-data-appconfiguration'
             - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
             - 'sdk/appservice/azure-resourcemanager-appservice'
+            - 'sdk/authorization/azure-resourcemanager-authorization'
             - 'sdk/core'
             - 'sdk/cosmos/azure-cosmos'
             - 'sdk/cdn/azure-resourcemanager-cdn'

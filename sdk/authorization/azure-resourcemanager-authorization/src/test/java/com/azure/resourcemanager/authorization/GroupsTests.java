@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
@@ -18,6 +19,8 @@ import java.util.List;
 public class GroupsTests extends GraphRbacManagementTest {
 
     @Test
+    @LiveOnly
+    // Test proxy file is out-dated, and do not have enough permission to run it.
     public void canCRUDGroup() throws Exception {
         String userName = generateRandomResourceName("user", 16);
         String spName = generateRandomResourceName("sp", 16);
