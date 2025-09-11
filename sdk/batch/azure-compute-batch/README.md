@@ -200,8 +200,8 @@ Pool pool = batchManager.pools()
             .withVirtualMachineConfiguration(
                 new VirtualMachineConfiguration()
                     .withImageReference(new ImageReference().withPublisher("Canonical")
-                        .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
-                    .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+                        .withOffer("UbuntuServer").withSku("22_04-lts").withVersion("latest"))
+                    .withNodeAgentSkuId("batch.node.ubuntu 22.04")))
     .withScaleSettings(
         new ScaleSettings()
             .withFixedScale(
@@ -221,8 +221,8 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
     .setVirtualMachineConfiguration(
         new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
-            .setSku("18_04-lts-gen2")
-            .setVersion("latest"), "batch.node.ubuntu 18.04"))
+            .setSku("22_04-lts")
+            .setVersion("latest"), "batch.node.ubuntu 22.04"))
     .setTargetDedicatedNodes(1), null);
 ```
 
