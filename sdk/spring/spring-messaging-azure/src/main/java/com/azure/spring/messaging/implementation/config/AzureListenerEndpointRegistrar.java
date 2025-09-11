@@ -7,7 +7,6 @@ import com.azure.spring.messaging.implementation.listener.MessageListenerContain
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 import org.springframework.util.Assert;
@@ -34,18 +33,14 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
     private BeanFactory beanFactory;
     private boolean startImmediately;
 
-    private Object mutex = this.endpointDescriptors;
+    private final Object mutex = this.endpointDescriptors;
 
     /**
      * A {@link BeanFactory} only needs to be available in conjunction with {@link #setContainerFactoryBeanName}.
      */
     @Override
-    @SuppressWarnings("deprecation")
     public void setBeanFactory(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
-        if (beanFactory instanceof ConfigurableBeanFactory) {
-            this.mutex = ((ConfigurableBeanFactory) beanFactory).getSingletonMutex();
-        }
     }
 
     @Override

@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -90,35 +89,14 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * The default time to live of cached JWK sets, in milliseconds. Set to 5 minutes.
      */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+    private Duration jwkSetSourceTimeToLive = Duration.ofMinutes(5);
 
     /**
-     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * The default refresh timeout of cached JWK sets, in milliseconds. Set to 15 seconds.
      */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
-
-    /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
-     */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
-
-    /**
-     * The lifespan (duration) of the cached JWK set before it expires.
-     */
-    private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
-
-    /**
-     * The refresh time (duration) of the cached JWK set before it expires.
-     */
-    private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
+    private Duration jwkSetSourceCacheRefreshTimeout = Duration.ofMillis(15);
 
     /**
      * The redirect uri after logout. For instance, 'http://localhost:8080/'.
@@ -272,44 +250,20 @@ public class AadAuthenticationProperties implements InitializingBean {
         return authenticateAdditionalParameters;
     }
 
-    public Duration getJwtConnectTimeout() {
-        return jwtConnectTimeout;
+    public Duration getJwkSetSourceTimeToLive() {
+        return jwkSetSourceTimeToLive;
     }
 
-    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
-        this.jwtConnectTimeout = jwtConnectTimeout;
+    public void setJwkSetSourceTimeToLive(Duration jwkSetSourceTimeToLive) {
+        this.jwkSetSourceTimeToLive = jwkSetSourceTimeToLive;
     }
 
-    public Duration getJwtReadTimeout() {
-        return jwtReadTimeout;
+    public Duration getJwkSetSourceCacheRefreshTimeout() {
+        return jwkSetSourceCacheRefreshTimeout;
     }
 
-    public void setJwtReadTimeout(Duration jwtReadTimeout) {
-        this.jwtReadTimeout = jwtReadTimeout;
-    }
-
-    public int getJwtSizeLimit() {
-        return jwtSizeLimit;
-    }
-
-    public void setJwtSizeLimit(int jwtSizeLimit) {
-        this.jwtSizeLimit = jwtSizeLimit;
-    }
-
-    public Duration getJwkSetCacheLifespan() {
-        return jwkSetCacheLifespan;
-    }
-
-    public void setJwkSetCacheLifespan(Duration jwkSetCacheLifespan) {
-        this.jwkSetCacheLifespan = jwkSetCacheLifespan;
-    }
-
-    public Duration getJwkSetCacheRefreshTime() {
-        return jwkSetCacheRefreshTime;
-    }
-
-    public void setJwkSetCacheRefreshTime(Duration jwkSetCacheRefreshTime) {
-        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
+    public void setJwkSetSourceCacheRefreshTimeout(Duration jwkSetSourceCacheRefreshTimeout) {
+        this.jwkSetSourceCacheRefreshTimeout = jwkSetSourceCacheRefreshTimeout;
     }
 
     public String getPostLogoutRedirectUri() {

@@ -63,7 +63,6 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      */
     private Filter conditionalAccessFilter;
 
-    @SuppressWarnings("removal")
     @Override
     public void init(HttpSecurity builder)throws Exception {
         super.init(builder);
@@ -79,19 +78,11 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
         this.jwkResolvers = context.getBeanProvider(OAuth2ClientAuthenticationJwkResolver.class);
 
         // @formatter:off
-        builder.oauth2Login()
-                    .authorizationEndpoint()
-                       .authorizationRequestResolver(requestResolver())
-                       .and()
-                    .tokenEndpoint()
-                       .accessTokenResponseClient(accessTokenResponseClient())
-                       .and()
-                    .userInfoEndpoint()
-                    .oidcUserService(oidcUserService)
-                        .and()
-                    .and()
-               .logout()
-                    .logoutSuccessHandler(oidcLogoutSuccessHandler());
+        builder.oauth2Login(oauth2 -> oauth2
+            .authorizationEndpoint(auth -> auth.authorizationRequestResolver(requestResolver()))
+            .tokenEndpoint(token -> token.accessTokenResponseClient(accessTokenResponseClient()))
+            .userInfoEndpoint(user -> user.oidcUserService(oidcUserService)))
+            .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler()));
         // @formatter:off
     }
 
@@ -142,7 +133,7 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      *
      * @return the access token response client
      */
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings("removal")
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));

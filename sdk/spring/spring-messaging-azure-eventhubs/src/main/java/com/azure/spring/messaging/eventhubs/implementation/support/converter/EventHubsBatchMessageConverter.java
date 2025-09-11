@@ -101,9 +101,6 @@ public class EventHubsBatchMessageConverter extends AbstractJacksonAzureMessageC
         return MessageBuilder.withPayload(payLoadList).copyHeaders(headers).build();
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @Override
     protected Map<String, Object> buildCustomHeaders(EventBatchContext azureMessage) {
         Map<String, Object> headers = super.buildCustomHeaders(azureMessage);
@@ -118,7 +115,7 @@ public class EventHubsBatchMessageConverter extends AbstractJacksonAzureMessageC
 
         for (EventData event : events) {
             enqueueTimeList.add(event.getEnqueuedTime());
-            offSetList.add(event.getOffset());
+            offSetList.add(event.getOffsetString());
             sequenceNumberList.add(event.getSequenceNumber());
             partitionKeyList.add(event.getPartitionKey());
             batchConvertedSystemProperties.add(event.getSystemProperties());

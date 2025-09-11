@@ -5,9 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
-import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.ProviderManager;
@@ -102,7 +100,7 @@ public final class RestTemplateTestUtil {
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings("unchecked")
     private static void assertRestTemplateWellConfiguredForJwtDecoderFactory(ApplicationContext context) {
         JwtDecoderFactory<ClientRegistration> factory = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
         JwtDecoder jwtDecoder = factory.createDecoder(clientRegistration());
@@ -112,14 +110,9 @@ public final class RestTemplateTestUtil {
 
         RestTemplate restTemplate = null;
         JWKSource<?> jwkSource = selector.getJWKSource();
-        if (jwkSource instanceof RemoteJWKSet<?> remoteJWKSet) {
-            ResourceRetriever retriever = remoteJWKSet.getResourceRetriever();
-            restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
-        } else {
-            Object source = getField(jwkSource.getClass(), "source", jwkSource);
-            source = getField(source.getClass(), "source", source);
-            restTemplate = (RestTemplate) getField(source.getClass(), "restOperations", source);
-        }
+        Object source = getField(jwkSource.getClass(), "source", jwkSource);
+        source = getField(source.getClass(), "source", source);
+        restTemplate = (RestTemplate) getField(source.getClass(), "restOperations", source);
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 

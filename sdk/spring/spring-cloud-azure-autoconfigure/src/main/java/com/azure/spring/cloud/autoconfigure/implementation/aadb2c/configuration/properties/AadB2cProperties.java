@@ -3,14 +3,12 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.exception.AadB2cConfigurationException;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,27 +56,6 @@ public class AadB2cProperties implements InitializingBean {
      * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
-
-    /**
-     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
-     */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
-
-    /**
-     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
-     */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
-
-    /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
-     */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * Redirect URL after logout.
@@ -250,30 +227,6 @@ public class AadB2cProperties implements InitializingBean {
 
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
-    }
-
-    public Duration getJwtConnectTimeout() {
-        return jwtConnectTimeout;
-    }
-
-    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
-        this.jwtConnectTimeout = jwtConnectTimeout;
-    }
-
-    public Duration getJwtReadTimeout() {
-        return jwtReadTimeout;
-    }
-
-    public void setJwtReadTimeout(Duration jwtReadTimeout) {
-        this.jwtReadTimeout = jwtReadTimeout;
-    }
-
-    public int getJwtSizeLimit() {
-        return jwtSizeLimit;
-    }
-
-    public void setJwtSizeLimit(int jwtSizeLimit) {
-        this.jwtSizeLimit = jwtSizeLimit;
     }
 
     public AadB2cProfileProperties getProfile() {

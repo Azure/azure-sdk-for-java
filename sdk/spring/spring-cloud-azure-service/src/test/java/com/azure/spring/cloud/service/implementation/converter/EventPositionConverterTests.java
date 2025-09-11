@@ -61,23 +61,17 @@ class EventPositionConverterTests {
         assertEquals(EventPosition.latest(), converted);
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @Test
     void shouldGetNumberOffset() {
         StartPositionProperties properties = new StartPositionProperties();
         properties.setOffset("123");
 
         EventPosition converted = EVENT_POSITION_CONVERTER.convert(properties);
-        EventPosition expected = EventPosition.fromOffset(123L);
+        EventPosition expected = EventPosition.fromOffsetString("123");
         assertEquals(expected, converted);
         assertFalse(expected.isInclusive());
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @Test
     void inclusiveShouldNotAffectOffset() {
         StartPositionProperties properties = new StartPositionProperties();
@@ -85,7 +79,7 @@ class EventPositionConverterTests {
         properties.setInclusive(true);
 
         EventPosition converted = EVENT_POSITION_CONVERTER.convert(properties);
-        EventPosition expected = EventPosition.fromOffset(123L);
+        EventPosition expected = EventPosition.fromOffsetString("123");
         assertEquals(expected, converted);
         assertFalse(expected.isInclusive());
     }
