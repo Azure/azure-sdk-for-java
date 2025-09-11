@@ -18,6 +18,12 @@ import java.io.IOException;
 public final class LivenessWithVerifyOutputs implements JsonSerializable<LivenessWithVerifyOutputs> {
 
     /*
+     * The detail of face for verification.
+     */
+    @Generated
+    private final LivenessWithVerifyImage verifyImage;
+
+    /*
      * The target face liveness face and comparison image face verification confidence.
      */
     @Generated
@@ -28,6 +34,31 @@ public final class LivenessWithVerifyOutputs implements JsonSerializable<Livenes
      */
     @Generated
     private final boolean isIdentical;
+
+    /**
+     * Creates an instance of LivenessWithVerifyOutputs class.
+     *
+     * @param verifyImage the verifyImage value to set.
+     * @param matchConfidence the matchConfidence value to set.
+     * @param isIdentical the isIdentical value to set.
+     */
+    @Generated
+    private LivenessWithVerifyOutputs(LivenessWithVerifyImage verifyImage, double matchConfidence,
+        boolean isIdentical) {
+        this.verifyImage = verifyImage;
+        this.matchConfidence = matchConfidence;
+        this.isIdentical = isIdentical;
+    }
+
+    /**
+     * Get the verifyImage property: The detail of face for verification.
+     *
+     * @return the verifyImage value.
+     */
+    @Generated
+    public LivenessWithVerifyImage getVerifyImage() {
+        return this.verifyImage;
+    }
 
     /**
      * Get the matchConfidence property: The target face liveness face and comparison image face verification
@@ -57,6 +88,7 @@ public final class LivenessWithVerifyOutputs implements JsonSerializable<Livenes
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("verifyImage", this.verifyImage);
         jsonWriter.writeDoubleField("matchConfidence", this.matchConfidence);
         jsonWriter.writeBooleanField("isIdentical", this.isIdentical);
         return jsonWriter.writeEndObject();
@@ -74,12 +106,15 @@ public final class LivenessWithVerifyOutputs implements JsonSerializable<Livenes
     @Generated
     public static LivenessWithVerifyOutputs fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            LivenessWithVerifyImage verifyImage = null;
             double matchConfidence = 0.0;
             boolean isIdentical = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("matchConfidence".equals(fieldName)) {
+                if ("verifyImage".equals(fieldName)) {
+                    verifyImage = LivenessWithVerifyImage.fromJson(reader);
+                } else if ("matchConfidence".equals(fieldName)) {
                     matchConfidence = reader.getDouble();
                 } else if ("isIdentical".equals(fieldName)) {
                     isIdentical = reader.getBoolean();
@@ -87,19 +122,7 @@ public final class LivenessWithVerifyOutputs implements JsonSerializable<Livenes
                     reader.skipChildren();
                 }
             }
-            return new LivenessWithVerifyOutputs(matchConfidence, isIdentical);
+            return new LivenessWithVerifyOutputs(verifyImage, matchConfidence, isIdentical);
         });
-    }
-
-    /**
-     * Creates an instance of LivenessWithVerifyOutputs class.
-     *
-     * @param matchConfidence the matchConfidence value to set.
-     * @param isIdentical the isIdentical value to set.
-     */
-    @Generated
-    private LivenessWithVerifyOutputs(double matchConfidence, boolean isIdentical) {
-        this.matchConfidence = matchConfidence;
-        this.isIdentical = isIdentical;
     }
 }

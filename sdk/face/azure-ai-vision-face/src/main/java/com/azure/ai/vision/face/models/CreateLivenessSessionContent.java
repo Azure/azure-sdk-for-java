@@ -24,6 +24,15 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     private final LivenessOperationMode livenessOperationMode;
 
     /*
+     * Whether or not to allow a '200 - Success' response body to be sent to the client, which may be undesirable for
+     * security reasons. Default is false, clients will receive a '204 - NoContent' empty body response. Regardless of
+     * selection, calling Session GetResult will always contain a response body enabling business logic to be
+     * implemented.
+     */
+    @Generated
+    private Boolean sendResultsToClient;
+
+    /*
      * Whether or not to allow client to set their own 'deviceCorrelationId' via the Vision SDK. Default is false, and
      * 'deviceCorrelationId' must be set in this request body.
      */
@@ -61,6 +70,34 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     @Generated
     public LivenessOperationMode getLivenessOperationMode() {
         return this.livenessOperationMode;
+    }
+
+    /**
+     * Get the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
+     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
+     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
+     * enabling business logic to be implemented.
+     *
+     * @return the sendResultsToClient value.
+     */
+    @Generated
+    public Boolean isSendResultsToClient() {
+        return this.sendResultsToClient;
+    }
+
+    /**
+     * Set the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
+     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
+     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
+     * enabling business logic to be implemented.
+     *
+     * @param sendResultsToClient the sendResultsToClient value to set.
+     * @return the CreateLivenessSessionContent object itself.
+     */
+    @Generated
+    public CreateLivenessSessionContent setSendResultsToClient(Boolean sendResultsToClient) {
+        this.sendResultsToClient = sendResultsToClient;
+        return this;
     }
 
     /**
@@ -148,16 +185,13 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("livenessOperationMode",
             this.livenessOperationMode == null ? null : this.livenessOperationMode.toString());
+        jsonWriter.writeBooleanField("sendResultsToClient", this.sendResultsToClient);
         jsonWriter.writeBooleanField("deviceCorrelationIdSetInClient", this.deviceCorrelationIdSetInClient);
         jsonWriter.writeBooleanField("enableSessionImage", this.enableSessionImage);
-        jsonWriter.writeStringField("livenessModelVersion",
-            this.livenessModelVersion == null ? null : this.livenessModelVersion.toString());
+        jsonWriter.writeStringField("livenessSingleModalModel",
+            this.livenessSingleModalModel == null ? null : this.livenessSingleModalModel.toString());
         jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
         jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
-        jsonWriter.writeJsonField("numberOfClientAttemptsAllowed", this.numberOfClientAttemptsAllowed);
-        jsonWriter.writeStringField("userCorrelationId", this.userCorrelationId);
-        jsonWriter.writeBooleanField("userCorrelationIdSetInClient", this.userCorrelationIdSetInClient);
-        jsonWriter.writeStringField("expectedClientIpAddress", this.expectedClientIpAddress);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,53 +208,41 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     public static CreateLivenessSessionContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LivenessOperationMode livenessOperationMode = null;
+            Boolean sendResultsToClient = null;
             Boolean deviceCorrelationIdSetInClient = null;
             Boolean enableSessionImage = null;
-            LivenessModel livenessModelVersion = null;
+            LivenessModel livenessSingleModalModel = null;
             String deviceCorrelationId = null;
             Integer authTokenTimeToLiveInSeconds = null;
-            HttpPart numberOfClientAttemptsAllowed = null;
-            String userCorrelationId = null;
-            Boolean userCorrelationIdSetInClient = null;
-            String expectedClientIpAddress = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("livenessOperationMode".equals(fieldName)) {
                     livenessOperationMode = LivenessOperationMode.fromString(reader.getString());
+                } else if ("sendResultsToClient".equals(fieldName)) {
+                    sendResultsToClient = reader.getNullable(JsonReader::getBoolean);
                 } else if ("deviceCorrelationIdSetInClient".equals(fieldName)) {
                     deviceCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableSessionImage".equals(fieldName)) {
                     enableSessionImage = reader.getNullable(JsonReader::getBoolean);
-                } else if ("livenessModelVersion".equals(fieldName)) {
-                    livenessModelVersion = LivenessModel.fromString(reader.getString());
+                } else if ("livenessSingleModalModel".equals(fieldName)) {
+                    livenessSingleModalModel = LivenessModel.fromString(reader.getString());
                 } else if ("deviceCorrelationId".equals(fieldName)) {
                     deviceCorrelationId = reader.getString();
                 } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
                     authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("numberOfClientAttemptsAllowed".equals(fieldName)) {
-                    numberOfClientAttemptsAllowed = HttpPart.fromJson(reader);
-                } else if ("userCorrelationId".equals(fieldName)) {
-                    userCorrelationId = reader.getString();
-                } else if ("userCorrelationIdSetInClient".equals(fieldName)) {
-                    userCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
-                } else if ("expectedClientIpAddress".equals(fieldName)) {
-                    expectedClientIpAddress = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             CreateLivenessSessionContent deserializedCreateLivenessSessionContent
                 = new CreateLivenessSessionContent(livenessOperationMode);
+            deserializedCreateLivenessSessionContent.sendResultsToClient = sendResultsToClient;
             deserializedCreateLivenessSessionContent.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
             deserializedCreateLivenessSessionContent.enableSessionImage = enableSessionImage;
-            deserializedCreateLivenessSessionContent.livenessModelVersion = livenessModelVersion;
+            deserializedCreateLivenessSessionContent.livenessSingleModalModel = livenessSingleModalModel;
             deserializedCreateLivenessSessionContent.deviceCorrelationId = deviceCorrelationId;
             deserializedCreateLivenessSessionContent.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
-            deserializedCreateLivenessSessionContent.numberOfClientAttemptsAllowed = numberOfClientAttemptsAllowed;
-            deserializedCreateLivenessSessionContent.userCorrelationId = userCorrelationId;
-            deserializedCreateLivenessSessionContent.userCorrelationIdSetInClient = userCorrelationIdSetInClient;
-            deserializedCreateLivenessSessionContent.expectedClientIpAddress = expectedClientIpAddress;
             return deserializedCreateLivenessSessionContent;
         });
     }
@@ -230,6 +252,13 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      */
     @Generated
     private Boolean enableSessionImage;
+
+    /*
+     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
+     * then the latest supported model version will be chosen
+     */
+    @Generated
+    private LivenessModel livenessSingleModalModel;
 
     /**
      * Get the enableSessionImage property: Whether or not store the session image.
@@ -253,159 +282,27 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
         return this;
     }
 
-    /*
-     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
-     * then the latest supported model version will be chosen
-     */
-    @Generated
-    private LivenessModel livenessModelVersion;
-
-    /*
-     * The number of times a client can attempt a liveness check using the same authToken. Default value is 1. Maximum
-     * value is 3.
-     */
-    @Generated
-    private HttpPart numberOfClientAttemptsAllowed;
-
-    /*
-     * Unique Guid per each end-user. This is to provide rate limiting and anti-hammering. If
-     * 'userCorrelationIdSetInClient' is true in this request, this 'userCorrelationId' must be null.
-     */
-    @Generated
-    private String userCorrelationId;
-
-    /*
-     * Whether or not to allow client to set their own 'userCorrelationId' via the Vision SDK. Default is false, and
-     * 'userCorrelationId' must be set in this request body.
-     */
-    @Generated
-    private Boolean userCorrelationIdSetInClient;
-
-    /*
-     * Specify the expected IP address or CIDR block of the client that runs the liveness check.
-     */
-    @Generated
-    private String expectedClientIpAddress;
-
     /**
-     * Get the livenessModelVersion property: The model version used for liveness classification. This is an optional
-     * parameter, and if this is not specified, then the latest supported model version will be chosen.
+     * Get the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
      *
-     * @return the livenessModelVersion value.
+     * @return the livenessSingleModalModel value.
      */
     @Generated
-    public LivenessModel getLivenessModelVersion() {
-        return this.livenessModelVersion;
+    public LivenessModel getLivenessSingleModalModel() {
+        return this.livenessSingleModalModel;
     }
 
     /**
-     * Set the livenessModelVersion property: The model version used for liveness classification. This is an optional
-     * parameter, and if this is not specified, then the latest supported model version will be chosen.
+     * Set the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
      *
-     * @param livenessModelVersion the livenessModelVersion value to set.
+     * @param livenessSingleModalModel the livenessSingleModalModel value to set.
      * @return the CreateLivenessSessionContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setLivenessModelVersion(LivenessModel livenessModelVersion) {
-        this.livenessModelVersion = livenessModelVersion;
-        return this;
-    }
-
-    /**
-     * Get the numberOfClientAttemptsAllowed property: The number of times a client can attempt a liveness check using
-     * the same authToken. Default value is 1. Maximum value is 3.
-     *
-     * @return the numberOfClientAttemptsAllowed value.
-     */
-    @Generated
-    public HttpPart getNumberOfClientAttemptsAllowed() {
-        return this.numberOfClientAttemptsAllowed;
-    }
-
-    /**
-     * Set the numberOfClientAttemptsAllowed property: The number of times a client can attempt a liveness check using
-     * the same authToken. Default value is 1. Maximum value is 3.
-     *
-     * @param numberOfClientAttemptsAllowed the numberOfClientAttemptsAllowed value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setNumberOfClientAttemptsAllowed(HttpPart numberOfClientAttemptsAllowed) {
-        this.numberOfClientAttemptsAllowed = numberOfClientAttemptsAllowed;
-        return this;
-    }
-
-    /**
-     * Get the userCorrelationId property: Unique Guid per each end-user. This is to provide rate limiting and
-     * anti-hammering. If 'userCorrelationIdSetInClient' is true in this request, this 'userCorrelationId' must be null.
-     *
-     * @return the userCorrelationId value.
-     */
-    @Generated
-    public String getUserCorrelationId() {
-        return this.userCorrelationId;
-    }
-
-    /**
-     * Set the userCorrelationId property: Unique Guid per each end-user. This is to provide rate limiting and
-     * anti-hammering. If 'userCorrelationIdSetInClient' is true in this request, this 'userCorrelationId' must be null.
-     *
-     * @param userCorrelationId the userCorrelationId value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setUserCorrelationId(String userCorrelationId) {
-        this.userCorrelationId = userCorrelationId;
-        return this;
-    }
-
-    /**
-     * Get the userCorrelationIdSetInClient property: Whether or not to allow client to set their own
-     * 'userCorrelationId' via the Vision SDK. Default is false, and 'userCorrelationId' must be set in this request
-     * body.
-     *
-     * @return the userCorrelationIdSetInClient value.
-     */
-    @Generated
-    public Boolean isUserCorrelationIdSetInClient() {
-        return this.userCorrelationIdSetInClient;
-    }
-
-    /**
-     * Set the userCorrelationIdSetInClient property: Whether or not to allow client to set their own
-     * 'userCorrelationId' via the Vision SDK. Default is false, and 'userCorrelationId' must be set in this request
-     * body.
-     *
-     * @param userCorrelationIdSetInClient the userCorrelationIdSetInClient value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setUserCorrelationIdSetInClient(Boolean userCorrelationIdSetInClient) {
-        this.userCorrelationIdSetInClient = userCorrelationIdSetInClient;
-        return this;
-    }
-
-    /**
-     * Get the expectedClientIpAddress property: Specify the expected IP address or CIDR block of the client that runs
-     * the liveness check.
-     *
-     * @return the expectedClientIpAddress value.
-     */
-    @Generated
-    public String getExpectedClientIpAddress() {
-        return this.expectedClientIpAddress;
-    }
-
-    /**
-     * Set the expectedClientIpAddress property: Specify the expected IP address or CIDR block of the client that runs
-     * the liveness check.
-     *
-     * @param expectedClientIpAddress the expectedClientIpAddress value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setExpectedClientIpAddress(String expectedClientIpAddress) {
-        this.expectedClientIpAddress = expectedClientIpAddress;
+    public CreateLivenessSessionContent setLivenessSingleModalModel(LivenessModel livenessSingleModalModel) {
+        this.livenessSingleModalModel = livenessSingleModalModel;
         return this;
     }
 }

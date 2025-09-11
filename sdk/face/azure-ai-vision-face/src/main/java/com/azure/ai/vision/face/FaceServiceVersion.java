@@ -18,17 +18,7 @@ public enum FaceServiceVersion implements ServiceVersion {
     /**
      * Enum value v1.2-preview.1.
      */
-    V1_2_PREVIEW_1("v1.2-preview.1"),
-
-    /**
-     * Enum value v1.2.
-     */
-    V1_2("v1.2"),
-
-    /**
-     * Enum value v1.3-preview.1.
-     */
-    V1_3_PREVIEW_1("v1.3-preview.1");
+    V1_2_PREVIEW_1("v1.2-preview.1");
 
     private final String version;
 
@@ -50,6 +40,6 @@ public enum FaceServiceVersion implements ServiceVersion {
      * @return The latest {@link FaceServiceVersion}.
      */
     public static FaceServiceVersion getLatest() {
-        return V1_3_PREVIEW_1;
+        return V1_2_PREVIEW_1;
     }
 }

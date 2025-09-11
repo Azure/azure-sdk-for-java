@@ -152,7 +152,7 @@ public final class FaceSessionClientImpl {
     @Host("{endpoint}/face/{apiVersion}")
     @ServiceInterface(name = "FaceSessionClient")
     public interface FaceSessionClientService {
-        @Post("/detectLiveness-sessions")
+        @Post("/detectLiveness/singleModal/sessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -163,7 +163,7 @@ public final class FaceSessionClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Post("/detectLiveness-sessions")
+        @Post("/detectLiveness/singleModal/sessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -174,27 +174,27 @@ public final class FaceSessionClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/detectLiveness-sessions/{sessionId}")
-        @ExpectedResponses({ 204 })
+        @Delete("/detectLiveness/singleModal/sessions/{sessionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteLivenessSession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/detectLiveness-sessions/{sessionId}")
-        @ExpectedResponses({ 204 })
+        @Delete("/detectLiveness/singleModal/sessions/{sessionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteLivenessSessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/detectLiveness-sessions/{sessionId}")
+        @Get("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -204,7 +204,7 @@ public final class FaceSessionClientImpl {
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/detectLiveness-sessions/{sessionId}")
+        @Get("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -214,51 +214,113 @@ public final class FaceSessionClientImpl {
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        // @Multipart not supported by RestProxy
-        @Post("/detectLivenessWithVerify-sessions")
+        @Get("/detectLiveness/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLivenessSessions(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/detectLiveness/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLivenessSessionsSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/detectLiveness/singleModal/sessions/{sessionId}/audit")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLivenessSessionAuditEntries(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/detectLiveness/singleModal/sessions/{sessionId}/audit")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLivenessSessionAuditEntriesSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySession(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        // @Multipart not supported by RestProxy
-        @Post("/detectLivenessWithVerify-sessions")
+        @Post("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/detectLivenessWithVerify/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImage(
+            @HostParam("endpoint") String endpoint, @HostParam("apiVersion") String apiVersion,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/detectLivenessWithVerify/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/detectLivenessWithVerify-sessions/{sessionId}")
-        @ExpectedResponses({ 204 })
+        @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteLivenessWithVerifySession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/detectLivenessWithVerify-sessions/{sessionId}")
-        @ExpectedResponses({ 204 })
+        @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteLivenessWithVerifySessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/detectLivenessWithVerify-sessions/{sessionId}")
+        @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -268,13 +330,53 @@ public final class FaceSessionClientImpl {
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/detectLivenessWithVerify-sessions/{sessionId}")
+        @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessWithVerifySessionResultSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/detectLivenessWithVerify/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLivenessWithVerifySessions(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/detectLivenessWithVerify/singleModal/sessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLivenessWithVerifySessionsSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}/audit")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLivenessWithVerifySessionAuditEntries(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}/audit")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLivenessWithVerifySessionAuditEntriesSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -302,7 +404,7 @@ public final class FaceSessionClientImpl {
             @BodyParam("application/json") BinaryData detectFromSessionImageRequest, RequestOptions requestOptions,
             Context context);
 
-        @Get("/sessionImages/{sessionImageId}")
+        @Get("/session/sessionImages/{sessionImageId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -312,7 +414,7 @@ public final class FaceSessionClientImpl {
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionImageId") String sessionImageId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/sessionImages/{sessionImageId}")
+        @Get("/session/sessionImages/{sessionImageId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -334,16 +436,12 @@ public final class FaceSessionClientImpl {
      * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
+     *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
      *     enableSessionImage: Boolean (Optional)
-     *     livenessModelVersion: String(2024-11-15) (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
-     *     numberOfClientAttemptsAllowed (Optional): {
-     *     }
-     *     userCorrelationId: String (Optional)
-     *     userCorrelationIdSetInClient: Boolean (Optional)
-     *     expectedClientIpAddress: String (Optional)
      * }
      * }
      * </pre>
@@ -355,55 +453,6 @@ public final class FaceSessionClientImpl {
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): {
-     *                                 top: int (Required)
-     *                                 left: int (Required)
-     *                                 width: int (Required)
-     *                                 height: int (Required)
-     *                             }
-     *                         }
-     *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -414,7 +463,8 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detect liveness along with {@link Response} on successful completion of {@link Mono}.
+     * @return response of liveness session creation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createLivenessSessionWithResponseAsync(BinaryData body,
@@ -436,16 +486,12 @@ public final class FaceSessionClientImpl {
      * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
+     *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
      *     enableSessionImage: Boolean (Optional)
-     *     livenessModelVersion: String(2024-11-15) (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
-     *     numberOfClientAttemptsAllowed (Optional): {
-     *     }
-     *     userCorrelationId: String (Optional)
-     *     userCorrelationIdSetInClient: Boolean (Optional)
-     *     expectedClientIpAddress: String (Optional)
      * }
      * }
      * </pre>
@@ -457,55 +503,6 @@ public final class FaceSessionClientImpl {
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): {
-     *                                 top: int (Required)
-     *                                 left: int (Required)
-     *                                 width: int (Required)
-     *                                 height: int (Required)
-     *                             }
-     *                         }
-     *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -516,7 +513,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detect liveness along with {@link Response}.
+     * @return response of liveness session creation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
@@ -543,8 +540,9 @@ public final class FaceSessionClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLivenessSessionWithResponseAsync(String sessionId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteLivenessSession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), sessionId, requestOptions, context));
+            this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, context));
     }
 
     /**
@@ -563,8 +561,9 @@ public final class FaceSessionClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteLivenessSessionWithResponse(String sessionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteLivenessSessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), sessionId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -575,56 +574,59 @@ public final class FaceSessionClientImpl {
      * <pre>
      * {@code
      * {
-     *     sessionId: String (Required)
-     *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): {
-     *                                 top: int (Required)
-     *                                 left: int (Required)
-     *                                 width: int (Required)
-     *                                 height: int (Required)
-     *                             }
-     *                         }
+     *     id: String (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     sessionStartDateTime: OffsetDateTime (Optional)
+     *     sessionExpired: boolean (Required)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     status: String(NotStarted/Started/ResultAvailable) (Required)
+     *     result (Optional): {
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
      *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
      *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
      *                 }
      *             }
-     *         ]
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }
@@ -654,56 +656,59 @@ public final class FaceSessionClientImpl {
      * <pre>
      * {@code
      * {
-     *     sessionId: String (Required)
-     *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): {
-     *                                 top: int (Required)
-     *                                 left: int (Required)
-     *                                 width: int (Required)
-     *                                 height: int (Required)
-     *                             }
-     *                         }
+     *     id: String (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     sessionStartDateTime: OffsetDateTime (Optional)
+     *     sessionExpired: boolean (Required)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     status: String(NotStarted/Started/ResultAvailable) (Required)
+     *     result (Optional): {
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
      *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
      *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
      *                 }
      *             }
-     *         ]
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }
@@ -725,11 +730,294 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Create a new liveness session with verify. Provide the verify image during session creation.
+     * Lists sessions for /detectLiveness/SingleModal.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-sessions for
+     * more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: String (Required)
+     *         createdDateTime: OffsetDateTime (Required)
+     *         sessionStartDateTime: OffsetDateTime (Optional)
+     *         sessionExpired: boolean (Required)
+     *         deviceCorrelationId: String (Optional)
+     *         authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLivenessSessionsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLivenessSessions(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Lists sessions for /detectLiveness/SingleModal.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-sessions for
+     * more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: String (Required)
+     *         createdDateTime: OffsetDateTime (Required)
+     *         sessionStartDateTime: OffsetDateTime (Optional)
+     *         sessionExpired: boolean (Required)
+     *         deviceCorrelationId: String (Optional)
+     *         authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLivenessSessionsWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLivenessSessionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-audit-entries for more
+     * details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
+     *                 }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
+     *                 }
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param sessionId The unique ID to reference this session.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLivenessSessionAuditEntriesWithResponseAsync(String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLivenessSessionAuditEntries(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, context));
+    }
+
+    /**
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-audit-entries for more
+     * details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
+     *                 }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
+     *                 }
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param sessionId The unique ID to reference this session.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLivenessSessionAuditEntriesWithResponse(String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLivenessSessionAuditEntriesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            sessionId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create a new liveness session with verify. Client device submits VerifyImage during the
+     * /detectLivenessWithVerify/singleModal call.
      * 
      * Please refer to
-     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
-     * for more details.
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session for
+     * more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     livenessOperationMode: String(Passive/PassiveActive) (Required)
+     *     sendResultsToClient: Boolean (Optional)
+     *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -737,87 +1025,97 @@ public final class FaceSessionClientImpl {
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         verifyReferences (Required): [
-     *              (Required){
-     *                 referenceType: String(Color/Infrared/Depth) (Required)
-     *                 faceRectangle (Required): {
-     *                     top: int (Required)
-     *                     left: int (Required)
-     *                     width: int (Required)
-     *                     height: int (Required)
-     *                 }
-     *                 qualityForRecognition: String(low/medium/high) (Required)
-     *             }
-     *         ]
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): (recursive schema, see faceRectangle above)
-     *                         }
-     *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                     verifyResult (Optional): {
-     *                         matchConfidence: double (Required)
-     *                         isIdentical: boolean (Required)
-     *                     }
-     *                     verifyImageHash: String (Optional)
-     *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         ]
+     *     verifyImage (Optional): {
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
      * }
      * </pre>
      * 
-     * @param body Request content of liveness with verify session creation.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detect liveness with verify along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return response of liveness session with verify creation with verify image provided along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createLivenessWithVerifySession(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Create a new liveness session with verify. Client device submits VerifyImage during the
+     * /detectLivenessWithVerify/singleModal call.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session for
+     * more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     livenessOperationMode: String(Passive/PassiveActive) (Required)
+     *     sendResultsToClient: Boolean (Optional)
+     *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sessionId: String (Required)
+     *     authToken: String (Required)
+     *     verifyImage (Optional): {
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         qualityForRecognition: String(low/medium/high) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param body Body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response of liveness session with verify creation with verify image provided along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createLivenessWithVerifySessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -833,66 +1131,14 @@ public final class FaceSessionClientImpl {
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         verifyReferences (Required): [
-     *              (Required){
-     *                 referenceType: String(Color/Infrared/Depth) (Required)
-     *                 faceRectangle (Required): {
-     *                     top: int (Required)
-     *                     left: int (Required)
-     *                     width: int (Required)
-     *                     height: int (Required)
-     *                 }
-     *                 qualityForRecognition: String(low/medium/high) (Required)
-     *             }
-     *         ]
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): (recursive schema, see faceRectangle above)
-     *                         }
-     *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                     verifyResult (Optional): {
-     *                         matchConfidence: double (Required)
-     *                         isIdentical: boolean (Required)
-     *                     }
-     *                     verifyImageHash: String (Optional)
-     *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         ]
+     *     verifyImage (Optional): {
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
      * }
@@ -904,15 +1150,60 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detect liveness with verify along with {@link Response}.
+     * @return response of liveness session with verify creation with verify image provided along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body,
+    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.createLivenessWithVerifySessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, body, requestOptions, Context.NONE);
+        return FluxUtil
+            .withContext(context -> service.createLivenessWithVerifySessionWithVerifyImage(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Create a new liveness session with verify. Provide the verify image during session creation.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
+     * for more details.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sessionId: String (Required)
+     *     authToken: String (Required)
+     *     verifyImage (Optional): {
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         qualityForRecognition: String(low/medium/high) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param body Request content of liveness with verify session creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response of liveness session with verify creation with verify image provided along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.createLivenessWithVerifySessionWithVerifyImageSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -933,8 +1224,9 @@ public final class FaceSessionClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLivenessWithVerifySessionWithResponseAsync(String sessionId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteLivenessWithVerifySession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), sessionId, requestOptions, context));
+            this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, context));
     }
 
     /**
@@ -954,8 +1246,9 @@ public final class FaceSessionClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteLivenessWithVerifySessionWithResponse(String sessionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteLivenessWithVerifySessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            sessionId, requestOptions, Context.NONE);
+            sessionId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -967,68 +1260,59 @@ public final class FaceSessionClientImpl {
      * <pre>
      * {@code
      * {
-     *     sessionId: String (Required)
-     *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         verifyReferences (Required): [
-     *              (Required){
-     *                 referenceType: String(Color/Infrared/Depth) (Required)
-     *                 faceRectangle (Required): {
-     *                     top: int (Required)
-     *                     left: int (Required)
-     *                     width: int (Required)
-     *                     height: int (Required)
+     *     id: String (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     sessionStartDateTime: OffsetDateTime (Optional)
+     *     sessionExpired: boolean (Required)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     status: String(NotStarted/Started/ResultAvailable) (Required)
+     *     result (Optional): {
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 qualityForRecognition: String(low/medium/high) (Required)
-     *             }
-     *         ]
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): (recursive schema, see faceRectangle above)
-     *                         }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
      *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                     verifyResult (Optional): {
-     *                         matchConfidence: double (Required)
-     *                         isIdentical: boolean (Required)
-     *                     }
-     *                     verifyImageHash: String (Optional)
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
      *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
      *                 }
      *             }
-     *         ]
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }
@@ -1060,68 +1344,59 @@ public final class FaceSessionClientImpl {
      * <pre>
      * {@code
      * {
-     *     sessionId: String (Required)
-     *     authToken: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     modelVersion: String(2024-11-15) (Optional)
-     *     isAbuseMonitoringEnabled (Optional): {
-     *     }
-     *     expectedClientIpAddress: String (Optional)
-     *     results (Required): {
-     *         verifyReferences (Required): [
-     *              (Required){
-     *                 referenceType: String(Color/Infrared/Depth) (Required)
-     *                 faceRectangle (Required): {
-     *                     top: int (Required)
-     *                     left: int (Required)
-     *                     width: int (Required)
-     *                     height: int (Required)
+     *     id: String (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     sessionStartDateTime: OffsetDateTime (Optional)
+     *     sessionExpired: boolean (Required)
+     *     deviceCorrelationId: String (Optional)
+     *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     status: String(NotStarted/Started/ResultAvailable) (Required)
+     *     result (Optional): {
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 qualityForRecognition: String(low/medium/high) (Required)
-     *             }
-     *         ]
-     *         attempts (Required): [
-     *              (Required){
-     *                 attemptId: int (Required)
-     *                 attemptStatus: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *                 result (Optional): {
-     *                     livenessDecision: String(uncertain/realface/spoofface) (Optional)
-     *                     targets (Required): {
-     *                         color (Required): {
-     *                             faceRectangle (Required): (recursive schema, see faceRectangle above)
-     *                         }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
      *                     }
-     *                     digest: String (Required)
-     *                     sessionImageId: String (Optional)
-     *                     verifyResult (Optional): {
-     *                         matchConfidence: double (Required)
-     *                         isIdentical: boolean (Required)
-     *                     }
-     *                     verifyImageHash: String (Optional)
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
      *                 }
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     targets (Required): (recursive schema, see targets above)
-     *                 }
-     *                 clientInformation (Optional): [
-     *                      (Optional){
-     *                         ip: String (Required)
-     *                     }
-     *                 ]
-     *                 abuseMonitoringResult (Optional): {
-     *                     isAbuseDetected (Required): {
-     *                     }
-     *                     otherFlaggedSessions (Required): [
-     *                          (Required){
-     *                             attemptId: int (Required)
-     *                             sessionId: String (Required)
-     *                             sessionImageId: String (Optional)
-     *                         }
-     *                     ]
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
      *                 }
      *             }
-     *         ]
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }
@@ -1141,6 +1416,272 @@ public final class FaceSessionClientImpl {
         final String accept = "application/json";
         return service.getLivenessWithVerifySessionResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             sessionId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists sessions for /detectLivenessWithVerify/SingleModal.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-sessions for more
+     * details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: String (Required)
+     *         createdDateTime: OffsetDateTime (Required)
+     *         sessionStartDateTime: OffsetDateTime (Optional)
+     *         sessionExpired: boolean (Required)
+     *         deviceCorrelationId: String (Optional)
+     *         authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLivenessWithVerifySessionsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLivenessWithVerifySessions(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Lists sessions for /detectLivenessWithVerify/SingleModal.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-sessions for more
+     * details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: String (Required)
+     *         createdDateTime: OffsetDateTime (Required)
+     *         sessionStartDateTime: OffsetDateTime (Optional)
+     *         sessionExpired: boolean (Required)
+     *         deviceCorrelationId: String (Optional)
+     *         authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLivenessWithVerifySessionsWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLivenessWithVerifySessionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-audit-entries
+     * for more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
+     *                 }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
+     *                 }
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param sessionId The unique ID to reference this session.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLivenessWithVerifySessionAuditEntriesWithResponseAsync(String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLivenessWithVerifySessionAuditEntries(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, context));
+    }
+
+    /**
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-audit-entries
+     * for more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>start</td><td>String</td><td>No</td><td>List resources greater than the "start". It contains no more than
+     * 64 characters. Default is empty.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of items to list, ranging in [1, 1000]. Default is
+     * 1000.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         id: long (Required)
+     *         sessionId: String (Required)
+     *         requestId: String (Required)
+     *         clientRequestId: String (Required)
+     *         receivedDateTime: OffsetDateTime (Required)
+     *         request (Required): {
+     *             url: String (Required)
+     *             method: String (Required)
+     *             contentLength: Long (Optional)
+     *             contentType: String (Required)
+     *             userAgent: String (Optional)
+     *         }
+     *         response (Required): {
+     *             body (Required): {
+     *                 livenessDecision: String(uncertain/realface/spoofface) (Optional)
+     *                 target (Optional): {
+     *                     faceRectangle (Required): {
+     *                         top: int (Required)
+     *                         left: int (Required)
+     *                         width: int (Required)
+     *                         height: int (Required)
+     *                     }
+     *                     fileName: String (Required)
+     *                     timeOffsetWithinFile: int (Required)
+     *                     imageType: String(Color/Infrared/Depth) (Required)
+     *                 }
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
+     *                 verifyResult (Optional): {
+     *                     verifyImage (Required): {
+     *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
+     *                         qualityForRecognition: String(low/medium/high) (Required)
+     *                     }
+     *                     matchConfidence: double (Required)
+     *                     isIdentical: boolean (Required)
+     *                 }
+     *                  (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
+     *             }
+     *             statusCode: int (Required)
+     *             latencyInMilliseconds: long (Required)
+     *         }
+     *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param sessionId The unique ID to reference this session.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLivenessWithVerifySessionAuditEntriesWithResponse(String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLivenessWithVerifySessionAuditEntriesSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, Context.NONE);
     }
 
     /**

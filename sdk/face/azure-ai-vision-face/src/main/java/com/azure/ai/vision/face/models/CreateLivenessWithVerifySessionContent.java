@@ -5,18 +5,33 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Request of liveness with verify session creation.
+ * Request for creating liveness with verify session.
  */
 @Fluent
-public final class CreateLivenessWithVerifySessionContent {
+public final class CreateLivenessWithVerifySessionContent
+    implements JsonSerializable<CreateLivenessWithVerifySessionContent> {
 
     /*
      * Type of liveness mode the client should follow.
      */
     @Generated
     private final LivenessOperationMode livenessOperationMode;
+
+    /*
+     * Whether or not to allow a '200 - Success' response body to be sent to the client, which may be undesirable for
+     * security reasons. Default is false, clients will receive a '204 - NoContent' empty body response. Regardless of
+     * selection, calling Session GetResult will always contain a response body enabling business logic to be
+     * implemented.
+     */
+    @Generated
+    private Boolean sendResultsToClient;
 
     /*
      * Whether or not to allow client to set their own 'deviceCorrelationId' via the Vision SDK. Default is false, and
@@ -30,6 +45,13 @@ public final class CreateLivenessWithVerifySessionContent {
      */
     @Generated
     private Boolean enableSessionImage;
+
+    /*
+     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
+     * then the latest supported model version will be chosen
+     */
+    @Generated
+    private LivenessModel livenessSingleModalModel;
 
     /*
      * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If
@@ -51,12 +73,20 @@ public final class CreateLivenessWithVerifySessionContent {
     private Boolean returnVerifyImageHash;
 
     /*
-     * Threshold for confidence of the face verification. Please refer to the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-
-     * services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score
+     * Threshold for confidence of the face verification.
      */
     @Generated
     private Double verifyConfidenceThreshold;
+
+    /**
+     * Creates an instance of CreateLivenessWithVerifySessionContent class.
+     *
+     * @param livenessOperationMode the livenessOperationMode value to set.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionContent(LivenessOperationMode livenessOperationMode) {
+        this.livenessOperationMode = livenessOperationMode;
+    }
 
     /**
      * Get the livenessOperationMode property: Type of liveness mode the client should follow.
@@ -66,6 +96,34 @@ public final class CreateLivenessWithVerifySessionContent {
     @Generated
     public LivenessOperationMode getLivenessOperationMode() {
         return this.livenessOperationMode;
+    }
+
+    /**
+     * Get the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
+     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
+     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
+     * enabling business logic to be implemented.
+     *
+     * @return the sendResultsToClient value.
+     */
+    @Generated
+    public Boolean isSendResultsToClient() {
+        return this.sendResultsToClient;
+    }
+
+    /**
+     * Set the sendResultsToClient property: Whether or not to allow a '200 - Success' response body to be sent to the
+     * client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent'
+     * empty body response. Regardless of selection, calling Session GetResult will always contain a response body
+     * enabling business logic to be implemented.
+     *
+     * @param sendResultsToClient the sendResultsToClient value to set.
+     * @return the CreateLivenessWithVerifySessionContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionContent setSendResultsToClient(Boolean sendResultsToClient) {
+        this.sendResultsToClient = sendResultsToClient;
+        return this;
     }
 
     /**
@@ -114,6 +172,30 @@ public final class CreateLivenessWithVerifySessionContent {
     @Generated
     public CreateLivenessWithVerifySessionContent setEnableSessionImage(Boolean enableSessionImage) {
         this.enableSessionImage = enableSessionImage;
+        return this;
+    }
+
+    /**
+     * Get the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
+     *
+     * @return the livenessSingleModalModel value.
+     */
+    @Generated
+    public LivenessModel getLivenessSingleModalModel() {
+        return this.livenessSingleModalModel;
+    }
+
+    /**
+     * Set the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
+     *
+     * @param livenessSingleModalModel the livenessSingleModalModel value to set.
+     * @return the CreateLivenessWithVerifySessionContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionContent setLivenessSingleModalModel(LivenessModel livenessSingleModalModel) {
+        this.livenessSingleModalModel = livenessSingleModalModel;
         return this;
     }
 
@@ -191,9 +273,7 @@ public final class CreateLivenessWithVerifySessionContent {
     }
 
     /**
-     * Get the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
-     * the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
+     * Get the verifyConfidenceThreshold property: Threshold for confidence of the face verification.
      *
      * @return the verifyConfidenceThreshold value.
      */
@@ -203,9 +283,7 @@ public final class CreateLivenessWithVerifySessionContent {
     }
 
     /**
-     * Set the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
-     * the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
+     * Set the verifyConfidenceThreshold property: Threshold for confidence of the face verification.
      *
      * @param verifyConfidenceThreshold the verifyConfidenceThreshold value to set.
      * @return the CreateLivenessWithVerifySessionContent object itself.
@@ -216,96 +294,86 @@ public final class CreateLivenessWithVerifySessionContent {
         return this;
     }
 
-    /*
-     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
-     * then the latest supported model version will be chosen
-     */
-    @Generated
-    private LivenessModel livenessModelVersion;
-
-    /*
-     * The image stream for verify. Content-Disposition header field for this part must have filename.
-     */
-    @Generated
-    private final VerifyImageFileDetails verifyImage;
-
-    /*
-     * The number of times a client can attempt a liveness check using the same authToken. Default value is 1. Maximum
-     * value is 3.
-     */
-    @Generated
-    private Integer numberOfClientAttemptsAllowed;
-
     /**
-     * Creates an instance of CreateLivenessWithVerifySessionContent class.
-     *
-     * @param livenessOperationMode the livenessOperationMode value to set.
-     * @param verifyImage the verifyImage value to set.
+     * {@inheritDoc}
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent(LivenessOperationMode livenessOperationMode,
-        VerifyImageFileDetails verifyImage) {
-        this.livenessOperationMode = livenessOperationMode;
-        this.verifyImage = verifyImage;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("livenessOperationMode",
+            this.livenessOperationMode == null ? null : this.livenessOperationMode.toString());
+        jsonWriter.writeBooleanField("sendResultsToClient", this.sendResultsToClient);
+        jsonWriter.writeBooleanField("deviceCorrelationIdSetInClient", this.deviceCorrelationIdSetInClient);
+        jsonWriter.writeBooleanField("enableSessionImage", this.enableSessionImage);
+        jsonWriter.writeStringField("livenessSingleModalModel",
+            this.livenessSingleModalModel == null ? null : this.livenessSingleModalModel.toString());
+        jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
+        jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        jsonWriter.writeBooleanField("returnVerifyImageHash", this.returnVerifyImageHash);
+        jsonWriter.writeNumberField("verifyConfidenceThreshold", this.verifyConfidenceThreshold);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the livenessModelVersion property: The model version used for liveness classification. This is an optional
-     * parameter, and if this is not specified, then the latest supported model version will be chosen.
+     * Reads an instance of CreateLivenessWithVerifySessionContent from the JsonReader.
      *
-     * @return the livenessModelVersion value.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateLivenessWithVerifySessionContent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateLivenessWithVerifySessionContent.
      */
     @Generated
-    public LivenessModel getLivenessModelVersion() {
-        return this.livenessModelVersion;
-    }
-
-    /**
-     * Set the livenessModelVersion property: The model version used for liveness classification. This is an optional
-     * parameter, and if this is not specified, then the latest supported model version will be chosen.
-     *
-     * @param livenessModelVersion the livenessModelVersion value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessWithVerifySessionContent setLivenessModelVersion(LivenessModel livenessModelVersion) {
-        this.livenessModelVersion = livenessModelVersion;
-        return this;
-    }
-
-    /**
-     * Get the verifyImage property: The image stream for verify. Content-Disposition header field for this part must
-     * have filename.
-     *
-     * @return the verifyImage value.
-     */
-    @Generated
-    public VerifyImageFileDetails getVerifyImage() {
-        return this.verifyImage;
-    }
-
-    /**
-     * Get the numberOfClientAttemptsAllowed property: The number of times a client can attempt a liveness check using
-     * the same authToken. Default value is 1. Maximum value is 3.
-     *
-     * @return the numberOfClientAttemptsAllowed value.
-     */
-    @Generated
-    public Integer getNumberOfClientAttemptsAllowed() {
-        return this.numberOfClientAttemptsAllowed;
-    }
-
-    /**
-     * Set the numberOfClientAttemptsAllowed property: The number of times a client can attempt a liveness check using
-     * the same authToken. Default value is 1. Maximum value is 3.
-     *
-     * @param numberOfClientAttemptsAllowed the numberOfClientAttemptsAllowed value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessWithVerifySessionContent
-        setNumberOfClientAttemptsAllowed(Integer numberOfClientAttemptsAllowed) {
-        this.numberOfClientAttemptsAllowed = numberOfClientAttemptsAllowed;
-        return this;
+    public static CreateLivenessWithVerifySessionContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LivenessOperationMode livenessOperationMode = null;
+            Boolean sendResultsToClient = null;
+            Boolean deviceCorrelationIdSetInClient = null;
+            Boolean enableSessionImage = null;
+            LivenessModel livenessSingleModalModel = null;
+            String deviceCorrelationId = null;
+            Integer authTokenTimeToLiveInSeconds = null;
+            Boolean returnVerifyImageHash = null;
+            Double verifyConfidenceThreshold = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("livenessOperationMode".equals(fieldName)) {
+                    livenessOperationMode = LivenessOperationMode.fromString(reader.getString());
+                } else if ("sendResultsToClient".equals(fieldName)) {
+                    sendResultsToClient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deviceCorrelationIdSetInClient".equals(fieldName)) {
+                    deviceCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableSessionImage".equals(fieldName)) {
+                    enableSessionImage = reader.getNullable(JsonReader::getBoolean);
+                } else if ("livenessSingleModalModel".equals(fieldName)) {
+                    livenessSingleModalModel = LivenessModel.fromString(reader.getString());
+                } else if ("deviceCorrelationId".equals(fieldName)) {
+                    deviceCorrelationId = reader.getString();
+                } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
+                    authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("returnVerifyImageHash".equals(fieldName)) {
+                    returnVerifyImageHash = reader.getNullable(JsonReader::getBoolean);
+                } else if ("verifyConfidenceThreshold".equals(fieldName)) {
+                    verifyConfidenceThreshold = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateLivenessWithVerifySessionContent deserializedCreateLivenessWithVerifySessionContent
+                = new CreateLivenessWithVerifySessionContent(livenessOperationMode);
+            deserializedCreateLivenessWithVerifySessionContent.sendResultsToClient = sendResultsToClient;
+            deserializedCreateLivenessWithVerifySessionContent.deviceCorrelationIdSetInClient
+                = deviceCorrelationIdSetInClient;
+            deserializedCreateLivenessWithVerifySessionContent.enableSessionImage = enableSessionImage;
+            deserializedCreateLivenessWithVerifySessionContent.livenessSingleModalModel = livenessSingleModalModel;
+            deserializedCreateLivenessWithVerifySessionContent.deviceCorrelationId = deviceCorrelationId;
+            deserializedCreateLivenessWithVerifySessionContent.authTokenTimeToLiveInSeconds
+                = authTokenTimeToLiveInSeconds;
+            deserializedCreateLivenessWithVerifySessionContent.returnVerifyImageHash = returnVerifyImageHash;
+            deserializedCreateLivenessWithVerifySessionContent.verifyConfidenceThreshold = verifyConfidenceThreshold;
+            return deserializedCreateLivenessWithVerifySessionContent;
+        });
     }
 }
