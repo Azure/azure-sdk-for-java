@@ -9,12 +9,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Remove deprecated APIs `ServiceBusJmsConnectionFactoryCustomizer.customize(ServiceBusJmsConnectionFactory factory)`.
 - Remove deprecated APIs `AzureEventHubsKafkaAutoConfiguration.eventHubsKafkaConnectionString(Environment environment)`, `AzureEventHubsKafkaAutoConfiguration.kafkaPropertiesBeanPostProcessor()`.
 
-### Spring Azure Resource Manager
-This section includes changes in `spring-cloud-azure-resourcemanager` module.
-
-#### Breaking Changes
-- Remove deprecated APIs `provisionQueue(String namespace, String queue)`, `provisionTopic(String namespace, String topic)`, `provisionSubscription(String namespace, String topic, String subscription)`.
-
 ### Spring Cloud Stream Service Bus Binder Core
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus-core` module.
 
