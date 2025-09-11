@@ -205,8 +205,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -216,8 +217,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -227,7 +229,8 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -237,7 +240,8 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/secrets")
         @ExpectedResponses({ 200 })
@@ -512,7 +516,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -588,7 +591,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -639,7 +641,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -690,7 +691,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -764,12 +764,12 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
      * 
      * @param secretName The name of the secret.
+     * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -780,13 +780,13 @@ public final class SecretClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateSecretWithResponseAsync(String secretName, BinaryData parameters,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateSecretWithResponseAsync(String secretName, String secretVersion,
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                secretName, contentType, accept, parameters, requestOptions, context));
+                secretName, secretVersion, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -839,12 +839,12 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
      * 
      * @param secretName The name of the secret.
+     * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -854,12 +854,12 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateSecretWithResponse(String secretName, BinaryData parameters,
+    public Response<BinaryData> updateSecretWithResponse(String secretName, String secretVersion, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+            secretVersion, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -867,17 +867,6 @@ public final class SecretClientImpl {
      * 
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>outContentType</td><td>String</td><td>No</td><td>The media type (MIME type) of the certificate. If a
-     * supported format is specified, the certificate content is converted to the requested format. Currently, only PFX
-     * to PEM conversion is supported. If an unsupported format is specified, the request is rejected. If not specified,
-     * the certificate is returned in its original format without conversion. Allowed values: "application/x-pkcs12",
-     * "application/x-pem-file".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -900,12 +889,13 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
      * 
      * @param secretName The name of the secret.
+     * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
+     * version of the secret is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -917,10 +907,11 @@ public final class SecretClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSecretWithResponseAsync(String secretName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSecretWithResponseAsync(String secretName, String secretVersion,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSecret(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), secretName, secretVersion, accept, requestOptions, context));
     }
 
     /**
@@ -928,17 +919,6 @@ public final class SecretClientImpl {
      * 
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>outContentType</td><td>String</td><td>No</td><td>The media type (MIME type) of the certificate. If a
-     * supported format is specified, the certificate content is converted to the requested format. Currently, only PFX
-     * to PEM conversion is supported. If an unsupported format is specified, the request is rejected. If not specified,
-     * the certificate is returned in its original format without conversion. Allowed values: "application/x-pkcs12",
-     * "application/x-pem-file".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -961,12 +941,13 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
      * 
      * @param secretName The name of the secret.
+     * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
+     * version of the secret is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -977,10 +958,11 @@ public final class SecretClientImpl {
      * The GET operation is applicable to any secret stored in Azure Key Vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSecretWithResponse(String secretName, RequestOptions requestOptions) {
+    public Response<BinaryData> getSecretWithResponse(String secretName, String secretVersion,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
-            requestOptions, Context.NONE);
+        return service.getSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            secretVersion, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1670,7 +1652,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -1724,7 +1705,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -1821,7 +1801,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -1870,7 +1849,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -1988,7 +1966,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -2048,7 +2025,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>

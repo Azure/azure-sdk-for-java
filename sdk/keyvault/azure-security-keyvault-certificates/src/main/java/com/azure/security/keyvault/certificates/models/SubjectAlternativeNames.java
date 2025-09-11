@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The Subject Alternative Names of a X509 object.
+ * The subject alternate names of a X509 object.
  */
 @Fluent
 public final class SubjectAlternativeNames implements JsonSerializable<SubjectAlternativeNames> {
@@ -25,28 +25,16 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     private List<String> emails;
 
     /*
-     * Domain Names.
+     * Domain names.
      */
     @Generated
     private List<String> dnsNames;
 
     /*
-     * User Principal Names.
+     * User principal names.
      */
     @Generated
     private List<String> userPrincipalNames;
-
-    /*
-     * Uniform Resource Identifiers.
-     */
-    @Generated
-    private List<String> uris;
-
-    /*
-     * IP addresses; supports IPv4 and IPv6.
-     */
-    @Generated
-    private List<String> ipAddresses;
 
     /**
      * Creates an instance of SubjectAlternativeNames class.
@@ -78,7 +66,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Get the dnsNames property: Domain Names.
+     * Get the dnsNames property: Domain names.
      * 
      * @return the dnsNames value.
      */
@@ -88,7 +76,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Set the dnsNames property: Domain Names.
+     * Set the dnsNames property: Domain names.
      * 
      * @param dnsNames the dnsNames value to set.
      * @return the SubjectAlternativeNames object itself.
@@ -100,7 +88,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Get the userPrincipalNames property: User Principal Names.
+     * Get the userPrincipalNames property: User principal names.
      * 
      * @return the userPrincipalNames value.
      */
@@ -110,7 +98,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Set the userPrincipalNames property: User Principal Names.
+     * Set the userPrincipalNames property: User principal names.
      * 
      * @param userPrincipalNames the userPrincipalNames value to set.
      * @return the SubjectAlternativeNames object itself.
@@ -118,50 +106,6 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     @Generated
     public SubjectAlternativeNames setUserPrincipalNames(List<String> userPrincipalNames) {
         this.userPrincipalNames = userPrincipalNames;
-        return this;
-    }
-
-    /**
-     * Get the uris property: Uniform Resource Identifiers.
-     * 
-     * @return the uris value.
-     */
-    @Generated
-    public List<String> getUris() {
-        return this.uris;
-    }
-
-    /**
-     * Set the uris property: Uniform Resource Identifiers.
-     * 
-     * @param uris the uris value to set.
-     * @return the SubjectAlternativeNames object itself.
-     */
-    @Generated
-    public SubjectAlternativeNames setUris(List<String> uris) {
-        this.uris = uris;
-        return this;
-    }
-
-    /**
-     * Get the ipAddresses property: IP addresses; supports IPv4 and IPv6.
-     * 
-     * @return the ipAddresses value.
-     */
-    @Generated
-    public List<String> getIpAddresses() {
-        return this.ipAddresses;
-    }
-
-    /**
-     * Set the ipAddresses property: IP addresses; supports IPv4 and IPv6.
-     * 
-     * @param ipAddresses the ipAddresses value to set.
-     * @return the SubjectAlternativeNames object itself.
-     */
-    @Generated
-    public SubjectAlternativeNames setIpAddresses(List<String> ipAddresses) {
-        this.ipAddresses = ipAddresses;
         return this;
     }
 
@@ -175,8 +119,6 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
         jsonWriter.writeArrayField("emails", this.emails, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dns_names", this.dnsNames, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("upns", this.userPrincipalNames, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("uris", this.uris, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -205,12 +147,6 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
                 } else if ("upns".equals(fieldName)) {
                     List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
-                } else if ("uris".equals(fieldName)) {
-                    List<String> uris = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSubjectAlternativeNames.uris = uris;
-                } else if ("ipAddresses".equals(fieldName)) {
-                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSubjectAlternativeNames.ipAddresses = ipAddresses;
                 } else {
                     reader.skipChildren();
                 }
