@@ -162,6 +162,12 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
 
+    /*
+     * Optional, default value is true. Only applicable to SMB shares.
+     * Specifies whether granting of new directory leases for directories present in a share are to be enabled or disabled.
+     */
+    private Boolean enableSmbDirectoryLease;
+
     /**
      * Creates a new instance of {@link ShareProperties}.
      */
@@ -793,6 +799,30 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     public ShareProperties
         setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
         this.nextAllowedProvisionedBandwidthDowngradeTime = nextAllowedProvisionedBandwidthDowngradeTime;
+        return this;
+    }
+
+    /**
+     * Optional, default value is true. Only applicable to SMB shares.
+     * Specifies whether granting of new directory leases for directories present in a share are to be enabled or disabled.
+     * An input of true specifies that granting of new directory leases is to be allowed.
+     * An input of false specifies that granting of new directory leases is to be blocked.
+     * @return the enableSmbDirectoryLease value.
+     */
+    public Boolean isSmbDirectoryLeaseEnabled() {
+        return enableSmbDirectoryLease;
+    }
+
+    /**
+     * Optional, default value is true. Only applicable to SMB shares.
+     * Specifies whether granting of new directory leases for directories present in a share are to be enabled or disabled.
+     * An input of true specifies that granting of new directory leases is to be allowed.
+     * An input of false specifies that granting of new directory leases is to be blocked.
+     * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setSmbDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
+        this.enableSmbDirectoryLease = enableSmbDirectoryLease;
         return this;
     }
 

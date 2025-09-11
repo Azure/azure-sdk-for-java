@@ -45,6 +45,7 @@ public class CommonSasQueryParameters {
     private final String unauthorizedObjectId;
     private final String correlationId;
     private final String encryptionScope;
+    private final String delegatedUserObjectId;
 
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
@@ -108,6 +109,8 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap, Integer::parseInt);
         this.encryptionScope = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE,
             removeSasParametersFromMap);
+        this.delegatedUserObjectId = getQueryParameter(queryParamsMap,
+            Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID, removeSasParametersFromMap);
     }
 
     /**
@@ -168,6 +171,8 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, this.signature);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
+            this.delegatedUserObjectId);
 
         // Account
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICES, this.services);
@@ -465,5 +470,16 @@ public class CommonSasQueryParameters {
      */
     public String getEncryptionScope() {
         return encryptionScope;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
     }
 }

@@ -3,6 +3,8 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -11,6 +13,8 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.AccessControlType;
@@ -41,6 +45,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -117,6 +122,63 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), os.toString());
     }
 
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileDatalakeSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileClient client = instrument(new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
+                .sasToken(sas)
+                .credential(tokenCredential)).buildFileClient();
+
+            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeFileClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl()).sasToken(sas))
+                    .buildFileClient();
+
+            DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+                () -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
+    }
+
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void directorySasPermission() {
@@ -157,6 +219,68 @@ public class SasTests extends DataLakeTestBase {
 
         assertThrows(DataLakeStorageException.class,
             () -> getDirectoryClient(sas, getFileSystemUrl(), pathName).getProperties());
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void directorySasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            DataLakeDirectoryClient directoryClient
+                = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = directoryClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeDirectoryClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(directoryClient.getDirectoryUrl())
+                    .sasToken(sas)
+                    .credential(tokenCredential)).buildDirectoryClient();
+
+            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void directorySasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            DataLakeDirectoryClient directoryClient
+                = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = directoryClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeDirectoryClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(directoryClient.getDirectoryUrl()).sasToken(sas))
+                    .buildDirectoryClient();
+
+            DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+                () -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
     }
 
     @Test
@@ -451,6 +575,64 @@ public class SasTests extends DataLakeTestBase {
 
         assertThrows(DataLakeStorageException.class, () -> client.listPaths().iterator().hasNext());
         assertTrue(sasWithPermissions.contains("scid=" + cid));
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileSystemSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)
+                    .credential(tokenCredential)).buildClient();
+
+            assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileSystemSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)).buildClient();
+
+            DataLakeStorageException e
+                = assertThrows(DataLakeStorageException.class, () -> client.listPaths().iterator().hasNext());
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
     }
 
     @SuppressWarnings("deprecation")

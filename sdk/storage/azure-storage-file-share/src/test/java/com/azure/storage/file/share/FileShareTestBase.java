@@ -361,6 +361,24 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
+    protected ShareServiceClient getOAuthServiceClient() {
+        ShareServiceClientBuilder builder
+            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthServiceAsyncClient() {
+        ShareServiceClientBuilder builder
+            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+    }
+
     protected ShareServiceClient getOAuthPremiumServiceClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
@@ -572,5 +590,27 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean isServiceVersionSpecified() {
         return ENVIRONMENT.getServiceVersion() != null;
+    }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 4 times
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
     }
 }

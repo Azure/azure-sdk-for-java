@@ -92,6 +92,8 @@ public class DataLakeSasImplUtil {
 
     private String encryptionScope;
 
+    private String delegatedUserObjectId;
+
     /**
      * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
      *
@@ -108,7 +110,7 @@ public class DataLakeSasImplUtil {
      * @param sasValues {@link DataLakeServiceSasSignatureValues}
      * @param fileSystemName The file system name
      * @param pathName The path name
-     * @param isDirectory Whether or not the path points to a directory.
+     * @param isDirectory Whether the path points to a directory.
      */
     public DataLakeSasImplUtil(DataLakeServiceSasSignatureValues sasValues, String fileSystemName, String pathName,
         boolean isDirectory) {
@@ -131,6 +133,7 @@ public class DataLakeSasImplUtil {
         this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;
         this.encryptionScope = sasValues.getEncryptionScope();
+        this.delegatedUserObjectId = sasValues.getDelegatedUserObjectId();
     }
 
     /**
@@ -255,6 +258,8 @@ public class DataLakeSasImplUtil {
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, this.unauthorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DELEGATED_USER_OBJECT_ID,
+                this.delegatedUserObjectId);
         }
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
@@ -455,7 +460,7 @@ public class DataLakeSasImplUtil {
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
                 this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
-                "", /* new schema 2025-07-05 */
+                this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
                 this.encryptionScope == null ? "" : this.encryptionScope,
