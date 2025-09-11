@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Fleets_ListVirtualMachineScaleSets.json
+     * x-ms-original-file: 2025-07-01-preview/Fleets_ListVirtualMachineScaleSets.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachineScaleSets.
