@@ -33,6 +33,8 @@ public final class PrivateEndpointConnectionsPutHeaders {
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
+        } else {
+            this.retryAfter = null;
         }
         this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
     }

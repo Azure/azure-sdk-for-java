@@ -14,8 +14,6 @@ import com.azure.resourcemanager.keyvault.fluent.models.MhsmGeoReplicatedRegionI
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Properties of the managed HSM Pool.
@@ -25,7 +23,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
     /*
      * The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
      */
-    private UUID tenantId;
+    private String tenantId;
 
     /*
      * Array of initial administrators object ids for this managed hsm pool.
@@ -113,7 +111,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
      * 
      * @return the tenantId value.
      */
-    public UUID tenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -124,7 +122,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
      * @param tenantId the tenantId value to set.
      * @return the ManagedHsmProperties object itself.
      */
-    public ManagedHsmProperties withTenantId(UUID tenantId) {
+    public ManagedHsmProperties withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -384,7 +382,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeArrayField("initialAdminObjectIds", this.initialAdminObjectIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("enableSoftDelete", this.enableSoftDelete);
@@ -414,8 +412,7 @@ public final class ManagedHsmProperties implements JsonSerializable<ManagedHsmPr
                 reader.nextToken();
 
                 if ("tenantId".equals(fieldName)) {
-                    deserializedManagedHsmProperties.tenantId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedManagedHsmProperties.tenantId = reader.getString();
                 } else if ("initialAdminObjectIds".equals(fieldName)) {
                     List<String> initialAdminObjectIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedHsmProperties.initialAdminObjectIds = initialAdminObjectIds;

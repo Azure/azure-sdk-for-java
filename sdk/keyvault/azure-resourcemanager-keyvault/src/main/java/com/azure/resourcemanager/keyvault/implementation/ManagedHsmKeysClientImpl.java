@@ -63,7 +63,7 @@ public final class ManagedHsmKeysClientImpl implements ManagedHsmKeysClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientManagedHsmKeys")
     public interface ManagedHsmKeysService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/keys/{keyName}")

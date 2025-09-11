@@ -20,7 +20,6 @@ import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Samples for Vaults CreateOrUpdate.
@@ -43,8 +42,7 @@ public final class VaultsCreateOrUpdateSamples {
             .getVaults()
             .createOrUpdate("sample-resource-group", "sample-vault", new VaultCreateOrUpdateParameters()
                 .withLocation("westus")
-                .withProperties(new VaultProperties()
-                    .withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                .withProperties(new VaultProperties().withTenantId("00000000-0000-0000-0000-000000000000")
                     .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
                     .withEnabledForDeployment(true)
                     .withEnabledForDiskEncryption(true)
@@ -74,11 +72,10 @@ public final class VaultsCreateOrUpdateSamples {
             .getVaults()
             .createOrUpdate("sample-resource-group", "sample-vault",
                 new VaultCreateOrUpdateParameters().withLocation("westus")
-                    .withProperties(new VaultProperties()
-                        .withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                    .withProperties(new VaultProperties().withTenantId("00000000-0000-0000-0000-000000000000")
                         .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
                         .withAccessPolicies(Arrays.asList(new AccessPolicyEntry()
-                            .withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                            .withTenantId("00000000-0000-0000-0000-000000000000")
                             .withObjectId("00000000-0000-0000-0000-000000000000")
                             .withPermissions(new Permissions()
                                 .withKeys(Arrays.asList(KeyPermissions.ENCRYPT, KeyPermissions.DECRYPT,

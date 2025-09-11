@@ -55,7 +55,7 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientMhsmPrivateLinkResources")
     public interface MhsmPrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateLinkResources")

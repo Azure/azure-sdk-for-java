@@ -70,7 +70,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientMhsmPrivateEndpointConnections")
     public interface MhsmPrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections")

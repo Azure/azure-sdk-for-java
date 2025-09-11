@@ -15,7 +15,6 @@ import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.keyvault.models.VaultPatchProperties;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Samples for Vaults Update.
@@ -36,11 +35,11 @@ public final class VaultsUpdateSamples {
             .serviceClient()
             .getVaults()
             .updateWithResponse("sample-resource-group", "sample-vault",
-                new VaultPatchParameters().withProperties(
-                    new VaultPatchProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                new VaultPatchParameters()
+                    .withProperties(new VaultPatchProperties().withTenantId("00000000-0000-0000-0000-000000000000")
                         .withSku(new Sku().withFamily(SkuFamily.A).withName(SkuName.STANDARD))
                         .withAccessPolicies(Arrays.asList(new AccessPolicyEntry()
-                            .withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                            .withTenantId("00000000-0000-0000-0000-000000000000")
                             .withObjectId("00000000-0000-0000-0000-000000000000")
                             .withPermissions(new Permissions()
                                 .withKeys(Arrays.asList(KeyPermissions.ENCRYPT, KeyPermissions.DECRYPT,

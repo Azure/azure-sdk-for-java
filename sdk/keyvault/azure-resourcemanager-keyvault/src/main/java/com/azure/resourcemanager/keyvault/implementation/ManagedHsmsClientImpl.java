@@ -79,7 +79,7 @@ public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmI
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientManagedHsms")
     public interface ManagedHsmsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")

@@ -81,7 +81,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientVaults")
     public interface VaultsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}")
@@ -2036,7 +2036,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the deleted vaults in a subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedVaultInner>> listDeletedNextSinglePageAsync(String nextLink) {
@@ -2063,7 +2064,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of vaults along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the deleted vaults in a subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedVaultInner>> listDeletedNextSinglePageAsync(String nextLink, Context context) {

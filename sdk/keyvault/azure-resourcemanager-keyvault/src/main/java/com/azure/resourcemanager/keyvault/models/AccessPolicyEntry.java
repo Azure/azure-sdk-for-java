@@ -11,8 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key
@@ -23,7 +21,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
     /*
      * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
-    private UUID tenantId;
+    private String tenantId;
 
     /*
      * The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault.
@@ -34,7 +32,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
     /*
      * Application ID of the client making request on behalf of a principal
      */
-    private UUID applicationId;
+    private String applicationId;
 
     /*
      * Permissions the identity has for keys, secrets and certificates.
@@ -53,7 +51,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
      * 
      * @return the tenantId value.
      */
-    public UUID tenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -64,7 +62,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
      * @param tenantId the tenantId value to set.
      * @return the AccessPolicyEntry object itself.
      */
-    public AccessPolicyEntry withTenantId(UUID tenantId) {
+    public AccessPolicyEntry withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -96,7 +94,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
      * 
      * @return the applicationId value.
      */
-    public UUID applicationId() {
+    public String applicationId() {
         return this.applicationId;
     }
 
@@ -106,7 +104,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
      * @param applicationId the applicationId value to set.
      * @return the AccessPolicyEntry object itself.
      */
-    public AccessPolicyEntry withApplicationId(UUID applicationId) {
+    public AccessPolicyEntry withApplicationId(String applicationId) {
         this.applicationId = applicationId;
         return this;
     }
@@ -161,10 +159,10 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("objectId", this.objectId);
         jsonWriter.writeJsonField("permissions", this.permissions);
-        jsonWriter.writeStringField("applicationId", Objects.toString(this.applicationId, null));
+        jsonWriter.writeStringField("applicationId", this.applicationId);
         return jsonWriter.writeEndObject();
     }
 
@@ -185,15 +183,13 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
                 reader.nextToken();
 
                 if ("tenantId".equals(fieldName)) {
-                    deserializedAccessPolicyEntry.tenantId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAccessPolicyEntry.tenantId = reader.getString();
                 } else if ("objectId".equals(fieldName)) {
                     deserializedAccessPolicyEntry.objectId = reader.getString();
                 } else if ("permissions".equals(fieldName)) {
                     deserializedAccessPolicyEntry.permissions = Permissions.fromJson(reader);
                 } else if ("applicationId".equals(fieldName)) {
-                    deserializedAccessPolicyEntry.applicationId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAccessPolicyEntry.applicationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

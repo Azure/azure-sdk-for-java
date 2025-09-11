@@ -12,8 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Properties of the vault.
@@ -23,7 +21,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     /*
      * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
-    private UUID tenantId;
+    private String tenantId;
 
     /*
      * SKU details
@@ -132,7 +130,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
      * 
      * @return the tenantId value.
      */
-    public UUID tenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -143,7 +141,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
      * @param tenantId the tenantId value to set.
      * @return the VaultProperties object itself.
      */
-    public VaultProperties withTenantId(UUID tenantId) {
+    public VaultProperties withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -519,7 +517,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeArrayField("accessPolicies", this.accessPolicies,
             (writer, element) -> writer.writeJson(element));
@@ -556,8 +554,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
                 reader.nextToken();
 
                 if ("tenantId".equals(fieldName)) {
-                    deserializedVaultProperties.tenantId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedVaultProperties.tenantId = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedVaultProperties.sku = Sku.fromJson(reader);
                 } else if ("accessPolicies".equals(fieldName)) {

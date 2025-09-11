@@ -60,7 +60,7 @@ public final class MhsmRegionsClientImpl implements MhsmRegionsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
+    @ServiceInterface(name = "KeyVaultManagementClientMhsmRegions")
     public interface MhsmRegionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/regions")

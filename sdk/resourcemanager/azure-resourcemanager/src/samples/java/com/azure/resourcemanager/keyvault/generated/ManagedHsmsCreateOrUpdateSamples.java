@@ -12,7 +12,6 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Samples for ManagedHsms CreateOrUpdate.
@@ -34,17 +33,14 @@ public final class ManagedHsmsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getManagedHsms()
-            .createOrUpdate("hsm-group", "hsm1",
-                new ManagedHsmInner().withLocation("westus")
-                    .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
-                    .withSku(
-                        new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
-                    .withProperties(
-                        new ManagedHsmProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
-                            .withInitialAdminObjectIds(Arrays.asList("00000000-0000-0000-0000-000000000000"))
-                            .withEnableSoftDelete(true)
-                            .withSoftDeleteRetentionInDays(90)
-                            .withEnablePurgeProtection(false)),
+            .createOrUpdate("hsm-group", "hsm1", new ManagedHsmInner().withLocation("westus")
+                .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
+                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
+                .withProperties(new ManagedHsmProperties().withTenantId("00000000-0000-0000-0000-000000000000")
+                    .withInitialAdminObjectIds(Arrays.asList("00000000-0000-0000-0000-000000000000"))
+                    .withEnableSoftDelete(true)
+                    .withSoftDeleteRetentionInDays(90)
+                    .withEnablePurgeProtection(false)),
                 com.azure.core.util.Context.NONE);
     }
 

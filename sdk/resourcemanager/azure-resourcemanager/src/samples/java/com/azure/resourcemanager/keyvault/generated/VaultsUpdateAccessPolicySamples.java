@@ -13,7 +13,6 @@ import com.azure.resourcemanager.keyvault.models.Permissions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Samples for Vaults UpdateAccessPolicy.
@@ -37,8 +36,8 @@ public final class VaultsUpdateAccessPolicySamples {
             .getVaults()
             .updateAccessPolicyWithResponse("sample-group", "sample-vault", AccessPolicyUpdateKind.ADD,
                 new VaultAccessPolicyParametersInner()
-                    .withProperties(new VaultAccessPolicyProperties().withAccessPolicies(Arrays.asList(
-                        new AccessPolicyEntry().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                    .withProperties(new VaultAccessPolicyProperties().withAccessPolicies(
+                        Arrays.asList(new AccessPolicyEntry().withTenantId("00000000-0000-0000-0000-000000000000")
                             .withObjectId("00000000-0000-0000-0000-000000000000")
                             .withPermissions(new Permissions().withKeys(Arrays.asList(KeyPermissions.ENCRYPT))
                                 .withSecrets(Arrays.asList(SecretPermissions.GET))
