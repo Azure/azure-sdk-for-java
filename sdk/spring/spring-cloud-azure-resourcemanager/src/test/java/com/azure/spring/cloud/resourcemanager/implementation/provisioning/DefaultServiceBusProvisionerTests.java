@@ -38,7 +38,7 @@ class DefaultServiceBusProvisionerTests {
 
     private ServiceBusNamespaces serviceBusNamespaces;
     private ServiceBusNamespace serviceBusNamespace;
-
+    
     private static final String NAMESPACE = "namespace";
     private static final String QUEUE_NAME = "queue-name";
     private static final String TOPIC_NAME = "topic-name";
@@ -148,16 +148,19 @@ class DefaultServiceBusProvisionerTests {
         }
 
         @SuppressWarnings("deprecation")
+        @Override
         public void provisionQueue(String namespace, String queue) {
             this.queueCrud.getOrCreate(Tuples.of(namespace, queue));
         }
 
         @SuppressWarnings("deprecation")
+        @Override
         public void provisionTopic(String namespace, String topic) {
             this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
         }
 
         @SuppressWarnings("deprecation")
+        @Override
         public void provisionSubscription(String namespace, String topic, String subscription) {
             this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));
         }
