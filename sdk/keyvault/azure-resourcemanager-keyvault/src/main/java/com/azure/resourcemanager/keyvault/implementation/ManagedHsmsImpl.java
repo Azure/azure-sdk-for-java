@@ -33,7 +33,7 @@ public class ManagedHsmsImpl
     @Override
     protected ManagedHsmImpl wrapModel(String name) {
         ManagedHsmInner inner = new ManagedHsmInner().withProperties(new ManagedHsmProperties());
-        inner.properties().withTenantId(UUID.fromString(tenantId));
+        inner.properties().withTenantId(tenantId);
         return new ManagedHsmImpl(name, inner, this.manager());
     }
 

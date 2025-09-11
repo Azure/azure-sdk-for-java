@@ -71,7 +71,7 @@ class ManagedHsmImpl extends GroupableResourceImpl<ManagedHsm, ManagedHsmInner, 
         if (innerModel().properties() == null || innerModel().properties().tenantId() == null) {
             return null;
         }
-        return innerModel().properties().tenantId().toString();
+        return innerModel().properties().tenantId();
     }
 
     @Override

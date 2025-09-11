@@ -29,7 +29,7 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
         super(innerObject, parent);
-        innerModel().withTenantId(UUID.fromString(parent.tenantId()));
+        innerModel().withTenantId(parent.tenantId());
     }
 
     String userPrincipalName() {
@@ -261,13 +261,13 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     @Override
     public AccessPolicyImpl forApplicationId(String applicationId) {
-        innerModel().withApplicationId(UUID.fromString(applicationId));
+        innerModel().withApplicationId(applicationId);
         return this;
     }
 
     @Override
     public AccessPolicyImpl forTenantId(String tenantId) {
-        innerModel().withTenantId(UUID.fromString(tenantId));
+        innerModel().withTenantId(tenantId);
         return this;
     }
 

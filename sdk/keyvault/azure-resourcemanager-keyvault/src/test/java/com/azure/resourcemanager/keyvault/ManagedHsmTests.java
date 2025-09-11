@@ -111,19 +111,16 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         String objectId = azureCliSignedInUser().id();
 
         keyVaultManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
-        ManagedHsmInner inner
-            = keyVaultManager.serviceClient()
-                .getManagedHsms()
-                .createOrUpdate(rgName, mhsmName, new ManagedHsmInner().withLocation(Region.US_EAST2.name())
-                    .withSku(
-                        new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
-                    .withProperties(
-                        new ManagedHsmProperties().withTenantId(UUID.fromString(authorizationManager.tenantId()))
-                            .withInitialAdminObjectIds(Arrays.asList(objectId))
-                            .withEnableSoftDelete(true)
-                            .withSoftDeleteRetentionInDays(7)
-                            .withEnablePurgeProtection(false)), // DO NOT set it to true, otherwise you can't purge the instance
-                    Context.NONE);
+        ManagedHsmInner inner = keyVaultManager.serviceClient()
+            .getManagedHsms()
+            .createOrUpdate(rgName, mhsmName, new ManagedHsmInner().withLocation(Region.US_EAST2.name())
+                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
+                .withProperties(new ManagedHsmProperties().withTenantId(authorizationManager.tenantId())
+                    .withInitialAdminObjectIds(Arrays.asList(objectId))
+                    .withEnableSoftDelete(true)
+                    .withSoftDeleteRetentionInDays(7)
+                    .withEnablePurgeProtection(false)), // DO NOT set it to true, otherwise you can't purge the instance
+                Context.NONE);
 
         keyVaultManager.serviceClient().getManagedHsms().createOrUpdate(rgName, inner.name(), inner);
 

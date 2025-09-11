@@ -85,7 +85,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     @Override
     protected VaultImpl wrapModel(String name) {
         VaultInner inner = new VaultInner().withProperties(new VaultProperties());
-        inner.properties().withTenantId(UUID.fromString(tenantId));
+        inner.properties().withTenantId(tenantId);
         return new VaultImpl(name, inner, this.manager(), authorizationManager);
     }
 
@@ -158,7 +158,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
             parameters.withTags(deletedVault.innerModel().properties().tags());
             parameters.withProperties(new VaultProperties().withCreateMode(CreateMode.RECOVER)
                 .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.A))
-                .withTenantId(UUID.fromString(tenantId)));
+                .withTenantId(tenantId));
             return inner().createOrUpdateAsync(resourceGroupName, vaultName, parameters)
                 .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, authorizationManager));
         });
