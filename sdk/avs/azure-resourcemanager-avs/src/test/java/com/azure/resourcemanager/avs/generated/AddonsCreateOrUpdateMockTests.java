@@ -21,7 +21,7 @@ public final class AddonsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"diygbpvnwswmtxky\",\"name\":\"twwgzwx\",\"type\":\"l\"}";
+            = "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"xv\",\"name\":\"vrefdeesv\",\"type\":\"cuijpxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class AddonsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Addon response = manager.addons()
-            .define("gsksrfhf")
-            .withExistingPrivateCloud("uzivensrpmeyyvp", "patlbijp")
+            .define("ckt")
+            .withExistingPrivateCloud("enlsvxeizzgwkln", "rmffeyc")
             .withProperties(new AddonProperties())
             .create();
 

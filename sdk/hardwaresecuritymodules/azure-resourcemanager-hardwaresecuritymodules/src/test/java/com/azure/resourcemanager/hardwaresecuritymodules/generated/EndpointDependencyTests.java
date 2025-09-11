@@ -12,12 +12,12 @@ public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDependency model = BinaryData.fromString(
-            "{\"domainName\":\"czelpcirel\",\"endpointDetails\":[{\"ipAddress\":\"enwabfatk\",\"port\":1305337055,\"protocol\":\"bjhwuaan\",\"description\":\"jos\"}]}")
+            "{\"domainName\":\"hlyfjhdgqgg\",\"endpointDetails\":[{\"ipAddress\":\"nyga\",\"port\":624778524,\"protocol\":\"bqfatpxllrxcyjmo\",\"description\":\"su\"},{\"ipAddress\":\"r\",\"port\":1301778060,\"protocol\":\"mjsjqb\",\"description\":\"hyxxrwlycoduhpk\"}]}")
             .toObject(EndpointDependency.class);
-        Assertions.assertEquals("czelpcirel", model.domainName());
-        Assertions.assertEquals("enwabfatk", model.endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(1305337055, model.endpointDetails().get(0).port());
-        Assertions.assertEquals("bjhwuaan", model.endpointDetails().get(0).protocol());
-        Assertions.assertEquals("jos", model.endpointDetails().get(0).description());
+        Assertions.assertEquals("hlyfjhdgqgg", model.domainName());
+        Assertions.assertEquals("nyga", model.endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(624778524, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("bqfatpxllrxcyjmo", model.endpointDetails().get(0).protocol());
+        Assertions.assertEquals("su", model.endpointDetails().get(0).description());
     }
 }

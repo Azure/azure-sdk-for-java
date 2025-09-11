@@ -13,21 +13,21 @@ public final class WorkloadNetworkDhcpRelayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpRelay model = BinaryData.fromString(
-            "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"tfwvukxgaudc\"],\"displayName\":\"nhsjcnyej\",\"segments\":[\"yhtnapczwlokjye\",\"kkvnipjox\",\"jnchgej\",\"podmailzydehojwy\"],\"provisioningState\":\"Failed\",\"revision\":3937290489738694493}")
+            "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"sv\",\"kjprvk\"],\"displayName\":\"fz\",\"segments\":[\"yxgtczh\",\"ydbsd\"],\"provisioningState\":\"Building\",\"revision\":1302874325023703707}")
             .toObject(WorkloadNetworkDhcpRelay.class);
-        Assertions.assertEquals("nhsjcnyej", model.displayName());
-        Assertions.assertEquals(3937290489738694493L, model.revision());
-        Assertions.assertEquals("tfwvukxgaudc", model.serverAddresses().get(0));
+        Assertions.assertEquals("fz", model.displayName());
+        Assertions.assertEquals(1302874325023703707L, model.revision());
+        Assertions.assertEquals("sv", model.serverAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpRelay model = new WorkloadNetworkDhcpRelay().withDisplayName("nhsjcnyej")
-            .withRevision(3937290489738694493L)
-            .withServerAddresses(Arrays.asList("tfwvukxgaudc"));
+        WorkloadNetworkDhcpRelay model = new WorkloadNetworkDhcpRelay().withDisplayName("fz")
+            .withRevision(1302874325023703707L)
+            .withServerAddresses(Arrays.asList("sv", "kjprvk"));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpRelay.class);
-        Assertions.assertEquals("nhsjcnyej", model.displayName());
-        Assertions.assertEquals(3937290489738694493L, model.revision());
-        Assertions.assertEquals("tfwvukxgaudc", model.serverAddresses().get(0));
+        Assertions.assertEquals("fz", model.displayName());
+        Assertions.assertEquals(1302874325023703707L, model.revision());
+        Assertions.assertEquals("sv", model.serverAddresses().get(0));
     }
 }

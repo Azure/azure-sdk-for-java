@@ -15,17 +15,20 @@ public final class SolutionTypeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTypeSettings model = BinaryData.fromString(
-            "{\"solutionType\":\"qsrxybzqqed\",\"solutionSettings\":{\"\":{\"lmmnkzsmodmglo\":\"ciqfou\",\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"}}}")
+            "{\"solutionType\":\"qsrxybzqqed\",\"solutionSettings\":{\"lmmnkzsmodmglo\":\"ciqfou\",\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"}}")
             .toObject(SolutionTypeSettings.class);
         Assertions.assertEquals("qsrxybzqqed", model.solutionType());
+        Assertions.assertEquals("ciqfou", model.solutionSettings().additionalProperties().get("lmmnkzsmodmglo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SolutionTypeSettings model = new SolutionTypeSettings().withSolutionType("qsrxybzqqed")
-            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf()));
+            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
+                mapOf("lmmnkzsmodmglo", "ciqfou", "uqktap", "gpbkwtmut", "kdosvqw", "pwgcuertu")));
         model = BinaryData.fromObject(model).toObject(SolutionTypeSettings.class);
         Assertions.assertEquals("qsrxybzqqed", model.solutionType());
+        Assertions.assertEquals("ciqfou", model.solutionSettings().additionalProperties().get("lmmnkzsmodmglo"));
     }
 
     // Use "Map.of" if available

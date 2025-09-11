@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
 
-public final class PostResponseInnerTests {
+public final class GenerateAwsTemplateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PostResponseInner model = BinaryData.fromString("{}").toObject(PostResponseInner.class);
+        GenerateAwsTemplateResponseInner model
+            = BinaryData.fromString("{}").toObject(GenerateAwsTemplateResponseInner.class);
     }
 }
