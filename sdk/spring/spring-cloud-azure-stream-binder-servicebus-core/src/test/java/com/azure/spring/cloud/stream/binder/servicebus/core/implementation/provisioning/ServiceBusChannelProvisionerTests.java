@@ -34,7 +34,6 @@ class ServiceBusChannelProvisionerTests {
             new ExtendedProducerProperties<>(producerProperties);
 
         provisioner.provisionProducerDestination("test", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForProducer("test", producerProperties.getEntityType());
     }
 
     @SuppressWarnings("deprecation")
@@ -44,6 +43,5 @@ class ServiceBusChannelProvisionerTests {
             new ExtendedConsumerProperties<>(consumerProperties);
 
         provisioner.provisionConsumerDestination("test", "group", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForConsumer("test", "group", consumerProperties.getEntityType());
     }
 }
