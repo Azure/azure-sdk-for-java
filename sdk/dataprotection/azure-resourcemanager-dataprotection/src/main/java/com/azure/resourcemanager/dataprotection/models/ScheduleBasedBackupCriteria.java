@@ -204,7 +204,6 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
      */
     @Override
     public void validate() {
-        super.validate();
         if (daysOfMonth() != null) {
             daysOfMonth().forEach(e -> e.validate());
         }

@@ -12,8 +12,8 @@ public final class VirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"lt\",\"moRefId\":\"cjvefkdlfo\",\"folderPath\":\"ggkfpagaowpul\",\"restrictMovement\":\"Disabled\"},\"id\":\"ylsyxkqjnsje\",\"name\":\"vti\",\"type\":\"gxsds\"}],\"nextLink\":\"e\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"ddhcratizzr\",\"moRefId\":\"asxifto\",\"folderPath\":\"yzhftwesgogczh\",\"restrictMovement\":\"Disabled\"},\"id\":\"krlgnyhm\",\"name\":\"ssxkkgthr\",\"type\":\"gh\"}],\"nextLink\":\"bdhqxvcxgf\"}")
             .toObject(VirtualMachinesList.class);
-        Assertions.assertEquals("e", model.nextLink());
+        Assertions.assertEquals("bdhqxvcxgf", model.nextLink());
     }
 }

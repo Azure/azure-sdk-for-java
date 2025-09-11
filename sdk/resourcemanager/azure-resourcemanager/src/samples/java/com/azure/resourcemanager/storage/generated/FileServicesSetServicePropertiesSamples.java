@@ -8,9 +8,7 @@ import com.azure.resourcemanager.storage.fluent.models.FileServicePropertiesInne
 import com.azure.resourcemanager.storage.models.CorsRule;
 import com.azure.resourcemanager.storage.models.CorsRuleAllowedMethodsItem;
 import com.azure.resourcemanager.storage.models.CorsRules;
-import com.azure.resourcemanager.storage.models.EncryptionInTransit;
 import com.azure.resourcemanager.storage.models.Multichannel;
-import com.azure.resourcemanager.storage.models.NfsSetting;
 import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.SmbSetting;
 import java.util.Arrays;
@@ -21,7 +19,7 @@ import java.util.Arrays;
 public final class FileServicesSetServicePropertiesSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesPut.json
      */
     /**
      * Sample code: PutFileServices.
@@ -58,7 +56,7 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * FileServicesPut_EnableSecureSmbFeatures.json
      */
     /**
@@ -81,7 +79,7 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * FileServicesPut_EnableSMBMultichannel.json
      */
     /**
@@ -97,28 +95,6 @@ public final class FileServicesSetServicePropertiesSamples {
             .setServicePropertiesWithResponse("res4410", "sto8607",
                 new FileServicePropertiesInner().withProtocolSettings(new ProtocolSettings()
                     .withSmb(new SmbSetting().withMultichannel(new Multichannel().withEnabled(true)))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
-     * FileServicesPut_EncryptionInTransitRequired.json
-     */
-    /**
-     * Sample code: PutFileServices_EncryptionInTransitRequired.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        putFileServicesEncryptionInTransitRequired(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts()
-            .manager()
-            .serviceClient()
-            .getFileServices()
-            .setServicePropertiesWithResponse("res4410", "sto8607",
-                new FileServicePropertiesInner().withProtocolSettings(new ProtocolSettings()
-                    .withSmb(new SmbSetting().withEncryptionInTransit(new EncryptionInTransit().withRequired(true)))
-                    .withNfs(new NfsSetting().withEncryptionInTransit(new EncryptionInTransit().withRequired(true)))),
                 com.azure.core.util.Context.NONE);
     }
 }

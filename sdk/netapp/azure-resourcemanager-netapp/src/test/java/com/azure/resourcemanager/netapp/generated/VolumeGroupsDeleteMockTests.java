@@ -27,7 +27,7 @@ public final class VolumeGroupsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.volumeGroups().delete("z", "rfkspzhz", "tk", com.azure.core.util.Context.NONE);
+        manager.volumeGroups().delete("rhtgvgzpcrrkol", "w", "mjsmwr", com.azure.core.util.Context.NONE);
 
     }
 }

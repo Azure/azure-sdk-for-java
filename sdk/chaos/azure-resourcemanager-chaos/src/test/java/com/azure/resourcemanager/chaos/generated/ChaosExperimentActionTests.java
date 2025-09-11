@@ -12,15 +12,15 @@ public final class ChaosExperimentActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosExperimentAction model
-            = BinaryData.fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"ozwyiftyhxhuro\"}")
+            = BinaryData.fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"ewrmjmwvvjektc\"}")
                 .toObject(ChaosExperimentAction.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.name());
+        Assertions.assertEquals("ewrmjmwvvjektc", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosExperimentAction model = new ChaosExperimentAction().withName("ozwyiftyhxhuro");
+        ChaosExperimentAction model = new ChaosExperimentAction().withName("ewrmjmwvvjektc");
         model = BinaryData.fromObject(model).toObject(ChaosExperimentAction.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.name());
+        Assertions.assertEquals("ewrmjmwvvjektc", model.name());
     }
 }

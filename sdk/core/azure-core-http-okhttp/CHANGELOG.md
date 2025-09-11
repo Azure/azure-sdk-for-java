@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.13.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+- Upgraded Okio from `3.9.1` to `3.16.0` ([#46586](https://github.com/Azure/azure-sdk-for-java/pull/46586))
+
 ## 1.13.0 (2025-08-07)
 
 ### Other Changes

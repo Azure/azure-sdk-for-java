@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 
 import org.springframework.util.StringUtils;
 
@@ -14,27 +14,26 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.RequestType
 
 public class TracingInfo {
 
-    private boolean isDev = false;
-
     private boolean isKeyVaultConfigured = false;
 
     private int replicaCount;
 
-    private final FeatureFlagTracing featureFlagTracing;
+    private FeatureFlagTracing featureFlagTracing;
 
     private final Configuration configuration;
 
-    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
-        this.isDev = isDev;
+    public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
         this.featureFlagTracing = new FeatureFlagTracing();
         this.configuration = configuration;
     }
 
-    public String getValue(boolean watchRequests) {
-        String track = configuration
-            .get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+    String getValue(boolean watchRequests, boolean pushRefresh, FeatureFlagTracing featureFlagTracing) {
+        if (featureFlagTracing != null) {
+            this.featureFlagTracing = featureFlagTracing;
+        }
+        String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
         }
@@ -44,20 +43,20 @@ public class TracingInfo {
 
         sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=" + requestTypeValue);
 
-        if (featureFlagTracing != null && featureFlagTracing.usesAnyFilter()) {
-            sb.append(",Filter=").append(featureFlagTracing.toString());
+        if (this.featureFlagTracing.usesAnyFilter()) {
+            sb.append(",Filter=").append(this.featureFlagTracing.toString());
         }
 
         String hostType = getHostType();
         if (!hostType.isEmpty()) {
             sb.append(",").append(RequestTracingConstants.HOST_TYPE_KEY).append("=").append(hostType);
         }
-
-        if (isDev) {
-            sb.append(",Env=").append(DEV_ENV_TRACING);
-        }
         if (isKeyVaultConfigured) {
             sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
+        }
+        
+        if (pushRefresh) {
+            sb.append(",").append(PUSH_REFRESH);
         }
 
         if (replicaCount > 0) {
@@ -99,13 +98,6 @@ public class TracingInfo {
             sb.append(",FMSpVer=").append(ff.getImplementationVersion());
         }
         return sb;
-    }
-
-    /**
-     * @return the featureFlagTracing
-     */
-    public FeatureFlagTracing getFeatureFlagTracing() {
-        return featureFlagTracing;
     }
 
 }

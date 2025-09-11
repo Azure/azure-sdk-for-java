@@ -142,7 +142,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
 
     /**
      * @return The signed identifier (only for {@link BlobServiceSasSignatureValues}) or {@code null}. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */

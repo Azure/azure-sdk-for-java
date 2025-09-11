@@ -98,10 +98,13 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
             this.cosmosClientItem = CosmosClientCache.getCosmosClient(this.config.getAccountConfig(), connectorName);
             CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
-            validateDatabaseAndContainers(
-                containersConfig.getIncludedContainers(),
+
+            List<String> containersExistedInDatabase = validateDatabaseAndContainers(
+                containersConfig.isIncludeAllContainers() ? new ArrayList<>() : containersConfig.getIncludedContainers(),
                 this.cosmosClientItem.getClient(),
                 containersConfig.getDatabaseName());
+
+            validateContainersInTopicMap(containersExistedInDatabase, new ArrayList<>(containersConfig.getContainerToTopicMap().keySet()));
 
             // IMPORTANT: sequence matters
             this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
@@ -124,6 +127,16 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             throw e;
         }
 
+    }
+
+    private void validateContainersInTopicMap(
+        List<String> containersExistedInDatabase,
+        List<String> containersInTopicMap) {
+        if (containersInTopicMap != null
+            && !containersInTopicMap.isEmpty()
+            && !containersExistedInDatabase.containsAll(containersInTopicMap)) {
+            throw new IllegalStateException("Containers specified in the topic map do not exist in the CosmosDB account.");
+        }
     }
 
     @Override
@@ -534,13 +547,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
     private Map<String, String> getContainersTopicMap(List<CosmosContainerProperties> allContainers) {
         Map<String, String> topicMapFromConfig =
-            this.config.getContainersConfig().getContainersTopicMap()
-                .stream()
-                .map(containerTopicMapString -> containerTopicMapString.split("#"))
-                .collect(
-                    Collectors.toMap(
-                        containerTopicMapArray -> containerTopicMapArray[1],
-                        containerTopicMapArray -> containerTopicMapArray[0]));
+            this.config.getContainersConfig().getContainerToTopicMap();
 
         Map<String, String> effectiveContainersTopicMap = new HashMap<>();
         allContainers.forEach(containerProperties -> {

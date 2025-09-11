@@ -12,8 +12,8 @@ public final class CapabilityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"publisher\":\"pbewtghfgblcgwx\",\"targetType\":\"lvqhjkbegibtnmx\",\"description\":\"bwwaloa\",\"parametersSchema\":\"cgwrtzjuz\",\"urn\":\"yzm\"},\"id\":\"xongmtsavjcbpwxq\",\"name\":\"srknftguv\",\"type\":\"iuhprwmdyvxqta\"},{\"properties\":{\"publisher\":\"ww\",\"targetType\":\"yqbexrmcqibycno\",\"description\":\"knme\",\"parametersSchema\":\"sgzvahapjyzhpv\",\"urn\":\"zcjrvxdjzlmwlx\"},\"id\":\"ug\",\"name\":\"hzovawjvzunlut\",\"type\":\"nnprn\"},{\"properties\":{\"publisher\":\"eilpjzuaejxdu\",\"targetType\":\"skzbb\",\"description\":\"zumveekgpwo\",\"parametersSchema\":\"hkfpbs\",\"urn\":\"ofd\"},\"id\":\"uusdttouwa\",\"name\":\"oekqvk\",\"type\":\"lns\"},{\"properties\":{\"publisher\":\"xwyjsflhhc\",\"targetType\":\"lnjixisxya\",\"description\":\"oyaqcslyjpkiid\",\"parametersSchema\":\"exznelixhnr\",\"urn\":\"folhbnxknal\"},\"id\":\"lp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"}],\"nextLink\":\"lgqg\"}")
+            "{\"value\":[{\"properties\":{\"publisher\":\"sqe\",\"targetType\":\"agdfmglzlh\",\"description\":\"rifkwm\",\"parametersSchema\":\"ktsizntocipaou\",\"urn\":\"psqucmpoyf\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"},{\"properties\":{\"publisher\":\"yflusarhmofc\",\"targetType\":\"smy\",\"description\":\"kdtmlxhekuk\",\"parametersSchema\":\"txukcdmp\",\"urn\":\"cryuan\"},\"id\":\"uxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"}],\"nextLink\":\"nryrtihf\"}")
             .toObject(CapabilityListResult.class);
-        Assertions.assertEquals("lgqg", model.nextLink());
+        Assertions.assertEquals("nryrtihf", model.nextLink());
     }
 }

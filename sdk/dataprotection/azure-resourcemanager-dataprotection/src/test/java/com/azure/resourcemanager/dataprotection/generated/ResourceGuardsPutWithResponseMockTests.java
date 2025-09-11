@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
@@ -25,30 +25,28 @@ public final class ResourceGuardsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"jwnlax\",\"requestResourceType\":\"njqikcz\"}],\"vaultCriticalOperationExclusionList\":[\"tacgxmfc\",\"serxht\",\"soxhlwntsjgqr\",\"xypruuuy\"],\"description\":\"chrszi\"},\"eTag\":\"yuel\",\"location\":\"tn\",\"tags\":{\"ahzjmucftb\":\"fqyggagflnlgmtr\"},\"id\":\"r\",\"name\":\"lrohkpig\",\"type\":\"fusuckzmkwklsno\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ch\",\"requestResourceType\":\"sjlpjrtwszhv\"}],\"vaultCriticalOperationExclusionList\":[\"c\",\"hvtrrmhwrbfdpyf\",\"ubhvj\"],\"description\":\"r\"},\"eTag\":\"uyzlw\",\"location\":\"memhooclutnpq\",\"tags\":{\"mmyky\":\"czj\",\"rye\":\"jxsglhsr\"},\"id\":\"ylmbkzudni\",\"name\":\"rfih\",\"type\":\"tjewlpxuzzj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardResource response = manager.resourceGuards()
-            .define("zjrwdkqze")
-            .withRegion("cjkgdirazftxej")
-            .withExistingResourceGroup("aquflqbctqha")
-            .withTags(mapOf("urbuhhlkyqltq", "mdujtmvcopexcm", "djk", "rogtuwkf", "ijtk", "sysidfvclglxnf", "sharujtj",
-                "usqogsfikayia"))
-            .withEtag("cslmotoebnfxo")
-            .withProperties(
-                new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("qjagmditgueiook")))
+            .define("clgsc")
+            .withRegion("vwgf")
+            .withExistingResourceGroup("whoqhnlbqnbldxe")
+            .withTags(mapOf("aoaf", "hqykizmdk", "gc", "luqvoxmycjimryv", "hecbvopwndyq", "wpbmzgwesydsxwef"))
+            .withEtag("wlkjxn")
+            .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("hlvbmxu")))
             .create();
 
-        Assertions.assertEquals("tn", response.location());
-        Assertions.assertEquals("fqyggagflnlgmtr", response.tags().get("ahzjmucftb"));
-        Assertions.assertEquals("yuel", response.etag());
-        Assertions.assertEquals("tacgxmfc", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("memhooclutnpq", response.location());
+        Assertions.assertEquals("czj", response.tags().get("mmyky"));
+        Assertions.assertEquals("uyzlw", response.etag());
+        Assertions.assertEquals("c", response.properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     // Use "Map.of" if available

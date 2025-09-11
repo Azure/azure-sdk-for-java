@@ -504,6 +504,40 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
+     * Get the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().acceptGrowCapacityPoolForShortTermCloneSplit();
+    }
+
+    /**
+     * Set the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @param acceptGrowCapacityPoolForShortTermCloneSplit the acceptGrowCapacityPoolForShortTermCloneSplit value to
+     * set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withAcceptGrowCapacityPoolForShortTermCloneSplit(
+        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties()
+            .withAcceptGrowCapacityPoolForShortTermCloneSplit(acceptGrowCapacityPoolForShortTermCloneSplit);
+        return this;
+    }
+
+    /**
      * Get the isRestoring property: Restoring.
      * 
      * @return the isRestoring value.
@@ -1265,6 +1299,15 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      */
     public String originatingResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().originatingResourceId();
+    }
+
+    /**
+     * Get the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    public Long inheritedSizeInBytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
     }
 
     /**

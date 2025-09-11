@@ -45,7 +45,6 @@ public final class CopyOnExpiryOption extends CopyOption {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

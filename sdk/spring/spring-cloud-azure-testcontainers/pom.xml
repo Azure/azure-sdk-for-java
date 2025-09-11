@@ -69,20 +69,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.31.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.31.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.26.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
-      <version>3.5.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.9</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.27.3</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.4</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -167,7 +167,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-testcontainers:[3.5.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-testcontainers:[3.5.5]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:azure:[1.21.3]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
               </includes>
             </bannedDependencies>

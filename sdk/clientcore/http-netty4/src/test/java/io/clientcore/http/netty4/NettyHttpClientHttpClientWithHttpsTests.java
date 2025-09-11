@@ -17,7 +17,7 @@ import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Reactor Netty {@link HttpClientTests} with https.
+ * Netty {@link HttpClientTests} with https.
  * Some request logic branches out if it's https like file uploads.
  */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
@@ -28,6 +28,7 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     static {
         HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder() //.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+            .connectionPoolSize(0)
             .sslContextModifier(ssl -> ssl.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
             .build();
     }
@@ -40,6 +41,9 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @AfterAll
     public static void stopTestServer() {
+        if (HTTP_CLIENT_INSTANCE instanceof NettyHttpClient) {
+            ((NettyHttpClient) HTTP_CLIENT_INSTANCE).close();
+        }
         if (server != null) {
             server.stop();
         }

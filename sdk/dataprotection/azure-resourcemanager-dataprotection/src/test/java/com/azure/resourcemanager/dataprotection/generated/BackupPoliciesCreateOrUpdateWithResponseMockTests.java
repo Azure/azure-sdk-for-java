@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.BaseBackupPolicy;
@@ -23,21 +23,21 @@ public final class BackupPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"nowc\",\"hfgmvecactxm\",\"oteyowc\",\"uqovekqvgqouwif\"]},\"id\":\"pjwyiv\",\"name\":\"ikf\",\"type\":\"cvhrfsp\"}";
+            = "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"gketwzhhzjhf\",\"mhv\"]},\"id\":\"uvgp\",\"name\":\"uneqsxvmhf\",\"type\":\"uzjyihsasbhudypo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BaseBackupPolicyResource response = manager.backupPolicies()
-            .define("own")
-            .withExistingBackupVault("zjvusfzldmo", "uxylfsbtkadpy")
-            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("kb", "grjqctojcmi", "of")))
+            .define("zflbqvg")
+            .withExistingBackupVault("uvyinzqodfvpgs", "oxgsgbpfgzdjtx")
+            .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("lgafcqusrdve")))
             .create();
 
-        Assertions.assertEquals("nowc", response.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("gketwzhhzjhf", response.properties().datasourceTypes().get(0));
     }
 }

@@ -19,12 +19,9 @@ private[cosmos] object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
-  val defaultHttpRequestTimeoutInSeconds = 70L
   val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
-  val defaultMetricsIntervalInSeconds = 60
-  val defaultSlf4jMetricReporterEnabled = false
   val readOperationEndToEndTimeoutInSeconds = 65
   val batchOperationEndToEndTimeoutInSeconds = 65
 
@@ -37,6 +34,10 @@ private[cosmos] object CosmosConstants {
     val BytesWritten = "bytesWritten"
     val RecordsWritten = "recordsWritten"
     val TotalRequestCharge = "cosmos.totalRequestCharge"
+
+    val ChangeFeedLsnRange = "cosmos.changeFeed.partition.lsnRange"
+    val ChangeFeedItemsCnt = "cosmos.changeFeed.partition.itemsCnt"
+    val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
 
     val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
   }
@@ -70,5 +71,22 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+  }
+
+  object ChangeFeedMetricsConfigs {
+    private val MetricsHistoryPropertyName = "spark.cosmos.changeFeed.performance.metrics.history"
+    private val MetricsHistoryEnvName = "SPARK.COSMOS.CHANGEFEED.PERFORMANCE.METRICS.HISTORY"
+    private val DefaultMetricsHistory = "5"
+    private val MetricsHistoryDecayFactorPropertyName = "spark.cosmos.changeFeed.performance.metrics.decayFactor"
+    private val MetricsHistoryDecayFactorEnvName = "SPARK.COSMOS.CHANGEFEED.PERFORMANCE.METRICS.DECAYFACTOR"
+    private val DefaultMetricsHistoryDecayFactor = "0.85"
+    val MetricsHistory: Int =
+      Option(System.getProperty(MetricsHistoryPropertyName))
+        .orElse(sys.env.get(MetricsHistoryEnvName))
+        .getOrElse(DefaultMetricsHistory).toInt
+    val MetricsHistoryDecayFactor: Double =
+      Option(System.getProperty(MetricsHistoryDecayFactorPropertyName))
+       .orElse(sys.env.get(MetricsHistoryDecayFactorEnvName))
+       .getOrElse(DefaultMetricsHistoryDecayFactor).toDouble
   }
 }

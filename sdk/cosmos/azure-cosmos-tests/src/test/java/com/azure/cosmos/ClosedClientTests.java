@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -95,7 +94,7 @@ public class ClosedClientTests extends TestSuiteBase {
 
             safeClose(asyncClient);
 
-            performDocumentOperation(cosmosAsyncContainer, TestItem.createNewItem(), operationType);
+            performDocumentOperation(cosmosAsyncContainer, TestObject.create(), operationType);
             fail("Operation is expected to fail!");
         } catch (Exception ex) {
 
@@ -121,7 +120,7 @@ public class ClosedClientTests extends TestSuiteBase {
 
     private void performDocumentOperation(
         CosmosAsyncContainer asyncContainer,
-        TestItem testItem,
+        TestObject testItem,
         OperationType operationType) {
 
         if (operationType == OperationType.Query) {
@@ -131,7 +130,7 @@ public class ClosedClientTests extends TestSuiteBase {
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
 
             asyncContainer
-                .queryItems(sqlQuerySpec, queryRequestOptions, TestItem.class)
+                .queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
         }
@@ -139,7 +138,7 @@ public class ClosedClientTests extends TestSuiteBase {
         if (operationType == OperationType.Read) {
 
             asyncContainer
-                .readItem(testItem.getId(), new PartitionKey(testItem.getId()), TestItem.class)
+                .readItem(testItem.getId(), new PartitionKey(testItem.getId()), TestObject.class)
                 .block();
         }
 
@@ -181,7 +180,7 @@ public class ClosedClientTests extends TestSuiteBase {
             CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
 
             asyncContainer
-                .patchItem(testItem.getId(), new PartitionKey(testItem.getId()), patchOperations, TestItem.class)
+                .patchItem(testItem.getId(), new PartitionKey(testItem.getId()), patchOperations, TestObject.class)
                 .block();
         }
     }

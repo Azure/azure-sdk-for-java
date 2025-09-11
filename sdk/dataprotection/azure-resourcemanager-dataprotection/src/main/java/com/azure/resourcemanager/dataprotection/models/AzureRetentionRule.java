@@ -106,12 +106,15 @@ public final class AzureRetentionRule extends BasePolicyRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lifecycles() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
         } else {
             lifecycles().forEach(e -> e.validate());
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model AzureRetentionRule"));
         }
     }
 
