@@ -247,9 +247,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Patch("/keys/{key-name}/{key-version}")
         @ExpectedResponses({ 200 })
@@ -259,9 +258,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Get("/keys/{key-name}/{key-version}")
         @ExpectedResponses({ 200 })
@@ -271,8 +269,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/keys/{key-name}/{key-version}")
         @ExpectedResponses({ 200 })
@@ -282,8 +279,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/keys/{key-name}/versions")
         @ExpectedResponses({ 200 })
@@ -375,9 +371,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> encrypt(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/encrypt")
         @ExpectedResponses({ 200 })
@@ -387,9 +382,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> encryptSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/decrypt")
         @ExpectedResponses({ 200 })
@@ -399,9 +393,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> decrypt(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/decrypt")
         @ExpectedResponses({ 200 })
@@ -411,9 +404,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> decryptSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/sign")
         @ExpectedResponses({ 200 })
@@ -423,9 +415,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> sign(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/sign")
         @ExpectedResponses({ 200 })
@@ -435,9 +426,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> signSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/verify")
         @ExpectedResponses({ 200 })
@@ -447,9 +437,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> verify(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/verify")
         @ExpectedResponses({ 200 })
@@ -459,9 +448,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> verifySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/wrapkey")
         @ExpectedResponses({ 200 })
@@ -471,9 +459,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> wrapKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/wrapkey")
         @ExpectedResponses({ 200 })
@@ -483,9 +470,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> wrapKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/unwrapkey")
         @ExpectedResponses({ 200 })
@@ -495,9 +481,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> unwrapKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/unwrapkey")
         @ExpectedResponses({ 200 })
@@ -507,9 +492,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> unwrapKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/release")
         @ExpectedResponses({ 200 })
@@ -519,9 +503,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> release(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/keys/{key-name}/{key-version}/release")
         @ExpectedResponses({ 200 })
@@ -531,9 +514,8 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> releaseSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Get("/deletedkeys")
         @ExpectedResponses({ 200 })
@@ -689,8 +671,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKeyAttestation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/keys/{key-name}/{key-version}/attestation")
         @ExpectedResponses({ 200 })
@@ -700,8 +681,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKeyAttestationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1684,7 +1664,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of key to update.
-     * @param keyVersion The version of the key to update.
      * @param parameters The parameters of the key to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1695,13 +1674,12 @@ public final class KeyClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateKeyWithResponseAsync(String keyName, String keyVersion,
-        BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateKeyWithResponseAsync(String keyName, BinaryData parameters,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.updateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateKey(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -1803,7 +1781,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of key to update.
-     * @param keyVersion The version of the key to update.
      * @param parameters The parameters of the key to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1813,11 +1790,11 @@ public final class KeyClientImpl {
      * @return a KeyBundle consisting of a WebKey plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateKeyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> updateKeyWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+        return service.updateKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
             contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
@@ -1882,8 +1859,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1895,11 +1870,10 @@ public final class KeyClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getKeyWithResponseAsync(String keyName, String keyVersion,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getKeyWithResponseAsync(String keyName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getKey(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, keyVersion, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), keyName, accept, requestOptions, context));
     }
 
     /**
@@ -1963,8 +1937,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
-     * optional. If not specified, the latest version of the key is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1975,10 +1947,10 @@ public final class KeyClientImpl {
      * The get key operation is applicable to all key types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKeyWithResponse(String keyName, String keyVersion, RequestOptions requestOptions) {
+    public Response<BinaryData> getKeyWithResponse(String keyName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            accept, requestOptions, Context.NONE);
+        return service.getKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2778,7 +2750,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the encryption operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2788,13 +2759,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> encryptWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> encryptWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.encrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.encrypt(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -2836,7 +2806,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the encryption operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2846,12 +2815,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> encryptWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> encryptWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.encryptSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.encryptSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -2893,7 +2862,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the decryption operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2903,13 +2871,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> decryptWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> decryptWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.decrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.decrypt(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -2951,7 +2918,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the decryption operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2961,12 +2927,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> decryptWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> decryptWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.decryptSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.decryptSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3000,7 +2966,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the signing operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3010,13 +2975,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> signWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> signWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.sign(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-                keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.sign(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3050,7 +3014,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the signing operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3060,12 +3023,11 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> signWithResponse(String keyName, String keyVersion, BinaryData parameters,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> signWithResponse(String keyName, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.signSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.signSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3098,7 +3060,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for verify operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3108,13 +3069,12 @@ public final class KeyClientImpl {
      * @return the key verify result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> verifyWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.verify(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.verify(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3147,7 +3107,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for verify operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3157,12 +3116,12 @@ public final class KeyClientImpl {
      * @return the key verify result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> verifyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> verifyWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.verifySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.verifySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3202,7 +3161,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for wrap operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3212,13 +3170,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> wrapKeyWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> wrapKeyWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.wrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.wrapKey(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3258,7 +3215,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for wrap operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3268,12 +3224,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> wrapKeyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> wrapKeyWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.wrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.wrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3312,7 +3268,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the key operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3322,13 +3277,12 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> unwrapKeyWithResponseAsync(String keyName, String keyVersion,
-        BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> unwrapKeyWithResponseAsync(String keyName, BinaryData parameters,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.unwrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.unwrapKey(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3367,7 +3321,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key.
-     * @param keyVersion The version of the key.
      * @param parameters The parameters for the key operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3377,11 +3330,11 @@ public final class KeyClientImpl {
      * @return the key operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> unwrapKeyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> unwrapKeyWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.unwrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+        return service.unwrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
             contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
@@ -3413,7 +3366,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param parameters The parameters for the key release operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3424,13 +3376,12 @@ public final class KeyClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> releaseWithResponseAsync(String keyName, String keyVersion, BinaryData parameters,
+    public Mono<Response<BinaryData>> releaseWithResponseAsync(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.release(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(context -> service.release(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3461,7 +3412,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to get.
-     * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param parameters The parameters for the key release operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3471,12 +3421,12 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> releaseWithResponse(String keyName, String keyVersion, BinaryData parameters,
+    public Response<BinaryData> releaseWithResponse(String keyName, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.releaseSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions, Context.NONE);
+        return service.releaseSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -4495,8 +4445,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to retrieve attestation for.
-     * @param keyVersion Adding the version parameter retrieves attestation blob for specific version of a key. This URI
-     * fragment is optional. If not specified, the latest version of the key attestation blob is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4508,11 +4456,11 @@ public final class KeyClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getKeyAttestationWithResponseAsync(String keyName, String keyVersion,
+    public Mono<Response<BinaryData>> getKeyAttestationWithResponseAsync(String keyName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getKeyAttestation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, keyVersion, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), keyName, accept, requestOptions, context));
     }
 
     /**
@@ -4576,8 +4524,6 @@ public final class KeyClientImpl {
      * </pre>
      * 
      * @param keyName The name of the key to retrieve attestation for.
-     * @param keyVersion Adding the version parameter retrieves attestation blob for specific version of a key. This URI
-     * fragment is optional. If not specified, the latest version of the key attestation blob is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4588,11 +4534,10 @@ public final class KeyClientImpl {
      * The get key attestation operation returns the key along with its attestation blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKeyAttestationWithResponse(String keyName, String keyVersion,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getKeyAttestationWithResponse(String keyName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getKeyAttestationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-            keyVersion, accept, requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**

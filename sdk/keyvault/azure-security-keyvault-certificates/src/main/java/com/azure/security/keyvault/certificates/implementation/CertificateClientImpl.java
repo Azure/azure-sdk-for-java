@@ -479,7 +479,6 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
@@ -491,7 +490,6 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
@@ -503,8 +501,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/{certificate-version}")
         @ExpectedResponses({ 200 })
@@ -514,8 +511,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -1071,6 +1067,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -1174,6 +1176,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -2245,6 +2253,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2369,6 +2383,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -2499,6 +2519,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2574,6 +2600,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -2681,6 +2713,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2756,6 +2794,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -3071,6 +3115,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3156,6 +3206,12 @@ public final class CertificateClientImpl {
      *                 String (Optional)
      *             ]
      *             upns (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3245,6 +3301,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3309,6 +3371,12 @@ public final class CertificateClientImpl {
      *                 String (Optional)
      *             ]
      *             upns (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3401,6 +3469,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3465,6 +3539,12 @@ public final class CertificateClientImpl {
      *                 String (Optional)
      *             ]
      *             upns (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3557,6 +3637,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3633,6 +3719,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3677,7 +3769,6 @@ public final class CertificateClientImpl {
      * </pre>
      * 
      * @param certificateName The name of the certificate in the given key vault.
-     * @param certificateVersion The version of the certificate.
      * @param parameters The parameters for certificate update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3688,13 +3779,13 @@ public final class CertificateClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateCertificateWithResponseAsync(String certificateName,
-        String certificateVersion, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateCertificateWithResponseAsync(String certificateName, BinaryData parameters,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.updateCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                certificateName, certificateVersion, contentType, accept, parameters, requestOptions, context));
+                certificateName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3734,6 +3825,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3808,6 +3905,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -3854,7 +3957,6 @@ public final class CertificateClientImpl {
      * </pre>
      * 
      * @param certificateName The name of the certificate in the given key vault.
-     * @param certificateVersion The version of the certificate.
      * @param parameters The parameters for certificate update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3864,12 +3966,12 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateCertificateWithResponse(String certificateName, String certificateVersion,
-        BinaryData parameters, RequestOptions requestOptions) {
+    public Response<BinaryData> updateCertificateWithResponse(String certificateName, BinaryData parameters,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, certificateVersion, contentType, accept, parameters, requestOptions, Context.NONE);
+            certificateName, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3910,6 +4012,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -3956,8 +4064,6 @@ public final class CertificateClientImpl {
      * </pre>
      * 
      * @param certificateName The name of the certificate in the given vault.
-     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     * latest version of the certificate is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3969,12 +4075,11 @@ public final class CertificateClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificateWithResponseAsync(String certificateName, String certificateVersion,
+    public Mono<Response<BinaryData>> getCertificateWithResponseAsync(String certificateName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                certificateName, certificateVersion, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getCertificate(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context));
     }
 
     /**
@@ -4015,6 +4120,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -4061,8 +4172,6 @@ public final class CertificateClientImpl {
      * </pre>
      * 
      * @param certificateName The name of the certificate in the given vault.
-     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     * latest version of the certificate is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4073,11 +4182,10 @@ public final class CertificateClientImpl {
      * Gets information about a specific certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificateWithResponse(String certificateName, String certificateVersion,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getCertificateWithResponse(String certificateName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, certificateVersion, accept, requestOptions, Context.NONE);
+            certificateName, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4465,6 +4573,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4591,6 +4705,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -4767,6 +4887,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4877,6 +5003,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -5215,6 +5347,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5318,6 +5456,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
@@ -5470,6 +5614,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5570,6 +5720,12 @@ public final class CertificateClientImpl {
      *                     String (Optional)
      *                 ]
      *                 upns (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
      *                     String (Optional)
      *                 ]
      *             }
