@@ -46,16 +46,19 @@ import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 
 public class MetricDataMapper {
 
-    private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
+    private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);  
 
     private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
     private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME
         = AttributeKey.stringKey("applicationinsights.internal.metric_name");
+    public static final String MS_SENT_TO_AMW = "_MS.SentToAMW";
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
+
+    private final boolean otlpExporterEnabledForAKS;
 
     static {
         // HTTP unstable metrics to be excluded via Otel auto instrumentation
@@ -70,9 +73,10 @@ public class MetricDataMapper {
     }
 
     public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
-        boolean captureHttpServer4xxAsError) {
+        boolean captureHttpServer4xxAsError, boolean otlpExporterEnabledForAKS) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
+        this.otlpExporterEnabledForAKS = otlpExporterEnabledForAKS;
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
@@ -176,6 +180,9 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
+        if (otlpExporterEnabledForAKS) {
+            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabledForAKS));
+        }
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
