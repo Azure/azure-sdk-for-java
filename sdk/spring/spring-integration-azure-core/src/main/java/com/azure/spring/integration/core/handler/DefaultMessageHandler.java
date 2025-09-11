@@ -23,6 +23,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.util.Assert;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -31,9 +32,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
-import java.util.function.BiConsumer;
 
 import static com.azure.spring.messaging.AzureHeaders.PARTITION_ID;
 import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
@@ -51,7 +50,8 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final SendOperation sendOperation;
     private boolean sync = false;
 
-    private BiConsumer<Void, Throwable> sendCallback;
+    @SuppressWarnings("removal")
+    private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
     private ErrorMessageStrategy errorMessageStrategy = new DefaultErrorMessageStrategy();
@@ -108,30 +108,28 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     }
 
+    @SuppressWarnings("removal")
     private <T> void handleSendResponseAsync(Mono<T> mono, Message<?> message) {
-        CompletableFuture<T> future = mono.toFuture();
-        future.whenComplete((t, ex) -> {
-            if (ex != null) {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("{} sent failed in async mode due to {}", message, ex.getMessage());
-                }
-                if (this.sendCallback != null) {
-                    this.sendCallback.accept(null, ex);
-                }
-
-                if (getSendFailureChannel() != null) {
-                    this.messagingTemplate.send(getSendFailureChannel(), getErrorMessageStrategy()
-                        .buildErrorMessage(new AzureSendFailureException(message, ex), null));
-                }
-            } else {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("{} sent successfully in async mode", message);
-                }
-                if (this.sendCallback != null) {
-                    this.sendCallback.accept(null, null);
-                }
+        mono.doOnError(ex -> {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn("{} sent failed in async mode due to {}", message, ex.getMessage());
             }
-        });
+            if (this.sendCallback != null) {
+                this.sendCallback.onFailure(ex);
+            }
+
+            if (getSendFailureChannel() != null) {
+                this.messagingTemplate.send(getSendFailureChannel(), getErrorMessageStrategy()
+                    .buildErrorMessage(new AzureSendFailureException(message, ex), null));
+            }
+        }).doOnSuccess(t -> {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("{} sent successfully in async mode", message);
+            }
+            if (this.sendCallback != null) {
+                this.sendCallback.onSuccess((Void) t);
+            }
+        }).subscribe();
     }
 
     private <T> void waitingSendResponse(Mono<T> mono, Message<?> message) {
@@ -266,7 +264,8 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
-    public void setSendCallback(BiConsumer<Void, Throwable> callback) {
+    @SuppressWarnings("removal")
+    public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }
 

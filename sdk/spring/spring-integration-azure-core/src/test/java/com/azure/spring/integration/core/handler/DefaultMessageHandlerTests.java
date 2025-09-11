@@ -16,13 +16,13 @@ import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -70,10 +70,15 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     }
 
     @Test
+    @SuppressWarnings({"deprecation", "removal"})
     public void testSendCallback() {
-        BiConsumer<Void, Throwable> callbackSpy = spy(new BiConsumer<Void, Throwable>() {
+        ListenableFutureCallback<Void> callbackSpy = spy(new ListenableFutureCallback<Void>() {
             @Override
-            public void accept(Void v, Throwable ex) {
+            public void onFailure(Throwable ex) {
+            }
+
+            @Override
+            public void onSuccess(Void v) {
             }
         });
 
@@ -81,7 +86,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         this.handler.handleMessage(this.message);
 
-        verify(callbackSpy, times(1)).accept(eq(null), eq(null));
+        verify(callbackSpy, times(1)).onSuccess(eq(null));
     }
 
     @Test
