@@ -53,4 +53,16 @@ public class ThroughputControlCodeSnippet {
         container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
         // END: com.azure.cosmos.throughputControl.globalControl
     }
+
+    public void codeSnippetForEnableServerThroughputControl() {
+        // BEGIN: com.azure.cosmos.throughputControl.serverControl
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("localControlGroup")
+                .throughputBucket(2)
+                .build();
+
+        container.enableServerThroughputControlGroup(groupConfig);
+        // END: com.azure.cosmos.throughputControl.serverControl
+    }
 }

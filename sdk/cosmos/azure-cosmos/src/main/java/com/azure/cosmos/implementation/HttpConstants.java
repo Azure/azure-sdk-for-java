@@ -291,6 +291,9 @@ public class HttpConstants {
         public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
         public static final String THINCLIENT_START_EPK = "x-ms-thinclient-range-min";
         public static final String THINCLIENT_END_EPK = "x-ms-thinclient-range-max";
+
+        // Throughput bucket header
+        public static final String THROUGHPUT_BUCKET = "x-ms-cosmos-throughput-bucket";
     }
 
     public static class A_IMHeaderValues {

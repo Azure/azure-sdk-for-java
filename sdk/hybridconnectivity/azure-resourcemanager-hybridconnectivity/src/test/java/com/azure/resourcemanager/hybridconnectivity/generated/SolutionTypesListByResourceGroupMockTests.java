@@ -22,7 +22,7 @@ public final class SolutionTypesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutionType\":\"fbn\",\"description\":\"mctlpdngitv\",\"supportedAzureRegions\":[\"hrixkwmy\",\"jejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\"],\"solutionSettings\":[{\"name\":\"pwijnhy\",\"displayName\":\"svfycxzbfv\",\"type\":\"owvrvmtgjqppyos\",\"description\":\"ronzmyhgfip\",\"allowedValues\":[\"xkmcwaekrrjre\"],\"defaultValue\":\"fxtsgum\"},{\"name\":\"jglikkxwslolb\",\"displayName\":\"pvuzlmv\",\"type\":\"elfk\",\"description\":\"gplcrpwjxeznoigb\",\"allowedValues\":[\"jwmwkpnbs\",\"zejjoqk\",\"gfhsxttaugzxn\",\"aa\"],\"defaultValue\":\"pxdtnkdmkq\"}]},\"id\":\"lwuenvrkp\",\"name\":\"ou\",\"type\":\"ibreb\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutionType\":\"euyowqkd\",\"description\":\"t\",\"supportedAzureRegions\":[\"bi\"],\"solutionSettings\":[{\"name\":\"pikpz\",\"displayName\":\"mejzanlfzxia\",\"type\":\"rmbzo\",\"description\":\"okixrjqcir\",\"allowedValues\":[\"pfrlazsz\",\"nwoiind\"],\"defaultValue\":\"pwp\"},{\"name\":\"ylwbtlhflsjcdhsz\",\"displayName\":\"jvfbgofelja\",\"type\":\"rqmq\",\"description\":\"ldvriiiojnalghfk\",\"allowedValues\":[\"vsexsowuelu\",\"hhahhxvrhmzkwpjg\",\"wspughftqsxhqx\"],\"defaultValue\":\"j\"},{\"name\":\"ukndxdigrjgu\",\"displayName\":\"fzdm\",\"type\":\"yqtfihwh\",\"description\":\"otzi\",\"allowedValues\":[\"amvpphoszqzudph\"],\"defaultValue\":\"amvdkfwynwcvtbv\"}]},\"id\":\"yhmtnvyqiat\",\"name\":\"zwpcnpwzcjaesg\",\"type\":\"v\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,21 +32,20 @@ public final class SolutionTypesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SolutionTypeResource> response
-            = manager.solutionTypes().listByResourceGroup("gsopbyrqufegxu", com.azure.core.util.Context.NONE);
+            = manager.solutionTypes().listByResourceGroup("smwutwbdsrezpd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fbn", response.iterator().next().properties().solutionType());
-        Assertions.assertEquals("mctlpdngitv", response.iterator().next().properties().description());
-        Assertions.assertEquals("hrixkwmy", response.iterator().next().properties().supportedAzureRegions().get(0));
-        Assertions.assertEquals("pwijnhy", response.iterator().next().properties().solutionSettings().get(0).name());
-        Assertions.assertEquals("svfycxzbfv",
+        Assertions.assertEquals("euyowqkd", response.iterator().next().properties().solutionType());
+        Assertions.assertEquals("t", response.iterator().next().properties().description());
+        Assertions.assertEquals("bi", response.iterator().next().properties().supportedAzureRegions().get(0));
+        Assertions.assertEquals("pikpz", response.iterator().next().properties().solutionSettings().get(0).name());
+        Assertions.assertEquals("mejzanlfzxia",
             response.iterator().next().properties().solutionSettings().get(0).displayName());
-        Assertions.assertEquals("owvrvmtgjqppyos",
-            response.iterator().next().properties().solutionSettings().get(0).type());
-        Assertions.assertEquals("ronzmyhgfip",
+        Assertions.assertEquals("rmbzo", response.iterator().next().properties().solutionSettings().get(0).type());
+        Assertions.assertEquals("okixrjqcir",
             response.iterator().next().properties().solutionSettings().get(0).description());
-        Assertions.assertEquals("xkmcwaekrrjre",
+        Assertions.assertEquals("pfrlazsz",
             response.iterator().next().properties().solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("fxtsgum",
+        Assertions.assertEquals("pwp",
             response.iterator().next().properties().solutionSettings().get(0).defaultValue());
     }
 }

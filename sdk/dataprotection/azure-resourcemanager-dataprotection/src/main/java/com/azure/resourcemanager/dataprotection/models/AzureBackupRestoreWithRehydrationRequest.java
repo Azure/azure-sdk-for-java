@@ -153,7 +153,6 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
      */
     @Override
     public void validate() {
-        super.validate();
         if (rehydrationPriority() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -163,6 +162,26 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property rehydrationRetentionDuration in model AzureBackupRestoreWithRehydrationRequest"));
+        }
+        if (restoreTargetInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreTargetInfo in model AzureBackupRestoreWithRehydrationRequest"));
+        } else {
+            restoreTargetInfo().validate();
+        }
+        if (sourceDataStoreType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceDataStoreType in model AzureBackupRestoreWithRehydrationRequest"));
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
+        }
+        if (recoveryPointId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointId in model AzureBackupRestoreWithRehydrationRequest"));
         }
     }
 

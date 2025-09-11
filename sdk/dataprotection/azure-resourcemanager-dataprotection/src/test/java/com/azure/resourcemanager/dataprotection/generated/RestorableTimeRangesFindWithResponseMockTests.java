@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesRequest;
@@ -23,27 +23,27 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
     @Test
     public void testFindWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"lnymzotqy\",\"endTime\":\"yuzcbmqqvxmvw\",\"objectType\":\"tayx\"},{\"startTime\":\"nsup\",\"endTime\":\"ujlzqnhcvsqltn\",\"objectType\":\"ibg\"},{\"startTime\":\"xgnxfyqonmpqoxwd\",\"endTime\":\"fdbxiqxeiiqbim\",\"objectType\":\"mwwinhehfqpofv\"}],\"objectType\":\"cblembnkbwv\"},\"id\":\"xk\",\"name\":\"ivqiheb\",\"type\":\"tswbzuwfmd\"}";
+            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"btgfeb\",\"endTime\":\"l\",\"objectType\":\"mhyreeudz\"},{\"startTime\":\"av\",\"endTime\":\"pdqmjxlyyzglgouw\",\"objectType\":\"mjjyuojq\"},{\"startTime\":\"obaxkjeytu\",\"endTime\":\"lbfjkwr\",\"objectType\":\"nkqbhsyrq\"}],\"objectType\":\"jqhden\"},\"id\":\"ulkpakd\",\"name\":\"ifmjnn\",\"type\":\"wtqabpxuckp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureBackupFindRestorableTimeRangesResponseResource response = manager.restorableTimeRanges()
-            .findWithResponse("uamwabzxrvxc", "s", "sphaivmxyasflvg",
+            .findWithResponse("iosmgbzahgxqdly", "tlt", "ap",
                 new AzureBackupFindRestorableTimeRangesRequest()
-                    .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
-                    .withStartTime("wywa")
-                    .withEndTime("ihknsmjbl"),
+                    .withSourceDataStoreType(RestoreSourceDataStoreType.ARCHIVE_STORE)
+                    .withStartTime("zkatb")
+                    .withEndTime("mznnbsoqeqalarvl"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lnymzotqy", response.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("yuzcbmqqvxmvw", response.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("tayx", response.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("cblembnkbwv", response.properties().objectType());
+        Assertions.assertEquals("btgfeb", response.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("l", response.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("mhyreeudz", response.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("jqhden", response.properties().objectType());
     }
 }

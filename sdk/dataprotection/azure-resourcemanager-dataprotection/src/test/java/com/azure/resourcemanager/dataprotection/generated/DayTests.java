@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Day model = BinaryData.fromString("{\"date\":1284513946,\"isLast\":false}").toObject(Day.class);
-        Assertions.assertEquals(1284513946, model.date());
-        Assertions.assertEquals(false, model.isLast());
+        Day model = BinaryData.fromString("{\"date\":1956413749,\"isLast\":false}").toObject(Day.class);
+        Assertions.assertEquals(1956413749, model.date());
+        Assertions.assertFalse(model.isLast());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Day model = new Day().withDate(1284513946).withIsLast(false);
+        Day model = new Day().withDate(1956413749).withIsLast(false);
         model = BinaryData.fromObject(model).toObject(Day.class);
-        Assertions.assertEquals(1284513946, model.date());
-        Assertions.assertEquals(false, model.isLast());
+        Assertions.assertEquals(1956413749, model.date());
+        Assertions.assertFalse(model.isLast());
     }
 }

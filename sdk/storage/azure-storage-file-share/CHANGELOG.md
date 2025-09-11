@@ -12,6 +12,17 @@
 
 ### Other Changes
 
+## 12.27.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-storage-common` from `12.30.1` to version `12.30.2`.
+
+
 ## 12.27.1 (2025-07-29)
 
 ### Other Changes

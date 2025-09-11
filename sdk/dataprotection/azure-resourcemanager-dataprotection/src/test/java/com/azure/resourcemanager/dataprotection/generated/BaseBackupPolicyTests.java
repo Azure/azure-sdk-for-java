@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BaseBackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BaseBackupPolicy model = BinaryData
-            .fromString("{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"iwqvhkh\",\"xuigdtopbobj\"]}")
-            .toObject(BaseBackupPolicy.class);
-        Assertions.assertEquals("iwqvhkh", model.datasourceTypes().get(0));
+        BaseBackupPolicy model
+            = BinaryData.fromString("{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"uhrzayvvt\"]}")
+                .toObject(BaseBackupPolicy.class);
+        Assertions.assertEquals("uhrzayvvt", model.datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BaseBackupPolicy model = new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("iwqvhkh", "xuigdtopbobj"));
+        BaseBackupPolicy model = new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("uhrzayvvt"));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicy.class);
-        Assertions.assertEquals("iwqvhkh", model.datasourceTypes().get(0));
+        Assertions.assertEquals("uhrzayvvt", model.datasourceTypes().get(0));
     }
 }

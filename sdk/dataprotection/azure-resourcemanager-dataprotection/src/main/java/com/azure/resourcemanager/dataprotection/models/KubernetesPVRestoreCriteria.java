@@ -93,7 +93,6 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

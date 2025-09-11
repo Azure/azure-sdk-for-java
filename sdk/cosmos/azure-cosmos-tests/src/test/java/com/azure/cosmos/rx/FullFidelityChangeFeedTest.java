@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -21,6 +21,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -60,22 +61,22 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 continuationToken1 = response.getContinuationToken();
             }
 
-            TestItem item1 = new TestItem(
+            TestObject item1 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk-1", "Johnson");
-            TestItem item2 = new TestItem(
+                "mypk-1", Arrays.asList(), "Johnson");
+            TestObject item2 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk-1", "Smith");
-            TestItem item3 = new TestItem(
+                "mypk-1", Arrays.asList(), "Smith");
+            TestObject item3 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk-2", "John");
+                "mypk-2", Arrays.asList(), "John");
             cosmosContainer.createItem(item1).block();
             cosmosContainer.createItem(item2).block();
-            String originalLastNameItem1 = item1.getProp();
-            item1.setProp("Gates");
+            String originalLastNameItem1 = item1.getStringProp();
+            item1.setStringProp("Gates");
             cosmosContainer.upsertItem(item1).block();
-            String originalLastNameItem2 = item2.getProp();
-            item2.setProp("Doe");
+            String originalLastNameItem2 = item2.getStringProp();
+            item2.setStringProp("Doe");
             cosmosContainer.upsertItem(item2).block();
             cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
 
@@ -95,21 +96,21 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.size()).isEqualTo(5);
                 // Assert initial creation of items
                 assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem1);
+                assertThat(itemChanges.get(0).get("current").get("stringProp").asText()).isEqualTo(originalLastNameItem1);
                 assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
                 assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
-                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(originalLastNameItem2);
+                assertThat(itemChanges.get(1).get("current").get("stringProp").asText()).isEqualTo(originalLastNameItem2);
                 assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
                 // Assert replace of item1
                 assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(2).get("current").get("stringProp").asText()).isEqualTo(item1.getStringProp());
                 assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 if (itemChanges.get(2).get("previous") != null) {
                     assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
                 }
                 // Assert replace of item2
                 assertThat(itemChanges.get(3).get("current").get("id").asText()).isEqualTo(item2.getId());
-                assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+                assertThat(itemChanges.get(3).get("current").get("stringProp").asText()).isEqualTo(item2.getStringProp());
                 assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 if (itemChanges.get(3).get("previous") != null) {
                     assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
@@ -141,8 +142,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             }
 
             cosmosContainer.createItem(item3).block();
-            String originalLastNameItem3 = item3.getProp();
-            item3.setProp("Potter");
+            String originalLastNameItem3 = item3.getStringProp();
+            item3.setStringProp("Potter");
             cosmosContainer.upsertItem(item3).block();
             cosmosContainer.deleteItem(item3, new CosmosItemRequestOptions()).block();
 
@@ -162,11 +163,11 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.size()).isEqualTo(3);
                 // Assert initial creation of item3
                 assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item3.getId());
-                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem3);
+                assertThat(itemChanges.get(0).get("current").get("stringProp").asText()).isEqualTo(originalLastNameItem3);
                 assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
                 // Assert replace of item3
                 assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item3.getId());
-                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item3.getProp());
+                assertThat(itemChanges.get(1).get("current").get("stringProp").asText()).isEqualTo(item3.getStringProp());
                 assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 if (itemChanges.get(1).get("previous") != null) {
                     assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
@@ -209,16 +210,16 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
             options.allVersionsAndDeletes();
 
-            TestItem item1 = new TestItem(
+            TestObject item1 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk", "Johnson");
-            TestItem item2 = new TestItem(
+                "mypk", Arrays.asList(), "Johnson");
+            TestObject item2 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk", "Smith");
+                "mypk", Arrays.asList(), "Smith");
             cosmosContainer.upsertItem(item1).block();
             cosmosContainer.upsertItem(item2).block();
-            String originalLastName = item1.getProp();
-            item1.setProp("Gates");
+            String originalLastName = item1.getStringProp();
+            item1.setStringProp("Gates");
             cosmosContainer.upsertItem(item1).block();
             cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
 
@@ -234,14 +235,14 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.size()).isEqualTo(4);
                 // Assert initial creation of items
                 assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+                assertThat(itemChanges.get(0).get("current").get("stringProp").asText()).isEqualTo(originalLastName);
                 assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
                 assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
-                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+                assertThat(itemChanges.get(1).get("current").get("stringProp").asText()).isEqualTo(item2.getStringProp());
                 assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
                 // Assert replace of item1
                 assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(2).get("current").get("stringProp").asText()).isEqualTo(item1.getStringProp());
                 assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 if (itemChanges.get(2).get("previous") != null) {
                     assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
@@ -286,9 +287,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
             // Create, replace, and delete 50 objects for 150 total operations
             for (int i = 0; i < 50; i++) {
-                TestItem currentItem = new TestItem("item"+ i, "mypk", "Smith");
+                TestObject currentItem = new TestObject("item"+ i, "mypk", Arrays.asList(), "Smith");
                 cosmosContainer.upsertItem(currentItem).block();
-                currentItem.setProp("Jefferson");
+                currentItem.setStringProp("Jefferson");
                 cosmosContainer.upsertItem(currentItem).block();
                 cosmosContainer.deleteItem(currentItem, new CosmosItemRequestOptions()).block();
             }
@@ -342,18 +343,18 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
             options.allVersionsAndDeletes();
 
-            TestItem item1 = new TestItem(
+            TestObject item1 = new TestObject(
                 UUID.randomUUID().toString(),
-                "mypk", "Johnson");
+                "mypk", Arrays.asList(), "Johnson");
             cosmosContainer.upsertItem(item1).block();
-            String originalLastName = item1.getProp();
-            item1.setProp("Gates");
+            String originalLastName = item1.getStringProp();
+            item1.setStringProp("Gates");
             cosmosContainer.upsertItem(item1).block();
-            String secondLastName = item1.getProp();
-            item1.setProp("DiCaprio");
-            String thirdLastName = item1.getProp();
+            String secondLastName = item1.getStringProp();
+            item1.setStringProp("DiCaprio");
+            String thirdLastName = item1.getStringProp();
             cosmosContainer.upsertItem(item1).block();
-            item1.setProp(originalLastName);
+            item1.setStringProp(originalLastName);
             cosmosContainer.upsertItem(item1).block();
             cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
 
@@ -369,25 +370,25 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.size()).isEqualTo(5);
                 // Assert initial creation of item1
                 assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+                assertThat(itemChanges.get(0).get("current").get("stringProp").asText()).isEqualTo(originalLastName);
                 assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
                 // Verify separate replace operations
                 assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(secondLastName);
+                assertThat(itemChanges.get(1).get("current").get("stringProp").asText()).isEqualTo(secondLastName);
                 assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 assertThat(itemChanges.get(1).get("metadata").get("previousImageLSN").asText()
                 ).isEqualTo(itemChanges.get(0).get("metadata").get("lsn").asText());
                 assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
 
                 assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(thirdLastName);
+                assertThat(itemChanges.get(2).get("current").get("stringProp").asText()).isEqualTo(thirdLastName);
                 assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
                 ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
                 assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
 
                 assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
-                assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(3).get("current").get("stringProp").asText()).isEqualTo(item1.getStringProp());
                 assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
                 ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());

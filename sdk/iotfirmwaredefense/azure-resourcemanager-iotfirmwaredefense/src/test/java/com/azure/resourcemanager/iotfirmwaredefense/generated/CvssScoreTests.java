@@ -12,8 +12,8 @@ public final class CvssScoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CvssScore model
-            = BinaryData.fromString("{\"version\":481409327,\"score\":17.81756965941649}").toObject(CvssScore.class);
-        Assertions.assertEquals(481409327, model.version());
-        Assertions.assertEquals(17.81756965941649D, model.score());
+            = BinaryData.fromString("{\"version\":439757511,\"score\":21.929462733995752}").toObject(CvssScore.class);
+        Assertions.assertEquals(439757511, model.version());
+        Assertions.assertEquals(21.929462733995752D, model.score());
     }
 }

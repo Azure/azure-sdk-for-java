@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBaseResource;
@@ -21,25 +21,25 @@ public final class DppResourceGuardProxiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"gn\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"ewuninvud\",\"defaultResourceRequest\":\"h\"},{\"vaultCriticalOperation\":\"dtvqe\",\"defaultResourceRequest\":\"qct\"}],\"lastUpdatedTime\":\"xdtddmflhuytxzv\",\"description\":\"napxbannovv\"},\"id\":\"czytprwn\",\"name\":\"vroevytlyo\",\"type\":\"rrrouuxvnsa\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"oveofizrvjfnmj\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"yzgib\",\"defaultResourceRequest\":\"ujr\"},{\"vaultCriticalOperation\":\"fojuidjpuuyj\",\"defaultResourceRequest\":\"ejikzoeovvtzejet\"}],\"lastUpdatedTime\":\"ln\",\"description\":\"k\"},\"id\":\"uzk\",\"name\":\"bqzolxr\",\"type\":\"vhqjwtrhtgvg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies()
-            .getWithResponse("bo", "lcqxypokk", "minqcym", com.azure.core.util.Context.NONE)
+            .getWithResponse("izrzb", "psfxsf", "ztlvtmvagbwidqlv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gn", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("ewuninvud",
+        Assertions.assertEquals("oveofizrvjfnmj", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("yzgib",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals("ujr",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("xdtddmflhuytxzv", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("napxbannovv", response.properties().description());
+        Assertions.assertEquals("ln", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("k", response.properties().description());
     }
 }

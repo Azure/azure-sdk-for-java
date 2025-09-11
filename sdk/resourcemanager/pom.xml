@@ -11,29 +11,13 @@
   <modules>
     <module>azure-resourcemanager</module>
     <module>azure-resourcemanager-appplatform</module>
-    <module>azure-resourcemanager-appservice</module>
-    <module>azure-resourcemanager-authorization</module>
-    <module>azure-resourcemanager-cdn</module>
-    <module>azure-resourcemanager-compute</module>
-    <module>azure-resourcemanager-containerinstance</module>
-    <module>azure-resourcemanager-containerregistry</module>
-    <module>azure-resourcemanager-containerservice</module>
     <module>azure-resourcemanager-cosmos</module>
-    <module>azure-resourcemanager-dns</module>
     <module>azure-resourcemanager-eventhubs</module>
-    <module>azure-resourcemanager-keyvault</module>
     <module>azure-resourcemanager-monitor</module>
-    <module>azure-resourcemanager-msi</module>
-    <module>azure-resourcemanager-network</module>
     <module>azure-resourcemanager-perf</module>
-    <module>azure-resourcemanager-privatedns</module>
     <module>azure-resourcemanager-resources</module>
-    <module>azure-resourcemanager-redis</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-servicebus</module>
-    <module>azure-resourcemanager-sql</module>
-    <module>azure-resourcemanager-storage</module>
-    <module>azure-resourcemanager-trafficmanager</module>
     <module>azure-resourcemanager-test</module>
   </modules>
 </project>

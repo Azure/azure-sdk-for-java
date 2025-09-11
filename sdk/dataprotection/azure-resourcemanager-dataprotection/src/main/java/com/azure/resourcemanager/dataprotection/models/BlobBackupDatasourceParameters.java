@@ -16,7 +16,7 @@ import java.util.List;
  * Parameters to be used during configuration of backup of blobs.
  */
 @Fluent
-public final class BlobBackupDatasourceParameters extends BackupDatasourceParameters {
+public class BlobBackupDatasourceParameters extends BackupDatasourceParameters {
     /*
      * Type of the specific object - used for deserializing
      */
@@ -70,7 +70,6 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
      */
     @Override
     public void validate() {
-        super.validate();
         if (containersList() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -102,6 +101,31 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
      * @throws IOException If an error occurs while reading the BlobBackupDatasourceParameters.
      */
     public static BlobBackupDatasourceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AdlsBlobBackupDatasourceParameters".equals(discriminatorValue)) {
+                    return AdlsBlobBackupDatasourceParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BlobBackupDatasourceParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BlobBackupDatasourceParameters deserializedBlobBackupDatasourceParameters
                 = new BlobBackupDatasourceParameters();

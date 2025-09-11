@@ -12,8 +12,8 @@ public final class UsageMetricListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageMetricListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":2903733515306491145,\"totalFirmwareCount\":7428332481829076684,\"provisioningState\":\"Canceled\"},\"id\":\"xy\",\"name\":\"lmoyrx\",\"type\":\"wfudwpzntxhdzhl\"},{\"properties\":{\"monthlyFirmwareUploadCount\":1250050407909516338,\"totalFirmwareCount\":873443387319795966,\"provisioningState\":\"Extracting\"},\"id\":\"lhrxsbkyvpyc\",\"name\":\"n\",\"type\":\"z\"}],\"nextLink\":\"zka\"}")
+            "{\"value\":[{\"properties\":{\"monthlyFirmwareUploadCount\":8451132931226635993,\"totalFirmwareCount\":6340547465391917507,\"provisioningState\":\"Canceled\"},\"id\":\"wjvzunluthnn\",\"name\":\"rnxipei\",\"type\":\"pjzu\"}],\"nextLink\":\"jxdultskzbbtdzu\"}")
             .toObject(UsageMetricListResult.class);
-        Assertions.assertEquals("zka", model.nextLink());
+        Assertions.assertEquals("jxdultskzbbtdzu", model.nextLink());
     }
 }
