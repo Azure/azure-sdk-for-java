@@ -12,13 +12,13 @@ public final class WorkloadNetworkSegmentsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkSegmentsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"fwnfnb\",\"connectedGateway\":\"fionl\",\"subnet\":{\"dhcpRanges\":[\"tqgtzxdpnqbqq\",\"xrjfeallnwsub\",\"snjampmng\"],\"gatewayAddress\":\"scxaq\"},\"portVif\":[{\"portName\":\"hcbonqvpkvlr\"},{\"portName\":\"jease\"},{\"portName\":\"heoflokeyyienjbd\"},{\"portName\":\"tgrhpdjpjumas\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":4565931014747924245},\"id\":\"ualhbxxhejj\",\"name\":\"zvdudgwdslfhotwm\",\"type\":\"ynpwlbj\"},{\"properties\":{\"displayName\":\"acfta\",\"connectedGateway\":\"h\",\"subnet\":{\"dhcpRanges\":[\"yfsoppu\",\"uesnzwdejbavo\",\"xzdmohctb\",\"vudwx\"],\"gatewayAddress\":\"dnvowg\"},\"portVif\":[{\"portName\":\"gwdkcglhsl\"},{\"portName\":\"jdyggdtji\"},{\"portName\":\"b\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":833770082997190597},\"id\":\"hmenevfyexfwhybc\",\"name\":\"bvyvdcsity\",\"type\":\"naamde\"}],\"nextLink\":\"eh\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"iaa\",\"connectedGateway\":\"uagydwqfbylyrf\",\"subnet\":{\"dhcpRanges\":[\"tcojocqwo\",\"fnzjvusfzldm\",\"zuxylfsbtkadpyso\"],\"gatewayAddress\":\"btgkbugrjqctoj\"},\"portVif\":[{\"portName\":\"of\"},{\"portName\":\"ypefojyqdhcupl\"},{\"portName\":\"lcwkhihihlhz\"},{\"portName\":\"qtz\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":8583061153642738552},\"id\":\"hfgmvecactxm\",\"name\":\"oteyowc\",\"type\":\"uqovekqvgqouwif\"}],\"nextLink\":\"pjwyiv\"}")
             .toObject(WorkloadNetworkSegmentsList.class);
-        Assertions.assertEquals("fwnfnb", model.value().get(0).displayName());
-        Assertions.assertEquals("fionl", model.value().get(0).connectedGateway());
-        Assertions.assertEquals("tqgtzxdpnqbqq", model.value().get(0).subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("scxaq", model.value().get(0).subnet().gatewayAddress());
-        Assertions.assertEquals(4565931014747924245L, model.value().get(0).revision());
-        Assertions.assertEquals("eh", model.nextLink());
+        Assertions.assertEquals("iaa", model.value().get(0).displayName());
+        Assertions.assertEquals("uagydwqfbylyrf", model.value().get(0).connectedGateway());
+        Assertions.assertEquals("tcojocqwo", model.value().get(0).subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("btgkbugrjqctoj", model.value().get(0).subnet().gatewayAddress());
+        Assertions.assertEquals(8583061153642738552L, model.value().get(0).revision());
+        Assertions.assertEquals("pjwyiv", model.nextLink());
     }
 }

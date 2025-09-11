@@ -12,8 +12,9 @@ public final class WorkloadNetworkGatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayProperties model = BinaryData
-            .fromString("{\"provisioningState\":\"Updating\",\"displayName\":\"dtqajzyulpkudj\",\"path\":\"lkhbz\"}")
+            .fromString(
+                "{\"provisioningState\":\"Succeeded\",\"displayName\":\"fnczdwvvbalx\",\"path\":\"lchpodbzevwrdn\"}")
             .toObject(WorkloadNetworkGatewayProperties.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.displayName());
+        Assertions.assertEquals("fnczdwvvbalx", model.displayName());
     }
 }
