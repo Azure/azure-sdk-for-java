@@ -26,15 +26,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
 import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleMgmtClientBuilder;
-import com.azure.resourcemanager.computeschedule.implementation.OccurrenceExtensionsImpl;
-import com.azure.resourcemanager.computeschedule.implementation.OccurrencesImpl;
 import com.azure.resourcemanager.computeschedule.implementation.OperationsImpl;
-import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionExtensionsImpl;
 import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionsImpl;
-import com.azure.resourcemanager.computeschedule.models.OccurrenceExtensions;
-import com.azure.resourcemanager.computeschedule.models.Occurrences;
 import com.azure.resourcemanager.computeschedule.models.Operations;
-import com.azure.resourcemanager.computeschedule.models.ScheduledActionExtensions;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActions;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -52,12 +46,6 @@ public final class ComputeScheduleManager {
     private Operations operations;
 
     private ScheduledActions scheduledActions;
-
-    private ScheduledActionExtensions scheduledActionExtensions;
-
-    private Occurrences occurrences;
-
-    private OccurrenceExtensions occurrenceExtensions;
 
     private final ComputeScheduleMgmtClient clientObject;
 
@@ -287,7 +275,7 @@ public final class ComputeScheduleManager {
     }
 
     /**
-     * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
+     * Gets the resource collection API of ScheduledActions.
      * 
      * @return Resource collection API of ScheduledActions.
      */
@@ -296,43 +284,6 @@ public final class ComputeScheduleManager {
             this.scheduledActions = new ScheduledActionsImpl(clientObject.getScheduledActions(), this);
         }
         return scheduledActions;
-    }
-
-    /**
-     * Gets the resource collection API of ScheduledActionExtensions.
-     * 
-     * @return Resource collection API of ScheduledActionExtensions.
-     */
-    public ScheduledActionExtensions scheduledActionExtensions() {
-        if (this.scheduledActionExtensions == null) {
-            this.scheduledActionExtensions
-                = new ScheduledActionExtensionsImpl(clientObject.getScheduledActionExtensions(), this);
-        }
-        return scheduledActionExtensions;
-    }
-
-    /**
-     * Gets the resource collection API of Occurrences.
-     * 
-     * @return Resource collection API of Occurrences.
-     */
-    public Occurrences occurrences() {
-        if (this.occurrences == null) {
-            this.occurrences = new OccurrencesImpl(clientObject.getOccurrences(), this);
-        }
-        return occurrences;
-    }
-
-    /**
-     * Gets the resource collection API of OccurrenceExtensions.
-     * 
-     * @return Resource collection API of OccurrenceExtensions.
-     */
-    public OccurrenceExtensions occurrenceExtensions() {
-        if (this.occurrenceExtensions == null) {
-            this.occurrenceExtensions = new OccurrenceExtensionsImpl(clientObject.getOccurrenceExtensions(), this);
-        }
-        return occurrenceExtensions;
     }
 
     /**
