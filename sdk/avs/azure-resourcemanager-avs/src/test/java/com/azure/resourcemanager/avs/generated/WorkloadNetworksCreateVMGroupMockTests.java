@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"h\",\"members\":[\"hgwydyynfsv\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":1898691933470527119},\"id\":\"arfdlpukhpyrnei\",\"name\":\"jcpeogkhnmg\",\"type\":\"ro\"}";
+            = "{\"properties\":{\"displayName\":\"kvwjtqpkevmy\",\"members\":[\"crspxklurccl\",\"gxannnoytzposewx\",\"gpxvkqmaupxvpi\",\"dfaifyzyzeyuube\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":4004397580720883632},\"id\":\"ith\",\"name\":\"ygvfltgvdihoyn\",\"type\":\"rxwe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("uuuybnchrsziz")
-            .withExistingPrivateCloud("tvsoxhlwntsj", "qrsxyp")
-            .withDisplayName("elyetndnbf")
-            .withMembers(Arrays.asList("gagflnlgmtrwah", "jmucftby"))
-            .withRevision(411175145708469909L)
+            .defineVMGroup("ehuxiqhzlraym")
+            .withExistingPrivateCloud("udqll", "sauzpjlx")
+            .withDisplayName("lskihmxrfdsajred")
+            .withMembers(Arrays.asList("yshtuwgmev", "afpwzyifrkgwl", "xeqipx", "zdyi"))
+            .withRevision(6640091995270165550L)
             .create();
 
-        Assertions.assertEquals("h", response.displayName());
-        Assertions.assertEquals("hgwydyynfsv", response.members().get(0));
-        Assertions.assertEquals(1898691933470527119L, response.revision());
+        Assertions.assertEquals("kvwjtqpkevmy", response.displayName());
+        Assertions.assertEquals("crspxklurccl", response.members().get(0));
+        Assertions.assertEquals(4004397580720883632L, response.revision());
     }
 }

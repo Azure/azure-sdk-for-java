@@ -4,21 +4,21 @@
 
 package com.azure.resourcemanager.hybridconnectivity.implementation;
 
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
-import com.azure.resourcemanager.hybridconnectivity.models.PostResponse;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateResponse;
 
-public final class PostResponseImpl implements PostResponse {
-    private PostResponseInner innerObject;
+public final class GenerateAwsTemplateResponseImpl implements GenerateAwsTemplateResponse {
+    private GenerateAwsTemplateResponseInner innerObject;
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
 
-    PostResponseImpl(PostResponseInner innerObject,
+    GenerateAwsTemplateResponseImpl(GenerateAwsTemplateResponseInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public PostResponseInner innerModel() {
+    public GenerateAwsTemplateResponseInner innerModel() {
         return this.innerObject;
     }
 
