@@ -119,8 +119,8 @@ public final class ReadmeSamples {
             .setVirtualMachineConfiguration(
                 new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
                     .setOffer("UbuntuServer")
-                    .setSku("18_04-lts-gen2")
-                    .setVersion("latest"), "batch.node.ubuntu 18.04"))
+                    .setSku("22_04-lts")
+                    .setVersion("latest"), "batch.node.ubuntu 22.04"))
             .setTargetDedicatedNodes(1), null);
         // END: com.azure.compute.batch.create-pool.creates-a-simple-pool
 
