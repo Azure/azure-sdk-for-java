@@ -72,10 +72,6 @@ public class WorkloadIdentityCredential implements TokenCredential {
         IdentityClientOptions identityClientOptions) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
-        if (identityClientOptions == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("identityClientOptions cannot be null"));
-        }
-
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone()
             : identityClientOptions.getConfiguration();
@@ -90,18 +86,24 @@ public class WorkloadIdentityCredential implements TokenCredential {
         String clientIdInput
             = CoreUtils.isNullOrEmpty(clientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
 
+        ClientAssertionCredential tempClientAssertionCredential = null;
+        String tempClientId = null;
+
         if (!(CoreUtils.isNullOrEmpty(tenantIdInput)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
-
-            clientAssertionCredential = buildClientAssertionCredential(tenantIdInput, clientIdInput,
-                federatedTokenFilePathInput, identityClientOptions);
-            this.clientId = clientIdInput;
-        } else {
-            clientAssertionCredential = null;
-            this.clientId = null;
+            try {
+                tempClientAssertionCredential = buildClientAssertionCredential(tenantIdInput, clientIdInput,
+                    federatedTokenFilePathInput, identityClientOptions);
+                tempClientId = clientIdInput;
+            } catch (Exception e) {
+                LOGGER.atVerbose().log("Failed to build ClientAssertionCredential during construction", e);
+            }
         }
+
+        clientAssertionCredential = tempClientAssertionCredential;
+        this.clientId = tempClientId;
         this.identityClientOptions = identityClientOptions;
     }
 
