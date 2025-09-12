@@ -59,7 +59,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(builder, metricDataList.get(0), pointData, true, false);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricDataList.get(0), pointData, true, false, false);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(3.1415);
@@ -90,7 +90,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, false);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(20.0);
@@ -123,7 +123,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metric = metricDatas.get(0);
         PointData pointData = metric.getData().getPoints().stream().findFirst().get();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, false, false);
 
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
@@ -157,7 +157,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metric = metricDatas.get(0);
         PointData pointData = metric.getData().getPoints().stream().findFirst().get();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, true);
+        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, true, false);
 
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
@@ -220,7 +220,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(longPointData3.getAttributes().get(AttributeKey.stringKey("color"))).isEqualTo("yellow");
 
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData1, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData1, true, false, false);
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         MetricDataPoint metricDataPoint = metricsData.getMetrics().get(0);
@@ -232,7 +232,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(properties).containsEntry("color", "green");
 
         builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData2, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData2, true, false, false);
         metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         metricDataPoint = metricsData.getMetrics().get(0);
@@ -244,7 +244,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(properties).containsEntry("color", "red");
 
         builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData3, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData3, true, false, false);
         metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         metricDataPoint = metricsData.getMetrics().get(0);
@@ -283,7 +283,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, false);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(20);
@@ -319,7 +319,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
         PointData pointData = metricData.getData().getPoints().iterator().next();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, false);
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         assertThat(metricsData.getMetrics().get(0).getCount()).isEqualTo(1);
@@ -357,7 +357,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
         PointData pointData = metricData.getData().getPoints().iterator().next();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, false);
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         assertThat(metricsData.getProperties()).isNotNull();
