@@ -3,6 +3,7 @@
 
 package com.azure.verticals.agrifood.farming;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.core.http.rest.RequestOptions;
@@ -46,7 +47,8 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-createFarmHierarchy
         // Create Party
-        Map<String, String> partyData = Map.of("name", "party1");
+        Map<String, String> partyData = new HashMap<>();
+        partyData.put("name", "party1");
         BinaryData party = BinaryData.fromObject(partyData);
         partiesClient.createOrUpdateWithResponse("contoso-party", party, null).block();
 
