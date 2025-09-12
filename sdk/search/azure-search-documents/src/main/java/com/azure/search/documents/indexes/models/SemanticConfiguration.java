@@ -6,8 +6,8 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Defines a specific configuration to be used in the context of semantic capabilities.
  */
-@Immutable
+@Fluent
 public final class SemanticConfiguration implements JsonSerializable<SemanticConfiguration> {
     /*
      * The name of the semantic configuration.
@@ -34,6 +34,12 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      */
     @Generated
     private final SemanticPrioritizedFields prioritizedFields;
+
+    /*
+     * Specifies the score type to be used for the sort order of the search results.
+     */
+    @Generated
+    private RankingOrder rankingOrder;
 
     /**
      * Creates an instance of SemanticConfiguration class.
@@ -70,6 +76,28 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     }
 
     /**
+     * Get the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @return the rankingOrder value.
+     */
+    @Generated
+    public RankingOrder getRankingOrder() {
+        return this.rankingOrder;
+    }
+
+    /**
+     * Set the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @param rankingOrder the rankingOrder value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    @Generated
+    public SemanticConfiguration setRankingOrder(RankingOrder rankingOrder) {
+        this.rankingOrder = rankingOrder;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -78,6 +106,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("prioritizedFields", this.prioritizedFields);
+        jsonWriter.writeStringField("rankingOrder", this.rankingOrder == null ? null : this.rankingOrder.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +126,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             String name = null;
             boolean prioritizedFieldsFound = false;
             SemanticPrioritizedFields prioritizedFields = null;
+            RankingOrder rankingOrder = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -107,12 +137,18 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                 } else if ("prioritizedFields".equals(fieldName)) {
                     prioritizedFields = SemanticPrioritizedFields.fromJson(reader);
                     prioritizedFieldsFound = true;
+                } else if ("rankingOrder".equals(fieldName)) {
+                    rankingOrder = RankingOrder.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             if (nameFound && prioritizedFieldsFound) {
-                return new SemanticConfiguration(name, prioritizedFields);
+                SemanticConfiguration deserializedSemanticConfiguration
+                    = new SemanticConfiguration(name, prioritizedFields);
+                deserializedSemanticConfiguration.rankingOrder = rankingOrder;
+
+                return deserializedSemanticConfiguration;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!nameFound) {

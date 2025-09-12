@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.SplitSkillLanguage;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.VisualFeature;
 import com.azure.search.documents.indexes.models.WebApiSkill;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -219,7 +218,6 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("TODO: Service is not responding to api calls. 500 error thrown with little information.")
     public void createSkillsetReturnsCorrectDefinitionOcrSplitTextSync() {
         createAndValidateSkillsetSync(
             createTestSkillsetOcrSplitText(OcrSkillLanguage.EN, SplitSkillLanguage.EN, TextSplitMode.PAGES));
@@ -237,7 +235,6 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("TODO: Service is not responding to api calls. 500 error thrown with little information.")
     public void createSkillsetReturnsCorrectDefinitionOcrSplitTextAsync() {
         createAndValidateSkillsetAsync(
             createTestSkillsetOcrSplitText(OcrSkillLanguage.EN, SplitSkillLanguage.EN, TextSplitMode.PAGES));

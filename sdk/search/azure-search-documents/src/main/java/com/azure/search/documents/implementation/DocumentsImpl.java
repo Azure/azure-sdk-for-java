@@ -88,7 +88,7 @@ public final class DocumentsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({ 200, 206 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
@@ -96,7 +96,7 @@ public final class DocumentsImpl {
             @BodyParam("application/json") SearchRequest searchRequest, Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({ 200, 206 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchDocumentsResult> searchPostSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
