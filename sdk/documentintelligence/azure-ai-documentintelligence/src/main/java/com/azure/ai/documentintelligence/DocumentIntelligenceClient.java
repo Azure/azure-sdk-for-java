@@ -776,4 +776,51 @@ public final class DocumentIntelligenceClient {
             analyzeBatchDocumentOptions.getDocumentAnalysisFeatures(), analyzeBatchDocumentOptions.getQueryFields(),
             analyzeBatchDocumentOptions.getOutputContentFormat(), analyzeBatchDocumentOptions.getOutput());
     }
+
+    /**
+     * Gets the generated searchable PNG output from document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the generated searchable PNG output from document analysis along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAnalyzeResultPngWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAnalyzeResultPngWithResponse(modelId, resultId, requestOptions);
+    }
+
+    /**
+     * Gets the generated searchable PNG output from document analysis.
+     *
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the generated searchable PNG output from document analysis.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getAnalyzeResultPng(String modelId, String resultId) {
+        // Generated convenience method for getAnalyzeResultPngWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAnalyzeResultPngWithResponse(modelId, resultId, requestOptions).getValue();
+    }
 }
