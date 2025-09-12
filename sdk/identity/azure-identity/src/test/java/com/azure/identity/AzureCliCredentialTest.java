@@ -9,6 +9,9 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
+
+import jodd.util.Base64;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +19,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -225,9 +230,11 @@ public class AzureCliCredentialTest {
     @Test
     public void testClaimsChallengeThrowsCredentialUnavailableException() {
         // Test with claims provided
+        String claims = "{\"access_token\":{\"essential\":true}}";
+        String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
         TokenRequestContext requestWithClaims
             = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims("{\"access_token\":{\"essential\":true}}");
+                .setClaims(claims);
 
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
 
@@ -236,7 +243,7 @@ public class AzureCliCredentialTest {
             .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
                 && throwable.getMessage().contains("Claims challenges are not supported")
                 && throwable.getMessage().contains("az login --claims-challenge")
-                && throwable.getMessage().contains("access_token"))
+                && throwable.getMessage().contains(encodedClaims))
             .verify();
 
         // Test sync version

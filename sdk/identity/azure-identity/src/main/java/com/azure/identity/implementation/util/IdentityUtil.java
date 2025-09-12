@@ -244,8 +244,6 @@ public final class IdentityUtil {
         if (claims == null || claims.trim().isEmpty()) {
             return claims;
         }
-
-        // Always base64 encode - let azd handle decoding
         return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
     }
 }
