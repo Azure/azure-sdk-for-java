@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.SyncAsyncExtension;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
