@@ -46,7 +46,7 @@ import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 
 public class MetricDataMapper {
 
-    private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);  
+    private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
     private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
     private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
@@ -58,8 +58,8 @@ public class MetricDataMapper {
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
-    private final boolean otlpExporterEnabledForAKS;
-    private final boolean metricsToLAEnabled;
+    private boolean otlpExporterEnabledForAKS;
+    private boolean metricsToLAEnabled;
 
     static {
         // HTTP unstable metrics to be excluded via Otel auto instrumentation
@@ -74,16 +74,15 @@ public class MetricDataMapper {
     }
 
     public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
-        boolean captureHttpServer4xxAsError, boolean otlpExporterEnabledForAKS) {
+        boolean captureHttpServer4xxAsError, boolean otlpExporterEnabledForAKS, boolean metricsToLAEnabled) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
         this.otlpExporterEnabledForAKS = otlpExporterEnabledForAKS;
-
-        String metricsToLAEnvVar = System.getenv("APPLICATIONINSIGHTS_METRICS_TO_LOGANALYTICS_ENABLED");
-        this.metricsToLAEnabled = metricsToLAEnvVar == null || "true".equalsIgnoreCase(metricsToLAEnvVar);
+        this.metricsToLAEnabled = metricsToLAEnabled;
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
+        logger.verbose("Mapping metric data: {}", metricData.getName());
         MetricDataType type = metricData.getType();
         if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric
@@ -102,6 +101,7 @@ public class MetricDataMapper {
             }
 
             if (metricsToLAEnabled && !isPreAggregatedStandardMetric) {
+                logger.verbose("Mapping stable metric to Breeze: {}", metricData.getName());
                 List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
                 stableOtelMetrics.forEach(consumer::accept);
             }
@@ -120,7 +120,7 @@ public class MetricDataMapper {
 
             builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
             updateMetricPointBuilder(builder, metricData, pointData, captureHttpServer4xxAsError,
-                isPreAggregatedStandardMetric);
+                isPreAggregatedStandardMetric, this.otlpExporterEnabledForAKS);
 
             telemetryItems.add(builder.build());
         }
@@ -129,7 +129,8 @@ public class MetricDataMapper {
 
     // visible for testing
     public static void updateMetricPointBuilder(MetricTelemetryBuilder metricTelemetryBuilder, MetricData metricData,
-        PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric) {
+        PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric,
+        boolean otlpExporterEnabled) {
         checkArgument(metricData != null, "MetricData cannot be null.");
 
         MetricPointBuilder pointBuilder = new MetricPointBuilder();
@@ -187,8 +188,8 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
-        if (otlpExporterEnabledForAKS) {
-            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabledForAKS));
+        if (otlpExporterEnabled) {
+            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabled));
         }
 
         Attributes attributes = pointData.getAttributes();

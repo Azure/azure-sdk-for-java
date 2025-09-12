@@ -121,7 +121,7 @@ class AzureMonitorExporterBuilder {
 
     MetricExporter buildMetricExporter() {
         HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(), builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true, false),
+        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true, false, true),
             builtTelemetryItemExporter);
     }
 
