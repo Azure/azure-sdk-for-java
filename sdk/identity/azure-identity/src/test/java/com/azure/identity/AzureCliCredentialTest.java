@@ -249,7 +249,7 @@ public class AzureCliCredentialTest {
 
         Assertions.assertTrue(exception.getMessage().contains("Claims challenges are not supported"));
         Assertions.assertTrue(exception.getMessage().contains("az login --claims-challenge"));
-        Assertions.assertTrue(exception.getMessage().contains("access_token"));
+        Assertions.assertTrue(exception.getMessage().contains(encodedClaims));
     }
 
     @Test
