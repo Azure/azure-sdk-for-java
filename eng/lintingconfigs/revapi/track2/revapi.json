@@ -336,6 +336,11 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
+          "justification" : "Remove deprecated method"
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",
