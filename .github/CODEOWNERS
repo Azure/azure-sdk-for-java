@@ -146,6 +146,9 @@
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                                      @vxfield
 
+# PRLabel: %Azure Agrifood
+/sdk/agrifood/                                                     @vxfield @Azure/azure-java-sdk
+
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                                        @srnagar @jonathangiles @Azure/azure-java-sdk
 
@@ -210,7 +213,7 @@
 # ServiceOwners:                                                   @areddish @tburns10
 
 # PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/                                    @leareai
+/sdk/face/azure-ai-vision-face/                                    @leareai @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Face
 # ServiceOwners:                                                   @leareai
@@ -486,7 +489,7 @@
 # ServiceOwners:                                                   @Kishp01 @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @axisc @sjkwak @hmlam
+/sdk/eventhubs/                                                    @axisc @sjkwak @hmlam @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Hubs
 # ServiceOwners:                                                   @axisc @sjkwak @hmlam
