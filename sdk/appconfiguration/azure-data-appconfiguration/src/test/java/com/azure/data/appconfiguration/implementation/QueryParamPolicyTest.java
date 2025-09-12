@@ -176,19 +176,26 @@ public class QueryParamPolicyTest {
     }
 
     /**
-     * Test that duplicate query parameter keys are handled correctly
+     * Test that multiple query parameters with the same key are preserved as separate parameters
      */
     @SyncAsyncTest
-    public void duplicateQueryParameterKeysAreHandled() {
+    public void multipleParametersWithSameKeyArePreserved() {
         final String originalUrl = BASE_URL + ENDPOINT_PATH + "?filter=condition1&select=field1&filter=condition2";
 
         QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
             final String actualUrl = context.getHttpRequest().getUrl().toString();
-            // The policy should handle duplicates gracefully (TreeMap behavior)
-            assertTrue(actualUrl.contains("filter="), "Filter parameter should be present");
-            assertTrue(actualUrl.contains("select="), "Select parameter should be present");
+
+            // Count how many filter parameters exist
+            int filterCount = (actualUrl.length() - actualUrl.replace("filter=", "").length()) / "filter=".length();
+
+            // The policy should preserve both filter parameters as separate entries
+            assertEquals(2, filterCount, "Both filter parameters should be preserved separately");
+            assertTrue(actualUrl.contains("filter=condition1"), "First filter parameter should be preserved");
+            assertTrue(actualUrl.contains("filter=condition2"), "Second filter parameter should be preserved");
+            assertTrue(actualUrl.contains("select=field1"), "Select parameter should be preserved");
+
             return next.process();
         };
 
@@ -364,7 +371,7 @@ public class QueryParamPolicyTest {
     }
 
     /**
-     * Test that demonstrates the correct behavior for multiple tags parameters
+     * Test that validates the correct behavior for multiple tags parameters
      * 
      * This test verifies that the policy correctly preserves multiple tags parameters
      * as separate parameters instead of merging them into comma-separated values.
@@ -377,7 +384,7 @@ public class QueryParamPolicyTest {
         final String originalUrl
             = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
 
-        // This is what the URL SHOULD look like after processing
+        // The URL should preserve multiple tags parameters after processing (with alphabetical sorting)
         final String expectedUrl
             = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
 
@@ -386,14 +393,13 @@ public class QueryParamPolicyTest {
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
             final String actualUrl = context.getHttpRequest().getUrl().toString();
 
-            // THIS ASSERTION WILL FAIL with current implementation
-            // Multiple tags parameters should be preserved as separate parameters
+            // Verify that multiple tags parameters are preserved as separate parameters
             int tagsCount = (actualUrl.length() - actualUrl.replace("tags=", "").length()) / "tags=".length();
-            assertEquals(2, tagsCount, "CORRECT BEHAVIOR: Multiple tags parameters should be preserved separately. "
+            assertEquals(2, tagsCount, "Multiple tags parameters should be preserved separately. "
                 + "Expected 2 separate tags parameters, but got " + tagsCount);
 
-            // The URL should remain unchanged (except for sorting) when multiple tags exist
-            assertEquals(expectedUrl, actualUrl, "Multiple tags parameters should be preserved in their original form");
+            // The URL should preserve multiple tags parameters in their original form
+            assertEquals(expectedUrl, actualUrl, "Multiple tags parameters should be preserved with proper ordering");
 
             return next.process();
         };
@@ -404,14 +410,6 @@ public class QueryParamPolicyTest {
 
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
             () -> sendRequest(pipeline, originalUrl));
-    }
-
-    private Mono<HttpResponse> sendRequest(HttpPipeline pipeline, String url) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
-    }
-
-    private HttpResponse sendRequestSync(HttpPipeline pipeline, String url) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE).block();
     }
 
     /**
@@ -607,4 +605,13 @@ public class QueryParamPolicyTest {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, originalUrl),
             () -> sendRequest(pipeline, originalUrl));
     }
+    
+    private Mono<HttpResponse> sendRequest(HttpPipeline pipeline, String url) {
+        return pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
+    }
+
+    private HttpResponse sendRequestSync(HttpPipeline pipeline, String url) {
+        return pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE).block();
+    }
+
 }
