@@ -9,21 +9,37 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.core.query.QueryByExampleCriteriaBuilder;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.OffsetScrollPosition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Window;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
@@ -34,10 +50,14 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
  * @param <T> domain type.
  * @param <ID> id type.
  */
-public class SimpleCosmosRepository<T, ID extends Serializable> implements CosmosRepository<T, ID> {
+public class SimpleCosmosRepository<T, ID extends Serializable> implements CosmosRepository<T, ID>, QueryByExampleExecutor<T> {
+
+    private static final String EXAMPLE_MUST_NOT_BE_NULL = "Example must not be null";
+    private static final String QUERY_FUNCTION_MUST_NOT_BE_NULL = "Query function must not be null";
 
     private final CosmosOperations operation;
     private final CosmosEntityInformation<T, ID> information;
+    private ProjectionFactory projectionFactory;
 
     /**
      * Initialization
@@ -334,5 +354,173 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     @Override
     public Iterable<T> findAll(PartitionKey partitionKey) {
         return operation.findAll(partitionKey, information.getJavaType());
+    }
+
+    @Override
+    public <S extends T> Optional<S> findOne(Example<S> example) {
+        return new FluentQueryByExample<>(example, example.getProbeType()).one();
+    }
+
+    @Override
+    public <S extends T> Iterable<S> findAll(Example<S> example) {
+        return new FluentQueryByExample<>(example, example.getProbeType()).all();
+    }
+
+    @Override
+    public <S extends T> Iterable<S> findAll(Example<S> example, Sort sort) {
+        Assert.notNull(sort, "sort of findAll should not be null");
+        return new FluentQueryByExample<>(example, example.getProbeType()).sortBy(sort).all();
+    }
+
+    @Override
+    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
+        Assert.notNull(pageable, "pageable should not be null");
+        return new FluentQueryByExample<>(example, example.getProbeType()).page(pageable);
+    }
+
+    @Override
+    public <S extends T> long count(Example<S> example) {
+        return new FluentQueryByExample<>(example, example.getProbeType()).count();
+    }
+
+    @Override
+    public <S extends T> boolean exists(Example<S> example) {
+        return new FluentQueryByExample<>(example, example.getProbeType()).exists();
+    }
+
+    @Override
+    public <S extends T, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+
+        Assert.notNull(example, EXAMPLE_MUST_NOT_BE_NULL);
+        Assert.notNull(queryFunction, QUERY_FUNCTION_MUST_NOT_BE_NULL);
+
+        return queryFunction.apply(new FluentQueryByExample<>(example, example.getProbeType()));
+    }
+
+    /**
+     * {@link org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery} using {@link Example}.
+     */
+    class FluentQueryByExample<S, T> extends FetchableFluentQuerySupport<Example<S>, T> {
+
+        FluentQueryByExample(Example<S> example, Class<T> resultType) {
+            this(example, Sort.unsorted(), 0, resultType, Collections.emptyList());
+        }
+
+        FluentQueryByExample(Example<S> example, Sort sort, int limit, Class<T> resultType, List<String> fieldsToInclude) {
+            super(example, sort, limit, resultType, fieldsToInclude);
+        }
+
+        @Override
+        protected <R> FluentQueryByExample<S, R> create(Example<S> predicate, Sort sort, int limit, Class<R> resultType,
+                                                        List<String> fieldsToInclude) {
+            return new FluentQueryByExample<>(predicate, sort, limit, resultType, fieldsToInclude);
+        }
+
+        @Override
+        public T oneValue() {
+            Iterable<T> resultsIterable = operation.find(createQuery(), getResultType(), information.getContainerName());
+            final List<T> results = new ArrayList<>();
+            resultsIterable.forEach(results::add);
+            final T result;
+            if (results.isEmpty()) {
+                result = null;
+            } else if (results.size() == 1) {
+                result = results.get(0);
+            } else {
+                throw new CosmosAccessException("Too many results - return type "
+                    + getResultType()
+                    + " is not of type Iterable but find returned "
+                    + results.size()
+                    + " results");
+            }
+
+            return result;
+        }
+
+        @Override
+        public T firstValue() {
+            return this.stream().findFirst().orElse(null);
+        }
+
+        @Override
+        public List<T> all() {
+            return this.stream().toList();
+        }
+
+        @Override
+        public Window<T> scroll(ScrollPosition scrollPosition) {
+            Page<T> result;
+            if (scrollPosition instanceof KeysetScrollPosition keysetScrollPosition) {
+                String continuationToken = keysetScrollPosition.getKeys().get("continuationToken").toString();
+                result = this.page(CosmosPageRequest.of(0, 0, continuationToken, getSort()));
+                return Window.from(result.stream().toList(), value -> {
+                    keysetScrollPosition.getKeys().put("continuationToken", ((CosmosPageRequest) result).getRequestContinuation());
+                    return keysetScrollPosition;
+                });
+            } else if (scrollPosition instanceof OffsetScrollPosition offsetScrollPosition) {
+                int offset = Math.toIntExact(offsetScrollPosition.getOffset() % 100);
+                int pageNumber = Math.toIntExact(offsetScrollPosition.getOffset() / 100);
+                result = this.page(CosmosPageRequest.of(offset, pageNumber, 100, null, getSort()));
+                return Window.from(result.stream().toList(), offsetScrollPosition.positionFunction());
+            } else {
+                throw new IllegalArgumentException(String.format("ScrollPosition %s not supported", scrollPosition));
+            }
+        }
+
+        @Override
+        public Page<T> page(Pageable pageable) {
+
+            Assert.notNull(pageable, "Pageable must not be null");
+
+            CosmosQuery query = createQuery(q -> q.with(pageable));
+
+            if (pageable.getPageNumber() != 0
+                && !(pageable instanceof CosmosPageRequest)) {
+                throw new IllegalStateException("Not the first page but Pageable is not a valid "
+                    + "CosmosPageRequest, requestContinuation is required for non first page request");
+            }
+
+            query.with(pageable);
+
+            return operation.paginationQuery(query, getResultType(), information.getContainerName());
+        }
+
+        @Override
+        public Stream<T> stream() {
+            Spliterator<T> spliterator = operation.find(createQuery(), getResultType(), information.getContainerName())
+                .spliterator();
+            return StreamSupport.stream(spliterator, false);
+        }
+
+        @Override
+        public long count() {
+            return operation.count(createQuery(), information.getContainerName());
+        }
+
+        @Override
+        public boolean exists() {
+            return operation.exists(createQuery(), information.getJavaType(), information.getContainerName());
+        }
+
+        private CosmosQuery createQuery() {
+            return createQuery(UnaryOperator.identity());
+        }
+
+        private CosmosQuery createQuery(UnaryOperator<CosmosQuery> queryCustomizer) {
+
+            Criteria predicate = QueryByExampleCriteriaBuilder.getPredicate(getPredicate());
+            CosmosQuery query = new CosmosQuery(predicate);
+
+            if (getSort().isSorted()) {
+                query.with(getSort());
+            }
+
+            query.withLimit(getLimit());
+
+            query = queryCustomizer.apply(query);
+
+            return query;
+        }
+
     }
 }
