@@ -11,9 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.computefleet.fluent.models.FleetInner;
+import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.computefleet.models.Fleet;
 import com.azure.resourcemanager.computefleet.models.Fleets;
+import com.azure.resourcemanager.computefleet.models.VirtualMachine;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSet;
 
 public final class FleetsImpl implements Fleets {
@@ -88,6 +90,26 @@ public final class FleetsImpl implements Fleets {
         PagedIterable<VirtualMachineScaleSetInner> inner
             = this.serviceClient().listVirtualMachineScaleSets(resourceGroupName, name, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineScaleSetImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VirtualMachine> listVirtualMachines(String resourceGroupName, String name) {
+        PagedIterable<VirtualMachineInner> inner = this.serviceClient().listVirtualMachines(resourceGroupName, name);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VirtualMachine> listVirtualMachines(String resourceGroupName, String name, String filter,
+        String skiptoken, Context context) {
+        PagedIterable<VirtualMachineInner> inner
+            = this.serviceClient().listVirtualMachines(resourceGroupName, name, filter, skiptoken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public void cancel(String resourceGroupName, String fleetName) {
+        this.serviceClient().cancel(resourceGroupName, fleetName);
+    }
+
+    public void cancel(String resourceGroupName, String fleetName, Context context) {
+        this.serviceClient().cancel(resourceGroupName, fleetName, context);
     }
 
     public Fleet getById(String id) {

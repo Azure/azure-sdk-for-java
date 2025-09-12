@@ -22,6 +22,7 @@ import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.ValidateForModifyBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
 
 /**
@@ -338,6 +339,74 @@ public interface BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationJobExtendedInfoInner validateForBackup(String resourceGroupName, String vaultName,
         ValidateForBackupRequest parameters, Context context);
+
+    /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForModifyBackup(
+        String resourceGroupName, String vaultName, String backupInstanceName,
+        ValidateForModifyBackupRequest parameters);
+
+    /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForModifyBackup(
+        String resourceGroupName, String vaultName, String backupInstanceName,
+        ValidateForModifyBackupRequest parameters, Context context);
+
+    /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationJobExtendedInfoInner validateForModifyBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateForModifyBackupRequest parameters);
+
+    /**
+     * Validate whether update for backup instance will be successful or not.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationJobExtendedInfoInner validateForModifyBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateForModifyBackupRequest parameters, Context context);
 
     /**
      * Get result of backup instance creation operation.

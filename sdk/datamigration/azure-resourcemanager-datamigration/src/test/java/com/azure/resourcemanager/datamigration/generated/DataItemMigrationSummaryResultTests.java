@@ -11,7 +11,7 @@ public final class DataItemMigrationSummaryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataItemMigrationSummaryResult model = BinaryData.fromString(
-            "{\"name\":\"vlerchpqbmfpjba\",\"startedOn\":\"2021-07-26T01:12:04Z\",\"endedOn\":\"2021-06-03T19:53:15Z\",\"state\":\"Warning\",\"statusMessage\":\"spuunnoxyhkxgq\",\"itemsCount\":8879508928062968266,\"itemsCompletedCount\":5499837573865267014,\"errorPrefix\":\"oqcaaewdaomdj\",\"resultPrefix\":\"pjxxkzb\"}")
+            "{\"name\":\"tzlswvaj\",\"startedOn\":\"2021-11-03T15:02:37Z\",\"endedOn\":\"2021-09-26T07:25:25Z\",\"state\":\"Skipped\",\"statusMessage\":\"qzasunwqrjzfrgqh\",\"itemsCount\":8053513658904619463,\"itemsCompletedCount\":7536993001537330098,\"errorPrefix\":\"cnjrohmbpyryxame\",\"resultPrefix\":\"ydyvkfkmro\"}")
             .toObject(DataItemMigrationSummaryResult.class);
     }
 

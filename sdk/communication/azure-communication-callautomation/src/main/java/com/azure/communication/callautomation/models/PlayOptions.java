@@ -39,11 +39,6 @@ public final class PlayOptions {
      */
     private String operationCallbackUrl;
 
-    /*
-    * If set, hold audio will be interrupted, then this request will be played, and then the hold audio will be resumed.
-    */
-    private Boolean interruptHoldAudio;
-
     /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.
@@ -141,26 +136,6 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
-        return this;
-    }
-
-    /**
-     * Get the interruptHoldAudio property.
-     *
-     * @return the interruptHoldAudio value.
-     */
-    public Boolean isInterruptHoldAudio() {
-        return this.interruptHoldAudio;
-    }
-
-    /**
-     * Set the interruptHoldAudio property
-     *
-     * @param interruptHoldAudio the interruptHoldAudio value to set.
-     * @return the PlayOptions object itself.
-     */
-    public PlayOptions setInterruptHoldAudio(Boolean interruptHoldAudio) {
-        this.interruptHoldAudio = interruptHoldAudio;
         return this;
     }
 }

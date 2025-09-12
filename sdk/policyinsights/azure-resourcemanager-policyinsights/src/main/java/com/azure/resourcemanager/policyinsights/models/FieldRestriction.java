@@ -37,6 +37,16 @@ public final class FieldRestriction implements JsonSerializable<FieldRestriction
      */
     private PolicyReference policy;
 
+    /*
+     * The effect of the policy that is causing the field restriction. http://aka.ms/policyeffects
+     */
+    private String policyEffect;
+
+    /*
+     * The reason for the restriction.
+     */
+    private String reason;
+
     /**
      * Creates an instance of FieldRestriction class.
      */
@@ -77,6 +87,25 @@ public final class FieldRestriction implements JsonSerializable<FieldRestriction
      */
     public PolicyReference policy() {
         return this.policy;
+    }
+
+    /**
+     * Get the policyEffect property: The effect of the policy that is causing the field restriction.
+     * http://aka.ms/policyeffects.
+     * 
+     * @return the policyEffect value.
+     */
+    public String policyEffect() {
+        return this.policyEffect;
+    }
+
+    /**
+     * Get the reason property: The reason for the restriction.
+     * 
+     * @return the reason value.
+     */
+    public String reason() {
+        return this.reason;
     }
 
     /**
@@ -123,6 +152,10 @@ public final class FieldRestriction implements JsonSerializable<FieldRestriction
                     deserializedFieldRestriction.values = values;
                 } else if ("policy".equals(fieldName)) {
                     deserializedFieldRestriction.policy = PolicyReference.fromJson(reader);
+                } else if ("policyEffect".equals(fieldName)) {
+                    deserializedFieldRestriction.policyEffect = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedFieldRestriction.reason = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

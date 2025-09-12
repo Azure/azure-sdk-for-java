@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
@@ -22,7 +21,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -44,7 +42,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int failoverRetryCount;
 
     private int sessionTokenRetryCount;
-    private int staleContainerRetryCount;
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
     private RegionalRoutingContext regionalRoutingContext;
@@ -70,7 +67,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
-        this.staleContainerRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
@@ -147,13 +143,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
             return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
-        }
-
-        // This is for gateway mode, collection recreate scenario is not handled there
-        if (clientException != null &&
-            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
-            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
-            return this.shouldRetryOnStaleContainer();
         }
 
         if (clientException != null &&
@@ -272,27 +261,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 }
             }
         }
-    }
-
-    private Mono<ShouldRetryResult> shouldRetryOnStaleContainer() {
-        this.staleContainerRetryCount++;
-        if (this.rxCollectionCache == null || this.staleContainerRetryCount > 1) {
-            return Mono.just(ShouldRetryResult.noRetry());
-        }
-
-        this.request.setForceNameCacheRefresh(true);
-
-        // Refresh the sdk collection cache and throw the exception if intendedCollectionRid was passed by outside sdk, so caller will refresh their own collection cache if they have one
-        // Cosmos encryption is one use case
-        if(request.intendedCollectionRidPassedIntoSDK) {
-            return this.rxCollectionCache.refreshAsync(null, this.request).then( Mono.just(ShouldRetryResult.noRetry()));
-        }
-
-        //remove the previous header and try again
-        if(StringUtils.isNotEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
-            request.getHeaders().remove(INTENDED_COLLECTION_RID_HEADER);
-        }
-        return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
@@ -559,7 +527,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (cosmosException instanceof ServiceUnavailableException) {
             ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
             return serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_503
-                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND;
+        }
+
+        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND) {
+            return true;
         }
 
         return false;

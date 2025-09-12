@@ -151,25 +151,23 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CloudExadataInfrastructureUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("cloudexadatainfrastructurename") String cloudexadatainfrastructurename, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures")
@@ -1012,10 +1010,9 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
             return Mono.error(new IllegalArgumentException(
                 "Parameter cloudexadatainfrastructurename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1050,9 +1047,8 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
                 .log(new IllegalArgumentException(
                     "Parameter cloudexadatainfrastructurename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     /**
@@ -1088,9 +1084,8 @@ public final class CloudExadataInfrastructuresClientImpl implements CloudExadata
                 .log(new IllegalArgumentException(
                     "Parameter cloudexadatainfrastructurename is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, cloudexadatainfrastructurename, context);
     }
 
     /**

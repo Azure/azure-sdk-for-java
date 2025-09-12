@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class SwaggerSpecification implements JsonSerializable<SwaggerSpecification> {
     /*
-     * The apiVersions property.
+     * The api versions.
      */
     private List<String> apiVersions;
 
     /*
-     * The swaggerSpecFolderUri property.
+     * The swagger spec folder uri.
      */
     private String swaggerSpecFolderUri;
 
@@ -34,7 +34,7 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
     }
 
     /**
-     * Get the apiVersions property: The apiVersions property.
+     * Get the apiVersions property: The api versions.
      * 
      * @return the apiVersions value.
      */
@@ -43,7 +43,7 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
     }
 
     /**
-     * Set the apiVersions property: The apiVersions property.
+     * Set the apiVersions property: The api versions.
      * 
      * @param apiVersions the apiVersions value to set.
      * @return the SwaggerSpecification object itself.
@@ -54,7 +54,7 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
     }
 
     /**
-     * Get the swaggerSpecFolderUri property: The swaggerSpecFolderUri property.
+     * Get the swaggerSpecFolderUri property: The swagger spec folder uri.
      * 
      * @return the swaggerSpecFolderUri value.
      */
@@ -63,7 +63,7 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
     }
 
     /**
-     * Set the swaggerSpecFolderUri property: The swaggerSpecFolderUri property.
+     * Set the swaggerSpecFolderUri property: The swagger spec folder uri.
      * 
      * @param swaggerSpecFolderUri the swaggerSpecFolderUri value to set.
      * @return the SwaggerSpecification object itself.

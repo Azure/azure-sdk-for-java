@@ -134,7 +134,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ApplicationTypeVersionUpdateParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,9 +142,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationTypeName") String applicationTypeName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,7 +152,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationTypeName") String applicationTypeName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions")
@@ -824,11 +824,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
         if (version == null) {
             return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -873,9 +871,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version,
             Context.NONE);
     }
 
@@ -921,10 +918,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, context);
     }
 
     /**
@@ -1251,8 +1246,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeVersionResourceInner>>
@@ -1280,8 +1275,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink) {
@@ -1309,8 +1304,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink,

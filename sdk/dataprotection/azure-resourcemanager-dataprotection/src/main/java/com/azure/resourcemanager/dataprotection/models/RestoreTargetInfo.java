@@ -137,7 +137,6 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (datasourceInfo() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -150,6 +149,11 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
         }
         if (datasourceAuthCredentials() != null) {
             datasourceAuthCredentials().validate();
+        }
+        if (recoveryOption() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryOption in model RestoreTargetInfo"));
         }
     }
 

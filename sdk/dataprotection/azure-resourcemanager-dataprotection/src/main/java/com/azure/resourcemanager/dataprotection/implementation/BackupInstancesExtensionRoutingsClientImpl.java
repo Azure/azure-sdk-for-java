@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesExtensionRoutingsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupInstanceResourceInner;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResourceList;
@@ -60,7 +61,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DataProtectionClient")
+    @ServiceInterface(name = "DataProtectionClientBackupInstancesExtensionRoutings")
     public interface BackupInstancesExtensionRoutingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceId}/providers/Microsoft.DataProtection/backupInstances")
@@ -72,10 +73,27 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceId}/providers/Microsoft.DataProtection/backupInstances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BackupInstanceResourceList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupInstanceResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BackupInstanceResourceList> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -112,33 +130,6 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      * Gets a list of backup instances associated with a tracked resource.
      * 
      * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupInstanceResourceInner>> listSinglePageAsync(String resourceId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceId, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets a list of backup instances associated with a tracked resource.
-     * 
-     * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -154,17 +145,55 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      * Gets a list of backup instances associated with a tracked resource.
      * 
      * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupInstanceResourceInner> listSinglePage(String resourceId) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupInstanceResourceList> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceId, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets a list of backup instances associated with a tracked resource.
+     * 
+     * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource as paginated response with
-     * {@link PagedFlux}.
+     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupInstanceResourceInner> listAsync(String resourceId, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceId, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupInstanceResourceInner> listSinglePage(String resourceId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupInstanceResourceList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceId, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -179,7 +208,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId) {
-        return new PagedIterable<>(listAsync(resourceId));
+        return new PagedIterable<>(() -> listSinglePage(resourceId), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -195,7 +224,8 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId, Context context) {
-        return new PagedIterable<>(listAsync(resourceId, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceId, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -205,7 +235,8 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupInstanceResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupInstanceResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -227,25 +258,56 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupInstanceResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupInstanceResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupInstanceResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<BackupInstanceResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupInstancesExtensionRoutingsClientImpl.class);
 }

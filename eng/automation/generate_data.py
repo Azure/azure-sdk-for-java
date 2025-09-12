@@ -19,7 +19,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import ListIndentDumper
 
-from generate_utils import generate_typespec_project, clean_sdk_folder_if_swagger
+from generate_utils import generate_typespec_project, clean_sdk_folder
 
 GROUP_ID = "com.azure"
 DPG_ARGUMENTS = "--sdk-integration --generate-samples --generate-tests"
@@ -42,12 +42,13 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
 
     if not succeeded:
-        # check whether this is migration from Swagger
-        clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+        # error in emitter
+        # fallback to generate from a clean folder
+        clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
         if clean_sdk_folder_succeeded:
             # re-generate
             succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-                tsp_project, sdk_root, spec_root, head_sha, repo_url
+                tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
             )
 
     if succeeded:
@@ -71,12 +72,13 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 module,
             )
         else:
-            # check whether this is migration from Swagger
-            clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+            # error in compile
+            # fallback to generate from a clean folder
+            clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
             if clean_sdk_folder_succeeded:
                 # re-generate
                 succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-                    tsp_project, sdk_root, spec_root, head_sha, repo_url
+                    tsp_project, sdk_root, spec_root, head_sha, repo_url, disable_customization=True
                 )
                 stable_version, _ = set_or_default_version(sdk_root, GROUP_ID, module)
                 current_version = DEFAULT_VERSION

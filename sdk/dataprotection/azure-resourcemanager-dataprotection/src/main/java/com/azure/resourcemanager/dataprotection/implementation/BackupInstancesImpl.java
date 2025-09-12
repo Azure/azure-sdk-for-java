@@ -24,6 +24,7 @@ import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.ValidateForModifyBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
 
 public final class BackupInstancesImpl implements BackupInstances {
@@ -116,6 +117,28 @@ public final class BackupInstancesImpl implements BackupInstances {
         ValidateForBackupRequest parameters, Context context) {
         OperationJobExtendedInfoInner inner
             = this.serviceClient().validateForBackup(resourceGroupName, vaultName, parameters, context);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationJobExtendedInfo validateForModifyBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateForModifyBackupRequest parameters) {
+        OperationJobExtendedInfoInner inner = this.serviceClient()
+            .validateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationJobExtendedInfo validateForModifyBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateForModifyBackupRequest parameters, Context context) {
+        OperationJobExtendedInfoInner inner = this.serviceClient()
+            .validateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {

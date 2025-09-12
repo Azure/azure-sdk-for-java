@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
@@ -32,6 +33,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link NettyHttpClientBuilder}.
@@ -370,6 +373,35 @@ public class NettyHttpClientBuilderTests {
                 epollEventLoopGroupCreator, isKqueueAvailable, kqueueEventLoopGroupCreator);
 
         assertInstanceOf(expected, eventLoopGroup);
+    }
+
+    @Test
+    public void buildNettyClientWithoutConnectionPool() throws NoSuchFieldException, IllegalAccessException {
+        NettyHttpClient client = (NettyHttpClient) new NettyHttpClientBuilder().connectionPoolSize(0).build();
+
+        Field connectionPoolField = NettyHttpClient.class.getDeclaredField("connectionPool");
+        connectionPoolField.setAccessible(true);
+        assertNull(connectionPoolField.get(client), "Connection pool should be null when pool size is 0.");
+    }
+
+    @Test
+    public void testInvalidMaxPendingAcquires() {
+        NettyHttpClientBuilder builder = new NettyHttpClientBuilder();
+        assertThrows(IllegalArgumentException.class, () -> builder.maxPendingAcquires(0));
+        assertThrows(IllegalArgumentException.class, () -> builder.maxPendingAcquires(-1));
+    }
+
+    @Test
+    public void testMaximumHttpVersion() throws NoSuchFieldException, IllegalAccessException {
+        NettyHttpClientBuilder builder = new NettyHttpClientBuilder();
+
+        NettyHttpClient clientv1 = (NettyHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        Field httpVersionField = NettyHttpClient.class.getDeclaredField("maximumHttpVersion");
+        httpVersionField.setAccessible(true);
+        assertEquals(HttpProtocolVersion.HTTP_1_1, httpVersionField.get(clientv1));
+
+        NettyHttpClient clientv2 = (NettyHttpClient) builder.maximumHttpVersion(null).build();
+        assertEquals(HttpProtocolVersion.HTTP_2, httpVersionField.get(clientv2));
     }
 
     private static Stream<Arguments> getEventLoopGroupToUseSupplier() throws ReflectiveOperationException {

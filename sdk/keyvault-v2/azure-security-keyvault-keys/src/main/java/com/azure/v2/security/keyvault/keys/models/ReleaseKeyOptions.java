@@ -3,10 +3,13 @@
 
 package com.azure.v2.security.keyvault.keys.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 /**
  * Represents the configurable options to release a key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class ReleaseKeyOptions {
     /*
      * A client provided nonce for freshness.

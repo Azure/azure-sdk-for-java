@@ -13,7 +13,7 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 
 ### Prerequisites
 
-All libraries are baselined on Java 8, with testing and forward support up until the latest Java long-term support release (currently Java 17).
+All libraries are baselined on Java 8, with testing and forward support up until the latest Java long-term support release (currently Java 21).
 
 ## Available packages
 

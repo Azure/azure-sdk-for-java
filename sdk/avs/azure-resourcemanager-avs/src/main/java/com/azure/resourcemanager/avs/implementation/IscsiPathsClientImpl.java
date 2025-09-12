@@ -132,25 +132,23 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") IscsiPathInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -716,10 +714,9 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -753,9 +750,8 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -790,9 +786,8 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
 
     /**

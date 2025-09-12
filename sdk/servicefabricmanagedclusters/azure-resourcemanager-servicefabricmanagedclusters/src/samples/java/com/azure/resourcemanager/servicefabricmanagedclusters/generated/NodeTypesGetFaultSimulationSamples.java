@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class NodeTypesGetFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+     * x-ms-original-file: 2025-06-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
      */
     /**
      * Sample code: Get Node Type Fault Simulation.

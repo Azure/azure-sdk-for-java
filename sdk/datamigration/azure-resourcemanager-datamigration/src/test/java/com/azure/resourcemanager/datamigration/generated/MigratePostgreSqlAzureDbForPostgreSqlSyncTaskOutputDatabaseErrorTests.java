@@ -14,18 +14,19 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"xnavvwxq\",\"events\":[{\"timestampString\":\"unyowxwl\",\"eventTypeString\":\"jrkvfgbvfvpdbo\",\"eventText\":\"cizsjqlhkrribdei\"}],\"id\":\"ipqkghvxndzwm\"}")
+            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"gdirazf\",\"events\":[{\"timestampString\":\"w\",\"eventTypeString\":\"mdujtmvcopexcm\",\"eventText\":\"rbuhhlky\"},{\"timestampString\":\"tqsrogtuwkff\",\"eventTypeString\":\"ktsysidfvclglxn\",\"eventText\":\"ijtk\"},{\"timestampString\":\"sqo\",\"eventTypeString\":\"fikayiansharujtj\",\"eventText\":\"xfz\"},{\"timestampString\":\"qttv\",\"eventTypeString\":\"pqhjpenuygbqeqq\",\"eventText\":\"ewvnqvcdlgu\"}],\"id\":\"cmfdjwnlax\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("xnavvwxq", model.errorMessage());
+        Assertions.assertEquals("gdirazf", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError().withErrorMessage("xnavvwxq")
-                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent()));
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError().withErrorMessage("gdirazf")
+                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent(),
+                    new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent()));
         model = BinaryData.fromObject(model)
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("xnavvwxq", model.errorMessage());
+        Assertions.assertEquals("gdirazf", model.errorMessage());
     }
 }

@@ -108,23 +108,21 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             @PathParam("workloadImpactName") String workloadImpactName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workloadImpactName") String workloadImpactName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("workloadImpactName") String workloadImpactName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workloadImpactName") String workloadImpactName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("workloadImpactName") String workloadImpactName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts")
@@ -488,10 +486,9 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), workloadImpactName, accept, context))
+                this.client.getSubscriptionId(), workloadImpactName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -535,9 +532,8 @@ public final class WorkloadImpactsClientImpl implements WorkloadImpactsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), workloadImpactName, accept, context);
+            this.client.getSubscriptionId(), workloadImpactName, context);
     }
 
     /**

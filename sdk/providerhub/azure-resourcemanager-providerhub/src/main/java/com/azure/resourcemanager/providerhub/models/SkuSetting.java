@@ -19,62 +19,62 @@ import java.util.List;
 @Fluent
 public final class SkuSetting implements JsonSerializable<SkuSetting> {
     /*
-     * The name property.
+     * The name.
      */
     private String name;
 
     /*
-     * The tier property.
+     * The tier.
      */
     private String tier;
 
     /*
-     * The size property.
+     * The size.
      */
     private String size;
 
     /*
-     * The family property.
+     * The family.
      */
     private String family;
 
     /*
-     * The kind property.
+     * The kind.
      */
     private String kind;
 
     /*
-     * The locations property.
+     * The locations.
      */
     private List<String> locations;
 
     /*
-     * The locationInfo property.
+     * The location info.
      */
     private List<SkuLocationInfo> locationInfo;
 
     /*
-     * The requiredQuotaIds property.
+     * The required quota ids.
      */
     private List<String> requiredQuotaIds;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The capacity property.
+     * The capacity.
      */
     private SkuSettingCapacity capacity;
 
     /*
-     * The costs property.
+     * The costs.
      */
     private List<SkuCost> costs;
 
     /*
-     * The capabilities property.
+     * The capabilities.
      */
     private List<SkuCapability> capabilities;
 
@@ -85,7 +85,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The name.
      * 
      * @return the name value.
      */
@@ -94,7 +94,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The name.
      * 
      * @param name the name value to set.
      * @return the SkuSetting object itself.
@@ -105,7 +105,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the tier property: The tier property.
+     * Get the tier property: The tier.
      * 
      * @return the tier value.
      */
@@ -114,7 +114,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the tier property: The tier property.
+     * Set the tier property: The tier.
      * 
      * @param tier the tier value to set.
      * @return the SkuSetting object itself.
@@ -125,7 +125,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the size property: The size property.
+     * Get the size property: The size.
      * 
      * @return the size value.
      */
@@ -134,7 +134,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the size property: The size property.
+     * Set the size property: The size.
      * 
      * @param size the size value to set.
      * @return the SkuSetting object itself.
@@ -145,7 +145,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the family property: The family property.
+     * Get the family property: The family.
      * 
      * @return the family value.
      */
@@ -154,7 +154,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the family property: The family property.
+     * Set the family property: The family.
      * 
      * @param family the family value to set.
      * @return the SkuSetting object itself.
@@ -165,7 +165,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: The kind.
      * 
      * @return the kind value.
      */
@@ -174,7 +174,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the kind property: The kind property.
+     * Set the kind property: The kind.
      * 
      * @param kind the kind value to set.
      * @return the SkuSetting object itself.
@@ -185,7 +185,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the locations property: The locations property.
+     * Get the locations property: The locations.
      * 
      * @return the locations value.
      */
@@ -194,7 +194,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the locations property: The locations property.
+     * Set the locations property: The locations.
      * 
      * @param locations the locations value to set.
      * @return the SkuSetting object itself.
@@ -205,7 +205,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the locationInfo property: The locationInfo property.
+     * Get the locationInfo property: The location info.
      * 
      * @return the locationInfo value.
      */
@@ -214,7 +214,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the locationInfo property: The locationInfo property.
+     * Set the locationInfo property: The location info.
      * 
      * @param locationInfo the locationInfo value to set.
      * @return the SkuSetting object itself.
@@ -225,7 +225,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the requiredQuotaIds property: The requiredQuotaIds property.
+     * Get the requiredQuotaIds property: The required quota ids.
      * 
      * @return the requiredQuotaIds value.
      */
@@ -234,7 +234,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the requiredQuotaIds property: The requiredQuotaIds property.
+     * Set the requiredQuotaIds property: The required quota ids.
      * 
      * @param requiredQuotaIds the requiredQuotaIds value to set.
      * @return the SkuSetting object itself.
@@ -245,7 +245,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -254,7 +254,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the SkuSetting object itself.
@@ -265,7 +265,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the capacity property: The capacity property.
+     * Get the capacity property: The capacity.
      * 
      * @return the capacity value.
      */
@@ -274,7 +274,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the capacity property: The capacity property.
+     * Set the capacity property: The capacity.
      * 
      * @param capacity the capacity value to set.
      * @return the SkuSetting object itself.
@@ -285,7 +285,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the costs property: The costs property.
+     * Get the costs property: The costs.
      * 
      * @return the costs value.
      */
@@ -294,7 +294,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the costs property: The costs property.
+     * Set the costs property: The costs.
      * 
      * @param costs the costs value to set.
      * @return the SkuSetting object itself.
@@ -305,7 +305,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Get the capabilities property: The capabilities property.
+     * Get the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
@@ -314,7 +314,7 @@ public final class SkuSetting implements JsonSerializable<SkuSetting> {
     }
 
     /**
-     * Set the capabilities property: The capabilities property.
+     * Set the capabilities property: The capabilities.
      * 
      * @param capabilities the capabilities value to set.
      * @return the SkuSetting object itself.

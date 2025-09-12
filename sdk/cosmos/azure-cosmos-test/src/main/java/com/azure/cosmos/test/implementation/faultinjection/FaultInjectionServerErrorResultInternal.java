@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -168,6 +169,12 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
                 cosmosException = new PartitionKeyRangeGoneException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case LEASE_NOT_FOUND:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND));
+                cosmosException = new LeaseNotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:

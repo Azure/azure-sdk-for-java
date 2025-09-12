@@ -532,7 +532,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-06-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);

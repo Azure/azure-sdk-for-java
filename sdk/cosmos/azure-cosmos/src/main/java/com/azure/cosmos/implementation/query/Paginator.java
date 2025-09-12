@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -99,7 +100,8 @@ public class Paginator {
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
         Long endLsn,
-        OperationContextAndListenerTuple operationContext) {
+        OperationContextAndListenerTuple operationContext,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
@@ -115,7 +117,8 @@ public class Paginator {
                 endLsn,
                 operationContext,
                 client.getGlobalEndpointManager(),
-                client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                client.getGlobalPartitionEndpointManagerForCircuitBreaker(),
+                diagnosticsClientContext
             ),
             preFetchCount);
     }

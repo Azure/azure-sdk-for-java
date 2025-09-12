@@ -115,7 +115,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             @PathParam("storagePoolName") String storagePoolName, @PathParam("avsVmId") String avsVmId,
             @PathParam("volumeId") String volumeId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms/{avsVmId}/avsVmVolumes/{volumeId}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,9 +123,9 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @PathParam("avsVmId") String avsVmId,
-            @PathParam("volumeId") String volumeId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("volumeId") String volumeId, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms/{avsVmId}/avsVmVolumes/{volumeId}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -133,7 +133,7 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, @PathParam("avsVmId") String avsVmId,
-            @PathParam("volumeId") String volumeId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("volumeId") String volumeId, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms/{avsVmId}/avsVmVolumes")
@@ -625,9 +625,9 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
         if (volumeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeId is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -672,10 +672,8 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter volumeId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, Context.NONE);
     }
 
     /**
@@ -720,9 +718,8 @@ public final class AvsVmVolumesClientImpl implements AvsVmVolumesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter volumeId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, volumeId, context);
     }
 
     /**

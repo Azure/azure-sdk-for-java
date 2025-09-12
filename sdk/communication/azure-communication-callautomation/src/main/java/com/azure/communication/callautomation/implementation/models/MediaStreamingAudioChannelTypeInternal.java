@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Audio channel type to stream, eg. unmixed audio, mixed audio.
+ * The audio channel type to stream, e.g., unmixed audio, mixed audio.
  */
 public final class MediaStreamingAudioChannelTypeInternal
     extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * Properties of the Event Subscription update parameters.
@@ -42,6 +43,11 @@ public final class SubscriptionUpdateParametersProperties
      * Expiration time of the event subscription.
      */
     private OffsetDateTime expirationTimeUtc;
+
+    /*
+     * Tags relating to Event Subscription resource.
+     */
+    private Map<String, String> tags;
 
     /**
      * Creates an instance of SubscriptionUpdateParametersProperties class.
@@ -131,6 +137,26 @@ public final class SubscriptionUpdateParametersProperties
     }
 
     /**
+     * Get the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @param tags the tags value to set.
+     * @return the SubscriptionUpdateParametersProperties object itself.
+     */
+    public SubscriptionUpdateParametersProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +184,7 @@ public final class SubscriptionUpdateParametersProperties
             this.expirationTimeUtc == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeUtc));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +216,9 @@ public final class SubscriptionUpdateParametersProperties
                 } else if ("expirationTimeUtc".equals(fieldName)) {
                     deserializedSubscriptionUpdateParametersProperties.expirationTimeUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSubscriptionUpdateParametersProperties.tags = tags;
                 } else {
                     reader.skipChildren();
                 }

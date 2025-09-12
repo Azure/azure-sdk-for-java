@@ -6,6 +6,7 @@ package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -14,7 +15,7 @@ import com.azure.resourcemanager.providerhub.models.CustomRolloutProperties;
 import java.io.IOException;
 
 /**
- * Rollout details.
+ * The CustomRollout model.
  */
 @Fluent
 public final class CustomRolloutInner extends ProxyResource {
@@ -22,6 +23,11 @@ public final class CustomRolloutInner extends ProxyResource {
      * Properties of the rollout.
      */
     private CustomRolloutProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -62,6 +68,15 @@ public final class CustomRolloutInner extends ProxyResource {
     public CustomRolloutInner withProperties(CustomRolloutProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -144,6 +159,8 @@ public final class CustomRolloutInner extends ProxyResource {
                     deserializedCustomRolloutInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCustomRolloutInner.properties = CustomRolloutProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomRolloutInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

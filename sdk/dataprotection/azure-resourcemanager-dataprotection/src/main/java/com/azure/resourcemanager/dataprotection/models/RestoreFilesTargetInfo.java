@@ -87,13 +87,17 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (targetDetails() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property targetDetails in model RestoreFilesTargetInfo"));
         } else {
             targetDetails().validate();
+        }
+        if (recoveryOption() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryOption in model RestoreFilesTargetInfo"));
         }
     }
 

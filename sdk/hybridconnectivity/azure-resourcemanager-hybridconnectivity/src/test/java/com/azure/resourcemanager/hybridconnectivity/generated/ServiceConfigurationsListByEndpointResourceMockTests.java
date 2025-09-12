@@ -23,7 +23,7 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
     @Test
     public void testListByEndpointResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"kzzlvmbmpaxmodf\",\"port\":3624195401715068445,\"provisioningState\":\"Creating\"},\"id\":\"bpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"hdneuelfph\",\"port\":5814437001624716680,\"provisioningState\":\"Succeeded\"},\"id\":\"fikdowwqu\",\"name\":\"v\",\"type\":\"zx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ServiceConfigurationResource> response = manager.serviceConfigurations()
-            .listByEndpointResource("rpkhjwn", "yqsluic", com.azure.core.util.Context.NONE);
+            .listByEndpointResource("zmuvpbttdumorppx", "bmnzbtbhjpgl", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ServiceName.WAC, response.iterator().next().serviceName());
-        Assertions.assertEquals("kzzlvmbmpaxmodf", response.iterator().next().resourceId());
-        Assertions.assertEquals(3624195401715068445L, response.iterator().next().port());
+        Assertions.assertEquals("hdneuelfph", response.iterator().next().resourceId());
+        Assertions.assertEquals(5814437001624716680L, response.iterator().next().port());
     }
 }

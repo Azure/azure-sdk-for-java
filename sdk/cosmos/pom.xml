@@ -21,5 +21,6 @@
     <module>azure-cosmos-tests</module>
     <module>azure-cosmos-kafka-connect</module>
     <module>azure-cosmos-spark-account-data-resolver-sample</module>
+    <module>fabric-cosmos-spark-auth_3</module>
   </modules>
 </project>

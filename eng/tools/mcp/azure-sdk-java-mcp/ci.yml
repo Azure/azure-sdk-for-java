@@ -1,0 +1,127 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - release/*
+      - hotfix/*
+  paths:
+    include:
+      - eng/tools/mcp/azure-sdk-java-mcp
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - release/*
+      - hotfix/*
+  paths:
+    include:
+      - eng/tools/mcp/azure-sdk-java-mcp
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: 'Build'
+        variables:
+          - template: /eng/pipelines/templates/variables/image.yml
+          - name: NodeVersion
+            value: '22.x'
+          - name: ArtifactName
+            value: 'azure-sdk-java-mcp'
+          - name: McpToolDirectory
+            value: 'eng/tools/mcp/azure-sdk-java-mcp'
+        jobs:
+          - job: 'Build'
+
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+
+            steps:
+              - task: NodeTool@0
+                inputs:
+                  versionSpec: '$(NodeVersion)'
+                displayName: 'Use NodeJS $(NodeVersion)'
+
+              - script: |
+                  npm ci
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Install npm packages for MCP tool"
+
+              - script: |
+                  npm run lint
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Run ESLint validation"
+
+              - script: |
+                  npm run format:check
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Check code formatting"
+
+              - script: |
+                  npm run test:run
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Run tests"
+
+              - script: |
+                  npm run-script build
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Build Java MCP tool"
+
+              - pwsh: |
+                  npm pack $(McpToolDirectory)
+                  Copy-Item ./*.tgz $(Build.ArtifactStagingDirectory)
+                displayName: "Pack Java MCP tool"
+
+              - task: 1ES.PublishPipelineArtifact@1
+                inputs:
+                  targetPath: '$(Build.ArtifactStagingDirectory)'
+                  artifactName: $(ArtifactName)
+
+      - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
+        - stage: 'Release'
+          dependsOn: Build
+          condition: Succeeded()
+          variables:
+            - template: /eng/pipelines/templates/variables/image.yml
+            - name: ArtifactName
+              value: 'azure-sdk-java-mcp'
+            - name: McpToolDirectory
+              value: 'eng/tools/mcp/azure-sdk-java-mcp'
+
+          jobs:
+          - job: PublishPackage
+            displayName: 'Publish azure-sdk-java-mcp package to devops feed'
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+            - download: current
+
+            - pwsh: |
+                $detectedPackageName=Get-ChildItem $(Pipeline.Workspace)/$(ArtifactName)/*.tgz
+                Write-Host "Detected package name: $detectedPackageName"
+                Write-Host "##vso[task.setvariable variable=PackageArtifactFullPath]$detectedPackageName"
+              displayName: "Find package artifact"
+
+            - pwsh: |
+                @"
+                registry=https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
+                always-auth=true
+                "@ | Set-Content -Path $(McpToolDirectory)/.npmrc -NoNewline
+              displayName: "Generate .npmrc"
+
+            - task: NpmAuthenticate@0
+              inputs:
+                workingFile: $(McpToolDirectory)/.npmrc
+
+            - pwsh: |
+                npm publish $(PackageArtifactFullPath) --registry https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
+              workingDirectory: $(McpToolDirectory)
+              displayName: "Publish package to devops feed"

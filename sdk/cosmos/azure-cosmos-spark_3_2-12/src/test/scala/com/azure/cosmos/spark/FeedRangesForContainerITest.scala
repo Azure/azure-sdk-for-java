@@ -14,7 +14,7 @@ import scala.collection.mutable
 
 class FeedRangesForContainerITest
   extends IntegrationSpec
-    with SparkWithDropwizardAndSlf4jMetrics
+    with SparkWithMetrics
     with CosmosClient
     with CosmosContainer
     with BasicLoggingTrait

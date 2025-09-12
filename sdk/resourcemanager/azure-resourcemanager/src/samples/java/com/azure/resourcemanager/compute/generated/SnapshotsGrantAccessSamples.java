@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 public final class SnapshotsGrantAccessSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/snapshotExamples/
      * Snapshot_BeginGetAccess.json
      */
     /**

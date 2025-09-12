@@ -54,9 +54,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
-          enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
-          clientTelemetryEndpoint = None,
           preferredRegionsList = None,
           subscriptionId = None,
           tenantId = None,
@@ -64,7 +62,10 @@ class CosmosClientCacheITest
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "",
           clientBuilderInterceptors = None,
-          clientInterceptors = None)
+          clientInterceptors = None,
+          sampledDiagnosticsLoggerConfig = None,
+          azureMonitorConfig = None
+        )
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
@@ -80,9 +81,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
-          enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
-          clientTelemetryEndpoint = None,
           preferredRegionsList = Some(Array[String]()),
           subscriptionId = None,
           tenantId = None,
@@ -90,7 +89,10 @@ class CosmosClientCacheITest
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "",
           clientBuilderInterceptors = None,
-          clientInterceptors = None)
+          clientInterceptors = None,
+          sampledDiagnosticsLoggerConfig = None,
+          azureMonitorConfig = None
+        )
       ),
       (
         "StandardCtorWithOnePreferredRegion",
@@ -106,9 +108,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
-          enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
-          clientTelemetryEndpoint = None,
           preferredRegionsList = Some(Array[String]("North Europe")),
           subscriptionId = None,
           tenantId = None,
@@ -116,7 +116,10 @@ class CosmosClientCacheITest
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "",
           clientBuilderInterceptors = None,
-          clientInterceptors = None)
+          clientInterceptors = None,
+          sampledDiagnosticsLoggerConfig = None,
+          azureMonitorConfig = None
+        )
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
@@ -132,9 +135,7 @@ class CosmosClientCacheITest
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
-          enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
-          clientTelemetryEndpoint = None,
           preferredRegionsList = Some(Array[String]("North Europe", "West Europe")),
           subscriptionId = None,
           tenantId = None,
@@ -142,7 +143,10 @@ class CosmosClientCacheITest
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "",
           clientBuilderInterceptors = None,
-          clientInterceptors = None)
+          clientInterceptors = None,
+          sampledDiagnosticsLoggerConfig = None,
+          azureMonitorConfig = None
+        )
       )
     )
 
@@ -162,9 +166,7 @@ class CosmosClientCacheITest
         userConfig.proactiveConnectionInitializationDurationInSeconds,
         userConfig.httpConnectionPoolSize,
         userConfig.readConsistencyStrategy,
-        enableClientTelemetry = false,
         disableTcpConnectionEndpointRediscovery = false,
-        clientTelemetryEndpoint = None,
         userConfig.preferredRegionsList match {
           case Some(array) => Some(array.clone())
           case None => None
@@ -175,7 +177,9 @@ class CosmosClientCacheITest
         userConfig.azureEnvironmentEndpoints,
         sparkEnvironmentInfo = "",
         clientBuilderInterceptors = None,
-        clientInterceptors = None
+        clientInterceptors = None,
+        sampledDiagnosticsLoggerConfig = None,
+        azureMonitorConfig = None
       )
 
       logInfo(s"TestCase: {$testCaseName}")

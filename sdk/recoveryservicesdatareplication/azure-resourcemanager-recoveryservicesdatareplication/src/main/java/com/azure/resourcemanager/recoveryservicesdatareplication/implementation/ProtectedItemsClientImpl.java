@@ -136,7 +136,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ProtectedItemModelUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,9 +144,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("forceDelete") Boolean forceDelete,
             @PathParam("vaultName") String vaultName, @PathParam("protectedItemName") String protectedItemName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -154,7 +154,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("forceDelete") Boolean forceDelete,
             @PathParam("vaultName") String vaultName, @PathParam("protectedItemName") String protectedItemName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems")
@@ -903,11 +903,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -948,9 +946,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName,
             Context.NONE);
     }
 
@@ -992,10 +989,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, forceDelete, vaultName, protectedItemName, context);
     }
 
     /**
@@ -1658,8 +1653,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectedItemModel list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the list of protected items in the given vault along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectedItemModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -1684,7 +1679,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectedItemModel list operation along with {@link PagedResponse}.
+     * @return the list of protected items in the given vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemModelInner> listNextSinglePage(String nextLink) {
@@ -1712,7 +1707,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ProtectedItemModel list operation along with {@link PagedResponse}.
+     * @return the list of protected items in the given vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectedItemModelInner> listNextSinglePage(String nextLink, Context context) {

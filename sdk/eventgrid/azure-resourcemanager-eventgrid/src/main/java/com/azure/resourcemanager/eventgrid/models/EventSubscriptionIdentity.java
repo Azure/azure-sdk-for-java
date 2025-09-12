@@ -26,6 +26,11 @@ public final class EventSubscriptionIdentity implements JsonSerializable<EventSu
      */
     private String userAssignedIdentity;
 
+    /*
+     * The details of the Federated Identity Credential (FIC) used with the resource delivery.
+     */
+    private FederatedIdentityCredentialInfo federatedIdentityCredentialInfo;
+
     /**
      * Creates an instance of EventSubscriptionIdentity class.
      */
@@ -73,11 +78,37 @@ public final class EventSubscriptionIdentity implements JsonSerializable<EventSu
     }
 
     /**
+     * Get the federatedIdentityCredentialInfo property: The details of the Federated Identity Credential (FIC) used
+     * with the resource delivery.
+     * 
+     * @return the federatedIdentityCredentialInfo value.
+     */
+    public FederatedIdentityCredentialInfo federatedIdentityCredentialInfo() {
+        return this.federatedIdentityCredentialInfo;
+    }
+
+    /**
+     * Set the federatedIdentityCredentialInfo property: The details of the Federated Identity Credential (FIC) used
+     * with the resource delivery.
+     * 
+     * @param federatedIdentityCredentialInfo the federatedIdentityCredentialInfo value to set.
+     * @return the EventSubscriptionIdentity object itself.
+     */
+    public EventSubscriptionIdentity
+        withFederatedIdentityCredentialInfo(FederatedIdentityCredentialInfo federatedIdentityCredentialInfo) {
+        this.federatedIdentityCredentialInfo = federatedIdentityCredentialInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (federatedIdentityCredentialInfo() != null) {
+            federatedIdentityCredentialInfo().validate();
+        }
     }
 
     /**
@@ -88,6 +119,7 @@ public final class EventSubscriptionIdentity implements JsonSerializable<EventSu
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        jsonWriter.writeJsonField("federatedIdentityCredentialInfo", this.federatedIdentityCredentialInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -111,6 +143,9 @@ public final class EventSubscriptionIdentity implements JsonSerializable<EventSu
                         = EventSubscriptionIdentityType.fromString(reader.getString());
                 } else if ("userAssignedIdentity".equals(fieldName)) {
                     deserializedEventSubscriptionIdentity.userAssignedIdentity = reader.getString();
+                } else if ("federatedIdentityCredentialInfo".equals(fieldName)) {
+                    deserializedEventSubscriptionIdentity.federatedIdentityCredentialInfo
+                        = FederatedIdentityCredentialInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

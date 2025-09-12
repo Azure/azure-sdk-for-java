@@ -20,7 +20,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
         val patchParameters = this.getPatchHelperTestParameters()
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]()))
 
         val patchOperationList = this.getPatchOperationList(patchParameters, "")
@@ -47,7 +47,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
         val patchParameters = this.getPatchHelperTestParameters()
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]()))
 
         val nestedPath = "nestedObject"
@@ -73,7 +73,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
         val patchParameters = this.getPatchHelperTestParameters()
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]()))
 
         val nestedPath = "nestedArray"
@@ -107,7 +107,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
 
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]()))
         val expectedPatchOperationMap =
             this
@@ -150,7 +150,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
 
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(columnConfigsMap))
 
         val expectedPatchOperationMap =
@@ -202,7 +202,7 @@ class CosmosPatchHelperSpec extends UnitSpec {
 
         val cosmosPatchHelper =
             new CosmosPatchHelper(
-                DiagnosticsConfig(Option.empty, false, None),
+                DiagnosticsConfig(),
                 CosmosPatchConfigs(columnConfigsMap))
 
         val patchOperations = cosmosPatchHelper.createCosmosPatchBulkUpdateOperations(partialUpdateNode)

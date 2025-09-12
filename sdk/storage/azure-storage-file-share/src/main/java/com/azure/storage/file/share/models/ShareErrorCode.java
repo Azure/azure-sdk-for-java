@@ -435,6 +435,12 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
 
     /**
+     * Static value ShareSnapshotNotFound for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode SHARE_SNAPSHOT_NOT_FOUND = fromString("ShareSnapshotNotFound");
+
+    /**
      * Creates a new instance of ShareErrorCode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

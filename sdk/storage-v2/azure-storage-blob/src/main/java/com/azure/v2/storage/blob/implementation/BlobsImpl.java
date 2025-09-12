@@ -34,6 +34,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +57,11 @@ public final class BlobsImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of BlobsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -63,6 +69,7 @@ public final class BlobsImpl {
     BlobsImpl(AzureBlobStorageImpl client) {
         this.service = BlobsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -533,30 +540,33 @@ public final class BlobsImpl {
         Boolean rangeGetContentCRC64, String structuredBodyType, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, RequestContext requestContext) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.download(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range, leaseId,
-            rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey, encryptionKeySha256,
-            encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Download", requestContext,
+            updatedContext -> {
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.download(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
+                    leaseId, rangeGetContentMD5, rangeGetContentCRC64, structuredBodyType, encryptionKey,
+                    encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                    ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -596,30 +606,33 @@ public final class BlobsImpl {
         String versionId, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, RequestContext requestContext) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getProperties(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> {
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.getProperties(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout,
+                    leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                    ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -676,14 +689,17 @@ public final class BlobsImpl {
         Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         BlobDeleteType blobDeleteType, RequestContext requestContext) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
-            deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, blobDeleteType, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Delete", requestContext,
+            updatedContext -> {
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.delete(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
+                    deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, blobDeleteType, accept, updatedContext);
+            });
     }
 
     /**
@@ -705,10 +721,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> undeleteWithResponse(String containerName, String blob, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String comp = "undelete";
-        final String accept = "application/xml";
-        return service.undelete(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Undelete", requestContext,
+            updatedContext -> {
+                final String comp = "undelete";
+                final String accept = "application/xml";
+                return service.undelete(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -732,10 +751,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setExpiryWithResponse(String containerName, String blob, BlobExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn, RequestContext requestContext) {
-        final String comp = "expiry";
-        final String accept = "application/xml";
-        return service.setExpiry(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, expiryOptions, expiresOn, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetExpiry", requestContext,
+            updatedContext -> {
+                final String comp = "expiry";
+                final String accept = "application/xml";
+                return service.setExpiry(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, updatedContext);
+            });
     }
 
     /**
@@ -767,47 +789,50 @@ public final class BlobsImpl {
     public Response<Void> setHttpHeadersWithResponse(String containerName, String blob, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, BlobHttpHeaders blobHttpHeaders, RequestContext requestContext) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setHttpHeaders(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
-            contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
-            requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetHttpHeaders", requestContext,
+            updatedContext -> {
+                final String comp = "properties";
+                final String accept = "application/xml";
+                String cacheControlInternal = null;
+                if (blobHttpHeaders != null) {
+                    cacheControlInternal = blobHttpHeaders.getCacheControl();
+                }
+                String cacheControl = cacheControlInternal;
+                String contentTypeInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentTypeInternal = blobHttpHeaders.getContentType();
+                }
+                String contentType = contentTypeInternal;
+                byte[] contentMd5Internal = null;
+                if (blobHttpHeaders != null) {
+                    contentMd5Internal = blobHttpHeaders.getContentMd5();
+                }
+                byte[] contentMd5 = contentMd5Internal;
+                String contentEncodingInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+                }
+                String contentEncoding = contentEncodingInternal;
+                String contentLanguageInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+                }
+                String contentLanguage = contentLanguageInternal;
+                String contentDispositionInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+                }
+                String contentDisposition = contentDispositionInternal;
+                String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.setHttpHeaders(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
+                    contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    contentDisposition, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -841,15 +866,18 @@ public final class BlobsImpl {
         String requestId, OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, String snapshot, String versionId,
         RequestContext requestContext) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, snapshot, versionId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetImmutabilityPolicy", requestContext,
+            updatedContext -> {
+                final String comp = "immutabilityPolicies";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                    = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+                return service.setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
+                    immutabilityPolicyMode, snapshot, versionId, accept, updatedContext);
+            });
     }
 
     /**
@@ -877,10 +905,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteImmutabilityPolicyWithResponse(String containerName, String blob, Integer timeout,
         String requestId, String snapshot, String versionId, RequestContext requestContext) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
-        return service.deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, snapshot, versionId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.DeleteImmutabilityPolicy", requestContext,
+            updatedContext -> {
+                final String comp = "immutabilityPolicies";
+                final String accept = "application/xml";
+                return service.deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, snapshot, versionId, accept, updatedContext);
+            });
     }
 
     /**
@@ -909,10 +940,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLegalHoldWithResponse(String containerName, String blob, boolean legalHold,
         Integer timeout, String requestId, String snapshot, String versionId, RequestContext requestContext) {
-        final String comp = "legalhold";
-        final String accept = "application/xml";
-        return service.setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, legalHold, snapshot, versionId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetLegalHold", requestContext,
+            updatedContext -> {
+                final String comp = "legalhold";
+                final String accept = "application/xml";
+                return service.setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, legalHold, snapshot, versionId, accept, updatedContext);
+            });
     }
 
     /**
@@ -953,36 +987,39 @@ public final class BlobsImpl {
         Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadata(this.client.getUrl(), containerName, blob, comp, timeout, metadata, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetMetadata", requestContext,
+            updatedContext -> {
+                final String comp = "metadata";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.setMetadata(this.client.getUrl(), containerName, blob, comp, timeout, metadata, leaseId,
+                    encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                    ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -1018,16 +1055,19 @@ public final class BlobsImpl {
     public Response<Void> acquireLeaseWithResponse(String containerName, String blob, Integer timeout, Integer duration,
         String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, RequestContext requestContext) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AcquireLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String action = "acquire";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.acquireLease(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
+                    proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1058,16 +1098,19 @@ public final class BlobsImpl {
     public Response<Void> releaseLeaseWithResponse(String containerName, String blob, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, RequestContext requestContext) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ReleaseLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String action = "release";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.releaseLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1098,16 +1141,19 @@ public final class BlobsImpl {
     public Response<Void> renewLeaseWithResponse(String containerName, String blob, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, RequestContext requestContext) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.RenewLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String action = "renew";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.renewLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1141,16 +1187,19 @@ public final class BlobsImpl {
     public Response<Void> changeLeaseWithResponse(String containerName, String blob, String leaseId,
         String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, RequestContext requestContext) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ChangeLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String action = "change";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.changeLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                    proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1186,16 +1235,19 @@ public final class BlobsImpl {
     public Response<Void> breakLeaseWithResponse(String containerName, String blob, Integer timeout,
         Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, RequestContext requestContext) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.BreakLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String action = "break";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.breakLease(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1235,36 +1287,39 @@ public final class BlobsImpl {
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String leaseId, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        final String comp = "snapshot";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshot(this.client.getUrl(), containerName, blob, comp, timeout, metadata, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.CreateSnapshot", requestContext,
+            updatedContext -> {
+                final String comp = "snapshot";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.createSnapshot(this.client.getUrl(), containerName, blob, comp, timeout, metadata,
+                    encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                    ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1322,22 +1377,26 @@ public final class BlobsImpl {
         String ifMatch, String ifNoneMatch, String ifTags, String leaseId, String requestId, String blobTagsString,
         Boolean sealBlob, OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode,
         Boolean legalHold, RequestContext requestContext) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.startCopyFromURL(this.client.getUrl(), containerName, blob, timeout, metadata, tier,
-            rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.StartCopyFromURL", requestContext,
+            updatedContext -> {
+                final String accept = "application/xml";
+                DateTimeRfc1123 sourceIfModifiedSinceConverted
+                    = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+                DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                    = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                    = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+                return service.startCopyFromURL(this.client.getUrl(), containerName, blob, timeout, metadata, tier,
+                    rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
+                    sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                    ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString,
+                    sealBlob, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -1400,30 +1459,33 @@ public final class BlobsImpl {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        final String xMsRequiresSync = "true";
-        final String accept = "application/xml";
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.copyFromURL(this.client.getUrl(), containerName, blob, xMsRequiresSync, timeout, metadata, tier,
-            sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, leaseId,
-            this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-            encryptionScope, copySourceTags, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.CopyFromURL", requestContext,
+            updatedContext -> {
+                final String xMsRequiresSync = "true";
+                final String accept = "application/xml";
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                DateTimeRfc1123 sourceIfModifiedSinceConverted
+                    = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+                DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                    = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
+                DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                    = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+                return service.copyFromURL(this.client.getUrl(), containerName, blob, xMsRequiresSync, timeout,
+                    metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
+                    sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                    ifTags, copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted,
+                    blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
+                    copySourceAuthorization, encryptionScope, copySourceTags, accept, updatedContext);
+            });
     }
 
     /**
@@ -1448,11 +1510,15 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyFromURLWithResponse(String containerName, String blob, String copyId,
         Integer timeout, String leaseId, String requestId, RequestContext requestContext) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
-        return service.abortCopyFromURL(this.client.getUrl(), containerName, blob, comp, copyActionAbortConstant,
-            copyId, timeout, leaseId, this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AbortCopyFromURL", requestContext,
+            updatedContext -> {
+                final String comp = "copy";
+                final String copyActionAbortConstant = "abort";
+                final String accept = "application/xml";
+                return service.abortCopyFromURL(this.client.getUrl(), containerName, blob, comp,
+                    copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -1488,10 +1554,14 @@ public final class BlobsImpl {
     public Response<Void> setTierWithResponse(String containerName, String blob, AccessTier tier, String snapshot,
         String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId,
         String ifTags, RequestContext requestContext) {
-        final String comp = "tier";
-        final String accept = "application/xml";
-        return service.setTier(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout, tier,
-            rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetTier", requestContext,
+            updatedContext -> {
+                final String comp = "tier";
+                final String accept = "application/xml";
+                return service.setTier(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout,
+                    tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -1513,11 +1583,14 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(String containerName, String blob, Integer timeout,
         String requestId, RequestContext requestContext) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp, timeout,
-            this.client.getVersion(), requestId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> {
+                final String restype = "account";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1555,30 +1628,33 @@ public final class BlobsImpl {
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, QueryRequest queryRequest, CpkInfo cpkInfo,
         RequestContext requestContext) {
-        final String comp = "query";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.query(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, this.client.getVersion(), requestId, queryRequest, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Query", requestContext, updatedContext -> {
+            final String comp = "query";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            return service.query(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                queryRequest, accept, updatedContext);
+        });
     }
 
     /**
@@ -1608,10 +1684,13 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobTags> getTagsWithResponse(String containerName, String blob, Integer timeout, String requestId,
         String snapshot, String versionId, String ifTags, String leaseId, RequestContext requestContext) {
-        final String comp = "tags";
-        final String accept = "application/xml";
-        return service.getTags(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, snapshot, versionId, ifTags, leaseId, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetTags", requestContext,
+            updatedContext -> {
+                final String comp = "tags";
+                final String accept = "application/xml";
+                return service.getTags(this.client.getUrl(), containerName, blob, comp, timeout,
+                    this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1641,12 +1720,17 @@ public final class BlobsImpl {
     public Response<Void> setTagsWithResponse(String containerName, String blob, Integer timeout, String versionId,
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags,
         String leaseId, BlobTags tags, RequestContext requestContext) {
-        final String comp = "tags";
-        final String accept = "application/xml";
-        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
-        String transactionalContentCrc64Converted = new String(Base64.getEncoder().encode(transactionalContentCrc64));
-        return service.setTags(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(), timeout,
-            versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, leaseId,
-            tags, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetTags", requestContext,
+            updatedContext -> {
+                final String comp = "tags";
+                final String accept = "application/xml";
+                String transactionalContentMD5Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentMD5));
+                String transactionalContentCrc64Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentCrc64));
+                return service.setTags(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(),
+                    timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId,
+                    ifTags, leaseId, tags, accept, updatedContext);
+            });
     }
 }

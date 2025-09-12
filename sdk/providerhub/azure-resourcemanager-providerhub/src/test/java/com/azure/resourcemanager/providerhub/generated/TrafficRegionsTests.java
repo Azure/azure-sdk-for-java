@@ -12,17 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficRegionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficRegions model = BinaryData
-            .fromString("{\"regions\":[\"bihanuf\",\"fcbjysagithxqha\",\"ifpikxwczby\",\"cnpqxuhivyqniwby\"]}")
-            .toObject(TrafficRegions.class);
-        Assertions.assertEquals("bihanuf", model.regions().get(0));
+        TrafficRegions model = BinaryData.fromString("{\"regions\":[\"cs\",\"h\"]}").toObject(TrafficRegions.class);
+        Assertions.assertEquals("cs", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficRegions model = new TrafficRegions()
-            .withRegions(Arrays.asList("bihanuf", "fcbjysagithxqha", "ifpikxwczby", "cnpqxuhivyqniwby"));
+        TrafficRegions model = new TrafficRegions().withRegions(Arrays.asList("cs", "h"));
         model = BinaryData.fromObject(model).toObject(TrafficRegions.class);
-        Assertions.assertEquals("bihanuf", model.regions().get(0));
+        Assertions.assertEquals("cs", model.regions().get(0));
     }
 }

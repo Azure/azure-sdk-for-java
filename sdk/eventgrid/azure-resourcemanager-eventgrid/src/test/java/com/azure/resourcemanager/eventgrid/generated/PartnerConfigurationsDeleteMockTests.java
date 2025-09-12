@@ -27,7 +27,7 @@ public final class PartnerConfigurationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.partnerConfigurations().delete("ivykp", com.azure.core.util.Context.NONE);
+        manager.partnerConfigurations().delete("vqzrwtrd", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -17,17 +17,17 @@ import java.io.IOException;
 @Fluent
 public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> {
     /*
-     * The validationRequired property.
+     * Whether validation is required.
      */
     private Boolean validationRequired;
 
     /*
-     * The crossResourceGroupMoveEnabled property.
+     * Whether cross resource group move is enabled.
      */
     private Boolean crossResourceGroupMoveEnabled;
 
     /*
-     * The crossSubscriptionMoveEnabled property.
+     * Whether cross subscription move is enabled.
      */
     private Boolean crossSubscriptionMoveEnabled;
 
@@ -38,7 +38,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Get the validationRequired property: The validationRequired property.
+     * Get the validationRequired property: Whether validation is required.
      * 
      * @return the validationRequired value.
      */
@@ -47,7 +47,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Set the validationRequired property: The validationRequired property.
+     * Set the validationRequired property: Whether validation is required.
      * 
      * @param validationRequired the validationRequired value to set.
      * @return the ResourceMovePolicy object itself.
@@ -58,7 +58,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Get the crossResourceGroupMoveEnabled property: The crossResourceGroupMoveEnabled property.
+     * Get the crossResourceGroupMoveEnabled property: Whether cross resource group move is enabled.
      * 
      * @return the crossResourceGroupMoveEnabled value.
      */
@@ -67,7 +67,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Set the crossResourceGroupMoveEnabled property: The crossResourceGroupMoveEnabled property.
+     * Set the crossResourceGroupMoveEnabled property: Whether cross resource group move is enabled.
      * 
      * @param crossResourceGroupMoveEnabled the crossResourceGroupMoveEnabled value to set.
      * @return the ResourceMovePolicy object itself.
@@ -78,7 +78,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Get the crossSubscriptionMoveEnabled property: The crossSubscriptionMoveEnabled property.
+     * Get the crossSubscriptionMoveEnabled property: Whether cross subscription move is enabled.
      * 
      * @return the crossSubscriptionMoveEnabled value.
      */
@@ -87,7 +87,7 @@ public class ResourceMovePolicy implements JsonSerializable<ResourceMovePolicy> 
     }
 
     /**
-     * Set the crossSubscriptionMoveEnabled property: The crossSubscriptionMoveEnabled property.
+     * Set the crossSubscriptionMoveEnabled property: Whether cross subscription move is enabled.
      * 
      * @param crossSubscriptionMoveEnabled the crossSubscriptionMoveEnabled value to set.
      * @return the ResourceMovePolicy object itself.

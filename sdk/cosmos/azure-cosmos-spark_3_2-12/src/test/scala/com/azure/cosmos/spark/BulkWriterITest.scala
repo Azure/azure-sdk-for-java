@@ -38,7 +38,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
@@ -77,7 +77,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
@@ -124,7 +124,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
 
       val onlyOnePartitionKeyValue = UUID.randomUUID().toString
@@ -190,7 +190,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         metricsPublisher)
 
       val onlyOnePartitionKeyValue = UUID.randomUUID().toString
@@ -245,7 +245,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
@@ -281,7 +281,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       deleteConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
 
     for(i <- 0 until 5000) {
@@ -310,7 +310,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
@@ -336,7 +336,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     for(itemFromDB <- allItems) {
@@ -374,7 +374,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       deleteConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     for(i <- 0 until 5000) {
@@ -397,7 +397,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
@@ -438,7 +438,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
 
     // First create items without any etag property - so just insert them
@@ -464,7 +464,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
     val secondWriteId = UUID.randomUUID().toString
     // now modify the items read back from DB (so they have etag)
@@ -501,7 +501,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
     // now modify the items read back from DB after the first write
     // (so they have stale etag) and modify them
@@ -558,7 +558,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       metricsPublisher)
 
     // First create one item, as patch can only operate on existing items
@@ -684,7 +684,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
@@ -762,7 +762,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
@@ -844,7 +844,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item with nestedObject, as patch can only operate on existing items
@@ -903,7 +903,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item with nestedObject, as patch can only operate on existing items
@@ -979,7 +979,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item with nestedObject, as patch can only operate on existing items
@@ -1039,7 +1039,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
@@ -1114,7 +1114,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           createdContainer,
           partitionKeyDefinition,
           writeConfig,
-          DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+          DiagnosticsConfig(),
           new TestOutputMetricsPublisher)
 
         // First create one item, as patch can only operate on existing items
@@ -1174,7 +1174,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
@@ -1279,7 +1279,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         metricsPublisher)
 
       val items = mutable.Map[String, ObjectNode]()
@@ -1324,7 +1324,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
 
       val item = getItem(UUID.randomUUID().toString)
@@ -1370,7 +1370,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
 
       // First create one item
@@ -1444,7 +1444,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
 
       // First create one item
@@ -1494,7 +1494,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
       // First create one item with nestedObject
       val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
@@ -1552,7 +1552,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         new TestOutputMetricsPublisher)
 
       // First create one item with nestedObject

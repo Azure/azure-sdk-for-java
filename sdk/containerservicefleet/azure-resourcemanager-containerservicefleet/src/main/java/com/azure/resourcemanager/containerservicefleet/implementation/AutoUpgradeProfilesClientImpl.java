@@ -114,7 +114,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AutoUpgradeProfileInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,10 +122,9 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName,
-            @PathParam("autoUpgradeProfileName") String autoUpgradeProfileName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autoUpgradeProfileName") String autoUpgradeProfileName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -133,8 +132,7 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName,
-            @PathParam("autoUpgradeProfileName") String autoUpgradeProfileName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autoUpgradeProfileName") String autoUpgradeProfileName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles")
@@ -684,11 +682,8 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             return Mono.error(
                 new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -729,9 +724,8 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName,
             Context.NONE);
     }
 
@@ -773,10 +767,8 @@ public final class AutoUpgradeProfilesClientImpl implements AutoUpgradeProfilesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, autoUpgradeProfileName, context);
     }
 
     /**

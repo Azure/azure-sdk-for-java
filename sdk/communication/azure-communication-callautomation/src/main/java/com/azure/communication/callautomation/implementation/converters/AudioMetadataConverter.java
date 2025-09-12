@@ -3,10 +3,10 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
+import java.io.IOException;
+
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-
-import java.io.IOException;
 
 /** The Audio
  * MetadataInternal model. */
@@ -31,11 +31,6 @@ public final class AudioMetadataConverter {
      * The channels.
      */
     private int channels;
-
-    /*
-     * The length.
-     */
-    private int length;
 
     /**
      * Get the mediaSubscriptionId property.
@@ -74,15 +69,6 @@ public final class AudioMetadataConverter {
     }
 
     /**
-     * Get the length property.
-     *
-     * @return the length value.
-     */
-    public int getLength() {
-        return length;
-    }
-
-    /**
      * Reads an instance of AudioMetadataConverter from the JsonReader.
      *<p>
      * Note: AudioMetadataConverter does not have to implement JsonSerializable, model is only used in deserialization
@@ -107,8 +93,6 @@ public final class AudioMetadataConverter {
                     converter.sampleRate = reader.getInt();
                 } else if ("channels".equals(fieldName)) {
                     converter.channels = reader.getInt();
-                } else if ("length".equals(fieldName)) {
-                    converter.length = reader.getInt();
                 } else {
                     reader.skipChildren();
                 }

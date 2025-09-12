@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ComplianceDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceDetail model = BinaryData.fromString("{\"complianceState\":\"zsdymbrnysuxmpra\",\"count\":117142213}")
+        ComplianceDetail model = BinaryData.fromString("{\"complianceState\":\"hwahfbousn\",\"count\":793996513}")
             .toObject(ComplianceDetail.class);
-        Assertions.assertEquals("zsdymbrnysuxmpra", model.complianceState());
-        Assertions.assertEquals(117142213, model.count());
+        Assertions.assertEquals("hwahfbousn", model.complianceState());
+        Assertions.assertEquals(793996513, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComplianceDetail model = new ComplianceDetail().withComplianceState("zsdymbrnysuxmpra").withCount(117142213);
+        ComplianceDetail model = new ComplianceDetail().withComplianceState("hwahfbousn").withCount(793996513);
         model = BinaryData.fromObject(model).toObject(ComplianceDetail.class);
-        Assertions.assertEquals("zsdymbrnysuxmpra", model.complianceState());
-        Assertions.assertEquals(117142213, model.count());
+        Assertions.assertEquals("hwahfbousn", model.complianceState());
+        Assertions.assertEquals(793996513, model.count());
     }
 }

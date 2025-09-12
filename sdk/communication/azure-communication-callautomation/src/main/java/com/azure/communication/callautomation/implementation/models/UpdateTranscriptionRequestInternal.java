@@ -18,13 +18,13 @@ import java.io.IOException;
 @Fluent
 public final class UpdateTranscriptionRequestInternal implements JsonSerializable<UpdateTranscriptionRequestInternal> {
     /*
-     * Defines new locale for transcription.
+     * Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      */
     @Generated
     private String locale;
 
     /*
-     * Sets Endpoint id where the custom model was deployed.
+     * The ID of the deployed custom model, in GUID format, e.g., a259c255-1cdw-4ed7-a693-dd58563b6f6a.
      */
     @Generated
     private String speechModelEndpointId;
@@ -50,7 +50,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the locale property: Defines new locale for transcription.
+     * Get the locale property: Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      * 
      * @return the locale value.
      */
@@ -60,7 +60,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Set the locale property: Defines new locale for transcription.
+     * Set the locale property: Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      * 
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
@@ -72,7 +72,8 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the speechModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * Get the speechModelEndpointId property: The ID of the deployed custom model, in GUID format, e.g.,
+     * a259c255-1cdw-4ed7-a693-dd58563b6f6a.
      * 
      * @return the speechModelEndpointId value.
      */
@@ -82,7 +83,8 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Set the speechModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * Set the speechModelEndpointId property: The ID of the deployed custom model, in GUID format, e.g.,
+     * a259c255-1cdw-4ed7-a693-dd58563b6f6a.
      * 
      * @param speechModelEndpointId the speechModelEndpointId value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.

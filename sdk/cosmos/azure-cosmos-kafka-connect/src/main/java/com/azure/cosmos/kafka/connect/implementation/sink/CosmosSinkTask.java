@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class CosmosSinkTask extends SinkTask {
@@ -27,6 +28,9 @@ public class CosmosSinkTask extends SinkTask {
     private SinkRecordTransformer sinkRecordTransformer;
     private IWriter cosmosWriter;
 
+    private long lastLogTimeMs = System.currentTimeMillis();
+    private final Map<String, Long> totalWrittenRecordsPerContainer = new ConcurrentHashMap<>();
+
     @Override
     public String version() {
         return KafkaCosmosConstants.CURRENT_VERSION;
@@ -35,28 +39,36 @@ public class CosmosSinkTask extends SinkTask {
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos sink task");
-        this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
-        this.cosmosClientItem =
-            CosmosClientCache.getCosmosClient(
-                this.sinkTaskConfig.getAccountConfig(),
-                this.sinkTaskConfig.getTaskId(),
-                this.sinkTaskConfig.getClientMetadataCachesSnapshot());
-        LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
-        this.throughputControlClientItem = this.getThroughputControlCosmosClient();
-        this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
-        if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
-            this.cosmosWriter =
-                new CosmosBulkWriter(
-                    this.sinkTaskConfig.getWriteConfig(),
-                    this.sinkTaskConfig.getThroughputControlConfig(),
-                    this.context.errantRecordReporter());
-        } else {
-            this.cosmosWriter =
-                new CosmosPointWriter(
-                    this.sinkTaskConfig.getWriteConfig(),
-                    this.sinkTaskConfig.getThroughputControlConfig(),
-                    context.errantRecordReporter());
+        try {
+            this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
+            this.cosmosClientItem =
+                CosmosClientCache.getCosmosClient(
+                    this.sinkTaskConfig.getAccountConfig(),
+                    this.sinkTaskConfig.getTaskId(),
+                    this.sinkTaskConfig.getClientMetadataCachesSnapshot());
+            LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
+            this.throughputControlClientItem = this.getThroughputControlCosmosClient();
+            this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
+
+            if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
+                this.cosmosWriter =
+                    new CosmosBulkWriter(
+                        this.sinkTaskConfig.getWriteConfig(),
+                        this.sinkTaskConfig.getThroughputControlConfig(),
+                        this.context.errantRecordReporter());
+            } else {
+                this.cosmosWriter =
+                    new CosmosPointWriter(
+                        this.sinkTaskConfig.getWriteConfig(),
+                        this.sinkTaskConfig.getThroughputControlConfig(),
+                        context.errantRecordReporter());
+            }
+        } catch (Throwable e) {
+            LOGGER.warn("Error occurred while starting the kafka sink task", e);
+            this.cleanup();
+
+            throw e;
         }
     }
 
@@ -112,20 +124,53 @@ public class CosmosSinkTask extends SinkTask {
             // transform sink records, for example populating id
             List<SinkRecord> transformedRecords = sinkRecordTransformer.transform(containerName, entry.getValue());
             this.cosmosWriter.write(container, transformedRecords);
+
+            totalWrittenRecordsPerContainer.merge(containerName, (long) entry.getValue().size(), Long::sum);
+        }
+
+        logWrittenRecordCount();
+    }
+
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSinkTask");
+
+        if (this.throughputControlClientItem != null && this.throughputControlClientItem != this.cosmosClientItem) {
+            LOGGER.debug("Releasing throughput control cosmos client");
+            CosmosClientCache.releaseCosmosClient(this.throughputControlClientItem.getClientConfig());
+            this.throughputControlClientItem = null;
+        }
+
+        if (this.cosmosClientItem != null) {
+            LOGGER.debug("Releasing cosmos client");
+            CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
+            this.cosmosClientItem = null;
+        }
+    }
+
+    private void logWrittenRecordCount() {
+        long currentTime = System.currentTimeMillis();
+        long durationInMs = currentTime - lastLogTimeMs;
+        if (durationInMs >= CosmosSinkTaskConfig.LOG_INTERVAL_MS) {
+            // Log accumulated counts for writes per container
+            for (Map.Entry<String, Long> entry : totalWrittenRecordsPerContainer.entrySet()) {
+                LOGGER.info(
+                    "Total {} records written to container {}, durationInMs {}, taskId {}",
+                    entry.getValue(),
+                    entry.getKey(),
+                    durationInMs,
+                    this.sinkTaskConfig.getTaskId()
+                );
+            }
+
+            // Reset counts and update last log time
+            totalWrittenRecordsPerContainer.clear();
+            lastLogTimeMs = currentTime;
         }
     }
 
     @Override
     public void stop() {
         LOGGER.info("Stopping Kafka CosmosDB sink task");
-        if (this.throughputControlClientItem != null && this.throughputControlClientItem != this.cosmosClientItem) {
-            CosmosClientCache.releaseCosmosClient(this.throughputControlClientItem.getClientConfig());
-            this.throughputControlClientItem = null;
-        }
-
-        if (this.cosmosClientItem != null) {
-            CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
-            this.cosmosClientItem = null;
-        }
+        this.cleanup();
     }
 }

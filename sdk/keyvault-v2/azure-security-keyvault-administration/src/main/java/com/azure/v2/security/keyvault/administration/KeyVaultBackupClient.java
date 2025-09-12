@@ -245,7 +245,7 @@ public final class KeyVaultBackupClient {
             = new SASTokenParameter(blobStorageUrl).setToken(sasToken).setUseManagedIdentity(sasToken == null);
 
         try (Response<FullBackupOperation> backupOperationResponse
-            = clientImpl.fullBackupWithResponse(sasTokenParameter, RequestContext.none())) {
+            = clientImpl.fullBackupOperationWithResponse(sasTokenParameter, RequestContext.none())) {
 
             return new Response<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),

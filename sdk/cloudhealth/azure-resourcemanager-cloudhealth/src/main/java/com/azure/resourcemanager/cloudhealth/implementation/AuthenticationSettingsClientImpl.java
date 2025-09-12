@@ -110,7 +110,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AuthenticationSettingInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -118,10 +118,9 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("authenticationSettingName") String authenticationSettingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("authenticationSettingName") String authenticationSettingName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -129,8 +128,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("authenticationSettingName") String authenticationSettingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("authenticationSettingName") String authenticationSettingName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings")
@@ -464,11 +462,8 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             return Mono.error(
                 new IllegalArgumentException("Parameter authenticationSettingName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -527,10 +522,8 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
                 .log(new IllegalArgumentException(
                     "Parameter authenticationSettingName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 
     /**

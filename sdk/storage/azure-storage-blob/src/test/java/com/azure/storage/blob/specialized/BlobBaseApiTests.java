@@ -805,17 +805,20 @@ public class BlobBaseApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.queryWithResponse(optionsOs, null, null));
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void copyFromURLSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.copyFromUrl(bc.getBlobUrl()));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
+    }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
 

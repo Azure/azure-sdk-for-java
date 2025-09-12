@@ -12,27 +12,27 @@ public final class LinkedAccessCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedAccessCheck model = BinaryData.fromString(
-            "{\"actionName\":\"scwsv\",\"linkedProperty\":\"otogtwrupqs\",\"linkedAction\":\"nmic\",\"linkedActionVerb\":\"vce\",\"linkedType\":\"eil\"}")
+            "{\"actionName\":\"qzbqjvsov\",\"linkedProperty\":\"okacspk\",\"linkedAction\":\"hzdobpxjmflbvvnc\",\"linkedActionVerb\":\"kcciwwzjuqkhr\",\"linkedType\":\"jiwkuofoskghsau\"}")
             .toObject(LinkedAccessCheck.class);
-        Assertions.assertEquals("scwsv", model.actionName());
-        Assertions.assertEquals("otogtwrupqs", model.linkedProperty());
-        Assertions.assertEquals("nmic", model.linkedAction());
-        Assertions.assertEquals("vce", model.linkedActionVerb());
-        Assertions.assertEquals("eil", model.linkedType());
+        Assertions.assertEquals("qzbqjvsov", model.actionName());
+        Assertions.assertEquals("okacspk", model.linkedProperty());
+        Assertions.assertEquals("hzdobpxjmflbvvnc", model.linkedAction());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.linkedActionVerb());
+        Assertions.assertEquals("jiwkuofoskghsau", model.linkedType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedAccessCheck model = new LinkedAccessCheck().withActionName("scwsv")
-            .withLinkedProperty("otogtwrupqs")
-            .withLinkedAction("nmic")
-            .withLinkedActionVerb("vce")
-            .withLinkedType("eil");
+        LinkedAccessCheck model = new LinkedAccessCheck().withActionName("qzbqjvsov")
+            .withLinkedProperty("okacspk")
+            .withLinkedAction("hzdobpxjmflbvvnc")
+            .withLinkedActionVerb("kcciwwzjuqkhr")
+            .withLinkedType("jiwkuofoskghsau");
         model = BinaryData.fromObject(model).toObject(LinkedAccessCheck.class);
-        Assertions.assertEquals("scwsv", model.actionName());
-        Assertions.assertEquals("otogtwrupqs", model.linkedProperty());
-        Assertions.assertEquals("nmic", model.linkedAction());
-        Assertions.assertEquals("vce", model.linkedActionVerb());
-        Assertions.assertEquals("eil", model.linkedType());
+        Assertions.assertEquals("qzbqjvsov", model.actionName());
+        Assertions.assertEquals("okacspk", model.linkedProperty());
+        Assertions.assertEquals("hzdobpxjmflbvvnc", model.linkedAction());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.linkedActionVerb());
+        Assertions.assertEquals("jiwkuofoskghsau", model.linkedType());
     }
 }

@@ -327,6 +327,11 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
      */
     private Boolean zoneBalance;
 
+    /*
+     * Specifies the node type should be configured for only outbound traffic and not inbound traffic.
+     */
+    private Boolean isOutboundOnly;
+
     /**
      * Creates an instance of NodeTypeProperties class.
      */
@@ -1470,6 +1475,28 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
+     * Get the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @return the isOutboundOnly value.
+     */
+    public Boolean isOutboundOnly() {
+        return this.isOutboundOnly;
+    }
+
+    /**
+     * Set the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @param isOutboundOnly the isOutboundOnly value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withIsOutboundOnly(Boolean isOutboundOnly) {
+        this.isOutboundOnly = isOutboundOnly;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1580,6 +1607,7 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
         jsonWriter.writeArrayField("vmApplications", this.vmApplications,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("zoneBalance", this.zoneBalance);
+        jsonWriter.writeBooleanField("isOutboundOnly", this.isOutboundOnly);
         return jsonWriter.writeEndObject();
     }
 
@@ -1726,6 +1754,8 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
                     deserializedNodeTypeProperties.vmApplications = vmApplications;
                 } else if ("zoneBalance".equals(fieldName)) {
                     deserializedNodeTypeProperties.zoneBalance = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOutboundOnly".equals(fieldName)) {
+                    deserializedNodeTypeProperties.isOutboundOnly = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

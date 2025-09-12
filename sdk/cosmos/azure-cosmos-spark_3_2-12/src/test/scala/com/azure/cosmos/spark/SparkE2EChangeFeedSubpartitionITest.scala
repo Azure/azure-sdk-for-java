@@ -11,7 +11,7 @@ import java.util.UUID
 
 class SparkE2EChangeFeedSubpartitionITest
   extends IntegrationSpec
-    with SparkWithDropwizardAndSlf4jMetrics
+    with SparkWithMetrics
     with CosmosClient
     with AutoCleanableCosmosContainerWithSubpartitions
     with BasicLoggingTrait

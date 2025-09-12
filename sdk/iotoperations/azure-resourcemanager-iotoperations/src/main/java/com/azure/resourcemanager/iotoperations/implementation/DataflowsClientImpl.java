@@ -114,7 +114,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") DataflowResourceInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflows/{dataflowName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,9 +122,9 @@ public final class DataflowsClientImpl implements DataflowsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("dataflowProfileName") String dataflowProfileName,
-            @PathParam("dataflowName") String dataflowName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("dataflowName") String dataflowName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflows/{dataflowName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -132,7 +132,7 @@ public final class DataflowsClientImpl implements DataflowsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("dataflowProfileName") String dataflowProfileName,
-            @PathParam("dataflowName") String dataflowName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("dataflowName") String dataflowName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}/dataflows")
@@ -635,11 +635,10 @@ public final class DataflowsClientImpl implements DataflowsClient {
         if (dataflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataflowName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName,
-                accept, context))
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -684,9 +683,8 @@ public final class DataflowsClientImpl implements DataflowsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter dataflowName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName,
             Context.NONE);
     }
 
@@ -732,9 +730,8 @@ public final class DataflowsClientImpl implements DataflowsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter dataflowName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, dataflowName,
             context);
     }
 

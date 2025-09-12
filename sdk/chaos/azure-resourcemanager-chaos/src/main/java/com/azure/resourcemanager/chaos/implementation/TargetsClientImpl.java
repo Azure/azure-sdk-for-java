@@ -113,7 +113,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") TargetInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,9 +123,9 @@ public final class TargetsClientImpl implements TargetsClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,7 +135,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets")
@@ -530,11 +530,10 @@ public final class TargetsClientImpl implements TargetsClient {
         if (targetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-                parentResourceName, targetName, accept, context))
+                parentResourceName, targetName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -605,10 +604,9 @@ public final class TargetsClientImpl implements TargetsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, targetName, accept, context);
+            parentResourceName, targetName, context);
     }
 
     /**
@@ -875,8 +873,8 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Target resources that extend a tracked regional resource along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetInner>> listNextSinglePageAsync(String nextLink) {
@@ -901,8 +899,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Target resources that extend a tracked regional resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listNextSinglePage(String nextLink) {
@@ -930,8 +927,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Target resources that extend a tracked regional resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listNextSinglePage(String nextLink, Context context) {

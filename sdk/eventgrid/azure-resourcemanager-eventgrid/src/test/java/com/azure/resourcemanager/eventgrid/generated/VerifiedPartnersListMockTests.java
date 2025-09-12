@@ -24,7 +24,7 @@ public final class VerifiedPartnersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"f4e39e0f-187b-44ec-bc63-7eaa686d3910\",\"organizationName\":\"kotaurat\",\"partnerDisplayName\":\"cppfzsclefyrle\",\"partnerTopicDetails\":{\"description\":\"qlmfdg\",\"longDescription\":\"bbuypwovvvsflee\",\"setupUri\":\"oqayrehjuqwv\"},\"provisioningState\":\"Updating\"},\"id\":\"lzhpzihacenq\",\"name\":\"zlxnqzubf\",\"type\":\"nfdbgmkfwmjcwt\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"31cf8465-6129-48b3-ae25-60d2d925abd0\",\"organizationName\":\"thtpqgfzdosi\",\"partnerDisplayName\":\"d\",\"partnerTopicDetails\":{\"description\":\"flgzh\",\"longDescription\":\"jg\",\"setupUri\":\"hcrx\"},\"partnerDestinationDetails\":{\"description\":\"rutvnpccxz\",\"longDescription\":\"xpmhzghhhk\",\"setupUri\":\"njdtujqzvhnj\"},\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"tmzstql\",\"type\":\"xolrwvtlg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,18 @@ public final class VerifiedPartnersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VerifiedPartner> response
-            = manager.verifiedPartners().list("hbnnxemv", 1912398825, com.azure.core.util.Context.NONE);
+            = manager.verifiedPartners().list("lhbimyii", 832518528, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UUID.fromString("f4e39e0f-187b-44ec-bc63-7eaa686d3910"),
+        Assertions.assertEquals(UUID.fromString("31cf8465-6129-48b3-ae25-60d2d925abd0"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("kotaurat", response.iterator().next().organizationName());
-        Assertions.assertEquals("cppfzsclefyrle", response.iterator().next().partnerDisplayName());
-        Assertions.assertEquals("qlmfdg", response.iterator().next().partnerTopicDetails().description());
-        Assertions.assertEquals("bbuypwovvvsflee", response.iterator().next().partnerTopicDetails().longDescription());
-        Assertions.assertEquals("oqayrehjuqwv", response.iterator().next().partnerTopicDetails().setupUri());
+        Assertions.assertEquals("thtpqgfzdosi", response.iterator().next().organizationName());
+        Assertions.assertEquals("d", response.iterator().next().partnerDisplayName());
+        Assertions.assertEquals("flgzh", response.iterator().next().partnerTopicDetails().description());
+        Assertions.assertEquals("jg", response.iterator().next().partnerTopicDetails().longDescription());
+        Assertions.assertEquals("hcrx", response.iterator().next().partnerTopicDetails().setupUri());
+        Assertions.assertEquals("rutvnpccxz", response.iterator().next().partnerDestinationDetails().description());
+        Assertions.assertEquals("xpmhzghhhk", response.iterator().next().partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("njdtujqzvhnj", response.iterator().next().partnerDestinationDetails().setupUri());
         Assertions.assertEquals(VerifiedPartnerProvisioningState.UPDATING,
             response.iterator().next().provisioningState());
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for FeaturesPolicy.
+ * The required feature policy.
  */
 public final class FeaturesPolicy extends ExpandableStringEnum<FeaturesPolicy> {
     /**

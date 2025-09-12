@@ -134,25 +134,23 @@ public final class IspCustomersClientImpl implements IspCustomersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("customerResourceName") String customerResourceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("customerResourceName") String customerResourceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers")
@@ -737,10 +735,9 @@ public final class IspCustomersClientImpl implements IspCustomersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -774,9 +771,8 @@ public final class IspCustomersClientImpl implements IspCustomersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, Context.NONE);
     }
 
     /**
@@ -811,9 +807,8 @@ public final class IspCustomersClientImpl implements IspCustomersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, context);
     }
 
     /**

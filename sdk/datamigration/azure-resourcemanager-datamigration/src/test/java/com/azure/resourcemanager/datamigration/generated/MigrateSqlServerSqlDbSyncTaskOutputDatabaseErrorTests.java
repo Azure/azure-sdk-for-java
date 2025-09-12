@@ -14,18 +14,17 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputDatabaseError model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"lhvygdyftu\",\"events\":[{\"timestampString\":\"nawjslbiwkojgcy\",\"eventTypeString\":\"sfmznbaeqphc\",\"eventText\":\"nrnrp\"},{\"timestampString\":\"huwrykqgaifm\",\"eventTypeString\":\"klbydv\",\"eventText\":\"bejdznxcv\"},{\"timestampString\":\"rhnj\",\"eventTypeString\":\"olvtnovqfzge\",\"eventText\":\"dftuljltduce\"},{\"timestampString\":\"tmczuomejwcwwqi\",\"eventTypeString\":\"nssxmojmsvpk\",\"eventText\":\"rvkwc\"}],\"id\":\"ql\"}")
+            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"otoihiqa\",\"events\":[{\"timestampString\":\"wf\",\"eventTypeString\":\"kwpzdqtvh\",\"eventText\":\"podaq\"}],\"id\":\"sipi\"}")
             .toObject(MigrateSqlServerSqlDbSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("lhvygdyftu", model.errorMessage());
+        Assertions.assertEquals("otoihiqa", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputDatabaseError model
-            = new MigrateSqlServerSqlDbSyncTaskOutputDatabaseError().withErrorMessage("lhvygdyftu")
-                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent(),
-                    new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent()));
+            = new MigrateSqlServerSqlDbSyncTaskOutputDatabaseError().withErrorMessage("otoihiqa")
+                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent()));
         model = BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("lhvygdyftu", model.errorMessage());
+        Assertions.assertEquals("otoihiqa", model.errorMessage());
     }
 }

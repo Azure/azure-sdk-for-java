@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointResource;
@@ -20,17 +20,17 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"ojhp\",\"name\":\"tfnmdx\",\"type\":\"tngfdgugeyzihgr\"}";
+            = "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"h\",\"name\":\"aglkafhon\",\"type\":\"juj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureBackupRecoveryPointResource response = manager.recoveryPoints()
-            .getWithResponse("fuojrngif", "rzpasccbiuimzdly", "dfqwmkyoq", "fdvruz", com.azure.core.util.Context.NONE)
+            .getWithResponse("wcrojphslhcaw", "u", "i", "dwfmvigorqjb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

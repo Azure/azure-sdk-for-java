@@ -35,7 +35,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -70,7 +70,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -99,7 +99,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false)
 
     val pointDeleter = new PointWriter(
-      container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -125,7 +125,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -146,7 +146,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     allItems should have size items.size
 
     val pointUpdater = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -184,7 +184,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointDeleter = new PointWriter(
-      container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -208,7 +208,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false)
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {
@@ -245,7 +245,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false)
 
     var pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -266,7 +266,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     allItems should have size items.size
 
     pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     val secondWriteId = UUID.randomUUID().toString
     // now modify the items read back from DB (so they have etag)
@@ -299,7 +299,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
 
     val thirdWriteId = UUID.randomUUID().toString
     pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
     // now modify the items read back from DB after the first write
     // (so they have stale etag) and modify them
     // subsequent write operation should update none of them because all etags are stale
@@ -349,7 +349,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -449,7 +449,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -528,7 +528,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item with nestedObject, as patch can only operate on existing items
     val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
@@ -599,7 +599,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -678,7 +678,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -761,7 +761,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkMaxPendingOperations = Some(900)
         )
 
-        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher, 1)
+        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(),new TestOutputMetricsPublisher, 1)
 
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -823,7 +823,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -937,7 +937,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
               container,
               partitionKeyDefinition,
               writeConfig,
-              DiagnosticsConfig(Option.empty, false, None),
+              DiagnosticsConfig(),
               MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
       val items = mutable.Map[String, ObjectNode]()
@@ -983,7 +983,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
               container,
               partitionKeyDefinition,
               writeConfig,
-              DiagnosticsConfig(Option.empty, false, None),
+              DiagnosticsConfig(),
               MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
       val item = getItem(UUID.randomUUID().toString)
@@ -1036,7 +1036,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
         bulkEnabled = false)
 
     val pointWriter = new PointWriter(
-        container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+        container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
     // First create one item
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -1107,7 +1107,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkEnabled = false)
 
       val pointWriter = new PointWriter(
-          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -1153,7 +1153,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkEnabled = false)
 
       val pointWriter = new PointWriter(
-          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
       // First create one item with nestedObject, as patch can only operate on existing items
       val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
@@ -1213,7 +1213,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkEnabled = false)
 
       val pointWriter = new PointWriter(
-          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
+          container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(), MockTaskContext.mockTaskContext(),new TestOutputMetricsPublisher)
 
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -1293,7 +1293,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
                   bulkMaxPendingOperations = Some(900)
               )
 
-              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher, 1)
+              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(),new TestOutputMetricsPublisher, 1)
 
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)

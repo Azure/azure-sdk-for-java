@@ -66,7 +66,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientAccountConnections")
     public interface AccountConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}")
@@ -116,7 +116,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectionUpdateContent body, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectionUpdateContent connection, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -127,7 +127,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectionUpdateContent body, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectionUpdateContent connection, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -138,7 +138,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectionPropertiesV2BasicResourceInner body,
+            @BodyParam("application/json") ConnectionPropertiesV2BasicResourceInner connection,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -149,7 +149,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectionPropertiesV2BasicResourceInner body,
+            @BodyParam("application/json") ConnectionPropertiesV2BasicResourceInner connection,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -425,7 +425,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body Parameters for account connection update.
+     * @param connection Parameters for account connection update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,7 +433,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionPropertiesV2BasicResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String accountName, String connectionName, ConnectionUpdateContent body) {
+        String accountName, String connectionName, ConnectionUpdateContent connection) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -452,13 +452,14 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (connection != null) {
+            connection.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, connectionName, this.client.getApiVersion(), body, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, connectionName, this.client.getApiVersion(), connection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -476,8 +477,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionPropertiesV2BasicResourceInner> updateAsync(String resourceGroupName, String accountName,
         String connectionName) {
-        final ConnectionUpdateContent body = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, connectionName, body)
+        final ConnectionUpdateContent connection = null;
+        return updateWithResponseAsync(resourceGroupName, accountName, connectionName, connection)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -487,7 +488,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body Parameters for account connection update.
+     * @param connection Parameters for account connection update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,7 +497,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPropertiesV2BasicResourceInner> updateWithResponse(String resourceGroupName,
-        String accountName, String connectionName, ConnectionUpdateContent body, Context context) {
+        String accountName, String connectionName, ConnectionUpdateContent connection, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -519,12 +520,12 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (connection != null) {
+            connection.validate();
         }
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, connectionName, this.client.getApiVersion(), body, accept, context);
+            accountName, connectionName, this.client.getApiVersion(), connection, accept, context);
     }
 
     /**
@@ -541,8 +542,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPropertiesV2BasicResourceInner update(String resourceGroupName, String accountName,
         String connectionName) {
-        final ConnectionUpdateContent body = null;
-        return updateWithResponse(resourceGroupName, accountName, connectionName, body, Context.NONE).getValue();
+        final ConnectionUpdateContent connection = null;
+        return updateWithResponse(resourceGroupName, accountName, connectionName, connection, Context.NONE).getValue();
     }
 
     /**
@@ -551,7 +552,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body The object for creating or updating a new account connection.
+     * @param connection The object for creating or updating a new account connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,7 +560,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionPropertiesV2BasicResourceInner>> createWithResponseAsync(String resourceGroupName,
-        String accountName, String connectionName, ConnectionPropertiesV2BasicResourceInner body) {
+        String accountName, String connectionName, ConnectionPropertiesV2BasicResourceInner connection) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -578,13 +579,14 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (connection != null) {
+            connection.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, connectionName, this.client.getApiVersion(), body, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, connectionName, this.client.getApiVersion(), connection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -602,8 +604,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionPropertiesV2BasicResourceInner> createAsync(String resourceGroupName, String accountName,
         String connectionName) {
-        final ConnectionPropertiesV2BasicResourceInner body = null;
-        return createWithResponseAsync(resourceGroupName, accountName, connectionName, body)
+        final ConnectionPropertiesV2BasicResourceInner connection = null;
+        return createWithResponseAsync(resourceGroupName, accountName, connectionName, connection)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -613,7 +615,7 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body The object for creating or updating a new account connection.
+     * @param connection The object for creating or updating a new account connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,7 +624,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionPropertiesV2BasicResourceInner> createWithResponse(String resourceGroupName,
-        String accountName, String connectionName, ConnectionPropertiesV2BasicResourceInner body, Context context) {
+        String accountName, String connectionName, ConnectionPropertiesV2BasicResourceInner connection,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -645,12 +648,12 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (connection != null) {
+            connection.validate();
         }
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, connectionName, this.client.getApiVersion(), body, accept, context);
+            accountName, connectionName, this.client.getApiVersion(), connection, accept, context);
     }
 
     /**
@@ -667,8 +670,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionPropertiesV2BasicResourceInner create(String resourceGroupName, String accountName,
         String connectionName) {
-        final ConnectionPropertiesV2BasicResourceInner body = null;
-        return createWithResponse(resourceGroupName, accountName, connectionName, body, Context.NONE).getValue();
+        final ConnectionPropertiesV2BasicResourceInner connection = null;
+        return createWithResponse(resourceGroupName, accountName, connectionName, connection, Context.NONE).getValue();
     }
 
     /**

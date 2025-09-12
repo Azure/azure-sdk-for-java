@@ -1069,12 +1069,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
@@ -1126,12 +1122,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
@@ -1186,12 +1178,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
@@ -1244,12 +1232,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair

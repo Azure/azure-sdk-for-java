@@ -203,8 +203,12 @@ public final class ExpressionEvaluationDetails implements JsonSerializable<Expre
         jsonWriter.writeStringField("result", this.result);
         jsonWriter.writeStringField("expression", this.expression);
         jsonWriter.writeStringField("path", this.path);
-        jsonWriter.writeUntypedField("expressionValue", this.expressionValue);
-        jsonWriter.writeUntypedField("targetValue", this.targetValue);
+        if (this.expressionValue != null) {
+            jsonWriter.writeUntypedField("expressionValue", this.expressionValue);
+        }
+        if (this.targetValue != null) {
+            jsonWriter.writeUntypedField("targetValue", this.targetValue);
+        }
         jsonWriter.writeStringField("operator", this.operator);
         return jsonWriter.writeEndObject();
     }

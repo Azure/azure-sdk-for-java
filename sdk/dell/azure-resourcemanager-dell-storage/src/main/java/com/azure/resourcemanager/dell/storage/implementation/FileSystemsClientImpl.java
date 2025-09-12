@@ -132,23 +132,23 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FileSystemResourceUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems/{filesystemName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("filesystemName") String filesystemName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("filesystemName") String filesystemName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems/{filesystemName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("filesystemName") String filesystemName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("filesystemName") String filesystemName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dell.Storage/filesystems")
@@ -728,10 +728,9 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
         if (filesystemName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filesystemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filesystemName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, filesystemName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -765,9 +764,8 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter filesystemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, filesystemName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, filesystemName, Context.NONE);
     }
 
     /**
@@ -801,9 +799,8 @@ public final class FileSystemsClientImpl implements FileSystemsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter filesystemName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, filesystemName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, filesystemName, context);
     }
 
     /**

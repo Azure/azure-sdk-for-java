@@ -115,25 +115,23 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StandbyVirtualMachinePoolResourceInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}")
         @ExpectedResponses({ 200 })
@@ -619,10 +617,9 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
             return Mono.error(new IllegalArgumentException(
                 "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -657,9 +654,8 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
                 .log(new IllegalArgumentException(
                     "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
     /**
@@ -695,9 +691,8 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
                 .log(new IllegalArgumentException(
                     "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, context);
     }
 
     /**
