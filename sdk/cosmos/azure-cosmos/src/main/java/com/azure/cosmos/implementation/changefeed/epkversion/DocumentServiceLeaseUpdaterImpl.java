@@ -80,6 +80,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
+                        logger.info("Lease with token {} and owner {}: Failed to update.", cachedLease.getLeaseToken(), cachedLease.getOwner(), throwable);
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
@@ -122,7 +123,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Lease with token {}: Failed to update lease with concurrency token '{}', owner '{}', continuationToken '{}'.",
+                        "Partition {} for the lease with token: {} failed to update due to lease conflict for owner: {}; current continuation token: {}",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
@@ -130,6 +131,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                     return Mono.just(cachedLease);
                 }
+                logger.warn("Partition {} lease update failed for owner {}; current continuation token {}.",
+                    cachedLease.getLeaseToken(),
+                    cachedLease.getOwner(),
+                    cachedLease.getReadableContinuationToken(), throwable);
                 return Mono.error(throwable);
             });
     }
@@ -159,10 +164,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             throw new LeaseLostException(lease, ex, true);
                         }
                         default: {
+                            logger.warn("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                             return Mono.error(re);
                         }
                     }
                 }
+                logger.warn("Lease with token {} and owner {}: Failed to replace.", lease.getLeaseToken(), lease.getOwner(), re);
                 return Mono.error(re);
             });
     }

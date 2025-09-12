@@ -315,10 +315,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
-                        logger.info("Partition {} failed to renew lease. The lease is gone already.", lease.getLeaseToken());
+                        logger.info("Partition {} failed to release the lease. The lease is gone already.", lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                 }
+                logger.info("Partition {} : failed to release lease.", lease.getLeaseToken(), ex);
 
                 return Mono.error(ex);
             })
@@ -362,7 +363,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                 }
-
+                logger.warn("Partition {} : failed to renew lease.", lease.getLeaseToken(), ex);
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
@@ -452,7 +453,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             })
             .doOnError(throwable -> {
                 logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
-                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken());
+                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken(), throwable);
             });
     }
 
