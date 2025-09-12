@@ -59,7 +59,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     public Mono<Void> createMissingLeases() {
         Map<String, List<String>> leaseTokenMap = new ConcurrentHashMap<>();
 
-        return this.enumPartitionKeyRanges()
+        String createMissingLeasesFlow = "createMissingLeases";
+
+        return this.enumPartitionKeyRanges(createMissingLeasesFlow)
             .map(partitionKeyRange -> {
                 leaseTokenMap.put(partitionKeyRange.getId(), partitionKeyRange.getParents());
                 return partitionKeyRange.getId();
@@ -112,8 +114,10 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
         logger.info("Partition {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, lastContinuationToken);
 
+        String splitFlow = "SplitFlow";
+
         // After a split, the children are either all or none available
-        return this.enumPartitionKeyRanges()
+        return this.enumPartitionKeyRanges(splitFlow)
             .filter(range -> range != null && range.getParents() != null && range.getParents().contains(leaseToken))
             .map(PartitionKeyRange::getId)
             .collectList()
@@ -134,7 +138,10 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             });
     }
 
-    private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
+    private Flux<PartitionKeyRange> enumPartitionKeyRanges(String flowId) {
+
+        logger.warn("Performing a ReadFeed initiated by {}", flowId);
+
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
