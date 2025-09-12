@@ -89,7 +89,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
