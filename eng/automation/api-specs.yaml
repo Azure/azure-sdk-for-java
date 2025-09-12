@@ -64,6 +64,8 @@ hybridaks:
   service: hybridcontainerservice
 informatica:
   service: informaticadatamanagement
+keyvault:
+  suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
   service: kubernetesconfiguration
   suffix: extensiontypes
