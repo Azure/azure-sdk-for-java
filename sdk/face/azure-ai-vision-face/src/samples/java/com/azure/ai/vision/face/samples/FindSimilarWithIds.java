@@ -13,7 +13,6 @@ import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.core.util.BinaryData;
-import com.nimbusds.jose.util.Pair;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.List;
@@ -44,10 +43,10 @@ public class FindSimilarWithIds {
         List<FaceDetectionResult> faceToFindSimilar = client.detect(
             imageBinary, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true);
 
-        faceToFindSimilar.stream()
-            .map(face -> Pair.of(face,
-                // Call FindSimilar for each face.
-                client.findSimilar(face.getFaceId(), detectedFaces, 9, FindSimilarMatchMode.MATCH_PERSON)))
-            .forEach(result -> Utils.logObject("FindSimilar faces for " + result.getLeft().getFaceId(), result.getRight(), true));
+        faceToFindSimilar.forEach(face -> {
+            // Call FindSimilar for each face.
+            var similarFaces = client.findSimilar(face.getFaceId(), detectedFaces, 9, FindSimilarMatchMode.MATCH_PERSON);
+            Utils.logObject("FindSimilar faces for " + face.getFaceId(), similarFaces, true);
+        });
     }
 }

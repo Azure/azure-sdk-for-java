@@ -3,11 +3,12 @@
 
 package com.azure.verticals.agrifood.farming;
 
+import java.util.Map;
+
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import net.minidev.json.JSONObject;
 
 /**
  * Code samples for the README.md
@@ -45,8 +46,8 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-createFarmHierarchy
         // Create Party
-        JSONObject object = new JSONObject().appendField("name", "party1");
-        BinaryData party = BinaryData.fromObject(object);
+        Map<String, String> partyData = Map.of("name", "party1");
+        BinaryData party = BinaryData.fromObject(partyData);
         partiesClient.createOrUpdateWithResponse("contoso-party", party, null).block();
 
         // Get Party
