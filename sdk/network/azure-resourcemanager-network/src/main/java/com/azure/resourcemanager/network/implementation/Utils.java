@@ -97,7 +97,8 @@ public final class Utils {
     // Internal utility function
     // name casing could be different between network.subnets() and nsg.subnets()
     static Optional<Subnet> getSubnetByName(Network network, String subnetName) {
-        return network.subnets().values()
+        return network.subnets()
+            .values()
             .stream()
             .filter(subnet -> subnet.name().equalsIgnoreCase(subnetName))
             .findFirst();

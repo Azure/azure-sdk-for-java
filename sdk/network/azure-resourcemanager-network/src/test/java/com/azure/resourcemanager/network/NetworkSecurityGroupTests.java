@@ -178,6 +178,7 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         nsg.refresh();
 
         Assertions.assertEquals(1, nsg.listAssociatedSubnets().size());
-        Assertions.assertEquals(subnetName.toLowerCase(Locale.ROOT), nsg.listAssociatedSubnets().iterator().next().name().toLowerCase(Locale.ROOT));
+        Assertions.assertEquals(subnetName.toLowerCase(Locale.ROOT),
+            nsg.listAssociatedSubnets().iterator().next().name().toLowerCase(Locale.ROOT));
     }
 }
