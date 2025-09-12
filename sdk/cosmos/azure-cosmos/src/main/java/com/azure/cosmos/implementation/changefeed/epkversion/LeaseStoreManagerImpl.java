@@ -319,12 +319,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
                     if (Exceptions.isNotFound(e)) {
-                        logger.info("Lease with token {} : failed to release lease. The lease is gone already.",
+                        logger.info("Lease with token {} : failed to renew lease. The lease is gone already.",
                             lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                 }
-                logger.info("Lease with token {} : failed to release lease.", lease.getLeaseToken(), ex);
 
                 return Mono.error(ex);
             })
@@ -466,7 +465,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             })
             .doOnError(throwable -> {
                 logger.info("Lease with token {}  : lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
-                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken(), throwable);
+                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken());
             });
     }
 
