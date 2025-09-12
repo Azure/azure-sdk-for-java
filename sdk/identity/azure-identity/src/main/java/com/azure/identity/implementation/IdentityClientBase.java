@@ -108,7 +108,6 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
-    static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
@@ -116,6 +115,7 @@ public abstract class IdentityClientBase {
     static final String ADFS_TENANT = "adfs";
     static final String HTTP_LOCALHOST = "http://localhost";
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
+    static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
@@ -789,10 +789,6 @@ public abstract class IdentityClientBase {
         return token;
     }
 
-    String redactInfo(String input) {
-        return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
-    }
-
     /**
      * Extract a single, user-friendly message from azd consoleMessage JSON output.
      *
@@ -947,6 +943,10 @@ public abstract class IdentityClientBase {
         } else {
             return DEFAULT_MAC_LINUX_PATH;
         }
+    }
+
+    String redactInfo(String input) {
+        return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }
 
     HttpPipeline setupPipeline() {
