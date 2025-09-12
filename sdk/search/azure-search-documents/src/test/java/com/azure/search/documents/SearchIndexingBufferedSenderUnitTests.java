@@ -48,7 +48,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.TestHelpers.getTestTokenCredential;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
@@ -71,7 +71,9 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     private static SearchClientBuilder getSearchClientBuilder() {
-        return new SearchClientBuilder().endpoint(ENDPOINT).indexName("index").credential(getTestTokenCredential());
+        return new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .indexName("index")
+            .credential(getTestTokenCredential());
     }
 
     private static HttpClient wrapWithAsserting(HttpClient wrappedHttpClient, boolean isSync) {

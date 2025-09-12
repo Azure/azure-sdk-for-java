@@ -1142,7 +1142,7 @@ public class SearchTests extends SearchTestBase {
             assertEquals(1, documents.size());
 
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 
@@ -1176,7 +1176,7 @@ public class SearchTests extends SearchTestBase {
 
             assertEquals(1, documents.size());
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 

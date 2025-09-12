@@ -461,7 +461,7 @@ public class IndexingTests extends SearchTestBase {
         Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(false), Context.NONE);
         List<IndexingResult> results = resultResponse.getValue().getResults();
-        assertEquals(resultResponse.getStatusCode(), 207);
+        assertEquals(207, resultResponse.getStatusCode());
         assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
         assertSuccessfulIndexResult(results.get(1), "randomId", 200);
         assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
@@ -504,7 +504,7 @@ public class IndexingTests extends SearchTestBase {
                 asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false)))
             .assertNext(resultResponse -> {
                 List<IndexingResult> results = resultResponse.getValue().getResults();
-                assertEquals(resultResponse.getStatusCode(), 207);
+                assertEquals(207, resultResponse.getStatusCode());
                 assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
                 assertSuccessfulIndexResult(results.get(1), "randomId", 200);
                 assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
@@ -1148,7 +1148,7 @@ public class IndexingTests extends SearchTestBase {
     static void assertFailedIndexResult(IndexingResult result, String key, int statusCode) {
         assertEquals(result.getKey(), key);
         assertEquals(result.getStatusCode(), statusCode);
-        assertEquals(result.getErrorMessage(), "Document not found.");
+        assertEquals("Document not found.", result.getErrorMessage());
         assertFalse(result.isSucceeded());
     }
 

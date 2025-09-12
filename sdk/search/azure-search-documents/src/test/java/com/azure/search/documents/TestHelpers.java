@@ -18,9 +18,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -51,7 +51,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -351,13 +351,6 @@ public final class TestHelpers {
         return documents;
     }
 
-    public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
-        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
-        uploadDocuments(client, documents);
-
-        return documents;
-    }
-
     public static HttpPipeline getHttpPipeline(SearchClient searchClient) {
         return searchClient.getHttpPipeline();
     }
@@ -390,7 +383,7 @@ public final class TestHelpers {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
@@ -419,7 +412,7 @@ public final class TestHelpers {
             if (pipelineCredential != null) {
                 return pipelineCredential;
             }
-            return new AzurePowerShellCredentialBuilder().build();
+            return new AzureCliCredentialBuilder().build();
         } else if (testMode == TestMode.RECORD) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
@@ -478,7 +471,7 @@ public final class TestHelpers {
     }
 
     public static SearchIndexClient createSharedSearchIndexClient() {
-        return new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        return new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))

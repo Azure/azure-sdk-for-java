@@ -102,6 +102,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.31.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-ai-openai</artifactId>
       <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-ai-openai;dependency} -->
       <scope>test</scope>

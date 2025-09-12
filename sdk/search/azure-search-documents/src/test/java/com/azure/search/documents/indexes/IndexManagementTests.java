@@ -72,7 +72,7 @@ public class IndexManagementTests extends SearchTestBase {
             return;
         }
 
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
