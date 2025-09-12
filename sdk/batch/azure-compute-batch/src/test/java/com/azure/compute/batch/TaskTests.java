@@ -63,13 +63,11 @@ public class TaskTests extends BatchClientTestBase {
         super.beforeTest();
         livePoolId = getStringIdWithUserNamePrefix("-testpool");
         liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
-        if (getTestMode() == TestMode.RECORD) {
-            try {
-                createIfNotExistIaaSPool(livePoolId);
-                createIfNotExistIaaSPool(liveIaasPoolId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            createIfNotExistIaaSPool(livePoolId);
+            createIfNotExistIaaSPool(liveIaasPoolId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
