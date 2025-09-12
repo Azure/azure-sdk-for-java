@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 
 public class NetworkSecurityGroupTests extends NetworkManagementTest {
 
@@ -138,5 +139,46 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         Assertions.assertEquals("Storage.WestUS", nsg.securityRules().get("rule3").destinationAddressPrefix());
 
         networkManager.networkSecurityGroups().deleteById(nsg.id());
+    }
+
+    @Test
+    public void canListAssociatedNetwork() {
+        final String nsgName = generateRandomResourceName("nsg", 8);
+
+        final Region region = Region.US_SOUTH_CENTRAL;
+
+        NetworkSecurityGroup nsg = networkManager.networkSecurityGroups()
+            .define(nsgName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .defineRule("rule1")
+            .allowOutbound()
+            .fromAnyAddress()
+            .fromAnyPort()
+            .toAnyAddress()
+            .toPort(80)
+            .withProtocol(SecurityRuleProtocol.TCP)
+            .attach()
+            .create();
+
+        Assertions.assertEquals(0, nsg.listAssociatedSubnets().size());
+        String subnetName = generateRandomResourceName("sb", 15);
+
+        networkManager.networks()
+            .define(generateRandomResourceName("nw", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .defineSubnet(subnetName)
+            .withAddressPrefix("10.0.0.0/28")
+            .withExistingNetworkSecurityGroup(nsg)
+            .attach()
+            .create();
+
+        nsg.refresh();
+
+        Assertions.assertEquals(1, nsg.listAssociatedSubnets().size());
+        Assertions.assertEquals(subnetName.toLowerCase(Locale.ROOT),
+            nsg.listAssociatedSubnets().iterator().next().name().toLowerCase(Locale.ROOT));
     }
 }

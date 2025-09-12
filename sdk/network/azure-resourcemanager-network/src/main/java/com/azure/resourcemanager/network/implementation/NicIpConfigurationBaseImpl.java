@@ -75,12 +75,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
             return null;
         }
 
-        Subnet subnet = network.subnets().get(subnetName);
-        if (subnet == null) {
-            return null;
-        }
-
-        return subnet.getNetworkSecurityGroup();
+        return Utils.getSubnetByName(network, subnetName).map(Subnet::getNetworkSecurityGroup).orElse(null);
     }
 
     @Override
