@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Changed `tenantId` and `principalId` type from `UUID` to `String`, for `ManagedHsm` and `ManagedServiceIdentity`.
+
 ### Bugs Fixed
 
 ### Other Changes
