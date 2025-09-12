@@ -7,19 +7,15 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.logging.ClientLogger;
 
-import reactor.core.publisher.Mono;
-
-public class QueryParamPolicy implements HttpPipelinePolicy {
+public final class QueryParamPolicy extends HttpPipelineSyncPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(QueryParamPolicy.class);
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         HttpRequest request = context.getHttpRequest();
 
         try {
@@ -50,7 +46,5 @@ public class QueryParamPolicy implements HttpPipelinePolicy {
                     + "Request will proceed with original URL. URL: {}, Error: {}",
                 request.getUrl(), e.getMessage(), e);
         }
-
-        return next.process();
     }
 }

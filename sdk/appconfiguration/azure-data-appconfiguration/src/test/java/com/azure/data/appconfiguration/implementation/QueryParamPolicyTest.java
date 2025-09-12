@@ -23,25 +23,6 @@ import com.azure.core.util.Context;
 
 import reactor.core.publisher.Mono;
 
-/**
- * Unit tests for QueryParamPolicy
- * 
- * IMPORTANT BUG IDENTIFIED:
- * The QueryParamPolicy currently has a bug where multiple query parameters with the same key
- * (like multiple "tags" parameters) get incorrectly merged into comma-separated values
- * instead of being preserved as separate parameters.
- * 
- * This is problematic for Azure App Configuration API which expects:
- * - Multiple tags parameters: "?tags=tag1%3D&tags=tag2%3D" 
- * - NOT comma-separated: "?tags=tag1%3D,tag2%3D"
- * 
- * The issue occurs because:
- * 1. UrlBuilder.getQuery() merges duplicate keys with comma separation
- * 2. QueryParamPolicy uses TreeMap<String, String> which only stores one value per key
- * 
- * To fix: The policy needs to handle multiple values per key properly, preserving
- * separate parameters while still providing lowercase conversion and alphabetical sorting.
- */
 public class QueryParamPolicyTest {
     private static final String BASE_URL = "http://localhost:8080";
     private static final String ENDPOINT_PATH = "/kv/test";
@@ -155,7 +136,7 @@ public class QueryParamPolicyTest {
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
             final String actualUrl = context.getHttpRequest().getUrl().toString();
             // The URL should either be cleaned up or preserved as is
-            assertTrue(actualUrl.equals(BASE_URL + ENDPOINT_PATH) || actualUrl.equals(originalUrl),
+            assertTrue((BASE_URL + ENDPOINT_PATH).equals(actualUrl) || actualUrl.equals(originalUrl),
                 "Empty query parameters should be handled gracefully");
             return next.process();
         };
