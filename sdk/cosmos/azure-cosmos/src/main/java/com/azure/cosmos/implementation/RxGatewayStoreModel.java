@@ -680,8 +680,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                 return Mono.error(dce);
             }
-        ).flatMap(response ->
-            this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders(), new StringBuilder()).then(Mono.just(response))
+        ).flatMap(response -> {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("RxGatewayStoreModel.processMessage:").append(",");
+            return this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders(), sb).then(Mono.just(response));
+            }
         );
     }
 
@@ -737,6 +741,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private Mono<Void> captureSessionTokenAndHandlePartitionSplit(RxDocumentServiceRequest request,
                                                                   Map<String, String> responseHeaders,
                                                                   StringBuilder sb) {
+
+        if (sb != null) {
+            sb.append("RxGatewayStoreModel.captureSessionTokenAndHandlePartitionSplit:").append(",");
+        }
+
         this.captureSessionToken(request, responseHeaders);
         if (request.requestContext.resolvedPartitionKeyRange != null &&
             StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
@@ -792,6 +801,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx, new StringBuilder());
         }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("RxGatewayStoreModel.resolvePartitionKeyRangeByPkRangeId:").append(",");
+
         return this.collectionCache.resolveCollectionAsync(
             metadataCtx,
             request)
@@ -799,7 +811,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 pkRangeId,
                 collectionHolder.v.getResourceId(),
                 metadataCtx,
-                new StringBuilder()));
+                sb));
     }
 
     private Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeIdCore(

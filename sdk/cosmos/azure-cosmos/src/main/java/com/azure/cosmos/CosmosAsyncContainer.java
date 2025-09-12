@@ -2639,6 +2639,8 @@ public class CosmosAsyncContainer {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        StringBuilder sb = new StringBuilder();
+        sb.append("CosmosAsyncContainer.getOverlappingFeedRanges").append(",");
 
         return this.getNormalizedEffectiveRange(feedRange)
             .flatMap(normalizedRange -> {
@@ -2654,7 +2656,7 @@ public class CosmosAsyncContainer {
                                 normalizedRange,
                                 forceRefresh,
                                 null,
-                                new StringBuilder()
+                                sb
                             );
                     });
             })
