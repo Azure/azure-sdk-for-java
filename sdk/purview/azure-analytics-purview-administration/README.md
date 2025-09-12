@@ -35,7 +35,11 @@ For more information about permissions, see [here][azure_purview_permissions].
 
 In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
 
-The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
+You can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create AccountsClient with Azure Active Directory Credential
 
@@ -52,8 +56,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
 
@@ -110,5 +112,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [create_azure_purview_account]: https://learn.microsoft.com/azure/purview/create-catalog-portal
 [azure_purview_permissions]: https://learn.microsoft.com/azure/purview/catalog-permissions
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-
-
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
