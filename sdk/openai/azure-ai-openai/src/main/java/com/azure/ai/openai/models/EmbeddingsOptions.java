@@ -190,7 +190,7 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * @return the encodingFormat value.
      */
     @Generated
-    EmbeddingEncodingFormat getEncodingFormat() {
+    public EmbeddingEncodingFormat getEncodingFormat() {
         return this.encodingFormat;
     }
 
@@ -201,7 +201,7 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * @return the EmbeddingsOptions object itself.
      */
     @Generated
-    EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+    public EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
         this.encodingFormat = encodingFormat;
         return this;
     }

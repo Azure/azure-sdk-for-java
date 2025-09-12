@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * Represents the available formats for embeddings data on responses.
  */
-class EmbeddingEncodingFormat extends ExpandableStringEnum<EmbeddingEncodingFormat> {
+public class EmbeddingEncodingFormat extends ExpandableStringEnum<EmbeddingEncodingFormat> {
 
     /**
      * Specifies that responses should provide arrays of floats for each embedding.
