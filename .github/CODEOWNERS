@@ -213,7 +213,7 @@
 # ServiceOwners:                                                   @areddish @tburns10
 
 # PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/                                    @leareai @Azure/azure-java-sdk
+/sdk/face/azure-ai-vision-face/                                    @g2vinay @leareai @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Face
 # ServiceOwners:                                                   @leareai
