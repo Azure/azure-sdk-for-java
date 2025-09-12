@@ -7,6 +7,7 @@ import com.azure.ai.vision.face.FaceClient;
 import com.azure.ai.vision.face.FaceClientBuilder;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
+import com.azure.ai.vision.face.models.FaceFindSimilarResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.models.FindSimilarMatchMode;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
@@ -45,7 +46,7 @@ public class FindSimilarWithIds {
 
         faceToFindSimilar.forEach(face -> {
             // Call FindSimilar for each face.
-            var similarFaces = client.findSimilar(face.getFaceId(), detectedFaces, 9, FindSimilarMatchMode.MATCH_PERSON);
+            List<FaceFindSimilarResult> similarFaces = client.findSimilar(face.getFaceId(), detectedFaces, 9, FindSimilarMatchMode.MATCH_PERSON);
             Utils.logObject("FindSimilar faces for " + face.getFaceId(), similarFaces, true);
         });
     }
