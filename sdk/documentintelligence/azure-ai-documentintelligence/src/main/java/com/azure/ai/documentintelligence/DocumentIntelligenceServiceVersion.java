@@ -13,7 +13,12 @@ public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-11-30.
      */
-    V2024_11_30("2024-11-30");
+    V2024_11_30("2024-11-30"),
+
+    /**
+     * Enum value 2025-09-01.
+     */
+    V2025_09_01("2025-09-01");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
      * @return The latest {@link DocumentIntelligenceServiceVersion}.
      */
     public static DocumentIntelligenceServiceVersion getLatest() {
-        return V2024_11_30;
+        return V2025_09_01;
     }
 }

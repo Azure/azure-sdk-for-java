@@ -174,8 +174,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @BodyParam("application/json") BinaryData analyzeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
@@ -185,8 +185,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @BodyParam("application/json") BinaryData analyzeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/pdf")
         @ExpectedResponses({ 200 })
@@ -206,6 +206,28 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAnalyzeResultPdfSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeResults/{resultId}/png")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAnalyzeResultPng(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeResults/{resultId}/png")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAnalyzeResultPngSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
             @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -240,8 +262,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteAnalyzeResult(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("resultId") String resultId, RequestOptions requestOptions, Context context);
 
         @Delete("/documentModels/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({ 204 })
@@ -251,8 +272,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteAnalyzeResultSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("resultId") String resultId, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyzeBatch")
         @ExpectedResponses({ 202 })
@@ -262,7 +282,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeBatchDocuments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("content-type") String contentType,
             @BodyParam("application/json") BinaryData analyzeBatchRequest, RequestOptions requestOptions,
             Context context);
 
@@ -274,7 +294,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeBatchDocumentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("content-type") String contentType,
             @BodyParam("application/json") BinaryData analyzeBatchRequest, RequestOptions requestOptions,
             Context context);
 
@@ -306,8 +326,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteAnalyzeBatchResult(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("resultId") String resultId, RequestOptions requestOptions, Context context);
 
         @Delete("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
         @ExpectedResponses({ 204 })
@@ -317,8 +336,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteAnalyzeBatchResultSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("resultId") String resultId, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
         @ExpectedResponses({ 200 })
@@ -350,8 +368,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> classifyDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @BodyParam("application/json") BinaryData classifyRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
@@ -361,8 +379,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> classifyDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @BodyParam("application/json") BinaryData classifyRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -431,10 +449,8 @@ public final class DocumentIntelligenceClientImpl {
     private Mono<Response<Void>> analyzeDocumentWithResponseAsync(String modelId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.analyzeDocument(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                modelId, contentType, accept, analyzeRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.analyzeDocument(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, contentType, analyzeRequest, requestOptions, context));
     }
 
     /**
@@ -483,9 +499,8 @@ public final class DocumentIntelligenceClientImpl {
     private Response<Void> analyzeDocumentWithResponse(String modelId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            contentType, accept, analyzeRequest, requestOptions, Context.NONE);
+            contentType, analyzeRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -778,6 +793,61 @@ public final class DocumentIntelligenceClientImpl {
     }
 
     /**
+     * Gets the generated searchable PNG output from document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the generated searchable PNG output from document analysis along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeResultPngWithResponseAsync(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "image/png";
+        return FluxUtil.withContext(context -> service.getAnalyzeResultPng(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the generated searchable PNG output from document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the generated searchable PNG output from document analysis along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAnalyzeResultPngWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "image/png";
+        return service.getAnalyzeResultPngSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            resultId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -849,9 +919,8 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnalyzeResultWithResponseAsync(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteAnalyzeResult(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), modelId, resultId, requestOptions, context));
     }
 
     /**
@@ -869,9 +938,8 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAnalyzeResultWithResponse(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteAnalyzeResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            resultId, accept, requestOptions, Context.NONE);
+            resultId, requestOptions, Context.NONE);
     }
 
     /**
@@ -929,10 +997,8 @@ public final class DocumentIntelligenceClientImpl {
     private Mono<Response<Void>> analyzeBatchDocumentsWithResponseAsync(String modelId, BinaryData analyzeBatchRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.analyzeBatchDocuments(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-                contentType, accept, analyzeBatchRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.analyzeBatchDocuments(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, contentType, analyzeBatchRequest, requestOptions, context));
     }
 
     /**
@@ -990,9 +1056,8 @@ public final class DocumentIntelligenceClientImpl {
     private Response<Void> analyzeBatchDocumentsWithResponse(String modelId, BinaryData analyzeBatchRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.analyzeBatchDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            contentType, accept, analyzeBatchRequest, requestOptions, Context.NONE);
+            contentType, analyzeBatchRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1519,9 +1584,8 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnalyzeBatchResultWithResponseAsync(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteAnalyzeBatchResult(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), modelId, resultId, requestOptions, context));
     }
 
     /**
@@ -1539,9 +1603,8 @@ public final class DocumentIntelligenceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAnalyzeBatchResultWithResponse(String modelId, String resultId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteAnalyzeBatchResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            resultId, accept, requestOptions, Context.NONE);
+            resultId, requestOptions, Context.NONE);
     }
 
     /**
@@ -1700,10 +1763,9 @@ public final class DocumentIntelligenceClientImpl {
     private Mono<Response<Void>> classifyDocumentWithResponseAsync(String classifierId, BinaryData classifyRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.classifyDocument(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                classifierId, contentType, accept, classifyRequest, requestOptions, context));
+                classifierId, contentType, classifyRequest, requestOptions, context));
     }
 
     /**
@@ -1743,9 +1805,8 @@ public final class DocumentIntelligenceClientImpl {
     private Response<Void> classifyDocumentWithResponse(String classifierId, BinaryData classifyRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.classifyDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), classifierId,
-            contentType, accept, classifyRequest, requestOptions, Context.NONE);
+            contentType, classifyRequest, requestOptions, Context.NONE);
     }
 
     /**
