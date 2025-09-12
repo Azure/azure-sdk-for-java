@@ -1,6 +1,6 @@
 {
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "java",
-  "TagPrefix": "java/resourcemanager/azure-resourcemanager-resources",
-  "Tag": "java/resourcemanager/azure-resourcemanager-resources_9bde3bd247"
+  "TagPrefix": "java/resources/azure-resourcemanager-resources",
+  "Tag": "java/resources/azure-resourcemanager-resources_5e481be4bc"
 }
