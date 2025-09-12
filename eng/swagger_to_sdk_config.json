@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/tools/spec-gen-sdk/src/types/SwaggerToSdkConfigSchema.json",
+  "initOptions": {
+    "initScript": {
+      "path": "./eng/automation/init.sh",
+      "envs": [
+        "JAVA_HOME_11_X64"
+      ]
+    }
+  },
+  "generateOptions": {
+    "generateScript": {
+      "path": "./eng/automation/generate.py",
+      "logPrefix": "Java-Sdk-Automation",
+      "stdout": {
+        "showInComment": "(.*\\[ERROR\\]\\s*).*"
+      }
+    }
+  },
+  "artifactOptions": {
+    "installInstructionScript": {
+      "path": "./eng/automation/install_instruction.py"
+    }
+  },
+  "advancedOptions": {
+    "generationCallMode": "one-per-config"
+  },
+  "packageOptions": {
+    "buildScript": {
+      "command": "mvn clean package -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
+    }
+  }
+}
