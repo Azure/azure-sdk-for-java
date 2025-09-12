@@ -428,8 +428,9 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             leaseStoreManager,
             DEFAULT_DEGREE_OF_PARALLELISM,
             DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
-            this.collectionId
-        );
+            this.collectionId,
+            this.changeFeedProcessorOptions,
+            this.hostName);
 
         RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
         String epkRangeVersionLeasePrefix = this.getEpkRangeVersionLeasePrefix();

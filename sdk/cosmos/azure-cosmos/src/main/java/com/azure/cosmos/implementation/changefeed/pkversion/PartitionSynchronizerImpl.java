@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -36,6 +37,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final int degreeOfParallelism;
     private final int maxBatchSize;
     private final String collectionResourceId;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
+    private final String hostName;
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
@@ -44,7 +47,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             LeaseManager leaseManager,
             int degreeOfParallelism,
             int maxBatchSize,
-            String collectionResourceId) {
+            String collectionResourceId,
+            ChangeFeedProcessorOptions changeFeedProcessorOptions,
+            String hostName) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
@@ -53,6 +58,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
         this.collectionResourceId = collectionResourceId;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.hostName = hostName;
     }
 
     @Override
@@ -140,13 +147,20 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges(String flowId) {
 
-        logger.warn("Performing a ReadFeed initiated by {}", flowId);
-
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
 
+        logger.warn("Performing a ReadFeed of PartitionKeyRange initiated by [{}] : for CollectionLink : [{}] by Host : [{}] targeting LeasePrefix : [{}]",
+            flowId, this.collectionSelfLink, this.hostName, this.changeFeedProcessorOptions.getLeasePrefix());
+
         return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
+            .doOnNext(feedResponse -> {
+                logger.warn("Obtained feed response with {} partition key ranges and a continuation token {} and flowId : {}",
+                    feedResponse.getResults().size(),
+                    feedResponse.getContinuationToken(),
+                    flowId);
+            })
             .map(FeedResponse::getResults)
             .flatMap(Flux::fromIterable)
             .onErrorResume(throwable -> {

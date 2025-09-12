@@ -267,6 +267,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             }
             Instant addressCallStartTime = Instant.now();
 
+            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}]", coll.getId(), collectionRid, this.client.getUserAgent());
+
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
                 .flatMap(p -> {

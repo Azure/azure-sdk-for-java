@@ -6127,6 +6127,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
 
+        logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}]", resourceType, resourceLink, maxPageSize, this.userAgentContainer.getUserAgent());
+
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
