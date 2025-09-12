@@ -118,7 +118,8 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                                                                                 FeedRangeEpkImpl.forFullRange()
                                                                                     .getRange(),
                                                                                 true,
-                                                                                null /*properties*/)
+                                                                                null /*properties*/,
+                                                      new StringBuilder())
                                                   .then(Mono.just(true)));
             }
 

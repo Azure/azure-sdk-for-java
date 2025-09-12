@@ -361,7 +361,7 @@ public class AddressResolver implements IAddressResolver {
         Mono<RefreshState> stateObs = collectionObs.flatMap(collectionValueHolder -> {
             state.collection = collectionValueHolder.v;
             Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs =
-                this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties);
+                this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties, new StringBuilder());
             final Utils.ValueHolder<DocumentCollection> underlyingCollection = collectionValueHolder;
             return routingMapObs.flatMap(routingMapValueHolder -> {
                 state.routingMap = routingMapValueHolder.v;
@@ -370,7 +370,7 @@ public class AddressResolver implements IAddressResolver {
                     state.collectionRoutingMapCacheIsUptoDate = true;
                     request.forcePartitionKeyRangeRefresh = false;
                     if (routingMapValueHolder.v != null) {
-                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties)
+                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties, new StringBuilder())
                             .map(newRoutingMapValueHolder -> {
                                 state.routingMap = newRoutingMapValueHolder.v;
                                 return state;
@@ -399,7 +399,8 @@ public class AddressResolver implements IAddressResolver {
                         BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collectionValueHolder.v.getResourceId(),
                             null,
-                            request.properties);
+                            request.properties,
+                        new StringBuilder());
 
                         return newRoutingMapObs.map(routingMapValueHolder -> {
                             newState.routingMap = routingMapValueHolder.v;
@@ -489,7 +490,8 @@ public class AddressResolver implements IAddressResolver {
                                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                 funcState.collection.getResourceId(),
                                 funcState.routingMap,
-                                request.properties);
+                                request.properties,
+                                new StringBuilder());
 
                             return getStateWithNewRoutingMap(funcState, newRoutingMapObs);
                         } else {
@@ -546,7 +548,8 @@ public class AddressResolver implements IAddressResolver {
                                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                     collectionValueHolder.v.getResourceId(),
                                     null,
-                                    request.properties);
+                                    request.properties,
+                                    new StringBuilder());
 
                                 return getStateWithNewRoutingMap(state, newRoutingMap);
                             }

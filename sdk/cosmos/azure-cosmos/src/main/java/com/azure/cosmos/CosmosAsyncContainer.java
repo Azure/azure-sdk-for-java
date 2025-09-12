@@ -2653,7 +2653,8 @@ public class CosmosAsyncContainer {
                                 collection.getResourceId(),
                                 normalizedRange,
                                 forceRefresh,
-                                null
+                                null,
+                                new StringBuilder()
                             );
                     });
             })

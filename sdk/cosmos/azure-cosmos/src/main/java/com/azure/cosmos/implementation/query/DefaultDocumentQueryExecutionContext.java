@@ -153,7 +153,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                                      resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
-                                                     null)
+                                                     null,
+                       new StringBuilder())
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 

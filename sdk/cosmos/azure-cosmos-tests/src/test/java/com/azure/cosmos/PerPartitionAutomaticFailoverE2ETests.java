@@ -1268,7 +1268,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     containerResponse.getProperties().getResourceId(),
                     PartitionKeyInternalHelper.FullRange,
                     false,
-                    null));
+                    null,
+                    new StringBuilder()));
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

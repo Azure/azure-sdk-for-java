@@ -911,7 +911,7 @@ public class DocumentProducerTest {
         doReturn(cache).when(client).getPartitionKeyRangeCache();
 
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
-            .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());
+            .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any(), any());
 
         doAnswer(invocation -> {
             RxDocumentServiceRequest req = invocation.getArgument(0);

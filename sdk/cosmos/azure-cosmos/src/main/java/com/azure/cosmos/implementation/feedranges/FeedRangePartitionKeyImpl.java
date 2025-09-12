@@ -130,7 +130,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                         containerRid,
                         Range.getPointRange(effectivePartitionKey),
                         false,
-                        null)
+                        null,
+                        new StringBuilder())
                     .flatMap(pkRangeHolder -> {
                         ArrayList<String> rangeList = new ArrayList<>(1);
 

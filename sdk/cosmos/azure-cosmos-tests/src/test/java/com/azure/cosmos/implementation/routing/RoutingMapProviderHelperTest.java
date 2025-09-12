@@ -77,7 +77,7 @@ public class RoutingMapProviderHelperTest {
         @Override
         public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            Range<String> range, boolean forceRefresh, Map<String, Object> properties) {
+            Range<String> range, boolean forceRefresh, Map<String, Object> properties, StringBuilder sb) {
             Utils.ValueHolder<List<PartitionKeyRange>> valueHolder = new Utils.ValueHolder<>();
             valueHolder.v = this.routingMap.getOverlappingRanges(range);
             return Mono.just(valueHolder);
@@ -86,7 +86,7 @@ public class RoutingMapProviderHelperTest {
         @Override
         public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties) {
+            String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties, StringBuilder sb) {
             return null;
         }
     }
@@ -98,7 +98,7 @@ public class RoutingMapProviderHelperTest {
         }
 
         @Override
-        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties) {
+        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties, StringBuilder sb) {
             return Mono.just(new Utils.ValueHolder<>(null));
         }
     }

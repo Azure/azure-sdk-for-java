@@ -19,14 +19,14 @@ import java.util.Map;
  */
 public interface IPartitionKeyRangeCache extends IRoutingMapProvider, ICollectionRoutingMapCache {
 
-    Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties);
+    Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties, StringBuilder sb);
 
     Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Range<String> range, boolean forceRefresh,
-                                                                                  Map<String, Object> properties);
+                                                                                  Map<String, Object> properties, StringBuilder sb);
 
     Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, String partitionKeyRangeId, boolean forceRefresh,
-                                                                                Map<String, Object> properties);
+                                                                                Map<String, Object> properties, StringBuilder sb);
 
-    Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties);
+    Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties, StringBuilder sb);
 
 }

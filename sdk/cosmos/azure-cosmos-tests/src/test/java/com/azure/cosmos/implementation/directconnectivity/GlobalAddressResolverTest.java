@@ -182,7 +182,8 @@ public class GlobalAddressResolverTest {
                         documentCollection.getResourceId(),
                         PartitionKeyInternalHelper.FullRange,
                         true,
-                        null))
+                        null,
+                    new StringBuilder()))
                 .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
 
         // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
@@ -228,7 +229,8 @@ public class GlobalAddressResolverTest {
                         documentCollection.getResourceId(),
                         PartitionKeyInternalHelper.FullRange,
                         true,
-                        null);
+                        null,
+                    new StringBuilder());
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
                 .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any());

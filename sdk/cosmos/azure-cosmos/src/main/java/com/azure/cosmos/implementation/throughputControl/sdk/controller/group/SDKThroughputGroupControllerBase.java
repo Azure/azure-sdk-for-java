@@ -214,7 +214,7 @@ public abstract class SDKThroughputGroupControllerBase implements IThroughputCon
 
     private Mono<Boolean> shouldUpdateRequestController(RxDocumentServiceRequest request) {
         return this.partitionKeyRangeCache.tryGetRangeByPartitionKeyRangeId(
-                null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null)
+                null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null, new StringBuilder())
             .flatMap(pkRangeHolder -> {
                 if (pkRangeHolder.v == null) {
                     return Mono.just(Boolean.FALSE);

@@ -159,7 +159,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                                     containerResponse.getProperties().getResourceId(),
                                     PartitionKeyInternalHelper.FullRange,
                                     true,
-                                    null);
+                                    null,
+                                new StringBuilder());
                 })
                 .flatMapIterable(pkRangesValueHolder -> pkRangesValueHolder.v)
                 .flatMap(partitionKeyRange -> {

@@ -114,7 +114,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        new StringBuilder())
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
@@ -166,7 +167,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        new StringBuilder())
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new InvalidPartitionException(

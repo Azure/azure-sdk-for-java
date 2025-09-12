@@ -117,7 +117,7 @@ final class BulkExecutorUtil {
                     itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
                     return docClientWrapper.getPartitionKeyRangeCache()
-                        .tryLookupAsync(null, collection.getResourceId(), null, null)
+                        .tryLookupAsync(null, collection.getResourceId(), null, null, new StringBuilder())
                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
                             if (routingMap.v == null) {

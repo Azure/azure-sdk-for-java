@@ -263,6 +263,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -305,6 +306,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -378,6 +380,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -409,6 +412,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 eq(false),
+                any(),
                 any());
     }
 
@@ -466,6 +470,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -499,6 +504,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -528,7 +534,8 @@ public class FeedRangeTest {
                 null,
                 partitionKeyRange.getId(),
                 false,
-                null);
+                null,
+                new StringBuilder());
     }
 
     @Test(groups = "unit")
@@ -552,6 +559,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)));
@@ -593,6 +601,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
@@ -623,6 +632,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any());
     }
 
@@ -786,6 +796,7 @@ public class FeedRangeTest {
                 any(),
                 any(),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 

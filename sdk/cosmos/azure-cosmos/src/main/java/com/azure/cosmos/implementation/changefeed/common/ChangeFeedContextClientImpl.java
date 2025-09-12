@@ -100,7 +100,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             collection.getResourceId(),
                             range,
                             forceRefresh,
-                            null);
+                            null,
+                        new StringBuilder());
                 })
                 .flatMap(pkRangesValueHolder -> {
                     if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {

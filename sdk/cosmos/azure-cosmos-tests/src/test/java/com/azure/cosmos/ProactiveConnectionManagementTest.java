@@ -860,7 +860,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                 containerResponse.getProperties().getResourceId(),
                                 PartitionKeyInternalHelper.FullRange,
                                 false,
-                                null));
+                                null,
+                            new StringBuilder()));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> buildPartitionKeyRangeRequestFromAsyncContainerAsMono(
@@ -874,7 +875,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                 containerResponse.getProperties().getResourceId(),
                                 PartitionKeyInternalHelper.FullRange,
                                 false,
-                                null));
+                                null,
+                            new StringBuilder()));
     }
 
     private class ProactiveConnectionManagementTestConfig {

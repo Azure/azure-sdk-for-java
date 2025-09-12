@@ -68,6 +68,7 @@ public class PkRangesThroughputRequestControllerTests {
                 eq(targetCollectionRid),
                 eq(RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES),
                 eq(true),
+                any(),
                 any())
         ).thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
     }

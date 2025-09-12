@@ -331,7 +331,8 @@ class DocumentProducer<T> {
             collectionRid,
             range,
             true,
-            qryOptionsAccessor.getProperties(cosmosQueryRequestOptions));
+            qryOptionsAccessor.getProperties(cosmosQueryRequestOptions),
+            new StringBuilder());
     }
 
     private boolean isSplitOrMerge(CosmosException e) {
