@@ -790,7 +790,6 @@ public abstract class IdentityClientBase {
         return token;
     }
 
-
     String redactInfo(String input) {
         return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }

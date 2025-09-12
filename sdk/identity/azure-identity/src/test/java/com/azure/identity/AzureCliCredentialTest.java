@@ -233,8 +233,7 @@ public class AzureCliCredentialTest {
         String claims = "{\"access_token\":{\"essential\":true}}";
         String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
         TokenRequestContext requestWithClaims
-            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims(claims);
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
 
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
 

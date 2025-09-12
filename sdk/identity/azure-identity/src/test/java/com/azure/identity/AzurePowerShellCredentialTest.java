@@ -79,8 +79,7 @@ public class AzurePowerShellCredentialTest {
         String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
 
         TokenRequestContext requestWithClaims
-            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims(claims);
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
 
         AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
 
@@ -161,8 +160,7 @@ public class AzurePowerShellCredentialTest {
         String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
 
         TokenRequestContext requestWithClaims
-            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims(claims);
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
 
         AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
 
@@ -170,8 +168,7 @@ public class AzurePowerShellCredentialTest {
         StepVerifier.create(credential.getToken(requestWithClaims))
             .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
                 && throwable.getMessage().contains("Connect-AzAccount -ClaimsChallenge")
-                && throwable.getMessage().contains(encodedClaims) 
-            )
+                && throwable.getMessage().contains(encodedClaims))
             .verify();
     }
 }
