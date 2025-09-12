@@ -27,7 +27,7 @@
   },
   "packageOptions": {
     "buildScript": {
-      "command": "mvn clean -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
+      "command": "mvn clean package -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
     }
   }
 }
