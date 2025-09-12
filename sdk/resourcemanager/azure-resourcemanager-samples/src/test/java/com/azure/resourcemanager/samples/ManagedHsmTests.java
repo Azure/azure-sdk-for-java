@@ -259,7 +259,7 @@ public class ManagedHsmTests extends SamplesTestBase {
                     .withSku(
                         new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
                     .withProperties(
-                        new ManagedHsmProperties().withTenantId(UUID.fromString(azureResourceManager.tenantId()))
+                        new ManagedHsmProperties().withTenantId(azureResourceManager.tenantId())
                             .withInitialAdminObjectIds(Arrays.asList(objectId))
                             .withEnableSoftDelete(true)
                             .withSoftDeleteRetentionInDays(7)
