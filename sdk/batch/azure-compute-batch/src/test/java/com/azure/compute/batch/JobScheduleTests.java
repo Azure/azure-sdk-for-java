@@ -44,14 +44,12 @@ public class JobScheduleTests extends BatchClientTestBase {
     protected void beforeTest() {
         super.beforeTest();
         poolId = getStringIdWithUserNamePrefix("-testpool");
-        if (getTestMode() == TestMode.RECORD) {
-            try {
-                livePool = createIfNotExistIaaSPool(poolId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Assertions.assertNotNull(livePool);
+        try {
+            livePool = createIfNotExistIaaSPool(poolId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Assertions.assertNotNull(livePool);
     }
 
     @SyncAsyncTest
