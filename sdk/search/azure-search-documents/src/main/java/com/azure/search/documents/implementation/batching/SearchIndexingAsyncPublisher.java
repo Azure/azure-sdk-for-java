@@ -190,7 +190,7 @@ public final class SearchIndexingAsyncPublisher<T> {
         }
 
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
-            response.getValue().getResults(), actions.size(), false)).doOnCancel(() -> {
+                response.getValue().getResults(), actions.size(), false)).doOnCancel(() -> {
                 LOGGER.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
                 documentManager.reinsertCancelledActions(batchActions);
             })

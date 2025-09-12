@@ -325,6 +325,7 @@ public final class FieldBuilder {
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
+        boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
         boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
@@ -350,6 +351,13 @@ public final class FieldBuilder {
             && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
             errorMessage.append(
                 "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
+        }
+
+        // Any field is allowed to have a normalizer, but it must be either a STRING or Collection(STRING) and have one
+        // of filterable, sortable, or facetable set to true.
+        if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
+            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
+                .append("one of filterable, sortable, or facetable set to true. ");
         }
 
         if (errorMessage.length() > 0) {
