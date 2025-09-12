@@ -109,6 +109,7 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
+    static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
@@ -647,7 +648,7 @@ public abstract class IdentityClientBase {
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
-                    String redactedOutput = IdentityUtil.redactInfo(processOutput);
+                    String redactedOutput = redactInfo(processOutput);
                     if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException("AzureCliCredential authentication unavailable."
@@ -672,7 +673,7 @@ public abstract class IdentityClientBase {
             }
 
         } catch (IOException | InterruptedException e) {
-            IllegalStateException ex = new IllegalStateException(IdentityUtil.redactInfo(e.getMessage()));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -734,7 +735,7 @@ public abstract class IdentityClientBase {
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
-                    String redactedOutput = IdentityUtil.redactInfo(processOutput);
+                    String redactedOutput = redactInfo(processOutput);
 
                     if (redactedOutput.contains("unknown flag: --claims")
                         || redactedOutput.contains("flag provided but not defined: -claims")) {
@@ -746,7 +747,7 @@ public abstract class IdentityClientBase {
 
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            String userFriendlyError = IdentityUtil.extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
                             if (userFriendlyError != null) {
                                 throw LOGGER
                                     .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
@@ -781,12 +782,99 @@ public abstract class IdentityClientBase {
                 token = new AccessToken(accessToken, expiresOn);
             }
         } catch (IOException | InterruptedException e) {
-            IllegalStateException ex = new IllegalStateException(IdentityUtil.redactInfo(e.getMessage()));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
             throw LOGGER.logExceptionAsError(ex);
         }
 
         return token;
+    }
+
+
+    String redactInfo(String input) {
+        return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
+    }
+
+    /**
+     * Extract a single, user-friendly message from azd consoleMessage JSON output.
+     *
+     * @param output The output from the Azure Developer CLI command.
+     * @return A user-friendly error message if found, otherwise null.
+     *
+     * Preference order:
+     * 1) A message containing "Suggestion" (case-insensitive)
+     * 2) The second message if multiple are present
+     * 3) The first message if only one exists
+     * Returns null if no messages can be parsed.
+     */
+    String extractUserFriendlyErrorFromAzdOutput(String output) {
+        if (output == null || output.isEmpty()) {
+            return null;
+        }
+
+        List<String> messages = new ArrayList<>();
+
+        for (String line : output.split("\\R")) { // split on any line break
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            // Handle multiple JSON objects in a single line
+            try (JsonReader reader = JsonProviders.createReader(trimmed)) {
+                while (reader.nextToken() != null) {
+                    if (reader.currentToken() == JsonToken.START_OBJECT) {
+                        Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
+
+                        // check "data.message"
+                        Object data = obj.get("data");
+                        if (data instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> dataMap = (Map<String, Object>) data;
+                            Object message = dataMap.get("message");
+                            if (message instanceof String) {
+                                String msg = ((String) message).trim();
+                                if (!msg.isEmpty()) {
+                                    messages.add(msg);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        // check "message"
+                        Object message = obj.get("message");
+                        if (message instanceof String) {
+                            String msg = ((String) message).trim();
+                            if (!msg.isEmpty()) {
+                                messages.add(msg);
+                            }
+                        }
+                    } else {
+                        break; // Not a JSON object, stop processing this line
+                    }
+                }
+            } catch (IOException e) {
+                // not JSON -> ignore
+            }
+        }
+
+        if (messages.isEmpty()) {
+            return null;
+        }
+
+        // Prefer the suggestion line if present
+        for (String msg : messages) {
+            if (msg.toLowerCase().contains("suggestion")) {
+                return redactInfo(msg);
+            }
+        }
+
+        // If more than one message exists, return the last one
+        if (messages.size() > 1) {
+            return redactInfo(messages.get(messages.size() - 1));
+        }
+
+        return redactInfo(messages.get(0));
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
