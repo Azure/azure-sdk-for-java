@@ -1047,7 +1047,7 @@ public abstract class IdentityClientBase {
     /**
      * Properly escape a string for shell command usage.
      */
-    private String shellEscape(String input) {
+    String shellEscape(String input) {
         if (input == null) {
             return "";
         }
