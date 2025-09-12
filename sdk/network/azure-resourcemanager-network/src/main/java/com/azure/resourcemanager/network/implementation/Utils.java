@@ -46,7 +46,7 @@ public final class Utils {
             return null;
         }
 
-        return getSubnetByName(network, subnetName).get();
+        return getSubnetByName(network, subnetName).orElse(null);
     }
 
     // Internal utility function
