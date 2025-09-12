@@ -26,6 +26,7 @@
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
+    <module>sdk/authorization</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
     <module>sdk/avs</module>
@@ -197,6 +198,7 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/privatedns</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
@@ -209,6 +211,7 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -239,6 +242,7 @@
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/springappdiscovery</module>
+    <module>sdk/sql</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
@@ -257,6 +261,7 @@
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
+    <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
     <module>sdk/vision</module>

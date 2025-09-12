@@ -20,7 +20,7 @@ public final class WorkloadNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"ndy\",\"name\":\"pchrqbn\",\"type\":\"jrcg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"fiqwoy\",\"name\":\"qvapcohhoucq\",\"type\":\"q\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class WorkloadNetworksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetwork response = manager.workloadNetworks()
-            .getWithResponse("yufmhruncuwmq", "pkcdqzhlct", com.azure.core.util.Context.NONE)
+            .getWithResponse("klinhmdptysprq", "gnzxojpslsvj", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

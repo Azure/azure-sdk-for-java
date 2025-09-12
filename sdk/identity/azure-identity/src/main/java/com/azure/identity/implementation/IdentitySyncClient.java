@@ -401,7 +401,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public AccessToken authenticateWithAzureDeveloperCli(TokenRequestContext request) {
 
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
 
         List<String> scopes = request.getScopes();
 
