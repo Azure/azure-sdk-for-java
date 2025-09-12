@@ -416,7 +416,7 @@ public class QueryParamPolicyTest {
      * Test single tags parameter is handled correctly
      */
     @SyncAsyncTest
-    public void singleTagsParameterIsHandledCorrectly() {
+    public void singleTagsParameter() {
         final String originalUrl = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&tags=environment%3Dprod";
 
         QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
