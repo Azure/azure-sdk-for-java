@@ -319,12 +319,12 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
                     if (Exceptions.isNotFound(e)) {
-                        logger.info("Lease with token {} : failed to release lease. The lease is gone already.",
+                        logger.warn("Lease with token {} : failed to release lease. The lease is gone already.",
                             lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                 }
-                logger.info("Lease with token {} : failed to release lease.", lease.getLeaseToken(), ex);
+                logger.warn("Lease with token {} : failed to release lease.", lease.getLeaseToken(), ex);
 
                 return Mono.error(ex);
             })
