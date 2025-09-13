@@ -370,7 +370,10 @@ public class AddressResolver implements IAddressResolver {
                     state.collectionRoutingMapCacheIsUptoDate = true;
                     request.forcePartitionKeyRangeRefresh = false;
                     if (routingMapValueHolder.v != null) {
-                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties, new StringBuilder())
+
+                        StringBuilder sb = new StringBuilder().append("AddressResolver.getOrRefreshRoutingMap:").append(",");
+
+                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties, sb)
                             .map(newRoutingMapValueHolder -> {
                                 state.routingMap = newRoutingMapValueHolder.v;
                                 return state;
@@ -395,12 +398,15 @@ public class AddressResolver implements IAddressResolver {
 
                 return newCollectionObs.flatMap(collectionValueHolder -> {
                         newState.collection = collectionValueHolder.v;
+
+                        StringBuilder sb = new StringBuilder().append("AddressResolver.getOrRefreshRoutingMap:").append(",");
+
                     Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMapObs = this.collectionRoutingMapCache.tryLookupAsync(
                         BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collectionValueHolder.v.getResourceId(),
                             null,
                             request.properties,
-                        new StringBuilder());
+                        sb);
 
                         return newRoutingMapObs.map(routingMapValueHolder -> {
                             newState.routingMap = routingMapValueHolder.v;
@@ -486,12 +492,15 @@ public class AddressResolver implements IAddressResolver {
                     Function<RefreshState, Mono<RefreshState>> ensureCollectionRoutingMapCacheIsUptoDateFunc = funcState -> {
                         if (!funcState.collectionRoutingMapCacheIsUptoDate) {
                             funcState.collectionRoutingMapCacheIsUptoDate = true;
+
+                            StringBuilder sb = new StringBuilder().append("AddressResolver.resolveAddressesAndIdentityAsync:").append(",");
+
                             Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMapObs = this.collectionRoutingMapCache.tryLookupAsync(
                                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                 funcState.collection.getResourceId(),
                                 funcState.routingMap,
                                 request.properties,
-                                new StringBuilder());
+                                sb);
 
                             return getStateWithNewRoutingMap(funcState, newRoutingMapObs);
                         } else {
@@ -544,12 +553,15 @@ public class AddressResolver implements IAddressResolver {
                                 // Collection cache was stale. We resolved to new Rid. routing map cache is potentially stale
                                 // for this new collection rid. Mark it as such.
                                 state.collectionRoutingMapCacheIsUptoDate = false;
+
+                                StringBuilder sb = new StringBuilder().append("AddressResolver.resolveAddressesAndIdentityAsync:").append(",");
+
                                 Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMap = this.collectionRoutingMapCache.tryLookupAsync(
                                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                     collectionValueHolder.v.getResourceId(),
                                     null,
                                     request.properties,
-                                    new StringBuilder());
+                                    sb);
 
                                 return getStateWithNewRoutingMap(state, newRoutingMap);
                             }

@@ -179,7 +179,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties, StringBuilder sb) {
 
         if (sb != null) {
-            sb.append("TryGetRangeByPartitionKeyRangeId:").append(",");
+            sb.append("RxPartitionKeyRangeCache.TryGetRangeByPartitionKeyRangeId:").append(",");
         }
 
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
@@ -228,6 +228,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         // here we stick to what main java sdk does, investigate later.
 
+        if (sb != null) {
+            sb.append("RxPartitionKeyRangeCache.GetRoutingMapForCollectionAsync:").append(",");
+        }
+
         Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(metaDataDiagnosticsContext, collectionRid , false, properties, sb);
 
         return rangesObs.flatMap(ranges -> {
@@ -270,7 +274,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         ); //this request doesn't actually go to server
 
         if (sb != null) {
-            sb.append("GetPartitionKeyRange:").append(collectionRid).append(",");
+            sb.append("RxPartitionKeyRangeCache.GetPartitionKeyRange:").append(collectionRid).append(",");
         }
 
         request.requestContext.resolvedCollectionRid = collectionRid;
