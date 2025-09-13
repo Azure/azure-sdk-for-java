@@ -22,7 +22,7 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
     @Test
     public void testCreateOrupdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"kcbcue\",\"port\":1999500267063441667,\"provisioningState\":\"Succeeded\"},\"id\":\"qibrhosxsdqrhzoy\",\"name\":\"i\",\"type\":\"m\"}";
+            = "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"edgfbcvkcvq\",\"port\":6395460850482092633,\"provisioningState\":\"Updating\"},\"id\":\"vdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceConfigurationResource response = manager.serviceConfigurations()
-            .define("quxvypomgkop")
-            .withExistingEndpoint("nubexk", "zksmondj")
-            .withServiceName(ServiceName.WAC)
-            .withResourceId("jvp")
-            .withPort(4279032137659144852L)
+            .define("ljuti")
+            .withExistingEndpoint("lvithhqzonosgg", "hcohfwdsjnk")
+            .withServiceName(ServiceName.SSH)
+            .withResourceId("cffgdkzzewk")
+            .withPort(4567739994281506426L)
             .create();
 
         Assertions.assertEquals(ServiceName.SSH, response.serviceName());
-        Assertions.assertEquals("kcbcue", response.resourceId());
-        Assertions.assertEquals(1999500267063441667L, response.port());
+        Assertions.assertEquals("edgfbcvkcvq", response.resourceId());
+        Assertions.assertEquals(6395460850482092633L, response.port());
     }
 }

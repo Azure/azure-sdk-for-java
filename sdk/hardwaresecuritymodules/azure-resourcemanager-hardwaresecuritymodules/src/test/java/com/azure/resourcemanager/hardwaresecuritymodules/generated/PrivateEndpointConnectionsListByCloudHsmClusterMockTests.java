@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByCloudHsmClusterMockTests {
     @Test
     public void testListByCloudHsmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"zzronasx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zq\",\"actionsRequired\":\"hftwesgog\"},\"provisioningState\":\"InternalError\",\"groupIds\":[\"nxkrlgnyhmossxkk\"]},\"etag\":\"h\",\"id\":\"gh\",\"name\":\"jbdhqxvc\",\"type\":\"gf\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"efr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"aojfm\",\"actionsRequired\":\"cotmr\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"tymoxoftp\",\"piwyczuhxacpqjl\",\"h\"]},\"etag\":\"usps\",\"id\":\"sdvlmfwdgzxulucv\",\"name\":\"amrsreuzv\",\"type\":\"urisjnhnytxifqj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class PrivateEndpointConnectionsListByCloudHsmClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByCloudHsmCluster("fcdmqnrojlpijn", "rxfrddhc", com.azure.core.util.Context.NONE);
+            .listByCloudHsmCluster("ujviylwdshfs", "n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("zq",
+        Assertions.assertEquals("aojfm",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hftwesgog",
+        Assertions.assertEquals("cotmr",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("h", response.iterator().next().etag());
+        Assertions.assertEquals("usps", response.iterator().next().etag());
     }
 }
