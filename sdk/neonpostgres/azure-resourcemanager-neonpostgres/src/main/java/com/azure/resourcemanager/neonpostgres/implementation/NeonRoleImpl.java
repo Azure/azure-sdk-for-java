@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner;
 import com.azure.resourcemanager.neonpostgres.models.NeonRole;
 import com.azure.resourcemanager.neonpostgres.models.NeonRoleProperties;
 
-public final class NeonRoleImpl implements NeonRole {
+public final class NeonRoleImpl implements NeonRole, NeonRole.Definition, NeonRole.Update {
     private NeonRoleInner innerObject;
 
     private final com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager;
-
-    NeonRoleImpl(NeonRoleInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -39,11 +35,91 @@ public final class NeonRoleImpl implements NeonRole {
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NeonRoleInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String organizationName;
+
+    private String projectName;
+
+    private String branchName;
+
+    private String neonRoleName;
+
+    public NeonRoleImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
+        String branchName) {
+        this.resourceGroupName = resourceGroupName;
+        this.organizationName = organizationName;
+        this.projectName = projectName;
+        this.branchName = branchName;
+        return this;
+    }
+
+    public NeonRole create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonRoles()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+                this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public NeonRole create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonRoles()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+                this.innerModel(), context);
+        return this;
+    }
+
+    NeonRoleImpl(String name, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = new NeonRoleInner();
+        this.serviceManager = serviceManager;
+        this.neonRoleName = name;
+    }
+
+    public NeonRoleImpl update() {
+        return this;
+    }
+
+    public NeonRole apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonRoles()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+                this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public NeonRole apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonRoles()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+                this.innerModel(), context);
+        return this;
+    }
+
+    NeonRoleImpl(NeonRoleInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
+        this.neonRoleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "neonRoles");
+    }
+
+    public NeonRoleImpl withProperties(NeonRoleProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

@@ -1,14 +1,152 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2025-09-10)
 
-### Features Added
+- Azure Resource Manager Neon Postgres client library for Java. This package contains Microsoft Azure SDK for Neon Postgres Management SDK.  Package api-version 2025-06-23-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Compute$DefinitionStages` was removed
 
-### Other Changes
+#### `models.Compute$Definition` was removed
+
+#### `models.Compute$Update` was removed
+
+#### `models.Compute$UpdateStages` was removed
+
+#### `models.NeonRoles` was modified
+
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.NeonDatabases` was modified
+
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+
+#### `models.Computes` was modified
+
+* `define(java.lang.String)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Endpoint` was modified
+
+* `refresh(com.azure.core.util.Context)` was removed
+* `refresh()` was removed
+
+#### `models.OrganizationResource$Update` was modified
+
+* `withProperties(models.OrganizationProperties)` was removed
+
+#### `models.NeonDatabase` was modified
+
+* `refresh()` was removed
+* `refresh(com.azure.core.util.Context)` was removed
+
+#### `models.NeonRole` was modified
+
+* `refresh(com.azure.core.util.Context)` was removed
+* `refresh()` was removed
+
+#### `models.Endpoints` was modified
+
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+
+#### `models.Compute` was modified
+
+* `refresh(com.azure.core.util.Context)` was removed
+* `refresh()` was removed
+* `resourceGroupName()` was removed
+* `update()` was removed
+
+#### `models.ComputeProperties` was modified
+
+* `withStatus(java.lang.String)` was removed
+* `withEntityName(java.lang.String)` was removed
+* `withMemory(java.lang.Integer)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withAttributes(java.util.List)` was removed
+* `withCpuCores(java.lang.Integer)` was removed
+
+### Features Added
+
+* `models.EntityType` was added
+
+* `models.AutoscalingSize` was added
+
+* `models.EndpointStatus` was added
+
+* `models.PreflightCheckParameters` was added
+
+* `models.OrganizationResourceUpdateProperties` was added
+
+* `models.OrganizationResourceUpdate` was added
+
+* `models.PreflightCheckResult` was added
+
+#### `models.Branches` was modified
+
+* `preflightWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PreflightCheckParameters,com.azure.core.util.Context)` was added
+* `preflight(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PreflightCheckParameters)` was added
+
+#### `models.NeonDatabaseProperties` was modified
+
+* `withDatabaseName(java.lang.String)` was added
+* `lastUpdated()` was added
+* `databaseName()` was added
+
+#### `models.EndpointProperties` was modified
+
+* `computeName()` was added
+* `withComputeName(java.lang.String)` was added
+* `status()` was added
+* `size()` was added
+* `withSize(models.AutoscalingSize)` was added
+* `withEndpointId(java.lang.String)` was added
+* `endpointId()` was added
+* `lastActive()` was added
+
+#### `models.OrganizationResource$Update` was modified
+
+* `withProperties(models.OrganizationResourceUpdateProperties)` was added
+
+#### `models.NeonRoleProperties` was modified
+
+* `withRoleName(java.lang.String)` was added
+* `lastUpdated()` was added
+* `roleName()` was added
+* `owns()` was added
+
+#### `models.Branch` was modified
+
+* `preflight(models.PreflightCheckParameters)` was added
+* `preflightWithResponse(models.PreflightCheckParameters,com.azure.core.util.Context)` was added
+
+#### `models.BranchProperties` was modified
+
+* `dataSize()` was added
+* `branchId()` was added
+* `withBranch(java.lang.String)` was added
+* `computeHours()` was added
+* `withBranchId(java.lang.String)` was added
+* `protectedProperty()` was added
+* `lastActive()` was added
+* `isDefault()` was added
+* `branch()` was added
 
 ## 1.0.0 (2025-04-21)
 

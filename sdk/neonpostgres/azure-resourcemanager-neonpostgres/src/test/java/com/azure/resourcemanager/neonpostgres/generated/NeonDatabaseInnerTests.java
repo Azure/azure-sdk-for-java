@@ -6,18 +6,40 @@ package com.azure.resourcemanager.neonpostgres.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonDatabaseInner;
+import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.NeonDatabaseProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class NeonDatabaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeonDatabaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"entityId\":\"seyqrhvyeldotjv\",\"entityName\":\"wiswskukjtasbvw\",\"createdAt\":\"pkxkdtxfk\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"twknvgm\",\"value\":\"bugtywatmqa\"},{\"name\":\"kueatgroeshoy\",\"value\":\"zcbyfq\"},{\"name\":\"kfaoytehq\",\"value\":\"uvjmv\"},{\"name\":\"mtdwcky\",\"value\":\"roejnndl\"}],\"branchId\":\"juskbrreqyn\",\"ownerName\":\"eysfaqegplw\"},\"id\":\"shwddkvbxgk\",\"name\":\"usybwptdaca\",\"type\":\"vvlfntymtp\"}")
+            "{\"properties\":{\"entityId\":\"queqihk\",\"entityName\":\"owl\",\"createdAt\":\"ouwhldxwhie\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"smfx\",\"value\":\"cvprst\"},{\"name\":\"kitbfjtd\",\"value\":\"otnplfacqocc\"}],\"branchId\":\"qxwetjtd\",\"ownerName\":\"u\",\"databaseName\":\"doad\",\"lastUpdated\":\"op\"},\"id\":\"hpadkmdzg\",\"name\":\"szxvctkbbxuhar\",\"type\":\"sirncclabvoy\"}")
             .toObject(NeonDatabaseInner.class);
-        Assertions.assertEquals("wiswskukjtasbvw", model.properties().entityName());
-        Assertions.assertEquals("twknvgm", model.properties().attributes().get(0).name());
-        Assertions.assertEquals("bugtywatmqa", model.properties().attributes().get(0).value());
-        Assertions.assertEquals("juskbrreqyn", model.properties().branchId());
-        Assertions.assertEquals("eysfaqegplw", model.properties().ownerName());
+        Assertions.assertEquals("owl", model.properties().entityName());
+        Assertions.assertEquals("smfx", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("cvprst", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("qxwetjtd", model.properties().branchId());
+        Assertions.assertEquals("u", model.properties().ownerName());
+        Assertions.assertEquals("doad", model.properties().databaseName());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NeonDatabaseInner model
+            = new NeonDatabaseInner().withProperties(new NeonDatabaseProperties().withEntityName("owl")
+                .withAttributes(Arrays.asList(new Attributes().withName("smfx").withValue("cvprst"),
+                    new Attributes().withName("kitbfjtd").withValue("otnplfacqocc")))
+                .withBranchId("qxwetjtd")
+                .withOwnerName("u")
+                .withDatabaseName("doad"));
+        model = BinaryData.fromObject(model).toObject(NeonDatabaseInner.class);
+        Assertions.assertEquals("owl", model.properties().entityName());
+        Assertions.assertEquals("smfx", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("cvprst", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("qxwetjtd", model.properties().branchId());
+        Assertions.assertEquals("u", model.properties().ownerName());
+        Assertions.assertEquals("doad", model.properties().databaseName());
     }
 }

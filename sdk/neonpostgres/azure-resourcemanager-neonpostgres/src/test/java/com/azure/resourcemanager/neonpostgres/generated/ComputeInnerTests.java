@@ -12,14 +12,14 @@ public final class ComputeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInner model = BinaryData.fromString(
-            "{\"properties\":{\"entityId\":\"acoyvivbsizusjs\",\"entityName\":\"bscm\",\"createdAt\":\"zijiufehgmv\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"v\",\"value\":\"kxrerlniylylyfwx\"},{\"name\":\"utgqztwh\",\"value\":\"hmupgxyjtcdxabbu\"}],\"region\":\"tabenbbk\",\"cpuCores\":1355647832,\"memory\":414385579,\"status\":\"cafeddw\"},\"id\":\"lzafwxu\",\"name\":\"gnhgook\",\"type\":\"talvnbwgp\"}")
+            "{\"properties\":{\"entityId\":\"mxjq\",\"entityName\":\"h\",\"createdAt\":\"jsbcml\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"bhuroolkolirhhm\",\"value\":\"jusuzgfjzc\"},{\"name\":\"aaxoialahfxwcc\",\"value\":\"kdxkuk\"}],\"region\":\"c\",\"cpuCores\":810637281,\"memory\":116473489,\"status\":\"oq\"},\"id\":\"shavljqkx\",\"name\":\"rqolnthbb\",\"type\":\"kgzukwdrnzkjth\"}")
             .toObject(ComputeInner.class);
-        Assertions.assertEquals("bscm", model.properties().entityName());
-        Assertions.assertEquals("v", model.properties().attributes().get(0).name());
-        Assertions.assertEquals("kxrerlniylylyfwx", model.properties().attributes().get(0).value());
-        Assertions.assertEquals("tabenbbk", model.properties().region());
-        Assertions.assertEquals(1355647832, model.properties().cpuCores());
-        Assertions.assertEquals(414385579, model.properties().memory());
-        Assertions.assertEquals("cafeddw", model.properties().status());
+        Assertions.assertEquals("h", model.properties().entityName());
+        Assertions.assertEquals("bhuroolkolirhhm", model.properties().attributes().get(0).name());
+        Assertions.assertEquals("jusuzgfjzc", model.properties().attributes().get(0).value());
+        Assertions.assertEquals("c", model.properties().region());
+        Assertions.assertEquals(810637281, model.properties().cpuCores());
+        Assertions.assertEquals(116473489, model.properties().memory());
+        Assertions.assertEquals("oq", model.properties().status());
     }
 }

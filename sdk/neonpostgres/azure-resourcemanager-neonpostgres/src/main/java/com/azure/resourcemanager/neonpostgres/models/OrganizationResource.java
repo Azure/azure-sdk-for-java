@@ -244,7 +244,7 @@ public interface OrganizationResource {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(OrganizationProperties properties);
+            Update withProperties(OrganizationResourceUpdateProperties properties);
         }
     }
 

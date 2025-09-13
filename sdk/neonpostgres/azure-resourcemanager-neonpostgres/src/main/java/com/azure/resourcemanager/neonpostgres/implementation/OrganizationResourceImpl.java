@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationProperties;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationResource;
+import com.azure.resourcemanager.neonpostgres.models.OrganizationResourceUpdate;
+import com.azure.resourcemanager.neonpostgres.models.OrganizationResourceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -76,6 +78,8 @@ public final class OrganizationResourceImpl
 
     private String organizationName;
 
+    private OrganizationResourceUpdate updateProperties;
+
     public OrganizationResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -102,20 +106,21 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResourceImpl update() {
+        this.updateProperties = new OrganizationResourceUpdate();
         return this;
     }
 
     public OrganizationResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getOrganizations()
-            .update(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, organizationName, updateProperties, Context.NONE);
         return this;
     }
 
     public OrganizationResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getOrganizations()
-            .update(resourceGroupName, organizationName, this.innerModel(), context);
+            .update(resourceGroupName, organizationName, updateProperties, context);
         return this;
     }
 
@@ -154,12 +159,26 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResourceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public OrganizationResourceImpl withProperties(OrganizationProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public OrganizationResourceImpl withProperties(OrganizationResourceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

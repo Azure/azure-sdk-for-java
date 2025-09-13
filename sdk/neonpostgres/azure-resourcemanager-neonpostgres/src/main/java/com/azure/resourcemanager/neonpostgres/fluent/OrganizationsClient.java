@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.neonpostgres.fluent.models.PgVersionsResultInner;
+import com.azure.resourcemanager.neonpostgres.models.OrganizationResourceUpdate;
 import com.azure.resourcemanager.neonpostgres.models.PgVersion;
 
 /**
@@ -122,7 +123,7 @@ public interface OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginUpdate(String resourceGroupName,
-        String organizationName, OrganizationResourceInner properties);
+        String organizationName, OrganizationResourceUpdate properties);
 
     /**
      * Update a OrganizationResource.
@@ -138,7 +139,7 @@ public interface OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginUpdate(String resourceGroupName,
-        String organizationName, OrganizationResourceInner properties, Context context);
+        String organizationName, OrganizationResourceUpdate properties, Context context);
 
     /**
      * Update a OrganizationResource.
@@ -153,7 +154,7 @@ public interface OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OrganizationResourceInner update(String resourceGroupName, String organizationName,
-        OrganizationResourceInner properties);
+        OrganizationResourceUpdate properties);
 
     /**
      * Update a OrganizationResource.
@@ -169,7 +170,7 @@ public interface OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OrganizationResourceInner update(String resourceGroupName, String organizationName,
-        OrganizationResourceInner properties, Context context);
+        OrganizationResourceUpdate properties, Context context);
 
     /**
      * Delete a OrganizationResource.

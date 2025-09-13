@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 public final class OrganizationsGetPostgresVersionsWithResponseMockTests {
     @Test
     public void testGetPostgresVersionsWithResponse() throws Exception {
-        String responseStr = "{\"versions\":[{\"version\":1619461010},{\"version\":1917475194}]}";
+        String responseStr
+            = "{\"versions\":[{\"version\":1538813816},{\"version\":420672272},{\"version\":1302381284},{\"version\":405248425}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +32,10 @@ public final class OrganizationsGetPostgresVersionsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PgVersionsResult response = manager.organizations()
-            .getPostgresVersionsWithResponse("rceqnkbrupob", new PgVersion().withVersion(1391296754),
+            .getPostgresVersionsWithResponse("mvhzfovanyrvaprt", new PgVersion().withVersion(74209052),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1619461010, response.versions().get(0).version());
+        Assertions.assertEquals(1538813816, response.versions().get(0).version());
     }
 }
