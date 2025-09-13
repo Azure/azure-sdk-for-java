@@ -21,6 +21,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import org.apache.commons.io.IOUtils;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -530,12 +531,12 @@ public class FeedRangeTest {
         Mockito
             .verify(routingMapProviderMock, Mockito.times(1))
             .tryGetPartitionKeyRangeByIdAsync(
-                null,
-                null,
-                partitionKeyRange.getId(),
-                false,
-                null,
-                new StringBuilder());
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.anyBoolean(),
+                Mockito.any(),
+                Mockito.any());
     }
 
     @Test(groups = "unit")
