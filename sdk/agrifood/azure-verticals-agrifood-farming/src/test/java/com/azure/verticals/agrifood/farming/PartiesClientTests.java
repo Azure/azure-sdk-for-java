@@ -16,7 +16,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -79,8 +78,7 @@ public class PartiesClientTests extends TestProxyTestBase {
     @Test
     public void testParties() {
         PartiesAsyncClient client = createPartiesClient();
-        JSONObject object = new JSONObject().appendField("name", "party1");
-        BinaryData party = BinaryData.fromObject(object);
+        BinaryData party = BinaryData.fromString("{\"name\":\"party1\"}");
         client.createOrUpdateWithResponse("contoso-party", party, null).block();
         Response<BinaryData> response = client.getWithResponse("contoso-party", new RequestOptions()).block();
         Assertions.assertNotNull(response.getValue());
