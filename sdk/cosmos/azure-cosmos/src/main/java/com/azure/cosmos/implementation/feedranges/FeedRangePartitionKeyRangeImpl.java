@@ -85,7 +85,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                         collection.getResourceId(),
                         this.partitionKeyRangeId,
                         false,
-                        null)
+                        null,
+                        new StringBuilder())
                     .flatMap((pkRangeHolder) -> {
                         if (pkRangeHolder.v == null) {
                             return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
@@ -93,7 +94,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                                 collection.getResourceId(),
                                 partitionKeyRangeId,
                                 true,
-                                null);
+                                null,
+                                new StringBuilder());
                         } else {
                             return Mono.just(pkRangeHolder);
                         }

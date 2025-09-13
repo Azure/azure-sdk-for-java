@@ -129,7 +129,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 collection.getResourceId(),
                                 PartitionKeyInternalHelper.FullRange,
                                 true,
-                                null)
+                                null,
+                                new StringBuilder())
                             .flatMap(valueHolder -> {
 
                                 String containerLink = ImplementationBridgeHelpers

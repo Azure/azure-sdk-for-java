@@ -122,7 +122,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         checkNotNull(range, "Range can not be null");
         // TODO: add diagnostics context
         return this.partitionKeyRangeCache
-            .tryGetOverlappingRangesAsync(null, this.targetContainerRid, range, true, null)
+            .tryGetOverlappingRangesAsync(null, this.targetContainerRid, range, true, null, new StringBuilder())
             .map(partitionKeyRangesValueHolder -> partitionKeyRangesValueHolder.v);
     }
 }
