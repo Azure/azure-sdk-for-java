@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Added a pipeline policy to handle query parameters to make sure the keys are always in lower case and in alphabetical order.
+
 ## 1.8.3 (2025-08-21)
 
 ### Other Changes
