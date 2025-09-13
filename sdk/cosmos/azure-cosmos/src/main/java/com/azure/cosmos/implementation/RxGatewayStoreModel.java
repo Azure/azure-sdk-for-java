@@ -547,6 +547,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             if (httpRequest.reactorNettyRequestRecord() != null) {
 
+                OperationCancelledException oce = new  OperationCancelledException("", httpRequest.uri());
+
                 ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
 
                 RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
@@ -555,6 +557,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
                 request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
             }
         });
     }

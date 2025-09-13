@@ -278,6 +278,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
+    private Function<DatabaseAccount, Void> perPartitionFailoverConfigModifier;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -741,6 +742,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient);
 
+            this.perPartitionFailoverConfigModifier
+                = (databaseAccount -> {
+                this.initializePerPartitionFailover(databaseAccount);
+                this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+                return null;
+            });
+
+            this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
             this.globalEndpointManager.init();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
@@ -806,7 +815,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
-            this.initializePerPartitionFailover(databaseAccountSnapshot);
             this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -1240,6 +1248,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             UUID activityId,
             final AtomicBoolean isQueryCancelledOnTimeout) {
 
+        // reevaluate e2e policy config on cosmosQueryRequestOptions
+        if (options != null) {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfigFromRequestOptions =
+                getEndToEndOperationLatencyPolicyConfig(
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .toRequestOptions(options),
+                    resourceTypeEnum,
+                    OperationType.Query);
+
+            if (endToEndPolicyConfigFromRequestOptions != null) {
+                options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfigFromRequestOptions);
+            }
+        }
+
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(diagnosticsClientContext, queryClient, resourceTypeEnum, klass, sqlQuery,
@@ -1399,6 +1423,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (!this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
+        }
+
+        if (!Configs.isThinClientEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
+        }
+
+        if (!(Configs.isHttp2Enabled() && (this.connectionPolicy.getHttp2ConnectionConfig() != null && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled()))) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
         }
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
@@ -7783,6 +7815,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
 
         this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
+        this.diagnosticsClientConfig.withIsPerPartitionAutomaticFailoverEnabled(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled());
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
@@ -7808,6 +7841,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
                 System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
             }
+        } else {
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.warn("Per-Partition Circuit Breaker is disabled by default when Per-Partition Automatic Failover is disabled.");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": false}");
+            }
         }
 
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
@@ -7815,11 +7855,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void enableAvailabilityStrategyForReads() {
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-            this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                this.connectionPolicy
-            );
+        this.ppafEnforcedE2ELatencyPolicyConfigForReads = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            this.connectionPolicy
+        );
+
+        if (this.ppafEnforcedE2ELatencyPolicyConfigForReads != null) {
+            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is enabled.");
+        } else {
+            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is disabled.");
         }
     }
 
