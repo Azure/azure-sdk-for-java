@@ -886,11 +886,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
                         return Mono.empty();
                     }
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("RxGatewayStoreModel.applySessionToken:").append(",");
+
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null,
-                        new StringBuilder()).flatMap(collectionRoutingMapValueHolder -> {
+                        sb).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

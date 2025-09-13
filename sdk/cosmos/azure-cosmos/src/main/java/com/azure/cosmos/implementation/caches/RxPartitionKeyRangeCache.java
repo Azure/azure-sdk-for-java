@@ -64,7 +64,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties, StringBuilder sb) {
 
         if (sb != null) {
-            sb.append("TryLookupAsync:").append(",");
+            sb.append("RxPartitionKeyRangeCache.TryLookupAsync:").append(",");
         }
 
         return routingMapCache.getAsync(
