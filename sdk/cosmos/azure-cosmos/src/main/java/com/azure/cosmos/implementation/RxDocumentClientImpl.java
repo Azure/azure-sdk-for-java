@@ -19,6 +19,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -1430,8 +1431,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
         }
 
-        if (!(Configs.isHttp2Enabled() && (this.connectionPolicy.getHttp2ConnectionConfig() != null && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled()))) {
-            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
+        if (!(Configs.isHttp2Enabled() && (this.connectionPolicy.getHttp2ConnectionConfig() != null))) {
+
+            Http2ConnectionConfig http2ConnectionConfig = this.connectionPolicy.getHttp2ConnectionConfig();
+
+            if (http2ConnectionConfig.isEnabled() != null && !http2ConnectionConfig.isEnabled()) {
+                userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
+            }
         }
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
