@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.v2.data.appconfiguration.ConfigurationClient;
-import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.v2.data.appconfiguration.models.SettingSelector;
-import io.clientcore.core.http.paging.PagedIterable;
-import io.clientcore.core.utils.configuration.Configuration;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
 import javax.net.ssl.SSLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.v2.data.appconfiguration.implementation.Utility.getTagsFilterInString;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 
 /**
  * Sample demonstrates how to list settings with tags filter.
@@ -31,8 +31,8 @@ public class ListSettingsWithTagsFilter {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                .connectionString(connectionString)
+                .buildClient();
 
         Map<String, String> tags = new HashMap<>();
         tags.put("release", "first");
@@ -49,8 +49,8 @@ public class ListSettingsWithTagsFilter {
         List<String> tagsFilterInString = getTagsFilterInString(tags2);
         System.out.println("List settings with tags filter = " + tagsFilterInString);
         PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
-            .setTagsFilter(tagsFilterInString));
+                .setTagsFilter(tagsFilterInString));
         configurationSettings.forEach(setting -> System.out.printf(
-            "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+                "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
     }
 }
