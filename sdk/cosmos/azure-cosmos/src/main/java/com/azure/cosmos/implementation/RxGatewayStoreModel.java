@@ -558,8 +558,34 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                 request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
 
-                BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
+                        request.requestContext.getCrossRegionAvailabilityContext();
+
+                    if (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled() && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()) {
+
+                        BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionRuleId(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(transportRequestId));
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionEvaluationResults(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(transportRequestId));
+
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                    }
+                }
             }
         });
     }

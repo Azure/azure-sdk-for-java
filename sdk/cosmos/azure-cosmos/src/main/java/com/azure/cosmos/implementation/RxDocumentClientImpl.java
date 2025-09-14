@@ -751,6 +751,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
             this.globalEndpointManager.init();
+            this.initializePerPartitionCircuitBreaker();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
@@ -7374,8 +7375,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (Configs.isReadAvailabilityStrategyEnabledWithPpaf()) {
 
-            logger.warn("Availability strategy for reads, queries, read all and read many" +
-                " is enabled when PerPartitionAutomaticFailover is enabled.");
+            logger.warn("As Per-Partition Automatic Failover (PPAF) is enabled a default End-to-End Operation Latency Policy will be applied for read, query, readAll and readyMany operation types.");
 
             if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
                 Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
@@ -7833,24 +7833,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializePerPartitionCircuitBreaker() {
+
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig;
+
         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-
-            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
-
-            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.warn("Per-Partition Circuit Breaker is enabled by default when Per-Partition Automatic Failover is enabled.");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
-            }
+            // Override custom config to enabled if PPAF is enabled
+            logger.warn("Per-Partition Circuit Breaker is enabled because Per-Partition Automatic Failover is enabled.");
+            partitionLevelCircuitBreakerConfig = PartitionLevelCircuitBreakerConfig.fromExplicitArgs(Boolean.TRUE);
         } else {
-            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
-
-            if (partitionLevelCircuitBreakerConfig != null && partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.warn("Per-Partition Circuit Breaker is disabled by default when Per-Partition Automatic Failover is disabled.");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": false}");
-            }
+            logger.warn("As Per-Partition Automatic Failover is disabled, Per-Partition Circuit Breaker will be enabled or disabled based on client configuration.");
+            partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         }
 
-        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig(partitionLevelCircuitBreakerConfig);
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
     }
 
@@ -7861,9 +7856,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         );
 
         if (this.ppafEnforcedE2ELatencyPolicyConfigForReads != null) {
-            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is enabled.");
+            logger.warn("Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is enabled.");
         } else {
-            logger.warn("Per-Partition Automatic Failover enforced E2E Latency Policy for reads is disabled.");
+            logger.warn("Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is disabled.");
         }
     }
 
