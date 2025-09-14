@@ -368,10 +368,10 @@ public class GlobalEndpointManager implements AutoCloseable {
                         Collection<DatabaseAccountLocation> thinClientReadLocations =
                                 databaseAccount.getThinClientReadableLocations();
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
-                        Boolean currentPerPartitionAutomaticFailoverEnabledFromService = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
 
-                        if (currentPerPartitionAutomaticFailoverEnabledFromService != null && !Objects.equals(currentPerPartitionAutomaticFailoverEnabledFromService, this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.get())) {
-                            this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.set(currentPerPartitionAutomaticFailoverEnabledFromService);
+                        if (this.hasPerPartitionAutomaticFailoverConfigChanged(databaseAccount)) {
+                            Boolean currentPerPartitionAutomaticFailoverEnabledFromService = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
+                            this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.set(Boolean.TRUE.equals(currentPerPartitionAutomaticFailoverEnabledFromService));
 
                             if (this.perPartitionAutomaticFailoverConfigModifier != null) {
                                 logger.warn("Per partition automatic failover enabled: {}, applying modifier", currentPerPartitionAutomaticFailoverEnabledFromService);
@@ -428,5 +428,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public void setPerPartitionAutomaticFailoverConfigModifier(Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier) {
         this.perPartitionAutomaticFailoverConfigModifier = perPartitionAutomaticFailoverConfigModifier;
+    }
+
+    private boolean hasPerPartitionAutomaticFailoverConfigChanged(DatabaseAccount databaseAccount) {
+        Boolean currentPerPartitionAutomaticFailoverEnabledFromService = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
+        return currentPerPartitionAutomaticFailoverEnabledFromService != null && !Objects.equals(currentPerPartitionAutomaticFailoverEnabledFromService, this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.get());
     }
 }
