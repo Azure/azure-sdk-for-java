@@ -49,11 +49,13 @@ public class UserAgentContainer {
     }
 
     public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+
+        if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
+            return;
+        }
+
         writeLock.lock();
         try {
-            if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
-                return;
-            }
 
             int value = 0;
 
