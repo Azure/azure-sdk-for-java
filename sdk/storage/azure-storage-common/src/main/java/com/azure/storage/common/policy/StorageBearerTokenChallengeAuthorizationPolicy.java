@@ -46,6 +46,18 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     }
 
     @Override
+    public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+        // Delegate to superclass to maintain previous behavior
+        return super.authorizeRequest(context);
+    }
+
+    @Override
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
+        // Delegate to superclass to maintain previous behavior
+        super.authorizeRequestSync(context);
+    }
+
+    @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> attributes = extractChallengeAttributes(authHeader);
