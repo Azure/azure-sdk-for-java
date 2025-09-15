@@ -51,6 +51,7 @@ public final class ShareServiceSasSignatureValues {
     private String contentEncoding;
     private String contentLanguage;
     private String contentType;
+    private String delegatedUserObjectId;
 
     /**
      * Creates an object with empty values for all fields.
@@ -419,6 +420,30 @@ public final class ShareServiceSasSignatureValues {
      */
     public ShareServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
+     * @return the updated ShareServiceSasSignatureValues object
+     */
+    public ShareServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
+        this.delegatedUserObjectId = delegatedUserObjectId;
         return this;
     }
 

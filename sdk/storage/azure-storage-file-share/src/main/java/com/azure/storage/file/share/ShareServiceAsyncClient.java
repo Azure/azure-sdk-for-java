@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -19,6 +20,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -26,15 +28,18 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.KeyInfo;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -337,8 +342,8 @@ public final class ShareServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link ShareServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link ShareServiceProperties#getCors()
+     * To maintain the CORS in the Share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Share service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -366,7 +371,7 @@ public final class ShareServiceAsyncClient {
      * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
-     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>More than five CORS rules will exist for the Share service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
      * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()
@@ -385,8 +390,8 @@ public final class ShareServiceAsyncClient {
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
      *
-     * To maintain the CORS in the Queue service pass a {@code null} value for {@link ShareServiceProperties#getCors()
-     * CORS}. To disable all CORS in the Queue service pass an empty list for {@link ShareServiceProperties#getCors()
+     * To maintain the CORS in the Share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
+     * CORS}. To disable all CORS in the Share service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
      *
      * <p><strong>Code Sample</strong></p>
@@ -429,7 +434,7 @@ public final class ShareServiceAsyncClient {
      * @throws ShareStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
-     * <li>More than five CORS rules will exist for the Queue service</li>
+     * <li>More than five CORS rules will exist for the Share service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
      * Length of {@link ShareCorsRule#getAllowedHeaders() allowed headers}, {@link ShareCorsRule#getExposedHeaders()
@@ -850,5 +855,58 @@ public final class ShareServiceAsyncClient {
         return this.azureFileStorageClient.getShares()
             .restoreWithResponseAsync(deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
             .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return A {@link Mono} containing the user delegation key.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * delegation key.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
+        OffsetDateTime expiry) {
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        Context context) {
+        StorageImplUtils.assertNotNull("expiry", expiry);
+        if (start != null && !start.isBefore(expiry)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
+        }
+        context = context == null ? Context.NONE : context;
+
+        return this.azureFileStorageClient.getServices()
+            .getUserDelegationKeyWithResponseAsync(
+                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                null, null, context)
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }

@@ -760,4 +760,26 @@ public class DataLakeTestBase extends TestProxyTestBase {
             sleepIfLiveTesting(delayMillis);
         }
     }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 5 times (4 retries + 1 final attempt)
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
+    }
 }
