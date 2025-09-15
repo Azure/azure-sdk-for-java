@@ -80,10 +80,10 @@ public class MetricDataMapper {
         boolean captureHttpServer4xxAsError) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
-        String sentToAmwEnvVar = System.getenv(SENT_TO_AMW);
-        if (sentToAmwEnvVar != null && "true".equalsIgnoreCase(sentToAmwEnvVar)) {
+        String sentToAmwProperty = System.getProperty(SENT_TO_AMW);
+        if (sentToAmwProperty != null && "true".equalsIgnoreCase(sentToAmwProperty)) {
             this.sentToAMW = "true";
-        } else if (sentToAmwEnvVar != null) {
+        } else if (sentToAmwProperty != null) {
             this.sentToAMW = "false";
         } else {
             this.sentToAMW = null;
