@@ -97,14 +97,7 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>azure-mgmt-sdk-test-jar</id>
-      <activation>
-        <property>
-          <!-- Don't run emulator tests -->
-          <name>AZURE_TEST_MODE</name>
-          <value>!LIVE</value>
-        </property>
-      </activation>
+      <id>unit</id>
       <dependencies>
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
