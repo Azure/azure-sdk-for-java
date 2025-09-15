@@ -24,6 +24,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -231,5 +232,18 @@ public final class IdentityUtil {
             LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Ensures the claims string is base64 encoded.
+     * 
+     * @param claims The claims string to encode if needed
+     * @return Base64 encoded claims string
+     */
+    public static String ensureBase64Encoded(String claims) {
+        if (claims == null || claims.trim().isEmpty()) {
+            return claims;
+        }
+        return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
     }
 }
