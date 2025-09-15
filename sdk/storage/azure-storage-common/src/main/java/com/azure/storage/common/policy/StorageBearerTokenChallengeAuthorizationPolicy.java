@@ -9,16 +9,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.util.AuthenticateChallenge;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Locale;
 
 /**
  * The storage authorization policy which supports challenges.
@@ -27,7 +25,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
-    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String BEARER_TOKEN_PREFIX = "Bearer";
     private static final String RESOURCE_ID = "resource_id";
     private static final String AUTHORIZATION_URI = "authorization_uri";
 
@@ -60,53 +58,76 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> attributes = extractChallengeAttributes(authHeader);
+        TokenRequestContext tokenRequestContext = processBearerChallenge(authHeader);
 
-        if (attributes.isEmpty()) {
+        if (tokenRequestContext == null) {
             return Mono.just(false);
         }
 
-        String resource = attributes.get(RESOURCE_ID);
-        String authUrl = attributes.get(AUTHORIZATION_URI);
-
-        String[] scopesToUse = initialScopes;
-        if (!CoreUtils.isNullOrEmpty(resource)) {
-            scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
-        }
-
-        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
-
-        if (!CoreUtils.isNullOrEmpty(authUrl)) {
-            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
-        }
         return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
     }
 
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> attributes = extractChallengeAttributes(authHeader);
+        TokenRequestContext tokenRequestContext = processBearerChallenge(authHeader);
 
-        if (attributes.isEmpty()) {
+        if (tokenRequestContext == null) {
             return false;
-        }
-
-        String resource = attributes.get(RESOURCE_ID);
-        String authUrl = attributes.get(AUTHORIZATION_URI);
-
-        String[] scopesToUse = initialScopes;
-        if (!CoreUtils.isNullOrEmpty(resource)) {
-            scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
-        }
-
-        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
-
-        if (!CoreUtils.isNullOrEmpty(authUrl)) {
-            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
         }
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
+    }
+
+    // Processes the bearer challenge from the authentication header.
+    TokenRequestContext processBearerChallenge(String authHeader) {
+        AuthenticateChallenge bearerChallenge = findBearer(authHeader);
+        if (bearerChallenge == null || bearerChallenge.getParameters().isEmpty()) {
+            return null;
+        }
+
+        Map<String, String> attributes = bearerChallenge.getParameters();
+        return createTokenRequestContext(attributes);
+    }
+
+    // Creates a token request context from challenge attributes.
+    TokenRequestContext createTokenRequestContext(Map<String, String> attributes) {
+        String resource = attributes.get(RESOURCE_ID);
+        String authUrl = attributes.get(AUTHORIZATION_URI);
+
+        // Determine scopes to use based on resource
+        String[] scopesToUse = determineScopesToUse(resource);
+
+        // Build the token request context
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
+
+        // Set tenant ID if authorization URI is available
+        if (!CoreUtils.isNullOrEmpty(authUrl)) {
+            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
+        }
+
+        return tokenRequestContext;
+    }
+
+    // Determines which scopes to use based on the resource.
+    String[] determineScopesToUse(String resource) {
+        if (CoreUtils.isNullOrEmpty(resource)) {
+            return initialScopes;
+        }
+
+        String scope = resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE;
+        return new String[] { scope };
+    }
+
+    // Returns the first Bearer challenge or null.
+    static AuthenticateChallenge findBearer(String authenticateHeader) {
+        for (AuthenticateChallenge ch : CoreUtils.parseAuthenticateHeader(authenticateHeader)) {
+            if (BEARER_TOKEN_PREFIX.equalsIgnoreCase(ch.getScheme())) {
+                return ch;
+            }
+        }
+        return null;
     }
 
     String extractTenantIdFromUri(String uri) {
@@ -119,47 +140,5 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
         }
-    }
-
-    Map<String, String> extractChallengeAttributes(String header) {
-        if (header == null || !header.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length())) {
-            return Collections.emptyMap();
-        }
-
-        // Remove "Bearer " prefix and trim any leading whitespace
-        // Don't lowercase the entire header as values can be corrupted
-        String remainingHeader = header.substring(BEARER_TOKEN_PREFIX.length()).trim();
-
-        // Split on commas first; if no commas present fall back to spaces.
-        String[] parts = remainingHeader.contains(",") ? remainingHeader.split(",") : remainingHeader.split(" ");
-
-        Map<String, String> output = new HashMap<>();
-        for (String pair : parts) {
-            String part = pair.trim();
-            //
-            if (part.isEmpty()) {
-                continue;
-            }
-            // Validate presence of '=' and that it's not the last character
-            int eq = part.indexOf('=');
-            if (eq < 0 || eq == part.length() - 1) {
-                continue; // ignore malformed
-            }
-
-            // Extract key/value, trim, lowercase key
-            // Strip surrounding quotes from value if present
-            String key = part.substring(0, eq).trim().toLowerCase(Locale.ROOT);
-            String value = stripQuotes(part.substring(eq + 1).trim());
-
-            output.put(key, value);
-        }
-        return output;
-    }
-
-    private static String stripQuotes(String v) {
-        if (v.length() >= 2 && v.startsWith("\"") && v.endsWith("\"")) {
-            return v.substring(1, v.length() - 1);
-        }
-        return v;
     }
 }
