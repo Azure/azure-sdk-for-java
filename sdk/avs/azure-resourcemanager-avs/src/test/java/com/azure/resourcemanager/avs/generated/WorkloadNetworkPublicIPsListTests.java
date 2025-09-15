@@ -12,10 +12,10 @@ public final class WorkloadNetworkPublicIPsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPublicIPsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"vdfgiotk\",\"numberOfPublicIPs\":8505816739590036821,\"publicIPBlock\":\"xlngx\",\"provisioningState\":\"Deleting\"},\"id\":\"ugnxkrxdqmi\",\"name\":\"tthzrvqd\",\"type\":\"abhjybi\"}],\"nextLink\":\"h\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"gumbnraauzzptja\",\"numberOfPublicIPs\":8740215687103788004,\"publicIPBlock\":\"hezwwvaiq\",\"provisioningState\":\"Succeeded\"},\"id\":\"fonkphhqyikvyla\",\"name\":\"yavluwmncstt\",\"type\":\"jfybvpoekrsgsgb\"},{\"properties\":{\"displayName\":\"zq\",\"numberOfPublicIPs\":180191019060757346,\"publicIPBlock\":\"kynscliqhzv\",\"provisioningState\":\"Building\"},\"id\":\"omtkub\",\"name\":\"tppn\",\"type\":\"dxzxhi\"},{\"properties\":{\"displayName\":\"bbc\",\"numberOfPublicIPs\":4254083119054920341,\"publicIPBlock\":\"tltdhlfkqojpy\",\"provisioningState\":\"Failed\"},\"id\":\"rdcnifmzzsdy\",\"name\":\"brn\",\"type\":\"suxmpraf\"},{\"properties\":{\"displayName\":\"khocxvdfffwaf\",\"numberOfPublicIPs\":6387884336317921780,\"publicIPBlock\":\"aspavehhr\",\"provisioningState\":\"Canceled\"},\"id\":\"n\",\"name\":\"oz\",\"type\":\"dhcxgkmoy\"}],\"nextLink\":\"dyuib\"}")
             .toObject(WorkloadNetworkPublicIPsList.class);
-        Assertions.assertEquals("vdfgiotk", model.value().get(0).displayName());
-        Assertions.assertEquals(8505816739590036821L, model.value().get(0).numberOfPublicIPs());
-        Assertions.assertEquals("h", model.nextLink());
+        Assertions.assertEquals("gumbnraauzzptja", model.value().get(0).displayName());
+        Assertions.assertEquals(8740215687103788004L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("dyuib", model.nextLink());
     }
 }

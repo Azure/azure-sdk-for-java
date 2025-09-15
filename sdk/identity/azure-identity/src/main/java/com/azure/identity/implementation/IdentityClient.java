@@ -364,6 +364,11 @@ public class IdentityClient extends IdentityClientBase {
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
             }
+
+            if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+                String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+                azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
+            }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }
@@ -497,9 +502,12 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
-        StringBuilder connectAzCommand
-            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
-                .append("'");
+        StringBuilder connectAzCommand = new StringBuilder("Connect-AzAccount -ClaimsChallenge '");
+
+        // Use IdentityUtil.ensureBase64Encoded for the claims
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        connectAzCommand.append(encodedClaims.replace("'", "''"))  // Escape single quotes for PowerShell
+            .append("'");
 
         // Add tenant if available
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);

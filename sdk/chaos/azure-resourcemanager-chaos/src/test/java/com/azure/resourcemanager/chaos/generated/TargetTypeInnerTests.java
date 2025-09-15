@@ -11,7 +11,7 @@ public final class TargetTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetTypeInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"wrlkdmtn\",\"description\":\"ok\",\"propertiesSchema\":\"llxdyhgs\",\"resourceTypes\":[\"ogjltdtbnnhad\",\"ocrkvcikh\",\"vpa\"]},\"id\":\"gxqquezik\",\"name\":\"wggxkallat\",\"type\":\"elwuipi\"}")
+            "{\"properties\":{\"displayName\":\"tsmypyynpcdp\",\"description\":\"nzgmwznmabik\",\"propertiesSchema\":\"orgjhxbldt\",\"resourceTypes\":[\"rlkdmtncvokotl\",\"xdy\"]},\"id\":\"syocogjltdtbnnha\",\"name\":\"oocrkvcikhnv\",\"type\":\"amqgxqquezikyw\"}")
             .toObject(TargetTypeInner.class);
     }
 }

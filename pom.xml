@@ -26,6 +26,7 @@
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
+    <module>sdk/authorization</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
     <module>sdk/avs</module>
@@ -242,6 +243,7 @@
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/springappdiscovery</module>
+    <module>sdk/sql</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>

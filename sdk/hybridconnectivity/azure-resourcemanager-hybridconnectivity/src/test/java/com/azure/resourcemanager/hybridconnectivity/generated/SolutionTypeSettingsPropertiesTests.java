@@ -12,13 +12,13 @@ public final class SolutionTypeSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTypeSettingsProperties model = BinaryData.fromString(
-            "{\"name\":\"gxywpmue\",\"displayName\":\"fjz\",\"type\":\"fqkquj\",\"description\":\"dsuyonobgla\",\"allowedValues\":[\"qxtccmgyudx\"],\"defaultValue\":\"tlmoyrx\"}")
+            "{\"name\":\"micykvceoveilo\",\"displayName\":\"notyfjfcnjbkcn\",\"type\":\"dhbt\",\"description\":\"kphywpnvjto\",\"allowedValues\":[\"ermclfplphoxuscr\",\"abgy\"],\"defaultValue\":\"psbjta\"}")
             .toObject(SolutionTypeSettingsProperties.class);
-        Assertions.assertEquals("gxywpmue", model.name());
-        Assertions.assertEquals("fjz", model.displayName());
-        Assertions.assertEquals("fqkquj", model.type());
-        Assertions.assertEquals("dsuyonobgla", model.description());
-        Assertions.assertEquals("qxtccmgyudx", model.allowedValues().get(0));
-        Assertions.assertEquals("tlmoyrx", model.defaultValue());
+        Assertions.assertEquals("micykvceoveilo", model.name());
+        Assertions.assertEquals("notyfjfcnjbkcn", model.displayName());
+        Assertions.assertEquals("dhbt", model.type());
+        Assertions.assertEquals("kphywpnvjto", model.description());
+        Assertions.assertEquals("ermclfplphoxuscr", model.allowedValues().get(0));
+        Assertions.assertEquals("psbjta", model.defaultValue());
     }
 }
