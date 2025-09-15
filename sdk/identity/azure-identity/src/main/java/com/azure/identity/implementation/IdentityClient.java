@@ -57,7 +57,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -337,7 +336,7 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
         List<String> scopes = request.getScopes();
 
         // It's really unlikely that the request comes with no scope, but we want to
@@ -364,6 +363,11 @@ public class IdentityClient extends IdentityClientBase {
 
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
+            }
+
+            if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+                String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+                azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
             }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
@@ -453,10 +457,15 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String tenant = resolvedTenant.equals(IdentityUtil.DEFAULT_TENANT) ? "" : resolvedTenant;
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
+            String command = PowerShellUtil.getPwshCommand(tenant, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
@@ -476,7 +485,12 @@ public class IdentityClient extends IdentityClientBase {
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                    OffsetDateTime expiresOn = PowerShellUtil.parseExpiresOn(time);
+                    if (expiresOn == null) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException(
+                                "Encountered error when deserializing ExpiresOn time from PowerShell response.")));
+                    }
                     return Mono.just(new AccessToken(accessToken, expiresOn));
                 } catch (IOException e) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -488,9 +502,12 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
-        StringBuilder connectAzCommand
-            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
-                .append("'");
+        StringBuilder connectAzCommand = new StringBuilder("Connect-AzAccount -ClaimsChallenge '");
+
+        // Use IdentityUtil.ensureBase64Encoded for the claims
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        connectAzCommand.append(encodedClaims.replace("'", "''"))  // Escape single quotes for PowerShell
+            .append("'");
 
         // Add tenant if available
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);

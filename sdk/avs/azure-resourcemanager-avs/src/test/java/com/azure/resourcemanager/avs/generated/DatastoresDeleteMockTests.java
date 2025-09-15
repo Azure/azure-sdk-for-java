@@ -28,7 +28,7 @@ public final class DatastoresDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.datastores()
-            .delete("fykhvuhxepmru", "znabaobns", "ujdjltymkmvg", "ihywartspph", com.azure.core.util.Context.NONE);
+            .delete("or", "mftpmdtz", "jltfvnzcyjtotpv", "pvpbdbzqgqqiheds", com.azure.core.util.Context.NONE);
 
     }
 }
