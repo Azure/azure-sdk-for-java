@@ -58,8 +58,8 @@ public class MetricDataMapper {
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
-    private boolean otlpExporterEnabledForAKS;
-    private boolean metricsToLAEnabled;
+    private final boolean otlpExporterEnabledForAKS;
+    private final boolean metricsToLAEnabled;
 
     static {
         // HTTP unstable metrics to be excluded via Otel auto instrumentation
@@ -82,7 +82,6 @@ public class MetricDataMapper {
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
-        logger.verbose("Mapping metric data: {}", metricData.getName());
         MetricDataType type = metricData.getType();
         if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric
@@ -101,7 +100,6 @@ public class MetricDataMapper {
             }
 
             if (metricsToLAEnabled && !isPreAggregatedStandardMetric) {
-                logger.verbose("Mapping stable metric to Breeze: {}", metricData.getName());
                 List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
                 stableOtelMetrics.forEach(consumer::accept);
             }
