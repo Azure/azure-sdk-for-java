@@ -53,12 +53,15 @@ public class MetricDataMapper {
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME
         = AttributeKey.stringKey("applicationinsights.internal.metric_name");
-    public static final String MS_SENT_TO_AMW = "_MS.SentToAMW";
+    public static final String MS_SENT_TO_AMW_ATTR = "_MS.SentToAMW";
+    private static final String METRICS_TO_LOG_ANALYTICS_ENABLED
+        = "APPLICATIONINSIGHTS_METRICS_TO_LOGANALYTICS_ENABLED";
+    private static final String SENT_TO_AMW = "SENT_TO_AMW";
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
-    private final boolean otlpExporterEnabledForAKS;
+    private final String sentToAMW;
     private final boolean metricsToLAEnabled;
 
     static {
@@ -74,11 +77,20 @@ public class MetricDataMapper {
     }
 
     public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
-        boolean captureHttpServer4xxAsError, boolean otlpExporterEnabledForAKS, boolean metricsToLAEnabled) {
+        boolean captureHttpServer4xxAsError) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
-        this.otlpExporterEnabledForAKS = otlpExporterEnabledForAKS;
-        this.metricsToLAEnabled = metricsToLAEnabled;
+        String sentToAmwEnvVar = System.getenv(SENT_TO_AMW);
+        if (sentToAmwEnvVar != null && "true".equalsIgnoreCase(sentToAmwEnvVar)) {
+            this.sentToAMW = "true";
+        } else if (sentToAmwEnvVar != null) {
+            this.sentToAMW = "false";
+        } else {
+            this.sentToAMW = null;
+        }
+
+        String metricsToLaEnvVar = System.getenv(METRICS_TO_LOG_ANALYTICS_ENABLED);
+        this.metricsToLAEnabled = metricsToLaEnvVar == null || "true".equalsIgnoreCase(metricsToLaEnvVar);
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
@@ -118,7 +130,7 @@ public class MetricDataMapper {
 
             builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
             updateMetricPointBuilder(builder, metricData, pointData, captureHttpServer4xxAsError,
-                isPreAggregatedStandardMetric, this.otlpExporterEnabledForAKS);
+                isPreAggregatedStandardMetric, this.sentToAMW);
 
             telemetryItems.add(builder.build());
         }
@@ -128,7 +140,7 @@ public class MetricDataMapper {
     // visible for testing
     public static void updateMetricPointBuilder(MetricTelemetryBuilder metricTelemetryBuilder, MetricData metricData,
         PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric,
-        boolean otlpExporterEnabled) {
+        String sentToAMW) {
         checkArgument(metricData != null, "MetricData cannot be null.");
 
         MetricPointBuilder pointBuilder = new MetricPointBuilder();
@@ -186,7 +198,9 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
-        metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabled));
+        if (sentToAMW != null) {
+            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW_ATTR, sentToAMW);
+        }
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
