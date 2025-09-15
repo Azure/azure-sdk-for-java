@@ -1,14 +1,16 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.53.3 (2025-09-15)
 
 ### Bugs Fixed
 
+- Fixed a bug that `NetworkSecurityGroup.listAssociatedSubnets` returns a list of `null`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.2 (2025-08-27)
 
