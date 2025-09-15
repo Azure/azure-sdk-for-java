@@ -186,9 +186,7 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
-        if (otlpExporterEnabled) {
-            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabled));
-        }
+        metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW, Boolean.toString(otlpExporterEnabled));
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {

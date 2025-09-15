@@ -272,7 +272,8 @@ public class AzureMonitorExportersEndToEndTest {
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("test");
         assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(1.0);
-        assertThat(metricsData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
+        assertThat(metricsData.getProperties()).containsExactly(entry("_MS.SentToAMW", "false"), entry("color", "red"),
+            entry("name", "apple"));
     }
 
     private static void validateLog(TelemetryItem telemetryItem) {

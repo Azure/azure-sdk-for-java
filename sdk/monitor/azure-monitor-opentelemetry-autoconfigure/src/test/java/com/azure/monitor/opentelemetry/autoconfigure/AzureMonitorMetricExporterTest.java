@@ -94,8 +94,9 @@ public class AzureMonitorMetricExporterTest {
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(20.0);
-            assertThat(metricsData.getProperties().size()).isEqualTo(1);
+            assertThat(metricsData.getProperties().size()).isEqualTo(2);
             assertThat(metricsData.getProperties()).containsEntry("thing", "engine");
+            assertThat(metricsData.getProperties()).containsEntry("_MS.SentToAMW", "false");
         }
 
         assertThat(metricData.getType()).isEqualTo(DOUBLE_GAUGE);
@@ -129,9 +130,10 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         Map<String, String> properties = metricsData.getProperties();
 
-        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.size()).isEqualTo(3);
         assertThat(properties.get(SERVER_ADDRESS.getKey())).isEqualTo("example.io");
         assertThat(properties.get("foo")).isEqualTo("bar");
+        assertThat(properties.get("_MS.SentToAMW")).isEqualTo("false");
     }
 
     @Test
@@ -163,12 +165,13 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         Map<String, String> properties = metricsData.getProperties();
 
-        assertThat(properties.size()).isEqualTo(5);
+        assertThat(properties.size()).isEqualTo(6);
         assertThat(properties.get("operation/synthetic")).isEqualTo("False");
         assertThat(properties.get("Request.Success")).isEqualTo("True");
         assertThat(properties.get("request/resultCode")).isEqualTo("200");
         assertThat(properties.get("_MS.IsAutocollected")).isEqualTo("True");
         assertThat(properties.get("_MS.MetricId")).isEqualTo("requests/duration");
+        assertThat(properties.get("_MS.SentToAMW")).isEqualTo("false");
     }
 
     @Test
@@ -227,9 +230,10 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricDataPoint.getValue()).isEqualTo(2);
 
         Map<String, String> properties = metricsData.getProperties();
-        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.size()).isEqualTo(3);
         assertThat(properties).containsEntry("name", "apple");
         assertThat(properties).containsEntry("color", "green");
+        assertThat(properties.get("_MS.SentToAMW")).isEqualTo("false");
 
         builder = MetricTelemetryBuilder.create();
         MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData2, true, false, false);
@@ -239,9 +243,10 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricDataPoint.getValue()).isEqualTo(6);
 
         properties = metricsData.getProperties();
-        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.size()).isEqualTo(3);
         assertThat(properties).containsEntry("name", "apple");
         assertThat(properties).containsEntry("color", "red");
+        assertThat(properties.get("_MS.SentToAMW")).isEqualTo("false");
 
         builder = MetricTelemetryBuilder.create();
         MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData3, true, false, false);
@@ -251,9 +256,10 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricDataPoint.getValue()).isEqualTo(7);
 
         properties = metricsData.getProperties();
-        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.size()).isEqualTo(3);
         assertThat(properties).containsEntry("name", "lemon");
         assertThat(properties).containsEntry("color", "yellow");
+        assertThat(properties.get("_MS.SentToAMW")).isEqualTo("false");
 
         assertThat(metricData.getType()).isEqualTo(LONG_SUM);
         assertThat(metricData.getName()).isEqualTo("testLongCounter");
@@ -287,8 +293,9 @@ public class AzureMonitorMetricExporterTest {
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(20);
-            assertThat(metricsData.getProperties().size()).isEqualTo(1);
+            assertThat(metricsData.getProperties().size()).isEqualTo(2);
             assertThat(metricsData.getProperties()).containsEntry("thing", "engine");
+            assertThat(metricsData.getProperties()).containsEntry("_MS.SentToAMW", "false");
         }
 
         assertThat(metricData.getType()).isEqualTo(LONG_GAUGE);
@@ -324,7 +331,7 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         assertThat(metricsData.getMetrics().get(0).getCount()).isEqualTo(1);
         assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(25.45);
-        assertThat(metricsData.getProperties()).isNull();
+        assertThat(metricsData.getProperties().size()).isEqualTo(1);
         assertThat(metricsData.getMetrics().get(0).getMax()).isEqualTo(25.45);
         assertThat(metricsData.getMetrics().get(0).getMin()).isEqualTo(25.45);
 
@@ -361,8 +368,8 @@ public class AzureMonitorMetricExporterTest {
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         assertThat(metricsData.getProperties()).isNotNull();
-        assertThat(metricsData.getProperties().size()).isEqualTo(1);
-        assertThat(metricsData.getProperties()).containsExactly(entry("foo", "bar"));
+        assertThat(metricsData.getProperties().size()).isEqualTo(2);
+        assertThat(metricsData.getProperties()).containsExactly(entry("_MS.SentToAMW", "false"), entry("foo", "bar"));
         assertThat(metricsData.getProperties().get("applicationinsights.internal.test")).isNull();
 
         assertThat(metricData.getType()).isEqualTo(LONG_SUM);
