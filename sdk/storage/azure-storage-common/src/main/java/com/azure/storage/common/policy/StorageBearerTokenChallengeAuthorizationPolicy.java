@@ -136,7 +136,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         Map<String, String> output = new HashMap<>();
         for (String pair : parts) {
             String part = pair.trim();
-            //
             if (part.isEmpty()) {
                 continue;
             }
