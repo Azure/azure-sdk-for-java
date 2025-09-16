@@ -17,7 +17,7 @@ import java.io.IOException;
  * and resources.
  */
 @Fluent
-public final class NetworkInjections implements JsonSerializable<NetworkInjections> {
+public final class NetworkInjection implements JsonSerializable<NetworkInjection> {
     /*
      * Specifies what features in AI Foundry network injection applies to. Currently only supports 'agent' for agent
      * scenarios. 'none' means no network injection.
@@ -35,9 +35,9 @@ public final class NetworkInjections implements JsonSerializable<NetworkInjectio
     private Boolean useMicrosoftManagedNetwork;
 
     /**
-     * Creates an instance of NetworkInjections class.
+     * Creates an instance of NetworkInjection class.
      */
-    public NetworkInjections() {
+    public NetworkInjection() {
     }
 
     /**
@@ -55,9 +55,9 @@ public final class NetworkInjections implements JsonSerializable<NetworkInjectio
      * supports 'agent' for agent scenarios. 'none' means no network injection.
      * 
      * @param scenario the scenario value to set.
-     * @return the NetworkInjections object itself.
+     * @return the NetworkInjection object itself.
      */
-    public NetworkInjections withScenario(ScenarioType scenario) {
+    public NetworkInjection withScenario(ScenarioType scenario) {
         this.scenario = scenario;
         return this;
     }
@@ -75,9 +75,9 @@ public final class NetworkInjections implements JsonSerializable<NetworkInjectio
      * Set the subnetArmId property: Specify the subnet for which your Agent Client is injected into.
      * 
      * @param subnetArmId the subnetArmId value to set.
-     * @return the NetworkInjections object itself.
+     * @return the NetworkInjection object itself.
      */
-    public NetworkInjections withSubnetArmId(String subnetArmId) {
+    public NetworkInjection withSubnetArmId(String subnetArmId) {
         this.subnetArmId = subnetArmId;
         return this;
     }
@@ -95,9 +95,9 @@ public final class NetworkInjections implements JsonSerializable<NetworkInjectio
      * Set the useMicrosoftManagedNetwork property: Boolean to enable Microsoft Managed Network for subnet delegation.
      * 
      * @param useMicrosoftManagedNetwork the useMicrosoftManagedNetwork value to set.
-     * @return the NetworkInjections object itself.
+     * @return the NetworkInjection object itself.
      */
-    public NetworkInjections withUseMicrosoftManagedNetwork(Boolean useMicrosoftManagedNetwork) {
+    public NetworkInjection withUseMicrosoftManagedNetwork(Boolean useMicrosoftManagedNetwork) {
         this.useMicrosoftManagedNetwork = useMicrosoftManagedNetwork;
         return this;
     }
@@ -123,33 +123,33 @@ public final class NetworkInjections implements JsonSerializable<NetworkInjectio
     }
 
     /**
-     * Reads an instance of NetworkInjections from the JsonReader.
+     * Reads an instance of NetworkInjection from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NetworkInjections if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of NetworkInjection if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the NetworkInjections.
+     * @throws IOException If an error occurs while reading the NetworkInjection.
      */
-    public static NetworkInjections fromJson(JsonReader jsonReader) throws IOException {
+    public static NetworkInjection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NetworkInjections deserializedNetworkInjections = new NetworkInjections();
+            NetworkInjection deserializedNetworkInjection = new NetworkInjection();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("scenario".equals(fieldName)) {
-                    deserializedNetworkInjections.scenario = ScenarioType.fromString(reader.getString());
+                    deserializedNetworkInjection.scenario = ScenarioType.fromString(reader.getString());
                 } else if ("subnetArmId".equals(fieldName)) {
-                    deserializedNetworkInjections.subnetArmId = reader.getString();
+                    deserializedNetworkInjection.subnetArmId = reader.getString();
                 } else if ("useMicrosoftManagedNetwork".equals(fieldName)) {
-                    deserializedNetworkInjections.useMicrosoftManagedNetwork
+                    deserializedNetworkInjection.useMicrosoftManagedNetwork
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNetworkInjections;
+            return deserializedNetworkInjection;
         });
     }
 }
