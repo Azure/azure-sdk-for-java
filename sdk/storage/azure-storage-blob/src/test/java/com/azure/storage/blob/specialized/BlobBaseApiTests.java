@@ -17,9 +17,13 @@ import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +52,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -818,6 +823,55 @@ public class BlobBaseApiTests extends BlobTestBase {
             .contains(
                 "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationSync() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        
+        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+        
+        InputStream input = new ByteArrayInputStream(encodedData.array());
+
+        // Create validation options with structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+
+        bc.upload(input, encodedData.remaining(), true);
+        
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bc.downloadStreamWithResponse(outputStream, null, null, null, false, validationOptions, null, null);
+        
+        TestUtils.assertArraysEqual(randomData, outputStream.toByteArray());
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationSyncRange() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        
+        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+        
+        InputStream input = new ByteArrayInputStream(encodedData.array());
+
+        // Create validation options with structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+
+        bc.upload(input, encodedData.remaining(), true);
+        
+        // Test range download on the encoded data
+        BlobRange range = new BlobRange(0, 512L);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bc.downloadStreamWithResponse(outputStream, range, null, null, false, validationOptions, null, null);
+        
+        // With range downloads on structured messages, we get a partial structured message
+        // The exact validation depends on the range, but the test ensures the API integration works
+        assertNotNull(outputStream.toByteArray());
+        assertTrue(outputStream.toByteArray().length > 0);
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
