@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
+    <module>azure-resourcemanager-resources</module>
     <module>azure-resourcemanager-resources-bicep</module>
     <module>azure-resourcemanager-resources-deploymentstacks</module>
   </modules>
