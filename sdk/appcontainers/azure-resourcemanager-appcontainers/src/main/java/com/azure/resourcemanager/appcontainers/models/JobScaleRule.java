@@ -39,8 +39,8 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
     private List<ScaleRuleAuth> auth;
 
     /*
-     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
-     * system-assigned identity.
+     * The resource ID of a user-assigned managed identity that is assigned to the job, or 'system' for system-assigned
+     * identity.
      */
     private String identity;
 
@@ -133,8 +133,8 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
     }
 
     /**
-     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
+     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the job, or
+     * 'system' for system-assigned identity.
      * 
      * @return the identity value.
      */
@@ -143,8 +143,8 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
     }
 
     /**
-     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
+     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the job, or
+     * 'system' for system-assigned identity.
      * 
      * @param identity the identity value to set.
      * @return the JobScaleRule object itself.
@@ -173,7 +173,9 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();

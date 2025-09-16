@@ -18,13 +18,19 @@ import com.azure.resourcemanager.appcontainers.models.ContainerResources;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import com.azure.resourcemanager.appcontainers.models.CustomScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
+import com.azure.resourcemanager.appcontainers.models.DaprAppHealth;
 import com.azure.resourcemanager.appcontainers.models.Ingress;
 import com.azure.resourcemanager.appcontainers.models.IngressStickySessions;
 import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
+import com.azure.resourcemanager.appcontainers.models.Level;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
+import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.Runtime;
+import com.azure.resourcemanager.appcontainers.models.RuntimeDotnet;
 import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgent;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgentLogging;
 import com.azure.resourcemanager.appcontainers.models.Scale;
 import com.azure.resourcemanager.appcontainers.models.ScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Service;
@@ -42,7 +48,8 @@ import java.util.Map;
 public final class ContainerAppsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerApps_Patch.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * ContainerApps_Patch.json
      */
     /**
      * Sample code: Patch Container App.
@@ -51,7 +58,7 @@ public final class ContainerAppsUpdateSamples {
      */
     public static void patchContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         ContainerApp resource = manager.containerApps()
-            .getByResourceGroupWithResponse("rg", "testcontainerapp0", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
@@ -60,7 +67,7 @@ public final class ContainerAppsUpdateSamples {
                     .withIngress(new Ingress().withExternal(true)
                         .withTargetPort(3000)
                         .withTraffic(Arrays.asList(new TrafficWeight()
-                            .withRevisionName("testcontainerapp0-ab1234")
+                            .withRevisionName("testcontainerApp0-ab1234")
                             .withWeight(100)
                             .withLabel("production")))
                         .withCustomDomains(Arrays.asList(new CustomDomain()
@@ -86,23 +93,36 @@ public final class ContainerAppsUpdateSamples {
                                         .withIpAddressRange("192.168.1.1/8")
                                         .withAction(Action.ALLOW)))
                         .withStickySessions(new IngressStickySessions().withAffinity(Affinity.STICKY)))
-                    .withDapr(new Dapr().withEnabled(true)
+                    .withDapr(new Dapr()
+                        .withEnabled(true)
                         .withAppProtocol(AppProtocol.HTTP)
                         .withAppPort(3000)
                         .withHttpReadBufferSize(30)
                         .withHttpMaxRequestSize(10)
                         .withLogLevel(LogLevel.DEBUG)
-                        .withEnableApiLogging(true))
-                    .withRuntime(new Runtime().withJava(new RuntimeJava().withEnableMetrics(true)))
+                        .withEnableApiLogging(true)
+                        .withAppHealth(new DaprAppHealth()
+                            .withEnabled(true)
+                            .withPath("/health")
+                            .withProbeIntervalSeconds(3)
+                            .withProbeTimeoutMilliseconds(1000)
+                            .withThreshold(3))
+                        .withMaxConcurrency(10))
+                    .withRuntime(new Runtime().withJava(new RuntimeJava().withEnableMetrics(true)
+                        .withJavaAgent(new RuntimeJavaAgent().withEnabled(true)
+                            .withLogging(new RuntimeJavaAgentLogging().withLoggerSettings(Arrays.asList(
+                                new LoggerSetting().withLogger("org.springframework.boot").withLevel(Level.DEBUG))))))
+                        .withDotnet(new RuntimeDotnet().withAutoConfigureDataProtection(true)))
                     .withMaxInactiveRevisions(10)
+                    .withRevisionTransitionThreshold(100)
                     .withService(new Service().withType("redis")))
             .withTemplate(new Template()
-                .withInitContainers(Arrays.asList(new InitContainer().withImage("repo/testcontainerapp0:v4")
+                .withInitContainers(Arrays.asList(new InitContainer().withImage("repo/testcontainerApp0:v4")
                     .withName("testinitcontainerApp0")
-                    .withResources(new ContainerResources().withCpu(0.5D).withMemory("1Gi"))))
+                    .withResources(new ContainerResources().withCpu(0.2D).withMemory("100Mi"))))
                 .withContainers(Arrays.asList(new Container()
-                    .withImage("repo/testcontainerapp0:v1")
-                    .withName("testcontainerapp0")
+                    .withImage("repo/testcontainerApp0:v1")
+                    .withName("testcontainerApp0")
                     .withProbes(
                         Arrays.asList(new ContainerAppProbe().withHttpGet(new ContainerAppProbeHttpGet()
                             .withHttpHeaders(
@@ -121,7 +141,9 @@ public final class ContainerAppsUpdateSamples {
                                     .withMetadata(mapOf("concurrentRequests", "50"))))))
                 .withServiceBinds(Arrays.asList(new ServiceBind().withServiceId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service")
-                    .withName("service"))))
+                    .withName("service")
+                    .withClientType("dotnet")
+                    .withCustomizedKeys(mapOf("DesiredKey", "fakeTokenPlaceholder")))))
             .apply();
     }
 

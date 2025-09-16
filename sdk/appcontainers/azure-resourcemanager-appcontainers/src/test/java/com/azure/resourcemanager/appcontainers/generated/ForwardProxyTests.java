@@ -13,21 +13,21 @@ public final class ForwardProxyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForwardProxy model = BinaryData.fromString(
-            "{\"convention\":\"Standard\",\"customHostHeaderName\":\"whdsoifiyip\",\"customProtoHeaderName\":\"sqwpgrjb\"}")
+            "{\"convention\":\"Custom\",\"customHostHeaderName\":\"asxazjpqyegualhb\",\"customProtoHeaderName\":\"hejjz\"}")
             .toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.convention());
-        Assertions.assertEquals("whdsoifiyip", model.customHostHeaderName());
-        Assertions.assertEquals("sqwpgrjb", model.customProtoHeaderName());
+        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
+        Assertions.assertEquals("asxazjpqyegualhb", model.customHostHeaderName());
+        Assertions.assertEquals("hejjz", model.customProtoHeaderName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.STANDARD)
-            .withCustomHostHeaderName("whdsoifiyip")
-            .withCustomProtoHeaderName("sqwpgrjb");
+        ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.CUSTOM)
+            .withCustomHostHeaderName("asxazjpqyegualhb")
+            .withCustomProtoHeaderName("hejjz");
         model = BinaryData.fromObject(model).toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.convention());
-        Assertions.assertEquals("whdsoifiyip", model.customHostHeaderName());
-        Assertions.assertEquals("sqwpgrjb", model.customProtoHeaderName());
+        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
+        Assertions.assertEquals("asxazjpqyegualhb", model.customHostHeaderName());
+        Assertions.assertEquals("hejjz", model.customProtoHeaderName());
     }
 }
