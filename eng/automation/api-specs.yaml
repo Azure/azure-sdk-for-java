@@ -17,6 +17,8 @@ azurestackhci/Microsoft.AzureStackHCI/StackHCI:
   service: azurestackhci
 cdn:
   suffix: generated
+certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
+  service: certificateregistration
 compute:
   suffix: generated
 containerinstance:
@@ -48,6 +50,8 @@ dnc:
   service: delegatednetwork
 dns:
   suffix: generated
+domainregistration/Microsoft.DomainRegistration/DomainRegistration:
+  service: domainregistration
 eventhub:
   service: eventhubs
   suffix: generated
@@ -150,10 +154,6 @@ vmware:
 web:
   service: appservice
   suffix: generated
-certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
-  service: certificateregistration
-domainregistration/Microsoft.DomainRegistration/DomainRegistration:
-  service: domainregistration
 workloads/Microsoft.Workloads/SAPDiscoverySites:
   service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:

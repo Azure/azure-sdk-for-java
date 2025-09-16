@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.models.NetworkInjections;
+import com.azure.resourcemanager.cognitiveservices.models.NetworkInjection;
 import com.azure.resourcemanager.cognitiveservices.models.ScenarioType;
 import org.junit.jupiter.api.Assertions;
 
-public final class NetworkInjectionsTests {
+public final class NetworkInjectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInjections model = BinaryData
+        NetworkInjection model = BinaryData
             .fromString(
                 "{\"scenario\":\"agent\",\"subnetArmId\":\"hmuouqfprwzwbn\",\"useMicrosoftManagedNetwork\":true}")
-            .toObject(NetworkInjections.class);
+            .toObject(NetworkInjection.class);
         Assertions.assertEquals(ScenarioType.AGENT, model.scenario());
         Assertions.assertEquals("hmuouqfprwzwbn", model.subnetArmId());
         Assertions.assertTrue(model.useMicrosoftManagedNetwork());
@@ -23,10 +23,10 @@ public final class NetworkInjectionsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInjections model = new NetworkInjections().withScenario(ScenarioType.AGENT)
+        NetworkInjection model = new NetworkInjection().withScenario(ScenarioType.AGENT)
             .withSubnetArmId("hmuouqfprwzwbn")
             .withUseMicrosoftManagedNetwork(true);
-        model = BinaryData.fromObject(model).toObject(NetworkInjections.class);
+        model = BinaryData.fromObject(model).toObject(NetworkInjection.class);
         Assertions.assertEquals(ScenarioType.AGENT, model.scenario());
         Assertions.assertEquals("hmuouqfprwzwbn", model.subnetArmId());
         Assertions.assertTrue(model.useMicrosoftManagedNetwork());
