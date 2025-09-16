@@ -97,7 +97,12 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>unit</id>
+      <id>azure-mgmt-sdk-test-jar</id>
+      <activation>
+        <property>
+          <name>!maven.test.skip</name>
+        </property>
+      </activation>
       <dependencies>
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
