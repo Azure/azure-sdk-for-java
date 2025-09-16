@@ -229,7 +229,7 @@
 URL-encoded. For example, if blob name is "directory/blob.txt" and is created by calling 
 `BlobContainerClient.getBlobClient("directory/blob.txt")`, 
 `BlobClient.getBlobName()` will return "directory/blob.txt" and the blob's url will result in 
-“https://account.blob.core.windows.net/container/directory%2Fblob.txt".
+“https://account.blob.core.windows.net/container/directory%2Fblob.txt". 
 
 ## 12.25.3 (2024-03-20)
 
