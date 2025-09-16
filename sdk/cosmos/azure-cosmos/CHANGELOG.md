@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
 
 ### 4.74.0 (2025-09-05)
 
