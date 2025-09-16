@@ -1297,6 +1297,53 @@ public class BlobClientBase {
     }
 
     /**
+     * Downloads a range of bytes from a blob into an output stream with support for content validation.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions-Duration-Context -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;0, 1024&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions&#40;&#41;
+     *     .setStructuredMessageValidationEnabled&#40;true&#41;;
+     *
+     * BlobDownloadResponse response = client.downloadStreamWithResponse&#40;new ByteArrayOutputStream&#40;&#41;, range, options, null, false,
+     *     validationOptions, timeout, new Context&#40;key2, value2&#41;&#41;;
+     * System.out.printf&#40;&quot;Download completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param contentValidationOptions {@link DownloadContentValidationOptions} options for content validation
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        DownloadContentValidationOptions contentValidationOptions, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("stream", stream);
+        Mono<BlobDownloadResponse> download
+            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, contentValidationOptions, context)
+                .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                    .thenReturn(new BlobDownloadResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
      * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
      * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *

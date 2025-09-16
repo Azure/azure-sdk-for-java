@@ -19,10 +19,13 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -572,6 +575,62 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
                     "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
         });
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidation() {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> input = Flux.just(ByteBuffer.wrap(randomData));
+
+        // Create validation options with structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationRange() {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> input = Flux.just(ByteBuffer.wrap(randomData));
+
+        // Create validation options with structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+
+        BlobRange range = new BlobRange(0, 512L);
+        byte[] expectedData = new byte[512];
+        System.arraycopy(randomData, 0, expectedData, 0, 512);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, expectedData))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationMixed() {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> input = Flux.just(ByteBuffer.wrap(randomData));
+
+        // Create validation options with both structured message and MD5 validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true)
+            .setMd5ValidationEnabled(true);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
+            .verifyComplete();
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
