@@ -115,6 +115,9 @@ public class OneDeployTests extends AppServiceTest {
             }
             connection.disconnect();
         }
+
+        Thread.sleep(60000);
+
         KuduDeploymentResult deployResult
             = webApp1.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
 

@@ -56,10 +56,9 @@ class AadWebApplicationConfigurationTests {
     @EnableWebSecurity
     static class TestSecurityFilterChain {
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
-            return http.oauth2Login(Customizer.withDefaults()).authorizeRequests(request -> request.anyRequest().authenticated()).build();
+            return http.oauth2Login(Customizer.withDefaults()).authorizeHttpRequests(request -> request.anyRequest().authenticated()).build();
         }
     }
 }

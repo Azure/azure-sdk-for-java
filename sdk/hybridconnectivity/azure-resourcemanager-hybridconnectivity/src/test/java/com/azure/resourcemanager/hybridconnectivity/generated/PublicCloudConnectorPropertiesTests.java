@@ -19,7 +19,7 @@ public final class PublicCloudConnectorPropertiesTests {
             .toObject(PublicCloudConnectorProperties.class);
         Assertions.assertEquals("fsrpymzidnse", model.awsCloudProfile().accountId());
         Assertions.assertEquals("tbzsgfyccs", model.awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(model.awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, model.hostType());
     }
 
@@ -33,7 +33,7 @@ public final class PublicCloudConnectorPropertiesTests {
         model = BinaryData.fromObject(model).toObject(PublicCloudConnectorProperties.class);
         Assertions.assertEquals("fsrpymzidnse", model.awsCloudProfile().accountId());
         Assertions.assertEquals("tbzsgfyccs", model.awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(model.awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, model.hostType());
     }
 }

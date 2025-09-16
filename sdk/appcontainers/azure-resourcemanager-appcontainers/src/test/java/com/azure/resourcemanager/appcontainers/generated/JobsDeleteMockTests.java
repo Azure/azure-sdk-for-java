@@ -27,7 +27,7 @@ public final class JobsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.jobs().delete("lioskkfmkmfdjx", "xgbkkqvjcteo", com.azure.core.util.Context.NONE);
+        manager.jobs().delete("hydt", "aczkf", com.azure.core.util.Context.NONE);
 
     }
 }

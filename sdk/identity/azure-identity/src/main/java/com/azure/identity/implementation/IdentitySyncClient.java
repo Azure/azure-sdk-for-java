@@ -401,7 +401,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public AccessToken authenticateWithAzureDeveloperCli(TokenRequestContext request) {
 
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
 
         List<String> scopes = request.getScopes();
 
@@ -428,6 +428,11 @@ public class IdentitySyncClient extends IdentityClientBase {
 
         if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azdCommand.append(" --tenant-id ").append(tenant);
+        }
+
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+            azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
         }
 
         try {

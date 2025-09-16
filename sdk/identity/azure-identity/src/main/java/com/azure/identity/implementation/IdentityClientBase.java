@@ -37,6 +37,7 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -734,7 +735,23 @@ public abstract class IdentityClientBase {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
+
+                    if (redactedOutput.contains("unknown flag: --claims")
+                        || redactedOutput.contains("flag provided but not defined: -claims")) {
+                        throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException("Claims challenges are not supported by the "
+                                + "currently installed Azure Developer CLI. Please update to azd CLI version 1.18.1 or higher "
+                                + "to support claims challenges."));
+                    }
+
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
+                        if (azdCommand.toString().contains("claims")) {
+                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                            if (userFriendlyError != null) {
+                                throw LOGGER
+                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
+                            }
+                        }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
                                 + " Please run 'azd auth login' to set up account."));
@@ -770,6 +787,88 @@ public abstract class IdentityClientBase {
         }
 
         return token;
+    }
+
+    /**
+     * Extract a single, user-friendly message from azd consoleMessage JSON output.
+     *
+     * @param output The output from the Azure Developer CLI command.
+     * @return A user-friendly error message if found, otherwise null.
+     *
+     * Preference order:
+     * 1) A message containing "Suggestion" (case-insensitive)
+     * 2) The second message if multiple are present
+     * 3) The first message if only one exists
+     * Returns null if no messages can be parsed.
+     */
+    String extractUserFriendlyErrorFromAzdOutput(String output) {
+        if (output == null || output.isEmpty()) {
+            return null;
+        }
+
+        List<String> messages = new ArrayList<>();
+
+        for (String line : output.split("\\R")) { // split on any line break
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            // Handle multiple JSON objects in a single line
+            try (JsonReader reader = JsonProviders.createReader(trimmed)) {
+                while (reader.nextToken() != null) {
+                    if (reader.currentToken() == JsonToken.START_OBJECT) {
+                        Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
+
+                        // check "data.message"
+                        Object data = obj.get("data");
+                        if (data instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> dataMap = (Map<String, Object>) data;
+                            Object message = dataMap.get("message");
+                            if (message instanceof String) {
+                                String msg = ((String) message).trim();
+                                if (!msg.isEmpty()) {
+                                    messages.add(msg);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        // check "message"
+                        Object message = obj.get("message");
+                        if (message instanceof String) {
+                            String msg = ((String) message).trim();
+                            if (!msg.isEmpty()) {
+                                messages.add(msg);
+                            }
+                        }
+                    } else {
+                        break; // Not a JSON object, stop processing this line
+                    }
+                }
+            } catch (IOException e) {
+                // not JSON -> ignore
+            }
+        }
+
+        if (messages.isEmpty()) {
+            return null;
+        }
+
+        // Prefer the suggestion line if present
+        for (String msg : messages) {
+            if (msg.toLowerCase().contains("suggestion")) {
+                return redactInfo(msg);
+            }
+        }
+
+        // If more than one message exists, return the last one
+        if (messages.size() > 1) {
+            return redactInfo(messages.get(messages.size() - 1));
+        }
+
+        return redactInfo(messages.get(0));
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
@@ -921,8 +1020,9 @@ public abstract class IdentityClientBase {
     String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
         StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
 
-        // Properly escape the claims content for shell safety
-        String escapedClaims = shellEscape(request.getClaims());
+        // Use IdentityUtil.ensureBase64Encoded and then escape for shell safety
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        String escapedClaims = shellEscape(encodedClaims);
         azLoginCommand.append("\"").append(escapedClaims).append("\"");
 
         // Add tenant if available
@@ -947,7 +1047,7 @@ public abstract class IdentityClientBase {
     /**
      * Properly escape a string for shell command usage.
      */
-    private String shellEscape(String input) {
+    String shellEscape(String input) {
         if (input == null) {
             return "";
         }
