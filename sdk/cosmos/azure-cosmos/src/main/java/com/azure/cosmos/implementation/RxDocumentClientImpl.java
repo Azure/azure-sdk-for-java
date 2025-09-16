@@ -6158,8 +6158,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             maxPageSize = (maxPageSize == -1) ? Configs.getPartitionKeyRangesReadFeedPageSize() : maxPageSize;
         }
 
-        logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, maxPageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
-
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
@@ -6167,9 +6165,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
             }
+
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
+
+            if (ResourceType.PartitionKeyRange.equals(resourceType)) {
+                logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, pageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
+            }
+
             retryPolicy.onBeforeSendRequest(request);
             return request;
         };
