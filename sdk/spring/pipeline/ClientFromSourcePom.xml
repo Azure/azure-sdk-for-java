@@ -44,7 +44,7 @@
     <module>../../containerservice/azure-resourcemanager-containerservice/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-cosmos/pom.xml</module>
     <module>../../dns/azure-resourcemanager-dns/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-eventhubs/pom.xml</module>
+    <module>../../eventhubs/azure-resourcemanager-eventhubs/pom.xml</module>
     <module>../../keyvault/azure-resourcemanager-keyvault/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-monitor/pom.xml</module>
     <module>../../msi/azure-resourcemanager-msi/pom.xml</module>
