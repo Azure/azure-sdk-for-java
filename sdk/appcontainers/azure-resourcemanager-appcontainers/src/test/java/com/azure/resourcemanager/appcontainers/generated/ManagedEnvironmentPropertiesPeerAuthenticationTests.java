@@ -14,7 +14,7 @@ public final class ManagedEnvironmentPropertiesPeerAuthenticationTests {
     public void testDeserialize() throws Exception {
         ManagedEnvironmentPropertiesPeerAuthentication model = BinaryData.fromString("{\"mtls\":{\"enabled\":false}}")
             .toObject(ManagedEnvironmentPropertiesPeerAuthentication.class);
-        Assertions.assertEquals(false, model.mtls().enabled());
+        Assertions.assertFalse(model.mtls().enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -22,6 +22,6 @@ public final class ManagedEnvironmentPropertiesPeerAuthenticationTests {
         ManagedEnvironmentPropertiesPeerAuthentication model
             = new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(false));
         model = BinaryData.fromObject(model).toObject(ManagedEnvironmentPropertiesPeerAuthentication.class);
-        Assertions.assertEquals(false, model.mtls().enabled());
+        Assertions.assertFalse(model.mtls().enabled());
     }
 }

@@ -50,6 +50,7 @@ jobs:
             - 'sdk/network'
             - 'sdk/privatedns/azure-resourcemanager-privatedns'
             - 'sdk/redis/azure-resourcemanager-redis'
+            - 'sdk/resources/azure-resourcemanager-resources'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/parents/azure-client-sdk-parent'

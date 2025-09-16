@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Container App Revision.
@@ -166,6 +167,15 @@ public final class RevisionInner extends ProxyResource {
      */
     public Integer trafficWeight() {
         return this.innerProperties() == null ? null : this.innerProperties().trafficWeight();
+    }
+
+    /**
+     * Get the labels property: List of labels assigned to this revision.
+     * 
+     * @return the labels value.
+     */
+    public List<String> labels() {
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
     }
 
     /**

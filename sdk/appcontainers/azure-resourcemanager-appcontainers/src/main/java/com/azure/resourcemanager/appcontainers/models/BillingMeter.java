@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,7 +16,29 @@ import java.io.IOException;
  * Billing meter.
  */
 @Fluent
-public final class BillingMeter extends ProxyResource {
+public final class BillingMeter implements JsonSerializable<BillingMeter> {
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
     /*
      * Region for the billing meter.
      */
@@ -27,30 +49,48 @@ public final class BillingMeter extends ProxyResource {
      */
     private BillingMeterProperties properties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
     /**
      * Creates an instance of BillingMeter class.
      */
     public BillingMeter() {
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -94,45 +134,6 @@ public final class BillingMeter extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -160,7 +161,6 @@ public final class BillingMeter extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BillingMeter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BillingMeter.
      */
     public static BillingMeter fromJson(JsonReader jsonReader) throws IOException {
@@ -176,12 +176,12 @@ public final class BillingMeter extends ProxyResource {
                     deserializedBillingMeter.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBillingMeter.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingMeter.systemData = SystemData.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedBillingMeter.location = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedBillingMeter.properties = BillingMeterProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedBillingMeter.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

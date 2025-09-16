@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,9 +17,25 @@ import java.io.IOException;
 @Fluent
 public final class BlobStorageTokenStore implements JsonSerializable<BlobStorageTokenStore> {
     /*
-     * The name of the app secrets containing the SAS URL of the blob storage containing the tokens.
+     * The name of the app secrets containing the SAS URL of the blob storage containing the tokens. Should not be used
+     * along with blobContainerUri.
      */
     private String sasUrlSettingName;
+
+    /*
+     * The URI of the blob storage containing the tokens. Should not be used along with sasUrlSettingName.
+     */
+    private String blobContainerUri;
+
+    /*
+     * The Client ID of a User-Assigned Managed Identity. Should not be used along with managedIdentityResourceId.
+     */
+    private String clientId;
+
+    /*
+     * The Resource ID of a User-Assigned Managed Identity. Should not be used along with clientId.
+     */
+    private String managedIdentityResourceId;
 
     /**
      * Creates an instance of BlobStorageTokenStore class.
@@ -30,7 +45,7 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
 
     /**
      * Get the sasUrlSettingName property: The name of the app secrets containing the SAS URL of the blob storage
-     * containing the tokens.
+     * containing the tokens. Should not be used along with blobContainerUri.
      * 
      * @return the sasUrlSettingName value.
      */
@@ -40,7 +55,7 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
 
     /**
      * Set the sasUrlSettingName property: The name of the app secrets containing the SAS URL of the blob storage
-     * containing the tokens.
+     * containing the tokens. Should not be used along with blobContainerUri.
      * 
      * @param sasUrlSettingName the sasUrlSettingName value to set.
      * @return the BlobStorageTokenStore object itself.
@@ -51,19 +66,78 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
     }
 
     /**
+     * Get the blobContainerUri property: The URI of the blob storage containing the tokens. Should not be used along
+     * with sasUrlSettingName.
+     * 
+     * @return the blobContainerUri value.
+     */
+    public String blobContainerUri() {
+        return this.blobContainerUri;
+    }
+
+    /**
+     * Set the blobContainerUri property: The URI of the blob storage containing the tokens. Should not be used along
+     * with sasUrlSettingName.
+     * 
+     * @param blobContainerUri the blobContainerUri value to set.
+     * @return the BlobStorageTokenStore object itself.
+     */
+    public BlobStorageTokenStore withBlobContainerUri(String blobContainerUri) {
+        this.blobContainerUri = blobContainerUri;
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The Client ID of a User-Assigned Managed Identity. Should not be used along with
+     * managedIdentityResourceId.
+     * 
+     * @return the clientId value.
+     */
+    public String clientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: The Client ID of a User-Assigned Managed Identity. Should not be used along with
+     * managedIdentityResourceId.
+     * 
+     * @param clientId the clientId value to set.
+     * @return the BlobStorageTokenStore object itself.
+     */
+    public BlobStorageTokenStore withClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityResourceId property: The Resource ID of a User-Assigned Managed Identity. Should not be
+     * used along with clientId.
+     * 
+     * @return the managedIdentityResourceId value.
+     */
+    public String managedIdentityResourceId() {
+        return this.managedIdentityResourceId;
+    }
+
+    /**
+     * Set the managedIdentityResourceId property: The Resource ID of a User-Assigned Managed Identity. Should not be
+     * used along with clientId.
+     * 
+     * @param managedIdentityResourceId the managedIdentityResourceId value to set.
+     * @return the BlobStorageTokenStore object itself.
+     */
+    public BlobStorageTokenStore withManagedIdentityResourceId(String managedIdentityResourceId) {
+        this.managedIdentityResourceId = managedIdentityResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sasUrlSettingName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sasUrlSettingName in model BlobStorageTokenStore"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BlobStorageTokenStore.class);
 
     /**
      * {@inheritDoc}
@@ -72,6 +146,9 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("sasUrlSettingName", this.sasUrlSettingName);
+        jsonWriter.writeStringField("blobContainerUri", this.blobContainerUri);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("managedIdentityResourceId", this.managedIdentityResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -81,7 +158,6 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
      * @param jsonReader The JsonReader being read.
      * @return An instance of BlobStorageTokenStore if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BlobStorageTokenStore.
      */
     public static BlobStorageTokenStore fromJson(JsonReader jsonReader) throws IOException {
@@ -93,6 +169,12 @@ public final class BlobStorageTokenStore implements JsonSerializable<BlobStorage
 
                 if ("sasUrlSettingName".equals(fieldName)) {
                     deserializedBlobStorageTokenStore.sasUrlSettingName = reader.getString();
+                } else if ("blobContainerUri".equals(fieldName)) {
+                    deserializedBlobStorageTokenStore.blobContainerUri = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedBlobStorageTokenStore.clientId = reader.getString();
+                } else if ("managedIdentityResourceId".equals(fieldName)) {
+                    deserializedBlobStorageTokenStore.managedIdentityResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

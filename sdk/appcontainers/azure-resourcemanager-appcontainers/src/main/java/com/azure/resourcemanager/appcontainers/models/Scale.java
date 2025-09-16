@@ -28,12 +28,12 @@ public final class Scale implements JsonSerializable<Scale> {
     private Integer maxReplicas;
 
     /*
-     * Optional. KEDA Cooldown Period in seconds. Defaults to 300 seconds if not set.
+     * Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
      */
     private Integer cooldownPeriod;
 
     /*
-     * Optional. KEDA Polling Interval in seconds. Defaults to 30 seconds if not set.
+     * Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
      */
     private Integer pollingInterval;
 
@@ -89,7 +89,7 @@ public final class Scale implements JsonSerializable<Scale> {
     }
 
     /**
-     * Get the cooldownPeriod property: Optional. KEDA Cooldown Period in seconds. Defaults to 300 seconds if not set.
+     * Get the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
      * 
      * @return the cooldownPeriod value.
      */
@@ -98,7 +98,7 @@ public final class Scale implements JsonSerializable<Scale> {
     }
 
     /**
-     * Set the cooldownPeriod property: Optional. KEDA Cooldown Period in seconds. Defaults to 300 seconds if not set.
+     * Set the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
      * 
      * @param cooldownPeriod the cooldownPeriod value to set.
      * @return the Scale object itself.
@@ -109,7 +109,7 @@ public final class Scale implements JsonSerializable<Scale> {
     }
 
     /**
-     * Get the pollingInterval property: Optional. KEDA Polling Interval in seconds. Defaults to 30 seconds if not set.
+     * Get the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
      * 
      * @return the pollingInterval value.
      */
@@ -118,7 +118,7 @@ public final class Scale implements JsonSerializable<Scale> {
     }
 
     /**
-     * Set the pollingInterval property: Optional. KEDA Polling Interval in seconds. Defaults to 30 seconds if not set.
+     * Set the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
      * 
      * @param pollingInterval the pollingInterval value to set.
      * @return the Scale object itself.
