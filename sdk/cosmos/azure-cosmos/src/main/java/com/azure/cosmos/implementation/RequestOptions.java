@@ -66,6 +66,7 @@ public class RequestOptions implements OverridableRequestOptions {
     private Set<String> keywordIdentifiers;
 
     private PartitionKeyDefinition partitionKeyDefinition;
+    private String operationId;
 
     public RequestOptions() {
 
@@ -123,6 +124,10 @@ public class RequestOptions implements OverridableRequestOptions {
 
         if (toBeCloned.keywordIdentifiers != null) {
             this.keywordIdentifiers = new HashSet<>(toBeCloned.keywordIdentifiers);
+        }
+
+        if (toBeCloned.operationId != null) {
+            this.operationId = toBeCloned.operationId;
         }
     }
 
@@ -706,5 +711,13 @@ public class RequestOptions implements OverridableRequestOptions {
 
     public PartitionKeyDefinition getPartitionKeyDefinition() {
         return this.partitionKeyDefinition;
+    }
+
+    public String getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
     }
 }

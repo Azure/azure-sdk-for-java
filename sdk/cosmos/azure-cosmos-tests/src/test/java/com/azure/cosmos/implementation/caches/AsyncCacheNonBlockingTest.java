@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -40,14 +41,14 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks.add(cache.getAsync(key, value -> refreshFunc.apply(key), forceRefresh -> false));
+            tasks.add(cache.getAsync(key, value -> refreshFunc.apply(key), forceRefresh -> false, StringUtils.EMPTY));
         }
 
         Flux<Integer> o = Flux.merge(tasks.stream().map(Mono::flux).collect(Collectors.toList()));
         o.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(10);
-        assertThat(cache.getAsync(2, value -> refreshFunc.apply(2), forceRefresh -> false).block()).isEqualTo(4);
+        assertThat(cache.getAsync(2, value -> refreshFunc.apply(2), forceRefresh -> false, StringUtils.EMPTY).block()).isEqualTo(4);
 
         // New function created to refresh the cache by sending forceRefresh true
         Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
@@ -58,7 +59,7 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks1 = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks1.add(cache.getAsync(key, value -> refreshFunc1.apply(key), forceRefresh -> true));
+            tasks1.add(cache.getAsync(key, value -> refreshFunc1.apply(key), forceRefresh -> true, StringUtils.EMPTY));
         }
 
         Flux<Integer> o1 = Flux.merge(tasks1.stream().map(Mono::flux).collect(Collectors.toList()));
@@ -67,7 +68,7 @@ public class AsyncCacheNonBlockingTest {
         // verify that cache refresh happened
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         // verify that we have the updated value in the cache now
-        assertThat(cache.getAsync(2, value -> refreshFunc1.apply(2), forceRefresh -> false).block()).isEqualTo(5);
+        assertThat(cache.getAsync(2, value -> refreshFunc1.apply(2), forceRefresh -> false, StringUtils.EMPTY).block()).isEqualTo(5);
 
 
         Function<Integer, Mono<Integer>> refreshFunc2 = key -> {
@@ -78,7 +79,7 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks2 = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks2.add(cache.getAsync(key, value -> refreshFunc2.apply(key), forceRefresh -> false));
+            tasks2.add(cache.getAsync(key, value -> refreshFunc2.apply(key), forceRefresh -> false, StringUtils.EMPTY));
         }
 
         Flux<Integer> o2 = Flux.merge(tasks2.stream().map(Mono::flux).collect(Collectors.toList()));
@@ -87,7 +88,7 @@ public class AsyncCacheNonBlockingTest {
         // verify that no cache refresh happened
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         // verify that we still have the old value in the cache
-        assertThat(cache.getAsync(2, value -> refreshFunc2.apply(2), forceRefresh -> false).block()).isEqualTo(5);
+        assertThat(cache.getAsync(2, value -> refreshFunc2.apply(2), forceRefresh -> false, StringUtils.EMPTY).block()).isEqualTo(5);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -103,7 +104,7 @@ public class AsyncCacheNonBlockingTest {
         AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
         // populate the cache
         int cacheKey = 1;
-        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false).block();
+        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false, StringUtils.EMPTY).block();
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
 
         // refresh the cache, since there is no refresh in progress, it will start a new one
@@ -136,7 +137,7 @@ public class AsyncCacheNonBlockingTest {
         AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
         // populate the cache
         int cacheKey = 0;
-        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false).block();
+        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false, StringUtils.EMPTY).block();
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
 
         // New function created to refresh the cache by sending forceRefresh true
@@ -145,7 +146,7 @@ public class AsyncCacheNonBlockingTest {
             return Mono.just(key * 2 + 1);
         };
 
-        Mono<Integer> monoAsync = cache.getAsync(cacheKey, value -> refreshFunc1.apply(cacheKey), forceRefresh -> true)
+        Mono<Integer> monoAsync = cache.getAsync(cacheKey, value -> refreshFunc1.apply(cacheKey), forceRefresh -> true, StringUtils.EMPTY)
             .doOnCancel(() -> logger.info("Subscription Cancelled"));
 
         StepVerifier.create(monoAsync)
@@ -158,7 +159,7 @@ public class AsyncCacheNonBlockingTest {
 
         for (int i = 0; i < 10; i++) {
             int finalI = i;
-            cache.getAsync(finalI, value -> refreshFunc1.apply(finalI), forceRefresh -> true)
+            cache.getAsync(finalI, value -> refreshFunc1.apply(finalI), forceRefresh -> true, StringUtils.EMPTY)
                 .doOnCancel(() -> logger.info("Subscription Cancelled : {}", finalI))
                 .doOnSubscribe(Subscription::cancel)
                 .subscribeOn(Schedulers.parallel())
