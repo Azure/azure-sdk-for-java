@@ -19,7 +19,7 @@
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
-    "dir": "azure-resourcemanager-authorization",
+    "dir": "../authorization/azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=package-2022-04-01 --enable-sync-stack=false"
@@ -97,7 +97,7 @@
     "args": "--tag=package-2016-04 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "eventhubs": {
-    "dir": "azure-resourcemanager-eventhubs",
+    "dir": "../eventhubs/azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
     "args": "--tag=package-2024-01 --enable-sync-stack=false"
@@ -109,7 +109,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "features": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-features-2021-07 --graalvm-config-suffix=feature --enable-sync-stack=false"
@@ -147,7 +147,7 @@
     "args": "--tag=package-2019-09 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "locks": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-locks-2017-04 --graalvm-config-suffix=lock --enable-sync-stack=false"
@@ -185,7 +185,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig --stream-style-serialization=false --enable-sync-stack=false"
   },
   "policy": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-policy-2023-04-java --graalvm-config-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
@@ -217,20 +217,20 @@
     "args": "--tag=package-2017-04 --stream-style-serialization=false"
   },
   "resources": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
   },
   "deployments": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-2025-04 --title=DeploymentsManagementClient --add-inner=Deployment,Provider --graalvm-config-suffix=deployments --enable-sync-stack=false"
   },
   "deploymentstacks": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
@@ -274,7 +274,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "subscriptions": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-subscriptions-2022-12 --graalvm-config-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations --enable-sync-stack=false"
@@ -298,13 +298,13 @@
     "args": "--tag=package-2024-11-30 --add-client-flatten=Identity --enable-sync-stack=false"
   },
   "changes": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-changes-2022-05 --graalvm-config-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType --enable-sync-stack=false"
   },
   "databoundaries": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-databoundaries-2024-08 --title=DataBoundariesManagementClient --graalvm-config-suffix=databoundary --remove-operation-group=Operations --enable-sync-stack=false"

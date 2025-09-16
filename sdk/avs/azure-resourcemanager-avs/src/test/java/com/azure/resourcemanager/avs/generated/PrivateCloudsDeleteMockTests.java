@@ -27,7 +27,7 @@ public final class PrivateCloudsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.privateClouds().delete("mzgwe", "ydsx", com.azure.core.util.Context.NONE);
+        manager.privateClouds().delete("gmwohqfzizvu", "mmkjsvthnwpztek", com.azure.core.util.Context.NONE);
 
     }
 }

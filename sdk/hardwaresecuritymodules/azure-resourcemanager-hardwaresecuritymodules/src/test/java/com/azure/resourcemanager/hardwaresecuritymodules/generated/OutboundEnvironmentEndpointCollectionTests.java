@@ -12,10 +12,10 @@ public final class OutboundEnvironmentEndpointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"wsuwsyr\",\"endpoints\":[{\"domainName\":\"ytgadgvraeaene\",\"endpointDetails\":[{}]},{\"domainName\":\"rrwlquuijfqkace\",\"endpointDetails\":[{},{}]},{\"domainName\":\"fpubjibwwi\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"qkvpuvksgplsakn\",\"endpoints\":[{\"domainName\":\"ynl\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"op\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"qiy\",\"endpointDetails\":[{},{}]}]}],\"nextLink\":\"zihleosjswsr\"}")
+            "{\"value\":[{\"category\":\"n\",\"endpoints\":[{\"domainName\":\"uopxodlqiyntor\",\"endpointDetails\":[{},{}]}]},{\"category\":\"eosjswsr\",\"endpoints\":[{\"domainName\":\"zrpzb\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"qqzqioxiysuiizyn\",\"endpointDetails\":[{}]},{\"domainName\":\"atrwyhqmibzyh\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"mypyynpcdpu\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"mwzn\",\"endpoints\":[{\"domainName\":\"knso\",\"endpointDetails\":[{},{}]},{\"domainName\":\"xbldtlwwrlkdmtn\",\"endpointDetails\":[{}]},{\"domainName\":\"otllxdyhgsyo\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"ltdtbnnhad\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"kvci\",\"endpoints\":[{\"domainName\":\"p\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"x\",\"endpointDetails\":[{}]}]}],\"nextLink\":\"zikywgg\"}")
             .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("wsuwsyr", model.value().get(0).category());
-        Assertions.assertEquals("ytgadgvraeaene", model.value().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals("zihleosjswsr", model.nextLink());
+        Assertions.assertEquals("n", model.value().get(0).category());
+        Assertions.assertEquals("uopxodlqiyntor", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("zikywgg", model.nextLink());
     }
 }

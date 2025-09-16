@@ -31,6 +31,11 @@ public final class ContainerResources implements JsonSerializable<ContainerResou
      */
     private String ephemeralStorage;
 
+    /*
+     * Required GPU in cores for GPU based app, e.g. 1.0
+     */
+    private Double gpu;
+
     /**
      * Creates an instance of ContainerResources class.
      */
@@ -87,6 +92,26 @@ public final class ContainerResources implements JsonSerializable<ContainerResou
     }
 
     /**
+     * Get the gpu property: Required GPU in cores for GPU based app, e.g. 1.0.
+     * 
+     * @return the gpu value.
+     */
+    public Double gpu() {
+        return this.gpu;
+    }
+
+    /**
+     * Set the gpu property: Required GPU in cores for GPU based app, e.g. 1.0.
+     * 
+     * @param gpu the gpu value to set.
+     * @return the ContainerResources object itself.
+     */
+    public ContainerResources withGpu(Double gpu) {
+        this.gpu = gpu;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -102,6 +127,7 @@ public final class ContainerResources implements JsonSerializable<ContainerResou
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("cpu", this.cpu);
         jsonWriter.writeStringField("memory", this.memory);
+        jsonWriter.writeNumberField("gpu", this.gpu);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,6 +152,8 @@ public final class ContainerResources implements JsonSerializable<ContainerResou
                     deserializedContainerResources.memory = reader.getString();
                 } else if ("ephemeralStorage".equals(fieldName)) {
                     deserializedContainerResources.ephemeralStorage = reader.getString();
+                } else if ("gpu".equals(fieldName)) {
+                    deserializedContainerResources.gpu = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

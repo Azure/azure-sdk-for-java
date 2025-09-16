@@ -28,7 +28,7 @@ public final class ContainerAppsAuthConfigsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.containerAppsAuthConfigs()
-            .deleteWithResponse("shbraga", "yyrmfsvbp", "vbopfppdbwnu", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("dsvh", "cdculr", "gpqtmo", com.azure.core.util.Context.NONE);
 
     }
 }

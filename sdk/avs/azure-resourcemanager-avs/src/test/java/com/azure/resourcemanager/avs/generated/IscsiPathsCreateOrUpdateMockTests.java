@@ -22,7 +22,7 @@ public final class IscsiPathsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"drvcqguef\"},\"id\":\"ompheqdur\",\"name\":\"lyujlfyoump\",\"type\":\"kyeclcdigpta\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"ljqepq\"},\"id\":\"ixmonstshiyxg\",\"name\":\"elfclducc\",\"type\":\"irdsvuwcob\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class IscsiPathsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IscsiPath response = manager.iscsiPaths()
-            .createOrUpdate("xdndsbdweaderzm", "ntopa", new IscsiPathInner().withNetworkBlock("v"),
+            .createOrUpdate("jx", "nptfujgi", new IscsiPathInner().withNetworkBlock("o"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("drvcqguef", response.networkBlock());
+        Assertions.assertEquals("ljqepq", response.networkBlock());
     }
 }

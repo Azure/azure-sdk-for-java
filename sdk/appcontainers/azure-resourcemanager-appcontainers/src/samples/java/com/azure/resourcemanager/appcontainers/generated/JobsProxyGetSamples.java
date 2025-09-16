@@ -9,7 +9,9 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class JobsProxyGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_ProxyGet.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Job_ProxyGet.
+     * json
      */
     /**
      * Sample code: Get Container App Job by name.
@@ -18,6 +20,6 @@ public final class JobsProxyGetSamples {
      */
     public static void
         getContainerAppJobByName(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.jobs().proxyGetWithResponse("rg", "testcontainerappsjob0", "rootApi", com.azure.core.util.Context.NONE);
+        manager.jobs().proxyGetWithResponse("rg", "testcontainerAppsJob0", "rootApi", com.azure.core.util.Context.NONE);
     }
 }
