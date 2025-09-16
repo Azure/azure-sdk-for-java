@@ -106,11 +106,30 @@ public class ReadmeSamples {
 
     public void getBlobClient3() {
         // BEGIN: readme-sample-getBlobClient3
+        // You can create blobs within a directory structure
+        BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob");
+        // END: readme-sample-getBlobClient3
+    }
+
+    public void getBlobClient4() {
+        // BEGIN: readme-sample-getBlobClient4
+        // You can create blobs within a directory structure
+        BlobClient blobClient = new BlobClientBuilder()
+            .endpoint("<your-storage-account-url>")
+            .sasToken("<your-sasToken>")
+            .containerName("mycontainer")
+            .blobName("directory/myblob")
+            .buildClient();
+        // END: readme-sample-getBlobClient4
+    }
+
+    public void getBlobClient5() {
+        // BEGIN: readme-sample-getBlobClient5
         // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
             .buildClient();
-        // END: readme-sample-getBlobClient3
+        // END: readme-sample-getBlobClient5
     }
 
     public void createBlobContainerClient1() {

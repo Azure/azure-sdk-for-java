@@ -254,14 +254,6 @@ or
 Create a `BlobClient` within a directory structure using `BlobContainerClient`. 
 
 ```java readme-sample-getBlobClient2
-BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob"); 
-```
-
-or
-
-Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
-
-```java readme-sample-getBlobClient3
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -272,7 +264,28 @@ BlobClient blobClient = new BlobClientBuilder()
 
 or
 
+Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
+
 ```java readme-sample-getBlobClient3
+// You can create blobs within a directory structure
+BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob");
+```
+
+or
+
+```java readme-sample-getBlobClient4
+// You can create blobs within a directory structure
+BlobClient blobClient = new BlobClientBuilder()
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .blobName("directory/myblob")
+    .buildClient();
+```
+
+or
+
+```java readme-sample-getBlobClient5
 // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
