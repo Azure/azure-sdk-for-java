@@ -150,6 +150,10 @@ vmware:
 web:
   service: appservice
   suffix: generated
+certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
+  service: certificateregistration
+domainregistration/Microsoft.DomainRegistration/DomainRegistration:
+  service: domainregistration
 workloads/Microsoft.Workloads/SAPDiscoverySites:
   service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:
