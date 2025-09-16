@@ -267,14 +267,12 @@ or
 Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
 
 ```java readme-sample-getBlobClient3
-// You can create blobs within a directory structure
 BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob");
 ```
 
 or
 
 ```java readme-sample-getBlobClient4
-// You can create blobs within a directory structure
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
