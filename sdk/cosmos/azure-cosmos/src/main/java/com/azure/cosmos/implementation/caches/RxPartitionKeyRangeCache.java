@@ -310,7 +310,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             qryOptAccessor.setOperationId(cosmosQueryRequestOptions, callIdentifier);
             Instant addressCallStartTime = Instant.now();
 
-            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier);
+            int prefetch = Configs.isPartitionKeyRangePrefetchingEnabled() ? Queues.XS_BUFFER_SIZE : 1;
+
+            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}] with Prefetch [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier, prefetch);
 
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
@@ -324,7 +326,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     }
 
                     return Flux.fromIterable(p.getResults());
-                }, 1, Configs.isPartitionKeyRangePrefetchingEnabled() ? Queues.XS_BUFFER_SIZE : 1).collectList();
+                }, 1, prefetch).collectList();
         });
     }
 }
