@@ -226,10 +226,10 @@
 ### Breaking Changes
 - When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
 `BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
-URL-encoded. For example, if blob name is "test%25test" and is created by calling 
-`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
-`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
-“https://account.blob.core.windows.net/container/test%25%25test”.
+URL-encoded. For example, if blob name is "directory/blob.txt" and is created by calling 
+`BlobContainerClient.getBlobClient("directory/blob.txt")`, 
+`BlobClient.getBlobName()` will return "directory/blob.txt" and the blob's url will result in 
+“https://account.blob.core.windows.net/container/directory/blob.txt".
 
 ## 12.25.3 (2024-03-20)
 
