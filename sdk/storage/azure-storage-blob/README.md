@@ -254,7 +254,7 @@ or
 Create a `BlobClient` within a directory structure using `BlobContainerClient`. 
 
 ```java readme-sample-getBlobClient2
-BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("directory/myblob"); 
 ```
 
 or
