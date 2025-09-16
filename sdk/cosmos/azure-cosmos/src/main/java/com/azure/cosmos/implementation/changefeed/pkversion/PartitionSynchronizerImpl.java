@@ -60,7 +60,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .map(partitionKeyRange -> {
                 leaseTokenMap.put(
                     partitionKeyRange.getId(),
-                    partitionKeyRange.getParents() == null ? Collections.emptyList(): partitionKeyRange.getParents());
+                    partitionKeyRange.getParents() == null ? Collections.emptyList() : partitionKeyRange.getParents());
                 return partitionKeyRange.getId();
             })
             .collectList()
