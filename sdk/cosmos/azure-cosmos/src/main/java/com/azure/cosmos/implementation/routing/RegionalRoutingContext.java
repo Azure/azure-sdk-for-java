@@ -11,16 +11,26 @@ public class RegionalRoutingContext {
     // IMPORTANT:
     // Please reevaluate overridden equals() implementation
     // when adding additional properties to this class
+    private final String region;
     private final URI gatewayRegionalEndpoint;
     private final String gatewayRegionalEndpointAsString;
     private URI thinclientRegionalEndpoint;
     private String thinclientRegionalEndpointAsString;
 
-    public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
+    public RegionalRoutingContext(URI gatewayRegionalEndpoint, String region) {
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
         this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
+        this.region = region;
         this.thinclientRegionalEndpoint = null;
-        thinclientRegionalEndpointAsString = null;
+        this.thinclientRegionalEndpointAsString = null;
+    }
+
+    public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
+        this(gatewayRegionalEndpoint, null);
+    }
+
+    public String getRegion() {
+        return this.region;
     }
 
     public URI getGatewayRegionalEndpoint() {

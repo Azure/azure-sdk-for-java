@@ -153,6 +153,10 @@ public class StoreResponse {
         return this.responsePayload.getPayload();
     }
 
+    public void setResponseBodyAsJson(JsonNode body) {
+        this.responsePayload.setPayload(body);
+    }
+
     public int getResponseBodyLength() {
         if (this.responsePayload == null) {
             return 0;
@@ -194,6 +198,20 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    // meant for fault injection only
+    public void setHeaderValue(String attribute, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
+                responseHeaderValues[i] = value;
+                return;
+            }
+        }
     }
 
     public double getRequestCharge() {

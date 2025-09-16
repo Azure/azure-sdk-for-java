@@ -99,7 +99,7 @@ public class FaultInjectionRequestContext {
 
     public void setLocationEndpointToRoute(URI locationEndpointToRoute) {
         this.locationEndpointToRoute = locationEndpointToRoute;
-        this.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute);
+        this.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute, null);
     }
 
     public URI getLocationEndpointToRoute() {

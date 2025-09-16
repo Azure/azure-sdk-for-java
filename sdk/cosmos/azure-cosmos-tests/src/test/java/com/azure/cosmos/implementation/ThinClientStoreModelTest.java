@@ -44,7 +44,8 @@ public class ThinClientStoreModelTest {
             ConsistencyLevel.SESSION,
             new UserAgentContainer(),
             globalEndpointManager,
-            httpClient);
+            httpClient,
+            null);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,

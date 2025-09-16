@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.mockito.Mockito.doAnswer;
 
@@ -64,7 +65,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 null,
                 false
         );
-        init(null, null);
+        init(null, null, null, null);
     }
 
     RxGatewayStoreModel createRxGatewayProxy(
@@ -75,7 +76,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             GlobalEndpointManager globalEndpointManager,
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             HttpClient rxOrigClient,
-            ApiType apiType) {
+            ApiType apiType,
+            Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
@@ -93,6 +95,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 userAgentContainer,
                 globalEndpointManager,
                 spyHttpClient,
-                apiType);
+                apiType,
+                httpRequestInterceptor);
     }
 }

@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -79,6 +80,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -88,7 +90,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        ApiType apiType) {
+        ApiType apiType,
+        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
 
         this.clientContext = clientContext;
 
@@ -104,6 +107,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+
+        this.httpRequestInterceptor = httpRequestInterceptor;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -300,6 +305,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
 
         try {
+            if (this.httpRequestInterceptor != null) {
+                RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request);
+                if (result != null) {
+                    return Mono.just(result);
+                }
+            }
+
             HttpRequest httpRequest = request
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);

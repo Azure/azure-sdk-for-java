@@ -10,8 +10,11 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+
+import java.util.function.BiFunction;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -96,6 +99,17 @@ public class StoreClientFactory implements AutoCloseable {
             this.transportClient,
             useMultipleWriteLocations,
             sessionRetryOptions);
+    }
+
+    public void setStoreResponseInterceptorIfRntbdTransportClient(
+            BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
+        this.throwIfClosed();
+
+        if (this.transportClient instanceof RntbdTransportClient) {
+            ((RntbdTransportClient) this.transportClient).setStoreResponseInterceptor(storeResponseInterceptor);
+        } else {
+            throw new IllegalStateException("StoreResponseInterceptor can only be set for RntbdTransportClient");
+        }
     }
 
     private void throwIfClosed() {

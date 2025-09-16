@@ -99,7 +99,8 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-            null);
+                null,
+                null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
@@ -143,6 +144,7 @@ public class RxGatewayStoreModelTest {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -202,7 +204,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
@@ -274,7 +277,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,

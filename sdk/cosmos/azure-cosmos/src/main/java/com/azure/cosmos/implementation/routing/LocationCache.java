@@ -943,7 +943,7 @@ public class LocationCache {
                         String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
                         URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
-                        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(endpoint);
+                        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(endpoint, location);
 
                         if (!endpointsByLocation.containsKey(location)) {
                             endpointsByLocation.put(location, regionalRoutingContext);
