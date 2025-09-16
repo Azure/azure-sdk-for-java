@@ -8,9 +8,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -21,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 
 /**
  * Implementation for the partition synchronizer.
@@ -135,13 +131,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     }
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
-        String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
-
-        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
-            .map(FeedResponse::getResults)
-            .flatMap(Flux::fromIterable)
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+            .flatMapMany(Flux::fromIterable)
             .onErrorResume(throwable -> {
                 logger.error("Failed to retrieve physical partition information.", throwable);
                 return Flux.empty();
