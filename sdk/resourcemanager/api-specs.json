@@ -97,7 +97,7 @@
     "args": "--tag=package-2016-04 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "eventhubs": {
-    "dir": "azure-resourcemanager-eventhubs",
+    "dir": "../eventhubs/azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
     "args": "--tag=package-2024-01 --enable-sync-stack=false"
