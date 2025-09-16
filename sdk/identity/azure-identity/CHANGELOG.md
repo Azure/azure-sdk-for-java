@@ -1,6 +1,6 @@
 # Release History
 
-## 1.18.0 (2025-09-12)
+## 1.18.0 (2025-09-16)
 
 ### Features Added
 
@@ -20,7 +20,7 @@
 
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
-- Upgraded `com.microsoft.azure:msal4j` from version `1.22.0` to version `1.23.0`.
+- Upgraded `com.microsoft.azure:msal4j` from version `1.22.0` to version `1.23.1`.
 
 ## 1.17.0 (2025-08-08)
 
