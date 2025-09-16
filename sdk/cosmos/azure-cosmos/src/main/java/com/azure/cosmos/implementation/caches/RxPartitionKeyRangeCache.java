@@ -3,16 +3,16 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.concurrent.Queues;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +51,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor();
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this.routingMapCache = new AsyncCacheNonBlocking<>();
@@ -67,10 +73,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             sb.append("RxPartitionKeyRangeCache.TryLookupAsync:").append(",");
         }
 
+        String callIdentifier = UUID.randomUUID().toString();
+
         return routingMapCache.getAsync(
                 collectionRid,
                 routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue,
-                    properties, sb), currentValue -> shouldForceRefresh(previousValue, currentValue))
+                    properties, sb, callIdentifier), currentValue -> shouldForceRefresh(previousValue, currentValue), callIdentifier)
             .map(Utils.ValueHolder::new)
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
@@ -182,9 +190,11 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             sb.append("RxPartitionKeyRangeCache.TryGetRangeByPartitionKeyRangeId:").append(",");
         }
 
+        String callIdentifier = UUID.randomUUID().toString();
+
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
             collectionRid,
-            routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties, sb), forceRefresh -> false).map(Utils.ValueHolder::new);
+            routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties, sb, callIdentifier), forceRefresh -> false, callIdentifier).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
@@ -221,7 +231,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         String collectionRid,
         CollectionRoutingMap previousRoutingMap,
         Map<String, Object> properties,
-        StringBuilder sb) {
+        StringBuilder sb,
+        String callIdentifier) {
 
         // TODO: NOTE: main java code doesn't do anything in regard to the previous routing map
         // .Net code instead of using DocumentClient controls sending request and receiving requests here
@@ -232,7 +243,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             sb.append("RxPartitionKeyRangeCache.GetRoutingMapForCollectionAsync:").append(",");
         }
 
-        Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(metaDataDiagnosticsContext, collectionRid , false, properties, sb);
+        Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(metaDataDiagnosticsContext, collectionRid , false, properties, sb, callIdentifier);
 
         return rangesObs.flatMap(ranges -> {
 
@@ -265,7 +276,14 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         });
     }
 
-    private Mono<List<PartitionKeyRange>> getPartitionKeyRange(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, boolean forceRefresh, Map<String, Object> properties, StringBuilder sb) {
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRange(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        boolean forceRefresh,
+        Map<String, Object> properties,
+        StringBuilder sb,
+        String callIdentifier) {
+
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
             OperationType.ReadFeed,
             collectionRid,
@@ -288,9 +306,11 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             if (properties != null) {
                 ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
+
+            qryOptAccessor.setOperationId(cosmosQueryRequestOptions, callIdentifier);
             Instant addressCallStartTime = Instant.now();
 
-            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A");
+            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier);
 
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
@@ -304,7 +324,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     }
 
                     return Flux.fromIterable(p.getResults());
-                }, 1).collectList();
+                }, 1, Configs.isPartitionKeyRangePrefetchingEnabled() ? Queues.XS_BUFFER_SIZE : 1).collectList();
         });
     }
 }

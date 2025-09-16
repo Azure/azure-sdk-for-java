@@ -4831,7 +4831,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options) {
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(
+        String collectionLink,
+        CosmosQueryRequestOptions options) {
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
         }
@@ -6152,7 +6154,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
 
-        logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}]", resourceType, resourceLink, maxPageSize, this.userAgentContainer.getUserAgent());
+        if (ResourceType.PartitionKeyRange.equals(resourceType)) {
+            maxPageSize = (maxPageSize == -1) ? Configs.getPartitionKeyRangesReadFeedPageSize() : maxPageSize;
+        }
+
+        logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, maxPageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
 
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
