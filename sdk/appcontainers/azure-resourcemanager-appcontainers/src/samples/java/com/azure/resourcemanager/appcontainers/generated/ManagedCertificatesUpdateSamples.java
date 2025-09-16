@@ -14,7 +14,8 @@ import java.util.Map;
 public final class ManagedCertificatesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedCertificates_Patch.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * ManagedCertificates_Patch.json
      */
     /**
      * Sample code: Patch Managed Certificate.

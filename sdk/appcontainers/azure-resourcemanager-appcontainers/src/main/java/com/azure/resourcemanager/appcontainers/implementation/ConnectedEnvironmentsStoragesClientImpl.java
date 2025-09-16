@@ -21,12 +21,20 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStoragesCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -59,13 +67,23 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientConnectedEnvironmentsStorages")
     public interface ConnectedEnvironmentsStoragesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ConnectedEnvironmentStoragesCollectionInner>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ConnectedEnvironmentStoragesCollectionInner> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -83,10 +101,33 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ConnectedEnvironmentStorageInner>> createOrUpdate(@HostParam("$host") String endpoint,
+        Response<ConnectedEnvironmentStorageInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
+            @PathParam("storageName") String storageName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
+            @PathParam("storageName") String storageName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConnectedEnvironmentStorageInner storageEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -96,9 +137,20 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
-        @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
+            @PathParam("storageName") String storageName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/storages/{storageName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -148,43 +200,6 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all storages for a connectedEnvironment along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedEnvironmentStoragesCollectionInner>> listWithResponseAsync(String resourceGroupName,
-        String connectedEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (connectedEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            connectedEnvironmentName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get all storages for a connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +226,28 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedEnvironmentStoragesCollectionInner> listWithResponse(String resourceGroupName,
         String connectedEnvironmentName, Context context) {
-        return listWithResponseAsync(resourceGroupName, connectedEnvironmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -275,46 +311,6 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage for a connectedEnvironment along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedEnvironmentStorageInner>> getWithResponseAsync(String resourceGroupName,
-        String connectedEnvironmentName, String storageName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (connectedEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
-        }
-        if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            connectedEnvironmentName, storageName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get storage for a connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -342,7 +338,32 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedEnvironmentStorageInner> getWithResponse(String resourceGroupName,
         String connectedEnvironmentName, String storageName, Context context) {
-        return getWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, storageName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -370,13 +391,13 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storage resource for connectedEnvironment along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedEnvironmentStorageInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -418,45 +439,95 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for connectedEnvironment along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return storage resource for connectedEnvironment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedEnvironmentStorageInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, ConnectedEnvironmentStorageInner storageEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
         }
         if (storageEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageEnvelope is required and cannot be null."));
         } else {
             storageEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, storageName, this.client.getApiVersion(), storageEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for connectedEnvironment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, ConnectedEnvironmentStorageInner storageEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        if (storageEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageEnvelope is required and cannot be null."));
+        } else {
+            storageEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             connectedEnvironmentName, storageName, this.client.getApiVersion(), storageEnvelope, accept, context);
     }
 
@@ -468,15 +539,41 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for connectedEnvironment on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of storage resource for connectedEnvironment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedEnvironmentStorageInner> createOrUpdateAsync(String resourceGroupName,
-        String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName,
-            storageEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ConnectedEnvironmentStorageInner>, ConnectedEnvironmentStorageInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String connectedEnvironmentName, String storageName,
+            ConnectedEnvironmentStorageInner storageEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            connectedEnvironmentName, storageName, storageEnvelope);
+        return this.client.<ConnectedEnvironmentStorageInner, ConnectedEnvironmentStorageInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectedEnvironmentStorageInner.class,
+            ConnectedEnvironmentStorageInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of storage resource for connectedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectedEnvironmentStorageInner>, ConnectedEnvironmentStorageInner>
+        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String storageName,
+            ConnectedEnvironmentStorageInner storageEnvelope) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope);
+        return this.client.<ConnectedEnvironmentStorageInner, ConnectedEnvironmentStorageInner>getLroResult(response,
+            ConnectedEnvironmentStorageInner.class, ConnectedEnvironmentStorageInner.class, Context.NONE);
     }
 
     /**
@@ -488,16 +585,18 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param storageEnvelope Configuration details of storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for connectedEnvironment along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of storage resource for connectedEnvironment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedEnvironmentStorageInner> createOrUpdateWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName,
-            storageEnvelope, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectedEnvironmentStorageInner>, ConnectedEnvironmentStorageInner>
+        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String storageName,
+            ConnectedEnvironmentStorageInner storageEnvelope, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
+            storageName, storageEnvelope, context);
+        return this.client.<ConnectedEnvironmentStorageInner, ConnectedEnvironmentStorageInner>getLroResult(response,
+            ConnectedEnvironmentStorageInner.class, ConnectedEnvironmentStorageInner.class, context);
     }
 
     /**
@@ -508,15 +607,55 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for connectedEnvironment on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConnectedEnvironmentStorageInner> createOrUpdateAsync(String resourceGroupName,
+        String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope) {
+        return beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storage resource for connectedEnvironment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedEnvironmentStorageInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         String storageName, ConnectedEnvironmentStorageInner storageEnvelope) {
-        return createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope,
-            Context.NONE).getValue();
+        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope)
+            .getFinalResult();
+    }
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for connectedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectedEnvironmentStorageInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, ConnectedEnvironmentStorageInner storageEnvelope, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope, context)
+            .getFinalResult();
     }
 
     /**
@@ -526,13 +665,13 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String connectedEnvironmentName,
-        String storageName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String storageName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -565,37 +704,82 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String connectedEnvironmentName,
-        String storageName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String storageName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, storageName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             connectedEnvironmentName, storageName, this.client.getApiVersion(), accept, context);
     }
 
@@ -606,14 +790,35 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String connectedEnvironmentName, String storageName) {
-        return deleteWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName)
-            .flatMap(ignored -> Mono.empty());
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String connectedEnvironmentName, String storageName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
+        String storageName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -624,14 +829,16 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
         String storageName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, connectedEnvironmentName, storageName, context).block();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -641,11 +848,46 @@ public final class ConnectedEnvironmentsStoragesClientImpl implements ConnectedE
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String connectedEnvironmentName, String storageName) {
+        return beginDeleteAsync(resourceGroupName, connectedEnvironmentName, storageName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName) {
-        deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE);
+        beginDelete(resourceGroupName, connectedEnvironmentName, storageName).getFinalResult();
     }
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName, Context context) {
+        beginDelete(resourceGroupName, connectedEnvironmentName, storageName, context).getFinalResult();
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedEnvironmentsStoragesClientImpl.class);
 }

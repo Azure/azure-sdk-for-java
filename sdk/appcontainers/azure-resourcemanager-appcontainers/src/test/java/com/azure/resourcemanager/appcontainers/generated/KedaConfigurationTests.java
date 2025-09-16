@@ -11,7 +11,7 @@ public final class KedaConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KedaConfiguration model
-            = BinaryData.fromString("{\"version\":\"ymerteeammxq\"}").toObject(KedaConfiguration.class);
+            = BinaryData.fromString("{\"version\":\"hlwntsjgq\"}").toObject(KedaConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test
