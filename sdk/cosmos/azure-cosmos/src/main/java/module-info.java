@@ -26,7 +26,6 @@ module com.azure.cosmos {
     //  This is only required by guava shaded libraries
     requires java.logging;
 	requires HdrHistogram;
-    requires reactor.core;
 
     // public API surface area
     exports com.azure.cosmos;

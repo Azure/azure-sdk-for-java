@@ -6155,7 +6155,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
 
         if (ResourceType.PartitionKeyRange.equals(resourceType)) {
-            maxPageSize = (maxPageSize == -1) ? Configs.getPartitionKeyRangesReadFeedPageSize() : maxPageSize;
+            maxPageSize = Configs.getPartitionKeyRangesReadFeedPageSize();
         }
 
         assert(resourceType != ResourceType.Document);

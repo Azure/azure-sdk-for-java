@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -87,8 +90,12 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
 
+            Optional<CosmosDiagnosticsContext> cosmosDiagnosticsContext = resolveDiagnosticsContext(dce);
+
             logger.warn(
-                "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} for statusCode {} and subStatusCode {}",
+                "OperationType {} for ResourceType {} will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} for statusCode {} and subStatusCode {}",
+                cosmosDiagnosticsContext.isPresent() ? cosmosDiagnosticsContext.get().getOperationType() : "N/A",
+                cosmosDiagnosticsContext.isPresent() ? cosmosDiagnosticsContext.get().getResourceType() : "N/A",
                 retryDelay.toMillis(),
                 this.currentAttemptCount,
                 this.cumulativeRetryDelay,
@@ -168,5 +175,12 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         }
         // if retry not needed returns null
         return null;
+    }
+
+    public Optional<CosmosDiagnosticsContext> resolveDiagnosticsContext(CosmosException dce) {
+        if (dce != null && dce.getDiagnostics() != null) {
+            return Optional.ofNullable(dce.getDiagnostics().getDiagnosticsContext());
+        }
+        return Optional.empty();
     }
 }
