@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -26,6 +27,7 @@ public class ReadToFileOptions {
     private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
+    private DownloadContentValidationOptions contentValidationOptions;
 
     /**
      * Constructs a {@link ReadToFileOptions}.
@@ -189,6 +191,26 @@ public class ReadToFileOptions {
      */
     public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * Gets the {@link DownloadContentValidationOptions}.
+     *
+     * @return {@link DownloadContentValidationOptions}
+     */
+    public DownloadContentValidationOptions getContentValidationOptions() {
+        return contentValidationOptions;
+    }
+
+    /**
+     * Sets the {@link DownloadContentValidationOptions}.
+     *
+     * @param contentValidationOptions {@link DownloadContentValidationOptions}
+     * @return The updated options.
+     */
+    public ReadToFileOptions setContentValidationOptions(DownloadContentValidationOptions contentValidationOptions) {
+        this.contentValidationOptions = contentValidationOptions;
         return this;
     }
 }

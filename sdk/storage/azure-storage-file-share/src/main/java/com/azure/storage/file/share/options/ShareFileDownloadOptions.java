@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
 
 /**
  * Extended options that may be passed when downloading a File.
@@ -17,6 +18,7 @@ public final class ShareFileDownloadOptions {
     private Boolean rangeContentMd5Requested;
     private ShareRequestConditions requestConditions;
     private DownloadRetryOptions retryOptions;
+    private DownloadContentValidationOptions contentValidationOptions;
 
     /**
      * Creates a new instance of {@link ShareFileDownloadOptions}.
@@ -101,6 +103,26 @@ public final class ShareFileDownloadOptions {
      */
     public ShareFileDownloadOptions setRetryOptions(DownloadRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Gets the {@link DownloadContentValidationOptions}.
+     *
+     * @return {@link DownloadContentValidationOptions}
+     */
+    public DownloadContentValidationOptions getContentValidationOptions() {
+        return contentValidationOptions;
+    }
+
+    /**
+     * Sets the {@link DownloadContentValidationOptions}.
+     *
+     * @param contentValidationOptions {@link DownloadContentValidationOptions}
+     * @return The updated options.
+     */
+    public ShareFileDownloadOptions setContentValidationOptions(DownloadContentValidationOptions contentValidationOptions) {
+        this.contentValidationOptions = contentValidationOptions;
         return this;
     }
 }

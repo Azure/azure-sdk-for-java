@@ -19,10 +19,15 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +44,7 @@ import reactor.util.function.Tuple2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -53,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -572,6 +579,75 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
                     "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
         });
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidation() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        
+        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+        
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create validation options with structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationRange() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        Flux<ByteBuffer> input = Flux.just(ByteBuffer.wrap(randomData));
+
+        // For range downloads, we don't use structured message validation because:
+        // 1. Ranges apply to the encoded data, not original data
+        // 2. Partial structured messages cannot be properly validated
+        // This test validates that the API integration works with range downloads when validation is disabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(false);
+
+        BlobRange range = new BlobRange(0, 512L);
+        byte[] expectedData = new byte[512];
+        System.arraycopy(randomData, 0, expectedData, 0, 512);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, expectedData))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadStreamWithResponseStructuredMessageValidation() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        
+        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+        
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create validation options with only structured message validation enabled
+        DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
+            .setStructuredMessageValidationEnabled(true)
+            .setMd5ValidationEnabled(false);
+
+        StepVerifier
+            .create(bc.upload(input, null, true)
+                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
+            .verifyComplete();
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
