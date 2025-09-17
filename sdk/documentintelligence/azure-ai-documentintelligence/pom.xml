@@ -71,8 +71,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-      <version>12.31.2</version>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.31.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
