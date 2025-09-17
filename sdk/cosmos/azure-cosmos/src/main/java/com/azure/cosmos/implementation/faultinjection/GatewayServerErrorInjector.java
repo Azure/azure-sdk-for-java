@@ -78,6 +78,9 @@ public class GatewayServerErrorInjector {
             return Mono.just(Utils.ValueHolder.initialize(request.requestContext.resolvedPartitionKeyRange));
         }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("GatewayServerErrorInjector.resolvePartitionKeyRange:").append(",");
+
         return this.collectionCache
             .resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request)
@@ -88,7 +91,7 @@ public class GatewayServerErrorInjector {
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null,
-                        new StringBuilder())
+                        sb)
                     .flatMap(collectionRoutingMapValueHolder -> {
                         String partitionKeyRangeId =
                             request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
