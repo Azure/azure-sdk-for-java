@@ -18,9 +18,18 @@ import scala.collection.JavaConverters._
 private[spark] object ContainerFeedRangesCache extends BasicLoggingTrait {
 
   private val cache = new TrieMap[String, CachedFeedRanges]
-  private val feedRangeRefreshIntervalOverride: Long = CosmosConstants.ContainerFeedRangesCacheConfigs.feedRangeRefreshInterval
+  private var feedRangeRefreshIntervalOverride: Option[Long] = None
+  private val defaultFeedRangeRefreshInterval: Long = CosmosConstants.ContainerFeedRangesCacheConfigs.feedRangeRefreshInterval
 
-  logInfo(s"feedRangeRefreshIntervalInMins: ${feedRangeRefreshIntervalOverride}")
+  logInfo(s"feedRangeRefreshIntervalInMins: ${feedRangeRefreshIntervalOverride.getOrElse(defaultFeedRangeRefreshInterval)}")
+
+  def overrideFeedRangeRefreshInterval(newInterval: Long): Unit = {
+    this.feedRangeRefreshIntervalOverride = Some(newInterval)
+  }
+
+  def resetFeedRangeRefreshInterval(): Unit = {
+    this.feedRangeRefreshIntervalOverride = None
+  }
 
   def getFeedRanges
   (
@@ -30,7 +39,7 @@ private[spark] object ContainerFeedRangesCache extends BasicLoggingTrait {
     val key = SparkBridgeInternal.getCacheKeyForContainer(container)
 
     val cacheExpirationThreshold = Instant.now.minus(
-      feedRangeRefreshIntervalOverride,
+      feedRangeRefreshIntervalOverride.getOrElse(defaultFeedRangeRefreshInterval),
       ChronoUnit.MINUTES)
 
     cache.get(key) match {
