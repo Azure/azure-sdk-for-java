@@ -13,24 +13,24 @@ public final class DiagnosticRenderingTests {
     public void testDeserialize() throws Exception {
         DiagnosticRendering model = BinaryData
             .fromString(
-                "{\"type\":316735321,\"title\":\"kxoyzunbixxr\",\"description\":\"kvcpwpgclr\",\"isVisible\":false}")
+                "{\"type\":833975977,\"title\":\"auxofshfph\",\"description\":\"nulaiywzejywhsl\",\"isVisible\":true}")
             .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(316735321, model.type());
-        Assertions.assertEquals("kxoyzunbixxr", model.title());
-        Assertions.assertEquals("kvcpwpgclr", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(833975977, model.type());
+        Assertions.assertEquals("auxofshfph", model.title());
+        Assertions.assertEquals("nulaiywzejywhsl", model.description());
+        Assertions.assertTrue(model.isVisible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticRendering model = new DiagnosticRendering().withType(316735321)
-            .withTitle("kxoyzunbixxr")
-            .withDescription("kvcpwpgclr")
-            .withIsVisible(false);
+        DiagnosticRendering model = new DiagnosticRendering().withType(833975977)
+            .withTitle("auxofshfph")
+            .withDescription("nulaiywzejywhsl")
+            .withIsVisible(true);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(316735321, model.type());
-        Assertions.assertEquals("kxoyzunbixxr", model.title());
-        Assertions.assertEquals("kvcpwpgclr", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(833975977, model.type());
+        Assertions.assertEquals("auxofshfph", model.title());
+        Assertions.assertEquals("nulaiywzejywhsl", model.description());
+        Assertions.assertTrue(model.isVisible());
     }
 }

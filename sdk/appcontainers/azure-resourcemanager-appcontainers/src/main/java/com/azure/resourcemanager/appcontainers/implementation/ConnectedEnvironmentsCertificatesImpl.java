@@ -59,14 +59,13 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String certificateName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
-    }
-
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName) {
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, certificateName);
+    }
+
+    public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
     public Certificate getById(String id) {
@@ -124,10 +123,10 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
+        this.delete(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -143,7 +142,7 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
+        this.delete(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
     private ConnectedEnvironmentsCertificatesClient serviceClient() {
