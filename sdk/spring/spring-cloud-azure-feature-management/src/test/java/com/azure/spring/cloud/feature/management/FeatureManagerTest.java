@@ -34,8 +34,8 @@ import com.azure.spring.cloud.feature.management.models.Conditions;
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
 import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.management.models.FeatureTelemetry;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
-import com.azure.spring.cloud.feature.management.models.Telemetry;
 import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 /**
@@ -244,7 +244,7 @@ public class FeatureManagerTest {
     @Test
     public void telemetryPublisherCalledWhenFeatureEnabledWithTelemetry() {
         List<Feature> features = List.of(new Feature().setId("EnabledFeatureWithTelemetry").setEnabled(true)
-            .setTelemetry(new Telemetry().setEnabled(true)));
+            .setTelemetry(new FeatureTelemetry().setEnabled(true)));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertTrue(featureManager.isEnabled("EnabledFeatureWithTelemetry"));
@@ -254,7 +254,7 @@ public class FeatureManagerTest {
     @Test
     public void telemetryPublisherNotCalledWhenTelemetryDisabled() {
         List<Feature> features = List.of(new Feature().setId("FeatureWithTelemetryDisabled").setEnabled(true)
-            .setTelemetry(new Telemetry().setEnabled(false)));
+            .setTelemetry(new FeatureTelemetry().setEnabled(false)));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertTrue(featureManager.isEnabled("FeatureWithTelemetryDisabled"));
@@ -264,7 +264,7 @@ public class FeatureManagerTest {
     @Test
     public void telemetryPublisherCalledWhenFeatureDisabledWithTelemetry() {
         List<Feature> features = List.of(new Feature().setId("DisabledFeatureWithTelemetry").setEnabled(false)
-            .setTelemetry(new Telemetry().setEnabled(true)));
+            .setTelemetry(new FeatureTelemetry().setEnabled(true)));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertFalse(featureManager.isEnabled("DisabledFeatureWithTelemetry"));

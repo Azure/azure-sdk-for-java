@@ -74,7 +74,7 @@ public class Feature {
      * and what additional metadata is included.
      */
     @JsonProperty("telemetry")
-    private Telemetry telemetry = new Telemetry();
+    private FeatureTelemetry telemetry = new FeatureTelemetry();
 
     /**
      * Gets the unique identifier of this feature flag.
@@ -216,7 +216,7 @@ public class Feature {
      * 
      * @return the telemetry configuration for this feature flag
      */
-    public Telemetry getTelemetry() {
+    public FeatureTelemetry getTelemetry() {
         return telemetry;
     }
 
@@ -228,7 +228,7 @@ public class Feature {
      * @param telemetry the telemetry configuration to set for this feature flag
      * @return the updated Feature instance for method chaining
      */
-    public Feature setTelemetry(Telemetry telemetry) {
+    public Feature setTelemetry(FeatureTelemetry telemetry) {
         this.telemetry = telemetry;
         return this;
     }

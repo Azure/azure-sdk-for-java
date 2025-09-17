@@ -46,9 +46,11 @@ public class Variant {
      * Sets the name of this variant.
      * 
      * @param name the name to identify this variant
+     * @return the updated Variant object
      */
-    public void setName(String name) {
+    public Variant setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -65,9 +67,11 @@ public class Variant {
      * Sets the implementation value of this variant.
      * 
      * @param value the implementation value to set for this variant
+     * @return the updated Variant object
      */
-    public void setValue(Object value) {
+    public Variant setValue(Object value) {
         this.value = value;
+        return this;
     }
 
 }
