@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerApps_ListByResourceGroup.
-     * json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * ContainerApps_ListByResourceGroup.json
      */
     /**
      * Sample code: List Container Apps by resource group.

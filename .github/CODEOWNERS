@@ -213,7 +213,7 @@
 # ServiceOwners:                                                   @areddish @tburns10
 
 # PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/                                    @anannya03 @leareai @Azure/azure-java-sdk
+/sdk/face/azure-ai-vision-face/                                    @leareai @Azure/azure-java-sdk
 
 # ServiceLabel: %Cognitive - Face
 # ServiceOwners:                                                   @leareai
@@ -505,12 +505,6 @@
 
 # ServiceLabel: %Health Deidentification
 # ServiceOwners:                                                   @alexathomases @Azure/healthdatadeidentification
-
-# PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/                                    @leareai
-
-# ServiceLabel: %Cognitive - Face
-# ServiceOwners:                                                   @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav

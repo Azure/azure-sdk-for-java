@@ -888,6 +888,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services account connections under the specified account.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -914,6 +916,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services account connections under the specified account.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -941,6 +945,8 @@ public final class AccountConnectionsClientImpl implements AccountConnectionsCli
     }
 
     /**
+     * Lists all the available Cognitive Services account connections under the specified account.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -24,6 +24,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.JobsExecutionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppJobExecutionsInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionInner;
@@ -60,7 +61,7 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientJobsExecutions")
     public interface JobsExecutionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/executions")
@@ -73,10 +74,28 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/executions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ContainerAppJobExecutionsInner> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ContainerAppJobExecutionsInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ContainerAppJobExecutionsInner> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -126,46 +145,6 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
      * @param filter The filter to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Container Apps Job's executions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listSinglePageAsync(String resourceGroupName, String jobName,
-        String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
-                this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get a Container Apps Job's executions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -200,17 +179,78 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Container Apps Job's executions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobExecutionInner> listSinglePage(String resourceGroupName, String jobName, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ContainerAppJobExecutionsInner> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+                this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get a Container Apps Job's executions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Job Name.
+     * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Container Apps Job's executions as paginated response with {@link PagedFlux}.
+     * @return a Container Apps Job's executions along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobExecutionInner> listAsync(String resourceGroupName, String jobName, String filter,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobExecutionInner> listSinglePage(String resourceGroupName, String jobName, String filter,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, jobName, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ContainerAppJobExecutionsInner> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+                this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -226,7 +266,8 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> list(String resourceGroupName, String jobName) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, jobName, filter));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, jobName, filter),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -244,18 +285,21 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> list(String resourceGroupName, String jobName, String filter,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, jobName, filter, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, jobName, filter, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
+     * Get a Container Apps Job's executions
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App executions collection ARM resource along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a Container Apps Job's executions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listNextSinglePageAsync(String nextLink) {
@@ -274,6 +318,37 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
     }
 
     /**
+     * Get a Container Apps Job's executions
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Container Apps Job's executions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobExecutionInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ContainerAppJobExecutionsInner> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get a Container Apps Job's executions
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -281,22 +356,25 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App executions collection ARM resource along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a Container Apps Job's executions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<JobExecutionInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ContainerAppJobExecutionsInner> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobsExecutionsClientImpl.class);
 }

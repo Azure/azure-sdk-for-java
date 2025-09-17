@@ -28,7 +28,8 @@ public final class ContainerAppsRevisionsDeactivateRevisionWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.containerAppsRevisions()
-            .deactivateRevisionWithResponse("orvvmqfloygbdgw", "mgxdgdhpabgd", "xjd", com.azure.core.util.Context.NONE);
+            .deactivateRevisionWithResponse("inmtsdixchwkibm", "jymncjcagai", "wcqzo",
+                com.azure.core.util.Context.NONE);
 
     }
 }

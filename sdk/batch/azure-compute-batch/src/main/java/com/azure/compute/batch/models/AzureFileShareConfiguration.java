@@ -53,16 +53,16 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
      * Creates an instance of AzureFileShareConfiguration class.
      *
      * @param accountName the accountName value to set.
-     * @param azureFileUrl the azureFileUrl value to set.
      * @param accountKey the accountKey value to set.
+     * @param azureFileUrl the azureFileUrl value to set.
      * @param relativeMountPath the relativeMountPath value to set.
      */
     @Generated
-    public AzureFileShareConfiguration(String accountName, String azureFileUrl, String accountKey,
+    public AzureFileShareConfiguration(String accountName, String accountKey, String azureFileUrl,
         String relativeMountPath) {
         this.accountName = accountName;
-        this.azureFileUrl = azureFileUrl;
         this.accountKey = accountKey;
+        this.azureFileUrl = azureFileUrl;
         this.relativeMountPath = relativeMountPath;
     }
 
@@ -141,8 +141,8 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accountName", this.accountName);
-        jsonWriter.writeStringField("azureFileUrl", this.azureFileUrl);
         jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("azureFileUrl", this.azureFileUrl);
         jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
         jsonWriter.writeStringField("mountOptions", this.mountOptions);
         return jsonWriter.writeEndObject();
@@ -161,8 +161,8 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
     public static AzureFileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String accountName = null;
-            String azureFileUrl = null;
             String accountKey = null;
+            String azureFileUrl = null;
             String relativeMountPath = null;
             String mountOptions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -170,10 +170,10 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
                 reader.nextToken();
                 if ("accountName".equals(fieldName)) {
                     accountName = reader.getString();
-                } else if ("azureFileUrl".equals(fieldName)) {
-                    azureFileUrl = reader.getString();
                 } else if ("accountKey".equals(fieldName)) {
                     accountKey = reader.getString();
+                } else if ("azureFileUrl".equals(fieldName)) {
+                    azureFileUrl = reader.getString();
                 } else if ("relativeMountPath".equals(fieldName)) {
                     relativeMountPath = reader.getString();
                 } else if ("mountOptions".equals(fieldName)) {
@@ -183,7 +183,7 @@ public final class AzureFileShareConfiguration implements JsonSerializable<Azure
                 }
             }
             AzureFileShareConfiguration deserializedAzureFileShareConfiguration
-                = new AzureFileShareConfiguration(accountName, azureFileUrl, accountKey, relativeMountPath);
+                = new AzureFileShareConfiguration(accountName, accountKey, azureFileUrl, relativeMountPath);
             deserializedAzureFileShareConfiguration.mountOptions = mountOptions;
             return deserializedAzureFileShareConfiguration;
         });
