@@ -514,7 +514,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 effectiveRange,
                 forceRefresh,
                 null,
-            new StringBuilder());
+            sb);
     }
 
     private static CompositeContinuationToken tryParseAsCompositeContinuationToken(
