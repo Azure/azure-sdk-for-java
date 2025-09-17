@@ -64,11 +64,6 @@
 
 * `withValue(java.util.List)` was removed
 
-#### `models.QuotasGetHeaders` was modified
-
-* `etag()` was removed
-* `withEtag(java.lang.String)` was removed
-
 #### `models.SubmittedResourceRequestStatusProperties` was modified
 
 * `withRequestedResource(models.GroupQuotaRequestBase)` was removed
@@ -84,11 +79,6 @@
 
 * `withRequestSubmitTime(java.time.OffsetDateTime)` was removed
 * `withSubscriptionId(java.lang.String)` was removed
-
-#### `models.UsagesGetHeaders` was modified
-
-* `etag()` was removed
-* `withEtag(java.lang.String)` was removed
 
 #### `models.UsagesObject` was modified
 
@@ -160,17 +150,9 @@
 
 * `systemData()` was added
 
-#### `models.QuotasGetHeaders` was modified
-
-* `eTag()` was added
-
 #### `models.QuotaRequestDetails` was modified
 
 * `systemData()` was added
-
-#### `models.UsagesGetHeaders` was modified
-
-* `eTag()` was added
 
 #### `QuotaManager` was modified
 
