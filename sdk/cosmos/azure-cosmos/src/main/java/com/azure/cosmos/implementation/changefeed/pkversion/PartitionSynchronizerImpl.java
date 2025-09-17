@@ -8,22 +8,19 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 
 /**
  * Implementation for the partition synchronizer.
@@ -70,7 +67,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
         return this.enumPartitionKeyRanges(createMissingLeasesFlow)
             .map(partitionKeyRange -> {
-                leaseTokenMap.put(partitionKeyRange.getId(), partitionKeyRange.getParents());
+                leaseTokenMap.put(
+                    partitionKeyRange.getId(),
+                    partitionKeyRange.getParents() == null ? Collections.emptyList() : partitionKeyRange.getParents());
                 return partitionKeyRange.getId();
             })
             .collectList()
@@ -146,23 +145,16 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     }
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges(String flowId) {
-
-        String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
-
         logger.warn("Performing a ReadFeed of PartitionKeyRange initiated by [{}] : for CollectionLink : [{}] by Host : [{}] targeting LeasePrefix : [{}]",
             flowId, this.collectionSelfLink, this.hostName, this.changeFeedProcessorOptions.getLeasePrefix());
 
-        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
-            .doOnNext(feedResponse -> {
-                logger.warn("Obtained feed response with {} partition key ranges and a continuation token {} and flowId : {}",
-                    feedResponse.getResults().size(),
-                    feedResponse.getContinuationToken(),
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+            .doOnNext(responses -> {
+                logger.warn("Obtained feed response with {} partition key ranges and flowId : {}",
+                    responses.size(),
                     flowId);
             })
-            .map(FeedResponse::getResults)
-            .flatMap(Flux::fromIterable)
+            .flatMapMany(Flux::fromIterable)
             .onErrorResume(throwable -> {
                 logger.error("Failed to retrieve physical partition information.", throwable);
                 return Flux.empty();
