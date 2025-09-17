@@ -125,7 +125,7 @@ public final class RoutingMapProviderHelper {
             StringBuilder sb = new StringBuilder();
             sb.append("RoutingMapProviderHelper.getOverlappingRanges").append(",");
 
-            return routingMapProvider.tryGetOverlappingRangesAsync(null, resourceId, queryRange, false, null, new StringBuilder())
+            return routingMapProvider.tryGetOverlappingRangesAsync(null, resourceId, queryRange, false, null, sb)
                        .map(ranges -> ranges.v != null ? ranges.v : new ArrayList<PartitionKeyRange>())
                        .map(targetRanges::addAll)
                        .flatMap(aBoolean -> {
