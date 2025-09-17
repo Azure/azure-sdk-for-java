@@ -1,14 +1,18 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2025-09-17)
 
-### Features Added
+- Azure Resource Manager Compute Schedule client library for Java. This package contains Microsoft Azure SDK for Compute Schedule Management SDK. Microsoft.ComputeSchedule Resource Provider management API. Package api-version 2025-04-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ScheduledActionResources` was modified
 
-### Other Changes
+* `models.ScheduledActionProperties properties()` -> `models.ScheduledActionsExtensionProperties properties()`
+
+### Features Added
+
+* `models.ScheduledActionsExtensionProperties` was added
 
 ## 1.2.0-beta.1 (2025-07-24)
 
