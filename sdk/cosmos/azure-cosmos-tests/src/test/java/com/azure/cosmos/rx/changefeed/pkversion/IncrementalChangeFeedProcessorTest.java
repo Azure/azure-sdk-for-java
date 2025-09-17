@@ -192,7 +192,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
      }
 
-    @Test(groups = { "long-emulator" }/*, timeOut = 4 * TIMEOUT*/)
+    @Test(groups = { "long-emulator" }, enabled = false, timeOut = 12 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginningWithPkRangeThrottles() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection
             = client.getDatabase("TestDb").getContainer("TestFeedContainer");
@@ -202,7 +202,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-//            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)

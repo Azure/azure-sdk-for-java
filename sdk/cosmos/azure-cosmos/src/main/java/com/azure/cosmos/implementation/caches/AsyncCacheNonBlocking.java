@@ -84,11 +84,11 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
             return initialLazyValue.getValueAsync().flatMap(value -> {
                 if (!forceRefresh.apply(value)) {
-                    logger.warn("cache[{}] value found without forceRefresh requirement", key);
+                    logger.warn("cache[{}] value found without forceRefresh requirement with callIdentifier [{}]", key, callIdentifier);
                     return Mono.just(value);
                 }
 
-                logger.warn("cache[{}] value found but with forceRefresh requirement", key);
+                logger.warn("cache[{}] value found but with forceRefresh requirement with callIdentifier [{}]", key, callIdentifier);
 
                 Mono<TValue> refreshMono = initialLazyValue.getOrCreateBackgroundRefreshTaskAsync(singleValueInitFunc);
 

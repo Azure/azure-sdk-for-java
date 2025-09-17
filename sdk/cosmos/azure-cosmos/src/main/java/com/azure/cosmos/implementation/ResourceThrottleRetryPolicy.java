@@ -90,12 +90,8 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
 
-            Optional<CosmosDiagnosticsContext> cosmosDiagnosticsContext = resolveDiagnosticsContext(dce);
-
             logger.warn(
-                "OperationType {} for ResourceType {} will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} for statusCode {} and subStatusCode {}",
-                cosmosDiagnosticsContext.isPresent() ? cosmosDiagnosticsContext.get().getOperationType() : "N/A",
-                cosmosDiagnosticsContext.isPresent() ? cosmosDiagnosticsContext.get().getResourceType() : "N/A",
+                "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} for statusCode {} and subStatusCode {}",
                 retryDelay.toMillis(),
                 this.currentAttemptCount,
                 this.cumulativeRetryDelay,
@@ -175,12 +171,5 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         }
         // if retry not needed returns null
         return null;
-    }
-
-    public Optional<CosmosDiagnosticsContext> resolveDiagnosticsContext(CosmosException dce) {
-        if (dce != null && dce.getDiagnostics() != null) {
-            return Optional.ofNullable(dce.getDiagnostics().getDiagnosticsContext());
-        }
-        return Optional.empty();
     }
 }
