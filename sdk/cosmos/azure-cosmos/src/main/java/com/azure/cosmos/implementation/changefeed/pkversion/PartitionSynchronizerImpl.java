@@ -8,21 +8,19 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 
 /**
  * Implementation for the partition synchronizer.
@@ -36,6 +34,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final int degreeOfParallelism;
     private final int maxBatchSize;
     private final String collectionResourceId;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
+    private final String hostName;
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
@@ -44,7 +44,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             LeaseManager leaseManager,
             int degreeOfParallelism,
             int maxBatchSize,
-            String collectionResourceId) {
+            String collectionResourceId,
+            ChangeFeedProcessorOptions changeFeedProcessorOptions,
+            String hostName) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
@@ -53,15 +55,21 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
         this.collectionResourceId = collectionResourceId;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.hostName = hostName;
     }
 
     @Override
     public Mono<Void> createMissingLeases() {
         Map<String, List<String>> leaseTokenMap = new ConcurrentHashMap<>();
 
-        return this.enumPartitionKeyRanges()
+        String createMissingLeasesFlow = "createMissingLeases";
+
+        return this.enumPartitionKeyRanges(createMissingLeasesFlow)
             .map(partitionKeyRange -> {
-                leaseTokenMap.put(partitionKeyRange.getId(), partitionKeyRange.getParents());
+                leaseTokenMap.put(
+                    partitionKeyRange.getId(),
+                    partitionKeyRange.getParents() == null ? Collections.emptyList() : partitionKeyRange.getParents());
                 return partitionKeyRange.getId();
             })
             .collectList()
@@ -112,8 +120,10 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
         logger.info("Partition {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, lastContinuationToken);
 
+        String splitFlow = "SplitFlow";
+
         // After a split, the children are either all or none available
-        return this.enumPartitionKeyRanges()
+        return this.enumPartitionKeyRanges(splitFlow)
             .filter(range -> range != null && range.getParents() != null && range.getParents().contains(leaseToken))
             .map(PartitionKeyRange::getId)
             .collectList()
@@ -134,14 +144,17 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             });
     }
 
-    private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
-        String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
+    private Flux<PartitionKeyRange> enumPartitionKeyRanges(String flowId) {
+        logger.warn("Performing a ReadFeed of PartitionKeyRange initiated by [{}] : for CollectionLink : [{}] by Host : [{}] targeting LeasePrefix : [{}]",
+            flowId, this.collectionSelfLink, this.hostName, this.changeFeedProcessorOptions.getLeasePrefix());
 
-        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
-            .map(FeedResponse::getResults)
-            .flatMap(Flux::fromIterable)
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+            .doOnNext(responses -> {
+                logger.warn("Obtained feed response with {} partition key ranges and flowId : {}",
+                    responses.size(),
+                    flowId);
+            })
+            .flatMapMany(Flux::fromIterable)
             .onErrorResume(throwable -> {
                 logger.error("Failed to retrieve physical partition information.", throwable);
                 return Flux.empty();

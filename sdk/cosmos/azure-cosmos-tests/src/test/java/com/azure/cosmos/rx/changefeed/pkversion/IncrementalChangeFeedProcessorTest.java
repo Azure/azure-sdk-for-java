@@ -38,6 +38,15 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -182,6 +191,89 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(500);
         }
      }
+
+    @Test(groups = { "long-emulator" }, enabled = false, timeOut = 12 * TIMEOUT)
+    public void readFeedDocumentsStartFromBeginningWithPkRangeThrottles() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection
+            = client.getDatabase("TestDb").getContainer("TestFeedContainer");
+        CosmosAsyncContainer createdLeaseCollection
+            = client.getDatabase("TestDb").getContainer("TestLeaseContainer");
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(10)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            FeedRange fullRange = FeedRange.forFullRange();
+
+            FaultInjectionServerErrorResult pkRangeThrottledError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                .suppressServiceRequests(false)
+                .build();
+
+            FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
+                .build();
+
+            String pkRangeThrottledId = String.format("pkrange-throttled-error-%s", UUID.randomUUID());
+
+            FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder(pkRangeThrottledId)
+                .condition(condition)
+                .result(pkRangeThrottledError);
+
+            FaultInjectionRule pkRangeThrottledFIErrorRule = ruleBuilder.build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(createdFeedCollection, Arrays.asList(pkRangeThrottledFIErrorRule)).block();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(20000 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // restart the change feed processor and verify it can start successfully
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to start
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+//            safeDeleteCollection(createdFeedCollection);
+//            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.            Thread.sleep(500);
+        }
+    }
 
     @Test(groups = { "long-emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() throws InterruptedException {

@@ -172,14 +172,17 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
   def extractChangeFeedStateForRange
   (
-    stateJsonBase64: String,
+    changeFeedState: ChangeFeedState,
     feedRange: NormalizedRange
   ): String = {
-    assert(!Strings.isNullOrWhiteSpace(stateJsonBase64), s"Argument 'stateJsonBase64' must not be null or empty.")
-    ChangeFeedState
-      .fromString(stateJsonBase64)
+    changeFeedState
       .extractForEffectiveRange(toCosmosRange(feedRange))
       .toString
+  }
+
+  def parseChangeFeedState(changeFeedStateJsonString: String): ChangeFeedState = {
+    assert(!Strings.isNullOrWhiteSpace(changeFeedStateJsonString), s"Argument 'changeFeedStateJsonString' must not be null or empty.")
+    ChangeFeedState.fromString(changeFeedStateJsonString)
   }
 
   def toFeedRange(range: NormalizedRange): FeedRange = {

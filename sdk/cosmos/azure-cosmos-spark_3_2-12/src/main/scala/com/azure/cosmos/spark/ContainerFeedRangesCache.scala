@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 
@@ -14,10 +15,13 @@ import scala.collection.concurrent.TrieMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] object ContainerFeedRangesCache {
+private[spark] object ContainerFeedRangesCache extends BasicLoggingTrait {
 
   private val cache = new TrieMap[String, CachedFeedRanges]
   private var feedRangeRefreshIntervalOverride: Option[Long] = None
+  private val defaultFeedRangeRefreshInterval: Long = CosmosConstants.ContainerFeedRangesCacheConfigs.feedRangeRefreshInterval
+
+  logInfo(s"feedRangeRefreshIntervalInMins: ${feedRangeRefreshIntervalOverride.getOrElse(defaultFeedRangeRefreshInterval)}")
 
   def overrideFeedRangeRefreshInterval(newInterval: Long): Unit = {
     this.feedRangeRefreshIntervalOverride = Some(newInterval)
@@ -35,7 +39,7 @@ private[spark] object ContainerFeedRangesCache {
     val key = SparkBridgeInternal.getCacheKeyForContainer(container)
 
     val cacheExpirationThreshold = Instant.now.minus(
-      feedRangeRefreshIntervalOverride.getOrElse(CosmosConstants.feedRangesCacheIntervalInMinutes),
+      feedRangeRefreshIntervalOverride.getOrElse(defaultFeedRangeRefreshInterval),
       ChronoUnit.MINUTES)
 
     cache.get(key) match {

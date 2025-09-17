@@ -360,6 +360,15 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    // Config to indicate the max page size for partition key range read feed operation if not already configured through CosmosQueryRequestOptions
+    private static final int DEFAULT_PK_RANGE_READ_FEED_PAGE_SIZE = 100;
+    private static final String PK_RANGE_READ_FEED_PAGE_SIZE = "COSMOS.PK_RANGE_READ_FEED_PAGE_SIZE";
+    private static final String PK_RANGE_READ_FEED_PAGE_SIZE_VARIABLE = "COSMOS_PK_RANGE_READ_FEED_PAGE_SIZE";
+
+    private static final boolean DEFAULT_PK_RANGE_PREFETCHING_ENABLED = false;
+    private static final String PK_RANGE_PREFETCHING_ENABLED = "COSMOS.PK_RANGE_PREFETCHING_ENABLED";
+    private static final String PK_RANGE_PREFETCHING_ENABLED_VARIABLE = "COSMOS_PK_RANGE_PREFETCHING_ENABLED";
+
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
@@ -1218,6 +1227,26 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static int getPartitionKeyRangesReadFeedPageSize() {
+        String pkRangeReadFeedPageSize = System.getProperty(
+            PK_RANGE_READ_FEED_PAGE_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(PK_RANGE_READ_FEED_PAGE_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_PK_RANGE_READ_FEED_PAGE_SIZE)));
+
+        return Integer.parseInt(pkRangeReadFeedPageSize);
+    }
+
+    public static boolean isPartitionKeyRangePrefetchingEnabled() {
+        String isPkRangePrefetchEnabled = System.getProperty(
+            PK_RANGE_PREFETCHING_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(PK_RANGE_PREFETCHING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_PK_RANGE_PREFETCHING_ENABLED)));
+
+        return Boolean.parseBoolean(isPkRangePrefetchEnabled);
     }
 
     public static String getAzureMonitorConnectionString() {
