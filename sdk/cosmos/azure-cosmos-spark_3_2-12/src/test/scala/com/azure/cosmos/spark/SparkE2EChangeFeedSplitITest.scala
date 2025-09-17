@@ -103,7 +103,7 @@ class SparkE2EChangeFeedSplitITest
    response.getStatusCode shouldEqual 200
 
    // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
-//   ContainerFeedRangesCache.overrideFeedRangeRefreshInterval(Int.MaxValue)
+   ContainerFeedRangesCache.overrideFeedRangeRefreshInterval(Int.MaxValue)
 
    try {
     val initialPartitionCount = df1.rdd.getNumPartitions
@@ -131,7 +131,7 @@ class SparkE2EChangeFeedSplitITest
     rowsArray2 should have size 50 - initialCount
    } finally {
     // Resetting FeedRange cache refresh to avoid unintended side-effects for other tests
-//    ContainerFeedRangesCache.resetFeedRangeRefreshInterval()
+    ContainerFeedRangesCache.resetFeedRangeRefreshInterval()
    }
   }
  }
