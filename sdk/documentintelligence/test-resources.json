@@ -150,7 +150,7 @@
     },
     "DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
-      "value": "[if(empty(parameters('batchTrainingDataContainer')), concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingSasProperties')).serviceSasToken), concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', parameters('batchTrainingDataContainer')))]"
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingSasProperties')).serviceSasToken)]"
     },
     "DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL": {
       "type": "string",

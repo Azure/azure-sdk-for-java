@@ -8,8 +8,12 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import org.junit.jupiter.params.provider.Arguments;
-
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,9 +28,11 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestProxyTestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
+import static com.azure.storage.common.sas.SasProtocol.*;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -75,10 +81,45 @@ public final class TestUtils {
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL");
+    public static final String STORAGE_ACCOUNT_NAME = GLOBAL_CONFIGURATION.get("AZURE_STORAGE_ACCOUNT_NAME");
+    public static final String SELECTION_MARK_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("SELECTION_MARK_DATA_CONTAINER_NAME");
+    public static final String MULTIPAGE_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("MULTIPAGE_TRAINING_DATA_CONTAINER_NAME");
+    public static final String CLASSIFIER_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("CLASSIFIER_TRAINING_DATA_CONTAINER_NAME");
+    public static final String BATCH_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("BATCH_TRAINING_DATA_CONTAINER_NAME");
+    public static final String BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME");
+    public static final String TRAINING_DATA_CONTAINER_NAME = GLOBAL_CONFIGURATION.get("TRAINING_DATA_CONTAINER_NAME");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private TestUtils() {
+    }
+
+    /**
+     * Get a blob container SAS connection string.
+     */
+    public static String getContainerSasConnectionString(String blobContainerName) {
+        BlobServiceClient blobServiceClient
+            = new BlobServiceClientBuilder().endpoint("https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(
+            java.time.OffsetDateTime.now().minusMinutes(5), java.time.OffsetDateTime.now().plusHours(1));
+        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
+            java.time.OffsetDateTime.now().plusHours(1),
+            new BlobContainerSasPermission().setReadPermission(true).setWritePermission(true).setListPermission(true))
+                .setStartTime(java.time.OffsetDateTime.now().minusMinutes(5))
+                .setProtocol(HTTPS_ONLY);
+
+        String sas = blobServiceClient.getBlobContainerClient(blobContainerName)
+            .generateUserDelegationSas(sasValues, userDelegationKey);
+        return "BlobEndpoint=https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/;" + "SharedAccessSignature=?"
+            + sas;
     }
 
     static void urlRunner(Consumer<String> testRunner, String fileName) {
@@ -127,7 +168,7 @@ public final class TestUtils {
     private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(TRAINING_DATA_CONTAINER_NAME);
     }
 
     /**
@@ -138,7 +179,7 @@ public final class TestUtils {
     private static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(MULTIPAGE_TRAINING_DATA_CONTAINER_NAME);
     }
 
     /**
@@ -149,7 +190,7 @@ public final class TestUtils {
     private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(SELECTION_MARK_DATA_CONTAINER_NAME);
     }
 
     /**
@@ -160,7 +201,7 @@ public final class TestUtils {
     private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(CLASSIFIER_TRAINING_DATA_CONTAINER_NAME);
     }
 
     /**
@@ -171,7 +212,7 @@ public final class TestUtils {
     private static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME);
     }
 
     /**
@@ -182,7 +223,7 @@ public final class TestUtils {
     private static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            : getContainerSasConnectionString(BATCH_TRAINING_DATA_CONTAINER_NAME);
     }
 
     /**
