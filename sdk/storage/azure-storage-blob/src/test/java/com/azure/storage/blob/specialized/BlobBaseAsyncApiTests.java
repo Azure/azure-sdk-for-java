@@ -606,35 +606,29 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @Test
     public void downloadStreamWithResponseContentValidationRange() throws IOException {
         byte[] randomData = getRandomByteArray(Constants.KB);
-        
-        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
-        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
-        
-        Flux<ByteBuffer> input = Flux.just(encodedData);
+        Flux<ByteBuffer> input = Flux.just(ByteBuffer.wrap(randomData));
 
-        // Create validation options with structured message validation enabled
+        // For range downloads, we don't use structured message validation because:
+        // 1. Ranges apply to the encoded data, not original data
+        // 2. Partial structured messages cannot be properly validated
+        // This test validates that the API integration works with range downloads when validation is disabled
         DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
-            .setStructuredMessageValidationEnabled(true);
+            .setStructuredMessageValidationEnabled(false);
 
-        // Test range download - note that range should be applied to the encoded data, not original data
         BlobRange range = new BlobRange(0, 512L);
-        
+        byte[] expectedData = new byte[512];
+        System.arraycopy(randomData, 0, expectedData, 0, 512);
+
         StepVerifier
             .create(bc.upload(input, null, true)
                 .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
-            .assertNext(r -> {
-                // With range downloads on structured messages, we get a partial structured message
-                // The exact validation depends on the range, but the test ensures the API integration works
-                assertNotNull(r);
-                assertTrue(r.length > 0);
-            })
+            .assertNext(r -> TestUtils.assertArraysEqual(r, expectedData))
             .verifyComplete();
     }
 
     @Test
-    public void downloadStreamWithResponseContentValidationMixed() throws IOException {
+    public void downloadStreamWithResponseStructuredMessageValidation() throws IOException {
         byte[] randomData = getRandomByteArray(Constants.KB);
         
         // Encode the data using StructuredMessageEncoder to enable proper structured message validation
@@ -643,7 +637,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         
         Flux<ByteBuffer> input = Flux.just(encodedData);
 
-        // Create validation options with structured message validation enabled (disable MD5 to avoid range conflicts)
+        // Create validation options with only structured message validation enabled
         DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
             .setStructuredMessageValidationEnabled(true)
             .setMd5ValidationEnabled(false);

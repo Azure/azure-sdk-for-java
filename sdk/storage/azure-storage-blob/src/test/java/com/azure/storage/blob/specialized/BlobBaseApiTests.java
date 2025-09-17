@@ -850,28 +850,25 @@ public class BlobBaseApiTests extends BlobTestBase {
     @Test
     public void downloadStreamWithResponseContentValidationSyncRange() throws IOException {
         byte[] randomData = getRandomByteArray(Constants.KB);
-        
-        // Encode the data using StructuredMessageEncoder to enable proper structured message validation
-        StructuredMessageEncoder encoder = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
-        
-        InputStream input = new ByteArrayInputStream(encodedData.array());
+        InputStream input = new ByteArrayInputStream(randomData);
 
-        // Create validation options with structured message validation enabled
+        // For range downloads, we don't use structured message validation because:
+        // 1. Ranges apply to the encoded data, not original data  
+        // 2. Partial structured messages cannot be properly validated
+        // This test validates that the API integration works with range downloads when validation is disabled
         DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
-            .setStructuredMessageValidationEnabled(true);
+            .setStructuredMessageValidationEnabled(false);
 
-        bc.upload(input, encodedData.remaining(), true);
+        bc.upload(input, randomData.length, true);
         
-        // Test range download on the encoded data
+        // Test range download on regular data
         BlobRange range = new BlobRange(0, 512L);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bc.downloadStreamWithResponse(outputStream, range, null, null, false, validationOptions, null, null);
         
-        // With range downloads on structured messages, we get a partial structured message
-        // The exact validation depends on the range, but the test ensures the API integration works
-        assertNotNull(outputStream.toByteArray());
-        assertTrue(outputStream.toByteArray().length > 0);
+        byte[] expectedData = new byte[512];
+        System.arraycopy(randomData, 0, expectedData, 0, 512);
+        TestUtils.assertArraysEqual(expectedData, outputStream.toByteArray());
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
