@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.telemetry;
 
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.DEFAULT_WHEN_ENABLED;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.ENABLED;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.EVALUATION_EVENT_VERSION;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.EVENT_NAME;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.FEATURE_NAME;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.REASON;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VARIANT;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VARIANT_ASSIGNMENT_PERCENTAGE;
-import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VERSION;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.DEFAULT_WHEN_ENABLED;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.ENABLED;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.EVALUATION_EVENT_VERSION;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.EVENT_NAME;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.FEATURE_NAME;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.REASON;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.VARIANT;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.VARIANT_ASSIGNMENT_PERCENTAGE;
+import static com.azure.spring.cloud.feature.management.telemetry.EvaluationEventConstants.VERSION;
 
 import java.util.HashMap;
 import java.util.Map;

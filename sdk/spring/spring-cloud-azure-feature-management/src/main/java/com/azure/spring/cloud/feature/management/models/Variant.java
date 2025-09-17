@@ -14,13 +14,13 @@ public class Variant {
      * The name of the variant that identifies this specific variation of the feature.
      * This is used to match against variant references in feature flag configurations.
      */
-    private String name;
+    private final String name;
 
     /**
      * The actual implementation value of the variant. This can be any type of object
      * that represents the variant's behavior or configuration.
      */
-    private Object value;
+    private final Object value;
 
     /**
      * Creates a new Variant with the specified name and value.
@@ -43,17 +43,6 @@ public class Variant {
     }
 
     /**
-     * Sets the name of this variant.
-     * 
-     * @param name the name to identify this variant
-     * @return the updated Variant object
-     */
-    public Variant setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Gets the implementation value of this variant.
      * This can be any object that represents the variant's behavior or configuration.
      * 
@@ -61,17 +50,6 @@ public class Variant {
      */
     public Object getValue() {
         return value;
-    }
-
-    /**
-     * Sets the implementation value of this variant.
-     * 
-     * @param value the implementation value to set for this variant
-     * @return the updated Variant object
-     */
-    public Variant setValue(Object value) {
-        this.value = value;
-        return this;
     }
 
 }
