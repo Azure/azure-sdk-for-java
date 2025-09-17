@@ -123,7 +123,8 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                             false,
                             null,
                             isContentResponseOnWriteEnabled,
-                            true);
+                            true,
+                            false);
                         Object[] injectedProviderParameters = new Object[4];
                         injectedProviderParameters[0] = builder;
                         injectedProviderParameters[1] = isContentResponseOnWriteEnabled;

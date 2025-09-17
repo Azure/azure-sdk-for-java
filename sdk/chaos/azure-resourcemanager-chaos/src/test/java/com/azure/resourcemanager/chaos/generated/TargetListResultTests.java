@@ -12,9 +12,9 @@ public final class TargetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{},\"location\":\"yatrwy\",\"id\":\"mibzyhwitsmypyyn\",\"name\":\"cdpu\",\"type\":\"nzgmwznmabik\"}],\"nextLink\":\"orgjhxbldt\"}")
+            "{\"value\":[{\"properties\":{},\"location\":\"qi\",\"id\":\"hungbwjzrnf\",\"name\":\"gxg\",\"type\":\"spemvtzfk\"},{\"properties\":{},\"location\":\"bljofxqeof\",\"id\":\"e\",\"name\":\"jhqjbasvmsmjqul\",\"type\":\"gsntnbybkzgcwr\"},{\"properties\":{},\"location\":\"xxwr\",\"id\":\"douskcqvkocrcjdk\",\"name\":\"tnhxbn\",\"type\":\"biksq\"},{\"properties\":{},\"location\":\"ssainqpjwnzll\",\"id\":\"mppeebvmgxs\",\"name\":\"bkyqduu\",\"type\":\"itcjczdz\"}],\"nextLink\":\"ndhkrw\"}")
             .toObject(TargetListResult.class);
-        Assertions.assertEquals("yatrwy", model.value().get(0).location());
-        Assertions.assertEquals("orgjhxbldt", model.nextLink());
+        Assertions.assertEquals("qi", model.value().get(0).location());
+        Assertions.assertEquals("ndhkrw", model.nextLink());
     }
 }

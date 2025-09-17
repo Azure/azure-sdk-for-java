@@ -15,7 +15,7 @@ public final class DiagnosticsProfileTests {
         DiagnosticsProfile model
             = BinaryData.fromString("{\"bootDiagnostics\":{\"enabled\":true,\"storageUri\":\"xotogtwrupqsxv\"}}")
                 .toObject(DiagnosticsProfile.class);
-        Assertions.assertEquals(true, model.bootDiagnostics().enabled());
+        Assertions.assertTrue(model.bootDiagnostics().enabled());
         Assertions.assertEquals("xotogtwrupqsxv", model.bootDiagnostics().storageUri());
     }
 
@@ -24,7 +24,7 @@ public final class DiagnosticsProfileTests {
         DiagnosticsProfile model = new DiagnosticsProfile()
             .withBootDiagnostics(new BootDiagnostics().withEnabled(true).withStorageUri("xotogtwrupqsxv"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsProfile.class);
-        Assertions.assertEquals(true, model.bootDiagnostics().enabled());
+        Assertions.assertTrue(model.bootDiagnostics().enabled());
         Assertions.assertEquals("xotogtwrupqsxv", model.bootDiagnostics().storageUri());
     }
 }

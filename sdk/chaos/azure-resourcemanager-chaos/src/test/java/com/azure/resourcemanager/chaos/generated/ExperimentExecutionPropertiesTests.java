@@ -10,9 +10,8 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionProperti
 public final class ExperimentExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionProperties model = BinaryData
-            .fromString(
-                "{\"status\":\"qn\",\"startedAt\":\"2021-06-17T06:36:49Z\",\"stoppedAt\":\"2021-02-11T00:33:58Z\"}")
+        ExperimentExecutionProperties model = BinaryData.fromString(
+            "{\"status\":\"jrybnwjewgdrjer\",\"startedAt\":\"2021-10-08T09:31:49Z\",\"stoppedAt\":\"2021-09-08T11:50:32Z\"}")
             .toObject(ExperimentExecutionProperties.class);
     }
 }

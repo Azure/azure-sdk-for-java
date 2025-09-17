@@ -11,5 +11,6 @@
   <modules>
     <module>azure-containers-containerregistry</module>
     <module>azure-containers-containerregistry-perf</module>
+    <module>azure-resourcemanager-containerregistry</module>
   </modules>
 </project>

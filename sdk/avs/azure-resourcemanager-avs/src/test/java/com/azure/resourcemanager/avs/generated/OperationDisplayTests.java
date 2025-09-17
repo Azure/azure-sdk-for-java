@@ -11,7 +11,7 @@ public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"axibxujw\",\"resource\":\"qwalmuzyoxaepd\",\"operation\":\"jancu\",\"description\":\"hdwbavxbniwdjs\"}")
+            "{\"provider\":\"cdm\",\"resource\":\"rcryuanzwuxzdxta\",\"operation\":\"lhmwhfpmrqobm\",\"description\":\"kknryrtihf\"}")
             .toObject(OperationDisplay.class);
     }
 }

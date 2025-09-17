@@ -16,33 +16,36 @@ public final class DedicatedHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHsmProperties model = BinaryData.fromString(
-            "{\"networkProfile\":{\"subnet\":{\"resourceId\":\"vjz\"},\"networkInterfaces\":[{\"resourceId\":\"l\",\"privateIpAddress\":\"nfqqnvwp\"},{\"resourceId\":\"taruoujmkcj\",\"privateIpAddress\":\"qytjrybnwjewgd\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"vnaenqpehindoyg\"},\"networkInterfaces\":[{\"resourceId\":\"hnzdndslgnayqi\",\"privateIpAddress\":\"nduhavhqlkthum\"},{\"resourceId\":\"olbgycduiertgccy\",\"privateIpAddress\":\"aolps\"}]},\"stampId\":\"qlfmmdnbb\",\"statusMessage\":\"zpswiydmc\",\"provisioningState\":\"Provisioning\"}")
+            "{\"networkProfile\":{\"subnet\":{\"resourceId\":\"cdui\"},\"networkInterfaces\":[{\"resourceId\":\"ccymvaolpsslql\",\"privateIpAddress\":\"mdnbbglzpswiy\"},{\"resourceId\":\"cwyhzdxssa\",\"privateIpAddress\":\"zmnvdfznudaod\"},{\"resourceId\":\"zbn\",\"privateIpAddress\":\"lylpstdb\"},{\"resourceId\":\"xsrz\",\"privateIpAddress\":\"ucerscdntnevfi\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"gtdsslswt\"},\"networkInterfaces\":[{\"resourceId\":\"iofz\",\"privateIpAddress\":\"qsemwabne\"},{\"resourceId\":\"hhszh\",\"privateIpAddress\":\"plvwiwubmwmbes\"},{\"resourceId\":\"nkww\",\"privateIpAddress\":\"pjflcxogao\"}]},\"stampId\":\"nzmnsikvm\",\"statusMessage\":\"ze\",\"provisioningState\":\"Provisioning\"}")
             .toObject(DedicatedHsmProperties.class);
-        Assertions.assertEquals("vjz", model.networkProfile().subnet().resourceId());
-        Assertions.assertEquals("nfqqnvwp", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("vnaenqpehindoyg", model.managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("nduhavhqlkthum",
+        Assertions.assertEquals("cdui", model.networkProfile().subnet().resourceId());
+        Assertions.assertEquals("mdnbbglzpswiy", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("gtdsslswt", model.managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("qsemwabne",
             model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("qlfmmdnbb", model.stampId());
+        Assertions.assertEquals("nzmnsikvm", model.stampId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmProperties model = new DedicatedHsmProperties()
-            .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("vjz"))
-                .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("nfqqnvwp"),
-                    new NetworkInterface().withPrivateIpAddress("qytjrybnwjewgd"))))
+            .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("cdui"))
+                .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("mdnbbglzpswiy"),
+                    new NetworkInterface().withPrivateIpAddress("zmnvdfznudaod"),
+                    new NetworkInterface().withPrivateIpAddress("lylpstdb"),
+                    new NetworkInterface().withPrivateIpAddress("ucerscdntnevfi"))))
             .withManagementNetworkProfile(
-                new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("vnaenqpehindoyg"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("nduhavhqlkthum"),
-                        new NetworkInterface().withPrivateIpAddress("aolps"))))
-            .withStampId("qlfmmdnbb");
+                new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("gtdsslswt"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("qsemwabne"),
+                        new NetworkInterface().withPrivateIpAddress("plvwiwubmwmbes"),
+                        new NetworkInterface().withPrivateIpAddress("pjflcxogao"))))
+            .withStampId("nzmnsikvm");
         model = BinaryData.fromObject(model).toObject(DedicatedHsmProperties.class);
-        Assertions.assertEquals("vjz", model.networkProfile().subnet().resourceId());
-        Assertions.assertEquals("nfqqnvwp", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("vnaenqpehindoyg", model.managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("nduhavhqlkthum",
+        Assertions.assertEquals("cdui", model.networkProfile().subnet().resourceId());
+        Assertions.assertEquals("mdnbbglzpswiy", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("gtdsslswt", model.managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("qsemwabne",
             model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("qlfmmdnbb", model.stampId());
+        Assertions.assertEquals("nzmnsikvm", model.stampId());
     }
 }

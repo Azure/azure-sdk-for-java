@@ -142,6 +142,7 @@ public class AzureAppConfigDataLocationResolver
         ReplicaLookUp replicaLookup = null;
         try {
             replicaLookup = new ReplicaLookUp(properties);
+            replicaLookup.updateAutoFailoverEndpoints();
             context.getBootstrapContext().registerIfAbsent(ReplicaLookUp.class, InstanceSupplier.of(replicaLookup));
         } catch (NamingException e) {
             LOGGER.info("Failed to find DNS Entry for config store while looking for replicas.");

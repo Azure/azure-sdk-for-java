@@ -42,16 +42,19 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.argThat;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
@@ -661,5 +664,283 @@ public class IdentityClientTests {
             test.run();
             Assertions.assertNotNull(publicClientApplicationMock);
         }
+    }
+
+    @Test
+    public void testExtractSuggestionMessagePreferred() {
+        // Should prefer messages containing 'Suggestion' (case-insensitive)
+        String output
+            = "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"\\nERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z\\n\"}}\n"
+                + "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"Suggestion: re-authentication required, run `azd auth login` to acquire a new token.\\n\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Suggestion: re-authentication required, run `azd auth login` to acquire a new token.", result);
+    }
+
+    @Test
+    public void testExtractSuggestionCaseInsensitive() {
+        // Should find 'suggestion' in any case
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"First message\"}}\n"
+            + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"SUGGESTION: Try running azd auth login\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("SUGGESTION: Try running azd auth login", result);
+    }
+
+    @Test
+    public void testExtractLastMessageWhenNoSuggestion() {
+        // Should return last message when multiple messages but no suggestion
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"First error message\"}}\n"
+            + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Second error message\"}}\n"
+            + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Third error message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Third error message", result);
+    }
+
+    @Test
+    public void testExtractFirstMessageWhenOnlyOne() {
+        // Should return first message when only one exists
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Only error message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Only error message", result);
+    }
+
+    @Test
+    public void testExtractMessageFromNestedData() {
+        // Should extract message from nested data structure
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Error in nested data\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Error in nested data", result);
+    }
+
+    @Test
+    public void testExtractMessageFromRootLevel() {
+        // Should extract message from root level of JSON
+        String output = "{\"message\":\"Root level error message\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Root level error message", result);
+    }
+
+    @Test
+    public void testExtractMixedMessageLocations() {
+        // Should handle messages at different JSON levels
+        String output = "{\"message\":\"Root level message\"}\n" + "{\"data\":{\"message\":\"Nested message\"}}\n"
+            + "{\"data\":{\"message\":\"suggestion: Use this suggestion\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("suggestion: Use this suggestion", result);
+    }
+
+    @Test
+    public void testIgnoreEmptyMessages() {
+        // Should ignore empty or whitespace-only messages
+        String output = "{\"data\":{\"message\":\"   \"}}\n" + "{\"data\":{\"message\":\"\"}}\n"
+            + "{\"data\":{\"message\":\"Valid message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Valid message", result);
+    }
+
+    @Test
+    public void testIgnoreNonJsonLines() {
+        // Should ignore lines that are not valid JSON
+        String output = "This is not JSON\n" + "{\"data\":{\"message\":\"Valid JSON message\"}}\n"
+            + "Another non-JSON line\n" + "{\"data\":{\"message\":\"Suggestion: Another valid message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Suggestion: Another valid message", result);
+    }
+
+    @Test
+    public void testIgnoreNonStringMessages() {
+        // Should ignore messages that are not strings
+        String output = "{\"data\":{\"message\":123}}\n" + "{\"data\":{\"message\":{\"nested\":\"object\"}}}\n"
+            + "{\"data\":{\"message\":\"Valid string message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Valid string message", result);
+    }
+
+    @Test
+    public void testIgnoreEmptyLines() {
+        // Should ignore empty lines and whitespace-only lines
+        String output
+            = "{\"data\":{\"message\":\"First message\"}}\n" + "\n" + "{\"data\":{\"message\":\"Second message\"}}\n";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Second message", result);
+    }
+
+    @Test
+    public void testSanitizeTokenInOutput() {
+        // Should sanitize tokens in the extracted message
+        String output = "{\"data\":{\"message\":\"Error with token: abc123token in message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertNotNull(result);
+        // Note: The actual redaction behavior depends on IdentityUtil.redactInfo implementation
+        // This test just verifies the method doesn't return null and processes the input
+        assertTrue(result.length() > 0);
+    }
+
+    @Test
+    public void testReturnNullForNoValidMessages() {
+        // Should return null when no valid messages found
+        String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "{\"nomessage\":\"Also not a message\"}\n"
+            + "This is not JSON";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertNull(result);
+    }
+
+    @Test
+    public void testReturnNullForEmptyOutput() {
+        // Should return null for empty output
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput("");
+        assertNull(result);
+    }
+
+    @Test
+    public void testReturnNullForNullOutput() {
+        // Should return null for null output
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(null);
+        assertNull(result);
+    }
+
+    @Test
+    public void testReturnNullForWhitespaceOnlyOutput() {
+        // Should return null for whitespace-only output
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput("   \n\n   \t  ");
+        assertNull(result);
+    }
+
+    @Test
+    public void testComplexRealWorldExample() {
+        // Should handle complex real-world azd output
+        String output
+            = "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"\\nERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z\\n\"}}\n"
+                + "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"Suggestion: re-authentication required, run `azd auth login` to acquire a new token.\\n\"}}\n"
+                + "{\"type\":\"progress\",\"data\":{\"activity\":\"Cleaning up\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Suggestion: re-authentication required, run `azd auth login` to acquire a new token.", result);
+    }
+
+    @Test
+    public void testStripWhitespaceFromMessages() {
+        // Should strip leading and trailing whitespace from messages
+        String output = "{\"data\":{\"message\":\"  \\n  Error message with whitespace  \\n  \"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Error message with whitespace", result);
+    }
+
+    @Test
+    public void testHandleMalformedJsonGracefully() {
+        // Should handle malformed JSON lines gracefully
+        String output = "{\"data\":{\"message\":\"First valid message\"}}\n"
+            + "{\"malformed\":\"json\"without\"closing\"brace\"\n"
+            + "{\"data\":{\"message\":\"suggestion: This should be found\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("suggestion: This should be found", result);
+    }
+
+    @Test
+    public void testMultipleSuggestionMessages() {
+        // Should return the first suggestion message found
+        String output = "{\"data\":{\"message\":\"First message\"}}\n"
+            + "{\"data\":{\"message\":\"Suggestion: First suggestion\"}}\n"
+            + "{\"data\":{\"message\":\"Another suggestion: Second suggestion\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Suggestion: First suggestion", result);
+    }
+
+    @Test
+    public void testSuggestionWithDifferentCasing() {
+        // Should find suggestion with various casing
+        String output = "{\"data\":{\"message\":\"Regular message\"}}\n"
+            + "{\"data\":{\"message\":\"sUgGeStIoN: Mixed case suggestion\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("sUgGeStIoN: Mixed case suggestion", result);
+    }
+
+    @Test
+    public void testNestedJsonObjects() {
+        // Should handle nested JSON structures properly
+        String output = "{\"outer\":{\"data\":{\"message\":\"This should not be found\"}}}\n"
+            + "{\"data\":{\"message\":\"This should be found\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("This should be found", result);
+    }
+
+    @Test
+    public void testMessageWithSpecialCharacters() {
+        // Should handle messages with special characters
+        String output = "{\"data\":{\"message\":\"Error: Special chars !@#$%^&*()+ message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Error: Special chars !@#$%^&*()+ message", result);
+    }
+
+    @Test
+    public void testMessageWithUnicodeCharacters() {
+        // Should handle messages with Unicode characters
+        String output = "{\"data\":{\"message\":\"Erreur: Caractères unicode éñ message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Erreur: Caractères unicode éñ message", result);
+    }
+
+    @Test
+    public void testEmptyDataObject() {
+        // Should handle empty data objects
+        String output = "{\"data\":{}}\n" + "{\"data\":{\"message\":\"Valid message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Valid message", result);
+    }
+
+    @Test
+    public void testMixedValidAndInvalidJson() {
+        // Should handle mix of valid and invalid JSON gracefully
+        String output = "{\"data\":{\"message\":\"First valid message\"}}\n" + "not json at all\n"
+            + "{\"incomplete\": \"json\n" + "{\"data\":{\"message\":\"Suggestion: Final message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("Suggestion: Final message", result);
     }
 }
