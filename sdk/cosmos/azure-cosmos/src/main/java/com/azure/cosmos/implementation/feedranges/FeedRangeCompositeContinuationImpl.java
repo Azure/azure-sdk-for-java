@@ -505,6 +505,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         Range<String> effectiveRange,
         final Boolean forceRefresh) {
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("FeedRangeCompositeContinuationImpl.tryGetOverlappingRanges").append(",");
+
         return partitionKeyRangeCache.tryGetOverlappingRangesAsync(
                 null,
                 this.getContainerRid(),

@@ -6555,6 +6555,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return Mono.error(new IllegalStateException("Collection cannot be null"));
             }
 
+            StringBuilder sb = new StringBuilder();
+            sb.append("RxDocumentClientImpl.getFeedRanges").append(",");
+
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache
                 .tryGetOverlappingRangesAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
@@ -6562,7 +6565,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES,
                     forceRefresh,
                     null,
-                    new StringBuilder());
+                    sb);
 
             return valueHolderMono.map(partitionKeyRangeList -> toFeedRanges(partitionKeyRangeList, request));
         });

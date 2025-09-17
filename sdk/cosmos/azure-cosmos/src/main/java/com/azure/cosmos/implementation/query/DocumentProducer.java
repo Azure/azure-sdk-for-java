@@ -326,13 +326,17 @@ class DocumentProducer<T> {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("DocumentProducer.getReplacementRanges").append(",");
+
         return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
             null,
             collectionRid,
             range,
             true,
             qryOptionsAccessor.getProperties(cosmosQueryRequestOptions),
-            new StringBuilder());
+            sb);
     }
 
     private boolean isSplitOrMerge(CosmosException e) {

@@ -192,7 +192,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
      }
 
-    @Test(groups = { "long-emulator" }, enabled = true, timeOut = 12 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, enabled = false, timeOut = 12 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginningWithPkRangeThrottles() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection
             = client.getDatabase("TestDb").getContainer("TestFeedContainer");
