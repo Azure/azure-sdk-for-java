@@ -79,6 +79,9 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                     throw new IllegalStateException("Collection cannot be null");
                 }
 
+                StringBuilder sb = new StringBuilder();
+                sb.append("FeedRangePartitionKeyRangeImpl.getEffectiveRange").append(",");
+
                 return routingMapProvider
                     .tryGetPartitionKeyRangeByIdAsync(
                         metadataDiagnosticsCtx,
@@ -86,7 +89,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                         this.partitionKeyRangeId,
                         false,
                         null,
-                        new StringBuilder())
+                        sb)
                     .flatMap((pkRangeHolder) -> {
                         if (pkRangeHolder.v == null) {
                             return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
@@ -95,7 +98,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                                 partitionKeyRangeId,
                                 true,
                                 null,
-                                new StringBuilder());
+                                sb);
                         } else {
                             return Mono.just(pkRangeHolder);
                         }

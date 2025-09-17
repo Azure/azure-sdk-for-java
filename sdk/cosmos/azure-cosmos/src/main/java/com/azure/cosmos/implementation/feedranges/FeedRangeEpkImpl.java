@@ -117,7 +117,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        new StringBuilder())
+                        sb)
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
@@ -163,6 +163,9 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 final String containerRid = collection.getResourceId();
                 request.setEffectiveRange(this.range);
 
+                StringBuilder sb = new StringBuilder();
+                sb.append("FeedRangeEpkImpl.populateFeedRangeFilteringHeaders").append(",");
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
@@ -170,7 +173,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        new StringBuilder())
+                        sb)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new InvalidPartitionException(
