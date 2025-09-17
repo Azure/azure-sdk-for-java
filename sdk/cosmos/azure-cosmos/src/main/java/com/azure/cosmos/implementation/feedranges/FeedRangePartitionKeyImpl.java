@@ -124,6 +124,9 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     this.partitionKey,
                     collection.getPartitionKey());
 
+                StringBuilder sb = new StringBuilder();
+                sb.append("FeedRangePartitionKeyImpl.getPartitionKeyRanges").append(",");
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
@@ -131,7 +134,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                         Range.getPointRange(effectivePartitionKey),
                         false,
                         null,
-                        new StringBuilder())
+                        sb)
                     .flatMap(pkRangeHolder -> {
                         ArrayList<String> rangeList = new ArrayList<>(1);
 

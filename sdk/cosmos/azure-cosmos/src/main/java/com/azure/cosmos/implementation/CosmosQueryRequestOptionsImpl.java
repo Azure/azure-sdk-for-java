@@ -32,6 +32,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCountForHybridSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private String collectionRid;
+    private String operationId;
 
     /**
      * Instantiates a new query request options.
@@ -72,6 +73,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
         this.maxItemCountForHybridSearch = options.maxItemCountForHybridSearch;
         this.collectionRid = options.collectionRid;
+        this.operationId = options.operationId;
     }
 
     /**
@@ -407,5 +409,13 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCollectionRid(String collectionRid) {
         this.collectionRid = collectionRid;
+    }
+
+    public String getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
     }
 }

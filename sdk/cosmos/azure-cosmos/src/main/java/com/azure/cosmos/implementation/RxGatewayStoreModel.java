@@ -797,12 +797,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         MetadataDiagnosticsContext metadataCtx = BridgeInternal
             .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
-        if (pkRangeId.getCollectionRid() != null) {
-            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx, new StringBuilder());
-        }
-
         StringBuilder sb = new StringBuilder();
         sb.append("RxGatewayStoreModel.resolvePartitionKeyRangeByPkRangeId:").append(",");
+
+        if (pkRangeId.getCollectionRid() != null) {
+            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx, sb);
+        }
 
         return this.collectionCache.resolveCollectionAsync(
             metadataCtx,

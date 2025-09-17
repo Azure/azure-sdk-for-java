@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.caches;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -71,19 +72,23 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     public Mono<TValue> getAsync(
         TKey key,
         Function<TValue, Mono<TValue>> singleValueInitFunc,
-        Function<TValue, Boolean> forceRefresh) {
-        return Mono.fromFuture(() -> getAsyncInternal(key, singleValueInitFunc, forceRefresh).toFuture(), true);
+        Function<TValue, Boolean> forceRefresh,
+        String callIdentifier) {
+        return Mono.fromFuture(() -> getAsyncInternal(key, singleValueInitFunc, forceRefresh, callIdentifier).toFuture(), true);
     }
 
-    private Mono<TValue> getAsyncInternal(TKey key, Function<TValue, Mono<TValue>> singleValueInitFunc, Function<TValue, Boolean> forceRefresh) {
+    private Mono<TValue> getAsyncInternal(TKey key, Function<TValue, Mono<TValue>> singleValueInitFunc, Function<TValue, Boolean> forceRefresh, String callIdentifier) {
         AsyncLazyWithRefresh<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null) {
             logger.debug("cache[{}] exists", key);
 
             return initialLazyValue.getValueAsync().flatMap(value -> {
                 if (!forceRefresh.apply(value)) {
+                    logger.warn("cache[{}] value found without forceRefresh requirement with callIdentifier [{}]", key, callIdentifier);
                     return Mono.just(value);
                 }
+
+                logger.warn("cache[{}] value found but with forceRefresh requirement with callIdentifier [{}]", key, callIdentifier);
 
                 Mono<TValue> refreshMono = initialLazyValue.getOrCreateBackgroundRefreshTaskAsync(singleValueInitFunc);
 
@@ -96,6 +101,13 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                             }
                         }
 
+                        if (exception instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                            logger.warn("backgroundRefreshTaskAsync [key exists] error for cache[{}] resulted in error with statusCode : [{}] and subStatusCode : [{}] and callIdentifier : [{}]", key, cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), callIdentifier);
+                        } else {
+                            logger.warn("backgroundRefreshTaskAsync [key exists] error for cache[{}] resulted in error with message : [{}] and callIdentifier : [{}]", key, exception.getMessage(), callIdentifier);
+                        }
+
                         logger.debug("refresh cache [{}] resulted in error", key, exception);
                         return Mono.error(exception);
                     }
@@ -104,12 +116,20 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                 if (initialLazyValue.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+
+                if (exception instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                    logger.warn("initialLazyValue.getValueAsync [key exists] error for cache[{}] resulted in error with statusCode : [{}] and subsStatusCode : [{}]", key, cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
+                } else {
+                    logger.warn("initialLazyValue.getValueAsync [key exists] error for cache[{}] resulted in error with message : [{}]", key, exception.getMessage());
+                }
+
                 logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             });
         }
 
-        logger.debug("cache[{}] doesn't exist, computing new value", key);
+        logger.warn("cache[{}] doesn't exist, computing new value", key);
         AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(singleValueInitFunc);
         AsyncLazyWithRefresh<TValue> preResult = this.values.putIfAbsent(key, asyncLazyWithRefresh);
         if (preResult == null) {
@@ -123,6 +143,14 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                 if (result.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+
+                if (exception instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                    logger.warn("result.getValueAsync [key does not exist] error for cache[{}] resulted in error with statusCode : [{}] and subsStatusCode : [{}] and callIdentifier : [{}]", key, cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), callIdentifier);
+                } else {
+                    logger.warn("result.getValueAsync [key does not exist] error for cache[{}] resulted in error with message : [{}] and callIdentifier : [{}]", key, exception.getMessage(), callIdentifier);
+                }
+
                 logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             }

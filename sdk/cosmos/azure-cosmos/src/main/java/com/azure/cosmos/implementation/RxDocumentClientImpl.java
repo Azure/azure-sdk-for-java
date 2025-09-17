@@ -4831,7 +4831,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options) {
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(
+        String collectionLink,
+        CosmosQueryRequestOptions options) {
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
         }
@@ -6152,7 +6154,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
 
-        logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}]", resourceType, resourceLink, maxPageSize, this.userAgentContainer.getUserAgent());
+        if (ResourceType.PartitionKeyRange.equals(resourceType)) {
+            maxPageSize = Configs.getPartitionKeyRangesReadFeedPageSize();
+        }
 
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
@@ -6161,9 +6165,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
             }
+
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
+
+            if (ResourceType.PartitionKeyRange.equals(resourceType)) {
+                logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, pageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
+            }
+
             retryPolicy.onBeforeSendRequest(request);
             return request;
         };
@@ -6545,6 +6555,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return Mono.error(new IllegalStateException("Collection cannot be null"));
             }
 
+            StringBuilder sb = new StringBuilder();
+            sb.append("RxDocumentClientImpl.getFeedRanges").append(",");
+
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache
                 .tryGetOverlappingRangesAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
@@ -6552,7 +6565,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES,
                     forceRefresh,
                     null,
-                    new StringBuilder());
+                    sb);
 
             return valueHolderMono.map(partitionKeyRangeList -> toFeedRanges(partitionKeyRangeList, request));
         });

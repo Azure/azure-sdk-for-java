@@ -107,6 +107,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 }
 
                 final String containerRid = collection.getResourceId();
+                StringBuilder sb = new StringBuilder();
+                sb.append("FeedRangeEpkImpl.getPartitionKeyRanges").append(",");
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
