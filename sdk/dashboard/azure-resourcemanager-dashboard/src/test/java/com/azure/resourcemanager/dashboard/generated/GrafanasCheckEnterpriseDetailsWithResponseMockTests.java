@@ -22,7 +22,7 @@ public final class GrafanasCheckEnterpriseDetailsWithResponseMockTests {
     @Test
     public void testCheckEnterpriseDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"saasSubscriptionDetails\":{\"planId\":\"lya\",\"offerId\":\"dckcbc\",\"publisherId\":\"jrjxgciqibrhosx\",\"term\":{\"termUnit\":\"rhzo\",\"startDate\":\"2021-01-19T18:37:38Z\",\"endDate\":\"2021-05-07T03:59:23Z\"}},\"marketplaceTrialQuota\":{\"availablePromotion\":\"None\",\"grafanaResourceId\":\"bahwfl\",\"trialStartAt\":\"2021-03-25T00:18:24Z\",\"trialEndAt\":\"2021-05-27T17:52:09Z\"}}";
+            = "{\"saasSubscriptionDetails\":{\"planId\":\"gccymvaolpssl\",\"offerId\":\"fmmdnbbg\",\"publisherId\":\"pswiydmcwyh\",\"term\":{\"termUnit\":\"ss\",\"startDate\":\"2021-03-20T02:21:45Z\",\"endDate\":\"2021-10-15T22:28:47Z\"}},\"marketplaceTrialQuota\":{\"availablePromotion\":\"FreeTrial\",\"grafanaResourceId\":\"znud\",\"trialStartAt\":\"2021-05-14T14:21:36Z\",\"trialEndAt\":\"2021-09-27T09:43:19Z\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,22 +32,22 @@ public final class GrafanasCheckEnterpriseDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EnterpriseDetails response = manager.grafanas()
-            .checkEnterpriseDetailsWithResponse("vmkcx", "zapvhelx", com.azure.core.util.Context.NONE)
+            .checkEnterpriseDetailsWithResponse("lbg", "cdui", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lya", response.saasSubscriptionDetails().planId());
-        Assertions.assertEquals("dckcbc", response.saasSubscriptionDetails().offerId());
-        Assertions.assertEquals("jrjxgciqibrhosx", response.saasSubscriptionDetails().publisherId());
-        Assertions.assertEquals("rhzo", response.saasSubscriptionDetails().term().termUnit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T18:37:38Z"),
+        Assertions.assertEquals("gccymvaolpssl", response.saasSubscriptionDetails().planId());
+        Assertions.assertEquals("fmmdnbbg", response.saasSubscriptionDetails().offerId());
+        Assertions.assertEquals("pswiydmcwyh", response.saasSubscriptionDetails().publisherId());
+        Assertions.assertEquals("ss", response.saasSubscriptionDetails().term().termUnit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T02:21:45Z"),
             response.saasSubscriptionDetails().term().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T03:59:23Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T22:28:47Z"),
             response.saasSubscriptionDetails().term().endDate());
-        Assertions.assertEquals(AvailablePromotion.NONE, response.marketplaceTrialQuota().availablePromotion());
-        Assertions.assertEquals("bahwfl", response.marketplaceTrialQuota().grafanaResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T00:18:24Z"),
+        Assertions.assertEquals(AvailablePromotion.FREE_TRIAL, response.marketplaceTrialQuota().availablePromotion());
+        Assertions.assertEquals("znud", response.marketplaceTrialQuota().grafanaResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T14:21:36Z"),
             response.marketplaceTrialQuota().trialStartAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T17:52:09Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T09:43:19Z"),
             response.marketplaceTrialQuota().trialEndAt());
     }
 }

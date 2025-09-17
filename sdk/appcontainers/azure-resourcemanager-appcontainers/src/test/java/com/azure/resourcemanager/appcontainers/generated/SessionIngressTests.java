@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SessionIngressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SessionIngress model = BinaryData.fromString("{\"targetPort\":1418512133}").toObject(SessionIngress.class);
-        Assertions.assertEquals(1418512133, model.targetPort());
+        SessionIngress model = BinaryData.fromString("{\"targetPort\":612930756}").toObject(SessionIngress.class);
+        Assertions.assertEquals(612930756, model.targetPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionIngress model = new SessionIngress().withTargetPort(1418512133);
+        SessionIngress model = new SessionIngress().withTargetPort(612930756);
         model = BinaryData.fromObject(model).toObject(SessionIngress.class);
-        Assertions.assertEquals(1418512133, model.targetPort());
+        Assertions.assertEquals(612930756, model.targetPort());
     }
 }

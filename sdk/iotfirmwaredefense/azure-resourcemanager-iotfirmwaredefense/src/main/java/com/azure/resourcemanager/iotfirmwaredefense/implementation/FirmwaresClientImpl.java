@@ -126,23 +126,23 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FirmwareUpdateDefinition properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("firmwareId") String firmwareId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("firmwareId") String firmwareId, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("firmwareId") String firmwareId, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("firmwareId") String firmwareId, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares")
@@ -595,10 +595,9 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
         if (firmwareId == null) {
             return Mono.error(new IllegalArgumentException("Parameter firmwareId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -655,9 +654,8 @@ public final class FirmwaresClientImpl implements FirmwaresClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter firmwareId is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, context);
     }
 
     /**

@@ -12,16 +12,16 @@ public final class UsersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Users model
-            = BinaryData.fromString("{\"viewersCanEdit\":false,\"editorsCanAdmin\":false}").toObject(Users.class);
+            = BinaryData.fromString("{\"viewersCanEdit\":false,\"editorsCanAdmin\":true}").toObject(Users.class);
         Assertions.assertFalse(model.viewersCanEdit());
-        Assertions.assertFalse(model.editorsCanAdmin());
+        Assertions.assertTrue(model.editorsCanAdmin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Users model = new Users().withViewersCanEdit(false).withEditorsCanAdmin(false);
+        Users model = new Users().withViewersCanEdit(false).withEditorsCanAdmin(true);
         model = BinaryData.fromObject(model).toObject(Users.class);
         Assertions.assertFalse(model.viewersCanEdit());
-        Assertions.assertFalse(model.editorsCanAdmin());
+        Assertions.assertTrue(model.editorsCanAdmin());
     }
 }

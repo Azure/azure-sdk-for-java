@@ -10,11 +10,12 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,8 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Endpoint for requesting new configurations to be loaded.
  */
-@SuppressWarnings("removal")
-@ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
+@Endpoint(id = APPCONFIGURATION_REFRESH)
 public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
@@ -105,7 +105,7 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
     }
 
     @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+    public void setApplicationEventPublisher(@NonNull ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }
 

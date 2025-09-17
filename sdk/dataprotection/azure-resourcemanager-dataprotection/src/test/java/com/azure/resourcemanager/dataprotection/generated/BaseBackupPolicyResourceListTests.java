@@ -15,22 +15,22 @@ public final class BaseBackupPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"gcpo\"]},\"id\":\"maajrmvdjwzrlo\",\"name\":\"mcl\",\"type\":\"hijco\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"tbzaqsqsycbkbfk\",\"ukdkexxppofmxa\"]},\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"nextLink\":\"i\"}")
+            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"coejctbzaqs\"]},\"id\":\"y\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"jjxhvpmo\"]},\"id\":\"xhdzxibqeojnx\",\"name\":\"bzv\",\"type\":\"dntwndeicbtw\"}],\"nextLink\":\"zao\"}")
             .toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("i", model.nextLink());
-        Assertions.assertEquals("gcpo", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("zao", model.nextLink());
+        Assertions.assertEquals("coejctbzaqs", model.value().get(0).properties().datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BaseBackupPolicyResourceList model = new BaseBackupPolicyResourceList().withNextLink("i")
+        BaseBackupPolicyResourceList model = new BaseBackupPolicyResourceList().withNextLink("zao")
             .withValue(Arrays.asList(
                 new BaseBackupPolicyResourceInner()
-                    .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("gcpo"))),
-                new BaseBackupPolicyResourceInner().withProperties(
-                    new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("tbzaqsqsycbkbfk", "ukdkexxppofmxa")))));
+                    .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("coejctbzaqs"))),
+                new BaseBackupPolicyResourceInner()
+                    .withProperties(new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("jjxhvpmo")))));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicyResourceList.class);
-        Assertions.assertEquals("i", model.nextLink());
-        Assertions.assertEquals("gcpo", model.value().get(0).properties().datasourceTypes().get(0));
+        Assertions.assertEquals("zao", model.nextLink());
+        Assertions.assertEquals("coejctbzaqs", model.value().get(0).properties().datasourceTypes().get(0));
     }
 }

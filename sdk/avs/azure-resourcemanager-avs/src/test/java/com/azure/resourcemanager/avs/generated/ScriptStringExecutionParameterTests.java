@@ -12,18 +12,18 @@ public final class ScriptStringExecutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptStringExecutionParameter model
-            = BinaryData.fromString("{\"type\":\"Value\",\"value\":\"iopid\",\"name\":\"qqfkuv\"}")
+            = BinaryData.fromString("{\"type\":\"Value\",\"value\":\"khazxkhnzbonlwn\",\"name\":\"oegokdwbwh\"}")
                 .toObject(ScriptStringExecutionParameter.class);
-        Assertions.assertEquals("qqfkuv", model.name());
-        Assertions.assertEquals("iopid", model.value());
+        Assertions.assertEquals("oegokdwbwh", model.name());
+        Assertions.assertEquals("khazxkhnzbonlwn", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScriptStringExecutionParameter model
-            = new ScriptStringExecutionParameter().withName("qqfkuv").withValue("iopid");
+            = new ScriptStringExecutionParameter().withName("oegokdwbwh").withValue("khazxkhnzbonlwn");
         model = BinaryData.fromObject(model).toObject(ScriptStringExecutionParameter.class);
-        Assertions.assertEquals("qqfkuv", model.name());
-        Assertions.assertEquals("iopid", model.value());
+        Assertions.assertEquals("oegokdwbwh", model.name());
+        Assertions.assertEquals("khazxkhnzbonlwn", model.value());
     }
 }

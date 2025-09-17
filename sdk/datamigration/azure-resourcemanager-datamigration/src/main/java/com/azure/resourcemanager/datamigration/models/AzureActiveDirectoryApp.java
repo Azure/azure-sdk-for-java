@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -31,6 +30,11 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
      * Tenant id of the customer
      */
     private String tenantId;
+
+    /*
+     * Ignore checking azure permissions on the AAD app
+     */
+    private Boolean ignoreAzurePermissions;
 
     /**
      * Creates an instance of AzureActiveDirectoryApp class.
@@ -99,28 +103,32 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
     }
 
     /**
+     * Get the ignoreAzurePermissions property: Ignore checking azure permissions on the AAD app.
+     * 
+     * @return the ignoreAzurePermissions value.
+     */
+    public Boolean ignoreAzurePermissions() {
+        return this.ignoreAzurePermissions;
+    }
+
+    /**
+     * Set the ignoreAzurePermissions property: Ignore checking azure permissions on the AAD app.
+     * 
+     * @param ignoreAzurePermissions the ignoreAzurePermissions value to set.
+     * @return the AzureActiveDirectoryApp object itself.
+     */
+    public AzureActiveDirectoryApp withIgnoreAzurePermissions(Boolean ignoreAzurePermissions) {
+        this.ignoreAzurePermissions = ignoreAzurePermissions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (applicationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property applicationId in model AzureActiveDirectoryApp"));
-        }
-        if (appKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property appKey in model AzureActiveDirectoryApp"));
-        }
-        if (tenantId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property tenantId in model AzureActiveDirectoryApp"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureActiveDirectoryApp.class);
 
     /**
      * {@inheritDoc}
@@ -131,6 +139,7 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
         jsonWriter.writeStringField("applicationId", this.applicationId);
         jsonWriter.writeStringField("appKey", this.appKey);
         jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeBooleanField("ignoreAzurePermissions", this.ignoreAzurePermissions);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,7 +149,6 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureActiveDirectoryApp if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureActiveDirectoryApp.
      */
     public static AzureActiveDirectoryApp fromJson(JsonReader jsonReader) throws IOException {
@@ -156,6 +164,9 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
                     deserializedAzureActiveDirectoryApp.appKey = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedAzureActiveDirectoryApp.tenantId = reader.getString();
+                } else if ("ignoreAzurePermissions".equals(fieldName)) {
+                    deserializedAzureActiveDirectoryApp.ignoreAzurePermissions
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

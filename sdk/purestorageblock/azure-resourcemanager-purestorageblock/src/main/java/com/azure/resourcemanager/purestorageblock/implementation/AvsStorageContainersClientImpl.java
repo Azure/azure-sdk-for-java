@@ -92,7 +92,7 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -100,10 +100,9 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName,
-            @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageContainerName") String storageContainerName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -111,8 +110,7 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName,
-            @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageContainerName") String storageContainerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers")
@@ -301,9 +299,9 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             return Mono
                 .error(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -343,10 +341,8 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, Context.NONE);
     }
 
     /**
@@ -386,9 +382,8 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, context);
     }
 
     /**

@@ -104,6 +104,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -140,6 +141,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -421,6 +423,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -1471,6 +1474,20 @@
         "momo",
         "RESOURCEID"
 
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
       ]
     }
   ],

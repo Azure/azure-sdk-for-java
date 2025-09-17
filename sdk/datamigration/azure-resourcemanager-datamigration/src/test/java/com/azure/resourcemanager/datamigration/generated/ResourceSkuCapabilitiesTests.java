@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datamigration.models.ResourceSkuCapabilities;
 public final class ResourceSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCapabilities model
-            = BinaryData.fromString("{\"name\":\"k\",\"value\":\"f\"}").toObject(ResourceSkuCapabilities.class);
+        ResourceSkuCapabilities model = BinaryData.fromString("{\"name\":\"evxccedcp\",\"value\":\"dyodnwzxltj\"}")
+            .toObject(ResourceSkuCapabilities.class);
     }
 
     @org.junit.jupiter.api.Test

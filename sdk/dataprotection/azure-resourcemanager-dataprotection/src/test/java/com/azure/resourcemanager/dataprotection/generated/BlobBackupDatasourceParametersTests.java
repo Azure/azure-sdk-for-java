@@ -13,16 +13,16 @@ public final class BlobBackupDatasourceParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobBackupDatasourceParameters model = BinaryData.fromString(
-            "{\"objectType\":\"BlobBackupDatasourceParameters\",\"containersList\":[\"ejjoqkagfhsxtta\",\"gzxnfaazpxdtnk\"]}")
+            "{\"objectType\":\"BlobBackupDatasourceParameters\",\"containersList\":[\"vydfceacvlhvygdy\",\"t\",\"mrtwna\",\"jslb\"]}")
             .toObject(BlobBackupDatasourceParameters.class);
-        Assertions.assertEquals("ejjoqkagfhsxtta", model.containersList().get(0));
+        Assertions.assertEquals("vydfceacvlhvygdy", model.containersList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BlobBackupDatasourceParameters model = new BlobBackupDatasourceParameters()
-            .withContainersList(Arrays.asList("ejjoqkagfhsxtta", "gzxnfaazpxdtnk"));
+            .withContainersList(Arrays.asList("vydfceacvlhvygdy", "t", "mrtwna", "jslb"));
         model = BinaryData.fromObject(model).toObject(BlobBackupDatasourceParameters.class);
-        Assertions.assertEquals("ejjoqkagfhsxtta", model.containersList().get(0));
+        Assertions.assertEquals("vydfceacvlhvygdy", model.containersList().get(0));
     }
 }

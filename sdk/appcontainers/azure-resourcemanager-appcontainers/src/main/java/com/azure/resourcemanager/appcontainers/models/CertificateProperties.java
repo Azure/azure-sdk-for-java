@@ -25,6 +25,11 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     private CertificateProvisioningState provisioningState;
 
     /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
+
+    /*
      * Properties for a certificate stored in a Key Vault.
      */
     private CertificateKeyVaultProperties certificateKeyVaultProperties;
@@ -79,6 +84,11 @@ public final class CertificateProperties implements JsonSerializable<Certificate
      */
     private String publicKeyHash;
 
+    /*
+     * The type of the certificate. Allowed values are `ServerSSLCertificate` and `ImagePullTrustedCA`
+     */
+    private CertificateType certificateType;
+
     /**
      * Creates an instance of CertificateProperties class.
      */
@@ -92,6 +102,15 @@ public final class CertificateProperties implements JsonSerializable<Certificate
      */
     public CertificateProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -228,6 +247,28 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
+     * Get the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @return the certificateType value.
+     */
+    public CertificateType certificateType() {
+        return this.certificateType;
+    }
+
+    /**
+     * Set the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @param certificateType the certificateType value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -247,6 +288,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
         jsonWriter.writeJsonField("certificateKeyVaultProperties", this.certificateKeyVaultProperties);
         jsonWriter.writeStringField("password", this.password);
         jsonWriter.writeBinaryField("value", this.value);
+        jsonWriter.writeStringField("certificateType",
+            this.certificateType == null ? null : this.certificateType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -268,6 +311,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
                 if ("provisioningState".equals(fieldName)) {
                     deserializedCertificateProperties.provisioningState
                         = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedCertificateProperties.deploymentErrors = reader.getString();
                 } else if ("certificateKeyVaultProperties".equals(fieldName)) {
                     deserializedCertificateProperties.certificateKeyVaultProperties
                         = CertificateKeyVaultProperties.fromJson(reader);
@@ -294,6 +339,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
                     deserializedCertificateProperties.valid = reader.getNullable(JsonReader::getBoolean);
                 } else if ("publicKeyHash".equals(fieldName)) {
                     deserializedCertificateProperties.publicKeyHash = reader.getString();
+                } else if ("certificateType".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateType = CertificateType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

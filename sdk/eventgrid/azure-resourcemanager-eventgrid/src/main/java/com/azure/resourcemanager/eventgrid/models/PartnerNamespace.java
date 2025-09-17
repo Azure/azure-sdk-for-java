@@ -117,8 +117,8 @@ public interface PartnerNamespace {
 
     /**
      * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the partner namespace.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the partner namespace.
      * 
      * @return the disableLocalAuth value.
      */
@@ -324,12 +324,12 @@ public interface PartnerNamespace {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the partner namespace..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the partner namespace..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the partner namespace.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the partner namespace.
              * @return the next definition stage.
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
@@ -456,12 +456,12 @@ public interface PartnerNamespace {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the partner namespace..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the partner namespace..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the partner namespace.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the partner namespace.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);

@@ -23,7 +23,7 @@ public final class HostsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"HostProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"whnhjtfv\",\"moRefId\":\"dpmiljpn\",\"fqdn\":\"nudqllz\",\"maintenance\":\"Upgrade\",\"faultDomain\":\"pjlxeehuxiqhzl\"},\"zones\":[\"mezx\"],\"sku\":{\"name\":\"kihmxrfdsajredn\",\"tier\":\"Standard\",\"size\":\"htuwgmev\",\"family\":\"fpwzyifrkgwltx\",\"capacity\":1848088560},\"id\":\"xgzdyimsfayorp\",\"name\":\"avkjog\",\"type\":\"sl\"}";
+            = "{\"properties\":{\"kind\":\"HostProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"wtswbzuwfmdur\",\"moRefId\":\"egizv\",\"fqdn\":\"felisdjub\",\"maintenance\":\"Replacement\",\"faultDomain\":\"igkxkbsazga\"},\"zones\":[\"cyrcmjdmspo\"],\"sku\":{\"name\":\"pv\",\"tier\":\"Standard\",\"size\":\"lniofrzgbzje\",\"family\":\"st\",\"capacity\":247999147},\"id\":\"v\",\"name\":\"bcuiiz\",\"type\":\"ktwfa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class HostsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HostModel response = manager.hosts()
-            .getWithResponse("ycvdimw", "zregzgyufutrwpw", "ryekzkd", "meottawj", com.azure.core.util.Context.NONE)
+            .getWithResponse("h", "hfqpofv", "bcblemb", "kbwvqvxkdiv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("whnhjtfv", response.properties().displayName());
-        Assertions.assertEquals(HostMaintenance.UPGRADE, response.properties().maintenance());
-        Assertions.assertEquals("mezx", response.zones().get(0));
-        Assertions.assertEquals("kihmxrfdsajredn", response.sku().name());
+        Assertions.assertEquals("wtswbzuwfmdur", response.properties().displayName());
+        Assertions.assertEquals(HostMaintenance.REPLACEMENT, response.properties().maintenance());
+        Assertions.assertEquals("cyrcmjdmspo", response.zones().get(0));
+        Assertions.assertEquals("pv", response.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals("htuwgmev", response.sku().size());
-        Assertions.assertEquals("fpwzyifrkgwltx", response.sku().family());
-        Assertions.assertEquals(1848088560, response.sku().capacity());
+        Assertions.assertEquals("lniofrzgbzje", response.sku().size());
+        Assertions.assertEquals("st", response.sku().family());
+        Assertions.assertEquals(247999147, response.sku().capacity());
     }
 }

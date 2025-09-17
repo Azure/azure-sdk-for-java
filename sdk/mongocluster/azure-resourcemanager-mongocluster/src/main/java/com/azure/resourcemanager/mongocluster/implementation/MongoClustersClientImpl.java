@@ -139,25 +139,23 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") MongoClusterUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("mongoClusterName") String mongoClusterName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("mongoClusterName") String mongoClusterName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters")
@@ -231,6 +229,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CheckNameAvailabilityRequest body,
             Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/promote")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -238,9 +237,9 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") PromoteReplicaRequest body,
-            Context context);
+            @BodyParam("application/json") PromoteReplicaRequest body, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/promote")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -248,8 +247,7 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") PromoteReplicaRequest body,
-            Context context);
+            @BodyParam("application/json") PromoteReplicaRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -927,10 +925,9 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -964,9 +961,8 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, Context.NONE);
     }
 
     /**
@@ -1001,9 +997,8 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, context);
     }
 
     /**
@@ -1621,9 +1616,9 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.promote(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, accept, body, context))
+        return FluxUtil
+            .withContext(context -> service.promote(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1665,10 +1660,8 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.promoteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, accept, body,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, body, Context.NONE);
     }
 
     /**
@@ -1710,9 +1703,8 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.promoteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, accept, body, context);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, contentType, body, context);
     }
 
     /**

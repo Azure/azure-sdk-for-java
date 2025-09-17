@@ -160,7 +160,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PlacementPolicyUpdate placementPolicyUpdate, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies/{placementPolicyName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -168,10 +168,9 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
-            @PathParam("placementPolicyName") String placementPolicyName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("placementPolicyName") String placementPolicyName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies/{placementPolicyName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -179,8 +178,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
-            @PathParam("placementPolicyName") String placementPolicyName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("placementPolicyName") String placementPolicyName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1145,11 +1143,10 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
-                accept, context))
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1194,10 +1191,9 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
-            accept, Context.NONE);
+            Context.NONE);
     }
 
     /**
@@ -1242,10 +1238,9 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter placementPolicyName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, placementPolicyName,
-            accept, context);
+            context);
     }
 
     /**

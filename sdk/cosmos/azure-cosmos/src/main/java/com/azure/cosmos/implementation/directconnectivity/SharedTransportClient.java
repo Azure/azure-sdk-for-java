@@ -123,7 +123,7 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.transportClient.getGlobalEndpointManager();
     }
 

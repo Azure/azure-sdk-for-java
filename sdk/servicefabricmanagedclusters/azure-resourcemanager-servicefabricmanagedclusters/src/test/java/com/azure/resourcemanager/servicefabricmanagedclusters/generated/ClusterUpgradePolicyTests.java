@@ -15,48 +15,48 @@ public final class ClusterUpgradePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpgradePolicy model = BinaryData.fromString(
-            "{\"forceRestart\":false,\"healthPolicy\":{\"maxPercentUnhealthyNodes\":682770513,\"maxPercentUnhealthyApplications\":581712977},\"deltaHealthPolicy\":{\"maxPercentDeltaUnhealthyNodes\":1910249555,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":1729587671,\"maxPercentDeltaUnhealthyApplications\":1714837723},\"monitoringPolicy\":{\"healthCheckWaitDuration\":\"ukghimdblxgw\",\"healthCheckStableDuration\":\"mfnjh\",\"healthCheckRetryTimeout\":\"j\",\"upgradeTimeout\":\"wmszkk\",\"upgradeDomainTimeout\":\"oqreyfkzikfjawn\"},\"upgradeReplicaSetCheckTimeout\":\"ivx\"}")
+            "{\"forceRestart\":false,\"healthPolicy\":{\"maxPercentUnhealthyNodes\":1947559864,\"maxPercentUnhealthyApplications\":2088277848},\"deltaHealthPolicy\":{\"maxPercentDeltaUnhealthyNodes\":101100234,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":972343553,\"maxPercentDeltaUnhealthyApplications\":636112442},\"monitoringPolicy\":{\"healthCheckWaitDuration\":\"gwimfn\",\"healthCheckStableDuration\":\"hfjx\",\"healthCheckRetryTimeout\":\"mszkkfo\",\"upgradeTimeout\":\"rey\",\"upgradeDomainTimeout\":\"kzikfjawneaivxwc\"},\"upgradeReplicaSetCheckTimeout\":\"lpcirelsf\"}")
             .toObject(ClusterUpgradePolicy.class);
         Assertions.assertFalse(model.forceRestart());
-        Assertions.assertEquals(682770513, model.healthPolicy().maxPercentUnhealthyNodes());
-        Assertions.assertEquals(581712977, model.healthPolicy().maxPercentUnhealthyApplications());
-        Assertions.assertEquals(1910249555, model.deltaHealthPolicy().maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(1729587671, model.deltaHealthPolicy().maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(1714837723, model.deltaHealthPolicy().maxPercentDeltaUnhealthyApplications());
-        Assertions.assertEquals("ukghimdblxgw", model.monitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("mfnjh", model.monitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("j", model.monitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("wmszkk", model.monitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("oqreyfkzikfjawn", model.monitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertEquals("ivx", model.upgradeReplicaSetCheckTimeout());
+        Assertions.assertEquals(1947559864, model.healthPolicy().maxPercentUnhealthyNodes());
+        Assertions.assertEquals(2088277848, model.healthPolicy().maxPercentUnhealthyApplications());
+        Assertions.assertEquals(101100234, model.deltaHealthPolicy().maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(972343553, model.deltaHealthPolicy().maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(636112442, model.deltaHealthPolicy().maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals("gwimfn", model.monitoringPolicy().healthCheckWaitDuration());
+        Assertions.assertEquals("hfjx", model.monitoringPolicy().healthCheckStableDuration());
+        Assertions.assertEquals("mszkkfo", model.monitoringPolicy().healthCheckRetryTimeout());
+        Assertions.assertEquals("rey", model.monitoringPolicy().upgradeTimeout());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.monitoringPolicy().upgradeDomainTimeout());
+        Assertions.assertEquals("lpcirelsf", model.upgradeReplicaSetCheckTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterUpgradePolicy model = new ClusterUpgradePolicy().withForceRestart(false)
-            .withHealthPolicy(new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(682770513)
-                .withMaxPercentUnhealthyApplications(581712977))
-            .withDeltaHealthPolicy(new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(1910249555)
-                .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(1729587671)
-                .withMaxPercentDeltaUnhealthyApplications(1714837723))
-            .withMonitoringPolicy(new ClusterMonitoringPolicy().withHealthCheckWaitDuration("ukghimdblxgw")
-                .withHealthCheckStableDuration("mfnjh")
-                .withHealthCheckRetryTimeout("j")
-                .withUpgradeTimeout("wmszkk")
-                .withUpgradeDomainTimeout("oqreyfkzikfjawn"))
-            .withUpgradeReplicaSetCheckTimeout("ivx");
+            .withHealthPolicy(new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(1947559864)
+                .withMaxPercentUnhealthyApplications(2088277848))
+            .withDeltaHealthPolicy(new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(101100234)
+                .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(972343553)
+                .withMaxPercentDeltaUnhealthyApplications(636112442))
+            .withMonitoringPolicy(new ClusterMonitoringPolicy().withHealthCheckWaitDuration("gwimfn")
+                .withHealthCheckStableDuration("hfjx")
+                .withHealthCheckRetryTimeout("mszkkfo")
+                .withUpgradeTimeout("rey")
+                .withUpgradeDomainTimeout("kzikfjawneaivxwc"))
+            .withUpgradeReplicaSetCheckTimeout("lpcirelsf");
         model = BinaryData.fromObject(model).toObject(ClusterUpgradePolicy.class);
         Assertions.assertFalse(model.forceRestart());
-        Assertions.assertEquals(682770513, model.healthPolicy().maxPercentUnhealthyNodes());
-        Assertions.assertEquals(581712977, model.healthPolicy().maxPercentUnhealthyApplications());
-        Assertions.assertEquals(1910249555, model.deltaHealthPolicy().maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(1729587671, model.deltaHealthPolicy().maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(1714837723, model.deltaHealthPolicy().maxPercentDeltaUnhealthyApplications());
-        Assertions.assertEquals("ukghimdblxgw", model.monitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("mfnjh", model.monitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("j", model.monitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("wmszkk", model.monitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("oqreyfkzikfjawn", model.monitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertEquals("ivx", model.upgradeReplicaSetCheckTimeout());
+        Assertions.assertEquals(1947559864, model.healthPolicy().maxPercentUnhealthyNodes());
+        Assertions.assertEquals(2088277848, model.healthPolicy().maxPercentUnhealthyApplications());
+        Assertions.assertEquals(101100234, model.deltaHealthPolicy().maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(972343553, model.deltaHealthPolicy().maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(636112442, model.deltaHealthPolicy().maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals("gwimfn", model.monitoringPolicy().healthCheckWaitDuration());
+        Assertions.assertEquals("hfjx", model.monitoringPolicy().healthCheckStableDuration());
+        Assertions.assertEquals("mszkkfo", model.monitoringPolicy().healthCheckRetryTimeout());
+        Assertions.assertEquals("rey", model.monitoringPolicy().upgradeTimeout());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.monitoringPolicy().upgradeDomainTimeout());
+        Assertions.assertEquals("lpcirelsf", model.upgradeReplicaSetCheckTimeout());
     }
 }

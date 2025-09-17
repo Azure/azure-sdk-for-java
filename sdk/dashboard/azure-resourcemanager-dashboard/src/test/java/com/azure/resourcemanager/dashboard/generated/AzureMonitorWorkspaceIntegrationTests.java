@@ -12,16 +12,16 @@ public final class AzureMonitorWorkspaceIntegrationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorWorkspaceIntegration model
-            = BinaryData.fromString("{\"azureMonitorWorkspaceResourceId\":\"ftutqxlngxlefgu\"}")
+            = BinaryData.fromString("{\"azureMonitorWorkspaceResourceId\":\"vhkhixu\"}")
                 .toObject(AzureMonitorWorkspaceIntegration.class);
-        Assertions.assertEquals("ftutqxlngxlefgu", model.azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("vhkhixu", model.azureMonitorWorkspaceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMonitorWorkspaceIntegration model
-            = new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("ftutqxlngxlefgu");
+            = new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("vhkhixu");
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceIntegration.class);
-        Assertions.assertEquals("ftutqxlngxlefgu", model.azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("vhkhixu", model.azureMonitorWorkspaceResourceId());
     }
 }

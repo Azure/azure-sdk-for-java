@@ -12,15 +12,15 @@ public final class RemediationPropertiesFailureThresholdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemediationPropertiesFailureThreshold model
-            = BinaryData.fromString("{\"percentage\":72.42369}").toObject(RemediationPropertiesFailureThreshold.class);
-        Assertions.assertEquals(72.42369F, model.percentage());
+            = BinaryData.fromString("{\"percentage\":23.345554}").toObject(RemediationPropertiesFailureThreshold.class);
+        Assertions.assertEquals(23.345554F, model.percentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemediationPropertiesFailureThreshold model
-            = new RemediationPropertiesFailureThreshold().withPercentage(72.42369F);
+            = new RemediationPropertiesFailureThreshold().withPercentage(23.345554F);
         model = BinaryData.fromObject(model).toObject(RemediationPropertiesFailureThreshold.class);
-        Assertions.assertEquals(72.42369F, model.percentage());
+        Assertions.assertEquals(23.345554F, model.percentage());
     }
 }

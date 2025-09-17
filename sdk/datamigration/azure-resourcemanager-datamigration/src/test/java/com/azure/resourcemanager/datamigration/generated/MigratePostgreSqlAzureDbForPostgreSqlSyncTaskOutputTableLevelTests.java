@@ -11,7 +11,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model = BinaryData.fromString(
-            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"dtclusiypb\",\"databaseName\":\"gytguslfead\",\"cdcInsertCounter\":1540620177587618900,\"cdcUpdateCounter\":4539196903443287081,\"cdcDeleteCounter\":8734080438498794448,\"fullLoadEstFinishTime\":\"2021-09-15T19:08:49Z\",\"fullLoadStartedOn\":\"2021-01-15T09:14:04Z\",\"fullLoadEndedOn\":\"2021-07-17T10:31:49Z\",\"fullLoadTotalRows\":5199624305945055059,\"state\":\"FULL_LOAD\",\"totalChangesApplied\":555329664048541191,\"dataErrorsCounter\":6507639588870568676,\"lastModifiedTime\":\"2021-08-16T07:12:35Z\",\"id\":\"vu\"}")
+            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"ohzjqatucoigeb\",\"databaseName\":\"cnwfepbnwgfmxjg\",\"cdcInsertCounter\":2410617396148437383,\"cdcUpdateCounter\":6612948564311319364,\"cdcDeleteCounter\":2744924050874109810,\"fullLoadEstFinishTime\":\"2021-06-01T23:54:49Z\",\"fullLoadStartedOn\":\"2021-01-06T12:40:34Z\",\"fullLoadEndedOn\":\"2021-08-14T22:27:05Z\",\"fullLoadTotalRows\":8416021990822633732,\"state\":\"CANCELED\",\"totalChangesApplied\":3526339684780682940,\"dataErrorsCounter\":3703277346132308031,\"lastModifiedTime\":\"2021-10-07T19:49:42Z\",\"id\":\"rwd\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
     }
 

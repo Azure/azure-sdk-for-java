@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in PublicCloudConnectorsClient.
@@ -122,7 +123,7 @@ public interface PublicCloudConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PublicCloudConnectorInner> updateWithResponse(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties, Context context);
+        PublicCloudConnectorUpdate properties, Context context);
 
     /**
      * Update a PublicCloudConnector.
@@ -137,7 +138,7 @@ public interface PublicCloudConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PublicCloudConnectorInner update(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties);
+        PublicCloudConnectorUpdate properties);
 
     /**
      * Delete a PublicCloudConnector.

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
 import com.azure.resourcemanager.providerhub.models.OperationActionType;
@@ -24,26 +24,26 @@ public final class OperationsListByProviderRegistrationWithResponseMockTests {
     @Test
     public void testListByProviderRegistrationWithResponse() throws Exception {
         String responseStr
-            = "[{\"name\":\"ptjgwdt\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"nblwphqlkcc\",\"resource\":\"zgygqwahoiulwgni\",\"operation\":\"prglvawuwzduf\",\"description\":\"pivlsbbjpm\"},\"actionType\":\"Internal\",\"properties\":\"datamifoxxkub\"},{\"name\":\"phavpmhbrb\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"vpbbt\",\"resource\":\"efjokn\",\"operation\":\"sqyzqedikdfr\",\"description\":\"biqmrjgei\"},\"actionType\":\"NotSpecified\",\"properties\":\"dataggwfiwz\"},{\"name\":\"xmjpbyep\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"provider\":\"ljvrcmyfqipgxhnp\",\"resource\":\"myqwcab\",\"operation\":\"nuilee\",\"description\":\"aswlp\"},\"actionType\":\"NotSpecified\",\"properties\":\"datarmfjlrxw\"},{\"name\":\"oauk\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"isizm\",\"resource\":\"a\",\"operation\":\"dsxjwuivedw\",\"description\":\"gyeewxeiq\"},\"actionType\":\"Internal\",\"properties\":\"datag\"}]";
+            = "[{\"name\":\"owpsfxt\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"ymh\",\"resource\":\"v\",\"operation\":\"yqfttehdpboujst\",\"description\":\"fvvdshxcdedsue\"},\"actionType\":\"Internal\",\"properties\":\"dataxcgjtf\"},{\"name\":\"nquktrfnslnlrxs\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"wntfmtbgwjdxwna\",\"resource\":\"kurrdreyzjwh\",\"operation\":\"etw\",\"description\":\"jwzzqseuzu\"},\"actionType\":\"NotSpecified\",\"properties\":\"datacy\"},{\"name\":\"hyqqzzdcy\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"ewfopazdazg\",\"resource\":\"sqgpewqcfu\",\"operation\":\"mdpv\",\"description\":\"zgl\"},\"actionType\":\"NotSpecified\",\"properties\":\"datanlzclctz\"},{\"name\":\"yowmndcovdw\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"zanhmkvfru\",\"resource\":\"kudrbcpftx\",\"operation\":\"dqyemebunaucm\",\"description\":\"irtneemmjau\"},\"actionType\":\"NotSpecified\",\"properties\":\"dataefnoh\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<OperationsDefinition> response = manager.operations()
-            .listByProviderRegistrationWithResponse("owlxte", com.azure.core.util.Context.NONE)
+            .listByProviderRegistrationWithResponse("scyvaifppuacvf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ptjgwdt", response.get(0).name());
-        Assertions.assertEquals(true, response.get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, response.get(0).origin());
-        Assertions.assertEquals("nblwphqlkcc", response.get(0).display().provider());
-        Assertions.assertEquals("zgygqwahoiulwgni", response.get(0).display().resource());
-        Assertions.assertEquals("prglvawuwzduf", response.get(0).display().operation());
-        Assertions.assertEquals("pivlsbbjpm", response.get(0).display().description());
+        Assertions.assertEquals("owpsfxt", response.get(0).name());
+        Assertions.assertTrue(response.get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.USER, response.get(0).origin());
+        Assertions.assertEquals("ymh", response.get(0).display().provider());
+        Assertions.assertEquals("v", response.get(0).display().resource());
+        Assertions.assertEquals("yqfttehdpboujst", response.get(0).display().operation());
+        Assertions.assertEquals("fvvdshxcdedsue", response.get(0).display().description());
         Assertions.assertEquals(OperationActionType.INTERNAL, response.get(0).actionType());
     }
 }

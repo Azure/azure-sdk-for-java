@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/PlaywrightWorkspaces_Update.json
+     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_Update.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Update.

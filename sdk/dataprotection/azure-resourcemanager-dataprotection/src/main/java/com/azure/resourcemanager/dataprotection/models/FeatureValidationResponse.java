@@ -95,7 +95,6 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
      */
     @Override
     public void validate() {
-        super.validate();
         if (features() != null) {
             features().forEach(e -> e.validate());
         }

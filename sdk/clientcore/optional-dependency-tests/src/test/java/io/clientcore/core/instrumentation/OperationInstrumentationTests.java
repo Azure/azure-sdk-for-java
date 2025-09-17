@@ -53,6 +53,7 @@ public class OperationInstrumentationTests {
     private TestClock testClock;
 
     private InstrumentationOptions otelOptions;
+    private InstrumentationOptions otelOptionsWithExperimentalFeatures;
     private SdkInstrumentationOptions sdkInstrumentationOptions
         = new SdkInstrumentationOptions("test-lib").setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
@@ -69,6 +70,8 @@ public class OperationInstrumentationTests {
         OpenTelemetry openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).setMeterProvider(meterProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        otelOptionsWithExperimentalFeatures
+            = new InstrumentationOptions().setTelemetryProvider(openTelemetry).setExperimentalFeaturesEnabled(true);
     }
 
     @AfterEach
@@ -87,6 +90,28 @@ public class OperationInstrumentationTests {
 
     @Test
     public void basicCall() {
+        Instrumentation instrumentation = Instrumentation.create(otelOptionsWithExperimentalFeatures,
+            sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+
+        AtomicReference<Span> current = new AtomicReference<>();
+        instrumentation.instrument("call", RequestContext.none(), context -> {
+            current.set(Span.current());
+            assertTrue(current.get().getSpanContext().isValid());
+            assertEquals(current.get().getSpanContext().getTraceId(), context.getInstrumentationContext().getTraceId());
+            assertEquals(current.get().getSpanContext().getSpanId(), context.getInstrumentationContext().getSpanId());
+        });
+
+        assertFalse(Span.current().getSpanContext().isValid());
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.INTERNAL, "localhost", 443L, null);
+
+        Collection<MetricData> metrics = meterReader.collectAllMetrics();
+        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L, null,
+            current.get().getSpanContext());
+    }
+
+    @Test
+    public void basicCallExperimentalFeaturesDisabled() {
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
 
@@ -100,17 +125,15 @@ public class OperationInstrumentationTests {
 
         assertFalse(Span.current().getSpanContext().isValid());
         assertEquals(1, exporter.getFinishedSpanItems().size());
-        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
+        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.INTERNAL, "localhost", 443L, null);
 
-        Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L, null,
-            current.get().getSpanContext());
+        assertEquals(0, meterReader.collectAllMetrics().size());
     }
 
     @Test
     public void callWithError() {
-        Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+        Instrumentation instrumentation = Instrumentation.create(otelOptionsWithExperimentalFeatures,
+            sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         RuntimeException error = new RuntimeException("Test error");
         assertThrows(RuntimeException.class, () -> instrumentation.instrument("call", RequestContext.none(), o -> {
             throw error;
@@ -118,7 +141,7 @@ public class OperationInstrumentationTests {
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
-        assertCallSpan(spanData, "call", SpanKind.CLIENT, "localhost", 443L, error.getClass().getCanonicalName());
+        assertCallSpan(spanData, "call", SpanKind.INTERNAL, "localhost", 443L, error.getClass().getCanonicalName());
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
         assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", "localhost", 443L,
             error.getClass().getCanonicalName(), spanData.getSpanContext());
@@ -126,13 +149,14 @@ public class OperationInstrumentationTests {
 
     @Test
     public void noEndpoint() {
-        Instrumentation instrumentation = Instrumentation.create(otelOptions, sdkInstrumentationOptions);
+        Instrumentation instrumentation
+            = Instrumentation.create(otelOptionsWithExperimentalFeatures, sdkInstrumentationOptions);
         instrumentation.instrument("call", RequestContext.none(), __ -> {
         });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
-        assertCallSpan(spanData, "call", SpanKind.CLIENT, null, null, null);
+        assertCallSpan(spanData, "call", SpanKind.INTERNAL, null, null, null);
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
         assertDurationMetric(metrics, "test.lib.client.operation.duration", "call", null, null, null,
             spanData.getSpanContext());
@@ -141,8 +165,8 @@ public class OperationInstrumentationTests {
     @ParameterizedTest
     @ValueSource(strings = { "http://example.com", "https://example.com:8080", "http://example.com:9090" })
     public void testEndpoints(String endpoint) {
-        Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(endpoint));
+        Instrumentation instrumentation = Instrumentation.create(otelOptionsWithExperimentalFeatures,
+            sdkInstrumentationOptions.setEndpoint(endpoint));
         instrumentation.instrument("Call", RequestContext.none(), __ -> {
         });
 
@@ -151,7 +175,7 @@ public class OperationInstrumentationTests {
 
         URI uri = URI.create(endpoint);
         Long expectedPort = uri.getPort() == -1 ? 80 : (long) uri.getPort();
-        assertCallSpan(spanData, "Call", SpanKind.CLIENT, uri.getHost(), expectedPort, null);
+        assertCallSpan(spanData, "Call", SpanKind.INTERNAL, uri.getHost(), expectedPort, null);
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
         assertDurationMetric(metrics, "test.lib.client.operation.duration", "Call", uri.getHost(), expectedPort, null,
             spanData.getSpanContext());
@@ -159,9 +183,9 @@ public class OperationInstrumentationTests {
 
     @Test
     public void tracingDisabled() {
-        otelOptions.setTracingEnabled(false);
-        Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
+        otelOptionsWithExperimentalFeatures.setTracingEnabled(false);
+        Instrumentation instrumentation = Instrumentation.create(otelOptionsWithExperimentalFeatures,
+            sdkInstrumentationOptions.setEndpoint(DEFAULT_ENDPOINT));
         instrumentation.instrument("call", RequestContext.none(), __ -> {
             assertFalse(Span.current().getSpanContext().isValid());
         });
@@ -181,7 +205,7 @@ public class OperationInstrumentationTests {
         });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
-        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
+        assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.INTERNAL, "localhost", 443L, null);
         assertEquals(0, meterReader.collectAllMetrics().size());
     }
 
@@ -203,8 +227,8 @@ public class OperationInstrumentationTests {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
         SdkInstrumentationOptions sdkOptions2 = new SdkInstrumentationOptions("test-lib2").setSdkVersion("2.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
-        Instrumentation instrumentation1 = Instrumentation.create(otelOptions, sdkOptions1);
-        Instrumentation instrumentation2 = Instrumentation.create(otelOptions, sdkOptions2);
+        Instrumentation instrumentation1 = Instrumentation.create(otelOptionsWithExperimentalFeatures, sdkOptions1);
+        Instrumentation instrumentation2 = Instrumentation.create(otelOptionsWithExperimentalFeatures, sdkOptions2);
 
         io.clientcore.core.instrumentation.tracing.Span span = instrumentation1.getTracer()
             .spanBuilder("call1", SpanKind.CONSUMER, null)
@@ -227,7 +251,7 @@ public class OperationInstrumentationTests {
         assertEquals(2, exporter.getFinishedSpanItems().size());
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
         SpanData spanData1 = exporter.getFinishedSpanItems().get(1);
-        assertCallSpan(spanData2, "call2", SpanKind.CLIENT, null, null, null);
+        assertCallSpan(spanData2, "call2", SpanKind.INTERNAL, null, null, null);
         assertCallSpan(spanData1, "call1", SpanKind.CONSUMER, null, null, null);
         assertEquals(spanData1.getSpanContext().getTraceId(), spanData2.getSpanContext().getTraceId());
         assertEquals(spanData1.getSpanContext().getSpanId(), spanData2.getParentSpanContext().getSpanId());
@@ -240,8 +264,8 @@ public class OperationInstrumentationTests {
 
     @Test
     public void testSiblingOperations() {
-        Instrumentation instrumentation
-            = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint("https://localhost"));
+        Instrumentation instrumentation = Instrumentation.create(otelOptionsWithExperimentalFeatures,
+            sdkInstrumentationOptions.setEndpoint("https://localhost"));
 
         AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
 
@@ -271,8 +295,8 @@ public class OperationInstrumentationTests {
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
         SpanData spanData3 = exporter.getFinishedSpanItems().get(1);
         SpanData spanData1 = exporter.getFinishedSpanItems().get(2);
-        assertCallSpan(spanData2, "call2", SpanKind.CLIENT, "localhost", 443L, null);
-        assertCallSpan(spanData3, "call3", SpanKind.CLIENT, "localhost", 443L, null);
+        assertCallSpan(spanData2, "call2", SpanKind.INTERNAL, "localhost", 443L, null);
+        assertCallSpan(spanData3, "call3", SpanKind.INTERNAL, "localhost", 443L, null);
         assertCallSpan(spanData1, "call1", SpanKind.CONSUMER, null, null, null);
         assertEquals(parent.get().getTraceId(), spanData2.getSpanContext().getTraceId());
         assertEquals(parent.get().getSpanId(), spanData2.getParentSpanContext().getSpanId());

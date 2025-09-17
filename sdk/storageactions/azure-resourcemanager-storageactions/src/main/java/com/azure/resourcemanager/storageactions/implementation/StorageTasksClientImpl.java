@@ -136,25 +136,23 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") StorageTaskUpdateParameters parameters,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageTaskName") String storageTaskName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageTaskName") String storageTaskName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageTaskName") String storageTaskName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageTaskName") String storageTaskName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks")
@@ -914,10 +912,9 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageTaskName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storageTaskName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -952,9 +949,8 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, Context.NONE);
     }
 
     /**
@@ -989,9 +985,8 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter storageTaskName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storageTaskName, context);
     }
 
     /**

@@ -114,7 +114,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PrivateEndpointConnectionInner properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections/{peConnectionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,10 +122,9 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudHsmClusterName") String cloudHsmClusterName,
-            @PathParam("peConnectionName") String peConnectionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("peConnectionName") String peConnectionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections/{peConnectionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -133,8 +132,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudHsmClusterName") String cloudHsmClusterName,
-            @PathParam("peConnectionName") String peConnectionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("peConnectionName") String peConnectionName, Context context);
     }
 
     /**
@@ -438,9 +436,9 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter peConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -481,10 +479,8 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter peConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE);
     }
 
     /**
@@ -525,9 +521,8 @@ public final class CloudHsmClusterPrivateEndpointConnectionsClientImpl
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter peConnectionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, peConnectionName, context);
     }
 
     /**

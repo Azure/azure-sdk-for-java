@@ -37,18 +37,11 @@ public interface ManagedGrafana {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the properties property: Properties specific to the grafana resource.
      * 
-     * @return the location value.
+     * @return the properties value.
      */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
+    ManagedGrafanaProperties properties();
 
     /**
      * Gets the sku property: The Sku of the grafana resource.
@@ -58,11 +51,18 @@ public interface ManagedGrafana {
     ResourceSku sku();
 
     /**
-     * Gets the properties property: Properties specific to the grafana resource.
+     * Gets the tags property: Resource tags.
      * 
-     * @return the properties value.
+     * @return the tags value.
      */
-    ManagedGrafanaProperties properties();
+    Map<String, String> tags();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    String location();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.
@@ -109,8 +109,8 @@ public interface ManagedGrafana {
     /**
      * The entirety of the ManagedGrafana definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
@@ -120,28 +120,7 @@ public interface ManagedGrafana {
         /**
          * The first stage of the ManagedGrafana definition.
          */
-        interface Blank extends WithLocation {
-        }
-
-        /**
-         * The stage of the ManagedGrafana definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(String location);
+        interface Blank extends WithResourceGroup {
         }
 
         /**
@@ -161,8 +140,8 @@ public interface ManagedGrafana {
          * The stage of the ManagedGrafana definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
-            DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithProperties, DefinitionStages.WithSku, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -180,6 +159,27 @@ public interface ManagedGrafana {
         }
 
         /**
+         * The stage of the ManagedGrafana definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
+
+        /**
          * The stage of the ManagedGrafana definition allowing to specify tags.
          */
         interface WithTags {
@@ -193,19 +193,6 @@ public interface ManagedGrafana {
         }
 
         /**
-         * The stage of the ManagedGrafana definition allowing to specify sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku of the grafana resource..
-             * 
-             * @param sku The Sku of the grafana resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(ResourceSku sku);
-        }
-
-        /**
          * The stage of the ManagedGrafana definition allowing to specify properties.
          */
         interface WithProperties {
@@ -216,6 +203,19 @@ public interface ManagedGrafana {
              * @return the next definition stage.
              */
             WithCreate withProperties(ManagedGrafanaProperties properties);
+        }
+
+        /**
+         * The stage of the ManagedGrafana definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku of the grafana resource..
+             * 
+             * @param sku The Sku of the grafana resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
         }
 
         /**

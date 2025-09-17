@@ -11,11 +11,13 @@ import com.azure.resourcemanager.providerhub.models.CustomRolloutArrayResponseWi
 import com.azure.resourcemanager.providerhub.models.CustomRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutPropertiesStatus;
+import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAutoProvisionConfig;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationProviderRegistration;
+import com.azure.resourcemanager.providerhub.models.CustomRolloutStatusManifestCheckinStatus;
 import com.azure.resourcemanager.providerhub.models.ExtendedErrorInfo;
+import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,41 +27,138 @@ public final class CustomRolloutArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomRolloutArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"specification\":{\"canary\":{\"regions\":[\"ovawjvzunlu\",\"hnnpr\"]},\"providerRegistration\":{\"properties\":{},\"id\":\"peilpjzuaejxdu\",\"name\":\"tskzbbtdzumveek\",\"type\":\"pwo\"},\"resourceTypeRegistrations\":[{\"id\":\"kfpbs\",\"name\":\"yofd\",\"type\":\"luu\"},{\"id\":\"dttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}]},\"status\":{\"completedRegions\":[\"jixisxyawjoyaqcs\"],\"failedOrSkippedRegions\":{\"pkii\":{},\"zyexzn\":{},\"lixhnrztfol\":{},\"bnxknalaulppg\":{}}}},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"}],\"nextLink\":\"qwwncw\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"specification\":{\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false},\"canary\":{\"regions\":[\"wndnhj\"]},\"releaseScopes\":[\"whvylw\",\"btdhxujznbm\",\"ow\",\"wpr\"],\"refreshSubscriptionRegistration\":false,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"j\",\"name\":\"khfxobbcswsrt\",\"type\":\"riplrbpbewtg\"},\"resourceTypeRegistrations\":[{\"id\":\"blcg\",\"name\":\"xzvlvqhjkbegib\",\"type\":\"nmxiebwwaloayqc\"},{\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"id\":\"wxqpsrknftguvri\",\"name\":\"hprwmdyv\",\"type\":\"qtayri\"}]},\"status\":{\"completedRegions\":[\"yqbexrmcqibycno\"],\"failedOrSkippedRegions\":{\"nmefqsgzvahapj\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"pvgqzcjrvxdjzlm\",\"pullRequest\":\"xkvugfhzov\",\"commitId\":\"jvzunluthnnp\"}}},\"id\":\"xipeilpjzuaejx\",\"name\":\"ultskzbbtdz\",\"type\":\"mv\"},{\"properties\":{\"provisioningState\":\"Created\",\"specification\":{\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":true},\"canary\":{\"regions\":[\"fpbsjyofdxl\",\"us\"]},\"releaseScopes\":[\"ouwaboekqvkeln\",\"mvb\",\"wyjsflhhcaalnjix\"],\"refreshSubscriptionRegistration\":false,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Hybrid\",\"id\":\"qcslyjpkiid\",\"name\":\"yexz\",\"type\":\"eli\"},\"resourceTypeRegistrations\":[{\"id\":\"rzt\",\"name\":\"o\",\"type\":\"hb\"}]},\"status\":{\"completedRegions\":[\"alaulppggdtpnapn\",\"iropuhpigvpgylg\",\"git\"],\"failedOrSkippedRegions\":{\"djvcsl\":{},\"n\":{},\"wwncwzzhxgk\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"gucnapkte\",\"pullRequest\":\"llwptfdy\",\"commitId\":\"fqbuaceopzf\"}}},\"id\":\"hhuao\",\"name\":\"ppcqeqxolz\",\"type\":\"ahzxctobgbk\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"specification\":{\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":true},\"canary\":{\"regions\":[\"rcfbunrm\",\"qjhhkxbpv\"]},\"releaseScopes\":[\"jhxxjyn\"],\"refreshSubscriptionRegistration\":false,\"skipReleaseScopeValidation\":false,\"providerRegistration\":{\"properties\":{},\"kind\":\"Direct\",\"id\":\"bxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"},\"resourceTypeRegistrations\":[{\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"},{\"id\":\"ytkblmpew\",\"name\":\"wfbkrvrns\",\"type\":\"shqjohxcrsbf\"},{\"id\":\"vasrruvwb\",\"name\":\"sqfsubcgjbirxb\",\"type\":\"ybsrfbjfdtwss\"}]},\"status\":{\"completedRegions\":[\"pvjzbe\",\"ilzznfqqnvwp\",\"qtaruoujmkcjhwq\",\"tjrybnwjewgdr\"],\"failedOrSkippedRegions\":{\"vnaenqpehindoyg\":{},\"ifthnz\":{},\"ndslgnayqigynduh\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"qlkth\",\"pullRequest\":\"aqolbgycduiertg\",\"commitId\":\"y\"}}},\"id\":\"aolps\",\"name\":\"lqlfm\",\"type\":\"dnbbglzps\"},{\"properties\":{\"provisioningState\":\"Failed\",\"specification\":{\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":false},\"canary\":{\"regions\":[\"xssadbzmnvdf\",\"n\",\"daodvxzbncblyl\"]},\"releaseScopes\":[\"dbh\",\"xsrz\",\"zucerscdntnev\"],\"refreshSubscriptionRegistration\":false,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"slswtm\",\"name\":\"eriofzpyqs\",\"type\":\"mwabnetshhszhedp\"},\"resourceTypeRegistrations\":[{\"id\":\"iwubmwmbesldnk\",\"name\":\"wtppjflcxogaoko\",\"type\":\"z\"},{\"id\":\"nsikvmkqzeqqkdl\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"}]},\"status\":{\"completedRegions\":[\"xbxwa\"],\"failedOrSkippedRegions\":{\"gqxndlkzgxhuripl\":{},\"podxunkb\":{},\"bxmubyynt\":{},\"lrb\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"oievseotgqrlltm\",\"pullRequest\":\"lauwzizxbmpgcjef\",\"commitId\":\"muvp\"}}},\"id\":\"tdum\",\"name\":\"rp\",\"type\":\"xe\"}],\"nextLink\":\"nzbtbhj\"}")
             .toObject(CustomRolloutArrayResponseWithContinuation.class);
-        Assertions.assertEquals(ProvisioningState.DELETED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("ovawjvzunlu",
-            model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("jixisxyawjoyaqcs",
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals("wndnhj", model.value().get(0).properties().specification().canary().regions().get(0));
+        Assertions.assertEquals("whvylw", model.value().get(0).properties().specification().releaseScopes().get(0));
+        Assertions.assertFalse(model.value().get(0).properties().specification().refreshSubscriptionRegistration());
+        Assertions.assertTrue(model.value().get(0).properties().specification().skipReleaseScopeValidation());
+        Assertions.assertEquals(ProviderRegistrationKind.HYBRID,
+            model.value().get(0).properties().specification().providerRegistration().kind());
+        Assertions.assertEquals("yqbexrmcqibycno",
             model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals("qwwncw", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
+        Assertions.assertEquals("pvgqzcjrvxdjzlm",
+            model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
+        Assertions.assertEquals("xkvugfhzov",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("jvzunluthnnp",
+            model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("nzbtbhj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomRolloutArrayResponseWithContinuation model = new CustomRolloutArrayResponseWithContinuation()
-            .withValue(Arrays.asList(new CustomRolloutInner()
-                .withProperties(new CustomRolloutProperties().withProvisioningState(ProvisioningState.DELETED)
+        CustomRolloutArrayResponseWithContinuation model
+            = new CustomRolloutArrayResponseWithContinuation().withValue(Arrays.asList(
+                new CustomRolloutInner().withProperties(new CustomRolloutProperties()
                     .withSpecification(new CustomRolloutPropertiesSpecification()
-                        .withCanary(
-                            new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("ovawjvzunlu", "hnnpr")))
+                        .withAutoProvisionConfig(new CustomRolloutSpecificationAutoProvisionConfig().withStorage(false)
+                            .withResourceGraph(false))
+                        .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("wndnhj")))
+                        .withReleaseScopes(Arrays.asList("whvylw", "btdhxujznbm", "ow", "wpr"))
+                        .withRefreshSubscriptionRegistration(false)
+                        .withSkipReleaseScopeValidation(true)
                         .withProviderRegistration(new CustomRolloutSpecificationProviderRegistration()
-                            .withProperties(new ProviderRegistrationProperties()))
+                            .withProperties(new ProviderRegistrationProperties())
+                            .withKind(ProviderRegistrationKind.HYBRID))
+                        .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner(),
+                            new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner())))
+                    .withStatus(new CustomRolloutPropertiesStatus()
+                        .withCompletedRegions(Arrays.asList("yqbexrmcqibycno"))
+                        .withFailedOrSkippedRegions(mapOf("nmefqsgzvahapj", new ExtendedErrorInfo()))
+                        .withManifestCheckinStatus(new CustomRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
+                            .withStatusMessage("pvgqzcjrvxdjzlm")
+                            .withPullRequest("xkvugfhzov")
+                            .withCommitId("jvzunluthnnp")))),
+                new CustomRolloutInner().withProperties(new CustomRolloutProperties()
+                    .withSpecification(new CustomRolloutPropertiesSpecification()
+                        .withAutoProvisionConfig(new CustomRolloutSpecificationAutoProvisionConfig().withStorage(false)
+                            .withResourceGraph(true))
+                        .withCanary(
+                            new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("fpbsjyofdxl", "us")))
+                        .withReleaseScopes(Arrays.asList("ouwaboekqvkeln", "mvb", "wyjsflhhcaalnjix"))
+                        .withRefreshSubscriptionRegistration(false)
+                        .withSkipReleaseScopeValidation(true)
+                        .withProviderRegistration(new CustomRolloutSpecificationProviderRegistration()
+                            .withProperties(new ProviderRegistrationProperties())
+                            .withKind(ProviderRegistrationKind.HYBRID))
+                        .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner())))
+                    .withStatus(new CustomRolloutPropertiesStatus()
+                        .withCompletedRegions(Arrays.asList("alaulppggdtpnapn", "iropuhpigvpgylg", "git"))
+                        .withFailedOrSkippedRegions(mapOf("djvcsl", new ExtendedErrorInfo(), "n",
+                            new ExtendedErrorInfo(), "wwncwzzhxgk", new ExtendedErrorInfo()))
+                        .withManifestCheckinStatus(new CustomRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
+                            .withStatusMessage("gucnapkte")
+                            .withPullRequest("llwptfdy")
+                            .withCommitId("fqbuaceopzf")))),
+                new CustomRolloutInner().withProperties(new CustomRolloutProperties()
+                    .withSpecification(new CustomRolloutPropertiesSpecification()
+                        .withAutoProvisionConfig(new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true)
+                            .withResourceGraph(true))
+                        .withCanary(
+                            new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("rcfbunrm", "qjhhkxbpv")))
+                        .withReleaseScopes(Arrays.asList("jhxxjyn"))
+                        .withRefreshSubscriptionRegistration(false)
+                        .withSkipReleaseScopeValidation(false)
+                        .withProviderRegistration(new CustomRolloutSpecificationProviderRegistration()
+                            .withProperties(new ProviderRegistrationProperties())
+                            .withKind(ProviderRegistrationKind.DIRECT))
+                        .withResourceTypeRegistrations(Arrays.asList(new ResourceTypeRegistrationInner(),
+                            new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner())))
+                    .withStatus(new CustomRolloutPropertiesStatus()
+                        .withCompletedRegions(
+                            Arrays.asList("pvjzbe", "ilzznfqqnvwp", "qtaruoujmkcjhwq", "tjrybnwjewgdr"))
+                        .withFailedOrSkippedRegions(mapOf("vnaenqpehindoyg", new ExtendedErrorInfo(), "ifthnz",
+                            new ExtendedErrorInfo(), "ndslgnayqigynduh", new ExtendedErrorInfo()))
+                        .withManifestCheckinStatus(new CustomRolloutStatusManifestCheckinStatus().withIsCheckedIn(true)
+                            .withStatusMessage("qlkth")
+                            .withPullRequest("aqolbgycduiertg")
+                            .withCommitId("y")))),
+                new CustomRolloutInner().withProperties(new CustomRolloutProperties()
+                    .withSpecification(new CustomRolloutPropertiesSpecification()
+                        .withAutoProvisionConfig(new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true)
+                            .withResourceGraph(false))
+                        .withCanary(new CustomRolloutSpecificationCanary()
+                            .withRegions(Arrays.asList("xssadbzmnvdf", "n", "daodvxzbncblyl")))
+                        .withReleaseScopes(Arrays.asList("dbh", "xsrz", "zucerscdntnev"))
+                        .withRefreshSubscriptionRegistration(false)
+                        .withSkipReleaseScopeValidation(true)
+                        .withProviderRegistration(new CustomRolloutSpecificationProviderRegistration()
+                            .withProperties(new ProviderRegistrationProperties())
+                            .withKind(ProviderRegistrationKind.MANAGED))
                         .withResourceTypeRegistrations(
                             Arrays.asList(new ResourceTypeRegistrationInner(), new ResourceTypeRegistrationInner())))
-                    .withStatus(
-                        new CustomRolloutPropertiesStatus().withCompletedRegions(Arrays.asList("jixisxyawjoyaqcs"))
-                            .withFailedOrSkippedRegions(
-                                mapOf("pkii", new ExtendedErrorInfo(), "zyexzn", new ExtendedErrorInfo(), "lixhnrztfol",
-                                    new ExtendedErrorInfo(), "bnxknalaulppg", new ExtendedErrorInfo()))))))
-            .withNextLink("qwwncw");
+                    .withStatus(new CustomRolloutPropertiesStatus().withCompletedRegions(Arrays.asList("xbxwa"))
+                        .withFailedOrSkippedRegions(
+                            mapOf("gqxndlkzgxhuripl", new ExtendedErrorInfo(), "podxunkb", new ExtendedErrorInfo(),
+                                "bxmubyynt", new ExtendedErrorInfo(), "lrb", new ExtendedErrorInfo()))
+                        .withManifestCheckinStatus(new CustomRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
+                            .withStatusMessage("oievseotgqrlltm")
+                            .withPullRequest("lauwzizxbmpgcjef")
+                            .withCommitId("muvp"))))))
+                .withNextLink("nzbtbhj");
         model = BinaryData.fromObject(model).toObject(CustomRolloutArrayResponseWithContinuation.class);
-        Assertions.assertEquals(ProvisioningState.DELETED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("ovawjvzunlu",
-            model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("jixisxyawjoyaqcs",
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals("wndnhj", model.value().get(0).properties().specification().canary().regions().get(0));
+        Assertions.assertEquals("whvylw", model.value().get(0).properties().specification().releaseScopes().get(0));
+        Assertions.assertFalse(model.value().get(0).properties().specification().refreshSubscriptionRegistration());
+        Assertions.assertTrue(model.value().get(0).properties().specification().skipReleaseScopeValidation());
+        Assertions.assertEquals(ProviderRegistrationKind.HYBRID,
+            model.value().get(0).properties().specification().providerRegistration().kind());
+        Assertions.assertEquals("yqbexrmcqibycno",
             model.value().get(0).properties().status().completedRegions().get(0));
-        Assertions.assertEquals("qwwncw", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
+        Assertions.assertEquals("pvgqzcjrvxdjzlm",
+            model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
+        Assertions.assertEquals("xkvugfhzov",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("jvzunluthnnp",
+            model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("nzbtbhj", model.nextLink());
     }
 
     // Use "Map.of" if available

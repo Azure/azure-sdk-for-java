@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -53,6 +54,11 @@ public final class CreateGroupCallOptions {
      * AI options for the call
      */
     private CallIntelligenceOptions callIntelligenceOptions;
+
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
+     */
+    private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
      * Constructor
@@ -199,5 +205,25 @@ public final class CreateGroupCallOptions {
      */
     public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
+    }
+
+    /**
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @return the teamsAppSource value.
+     */
+    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
+        return this.teamsAppSource;
+    }
+
+    /**
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @param teamsAppSource the teamsAppSource value to set.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
+        return this;
     }
 }

@@ -75,23 +75,23 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @Host("{endpoint}")
     @ServiceInterface(name = "DashboardManagementClientManagedPrivateEndpoints")
     public interface ManagedPrivateEndpointsService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/refreshManagedPrivateEndpoints")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refresh(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/refreshManagedPrivateEndpoints")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> refreshSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
@@ -155,25 +155,23 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             @BodyParam("application/json") ManagedPrivateEndpointUpdateParameters requestBodyParameters,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
-            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/managedPrivateEndpoints")
@@ -237,10 +235,9 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.refresh(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -274,9 +271,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -310,9 +306,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, context);
     }
 
     /**
@@ -1126,11 +1121,9 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             return Mono.error(
                 new IllegalArgumentException("Parameter managedPrivateEndpointName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1171,9 +1164,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 .log(new IllegalArgumentException(
                     "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName,
             Context.NONE);
     }
 
@@ -1215,10 +1207,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 .log(new IllegalArgumentException(
                     "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedPrivateEndpointName, context);
     }
 
     /**

@@ -20,60 +20,67 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"762d7716-96dc-4d58-9ce6-9cf8039814ec\",\"source\":\"ers\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"ycjsx\":{\"description\":\"namikzebrqbsms\",\"displayName\":\"iqg\",\"documentationUrl\":\"hokzrusw\",\"dataSchemaUrl\":\"hczznvf\"},\"xpelnjetagltsx\":{\"description\":\"wix\",\"displayName\":\"umwmxqhnd\",\"documentationUrl\":\"oamld\",\"dataSchemaUrl\":\"haohdjhhflzokxc\"},\"ky\":{\"description\":\"tft\",\"displayName\":\"pnpbswveflocc\",\"documentationUrl\":\"mozi\",\"dataSchemaUrl\":\"ipgawtxx\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-05-09T23:26:24Z\",\"provisioningState\":\"Updating\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"ytfmpc\",\"messageForActivation\":\"ilrmcaykggnox\"}")
+            "{\"partnerRegistrationImmutableId\":\"262e3c0c-1c5a-4271-bea9-06b822fc1cef\",\"source\":\"dfbzdixzmq\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"wyyu\":{\"description\":\"pqhe\",\"displayName\":\"ptmcgsbostzelnd\",\"documentationUrl\":\"tutmzl\",\"dataSchemaUrl\":\"ojlvfhrbbpneqvc\"},\"cpilj\":{\"description\":\"ochpprpr\",\"displayName\":\"mo\",\"documentationUrl\":\"yzejnhlbk\",\"dataSchemaUrl\":\"z\"},\"apjwogqqnobpudcd\":{\"description\":\"hzvechndbnwieho\",\"displayName\":\"wjwiuub\",\"documentationUrl\":\"fqsfa\",\"dataSchemaUrl\":\"qtferrqwexjkmf\"},\"jjum\":{\"description\":\"tqwpwya\",\"displayName\":\"zasqbucljgkyexao\",\"documentationUrl\":\"yaipidsda\",\"dataSchemaUrl\":\"tx\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-13T05:25:34Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"nm\",\"messageForActivation\":\"ngz\"}")
             .toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("762d7716-96dc-4d58-9ce6-9cf8039814ec"),
+        Assertions.assertEquals(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("ers", model.source());
+        Assertions.assertEquals("dfbzdixzmq", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("namikzebrqbsms", model.eventTypeInfo().inlineEventTypes().get("ycjsx").description());
-        Assertions.assertEquals("iqg", model.eventTypeInfo().inlineEventTypes().get("ycjsx").displayName());
-        Assertions.assertEquals("hokzrusw", model.eventTypeInfo().inlineEventTypes().get("ycjsx").documentationUrl());
-        Assertions.assertEquals("hczznvf", model.eventTypeInfo().inlineEventTypes().get("ycjsx").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T23:26:24Z"), model.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("ytfmpc", model.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("ilrmcaykggnox", model.messageForActivation());
+        Assertions.assertEquals("pqhe", model.eventTypeInfo().inlineEventTypes().get("wyyu").description());
+        Assertions.assertEquals("ptmcgsbostzelnd", model.eventTypeInfo().inlineEventTypes().get("wyyu").displayName());
+        Assertions.assertEquals("tutmzl", model.eventTypeInfo().inlineEventTypes().get("wyyu").documentationUrl());
+        Assertions.assertEquals("ojlvfhrbbpneqvc",
+            model.eventTypeInfo().inlineEventTypes().get("wyyu").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T05:25:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.activationState());
+        Assertions.assertEquals("nm", model.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("ngz", model.messageForActivation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerTopicProperties model = new PartnerTopicProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("762d7716-96dc-4d58-9ce6-9cf8039814ec"))
-            .withSource("ers")
+            .withPartnerRegistrationImmutableId(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"))
+            .withSource("dfbzdixzmq")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("ycjsx",
-                    new InlineEventProperties().withDescription("namikzebrqbsms")
-                        .withDisplayName("iqg")
-                        .withDocumentationUrl("hokzrusw")
-                        .withDataSchemaUrl("hczznvf"),
-                    "xpelnjetagltsx",
-                    new InlineEventProperties().withDescription("wix")
-                        .withDisplayName("umwmxqhnd")
-                        .withDocumentationUrl("oamld")
-                        .withDataSchemaUrl("haohdjhhflzokxc"),
-                    "ky",
-                    new InlineEventProperties().withDescription("tft")
-                        .withDisplayName("pnpbswveflocc")
-                        .withDocumentationUrl("mozi")
-                        .withDataSchemaUrl("ipgawtxx"))))
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-05-09T23:26:24Z"))
-            .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
-            .withPartnerTopicFriendlyDescription("ytfmpc")
-            .withMessageForActivation("ilrmcaykggnox");
+                .withInlineEventTypes(mapOf("wyyu",
+                    new InlineEventProperties().withDescription("pqhe")
+                        .withDisplayName("ptmcgsbostzelnd")
+                        .withDocumentationUrl("tutmzl")
+                        .withDataSchemaUrl("ojlvfhrbbpneqvc"),
+                    "cpilj",
+                    new InlineEventProperties().withDescription("ochpprpr")
+                        .withDisplayName("mo")
+                        .withDocumentationUrl("yzejnhlbk")
+                        .withDataSchemaUrl("z"),
+                    "apjwogqqnobpudcd",
+                    new InlineEventProperties().withDescription("hzvechndbnwieho")
+                        .withDisplayName("wjwiuub")
+                        .withDocumentationUrl("fqsfa")
+                        .withDataSchemaUrl("qtferrqwexjkmf"),
+                    "jjum",
+                    new InlineEventProperties().withDescription("tqwpwya")
+                        .withDisplayName("zasqbucljgkyexao")
+                        .withDocumentationUrl("yaipidsda")
+                        .withDataSchemaUrl("tx"))))
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-13T05:25:34Z"))
+            .withActivationState(PartnerTopicActivationState.DEACTIVATED)
+            .withPartnerTopicFriendlyDescription("nm")
+            .withMessageForActivation("ngz");
         model = BinaryData.fromObject(model).toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("762d7716-96dc-4d58-9ce6-9cf8039814ec"),
+        Assertions.assertEquals(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("ers", model.source());
+        Assertions.assertEquals("dfbzdixzmq", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("namikzebrqbsms", model.eventTypeInfo().inlineEventTypes().get("ycjsx").description());
-        Assertions.assertEquals("iqg", model.eventTypeInfo().inlineEventTypes().get("ycjsx").displayName());
-        Assertions.assertEquals("hokzrusw", model.eventTypeInfo().inlineEventTypes().get("ycjsx").documentationUrl());
-        Assertions.assertEquals("hczznvf", model.eventTypeInfo().inlineEventTypes().get("ycjsx").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T23:26:24Z"), model.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("ytfmpc", model.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("ilrmcaykggnox", model.messageForActivation());
+        Assertions.assertEquals("pqhe", model.eventTypeInfo().inlineEventTypes().get("wyyu").description());
+        Assertions.assertEquals("ptmcgsbostzelnd", model.eventTypeInfo().inlineEventTypes().get("wyyu").displayName());
+        Assertions.assertEquals("tutmzl", model.eventTypeInfo().inlineEventTypes().get("wyyu").documentationUrl());
+        Assertions.assertEquals("ojlvfhrbbpneqvc",
+            model.eventTypeInfo().inlineEventTypes().get("wyyu").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T05:25:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.activationState());
+        Assertions.assertEquals("nm", model.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("ngz", model.messageForActivation());
     }
 
     // Use "Map.of" if available

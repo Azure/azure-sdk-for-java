@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPeerCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPeerCommandResponseInner model = BinaryData.fromString("{\"peerAcceptCommand\":\"fsynljphuop\"}")
-            .toObject(ClusterPeerCommandResponseInner.class);
-        Assertions.assertEquals("fsynljphuop", model.peerAcceptCommand());
+        ClusterPeerCommandResponseInner model
+            = BinaryData.fromString("{\"peerAcceptCommand\":\"k\"}").toObject(ClusterPeerCommandResponseInner.class);
+        Assertions.assertEquals("k", model.peerAcceptCommand());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPeerCommandResponseInner model
-            = new ClusterPeerCommandResponseInner().withPeerAcceptCommand("fsynljphuop");
+        ClusterPeerCommandResponseInner model = new ClusterPeerCommandResponseInner().withPeerAcceptCommand("k");
         model = BinaryData.fromObject(model).toObject(ClusterPeerCommandResponseInner.class);
-        Assertions.assertEquals("fsynljphuop", model.peerAcceptCommand());
+        Assertions.assertEquals("k", model.peerAcceptCommand());
     }
 }

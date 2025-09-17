@@ -23,7 +23,7 @@ public final class PartnerRegistrationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"c76451d3-a741-408b-8ea7-5ec4f0c66e81\"},\"location\":\"mxkbcjwwdxomra\",\"tags\":{\"fly\":\"keboo\",\"mgd\":\"cagaedaoiqc\",\"dxfkuzb\":\"wga\"},\"id\":\"jecooyvhtu\",\"name\":\"bpelniibncgagd\",\"type\":\"cdqhftz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"af441071-a7bb-4098-a142-6e889907420c\"},\"location\":\"dccgndjgdpriggqq\",\"tags\":{\"buu\":\"f\",\"igi\":\"pyuflqjfshtujcyo\"},\"id\":\"wdcsk\",\"name\":\"kqnqvkixnmbzme\",\"type\":\"uyrzw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class PartnerRegistrationsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerRegistration> response = manager.partnerRegistrations()
-            .listByResourceGroup("pyrgu", "fazbkoc", 1213521586, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("ryfmxmdu", "zf", 1040410248, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mxkbcjwwdxomra", response.iterator().next().location());
-        Assertions.assertEquals("keboo", response.iterator().next().tags().get("fly"));
-        Assertions.assertEquals(UUID.fromString("c76451d3-a741-408b-8ea7-5ec4f0c66e81"),
+        Assertions.assertEquals("dccgndjgdpriggqq", response.iterator().next().location());
+        Assertions.assertEquals("f", response.iterator().next().tags().get("buu"));
+        Assertions.assertEquals(UUID.fromString("af441071-a7bb-4098-a142-6e889907420c"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

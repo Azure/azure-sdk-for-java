@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -1079,6 +1080,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            break;
+                        case SubStatusCodes.LEASE_NOT_FOUND:
+                            cause = new LeaseNotFoundException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
                             GoneException goneExceptionFromService =

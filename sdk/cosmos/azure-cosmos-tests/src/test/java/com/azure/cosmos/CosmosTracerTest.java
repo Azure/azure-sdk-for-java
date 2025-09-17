@@ -959,7 +959,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
-        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteEndpoints().size() > 1) {
+        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteRoutingContexts().size() > 1) {
 
             throw new SkipException("Tests would take too long to run on multi master account because " +
                 "scrips etc. creation can take several seconds for replication.");
@@ -1762,7 +1762,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
 
-            boolean isRequestChargeMismatch = 
+            boolean isRequestChargeMismatch =
                 (double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
                 || Double.valueOf(ctx.getTotalRequestCharge()) == 0d;
 

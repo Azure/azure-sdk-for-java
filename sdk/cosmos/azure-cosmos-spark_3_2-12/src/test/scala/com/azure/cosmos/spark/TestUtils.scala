@@ -92,6 +92,7 @@ trait SparkWithMetrics extends Spark {
       .master("local")
       .config("spark.cosmos.diagnostics.azureMonitor.enabled", "true")
       .config("spark.cosmos.diagnostics.azureMonitor.metrics.intervalInSeconds", "10")
+      .config("spark.cosmos.diagnostics.azureMonitor.connectionString", azMonConnectionString)
       .getOrCreate()
 
     LocalJavaFileSystem.applyToSparkSession(spark)
@@ -110,7 +111,7 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
-      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      // .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
       .config("spark.cosmos.metrics.slf4j.enabled", "false")
       .getOrCreate()
 

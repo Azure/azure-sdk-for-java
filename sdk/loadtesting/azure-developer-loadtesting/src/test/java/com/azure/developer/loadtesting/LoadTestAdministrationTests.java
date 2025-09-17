@@ -9,12 +9,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.FileType;
 import com.azure.developer.loadtesting.models.FileValidationStatus;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
@@ -67,7 +67,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fileType", FileType.ADDITIONAL_ARTIFACTS.toString());
+            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString());
         PollResponse<BinaryData> response
             = getLoadTestAdministrationClient().beginUploadTestFile(newTestId, uploadCsvFileName, file, requestOptions)
                 .poll();
@@ -80,7 +80,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions
-            = new RequestOptions().addQueryParam("fileType", FileType.TEST_SCRIPT.toString());
+            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.TEST_SCRIPT.toString());
         SyncPoller<BinaryData, BinaryData> poller = getLoadTestAdministrationClient().beginUploadTestFile(newTestId,
             uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
@@ -152,13 +152,14 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getTestFile() {
         TestFileInfo response = getLoadTestAdministrationClient().getTestFile(newTestId, uploadJmxFileName);
 
-        assertEquals(FileType.TEST_SCRIPT.toString(), response.getFileType().toString());
+        assertEquals(LoadTestingFileType.TEST_SCRIPT.toString(), response.getFileType().toString());
         assertEquals(uploadJmxFileName, response.getFileName());
 
         TestFileInfo additionalFileResponse
             = getLoadTestAdministrationClient().getTestFile(newTestId, uploadCsvFileName);
 
-        assertEquals(FileType.ADDITIONAL_ARTIFACTS.toString(), additionalFileResponse.getFileType().toString());
+        assertEquals(LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString(),
+            additionalFileResponse.getFileType().toString());
         assertEquals(uploadCsvFileName, additionalFileResponse.getFileName());
     }
 

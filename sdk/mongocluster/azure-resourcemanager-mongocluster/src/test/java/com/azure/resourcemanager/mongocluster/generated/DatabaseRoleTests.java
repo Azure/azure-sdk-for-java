@@ -13,16 +13,16 @@ public final class DatabaseRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseRole model
-            = BinaryData.fromString("{\"db\":\"qbqqwxr\",\"role\":\"dbOwner\"}").toObject(DatabaseRole.class);
-        Assertions.assertEquals("qbqqwxr", model.db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.role());
+            = BinaryData.fromString("{\"db\":\"ulexxbczwtr\",\"role\":\"root\"}").toObject(DatabaseRole.class);
+        Assertions.assertEquals("ulexxbczwtr", model.db());
+        Assertions.assertEquals(UserRole.ROOT, model.role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseRole model = new DatabaseRole().withDb("qbqqwxr").withRole(UserRole.DATABASE_OWNER);
+        DatabaseRole model = new DatabaseRole().withDb("ulexxbczwtr").withRole(UserRole.ROOT);
         model = BinaryData.fromObject(model).toObject(DatabaseRole.class);
-        Assertions.assertEquals("qbqqwxr", model.db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.role());
+        Assertions.assertEquals("ulexxbczwtr", model.db());
+        Assertions.assertEquals(UserRole.ROOT, model.role());
     }
 }

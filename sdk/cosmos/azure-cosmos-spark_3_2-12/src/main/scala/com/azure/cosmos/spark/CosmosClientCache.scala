@@ -24,15 +24,10 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import io.netty.util.ResourceLeakDetector
 import io.opentelemetry.api.common.AttributeKey
 import io.opentelemetry.api.logs.Severity
-import io.opentelemetry.instrumentation.log4j.appender.v2_17.OpenTelemetryAppender
 import io.opentelemetry.sdk.OpenTelemetrySdk
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import io.opentelemetry.sdk.metrics.SdkMeterProvider
 import io.opentelemetry.sdk.trace.samplers.Sampler
-import org.apache.logging.log4j.core.Filter.Result
-import org.apache.logging.log4j.{Level, LogManager}
-import org.apache.logging.log4j.core.filter.ThresholdFilter
-import org.apache.logging.log4j.core.{Filter, LoggerContext}
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -157,6 +152,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private def validateAadConfigs(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
+    val shouldLog = !(cosmosClientConfiguration.resourceGroupName.isDefined &&
+      cosmosClientConfiguration.subscriptionId.isDefined &&
+      cosmosClientConfiguration.tenantId.isDefined)
+    if (shouldLog) {
+      logWarning(
+        "To create Databases, Containers and other resources in Cosmos DB using Microsoft Entra ID, " +
+          "you need to provide resourceGroupName, subscriptionId and tenantId in the configuration. " +
+          "Otherwise, the Cosmos Catalog will not be able to create resources."
+      )
+    }
+    shouldLog
+  }
+
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
                                cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
@@ -170,17 +179,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
         // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
         cosmosClientConfiguration.authConfig match {
-            case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
-                sparkCatalogClient =
-                    CosmosCatalogManagementSDKClient(
-                        cosmosClientConfiguration.resourceGroupName.get,
-                        cosmosClientConfiguration.databaseAccountName,
-                        createCosmosManagementClient(
-                            cosmosClientConfiguration.subscriptionId.get,
-                            new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                            aadAuthConfig),
-                        cosmosAsyncClient)
-            case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+          case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    aadAuthConfig),
+                  cosmosAsyncClient)
+            }
+          case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -190,7 +202,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                     managedIdentityAuth),
                   cosmosAsyncClient)
-            case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+            }
+          case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -200,7 +214,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                     accessTokenProviderAuth),
                   cosmosAsyncClient)
-            case _ =>
+            }
+          case _ =>
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
@@ -318,8 +333,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         additionalSystemPropertyOverrides.put(
           "otel.traces.exporter", "azure_monitor")
         additionalSystemPropertyOverrides.put(
-          "otel.logs.exporter", "azure_monitor")
-        additionalSystemPropertyOverrides.put(
           "applicationinsights.live.metrics.enabled",
           azMonConfig.liveMetricsEnabled.toString)
 
@@ -388,16 +401,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             )
           )
       })
-      .addLogRecordProcessorCustomizer((processor, _) => {
-        logInfo(s"$processor")
-        processor
-      })
-      .addLogRecordExporterCustomizer((exporter, _) => new CosmosMaxCountPerIntervalLogExporter(
-        exporter,
-        Severity.WARN,
-        azMonConfig.logSamplingMaxCount,
-        azMonConfig.logSamplingIntervalInSeconds
-      ))
       .build
       .getOpenTelemetrySdk
 
@@ -416,60 +419,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       .build()
   }
 
-  private[this] def configureLoggingForAzureMonitor
-  (
-    cosmosClientConfiguration: CosmosClientConfiguration,
-    azMonConfig: AzureMonitorConfig,
-    openTelemetry: OpenTelemetrySdk
-  ): Unit = {
-    // 1. Get the context and config
-    val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
-    val config = ctx.getConfiguration
-
-    // 2. Create the appender and filter
-    val filter: Filter = ThresholdFilter.createFilter(
-      azMonConfig.logLevel, // Minimum log level to emit (e.g., WARN or ERROR)
-      Result.ACCEPT, // If above threshold
-      Result.DENY // If below threshold
-    )
-
-    val sampledDiagnosticsLoggerFilter: Filter = ThresholdFilter.createFilter(
-      Level.INFO, // Minimum log level to emit (e.g., WARN or ERROR)
-      Result.ACCEPT, // If above threshold
-      Result.DENY // If below threshold
-    )
-
-    val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
-      OpenTelemetryAppender.builder()
-
-    otelAppenderBuilder.setName("otel-appender")
-    otelAppenderBuilder.setFilter(filter)
-    otelAppenderBuilder.setOpenTelemetry(openTelemetry)
-    val otelAppender = otelAppenderBuilder.build()
-
-    otelAppender.start
-
-    // 3. Add to config
-    config.addAppender(otelAppender)
-
-    // 4. Attach to **all** existing logger configs
-    config.getLoggers.values().forEach { loggerConfig =>
-      if ((azMonConfig.logLevel == Level.WARN || azMonConfig.logLevel == Level.ERROR)
-        && loggerConfig.getName.contains("CosmosSamplingDiagnosticsLogger")) {
-
-        loggerConfig.addAppender(otelAppender, Level.INFO, sampledDiagnosticsLoggerFilter)
-      } else {
-        loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-      }
-    }
-
-    // 5. Also attach to root logger
-    val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
-    rootLoggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-
-    ctx.updateLoggers // Apply changes
-  }
-
   private[this] def configureAzureMonitorDiagnostics
   (
     cosmosClientConfiguration: CosmosClientConfiguration,
@@ -478,10 +427,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   ): TracingOptions = {
     val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
     val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
-
-    if (azMonConfig.logLevel != Level.OFF) {
-      configureLoggingForAzureMonitor(cosmosClientConfiguration, azMonConfig, openTelemetry)
-    }
 
     // Pass OpenTelemetry container to TracingOptions.
     val tracingOptions = new OpenTelemetryTracingOptions()
@@ -627,7 +572,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
       telemetryConfig = telemetryConfig
         .tracingOptions(tracingOptions)
-        .enableTransportLevelTracing()
     } else {
       logInfo("Azure Monitor traces/logs disabled.")
     }
@@ -822,7 +766,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] def createCosmosManagementClient(subscriptionId: String,
                                                  azureEnvironment: AzureEnvironment,
                                                  authConfig: CosmosAccessTokenAuthConfig): CosmosManager = {
-    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+    val tenantId = authConfig.tenantId.getOrElse(
+      throw new IllegalArgumentException("Tenant ID must be provided for CosmosAccessTokenAuthConfig")
+    )
+    val azureProfile = new AzureProfile(tenantId, subscriptionId, azureEnvironment)
 
     CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
   }

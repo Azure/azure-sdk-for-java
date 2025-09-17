@@ -22,7 +22,7 @@ public final class ManagedDashboardsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"mygtdssls\",\"tags\":{\"abnetshh\":\"weriofzpyqsem\",\"bmwmbesldnkw\":\"zhedplvwiw\",\"gaokonzmnsikv\":\"tppjflcx\"},\"id\":\"kqze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"ulppggdtpnapnyir\",\"tags\":{\"gylgqgitxmedjvcs\":\"hpigv\",\"rmgucnap\":\"ynqwwncwzzhxgk\"},\"id\":\"t\",\"name\":\"oellwp\",\"type\":\"fdygpfqbuaceopz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class ManagedDashboardsListMockTests {
 
         PagedIterable<ManagedDashboard> response = manager.managedDashboards().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mygtdssls", response.iterator().next().location());
-        Assertions.assertEquals("weriofzpyqsem", response.iterator().next().tags().get("abnetshh"));
+        Assertions.assertEquals("ulppggdtpnapnyir", response.iterator().next().location());
+        Assertions.assertEquals("hpigv", response.iterator().next().tags().get("gylgqgitxmedjvcs"));
     }
 }

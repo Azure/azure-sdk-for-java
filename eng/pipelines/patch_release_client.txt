@@ -58,8 +58,9 @@ com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
-com.azure:azure-monitor-query # Tests owner: srnagar
-com.azure:azure-monitor-ingestion # Tests owner: srnagar
+com.azure:azure-monitor-query-metrics # Tests owner: jairmyree, srnagar
+com.azure:azure-monitor-query-logs # Tests owner: jairmyree, srnagar
+com.azure:azure-monitor-ingestion # Tests owner: jairmyree, srnagar
 com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7

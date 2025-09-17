@@ -15,9 +15,9 @@ public final class FaultSimulationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationDetails model = BinaryData.fromString(
-            "{\"clusterId\":\"wkqbrqu\",\"operationId\":\"axhexiilivp\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"r\",\"status\":\"Done\",\"operationId\":\"oaxoruzfgsqu\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"xxle\",\"status\":\"Done\",\"operationId\":\"mxjezwlw\",\"operationStatus\":\"Succeeded\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-10-02T16:07:13Z\"}}}")
+            "{\"clusterId\":\"thzvaytdwkqbrqu\",\"operationId\":\"axhexiilivp\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"r\",\"status\":\"Done\",\"operationId\":\"oaxoruzfgsqu\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"xxle\",\"status\":\"Done\",\"operationId\":\"mxjezwlw\",\"operationStatus\":\"Succeeded\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-10-02T16:07:13Z\"}}}")
             .toObject(FaultSimulationDetails.class);
-        Assertions.assertEquals("wkqbrqu", model.clusterId());
+        Assertions.assertEquals("thzvaytdwkqbrqu", model.clusterId());
         Assertions.assertEquals("axhexiilivp", model.operationId());
         Assertions.assertEquals("r", model.nodeTypeFaultSimulation().get(0).nodeTypeName());
         Assertions.assertEquals(FaultSimulationStatus.DONE, model.nodeTypeFaultSimulation().get(0).status());

@@ -12,22 +12,22 @@ public final class ResourceTypeRegistrationPropertiesResourceMovePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceMovePolicy model = BinaryData.fromString(
-            "{\"validationRequired\":false,\"crossResourceGroupMoveEnabled\":false,\"crossSubscriptionMoveEnabled\":true}")
+            "{\"validationRequired\":false,\"crossResourceGroupMoveEnabled\":true,\"crossSubscriptionMoveEnabled\":false}")
             .toObject(ResourceTypeRegistrationPropertiesResourceMovePolicy.class);
-        Assertions.assertEquals(false, model.validationRequired());
-        Assertions.assertEquals(false, model.crossResourceGroupMoveEnabled());
-        Assertions.assertEquals(true, model.crossSubscriptionMoveEnabled());
+        Assertions.assertFalse(model.validationRequired());
+        Assertions.assertTrue(model.crossResourceGroupMoveEnabled());
+        Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceMovePolicy model
             = new ResourceTypeRegistrationPropertiesResourceMovePolicy().withValidationRequired(false)
-                .withCrossResourceGroupMoveEnabled(false)
-                .withCrossSubscriptionMoveEnabled(true);
+                .withCrossResourceGroupMoveEnabled(true)
+                .withCrossSubscriptionMoveEnabled(false);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceMovePolicy.class);
-        Assertions.assertEquals(false, model.validationRequired());
-        Assertions.assertEquals(false, model.crossResourceGroupMoveEnabled());
-        Assertions.assertEquals(true, model.crossSubscriptionMoveEnabled());
+        Assertions.assertFalse(model.validationRequired());
+        Assertions.assertTrue(model.crossResourceGroupMoveEnabled());
+        Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }
 }

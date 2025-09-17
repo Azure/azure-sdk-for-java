@@ -6,23 +6,4 @@
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Class name="com.azure.monitor.ingestion.implementation.ConcurrencyLimitingSpliterator" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest" />
-      <Class name="com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder" />
-      <Class name="com.azure.monitor.ingestion.models.LogsUploadError" />
-      <Class name="com.azure.monitor.ingestion.models.LogsUploadException" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder" />
-      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest" />
-      <Class name="com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder" />
-      <Class name="com.azure.monitor.ingestion.models.LogsUploadError" />
-      <Class name="com.azure.monitor.ingestion.models.LogsUploadException" />
-    </Or>
-  </Match>
 </FindBugsFilter>

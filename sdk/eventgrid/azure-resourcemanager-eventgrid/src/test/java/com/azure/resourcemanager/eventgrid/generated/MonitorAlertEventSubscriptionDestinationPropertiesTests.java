@@ -13,23 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitorAlertEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitorAlertEventSubscriptionDestinationProperties model = BinaryData
-            .fromString("{\"severity\":\"Sev0\",\"description\":\"l\",\"actionGroups\":[\"kbuhzaca\",\"ty\",\"tco\"]}")
+        MonitorAlertEventSubscriptionDestinationProperties model = BinaryData.fromString(
+            "{\"severity\":\"Sev2\",\"description\":\"ye\",\"actionGroups\":[\"unaucm\",\"irtneemmjau\",\"cgxefnohaitraniz\"]}")
             .toObject(MonitorAlertEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals(MonitorAlertSeverity.SEV0, model.severity());
-        Assertions.assertEquals("l", model.description());
-        Assertions.assertEquals("kbuhzaca", model.actionGroups().get(0));
+        Assertions.assertEquals(MonitorAlertSeverity.SEV2, model.severity());
+        Assertions.assertEquals("ye", model.description());
+        Assertions.assertEquals("unaucm", model.actionGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitorAlertEventSubscriptionDestinationProperties model
-            = new MonitorAlertEventSubscriptionDestinationProperties().withSeverity(MonitorAlertSeverity.SEV0)
-                .withDescription("l")
-                .withActionGroups(Arrays.asList("kbuhzaca", "ty", "tco"));
+            = new MonitorAlertEventSubscriptionDestinationProperties().withSeverity(MonitorAlertSeverity.SEV2)
+                .withDescription("ye")
+                .withActionGroups(Arrays.asList("unaucm", "irtneemmjau", "cgxefnohaitraniz"));
         model = BinaryData.fromObject(model).toObject(MonitorAlertEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals(MonitorAlertSeverity.SEV0, model.severity());
-        Assertions.assertEquals("l", model.description());
-        Assertions.assertEquals("kbuhzaca", model.actionGroups().get(0));
+        Assertions.assertEquals(MonitorAlertSeverity.SEV2, model.severity());
+        Assertions.assertEquals("ye", model.description());
+        Assertions.assertEquals("unaucm", model.actionGroups().get(0));
     }
 }

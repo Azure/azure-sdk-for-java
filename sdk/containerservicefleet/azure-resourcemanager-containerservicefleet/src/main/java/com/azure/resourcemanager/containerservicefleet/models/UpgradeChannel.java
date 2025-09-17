@@ -31,6 +31,14 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     public static final UpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
+     * Upgrades the clusters Kubernetes version to the latest supported patch version of the specified target Kubernetes
+     * version.
+     * For information on the behavior of update run for Kubernetes version upgrade,
+     * see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal.
+     */
+    public static final UpgradeChannel TARGET_KUBERNETES_VERSION = fromString("TargetKubernetesVersion");
+
+    /**
      * Creates a new instance of UpgradeChannel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -10,6 +10,26 @@
 
 ### Other Changes
 
+## 12.16.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-storage-common` from `12.30.1` to version `12.31.0-beta.2`.
+
+
+## 12.16.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0-beta.2`.
+
+
 ## 12.16.0 (2025-07-16)
 
 ### Features Added

@@ -11,7 +11,7 @@ public final class ResourceSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuCapacity model = BinaryData.fromString(
-            "{\"minimum\":4925998921332611681,\"maximum\":3554487366496283285,\"default\":8175859327820235456,\"scaleType\":\"Automatic\"}")
+            "{\"minimum\":3866272580656295370,\"maximum\":6123215158263005628,\"default\":3753719893956804179,\"scaleType\":\"None\"}")
             .toObject(ResourceSkuCapacity.class);
     }
 

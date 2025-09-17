@@ -22,7 +22,7 @@ public final class ManagedDashboardsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"location\":\"glzpswiydm\",\"tags\":{\"vdfznudaodvxzb\":\"hzdxssadbzm\"},\"id\":\"cblylpstdbhhxsr\",\"name\":\"dzu\",\"type\":\"erscdntne\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"vbxwyjsflhh\",\"tags\":{\"joya\":\"lnjixisxya\"},\"id\":\"cslyjpk\",\"name\":\"idzyexznelixhnr\",\"type\":\"tfolhbnx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ManagedDashboardsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedDashboard> response
-            = manager.managedDashboards().listByResourceGroup("lqlfm", com.azure.core.util.Context.NONE);
+            = manager.managedDashboards().listByResourceGroup("oekqvk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("glzpswiydm", response.iterator().next().location());
-        Assertions.assertEquals("hzdxssadbzm", response.iterator().next().tags().get("vdfznudaodvxzb"));
+        Assertions.assertEquals("vbxwyjsflhh", response.iterator().next().location());
+        Assertions.assertEquals("lnjixisxya", response.iterator().next().tags().get("joya"));
     }
 }

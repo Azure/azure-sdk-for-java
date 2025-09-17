@@ -14,19 +14,18 @@ public final class GrafanaIntegrationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GrafanaIntegrations model = BinaryData
-            .fromString(
-                "{\"azureMonitorWorkspaceIntegrations\":[{\"azureMonitorWorkspaceResourceId\":\"yvvtpgvdfgio\"}]}")
+            .fromString("{\"azureMonitorWorkspaceIntegrations\":[{\"azureMonitorWorkspaceResourceId\":\"xmqci\"}]}")
             .toObject(GrafanaIntegrations.class);
-        Assertions.assertEquals("yvvtpgvdfgio",
+        Assertions.assertEquals("xmqci",
             model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GrafanaIntegrations model = new GrafanaIntegrations().withAzureMonitorWorkspaceIntegrations(
-            Arrays.asList(new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("yvvtpgvdfgio")));
+            Arrays.asList(new AzureMonitorWorkspaceIntegration().withAzureMonitorWorkspaceResourceId("xmqci")));
         model = BinaryData.fromObject(model).toObject(GrafanaIntegrations.class);
-        Assertions.assertEquals("yvvtpgvdfgio",
+        Assertions.assertEquals("xmqci",
             model.azureMonitorWorkspaceIntegrations().get(0).azureMonitorWorkspaceResourceId());
     }
 }

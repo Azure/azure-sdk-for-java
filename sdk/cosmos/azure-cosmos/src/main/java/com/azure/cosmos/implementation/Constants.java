@@ -132,6 +132,7 @@ public final class Constants {
         // Hybrid Search Query
         public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
         public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String COMPONENT_WEIGHTS = "componentWeights";
         public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
         public static final String SKIP = "skip";
         public static final String TAKE = "take";
@@ -291,4 +292,5 @@ public final class Constants {
     }
 
     public static final int QUERYPLAN_CACHE_SIZE = 5000;
+    public static final String AAD_DEFAULT_SCOPE = "https://cosmos.azure.com/.default";
 }

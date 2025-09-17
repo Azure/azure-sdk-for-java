@@ -22,7 +22,7 @@ public final class IntegrationFabricsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"targetResourceId\":\"lxkvu\",\"dataSourceResourceId\":\"hzovawjvzunlut\",\"scenarios\":[\"prnxipeil\"]},\"location\":\"zuaejxd\",\"tags\":{\"dzumveekg\":\"skzbb\",\"bsjyofdx\":\"wozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"targetResourceId\":\"kv\",\"dataSourceResourceId\":\"elmqk\",\"scenarios\":[\"hvljuahaquh\",\"dhmdua\",\"aex\"]},\"location\":\"vfadmws\",\"tags\":{\"gomz\":\"gvxp\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class IntegrationFabricsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IntegrationFabric> response
-            = manager.integrationFabrics().list("nmefqsgzvahapj", "zhpvgqzcjrvxd", com.azure.core.util.Context.NONE);
+            = manager.integrationFabrics().list("ehhseyvjusrts", "hspkdeemao", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zuaejxd", response.iterator().next().location());
-        Assertions.assertEquals("skzbb", response.iterator().next().tags().get("dzumveekg"));
-        Assertions.assertEquals("lxkvu", response.iterator().next().properties().targetResourceId());
-        Assertions.assertEquals("hzovawjvzunlut", response.iterator().next().properties().dataSourceResourceId());
-        Assertions.assertEquals("prnxipeil", response.iterator().next().properties().scenarios().get(0));
+        Assertions.assertEquals("vfadmws", response.iterator().next().location());
+        Assertions.assertEquals("gvxp", response.iterator().next().tags().get("gomz"));
+        Assertions.assertEquals("kv", response.iterator().next().properties().targetResourceId());
+        Assertions.assertEquals("elmqk", response.iterator().next().properties().dataSourceResourceId());
+        Assertions.assertEquals("hvljuahaquh", response.iterator().next().properties().scenarios().get(0));
     }
 }

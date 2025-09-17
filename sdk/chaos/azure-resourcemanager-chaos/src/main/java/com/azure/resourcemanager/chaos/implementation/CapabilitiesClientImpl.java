@@ -116,7 +116,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CapabilityInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,9 +126,9 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @PathParam("capabilityName") String capabilityName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("capabilityName") String capabilityName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -138,7 +138,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
-            @PathParam("capabilityName") String capabilityName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("capabilityName") String capabilityName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities")
@@ -563,11 +563,10 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
         if (capabilityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-                parentResourceName, targetName, capabilityName, accept, context))
+                parentResourceName, targetName, capabilityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -645,10 +644,9 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, targetName, capabilityName, accept, context);
+            parentResourceName, targetName, capabilityName, context);
     }
 
     /**

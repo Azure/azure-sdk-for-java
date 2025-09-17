@@ -6,9 +6,11 @@ package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
 import java.io.IOException;
 
@@ -21,6 +23,17 @@ public class ProviderRegistrationInner extends ProxyResource {
      * The properties property.
      */
     private ProviderRegistrationProperties properties;
+
+    /*
+     * Provider registration kind. This Metadata is also used by portal/tooling/etc to render different UX experiences
+     * for resources of the same type.
+     */
+    private ProviderRegistrationKind kind;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -60,6 +73,48 @@ public class ProviderRegistrationInner extends ProxyResource {
      */
     public ProviderRegistrationInner withProperties(ProviderRegistrationProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Provider registration kind. This Metadata is also used by portal/tooling/etc to render
+     * different UX experiences for resources of the same type.
+     * 
+     * @return the kind value.
+     */
+    public ProviderRegistrationKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Provider registration kind. This Metadata is also used by portal/tooling/etc to render
+     * different UX experiences for resources of the same type.
+     * 
+     * @param kind the kind value to set.
+     * @return the ProviderRegistrationInner object itself.
+     */
+    public ProviderRegistrationInner withKind(ProviderRegistrationKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ProviderRegistrationInner object itself.
+     */
+    ProviderRegistrationInner withSystemData(SystemData systemData) {
+        this.systemData = systemData;
         return this;
     }
 
@@ -111,6 +166,7 @@ public class ProviderRegistrationInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +194,11 @@ public class ProviderRegistrationInner extends ProxyResource {
                     deserializedProviderRegistrationInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedProviderRegistrationInner.properties = ProviderRegistrationProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedProviderRegistrationInner.kind
+                        = ProviderRegistrationKind.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedProviderRegistrationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

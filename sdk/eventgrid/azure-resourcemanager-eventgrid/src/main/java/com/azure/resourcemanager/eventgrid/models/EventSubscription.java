@@ -544,30 +544,6 @@ public interface EventSubscription {
     EventSubscription refresh(Context context);
 
     /**
-     * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription along with {@link Response}.
-     */
-    Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
-
-    /**
-     * Get full URL of an event subscription.
-     * 
-     * Get the full endpoint URL for an event subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription.
-     */
-    EventSubscriptionFullUrl getFullUrl();
-
-    /**
      * Get delivery attributes for an event subscription.
      * 
      * Get all delivery attributes for an event subscription.
@@ -590,4 +566,28 @@ public interface EventSubscription {
      * @return all delivery attributes for an event subscription.
      */
     DeliveryAttributeListResult getDeliveryAttributes();
+
+    /**
+     * Get full URL of an event subscription.
+     * 
+     * Get the full endpoint URL for an event subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription along with {@link Response}.
+     */
+    Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
+
+    /**
+     * Get full URL of an event subscription.
+     * 
+     * Get the full endpoint URL for an event subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription.
+     */
+    EventSubscriptionFullUrl getFullUrl();
 }

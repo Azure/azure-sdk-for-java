@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.13 (Unreleased)
+### 1.0.0-beta.15 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,16 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0-beta.14 (2025-09-05)
+
+#### Features Added
+* Added support for Gateway V2 - See [PR 46223](https://github.com/Azure/azure-sdk-for-java/pull/46223)
+
+### 1.0.0-beta.13 (2025-07-24)
+
+#### Features Added
+* Added support for `FaultInjectionServerErrorType.LEASE_NOT_FOUND` - See [PR 46071](https://github.com/Azure/azure-sdk-for-java/pull/46071)
 
 ### 1.0.0-beta.12 (2025-05-14)
 

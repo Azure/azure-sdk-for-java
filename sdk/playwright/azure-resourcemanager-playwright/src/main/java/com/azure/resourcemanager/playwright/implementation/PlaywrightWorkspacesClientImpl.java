@@ -137,25 +137,23 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PlaywrightWorkspaceUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("playwrightWorkspaceName") String playwrightWorkspaceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("playwrightWorkspaceName") String playwrightWorkspaceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("playwrightWorkspaceName") String playwrightWorkspaceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("playwrightWorkspaceName") String playwrightWorkspaceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces")
@@ -596,7 +594,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -640,7 +638,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -658,7 +656,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -704,7 +702,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -721,7 +719,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -749,15 +747,14 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             return Mono.error(
                 new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -786,13 +783,12 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -823,13 +819,12 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, context);
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -847,7 +842,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -863,7 +858,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -881,7 +876,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -897,7 +892,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -911,7 +906,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -1192,7 +1187,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1225,7 +1220,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1239,7 +1234,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
@@ -1273,7 +1268,7 @@ public final class PlaywrightWorkspacesClientImpl implements PlaywrightWorkspace
     }
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

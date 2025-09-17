@@ -81,6 +81,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3-4_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-5_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/README.md', '#3113']
+  - ['sdk/cosmos/fabric-cosmos-spark-auth_3/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']

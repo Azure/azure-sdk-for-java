@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.8 (Unreleased)
+## 11.8.0-beta.9 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,43 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.8.0-beta.8 (2025-09-05)
+
+### Features Added
+
+- Support for `2025-08-01-Preview` service version.
+  - Added support for Knowledge Agent knowledge sources.
+  - Added support for Knowledge Agent answer synthesis.
+  - Added `VectorFilterMode.STRICT_POST_FILTER`.
+
+### Breaking Changes
+
+- Dropped support for `2025-05-01-Preview` service version.
+- Knowledge Agent target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
+  a richer concept that allows for knowledge agent to consume information from more than just Search indexes.
+
+## 11.7.9 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.10` to version `1.6.0`.
+
+
+## 11.7.8 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.9` to version `1.5.10`.
+
 
 ## 11.7.7 (2025-06-11)
 
@@ -56,6 +93,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
 
 ## 11.7.5 (2025-02-25)
 
@@ -184,6 +222,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
 
 ## 11.7.0 (2024-07-17)
 

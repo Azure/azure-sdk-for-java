@@ -13,19 +13,19 @@ public final class CheckNameAvailabilitySpecificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckNameAvailabilitySpecifications model = BinaryData.fromString(
-            "{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"fvovbvmeuecivy\",\"zceuojgjrw\"]}")
+            "{\"enableDefaultValidation\":false,\"resourceTypesWithCustomValidation\":[\"cxerf\",\"wutttxfvjrbi\",\"phxepcyvahf\"]}")
             .toObject(CheckNameAvailabilitySpecifications.class);
-        Assertions.assertEquals(true, model.enableDefaultValidation());
-        Assertions.assertEquals("fvovbvmeuecivy", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertFalse(model.enableDefaultValidation());
+        Assertions.assertEquals("cxerf", model.resourceTypesWithCustomValidation().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckNameAvailabilitySpecifications model
-            = new CheckNameAvailabilitySpecifications().withEnableDefaultValidation(true)
-                .withResourceTypesWithCustomValidation(Arrays.asList("fvovbvmeuecivy", "zceuojgjrw"));
+            = new CheckNameAvailabilitySpecifications().withEnableDefaultValidation(false)
+                .withResourceTypesWithCustomValidation(Arrays.asList("cxerf", "wutttxfvjrbi", "phxepcyvahf"));
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilitySpecifications.class);
-        Assertions.assertEquals(true, model.enableDefaultValidation());
-        Assertions.assertEquals("fvovbvmeuecivy", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertFalse(model.enableDefaultValidation());
+        Assertions.assertEquals("cxerf", model.resourceTypesWithCustomValidation().get(0));
     }
 }

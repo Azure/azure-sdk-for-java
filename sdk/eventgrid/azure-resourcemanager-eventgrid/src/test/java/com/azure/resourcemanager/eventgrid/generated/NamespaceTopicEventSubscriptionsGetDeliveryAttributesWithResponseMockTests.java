@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class NamespaceTopicEventSubscriptionsGetDeliveryAttributesWithResponseMockTests {
     @Test
     public void testGetDeliveryAttributesWithResponse() throws Exception {
-        String responseStr = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fupetasvv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"k\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"yzmspamwbwmbnl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +31,10 @@ public final class NamespaceTopicEventSubscriptionsGetDeliveryAttributesWithResp
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeliveryAttributeListResult response = manager.namespaceTopicEventSubscriptions()
-            .getDeliveryAttributesWithResponse("pqagynoiprn", "calincryqxz", "aqzi", "mqimiymqru",
+            .getDeliveryAttributesWithResponse("toxjdzj", "jznvhxqqmq", "paydhfn", "ocxm",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fupetasvv", response.value().get(0).name());
+        Assertions.assertEquals("k", response.value().get(0).name());
     }
 }

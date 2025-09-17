@@ -133,23 +133,23 @@ public final class FleetsClientImpl implements FleetsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") FleetPatch properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
-            @PathParam("fleetName") String fleetName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("fleetName") String fleetName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
-            @PathParam("fleetName") String fleetName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("fleetName") String fleetName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets")
@@ -1007,10 +1007,9 @@ public final class FleetsClientImpl implements FleetsClient {
         if (fleetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1045,9 +1044,8 @@ public final class FleetsClientImpl implements FleetsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, Context.NONE);
     }
 
     /**
@@ -1083,9 +1081,8 @@ public final class FleetsClientImpl implements FleetsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, context);
     }
 
     /**

@@ -21,7 +21,7 @@ public final class CapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publisher\":\"jbzbomvzzbtdcq\",\"targetType\":\"niyujv\",\"description\":\"l\",\"parametersSchema\":\"shfssnrbgyef\",\"urn\":\"msgaoj\"},\"id\":\"wncot\",\"name\":\"rfh\",\"type\":\"rctym\"}]}";
+            = "{\"value\":[{\"properties\":{\"publisher\":\"zev\",\"targetType\":\"hewpusdsttwv\",\"description\":\"vbbejdcng\",\"parametersSchema\":\"m\",\"urn\":\"kufgmj\"},\"id\":\"wr\",\"name\":\"grtwae\",\"type\":\"u\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class CapabilitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Capability> response = manager.capabilities()
-            .list("hhavgrvkffovjz", "pjbi", "gjmfxumvfcl", "yo", "wxnb", "fezzxscyhwzdg",
+            .list("lmnguxaw", "aldsy", "uximerqfobw", "znkbykutwpfhpagm", "r", "kdsnfdsdoakgtdl",
                 com.azure.core.util.Context.NONE);
 
     }

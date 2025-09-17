@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public class IdentityManagement implements JsonSerializable<IdentityManagement> {
     /*
-     * The type property.
+     * The type.
      */
     private IdentityManagementTypes type;
 
@@ -28,7 +28,7 @@ public class IdentityManagement implements JsonSerializable<IdentityManagement> 
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type.
      * 
      * @return the type value.
      */
@@ -37,7 +37,7 @@ public class IdentityManagement implements JsonSerializable<IdentityManagement> 
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The type.
      * 
      * @param type the type value to set.
      * @return the IdentityManagement object itself.

@@ -12,15 +12,30 @@ public final class ReportableExceptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReportableException model = BinaryData.fromString(
-            "{\"message\":\"l\",\"actionableMessage\":\"x\",\"filePath\":\"qgtz\",\"lineNumber\":\"pnqbqqwxrjfe\",\"hResult\":61111335,\"stackTrace\":\"wsubisnja\"}")
+            "{\"message\":\"gxmrhublwp\",\"actionableMessage\":\"sutrgjup\",\"filePath\":\"utpwoqhihejqgw\",\"lineNumber\":\"nfqn\",\"hResult\":479355012,\"stackTrace\":\"sx\"}")
             .toObject(ReportableException.class);
-        Assertions.assertEquals("x", model.actionableMessage());
+        Assertions.assertEquals("gxmrhublwp", model.message());
+        Assertions.assertEquals("sutrgjup", model.actionableMessage());
+        Assertions.assertEquals("utpwoqhihejqgw", model.filePath());
+        Assertions.assertEquals("nfqn", model.lineNumber());
+        Assertions.assertEquals(479355012, model.hResult());
+        Assertions.assertEquals("sx", model.stackTrace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportableException model = new ReportableException().withActionableMessage("x");
+        ReportableException model = new ReportableException().withMessage("gxmrhublwp")
+            .withActionableMessage("sutrgjup")
+            .withFilePath("utpwoqhihejqgw")
+            .withLineNumber("nfqn")
+            .withHResult(479355012)
+            .withStackTrace("sx");
         model = BinaryData.fromObject(model).toObject(ReportableException.class);
-        Assertions.assertEquals("x", model.actionableMessage());
+        Assertions.assertEquals("gxmrhublwp", model.message());
+        Assertions.assertEquals("sutrgjup", model.actionableMessage());
+        Assertions.assertEquals("utpwoqhihejqgw", model.filePath());
+        Assertions.assertEquals("nfqn", model.lineNumber());
+        Assertions.assertEquals(479355012, model.hResult());
+        Assertions.assertEquals("sx", model.stackTrace());
     }
 }

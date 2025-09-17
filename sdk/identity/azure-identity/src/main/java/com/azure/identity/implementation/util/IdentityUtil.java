@@ -24,6 +24,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -179,14 +180,16 @@ public final class IdentityUtil {
     }
 
     public static boolean isVsCodeBrokerAuthAvailable() {
+        // Check if VS Code broker auth record file exists
+        File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
+        return isBrokerAvailable() && authRecordFile.exists() && authRecordFile.isFile();
+    }
+
+    public static boolean isBrokerAvailable() {
         try {
             // 1. Check if Broker dependency is available
             Class.forName("com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder");
-
-            // 2. Check if VS Code broker auth record file exists
-            File authRecordFile = VSCODE_AUTH_RECORD_PATH.toFile();
-
-            return authRecordFile.exists() && authRecordFile.isFile();
+            return true;
         } catch (ClassNotFoundException e) {
             return false; // Broker not present
         }
@@ -202,5 +205,45 @@ public final class IdentityUtil {
         InputStream json = Files.newInputStream(VSCODE_AUTH_RECORD_PATH);
         // Deserialize to AuthenticationRecord
         return AuthenticationRecord.deserialize(json);
+    }
+
+    /**
+     * Checks if the GNOME Keyring is accessible.
+     * @return true if accessible, false otherwise.
+     */
+    public static boolean isKeyRingAccessible() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("secret-tool", "lookup", "test", "test");
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                return true; // Keyring is accessible
+            } else {
+                LOGGER.verbose("GNOME Keyring is unavailable or inaccessible.");
+                return false;
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore interrupted state if InterruptedException occurs
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        } catch (IOException e) {
+            LOGGER.verbose("Error while checking GNOME Keyring availability: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Ensures the claims string is base64 encoded.
+     * 
+     * @param claims The claims string to encode if needed
+     * @return Base64 encoded claims string
+     */
+    public static String ensureBase64Encoded(String claims) {
+        if (claims == null || claims.trim().isEmpty()) {
+            return claims;
+        }
+        return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
     }
 }

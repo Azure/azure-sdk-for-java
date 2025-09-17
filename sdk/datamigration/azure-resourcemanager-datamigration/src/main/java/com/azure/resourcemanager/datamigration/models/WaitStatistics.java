@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Wait statistics gathered during query batch execution.
  */
-@Immutable
+@Fluent
 public final class WaitStatistics implements JsonSerializable<WaitStatistics> {
     /*
      * Type of the Wait
@@ -47,6 +47,17 @@ public final class WaitStatistics implements JsonSerializable<WaitStatistics> {
     }
 
     /**
+     * Set the waitType property: Type of the Wait.
+     * 
+     * @param waitType the waitType value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitType(String waitType) {
+        this.waitType = waitType;
+        return this;
+    }
+
+    /**
      * Get the waitTimeMs property: Total wait time in millisecond(s).
      * 
      * @return the waitTimeMs value.
@@ -56,12 +67,34 @@ public final class WaitStatistics implements JsonSerializable<WaitStatistics> {
     }
 
     /**
+     * Set the waitTimeMs property: Total wait time in millisecond(s).
+     * 
+     * @param waitTimeMs the waitTimeMs value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitTimeMs(Float waitTimeMs) {
+        this.waitTimeMs = waitTimeMs;
+        return this;
+    }
+
+    /**
      * Get the waitCount property: Total no. of waits.
      * 
      * @return the waitCount value.
      */
     public Long waitCount() {
         return this.waitCount;
+    }
+
+    /**
+     * Set the waitCount property: Total no. of waits.
+     * 
+     * @param waitCount the waitCount value to set.
+     * @return the WaitStatistics object itself.
+     */
+    public WaitStatistics withWaitCount(Long waitCount) {
+        this.waitCount = waitCount;
+        return this;
     }
 
     /**
@@ -78,6 +111,9 @@ public final class WaitStatistics implements JsonSerializable<WaitStatistics> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("waitType", this.waitType);
+        jsonWriter.writeNumberField("waitTimeMs", this.waitTimeMs);
+        jsonWriter.writeNumberField("waitCount", this.waitCount);
         return jsonWriter.writeEndObject();
     }
 

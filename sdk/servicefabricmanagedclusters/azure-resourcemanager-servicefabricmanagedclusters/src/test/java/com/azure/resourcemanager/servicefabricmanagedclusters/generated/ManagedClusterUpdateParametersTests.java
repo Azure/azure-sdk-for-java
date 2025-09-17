@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedClusterUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedClusterUpdateParameters model
-            = BinaryData.fromString("{\"tags\":{\"tcs\":\"mjwosytx\",\"zikhl\":\"fcktqumiekke\"}}")
-                .toObject(ManagedClusterUpdateParameters.class);
-        Assertions.assertEquals("mjwosytx", model.tags().get("tcs"));
+        ManagedClusterUpdateParameters model = BinaryData.fromString("{\"tags\":{\"ekkezzikhlyfjh\":\"kfcktqum\"}}")
+            .toObject(ManagedClusterUpdateParameters.class);
+        Assertions.assertEquals("kfcktqum", model.tags().get("ekkezzikhlyfjh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedClusterUpdateParameters model
-            = new ManagedClusterUpdateParameters().withTags(mapOf("tcs", "mjwosytx", "zikhl", "fcktqumiekke"));
+            = new ManagedClusterUpdateParameters().withTags(mapOf("ekkezzikhlyfjh", "kfcktqum"));
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpdateParameters.class);
-        Assertions.assertEquals("mjwosytx", model.tags().get("tcs"));
+        Assertions.assertEquals("kfcktqum", model.tags().get("ekkezzikhlyfjh"));
     }
 
     // Use "Map.of" if available

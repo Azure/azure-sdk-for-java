@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for LinkedOperation.
+ * The linked operation.
  */
 public final class LinkedOperation extends ExpandableStringEnum<LinkedOperation> {
     /**

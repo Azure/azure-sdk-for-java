@@ -124,7 +124,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -132,7 +132,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name along with {@link Response} on successful completion of
+     * @return a Playwright workspace quota resource by name along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -164,7 +164,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -172,7 +172,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name on successful completion of {@link Mono}.
+     * @return a Playwright workspace quota resource by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlaywrightWorkspaceQuotaInner> getAsync(String resourceGroupName, String playwrightWorkspaceName,
@@ -182,7 +182,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -191,7 +191,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name along with {@link Response}.
+     * @return a Playwright workspace quota resource by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightWorkspaceQuotaInner> getWithResponse(String resourceGroupName,
@@ -224,7 +224,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -232,7 +232,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name.
+     * @return a Playwright workspace quota resource by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceQuotaInner get(String resourceGroupName, String playwrightWorkspaceName,
@@ -241,7 +241,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -281,7 +281,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -299,7 +299,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -338,7 +338,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -378,7 +378,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -397,7 +397,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.

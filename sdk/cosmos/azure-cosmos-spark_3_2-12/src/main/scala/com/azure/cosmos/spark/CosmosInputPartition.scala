@@ -44,7 +44,8 @@ private[spark] case class CosmosInputPartition
   feedRange: NormalizedRange,
   endLsn: Option[Long],
   continuationState: Option[String] = None,
-  readManyFilterOpt: Option[List[String]] = None
+  readManyFilterOpt: Option[List[String]] = None,
+  index: Option[Long] = None
 ) extends InputPartition {
 
   // Intentionally leaving out the change feed state when serializing input partition to json
@@ -57,16 +58,20 @@ private[spark] case class CosmosInputPartition
 
   def json(): String = jsonPersisted
 
-  private[spark] def withContinuationState(continuationState: String, clearEndLsn: Boolean): InputPartition = {
+  private[spark] def withContinuationState(continuationState: String, clearEndLsn: Boolean): CosmosInputPartition = {
     val effectiveEndLsn = if (clearEndLsn) {
       None
     } else {
       this.endLsn
     }
-    CosmosInputPartition(this.feedRange, effectiveEndLsn , Some(continuationState))
+    CosmosInputPartition(this.feedRange, effectiveEndLsn, Some(continuationState))
   }
 
   private[spark] def clearEndLsn(): InputPartition = {
     CosmosInputPartition(this.feedRange, None, this.continuationState)
+  }
+
+  private[spark] def withIndex(index: Long): CosmosInputPartition = {
+    CosmosInputPartition(this.feedRange, this.endLsn, this.continuationState, index = Some(index))
   }
 }

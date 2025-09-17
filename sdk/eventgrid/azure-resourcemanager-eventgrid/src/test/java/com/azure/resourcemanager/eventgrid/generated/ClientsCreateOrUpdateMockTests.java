@@ -27,7 +27,7 @@ public final class ClientsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"azvdhctmmkosz\",\"authenticationName\":\"blnsntrpcaqk\",\"clientCertificateAuthentication\":{\"validationScheme\":\"IpMatchesAuthenticationName\",\"allowedThumbprints\":[\"fmhklbnld\",\"vcb\",\"hez\",\"quwusq\"]},\"state\":\"Enabled\",\"attributes\":{\"mbjwcolbmxlb\":\"databrruyuuatv\",\"pcpahprzrvxhmtf\":\"dataw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"xzcmjhngxno\",\"name\":\"rxtd\",\"type\":\"sn\"}";
+            = "{\"properties\":{\"description\":\"i\",\"authenticationName\":\"cqibzj\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"iphryvcjwqwo\",\"sratjhdhzyb\",\"pijhfrzgdkk\",\"gv\"]},\"state\":\"Disabled\",\"attributes\":{\"mzhwilzzhni\":\"datausmmor\",\"neyttl\":\"datamriprlk\",\"bkut\":\"datacxiv\",\"ynbpvzlqywauy\":\"dataumltwjflu\"},\"provisioningState\":\"Succeeded\"},\"id\":\"khmocgjs\",\"name\":\"gouarhwvixqq\",\"type\":\"gljkybsj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,23 +37,23 @@ public final class ClientsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Client response = manager.clients()
-            .define("valqjrhuzgfxo")
-            .withExistingNamespace("ixh", "fratqxmbjroumzz")
-            .withDescription("pusllywpv")
-            .withAuthenticationName("otz")
+            .define("v")
+            .withExistingNamespace("bjvbzinzab", "mvoglj")
+            .withDescription("idnwceha")
+            .withAuthenticationName("do")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                .withValidationScheme(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME)
-                .withAllowedThumbprints(Arrays.asList("lgry", "qiuasigrows", "c", "equygdjboqgrmtq")))
-            .withState(ClientState.DISABLED)
-            .withAttributes(mapOf("iidisczskoswoqiq", "dataadrmmwiuawvcmjzk", "amnppcce", "datazugamxzkrrcoiis"))
+                .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
+                .withAllowedThumbprints(Arrays.asList("omqo", "pepiaeapfs", "rgdtpeqnacyheqw", "pqqncju")))
+            .withState(ClientState.ENABLED)
+            .withAttributes(mapOf("qiipsejb", "datazfymcwmbupyvqyvl"))
             .create();
 
-        Assertions.assertEquals("azvdhctmmkosz", response.description());
-        Assertions.assertEquals("blnsntrpcaqk", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("i", response.description());
+        Assertions.assertEquals("cqibzj", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("fmhklbnld", response.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, response.state());
+        Assertions.assertEquals("iphryvcjwqwo", response.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.DISABLED, response.state());
     }
 
     // Use "Map.of" if available

@@ -10,10 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsContentInner;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import com.azure.resourcemanager.providerhub.models.Operations;
-import com.azure.resourcemanager.providerhub.models.OperationsContent;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinition;
 import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
 import java.util.Collections;
@@ -69,22 +68,23 @@ public final class OperationsImpl implements Operations {
         }
     }
 
-    public Response<OperationsContent> createOrUpdateWithResponse(String providerNamespace,
-        OperationsPutContent operationsPutContent, Context context) {
-        Response<OperationsContentInner> inner
+    public Response<OperationsPutContent> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContentInner operationsPutContent, Context context) {
+        Response<OperationsPutContentInner> inner
             = this.serviceClient().createOrUpdateWithResponse(providerNamespace, operationsPutContent, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationsContentImpl(inner.getValue(), this.manager()));
+                new OperationsPutContentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationsContent createOrUpdate(String providerNamespace, OperationsPutContent operationsPutContent) {
-        OperationsContentInner inner = this.serviceClient().createOrUpdate(providerNamespace, operationsPutContent);
+    public OperationsPutContent createOrUpdate(String providerNamespace,
+        OperationsPutContentInner operationsPutContent) {
+        OperationsPutContentInner inner = this.serviceClient().createOrUpdate(providerNamespace, operationsPutContent);
         if (inner != null) {
-            return new OperationsContentImpl(inner, this.manager());
+            return new OperationsPutContentImpl(inner, this.manager());
         } else {
             return null;
         }

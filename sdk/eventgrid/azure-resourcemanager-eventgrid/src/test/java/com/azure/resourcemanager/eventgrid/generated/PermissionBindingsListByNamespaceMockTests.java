@@ -23,7 +23,7 @@ public final class PermissionBindingsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"lnupoyryefqmw\",\"topicSpaceName\":\"yztxlno\",\"permission\":\"Subscriber\",\"clientGroupName\":\"jceegvyiez\",\"provisioningState\":\"Canceled\"},\"id\":\"nji\",\"name\":\"l\",\"type\":\"kkreh\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"cdsgxceluji\",\"topicSpaceName\":\"lluunxh\",\"permission\":\"Subscriber\",\"clientGroupName\":\"xzfwugeupcknec\",\"provisioningState\":\"Creating\"},\"id\":\"rvfp\",\"name\":\"jdmngsytqpdzfyxc\",\"type\":\"wawoxcgzbejqf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class PermissionBindingsListByNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PermissionBinding> response = manager.permissionBindings()
-            .listByNamespace("yczyayubtgm", "xiqahr", "gpx", 1761303389, com.azure.core.util.Context.NONE);
+            .listByNamespace("icruo", "krjflsgaojb", "qpqsdoctpzpuj", 225216862, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lnupoyryefqmw", response.iterator().next().description());
-        Assertions.assertEquals("yztxlno", response.iterator().next().topicSpaceName());
+        Assertions.assertEquals("cdsgxceluji", response.iterator().next().description());
+        Assertions.assertEquals("lluunxh", response.iterator().next().topicSpaceName());
         Assertions.assertEquals(PermissionType.SUBSCRIBER, response.iterator().next().permission());
-        Assertions.assertEquals("jceegvyiez", response.iterator().next().clientGroupName());
+        Assertions.assertEquals("xzfwugeupcknec", response.iterator().next().clientGroupName());
     }
 }

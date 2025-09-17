@@ -117,10 +117,9 @@ public final class GrafanaCreateSamples {
     public static void grafanaCreate(com.azure.resourcemanager.dashboard.DashboardManager manager) {
         manager.grafanas()
             .define("myWorkspace")
-            .withRegion("West US")
             .withExistingResourceGroup("myResourceGroup")
+            .withRegion("West US")
             .withTags(mapOf("Environment", "Dev"))
-            .withSku(new ResourceSku().withName("Standard"))
             .withProperties(new ManagedGrafanaProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withZoneRedundancy(ZoneRedundancy.ENABLED)
                 .withApiKey(ApiKey.ENABLED)
@@ -145,6 +144,7 @@ public final class GrafanaCreateSamples {
                     .withUnifiedAlertingScreenshots(new UnifiedAlertingScreenshots().withCaptureEnabled(false)))
                 .withGrafanaPlugins(mapOf("sample-plugin-id", new GrafanaPlugin()))
                 .withGrafanaMajorVersion("9"))
+            .withSku(new ResourceSku().withName("Standard"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

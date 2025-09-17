@@ -2,35 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl" />
-      <Class name="com.azure.ai.anomalydetector.models.AnomalyState" />
-      <Class name="com.azure.ai.anomalydetector.models.AnomalyValue" />
-      <Class name="com.azure.ai.anomalydetector.models.CorrelationChanges" />
-      <Class name="com.azure.ai.anomalydetector.models.DiagnosticsInfo" />
-      <Class name="com.azure.ai.anomalydetector.models.ModelInfo" />
-      <Class name="com.azure.ai.anomalydetector.models.ModelState" />
-      <Class name="com.azure.ai.anomalydetector.models.MultivariateBatchDetectionResultSummary" />
-      <Class name="com.azure.ai.anomalydetector.models.MultivariateDetectionResult" />
-      <Class name="com.azure.ai.anomalydetector.models.MultivariateLastDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.MultivariateLastDetectionResult" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult" />
-      <Class name="com.azure.ai.anomalydetector.models.VariableValues" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder" />
-      <Class name="com.azure.ai.anomalydetector.models.MultivariateLastDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.UnivariateDetectionOptions" />
-      <Class name="com.azure.ai.anomalydetector.models.VariableValues" />
-    </Or>
-  </Match>
 </FindBugsFilter>
