@@ -30,17 +30,23 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+@EnabledIf(value = "shouldRun", disabledReason = "Avoid running emulator tests for MGMT library.")
 public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
 
     private String rgName = "";
     protected ResourceManager resourceManager;
     protected CosmosManager cosmosManager;
     protected NetworkManager networkManager;
+
+    static boolean shouldRun() {
+        return System.getProperty("COSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY") == null;
+    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
