@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.feature.management.models.Allocation;
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.management.models.PercentileAllocation;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
@@ -51,7 +51,7 @@ public class LoggerTelemetryPublisherTest {
     private ListAppender<ILoggingEvent> listAppender;
 
     @Mock
-    private Feature featureMock;
+    private FeatureDefinition featureMock;
 
     @Mock
     private Variant variantMock;

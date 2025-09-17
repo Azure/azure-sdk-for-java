@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.management.models.PercentileAllocation;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
@@ -58,7 +58,7 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
             return;
         }
 
-        Feature feature = evaluationEvent.getFeature();
+        FeatureDefinition feature = evaluationEvent.getFeature();
 
         Variant variant = evaluationEvent.getVariant();
 
