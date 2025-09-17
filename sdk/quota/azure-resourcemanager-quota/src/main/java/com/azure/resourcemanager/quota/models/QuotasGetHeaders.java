@@ -16,7 +16,7 @@ public final class QuotasGetHeaders {
     /*
      * The ETag property.
      */
-    private final String eTag;
+    private final String etag;
 
     // HttpHeaders containing the raw property values.
     /**
@@ -25,16 +25,16 @@ public final class QuotasGetHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public QuotasGetHeaders(HttpHeaders rawHeaders) {
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
     }
 
     /**
-     * Get the eTag property: The ETag property.
+     * Get the etag property: The ETag property.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
