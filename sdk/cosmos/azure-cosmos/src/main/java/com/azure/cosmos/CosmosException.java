@@ -369,7 +369,7 @@ public class CosmosException extends AzureException {
             if (StringUtils.isNotEmpty(header)) {
                 try {
                     retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
-                    logger.warn("Resolved retryAfterInMilliseconds : [{}] from RetryAfterInMilliseconds header: [{}].", retryIntervalInMilliseconds, header);
+                    logger.warn("Resolved retryAfterInMilliseconds : [{}] from RetryAfterInMilliseconds header : [{}] and MAX_RETRY_AFTER_IN_MS : [{}].", retryIntervalInMilliseconds, header, MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
                     logger.warn("SubStatusCode [{}] cannot be parsed as Integer.", header);
