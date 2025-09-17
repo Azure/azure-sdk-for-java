@@ -12,7 +12,6 @@
     <module>azure-resourcemanager</module>
     <module>azure-resourcemanager-appplatform</module>
     <module>azure-resourcemanager-cosmos</module>
-    <module>azure-resourcemanager-monitor</module>
     <module>azure-resourcemanager-perf</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-servicebus</module>
