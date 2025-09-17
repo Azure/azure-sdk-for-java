@@ -115,6 +115,7 @@ private class ChangeFeedMicroBatchStream
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
+    val parsedStartChangeFeedState = SparkBridgeImplementationInternal.parseChangeFeedState(start.changeFeedState)
     end
       .inputPartitions
       .get
@@ -123,7 +124,7 @@ private class ChangeFeedMicroBatchStream
           partition
            .withContinuationState(
              SparkBridgeImplementationInternal
-              .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
+              .extractChangeFeedStateForRange(parsedStartChangeFeedState, partition.feedRange),
              clearEndLsn = false)
            .withIndex(index)
       })
