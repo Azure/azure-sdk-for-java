@@ -20,6 +20,8 @@ import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricExporter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -27,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes.HTTP_RESPONSE_STATUS_CODE;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ServerAttributes.SERVER_ADDRESS;
@@ -40,8 +43,13 @@ import static org.assertj.core.api.Assertions.entry;
 
 public class AzureMonitorMetricExporterTest {
 
-    @Test
-    public void testDoubleCounter() {
+    static Stream<Boolean> enablementOptions() {
+        return Stream.of(true, false, null);
+    }
+
+    @ParameterizedTest
+    @MethodSource("enablementOptions")
+    public void testDoubleCounter(Boolean otlpExporterEnabled) {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
@@ -59,18 +67,28 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(builder, metricDataList.get(0), pointData, true, false, null);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricDataList.get(0), pointData, true, false,
+                otlpExporterEnabled);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(3.1415);
+
+            if (otlpExporterEnabled != null) {
+                assertThat(metricsData.getProperties().size()).isEqualTo(1);
+                assertThat(metricsData.getProperties()).containsEntry("_MS.SentToAMW",
+                    otlpExporterEnabled ? "True" : "False");
+            } else {
+                assertThat(metricsData.getProperties()).isNull();
+            }
         }
 
         assertThat(metricData.getType()).isEqualTo(DOUBLE_SUM);
         assertThat(metricData.getName()).isEqualTo("testDoubleCounter");
     }
 
-    @Test
-    public void testDoubleGauge() {
+    @ParameterizedTest
+    @MethodSource("enablementOptions")
+    public void testDoubleGauge(Boolean otlpExporterEnabled) {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
@@ -90,12 +108,16 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, null);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false, otlpExporterEnabled);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(20.0);
-            assertThat(metricsData.getProperties().size()).isEqualTo(1);
+            assertThat(metricsData.getProperties().size()).isEqualTo(otlpExporterEnabled == null ? 1 : 2);
             assertThat(metricsData.getProperties()).containsEntry("thing", "engine");
+            if (otlpExporterEnabled != null) {
+                assertThat(metricsData.getProperties()).containsEntry("_MS.SentToAMW",
+                    otlpExporterEnabled ? "True" : "False");
+            }
         }
 
         assertThat(metricData.getType()).isEqualTo(DOUBLE_GAUGE);

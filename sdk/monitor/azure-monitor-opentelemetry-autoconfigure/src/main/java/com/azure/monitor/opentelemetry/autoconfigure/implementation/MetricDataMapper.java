@@ -61,7 +61,7 @@ public class MetricDataMapper {
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
-    private final String sentToAMW;
+    private final Boolean otlpExporterEnabled;
     private final boolean metricsToLAEnabled;
 
     static {
@@ -78,16 +78,14 @@ public class MetricDataMapper {
 
     public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         boolean captureHttpServer4xxAsError) {
+        this(telemetryInitializer, captureHttpServer4xxAsError, null);
+    }
+
+    public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+        boolean captureHttpServer4xxAsError, Boolean otlpExporterEnabled) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
-        String sentToAmwProperty = System.getProperty(SENT_TO_AMW);
-        if (sentToAmwProperty != null && "true".equalsIgnoreCase(sentToAmwProperty)) {
-            this.sentToAMW = "true";
-        } else if (sentToAmwProperty != null) {
-            this.sentToAMW = "false";
-        } else {
-            this.sentToAMW = null;
-        }
+        this.otlpExporterEnabled = otlpExporterEnabled;
 
         String metricsToLaEnvVar = System.getenv(METRICS_TO_LOG_ANALYTICS_ENABLED);
         this.metricsToLAEnabled = metricsToLaEnvVar == null || "true".equalsIgnoreCase(metricsToLaEnvVar);
@@ -130,7 +128,7 @@ public class MetricDataMapper {
 
             builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
             updateMetricPointBuilder(builder, metricData, pointData, captureHttpServer4xxAsError,
-                isPreAggregatedStandardMetric, this.sentToAMW);
+                isPreAggregatedStandardMetric, this.otlpExporterEnabled);
 
             telemetryItems.add(builder.build());
         }
@@ -140,7 +138,7 @@ public class MetricDataMapper {
     // visible for testing
     public static void updateMetricPointBuilder(MetricTelemetryBuilder metricTelemetryBuilder, MetricData metricData,
         PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric,
-        String sentToAMW) {
+        Boolean otlpExporterEnabled) {
         checkArgument(metricData != null, "MetricData cannot be null.");
 
         MetricPointBuilder pointBuilder = new MetricPointBuilder();
@@ -198,8 +196,8 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
-        if (sentToAMW != null) {
-            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW_ATTR, sentToAMW);
+        if (otlpExporterEnabled != null) {
+            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW_ATTR, otlpExporterEnabled ? "True" : "False");
         }
 
         Attributes attributes = pointData.getAttributes();
