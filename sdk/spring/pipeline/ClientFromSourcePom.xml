@@ -46,7 +46,7 @@
     <module>../../dns/azure-resourcemanager-dns/pom.xml</module>
     <module>../../eventhubs/azure-resourcemanager-eventhubs/pom.xml</module>
     <module>../../keyvault/azure-resourcemanager-keyvault/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-monitor/pom.xml</module>
+    <module>../../monitor/azure-resourcemanager-monitor/pom.xml</module>
     <module>../../msi/azure-resourcemanager-msi/pom.xml</module>
     <module>../../network/azure-resourcemanager-network/pom.xml</module>
     <module>../../privatedns/azure-resourcemanager-privatedns/pom.xml</module>
