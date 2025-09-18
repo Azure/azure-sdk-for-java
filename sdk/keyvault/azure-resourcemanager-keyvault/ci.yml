@@ -39,7 +39,7 @@ parameters:
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: keyvault
+    ServiceDirectory: keyvault/azure-resourcemanager-keyvault
     Artifacts:
       - name: azure-resourcemanager-keyvault
         groupId: com.azure.resourcemanager

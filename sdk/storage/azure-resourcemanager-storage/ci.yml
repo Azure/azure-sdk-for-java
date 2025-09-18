@@ -38,7 +38,7 @@ parameters:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: storage
+    ServiceDirectory: storage/azure-resourcemanager-storage
     Artifacts:
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
