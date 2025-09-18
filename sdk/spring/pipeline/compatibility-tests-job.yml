@@ -21,86 +21,84 @@ jobs:
       image: $(LINUXVMIMAGE)
       os: linux
     steps:
-      - ${{ if ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '') }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - 'common/perf-test-core'
-              - 'sdk/appconfiguration/azure-data-appconfiguration'
-              - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
-              - 'sdk/appservice/azure-resourcemanager-appservice'
-              - 'sdk/authorization/azure-resourcemanager-authorization'
-              - 'sdk/core'
-              - 'sdk/cosmos/azure-cosmos'
-              - 'sdk/cdn/azure-resourcemanager-cdn'
-              - 'sdk/compute/azure-resourcemanager-compute'
-              - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
-              - 'sdk/containerregistry/azure-resourcemanager-containerregistry'
-              - 'sdk/containerservice/azure-resourcemanager-containerservice'
-              - 'sdk/dns/azure-resourcemanager-dns'
-              - 'sdk/boms/spring-cloud-azure-dependencies'
-              - 'sdk/eventgrid/azure-messaging-eventgrid'
-              - 'sdk/eventhubs'
-              - 'sdk/identity'
-              - 'sdk/jdbc'
-              - 'sdk/keyvault'
-              - 'sdk/monitor'
-              - 'sdk/msi/azure-resourcemanager-msi'
-              - 'sdk/network'
-              - 'sdk/privatedns/azure-resourcemanager-privatedns'
-              - 'sdk/redis/azure-resourcemanager-redis'
-              - 'sdk/spring'
-              - 'sdk/parents/azure-client-sdk-parent'
-              - 'sdk/parents/azure-client-sdk-parent'
-              - 'sdk/parents/azure-perf-test-parent'
-              - 'sdk/parents/azure-sdk-parent'
-              - 'sdk/resourcemanager'
-              - 'sdk/search/azure-resourcemanager-search'
-              - 'sdk/serialization'
-              - 'sdk/servicebus'
-              - 'sdk/sql/azure-resourcemanager-sql'
-              - 'sdk/storage'
-              - 'sdk/tools'
-              - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
-        - task: Maven@4
-          displayName: 'Install Unreleased Dependencies'
-          inputs:
-            mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
-            goals: 'install'
-            options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaTestVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-        - script: |
-            python -m pip install termcolor
-          displayName: 'Install python module'
-        - bash: |
-            echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
-          displayName: 'Set supported Spring version to environment variables'
-        - bash: |
-            echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
-            echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
-            echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
-            echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
-          displayName: 'Log Spring version and Maven pom path'
-        - script: |
-            python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
-          displayName: 'Insert Spring dependency managements'
-        - script: |
-              python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)
-          displayName: 'Remove unused dependency versions'
-        - task: Maven@4
-          displayName: 'Run tests'
-          inputs:
-            options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=- --fail-at-end'
-            mavenPomFile: sdk/spring/pom.xml
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaTestVersion)
-            jdkArchitectureOption: 'x64'
-            goals: 'clean install -Pdev '
-
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - '**/*.xml'
+            - 'common/perf-test-core'
+            - 'sdk/appconfiguration/azure-data-appconfiguration'
+            - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
+            - 'sdk/appservice/azure-resourcemanager-appservice'
+            - 'sdk/authorization/azure-resourcemanager-authorization'
+            - 'sdk/core'
+            - 'sdk/cosmos/azure-cosmos'
+            - 'sdk/cdn/azure-resourcemanager-cdn'
+            - 'sdk/compute/azure-resourcemanager-compute'
+            - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
+            - 'sdk/containerregistry/azure-resourcemanager-containerregistry'
+            - 'sdk/containerservice/azure-resourcemanager-containerservice'
+            - 'sdk/dns/azure-resourcemanager-dns'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
+            - 'sdk/eventgrid/azure-messaging-eventgrid'
+            - 'sdk/eventhubs'
+            - 'sdk/identity'
+            - 'sdk/jdbc'
+            - 'sdk/keyvault'
+            - 'sdk/monitor'
+            - 'sdk/msi/azure-resourcemanager-msi'
+            - 'sdk/network'
+            - 'sdk/privatedns/azure-resourcemanager-privatedns'
+            - 'sdk/redis/azure-resourcemanager-redis'
+            - 'sdk/spring'
+            - 'sdk/parents/azure-client-sdk-parent'
+            - 'sdk/parents/azure-client-sdk-parent'
+            - 'sdk/parents/azure-perf-test-parent'
+            - 'sdk/parents/azure-sdk-parent'
+            - 'sdk/resourcemanager'
+            - 'sdk/search/azure-resourcemanager-search'
+            - 'sdk/serialization'
+            - 'sdk/servicebus'
+            - 'sdk/sql/azure-resourcemanager-sql'
+            - 'sdk/storage'
+            - 'sdk/tools'
+            - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
+      - task: Maven@4
+        displayName: 'Install Unreleased Dependencies'
+        inputs:
+          mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
+          goals: 'install'
+          options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+      - script: |
+          python -m pip install termcolor
+        displayName: 'Install python module'
+      - bash: |
+          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
+        displayName: 'Set supported Spring version to environment variables'
+      - bash: |
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
+          echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
+          echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
+        displayName: 'Log Spring version and Maven pom path'
+      - script: |
+          python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
+        displayName: 'Insert Spring dependency managements'
+      - script: |
+            python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)
+        displayName: 'Remove unused dependency versions'
+      - task: Maven@4
+        displayName: 'Run tests'
+        inputs:
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=- --fail-at-end'
+          mavenPomFile: sdk/spring/pom.xml
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: 'clean install -Pdev '
 
