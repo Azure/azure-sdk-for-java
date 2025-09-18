@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-cognitiveservices</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for CognitiveServices Management</name>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -66,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

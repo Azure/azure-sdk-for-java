@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsExecutionsListSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Executions_Get.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * Job_Executions_Get.json
      */
     /**
      * Sample code: Get a Container Apps Job Executions.
@@ -19,6 +20,6 @@ public final class JobsExecutionsListSamples {
      */
     public static void
         getAContainerAppsJobExecutions(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.jobsExecutions().list("rg", "testcontainerappsjob0", null, com.azure.core.util.Context.NONE);
+        manager.jobsExecutions().list("rg", "testcontainerAppsJob0", null, com.azure.core.util.Context.NONE);
     }
 }

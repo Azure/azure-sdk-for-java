@@ -192,8 +192,12 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("SpringBootAdmin".equals(discriminatorValue)) {
+                if ("SpringCloudGateway".equals(discriminatorValue)) {
+                    return SpringCloudGatewayComponent.fromJson(readerToUse.reset());
+                } else if ("SpringBootAdmin".equals(discriminatorValue)) {
                     return SpringBootAdminComponent.fromJson(readerToUse.reset());
+                } else if ("Nacos".equals(discriminatorValue)) {
+                    return NacosComponent.fromJson(readerToUse.reset());
                 } else if ("SpringCloudEureka".equals(discriminatorValue)) {
                     return SpringCloudEurekaComponent.fromJson(readerToUse.reset());
                 } else if ("SpringCloudConfig".equals(discriminatorValue)) {

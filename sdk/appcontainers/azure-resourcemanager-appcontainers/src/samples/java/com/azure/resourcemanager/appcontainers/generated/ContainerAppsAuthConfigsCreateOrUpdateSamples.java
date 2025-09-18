@@ -6,10 +6,13 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.AppRegistration;
 import com.azure.resourcemanager.appcontainers.models.AuthPlatform;
+import com.azure.resourcemanager.appcontainers.models.BlobStorageTokenStore;
 import com.azure.resourcemanager.appcontainers.models.EncryptionSettings;
 import com.azure.resourcemanager.appcontainers.models.Facebook;
 import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.IdentityProviders;
+import com.azure.resourcemanager.appcontainers.models.Login;
+import com.azure.resourcemanager.appcontainers.models.TokenStore;
 import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActionV2;
 
 /**
@@ -18,7 +21,8 @@ import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActio
 public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/AuthConfigs_CreateOrUpdate.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * AuthConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App AuthConfig.
@@ -35,6 +39,66 @@ public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
                 new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS))
             .withIdentityProviders(new IdentityProviders().withFacebook(new Facebook().withRegistration(
                 new AppRegistration().withAppId("123").withAppSecretSettingName("fakeTokenPlaceholder"))))
+            .withEncryptionSettings(
+                new EncryptionSettings().withContainerAppAuthEncryptionSecretName("fakeTokenPlaceholder")
+                    .withContainerAppAuthSigningSecretName("fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * AuthConfigs_BlobStorageTokenStore_ClientId_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or Update Container App AuthConfig with msi clientID blob storage token store.
+     * 
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void createOrUpdateContainerAppAuthConfigWithMsiClientIDBlobStorageTokenStore(
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerAppsAuthConfigs()
+            .define("current")
+            .withExistingContainerApp("rg1", "myapp")
+            .withPlatform(new AuthPlatform().withEnabled(true))
+            .withGlobalValidation(
+                new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS))
+            .withIdentityProviders(new IdentityProviders().withFacebook(new Facebook().withRegistration(
+                new AppRegistration().withAppId("123").withAppSecretSettingName("fakeTokenPlaceholder"))))
+            .withLogin(new Login().withTokenStore(new TokenStore().withAzureBlobStorage(
+                new BlobStorageTokenStore().withBlobContainerUri("https://test.blob.core.windows.net/container1")
+                    .withClientId("00000000-0000-0000-0000-000000000000"))))
+            .withEncryptionSettings(
+                new EncryptionSettings().withContainerAppAuthEncryptionSecretName("fakeTokenPlaceholder")
+                    .withContainerAppAuthSigningSecretName("fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * AuthConfigs_BlobStorageTokenStore_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or Update Container App AuthConfig with msi managedIdentityResourceId blob storage token
+     * store.
+     * 
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void createOrUpdateContainerAppAuthConfigWithMsiManagedIdentityResourceIdBlobStorageTokenStore(
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerAppsAuthConfigs()
+            .define("current")
+            .withExistingContainerApp("rg1", "myapp")
+            .withPlatform(new AuthPlatform().withEnabled(true))
+            .withGlobalValidation(
+                new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS))
+            .withIdentityProviders(new IdentityProviders().withFacebook(new Facebook().withRegistration(
+                new AppRegistration().withAppId("123").withAppSecretSettingName("fakeTokenPlaceholder"))))
+            .withLogin(new Login().withTokenStore(new TokenStore().withAzureBlobStorage(new BlobStorageTokenStore()
+                .withBlobContainerUri("https://test.blob.core.windows.net/container1")
+                .withManagedIdentityResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))))
             .withEncryptionSettings(
                 new EncryptionSettings().withContainerAppAuthEncryptionSecretName("fakeTokenPlaceholder")
                     .withContainerAppAuthSigningSecretName("fakeTokenPlaceholder"))
