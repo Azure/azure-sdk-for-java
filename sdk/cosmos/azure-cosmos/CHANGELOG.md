@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Improved resilience around several completion events for an ssl handshake. - []()
 
 ### 4.74.0 (2025-09-05)
 
