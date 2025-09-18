@@ -65,6 +65,7 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private SmsServiceVersion serviceVersion;
 
     /**
      * Creates a new instance of {@link SmsClientBuilder}.
@@ -230,6 +231,7 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
      * @return the updated SmsClientBuilder object
      */
     public SmsClientBuilder serviceVersion(SmsServiceVersion version) {
+        this.serviceVersion = version;
         return this;
     }
 
@@ -307,8 +309,12 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
             builderPipeline = createHttpPipeline(httpClient);
         }
 
+        SmsServiceVersion buildServiceVersion = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
+
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
-        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+        clientBuilder.endpoint(endpoint)
+            .pipeline(builderPipeline)
+            .apiVersion(buildServiceVersion.getVersion());
 
         return clientBuilder.buildClient();
     }
