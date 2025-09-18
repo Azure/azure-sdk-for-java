@@ -5,7 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +17,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -39,7 +40,15 @@ public class PartitionScopedRegionLevelProgress {
         return this.partitionKeyRangeIdToRegionLevelProgress;
     }
 
-    public void tryRecordSessionToken(RxDocumentServiceRequest request, ISessionToken parsedSessionToken, String partitionKeyRangeId, String firstEffectivePreferredReadableRegion, String regionRoutedTo) {
+    public void tryRecordSessionToken(
+        RxDocumentServiceRequest request,
+        ISessionToken parsedSessionToken,
+        Long collectionRid,
+        String partitionKeyRangeId,
+        String firstEffectivePreferredReadableRegion,
+        String regionRoutedTo,
+        PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
+        boolean shouldUseBloomFilter) {
 
         checkNotNull(request, "request cannot be null!");
         checkNotNull(request.requestContext, "requestContext cannot be null!");
@@ -117,6 +126,17 @@ public class PartitionScopedRegionLevelProgress {
                             regionLevelProgressAsValInner.sessionToken,
                             globalLevelProgress.hasPartitionSeenNonPointDocumentOperations);
                     });
+
+                    if (shouldUseBloomFilter) {
+                        this.recordPartitionKeyInBloomFilter(
+                            request,
+                            collectionRid,
+                            regionRoutedTo,
+                            request.getPartitionKeyInternal(),
+                            request.getPartitionKeyDefinition(),
+                            partitionKeyBasedBloomFilter,
+                            firstEffectivePreferredReadableRegion);
+                    }
                 }
                 // regionId maps to a hub region
                 else {
@@ -285,6 +305,24 @@ public class PartitionScopedRegionLevelProgress {
 
         request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token from the first preferred region couldn't be merged with region-resolved session token : " + resolvedSessionToken.v.convertToString() + ".");
         return globalSessionToken;
+    }
+
+    private void recordPartitionKeyInBloomFilter(
+        RxDocumentServiceRequest request,
+        Long collectionRid,
+        String regionRoutedTo,
+        PartitionKeyInternal partitionKeyInternal,
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
+        String firstEffectivePreferredReadableRegion) {
+
+        partitionKeyBasedBloomFilter.tryRecordPartitionKey(
+            request,
+            collectionRid,
+            firstEffectivePreferredReadableRegion,
+            regionRoutedTo,
+            partitionKeyInternal,
+            partitionKeyDefinition);
     }
 
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
