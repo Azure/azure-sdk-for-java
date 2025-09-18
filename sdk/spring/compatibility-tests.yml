@@ -31,6 +31,7 @@ stages:
     dependsOn: []
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
         parameters:
           SparseCheckout: true
           JobTemplatePath: ../../../../../sdk/spring/pipeline/compatibility-tests-job.yml
