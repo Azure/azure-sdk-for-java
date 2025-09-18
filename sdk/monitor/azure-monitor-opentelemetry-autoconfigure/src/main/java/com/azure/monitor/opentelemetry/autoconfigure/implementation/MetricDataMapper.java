@@ -56,7 +56,6 @@ public class MetricDataMapper {
     public static final String MS_SENT_TO_AMW_ATTR = "_MS.SentToAMW";
     private static final String METRICS_TO_LOG_ANALYTICS_ENABLED
         = "APPLICATIONINSIGHTS_METRICS_TO_LOGANALYTICS_ENABLED";
-    private static final String SENT_TO_AMW = "SENT_TO_AMW";
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
@@ -65,7 +64,7 @@ public class MetricDataMapper {
     private final boolean metricsToLAEnabled;
 
     static {
-        // HTTP unstable metrics to be excluded via Otel auto instrumentation
+        // HTTP unstable metrics to be excluded via OTel auto instrumentation
         OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.client.duration");
         OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.server.duration");
 
