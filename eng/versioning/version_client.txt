@@ -506,7 +506,6 @@ com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computerecommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
