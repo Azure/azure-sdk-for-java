@@ -64,6 +64,7 @@ jobs:
             - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
         inputs:
           mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
           goals: 'install'
@@ -76,6 +77,7 @@ jobs:
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - bash: |
           echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
         displayName: 'Set supported Spring version to environment variables'
