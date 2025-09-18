@@ -145,11 +145,9 @@ class FeatureFlagClient {
             // Parse variants if present
             JsonNode variantsNode = node.get("variants");
             if (variantsNode != null && variantsNode.isArray()) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
                 List<Variant> variants = new ArrayList<>();
                 for (JsonNode variantNode : variantsNode) {
-                    Variant variant = objectMapper.convertValue(variantNode, Variant.class);
+                    Variant variant = CASE_INSENSITIVE_MAPPER.convertValue(variantNode, Variant.class);
                     variants.add(variant);
                 }
                 feature.setVariants(variants);
@@ -158,9 +156,7 @@ class FeatureFlagClient {
             // Parse allocation if present
             JsonNode allocationNode = node.get("allocation");
             if (allocationNode != null && !allocationNode.isNull()) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-                Allocation allocation = objectMapper.convertValue(allocationNode, Allocation.class);
+                Allocation allocation = CASE_INSENSITIVE_MAPPER.convertValue(allocationNode, Allocation.class);
                 feature.setAllocation(allocation);
             }
 
