@@ -45,9 +45,11 @@ public class UserAllocation {
      * This should match a valid variant name defined in the feature flag configuration.
      * 
      * @param variant the variant name to assign to the users
+     * @return the updated UserAllocation object
      */
-    public void setVariant(String variant) {
+    public UserAllocation setVariant(String variant) {
         this.variant = variant;
+        return this;
     }
 
     /**
@@ -67,9 +69,11 @@ public class UserAllocation {
      * this variant during feature flag evaluation.
      * 
      * @param users the list of user identifiers to associate with this variant
+     * @return the updated UserAllocation object
      */
-    public void setUsers(List<String> users) {
+    public UserAllocation setUsers(List<String> users) {
         this.users = users;
+        return this;
     }
 
 }
