@@ -3,13 +3,15 @@
 ### 4.75.0-beta.1 (Unreleased)
 
 #### Features Added
+* AAD Auth: Adds a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
-* Improved resilience around several completion events for an ssl handshake. - []()
+* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
+* Improved resilience around several completion events for an ssl handshake. - [46734](https://github.com/Azure/azure-sdk-for-java/pull/46734)
 
 ### 4.74.0 (2025-09-05)
 

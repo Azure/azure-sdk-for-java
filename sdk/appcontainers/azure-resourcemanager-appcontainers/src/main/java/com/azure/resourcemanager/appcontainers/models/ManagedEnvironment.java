@@ -118,6 +118,13 @@ public interface ManagedEnvironment {
     String defaultDomain();
 
     /**
+     * Gets the privateLinkDefaultDomain property: Private Link Default Domain Name for the environment.
+     * 
+     * @return the privateLinkDefaultDomain value.
+     */
+    String privateLinkDefaultDomain();
+
+    /**
      * Gets the staticIp property: Static IP of the Environment.
      * 
      * @return the staticIp value.
@@ -133,11 +140,32 @@ public interface ManagedEnvironment {
     AppLogsConfiguration appLogsConfiguration();
 
     /**
+     * Gets the appInsightsConfiguration property: Environment level Application Insights configuration.
+     * 
+     * @return the appInsightsConfiguration value.
+     */
+    AppInsightsConfiguration appInsightsConfiguration();
+
+    /**
+     * Gets the openTelemetryConfiguration property: Environment Open Telemetry configuration.
+     * 
+     * @return the openTelemetryConfiguration value.
+     */
+    OpenTelemetryConfiguration openTelemetryConfiguration();
+
+    /**
      * Gets the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
      * 
      * @return the zoneRedundant value.
      */
     Boolean zoneRedundant();
+
+    /**
+     * Gets the availabilityZones property: The list of availability zones to use for managed environment.
+     * 
+     * @return the availabilityZones value.
+     */
+    List<String> availabilityZones();
 
     /**
      * Gets the customDomainConfiguration property: Custom domain configuration for the environment.
@@ -196,6 +224,35 @@ public interface ManagedEnvironment {
      * @return the peerTrafficConfiguration value.
      */
     ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration();
+
+    /**
+     * Gets the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @return the ingressConfiguration value.
+     */
+    IngressConfiguration ingressConfiguration();
+
+    /**
+     * Gets the privateEndpointConnections property: Private endpoint connections to the resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the diskEncryptionConfiguration property: Disk encryption configuration for the Managed Environment.
+     * 
+     * @return the diskEncryptionConfiguration value.
+     */
+    DiskEncryptionConfiguration diskEncryptionConfiguration();
 
     /**
      * Gets the region of the resource.
@@ -284,10 +341,13 @@ public interface ManagedEnvironment {
             extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithIdentity,
             DefinitionStages.WithDaprAIInstrumentationKey, DefinitionStages.WithDaprAIConnectionString,
             DefinitionStages.WithVnetConfiguration, DefinitionStages.WithAppLogsConfiguration,
-            DefinitionStages.WithZoneRedundant, DefinitionStages.WithCustomDomainConfiguration,
-            DefinitionStages.WithWorkloadProfiles, DefinitionStages.WithKedaConfiguration,
-            DefinitionStages.WithDaprConfiguration, DefinitionStages.WithInfrastructureResourceGroup,
-            DefinitionStages.WithPeerAuthentication, DefinitionStages.WithPeerTrafficConfiguration {
+            DefinitionStages.WithAppInsightsConfiguration, DefinitionStages.WithOpenTelemetryConfiguration,
+            DefinitionStages.WithZoneRedundant, DefinitionStages.WithAvailabilityZones,
+            DefinitionStages.WithCustomDomainConfiguration, DefinitionStages.WithWorkloadProfiles,
+            DefinitionStages.WithKedaConfiguration, DefinitionStages.WithDaprConfiguration,
+            DefinitionStages.WithInfrastructureResourceGroup, DefinitionStages.WithPeerAuthentication,
+            DefinitionStages.WithPeerTrafficConfiguration, DefinitionStages.WithIngressConfiguration,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithDiskEncryptionConfiguration {
             /**
              * Executes the create request.
              * 
@@ -394,13 +454,39 @@ public interface ManagedEnvironment {
         interface WithAppLogsConfiguration {
             /**
              * Specifies the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-             * app logs to configured destination..
+             * app logs to configured destination.
              * 
              * @param appLogsConfiguration Cluster configuration which enables the log daemon to export app logs to
              * configured destination.
              * @return the next definition stage.
              */
             WithCreate withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify appInsightsConfiguration.
+         */
+        interface WithAppInsightsConfiguration {
+            /**
+             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
+             * 
+             * @param appInsightsConfiguration Environment level Application Insights configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify openTelemetryConfiguration.
+         */
+        interface WithOpenTelemetryConfiguration {
+            /**
+             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
+             * 
+             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
         }
 
         /**
@@ -414,6 +500,19 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify availabilityZones.
+         */
+        interface WithAvailabilityZones {
+            /**
+             * Specifies the availabilityZones property: The list of availability zones to use for managed environment.
+             * 
+             * @param availabilityZones The list of availability zones to use for managed environment.
+             * @return the next definition stage.
+             */
+            WithCreate withAvailabilityZones(List<String> availabilityZones);
         }
 
         /**
@@ -511,6 +610,48 @@ public interface ManagedEnvironment {
             WithCreate withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
         }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify ingressConfiguration.
+         */
+        interface WithIngressConfiguration {
+            /**
+             * Specifies the ingressConfiguration property: Ingress configuration for the Managed Environment..
+             * 
+             * @param ingressConfiguration Ingress configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withIngressConfiguration(IngressConfiguration ingressConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify diskEncryptionConfiguration.
+         */
+        interface WithDiskEncryptionConfiguration {
+            /**
+             * Specifies the diskEncryptionConfiguration property: Disk encryption configuration for the Managed
+             * Environment..
+             * 
+             * @param diskEncryptionConfiguration Disk encryption configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration);
+        }
     }
 
     /**
@@ -526,9 +667,12 @@ public interface ManagedEnvironment {
     interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithIdentity,
         UpdateStages.WithDaprAIInstrumentationKey, UpdateStages.WithDaprAIConnectionString,
         UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration,
-        UpdateStages.WithCustomDomainConfiguration, UpdateStages.WithWorkloadProfiles,
-        UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication,
-        UpdateStages.WithPeerTrafficConfiguration {
+        UpdateStages.WithAppInsightsConfiguration, UpdateStages.WithOpenTelemetryConfiguration,
+        UpdateStages.WithAvailabilityZones, UpdateStages.WithCustomDomainConfiguration,
+        UpdateStages.WithWorkloadProfiles, UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration,
+        UpdateStages.WithPeerAuthentication, UpdateStages.WithPeerTrafficConfiguration,
+        UpdateStages.WithIngressConfiguration, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithDiskEncryptionConfiguration {
         /**
          * Executes the update request.
          * 
@@ -639,13 +783,52 @@ public interface ManagedEnvironment {
         interface WithAppLogsConfiguration {
             /**
              * Specifies the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-             * app logs to configured destination..
+             * app logs to configured destination.
              * 
              * @param appLogsConfiguration Cluster configuration which enables the log daemon to export app logs to
              * configured destination.
              * @return the next definition stage.
              */
             Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify appInsightsConfiguration.
+         */
+        interface WithAppInsightsConfiguration {
+            /**
+             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
+             * 
+             * @param appInsightsConfiguration Environment level Application Insights configuration.
+             * @return the next definition stage.
+             */
+            Update withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify openTelemetryConfiguration.
+         */
+        interface WithOpenTelemetryConfiguration {
+            /**
+             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
+             * 
+             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
+             * @return the next definition stage.
+             */
+            Update withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify availabilityZones.
+         */
+        interface WithAvailabilityZones {
+            /**
+             * Specifies the availabilityZones property: The list of availability zones to use for managed environment.
+             * 
+             * @param availabilityZones The list of availability zones to use for managed environment.
+             * @return the next definition stage.
+             */
+            Update withAvailabilityZones(List<String> availabilityZones);
         }
 
         /**
@@ -725,6 +908,48 @@ public interface ManagedEnvironment {
              */
             Update withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify ingressConfiguration.
+         */
+        interface WithIngressConfiguration {
+            /**
+             * Specifies the ingressConfiguration property: Ingress configuration for the Managed Environment..
+             * 
+             * @param ingressConfiguration Ingress configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withIngressConfiguration(IngressConfiguration ingressConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify diskEncryptionConfiguration.
+         */
+        interface WithDiskEncryptionConfiguration {
+            /**
+             * Specifies the diskEncryptionConfiguration property: Disk encryption configuration for the Managed
+             * Environment..
+             * 
+             * @param diskEncryptionConfiguration Disk encryption configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration);
         }
     }
 

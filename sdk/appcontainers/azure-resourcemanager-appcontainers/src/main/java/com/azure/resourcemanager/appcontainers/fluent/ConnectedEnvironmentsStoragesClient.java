@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStoragesCollectionInner;
 
@@ -84,17 +86,33 @@ public interface ConnectedEnvironmentsStoragesClient {
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of storage resource for connectedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectedEnvironmentStorageInner>, ConnectedEnvironmentStorageInner> beginCreateOrUpdate(
+        String resourceGroupName, String connectedEnvironmentName, String storageName,
+        ConnectedEnvironmentStorageInner storageEnvelope);
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for connectedEnvironment along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of storage resource for connectedEnvironment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectedEnvironmentStorageInner> createOrUpdateWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String storageName, ConnectedEnvironmentStorageInner storageEnvelope,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectedEnvironmentStorageInner>, ConnectedEnvironmentStorageInner> beginCreateOrUpdate(
+        String resourceGroupName, String connectedEnvironmentName, String storageName,
+        ConnectedEnvironmentStorageInner storageEnvelope, Context context);
 
     /**
      * Create or update storage for a connectedEnvironment.
@@ -104,14 +122,45 @@ public interface ConnectedEnvironmentsStoragesClient {
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storage resource for connectedEnvironment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConnectedEnvironmentStorageInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         String storageName, ConnectedEnvironmentStorageInner storageEnvelope);
+
+    /**
+     * Create or update storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for connectedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectedEnvironmentStorageInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, ConnectedEnvironmentStorageInner storageEnvelope, Context context);
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
+        String storageName);
 
     /**
      * Delete storage for a connectedEnvironment.
@@ -121,14 +170,13 @@ public interface ConnectedEnvironmentsStoragesClient {
      * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String storageName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
+        String storageName, Context context);
 
     /**
      * Delete storage for a connectedEnvironment.
@@ -137,10 +185,23 @@ public interface ConnectedEnvironmentsStoragesClient {
      * @param connectedEnvironmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String connectedEnvironmentName, String storageName);
+
+    /**
+     * Delete storage for a connectedEnvironment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String connectedEnvironmentName, String storageName, Context context);
 }

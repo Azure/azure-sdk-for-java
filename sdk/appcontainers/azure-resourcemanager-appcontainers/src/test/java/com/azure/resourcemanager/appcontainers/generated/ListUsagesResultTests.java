@@ -15,27 +15,34 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":51.11168,\"limit\":60.474632,\"name\":{\"value\":\"ntsj\",\"localizedValue\":\"rsxypruuu\"}}],\"nextLink\":\"nchrszizoyu\"}")
+            "{\"value\":[{\"currentValue\":55.136757,\"limit\":65.378006,\"name\":{\"value\":\"yfoeb\",\"localizedValue\":\"tjpp\"}},{\"currentValue\":49.864525,\"limit\":63.19597,\"name\":{\"value\":\"h\",\"localizedValue\":\"kpjtnqjilaywk\"}},{\"currentValue\":17.043554,\"limit\":7.3441863,\"name\":{\"value\":\"qsyrilmhxdqao\",\"localizedValue\":\"ylnkkbjpjvlywltm\"}}],\"nextLink\":\"obbjwhlwy\"}")
             .toObject(ListUsagesResult.class);
-        Assertions.assertEquals(51.11168f, model.value().get(0).currentValue());
-        Assertions.assertEquals(60.474632f, model.value().get(0).limit());
-        Assertions.assertEquals("ntsj", model.value().get(0).name().value());
-        Assertions.assertEquals("rsxypruuu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("nchrszizoyu", model.nextLink());
+        Assertions.assertEquals(55.136757f, model.value().get(0).currentValue());
+        Assertions.assertEquals(65.378006f, model.value().get(0).limit());
+        Assertions.assertEquals("yfoeb", model.value().get(0).name().value());
+        Assertions.assertEquals("tjpp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("obbjwhlwy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult()
-            .withValue(Arrays.asList(new UsageInner().withCurrentValue(51.11168f)
-                .withLimit(60.474632f)
-                .withName(new UsageName().withValue("ntsj").withLocalizedValue("rsxypruuu"))))
-            .withNextLink("nchrszizoyu");
+            .withValue(Arrays.asList(
+                new UsageInner().withCurrentValue(55.136757f)
+                    .withLimit(65.378006f)
+                    .withName(new UsageName().withValue("yfoeb").withLocalizedValue("tjpp")),
+                new UsageInner().withCurrentValue(49.864525f)
+                    .withLimit(63.19597f)
+                    .withName(new UsageName().withValue("h").withLocalizedValue("kpjtnqjilaywk")),
+                new UsageInner().withCurrentValue(17.043554f)
+                    .withLimit(7.3441863f)
+                    .withName(new UsageName().withValue("qsyrilmhxdqao").withLocalizedValue("ylnkkbjpjvlywltm"))))
+            .withNextLink("obbjwhlwy");
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
-        Assertions.assertEquals(51.11168f, model.value().get(0).currentValue());
-        Assertions.assertEquals(60.474632f, model.value().get(0).limit());
-        Assertions.assertEquals("ntsj", model.value().get(0).name().value());
-        Assertions.assertEquals("rsxypruuu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("nchrszizoyu", model.nextLink());
+        Assertions.assertEquals(55.136757f, model.value().get(0).currentValue());
+        Assertions.assertEquals(65.378006f, model.value().get(0).limit());
+        Assertions.assertEquals("yfoeb", model.value().get(0).name().value());
+        Assertions.assertEquals("tjpp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("obbjwhlwy", model.nextLink());
     }
 }
