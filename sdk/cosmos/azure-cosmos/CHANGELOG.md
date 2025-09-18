@@ -10,8 +10,8 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
-* Improved resilience around several completion events for an ssl handshake. - [46734](https://github.com/Azure/azure-sdk-for-java/pull/46734)
+* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [PR 46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
+* Improved resilience around several completion events for an ssl handshake. - [PR 46734](https://github.com/Azure/azure-sdk-for-java/pull/46734)
 
 ### 4.74.0 (2025-09-05)
 
