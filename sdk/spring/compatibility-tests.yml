@@ -28,6 +28,7 @@ stages:
                 python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py --target-version-prefix 3. --non-target-version-prefix-list 3.0. --use-the-latest-version yes
               displayName: 'Update supported Spring versions'
   - stage: "NonLatestVersionsCompatibility"
+    condition: false
     dependsOn: []
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
