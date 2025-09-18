@@ -4,6 +4,7 @@
 
 package com.azure.communication.sms.models;
 
+import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -28,6 +29,18 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      */
     @Generated
     private String tag;
+
+    /*
+     * Time to wait for a delivery report. After this time a delivery report with timeout error code is generated.
+     */
+    @Generated
+    private Integer deliveryReportTimeoutInSeconds;
+
+    /*
+     * Defines optional parameters for connecting with the Messaging Connect Partner to deliver SMS.
+     */
+    @Generated
+    private MessagingConnectOptions messagingConnect;
 
     /**
      * Creates an instance of SmsSendOptions class.
@@ -85,6 +98,54 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
     }
 
     /**
+     * Get the deliveryReportTimeoutInSeconds property: Time to wait for a delivery report. After this time a delivery
+     * report with timeout error code is generated.
+     * 
+     * @return the deliveryReportTimeoutInSeconds value.
+     */
+    @Generated
+    public Integer getDeliveryReportTimeoutInSeconds() {
+        return this.deliveryReportTimeoutInSeconds;
+    }
+
+    /**
+     * Set the deliveryReportTimeoutInSeconds property: Time to wait for a delivery report. After this time a delivery
+     * report with timeout error code is generated.
+     * 
+     * @param deliveryReportTimeoutInSeconds the deliveryReportTimeoutInSeconds value to set.
+     * @return the SmsSendOptions object itself.
+     */
+    @Generated
+    public SmsSendOptions setDeliveryReportTimeoutInSeconds(Integer deliveryReportTimeoutInSeconds) {
+        this.deliveryReportTimeoutInSeconds = deliveryReportTimeoutInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the messagingConnect property: Defines optional parameters for connecting with the Messaging Connect Partner
+     * to deliver SMS.
+     * 
+     * @return the messagingConnect value.
+     */
+    @Generated
+    public MessagingConnectOptions getMessagingConnect() {
+        return this.messagingConnect;
+    }
+
+    /**
+     * Set the messagingConnect property: Defines optional parameters for connecting with the Messaging Connect Partner
+     * to deliver SMS.
+     * 
+     * @param messagingConnect the messagingConnect value to set.
+     * @return the SmsSendOptions object itself.
+     */
+    @Generated
+    public SmsSendOptions setMessagingConnect(MessagingConnectOptions messagingConnect) {
+        this.messagingConnect = messagingConnect;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -93,6 +154,8 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enableDeliveryReport", this.deliveryReportEnabled);
         jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeNumberField("deliveryReportTimeoutInSeconds", this.deliveryReportTimeoutInSeconds);
+        jsonWriter.writeJsonField("messagingConnect", this.messagingConnect);
         return jsonWriter.writeEndObject();
     }
 
@@ -117,6 +180,10 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
                     deserializedSmsSendOptions.deliveryReportEnabled = reader.getBoolean();
                 } else if ("tag".equals(fieldName)) {
                     deserializedSmsSendOptions.tag = reader.getString();
+                } else if ("deliveryReportTimeoutInSeconds".equals(fieldName)) {
+                    deserializedSmsSendOptions.deliveryReportTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("messagingConnect".equals(fieldName)) {
+                    deserializedSmsSendOptions.messagingConnect = MessagingConnectOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
