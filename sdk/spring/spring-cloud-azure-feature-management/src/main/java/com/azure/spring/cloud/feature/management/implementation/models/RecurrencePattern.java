@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The recurrence pattern specifying how often the time window repeats
- * */
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecurrencePattern {
     /**
@@ -22,8 +22,8 @@ public class RecurrencePattern {
     private RecurrencePatternType type = RecurrencePatternType.DAILY;
 
     /**
-     * The number of units between occurrences, where units can be in days, weeks, months, or years,
-     * depending on the pattern type. Default value is 1
+     * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the
+     * pattern type. Default value is 1
      */
     private Integer interval = 1;
 
@@ -34,60 +34,66 @@ public class RecurrencePattern {
 
     /**
      * The first day of the week
-     * */
+     */
     private DayOfWeek firstDayOfWeek = DayOfWeek.SUNDAY;
 
     /**
      * @return the recurrence pattern type
-     * */
+     */
     public RecurrencePatternType getType() {
         return type;
     }
 
     /**
      * @param type pattern type to be set
+     * @return the updated RecurrencePattern object
      * @throws IllegalArgumentException if type is invalid
-     * */
-    public void setType(String type) throws IllegalArgumentException {
+     */
+    public RecurrencePattern setType(String type) throws IllegalArgumentException {
         try {
             this.type = RecurrencePatternType.valueOf(type.toUpperCase());
         } catch (final IllegalArgumentException e) {
             throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.Type", Arrays.toString(RecurrencePatternType.values())));
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.Type",
+                    Arrays.toString(RecurrencePatternType.values())));
         }
+        return this;
     }
 
     /**
      * @return the number of units between occurrences
-     * */
+     */
     public Integer getInterval() {
         return interval;
     }
 
     /**
      * @param interval the time units to be set
+     * @return the updated RecurrencePattern object
      * @throws IllegalArgumentException if interval is invalid
-     * */
-    public void setInterval(Integer interval) throws IllegalArgumentException {
+     */
+    public RecurrencePattern setInterval(Integer interval) throws IllegalArgumentException {
         if (interval == null || interval <= 0) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
         }
         this.interval = interval;
+        return this;
     }
 
     /**
      * @return the days of the week on which the time window occurs
-     * */
+     */
     public List<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
 
     /**
      * @param daysOfWeek the days that time window occurs
+     * @return the updated RecurrencePattern object
      * @throws IllegalArgumentException if daysOfWeek is null/empty, or has invalid value
-     * */
-    public void setDaysOfWeek(List<String> daysOfWeek) throws IllegalArgumentException {
+     */
+    public RecurrencePattern setDaysOfWeek(List<String> daysOfWeek) throws IllegalArgumentException {
         if (daysOfWeek == null || daysOfWeek.size() == 0) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
@@ -99,22 +105,25 @@ public class RecurrencePattern {
             }
         } catch (final IllegalArgumentException e) {
             throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.DaysOfWeek", Arrays.toString(DayOfWeek.values())));
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.DaysOfWeek",
+                    Arrays.toString(DayOfWeek.values())));
         }
+        return this;
     }
 
     /**
      * @return the first day of the week
-     * */
+     */
     public DayOfWeek getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
     /**
      * @param firstDayOfWeek the first day of the week
+     * @return the updated RecurrencePattern object
      * @throws IllegalArgumentException if firstDayOfWeek is invalid
-     * */
-    public void setFirstDayOfWeek(String firstDayOfWeek) throws IllegalArgumentException {
+     */
+    public RecurrencePattern setFirstDayOfWeek(String firstDayOfWeek) throws IllegalArgumentException {
         if (firstDayOfWeek == null) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.FirstDayOfWeek"));
@@ -124,7 +133,9 @@ public class RecurrencePattern {
             this.firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
         } catch (final IllegalArgumentException e) {
             throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.FirstDayOfWeek", Arrays.toString(DayOfWeek.values())));
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.FirstDayOfWeek",
+                    Arrays.toString(DayOfWeek.values())));
         }
+        return this;
     }
 }

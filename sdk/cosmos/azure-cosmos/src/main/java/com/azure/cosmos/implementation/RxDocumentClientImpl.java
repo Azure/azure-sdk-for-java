@@ -535,17 +535,68 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
                 this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-            } else {
+            }else {
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
                     String scopeOverride = Configs.getAadScopeOverride();
-                    String defaultScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
-                    String scopeToUse = (scopeOverride != null && !scopeOverride.isEmpty()) ? scopeOverride : defaultScope;
+                    String accountScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
 
-                    this.tokenCredentialScopes = new String[] { scopeToUse };
-                    this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
-                        .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
+                    if (scopeOverride != null && !scopeOverride.isEmpty()) {
+                        // Use only the override scope; no fallback.
+                        this.tokenCredentialScopes = new String[] { scopeOverride };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope = this.tokenCredentialScopes[0];
+                            final TokenRequestContext ctx = new TokenRequestContext().addScopes(primaryScope);
+                            return this.tokenCredential.getToken(ctx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using override scope: {}", primaryScope);
+                                    }
+                                });
+                        });
+                    } else {
+                        // Account scope with fallback to default scope on AADSTS500011 error
+                        this.tokenCredentialScopes = new String[] { accountScope, Constants.AAD_DEFAULT_SCOPE };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope  = this.tokenCredentialScopes[0];
+                            final String fallbackScope = this.tokenCredentialScopes[1];
+
+                            final TokenRequestContext primaryCtx = new TokenRequestContext().addScopes(primaryScope);
+
+                            return this.tokenCredential.getToken(primaryCtx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using account scope: {}", primaryScope);
+                                    }
+                                })
+                                .onErrorResume(error -> {
+                                    final Throwable root = reactor.core.Exceptions.unwrap(error);
+                                    final String messageText = (root.getMessage() != null) ? root.getMessage() : "";
+                                    final boolean isAadAppNotFound = messageText.contains("AADSTS500011");
+
+                                    if (!isAadAppNotFound) {
+                                        return Mono.error(error);
+                                    }
+
+                                    if (logger.isWarnEnabled()) {
+                                        logger.warn(
+                                            "AAD token: account scope failed with AADSTS500011; retrying with fallback scope: {}",
+                                            fallbackScope);
+                                    }
+
+                                    final TokenRequestContext fallbackCtx = new TokenRequestContext().addScopes(fallbackScope);
+                                    return this.tokenCredential.getToken(fallbackCtx)
+                                        .doOnNext(t -> {
+                                            if (logger.isInfoEnabled()) {
+                                                logger.info("AAD token: acquired using fallback scope: {}", fallbackScope);
+                                            }
+                                        });
+                                });
+                        });
+                    }
                     this.authorizationTokenType = AuthorizationTokenType.AadToken;
                 }
             }

@@ -21,6 +21,11 @@ public final class RuntimeJava implements JsonSerializable<RuntimeJava> {
      */
     private Boolean enableMetrics;
 
+    /*
+     * Diagnostic capabilities achieved by java agent
+     */
+    private RuntimeJavaAgent javaAgent;
+
     /**
      * Creates an instance of RuntimeJava class.
      */
@@ -48,11 +53,34 @@ public final class RuntimeJava implements JsonSerializable<RuntimeJava> {
     }
 
     /**
+     * Get the javaAgent property: Diagnostic capabilities achieved by java agent.
+     * 
+     * @return the javaAgent value.
+     */
+    public RuntimeJavaAgent javaAgent() {
+        return this.javaAgent;
+    }
+
+    /**
+     * Set the javaAgent property: Diagnostic capabilities achieved by java agent.
+     * 
+     * @param javaAgent the javaAgent value to set.
+     * @return the RuntimeJava object itself.
+     */
+    public RuntimeJava withJavaAgent(RuntimeJavaAgent javaAgent) {
+        this.javaAgent = javaAgent;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (javaAgent() != null) {
+            javaAgent().validate();
+        }
     }
 
     /**
@@ -62,6 +90,7 @@ public final class RuntimeJava implements JsonSerializable<RuntimeJava> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enableMetrics", this.enableMetrics);
+        jsonWriter.writeJsonField("javaAgent", this.javaAgent);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +111,8 @@ public final class RuntimeJava implements JsonSerializable<RuntimeJava> {
 
                 if ("enableMetrics".equals(fieldName)) {
                     deserializedRuntimeJava.enableMetrics = reader.getNullable(JsonReader::getBoolean);
+                } else if ("javaAgent".equals(fieldName)) {
+                    deserializedRuntimeJava.javaAgent = RuntimeJavaAgent.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,21 +9,29 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appcontainers.models.OpenTelemetryConfiguration;
+import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ManagedEnvironmentImpl
     implements ManagedEnvironment, ManagedEnvironment.Definition, ManagedEnvironment.Update {
@@ -92,6 +100,10 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().defaultDomain();
     }
 
+    public String privateLinkDefaultDomain() {
+        return this.innerModel().privateLinkDefaultDomain();
+    }
+
     public String staticIp() {
         return this.innerModel().staticIp();
     }
@@ -100,8 +112,25 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().appLogsConfiguration();
     }
 
+    public AppInsightsConfiguration appInsightsConfiguration() {
+        return this.innerModel().appInsightsConfiguration();
+    }
+
+    public OpenTelemetryConfiguration openTelemetryConfiguration() {
+        return this.innerModel().openTelemetryConfiguration();
+    }
+
     public Boolean zoneRedundant() {
         return this.innerModel().zoneRedundant();
+    }
+
+    public List<String> availabilityZones() {
+        List<String> inner = this.innerModel().availabilityZones();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public CustomDomainConfiguration customDomainConfiguration() {
@@ -139,6 +168,29 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration() {
         return this.innerModel().peerTrafficConfiguration();
+    }
+
+    public IngressConfiguration ingressConfiguration() {
+        return this.innerModel().ingressConfiguration();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public DiskEncryptionConfiguration diskEncryptionConfiguration() {
+        return this.innerModel().diskEncryptionConfiguration();
     }
 
     public Region region() {
@@ -287,8 +339,24 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
+    public ManagedEnvironmentImpl withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration) {
+        this.innerModel().withAppInsightsConfiguration(appInsightsConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl
+        withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration) {
+        this.innerModel().withOpenTelemetryConfiguration(openTelemetryConfiguration);
+        return this;
+    }
+
     public ManagedEnvironmentImpl withZoneRedundant(Boolean zoneRedundant) {
         this.innerModel().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withAvailabilityZones(List<String> availabilityZones) {
+        this.innerModel().withAvailabilityZones(availabilityZones);
         return this;
     }
 
@@ -326,6 +394,22 @@ public final class ManagedEnvironmentImpl
     public ManagedEnvironmentImpl
         withPeerTrafficConfiguration(ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration) {
         this.innerModel().withPeerTrafficConfiguration(peerTrafficConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        this.innerModel().withIngressConfiguration(ingressConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl
+        withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration) {
+        this.innerModel().withDiskEncryptionConfiguration(diskEncryptionConfiguration);
         return this;
     }
 }

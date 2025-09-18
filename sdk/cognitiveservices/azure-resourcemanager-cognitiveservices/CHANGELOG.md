@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2025-09-16)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NetworkInjections` was removed
+
+#### `models.AccountProperties` was modified
+
+* `models.NetworkInjections networkInjections()` -> `java.util.List networkInjections()`
+* `withNetworkInjections(models.NetworkInjections)` was removed
+
+### Features Added
+
+* `models.NetworkInjection` was added
+
+#### `models.AccountProperties` was modified
+
+* `withNetworkInjections(java.util.List)` was added
 
 ## 1.2.0 (2025-07-21)
 

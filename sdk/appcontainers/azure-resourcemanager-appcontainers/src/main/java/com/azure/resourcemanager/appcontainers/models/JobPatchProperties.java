@@ -18,6 +18,11 @@ import java.util.Map;
 @Fluent
 public final class JobPatchProperties implements JsonSerializable<JobPatchProperties> {
     /*
+     * The complex type of the extended location.
+     */
+    private ExtendedLocation extendedLocation;
+
+    /*
      * Managed identities needed by a container app job to interact with other Azure services to not maintain any
      * secrets or credentials in code.
      */
@@ -37,6 +42,26 @@ public final class JobPatchProperties implements JsonSerializable<JobPatchProper
      * Creates an instance of JobPatchProperties class.
      */
     public JobPatchProperties() {
+    }
+
+    /**
+     * Get the extendedLocation property: The complex type of the extended location.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The complex type of the extended location.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the JobPatchProperties object itself.
+     */
+    public JobPatchProperties withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
     }
 
     /**
@@ -107,6 +132,9 @@ public final class JobPatchProperties implements JsonSerializable<JobPatchProper
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
@@ -121,6 +149,7 @@ public final class JobPatchProperties implements JsonSerializable<JobPatchProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
@@ -142,7 +171,9 @@ public final class JobPatchProperties implements JsonSerializable<JobPatchProper
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("identity".equals(fieldName)) {
+                if ("extendedLocation".equals(fieldName)) {
+                    deserializedJobPatchProperties.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
                     deserializedJobPatchProperties.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());

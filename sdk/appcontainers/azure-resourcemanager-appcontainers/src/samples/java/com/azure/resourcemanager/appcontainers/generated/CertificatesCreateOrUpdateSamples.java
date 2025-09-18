@@ -7,13 +7,15 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appcontainers.models.CertificateKeyVaultProperties;
 import com.azure.resourcemanager.appcontainers.models.CertificateProperties;
+import com.azure.resourcemanager.appcontainers.models.CertificateType;
 
 /**
  * Samples for Certificates CreateOrUpdate.
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * Certificate_CreateOrUpdate_FromKeyVault.json
      */
     /**
@@ -29,13 +31,15 @@ public final class CertificatesCreateOrUpdateSamples {
                     .withProperties(new CertificateProperties()
                         .withCertificateKeyVaultProperties(new CertificateKeyVaultProperties().withIdentity(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/microsoft.managedidentity/userassignedidentities/test-user-mi")
-                            .withKeyVaultUrl("fakeTokenPlaceholder"))),
+                            .withKeyVaultUrl("fakeTokenPlaceholder"))
+                        .withCertificateType(CertificateType.SERVER_SSLCERTIFICATE)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Certificate_CreateOrUpdate.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * Certificate_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Certificate.
@@ -48,7 +52,8 @@ public final class CertificatesCreateOrUpdateSamples {
             .createOrUpdateWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
                 new CertificateInner().withLocation("East US")
                     .withProperties(new CertificateProperties().withPassword("fakeTokenPlaceholder")
-                        .withValue("Y2VydA==".getBytes())),
+                        .withValue("Y2VydA==".getBytes())
+                        .withCertificateType(CertificateType.IMAGE_PULL_TRUSTED_CA)),
                 com.azure.core.util.Context.NONE);
     }
 }
