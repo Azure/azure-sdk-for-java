@@ -9,6 +9,7 @@ import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
  * Implementations of this interface can be used to send telemetry data to various
  * telemetry services or systems.
  */
+@FunctionalInterface
 public interface TelemetryPublisher {
     
     /**

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * metadata for customizing telemetry information.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Telemetry {
+public class FeatureTelemetry {
 
     private boolean enabled;
 
@@ -23,7 +23,7 @@ public class Telemetry {
      * Creates a new instance of the Telemetry class.
      * By default, telemetry is enabled and no metadata is set.
      */
-    public Telemetry() {
+    public FeatureTelemetry() {
         this.enabled = false; // Default to disabled
         this.metadata = new HashMap<>();
     }
@@ -43,7 +43,7 @@ public class Telemetry {
      * @param enabled {@code true} to enable telemetry, {@code false} to disable it
      * @return The updated Telemetry instance for method chaining
      */
-    public Telemetry setEnabled(boolean enabled) {
+    public FeatureTelemetry setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -65,7 +65,7 @@ public class Telemetry {
      * @param metadata A map of key-value pairs to provide additional context for telemetry events
      * @return The updated Telemetry instance for method chaining
      */
-    public Telemetry setMetadata(Map<String, String> metadata) {
+    public FeatureTelemetry setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

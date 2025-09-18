@@ -16,12 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * and variant references for feature flags that support multiple variations.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Feature {
+public class FeatureDefinition {
 
     /**
      * Creates a new instance of the Feature class.
      */
-    public Feature() {
+    public FeatureDefinition() {
     }
 
     /**
@@ -74,7 +74,7 @@ public class Feature {
      * and what additional metadata is included.
      */
     @JsonProperty("telemetry")
-    private Telemetry telemetry = new Telemetry();
+    private FeatureTelemetry telemetry = new FeatureTelemetry();
 
     /**
      * Gets the unique identifier of this feature flag.
@@ -91,7 +91,7 @@ public class Feature {
      * @param id the feature flag identifier to set
      * @return the updated Feature instance for method chaining
      */
-    public Feature setId(String id) {
+    public FeatureDefinition setId(String id) {
         this.id = id;
         return this;
     }
@@ -112,7 +112,7 @@ public class Feature {
      * @param enabled true to enable the feature flag, false to disable it
      * @return the updated Feature instance for method chaining
      */
-    public Feature setEnabled(boolean enabled) {
+    public FeatureDefinition setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -133,7 +133,7 @@ public class Feature {
      * @param description the description to set for the feature flag
      * @return the updated Feature instance for method chaining
      */
-    public Feature setDescription(String description) {
+    public FeatureDefinition setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -156,7 +156,7 @@ public class Feature {
      * @param conditions the conditions to set for feature flag evaluation
      * @return the updated Feature instance for method chaining
      */
-    public Feature setConditions(Conditions conditions) {
+    public FeatureDefinition setConditions(Conditions conditions) {
         this.conditions = conditions;
         return this;
     }
@@ -180,7 +180,7 @@ public class Feature {
      * @param allocation the allocation strategy to set for variant assignment
      * @return the updated Feature instance for method chaining
      */
-    public Feature setAllocation(Allocation allocation) {
+    public FeatureDefinition setAllocation(Allocation allocation) {
         this.allocation = allocation;
         return this;
     }
@@ -204,7 +204,7 @@ public class Feature {
      * @param variants the list of variant references to set for this feature flag
      * @return the updated Feature instance for method chaining
      */
-    public Feature setVariants(List<VariantReference> variants) {
+    public FeatureDefinition setVariants(List<VariantReference> variants) {
         this.variants = variants;
         return this;
     }
@@ -216,7 +216,7 @@ public class Feature {
      * 
      * @return the telemetry configuration for this feature flag
      */
-    public Telemetry getTelemetry() {
+    public FeatureTelemetry getTelemetry() {
         return telemetry;
     }
 
@@ -228,7 +228,7 @@ public class Feature {
      * @param telemetry the telemetry configuration to set for this feature flag
      * @return the updated Feature instance for method chaining
      */
-    public Feature setTelemetry(Telemetry telemetry) {
+    public FeatureDefinition setTelemetry(FeatureTelemetry telemetry) {
         this.telemetry = telemetry;
         return this;
     }
