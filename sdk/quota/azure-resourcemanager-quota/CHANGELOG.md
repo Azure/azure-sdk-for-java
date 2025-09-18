@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+Order of paramaters changes for API involves a `scope` parameter. It is now the first parameter in API.
+
 #### `models.UsagesLimits` was removed
 
 #### `models.QuotasListResponse` was removed
