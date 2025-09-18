@@ -19,8 +19,8 @@ public class HttpHeadersTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set(headerName, headerValue);
 
-        Map<String, String> caseInsensitiveMap = headers.toCaseInsensitiveMap();
-        assertThat(caseInsensitiveMap.get(headerName.toLowerCase())).isEqualTo(headerValue);
+        Map<String, String> lowerCaseMap = headers.toLowerCaseMap();
+        assertThat(lowerCaseMap.get(headerName.toLowerCase())).isEqualTo(headerValue);
 
         Map<String, String> caseSensitiveMap = headers.toMap();
         assertThat(caseSensitiveMap.get(headerName.toLowerCase())).isNull();
