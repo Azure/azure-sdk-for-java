@@ -37,46 +37,47 @@ parameters:
     default: ''
 
 stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-    parameters:
-      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-      Artifacts: ${{ parameters.Artifacts }}
-      TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-      ServiceDirectory: spring
-      TestName: ${{ parameters.TestName }}
-      BuildOptions: ${{ parameters.BuildOptions }}
-      EnvVars: ${{ parameters.EnvVars }}
-      TestGoals: "clean verify"
-      TestOptions: ${{ parameters.TestOptions }}
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
-      PreGenerationSteps:
-        - script: |
-            python -m pip install termcolor
-          displayName: 'Install python module'
-        - script: |
-            python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -mcp ${{ parameters.MatrixConfigs[0].Path }}
-          displayName: 'Update supported Spring versions'
-      MatrixFilters:
-        - JavaTestVersion=^(?!1.8|1.11).*
-      AdditionalSparseCheckoutPaths:
-        - 'sdk/spring'
-      PreSteps:
-        - ${{ parameters.PreSteps }}
-        - script: |
-            python -m pip install termcolor requests
-          displayName: 'Install python modules'
-        - bash: |
-            echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
-          displayName: 'Set supported Spring version to environment variables'
-        - bash: |
-            echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
-            echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
-            echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
-            echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
-          displayName: 'Log Spring version and Maven pom path'
-        - script: |
-            python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION) --usage integration
-          displayName: 'Insert Spring dependency managements'
-        - script: |
-            python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) --usage integration
-          displayName: 'Remove unused dependency versions'
+  - ${{ if ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '') }}:
+    - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      parameters:
+        TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+        Artifacts: ${{ parameters.Artifacts }}
+        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+        ServiceDirectory: spring
+        TestName: ${{ parameters.TestName }}
+        BuildOptions: ${{ parameters.BuildOptions }}
+        EnvVars: ${{ parameters.EnvVars }}
+        TestGoals: "clean verify"
+        TestOptions: ${{ parameters.TestOptions }}
+        MatrixConfigs: ${{ parameters.MatrixConfigs }}
+        PreGenerationSteps:
+          - script: |
+              python -m pip install termcolor
+            displayName: 'Install python module'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -mcp ${{ parameters.MatrixConfigs[0].Path }}
+            displayName: 'Update supported Spring versions'
+        MatrixFilters:
+          - JavaTestVersion=^(?!1.8|1.11).*
+        AdditionalSparseCheckoutPaths:
+          - 'sdk/spring'
+        PreSteps:
+          - ${{ parameters.PreSteps }}
+          - script: |
+              python -m pip install termcolor requests
+            displayName: 'Install python modules'
+          - bash: |
+              echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
+            displayName: 'Set supported Spring version to environment variables'
+          - bash: |
+              echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
+              echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
+              echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
+              echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
+            displayName: 'Log Spring version and Maven pom path'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION) --usage integration
+            displayName: 'Insert Spring dependency managements'
+          - script: |
+              python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) --usage integration
+            displayName: 'Remove unused dependency versions'
