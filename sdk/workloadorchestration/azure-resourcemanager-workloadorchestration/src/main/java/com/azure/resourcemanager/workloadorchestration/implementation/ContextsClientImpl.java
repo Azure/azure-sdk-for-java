@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.ContextsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ContextInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.ContextListResult;
+import com.azure.resourcemanager.workloadorchestration.models.ContextUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -115,7 +116,7 @@ public final class ContextsClientImpl implements ContextsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("contextName") String contextName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ContextInner properties, Context context);
+            @BodyParam("application/json") ContextUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}")
         @ExpectedResponses({ 200, 202 })
@@ -124,7 +125,7 @@ public final class ContextsClientImpl implements ContextsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("contextName") String contextName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ContextInner properties, Context context);
+            @BodyParam("application/json") ContextUpdate properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts")
@@ -571,7 +572,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String contextName,
-        ContextInner properties) {
+        ContextUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -612,7 +613,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName,
-        ContextInner properties) {
+        ContextUpdate properties) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -658,7 +659,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName,
-        ContextInner properties, Context context) {
+        ContextUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -702,7 +703,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContextInner>, ContextInner> beginUpdateAsync(String resourceGroupName,
-        String contextName, ContextInner properties) {
+        String contextName, ContextUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, contextName, properties);
         return this.client.<ContextInner, ContextInner>getLroResult(mono, this.client.getHttpPipeline(),
             ContextInner.class, ContextInner.class, this.client.getContext());
@@ -721,7 +722,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
-        ContextInner properties) {
+        ContextUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, contextName, properties);
         return this.client.<ContextInner, ContextInner>getLroResult(response, ContextInner.class, ContextInner.class,
             Context.NONE);
@@ -741,7 +742,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
-        ContextInner properties, Context context) {
+        ContextUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, contextName, properties, context);
         return this.client.<ContextInner, ContextInner>getLroResult(response, ContextInner.class, ContextInner.class,
             context);
@@ -759,7 +760,7 @@ public final class ContextsClientImpl implements ContextsClient {
      * @return context Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContextInner> updateAsync(String resourceGroupName, String contextName, ContextInner properties) {
+    private Mono<ContextInner> updateAsync(String resourceGroupName, String contextName, ContextUpdate properties) {
         return beginUpdateAsync(resourceGroupName, contextName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -776,7 +777,7 @@ public final class ContextsClientImpl implements ContextsClient {
      * @return context Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContextInner update(String resourceGroupName, String contextName, ContextInner properties) {
+    public ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties) {
         return beginUpdate(resourceGroupName, contextName, properties).getFinalResult();
     }
 
@@ -793,7 +794,8 @@ public final class ContextsClientImpl implements ContextsClient {
      * @return context Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContextInner update(String resourceGroupName, String contextName, ContextInner properties, Context context) {
+    public ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties,
+        Context context) {
         return beginUpdate(resourceGroupName, contextName, properties, context).getFinalResult();
     }
 

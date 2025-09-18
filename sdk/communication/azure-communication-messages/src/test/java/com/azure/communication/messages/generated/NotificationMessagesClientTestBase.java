@@ -8,6 +8,10 @@ package com.azure.communication.messages.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.communication.messages.ConversationAdministrationClient;
+import com.azure.communication.messages.ConversationAdministrationClientBuilder;
+import com.azure.communication.messages.ConversationThreadClient;
+import com.azure.communication.messages.ConversationThreadClientBuilder;
 import com.azure.communication.messages.MessageTemplateClient;
 import com.azure.communication.messages.MessageTemplateClientBuilder;
 import com.azure.communication.messages.NotificationMessagesClient;
@@ -24,6 +28,10 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
     protected NotificationMessagesClient notificationMessagesClient;
 
     protected MessageTemplateClient messageTemplateClient;
+
+    protected ConversationAdministrationClient conversationAdministrationClient;
+
+    protected ConversationThreadClient conversationThreadClient;
 
     @Override
     protected void beforeTest() {
@@ -54,6 +62,35 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
             messageTemplateClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         messageTemplateClient = messageTemplateClientbuilder.buildClient();
+
+        ConversationAdministrationClientBuilder conversationAdministrationClientbuilder
+            = new ConversationAdministrationClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            conversationAdministrationClientbuilder.credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            conversationAdministrationClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            conversationAdministrationClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        conversationAdministrationClient = conversationAdministrationClientbuilder.buildClient();
+
+        ConversationThreadClientBuilder conversationThreadClientbuilder = new ConversationThreadClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            conversationThreadClientbuilder.credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            conversationThreadClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            conversationThreadClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        conversationThreadClient = conversationThreadClientbuilder.buildClient();
 
     }
 }

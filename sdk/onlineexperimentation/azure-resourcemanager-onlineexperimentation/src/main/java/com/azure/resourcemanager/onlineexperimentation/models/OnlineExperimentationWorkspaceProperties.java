@@ -10,7 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.PrivateEndpointConnectionInner;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of an online experimentation workspace.
@@ -55,6 +57,18 @@ public final class OnlineExperimentationWorkspaceProperties
      * The data plane endpoint for the online experimentation workspace resource.
      */
     private String endpoint;
+
+    /*
+     * Public Network Access Control for the online experimentation resource. Defaults to Enabled if not set.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
+     */
+    private PublicNetworkAccessType publicNetworkAccess;
+
+    /*
+     * The private endpoint connections associated with the online experimentation workspace resource.
+     */
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Creates an instance of OnlineExperimentationWorkspaceProperties class.
@@ -182,6 +196,43 @@ public final class OnlineExperimentationWorkspaceProperties
     }
 
     /**
+     * Get the publicNetworkAccess property: Public Network Access Control for the online experimentation resource.
+     * Defaults to Enabled if not set.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessType publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Public Network Access Control for the online experimentation resource.
+     * Defaults to Enabled if not set.
+     * - Enabled: The resource can be accessed from the public internet.
+     * - Disabled: The resource can only be accessed from a private endpoint.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the OnlineExperimentationWorkspaceProperties object itself.
+     */
+    public OnlineExperimentationWorkspaceProperties
+        withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The private endpoint connections associated with the online
+     * experimentation workspace resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -205,6 +256,9 @@ public final class OnlineExperimentationWorkspaceProperties
         if (encryption() != null) {
             encryption().validate();
         }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentationWorkspaceProperties.class);
@@ -219,6 +273,8 @@ public final class OnlineExperimentationWorkspaceProperties
         jsonWriter.writeStringField("logsExporterStorageAccountResourceId", this.logsExporterStorageAccountResourceId);
         jsonWriter.writeStringField("appConfigurationResourceId", this.appConfigurationResourceId);
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -258,6 +314,14 @@ public final class OnlineExperimentationWorkspaceProperties
                         = ResourceEncryptionConfiguration.fromJson(reader);
                 } else if ("endpoint".equals(fieldName)) {
                     deserializedOnlineExperimentationWorkspaceProperties.endpoint = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedOnlineExperimentationWorkspaceProperties.publicNetworkAccess
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedOnlineExperimentationWorkspaceProperties.privateEndpointConnections
+                        = privateEndpointConnections;
                 } else {
                     reader.skipChildren();
                 }

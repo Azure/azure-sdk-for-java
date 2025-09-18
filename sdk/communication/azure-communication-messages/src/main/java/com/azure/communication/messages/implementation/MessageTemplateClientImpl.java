@@ -202,7 +202,7 @@ public final class MessageTemplateClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -244,7 +244,7 @@ public final class MessageTemplateClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -278,7 +278,7 @@ public final class MessageTemplateClientImpl {
             if (pageSize != null) {
                 requestOptionsLocal.addRequestCallback(requestLocal -> {
                     UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    urlBuilder.setQueryParameter("maxPageSize", String.valueOf(pageSize));
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
@@ -289,7 +289,7 @@ public final class MessageTemplateClientImpl {
             if (pageSize != null) {
                 requestOptionsLocal.addRequestCallback(requestLocal -> {
                     UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    urlBuilder.setQueryParameter("maxPageSize", String.valueOf(pageSize));
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
@@ -303,7 +303,7 @@ public final class MessageTemplateClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -342,7 +342,7 @@ public final class MessageTemplateClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -376,7 +376,7 @@ public final class MessageTemplateClientImpl {
             if (pageSize != null) {
                 requestOptionsLocal.addRequestCallback(requestLocal -> {
                     UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    urlBuilder.setQueryParameter("maxPageSize", String.valueOf(pageSize));
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
@@ -387,7 +387,7 @@ public final class MessageTemplateClientImpl {
             if (pageSize != null) {
                 requestOptionsLocal.addRequestCallback(requestLocal -> {
                     UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    urlBuilder.setQueryParameter("maxPageSize", String.valueOf(pageSize));
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }

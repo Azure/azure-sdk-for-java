@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Export parameter for a resource group.
@@ -22,12 +23,12 @@ public final class ExportResourceGroup extends BaseExportModel {
     private Type type = Type.EXPORT_RESOURCE_GROUP;
 
     /*
-     * The name of the resource group to be exported
+     * The name of the resource group to be exported.
      */
     private String resourceGroupName;
 
     /*
-     * The name pattern of the Terraform resources
+     * The id prefix for the exported Terraform resources. Defaults to `res-`.
      */
     private String namePattern;
 
@@ -68,7 +69,7 @@ public final class ExportResourceGroup extends BaseExportModel {
     }
 
     /**
-     * Get the namePattern property: The name pattern of the Terraform resources.
+     * Get the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @return the namePattern value.
      */
@@ -77,7 +78,7 @@ public final class ExportResourceGroup extends BaseExportModel {
     }
 
     /**
-     * Set the namePattern property: The name pattern of the Terraform resources.
+     * Set the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @param namePattern the namePattern value to set.
      * @return the ExportResourceGroup object itself.
@@ -115,6 +116,42 @@ public final class ExportResourceGroup extends BaseExportModel {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResourceGroup withIncludeRoleAssignment(Boolean includeRoleAssignment) {
+        super.withIncludeRoleAssignment(includeRoleAssignment);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResourceGroup withIncludeManagedResource(Boolean includeManagedResource) {
+        super.withIncludeManagedResource(includeManagedResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResourceGroup withExcludeAzureResource(List<String> excludeAzureResource) {
+        super.withExcludeAzureResource(excludeAzureResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResourceGroup withExcludeTerraformResource(List<String> excludeTerraformResource) {
+        super.withExcludeTerraformResource(excludeTerraformResource);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,6 +176,12 @@ public final class ExportResourceGroup extends BaseExportModel {
         jsonWriter.writeStringField("targetProvider", targetProvider() == null ? null : targetProvider().toString());
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
+        jsonWriter.writeBooleanField("includeRoleAssignment", includeRoleAssignment());
+        jsonWriter.writeBooleanField("includeManagedResource", includeManagedResource());
+        jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludeTerraformResource", excludeTerraformResource(),
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("namePattern", this.namePattern);
@@ -167,6 +210,18 @@ public final class ExportResourceGroup extends BaseExportModel {
                     deserializedExportResourceGroup.withFullProperties(reader.getNullable(JsonReader::getBoolean));
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedExportResourceGroup.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeRoleAssignment".equals(fieldName)) {
+                    deserializedExportResourceGroup
+                        .withIncludeRoleAssignment(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeManagedResource".equals(fieldName)) {
+                    deserializedExportResourceGroup
+                        .withIncludeManagedResource(reader.getNullable(JsonReader::getBoolean));
+                } else if ("excludeAzureResource".equals(fieldName)) {
+                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportResourceGroup.withExcludeAzureResource(excludeAzureResource);
+                } else if ("excludeTerraformResource".equals(fieldName)) {
+                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportResourceGroup.withExcludeTerraformResource(excludeTerraformResource);
                 } else if ("resourceGroupName".equals(fieldName)) {
                     deserializedExportResourceGroup.resourceGroupName = reader.getString();
                 } else if ("type".equals(fieldName)) {

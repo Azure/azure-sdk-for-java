@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.SolutionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.SolutionListResult;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -118,7 +119,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
             @PathParam("solutionName") String solutionName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SolutionInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SolutionUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}")
@@ -128,7 +129,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
             @PathParam("solutionName") String solutionName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SolutionInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SolutionUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -582,7 +583,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String targetName,
-        String solutionName, SolutionInner properties) {
+        String solutionName, SolutionUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -629,7 +630,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName, String solutionName,
-        SolutionInner properties) {
+        SolutionUpdate properties) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -680,7 +681,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName, String solutionName,
-        SolutionInner properties, Context context) {
+        SolutionUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -730,7 +731,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginUpdateAsync(String resourceGroupName,
-        String targetName, String solutionName, SolutionInner properties) {
+        String targetName, String solutionName, SolutionUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, targetName, solutionName, properties);
         return this.client.<SolutionInner, SolutionInner>getLroResult(mono, this.client.getHttpPipeline(),
@@ -751,7 +752,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String targetName,
-        String solutionName, SolutionInner properties) {
+        String solutionName, SolutionUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, targetName, solutionName, properties);
         return this.client.<SolutionInner, SolutionInner>getLroResult(response, SolutionInner.class,
             SolutionInner.class, Context.NONE);
@@ -772,7 +773,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String targetName,
-        String solutionName, SolutionInner properties, Context context) {
+        String solutionName, SolutionUpdate properties, Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, targetName, solutionName, properties, context);
         return this.client.<SolutionInner, SolutionInner>getLroResult(response, SolutionInner.class,
@@ -793,7 +794,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionInner> updateAsync(String resourceGroupName, String targetName, String solutionName,
-        SolutionInner properties) {
+        SolutionUpdate properties) {
         return beginUpdateAsync(resourceGroupName, targetName, solutionName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -812,7 +813,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionInner update(String resourceGroupName, String targetName, String solutionName,
-        SolutionInner properties) {
+        SolutionUpdate properties) {
         return beginUpdate(resourceGroupName, targetName, solutionName, properties).getFinalResult();
     }
 
@@ -831,7 +832,7 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionInner update(String resourceGroupName, String targetName, String solutionName,
-        SolutionInner properties, Context context) {
+        SolutionUpdate properties, Context context) {
         return beginUpdate(resourceGroupName, targetName, solutionName, properties, context).getFinalResult();
     }
 

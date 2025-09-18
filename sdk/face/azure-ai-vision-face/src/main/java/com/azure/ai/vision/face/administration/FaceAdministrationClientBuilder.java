@@ -51,8 +51,8 @@ import java.util.Objects;
         FaceAdministrationClient.class,
         FaceAdministrationAsyncClient.class,
         LargeFaceListClient.class,
-        LargePersonGroupClient.class,
         LargeFaceListAsyncClient.class,
+        LargePersonGroupClient.class,
         LargePersonGroupAsyncClient.class })
 public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdministrationClientBuilder>,
     ConfigurationTrait<FaceAdministrationClientBuilder>, TokenCredentialTrait<FaceAdministrationClientBuilder>,
@@ -239,12 +239,6 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
         return this;
     }
 
-    /*
-     * Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
-     */
-    @Generated
-    private String largeFaceListId;
-
     /**
      * Sets Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      *
@@ -255,12 +249,6 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
         this.largeFaceListId = largeFaceListId;
         return this;
     }
-
-    /*
-     * ID of the container.
-     */
-    @Generated
-    private String largePersonGroupId;
 
     /**
      * Sets ID of the container.
@@ -320,9 +308,8 @@ public final class FaceAdministrationClientBuilder implements HttpTrait<FaceAdmi
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         FaceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : FaceServiceVersion.getLatest();
-        FaceAdministrationClientImpl client
-            = new FaceAdministrationClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-                this.endpoint, this.largeFaceListId, this.largePersonGroupId, localServiceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
