@@ -1,6 +1,6 @@
 ## Release History
 
-### 6.0.0 (2025-09-12)
+### 6.0.0 (2025-09-19)
 
 #### Other Changes
 * regular release
