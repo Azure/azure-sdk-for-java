@@ -129,9 +129,9 @@ com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.1.3;1.2.0-beta.1
-com.azure:azure-identity;1.17.0;1.18.0-beta.1
+com.azure:azure-identity;1.18.0;1.19.0-beta.1
 com.azure:azure-identity-extensions;1.2.4;1.3.0-beta.1
-com.azure:azure-identity-broker;1.1.16;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.17;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.29;1.1.0-beta.1
@@ -400,7 +400,7 @@ com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azureadexternalidentities;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dashboard;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.1.0;1.2.0-beta.1
@@ -507,6 +507,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-computerecommender;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
@@ -542,8 +543,6 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
-unreleased_com.azure:azure-identity;1.18.0-beta.1
-unreleased_com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.2.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -552,3 +551,4 @@ unreleased_com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.2.0-b
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.2.0-beta.1
