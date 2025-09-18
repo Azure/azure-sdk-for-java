@@ -113,7 +113,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
         StepVerifier.create(monoResponse).assertNext(fileInfo -> {
             assertNotNull(fileInfo);
             assertEquals(uploadJmxFileName, fileInfo.getFileName());
-            assertEquals(FileType.TEST_SCRIPT.toString(), fileInfo.getFileType().toString());
+            assertEquals(LoadTestingFileType.TEST_SCRIPT.toString(), fileInfo.getFileType().toString());
         }).verifyComplete();
     }
 

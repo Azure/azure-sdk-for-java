@@ -12,9 +12,9 @@ public final class WorkloadNetworkVirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"wkuofoskghsauu\",\"vmType\":\"SERVICE\"},\"id\":\"vxieduugidyj\",\"name\":\"rfbyaosvexcso\",\"type\":\"pclhocohslk\"}],\"nextLink\":\"leggzfbu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"pchwa\",\"vmType\":\"EDGE\"},\"id\":\"usnfepgfewet\",\"name\":\"l\",\"type\":\"xgncxyk\"}],\"nextLink\":\"djhlimm\"}")
             .toObject(WorkloadNetworkVirtualMachinesList.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.value().get(0).displayName());
-        Assertions.assertEquals("leggzfbu", model.nextLink());
+        Assertions.assertEquals("pchwa", model.value().get(0).displayName());
+        Assertions.assertEquals("djhlimm", model.nextLink());
     }
 }

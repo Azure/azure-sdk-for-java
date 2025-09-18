@@ -20,7 +20,7 @@ public final class AddonsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Failed\"},\"id\":\"st\",\"name\":\"jeaq\",\"type\":\"rmvvfkoxmlghktui\"}";
+            = "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Failed\"},\"id\":\"qgatjeaahhvjhhn\",\"name\":\"kzyb\",\"type\":\"jjidjk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class AddonsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Addon response = manager.addons()
-            .getWithResponse("pbrlcyrduczkgofx", "fsrucv", "rrp", com.azure.core.util.Context.NONE)
+            .getWithResponse("zkgimsid", "asi", "ddyvvjskgfmo", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

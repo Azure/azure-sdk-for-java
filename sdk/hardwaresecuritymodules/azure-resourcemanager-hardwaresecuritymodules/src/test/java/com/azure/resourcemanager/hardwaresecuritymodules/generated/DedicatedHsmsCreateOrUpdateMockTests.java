@@ -30,7 +30,7 @@ public final class DedicatedHsmsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"ocxvdfffwafqr\",\"udaspavehh\",\"vkbunzozudh\",\"xg\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"xcdyuibhmfdnb\"},\"networkInterfaces\":[{\"resourceId\":\"f\",\"privateIpAddress\":\"cjnaeoisrvhmgor\"},{\"resourceId\":\"ukiscvwmzhw\",\"privateIpAddress\":\"efaxvxilc\"},{\"resourceId\":\"gnhnzeyq\",\"privateIpAddress\":\"jjfzqlqhycavo\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"dbeesmie\"},\"networkInterfaces\":[{\"resourceId\":\"ariaawi\",\"privateIpAddress\":\"gy\"},{\"resourceId\":\"qfby\",\"privateIpAddress\":\"rfgi\"},{\"resourceId\":\"tcojocqwo\",\"privateIpAddress\":\"nzjvusfzldm\"}]},\"stampId\":\"uxylfsbtkadpy\",\"statusMessage\":\"wn\",\"provisioningState\":\"Succeeded\"},\"location\":\"bugrj\",\"tags\":{\"foj\":\"ojcmisofieyp\"},\"id\":\"qdhcu\",\"name\":\"lcplc\",\"type\":\"khihihlhzds\"}";
+            = "{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"xg\"},\"networkInterfaces\":[{\"resourceId\":\"xcdyuibhmfdnb\",\"privateIpAddress\":\"dvfvfcjnaeoi\"},{\"resourceId\":\"vhmgorffukis\",\"privateIpAddress\":\"w\"},{\"resourceId\":\"hwplefaxvx\",\"privateIpAddress\":\"cbtgnhnz\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"tjj\"},\"networkInterfaces\":[{\"resourceId\":\"qhycavodggxdbees\",\"privateIpAddress\":\"eknlra\"},{\"resourceId\":\"aawiuagydwqfb\",\"privateIpAddress\":\"yr\"},{\"resourceId\":\"iagtc\",\"privateIpAddress\":\"ocqwogfnzjvus\"}]},\"stampId\":\"ld\",\"statusMessage\":\"zuxylfsbtkadpyso\",\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"u\",\"rj\"],\"location\":\"to\",\"tags\":{\"cuplcplcwkhih\":\"isofieypefojyqd\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,34 +40,36 @@ public final class DedicatedHsmsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DedicatedHsm response = manager.dedicatedHsms()
-            .define("xndticokpvzmlqtm")
-            .withRegion("dhuzqgnjdgk")
-            .withExistingResourceGroup("glae")
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS2500))
+            .define("ld")
+            .withRegion("gtrd")
+            .withExistingResourceGroup("t")
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(
-                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("awfvjlboxqvkjl"))
-                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("dwdigumb"))))
+                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("firclnpkciayz"))
+                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("vjlboxqvk"),
+                            new NetworkInterface().withPrivateIpAddress("ynhdwdigum"),
+                            new NetworkInterface().withPrivateIpAddress("zysdzh"),
+                            new NetworkInterface().withPrivateIpAddress("hqyikvy"))))
                 .withManagementNetworkProfile(
-                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("uzzptjazysdz"))
-                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("yuvvfonkp"),
-                            new NetworkInterface().withPrivateIpAddress("uyav"))))
-                .withStampId("wmn"))
-            .withTags(mapOf("hzvhxnkomtkubo", "cli", "hihfrbbcevqagtlt", "ppnvdxz"))
-            .withZones(Arrays.asList("bf", "rclnpkc", "ayzri"))
+                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("avluwmncs"))
+                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("gsgbdhuzq"))))
+                .withStampId("j"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS250))
+            .withTags(mapOf("u", "fmzzsdymbrny", "rafwgckhocxvdf", "m"))
+            .withZones(Arrays.asList("kubotppnvdxz", "hihfrbbcevqagtlt", "hlfkqojpy"))
             .create();
 
-        Assertions.assertEquals("bugrj", response.location());
-        Assertions.assertEquals("ojcmisofieyp", response.tags().get("foj"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.sku().name());
-        Assertions.assertEquals("ocxvdfffwafqr", response.zones().get(0));
-        Assertions.assertEquals("xcdyuibhmfdnb", response.properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("cjnaeoisrvhmgor",
+        Assertions.assertEquals("to", response.location());
+        Assertions.assertEquals("isofieypefojyqd", response.tags().get("cuplcplcwkhih"));
+        Assertions.assertEquals("xg", response.properties().networkProfile().subnet().resourceId());
+        Assertions.assertEquals("dvfvfcjnaeoi",
             response.properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("dbeesmie", response.properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("gy",
+        Assertions.assertEquals("tjj", response.properties().managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("eknlra",
             response.properties().managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("uxylfsbtkadpy", response.properties().stampId());
+        Assertions.assertEquals("ld", response.properties().stampId());
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.sku().name());
+        Assertions.assertEquals("u", response.zones().get(0));
     }
 
     // Use "Map.of" if available

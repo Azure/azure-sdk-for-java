@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /** Defines a few utilities. */
 public final class Utils {
@@ -45,7 +46,7 @@ public final class Utils {
             return null;
         }
 
-        return network.subnets().get(subnetName);
+        return getSubnetByName(network, subnetName).orElse(null);
     }
 
     // Internal utility function
@@ -63,7 +64,7 @@ public final class Utils {
                 }
 
                 String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
-                subnets.add(network.subnets().get(subnetName));
+                getSubnetByName(network, subnetName).ifPresent(subnets::add);
             }
         }
 
@@ -91,5 +92,15 @@ public final class Utils {
         }
 
         return Collections.unmodifiableCollection(backends);
+    }
+
+    // Internal utility function
+    // name casing could be different between network.subnets() and nsg.subnets()
+    static Optional<Subnet> getSubnetByName(Network network, String subnetName) {
+        return network.subnets()
+            .values()
+            .stream()
+            .filter(subnet -> subnet.name().equalsIgnoreCase(subnetName))
+            .findFirst();
     }
 }

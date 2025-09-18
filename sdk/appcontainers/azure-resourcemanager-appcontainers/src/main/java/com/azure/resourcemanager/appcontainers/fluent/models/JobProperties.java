@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.JobConfiguration;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.JobRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +25,11 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
      * Provisioning state of the Container Apps Job.
      */
     private JobProvisioningState provisioningState;
+
+    /*
+     * Current running state of the job
+     */
+    private JobRunningState runningState;
 
     /*
      * Resource ID of environment.
@@ -68,6 +74,15 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
      */
     public JobProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the runningState property: Current running state of the job.
+     * 
+     * @return the runningState value.
+     */
+    public JobRunningState runningState() {
+        return this.runningState;
     }
 
     /**
@@ -212,6 +227,8 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedJobProperties.provisioningState = JobProvisioningState.fromString(reader.getString());
+                } else if ("runningState".equals(fieldName)) {
+                    deserializedJobProperties.runningState = JobRunningState.fromString(reader.getString());
                 } else if ("environmentId".equals(fieldName)) {
                     deserializedJobProperties.environmentId = reader.getString();
                 } else if ("workloadProfileName".equals(fieldName)) {

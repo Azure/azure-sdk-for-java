@@ -151,7 +151,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private AffinityInfo affinityInfo;
+    private BatchAffinityInfo affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
@@ -192,12 +192,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      */
     @Generated
     private MultiInstanceSettings multiInstanceSettings;
-
-    /*
-     * Resource usage statistics for the Task.
-     */
-    @Generated
-    private BatchTaskStatistics stats;
 
     /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
@@ -429,7 +423,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the affinityInfo value.
      */
     @Generated
-    public AffinityInfo getAffinityInfo() {
+    public BatchAffinityInfo getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -507,16 +501,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     @Generated
     public MultiInstanceSettings getMultiInstanceSettings() {
         return this.multiInstanceSettings;
-    }
-
-    /**
-     * Get the stats property: Resource usage statistics for the Task.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchTaskStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -627,7 +611,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                         = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                     deserializedBatchTask.environmentSettings = environmentSettings;
                 } else if ("affinityInfo".equals(fieldName)) {
-                    deserializedBatchTask.affinityInfo = AffinityInfo.fromJson(reader);
+                    deserializedBatchTask.affinityInfo = BatchAffinityInfo.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchTask.constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -641,7 +625,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("multiInstanceSettings".equals(fieldName)) {
                     deserializedBatchTask.multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchTask.stats = BatchTaskStatistics.fromJson(reader);
+                    deserializedBatchTask.taskStatistics = BatchTaskStatistics.fromJson(reader);
                 } else if ("dependsOn".equals(fieldName)) {
                     deserializedBatchTask.dependsOn = BatchTaskDependencies.fromJson(reader);
                 } else if ("applicationPackageReferences".equals(fieldName)) {
@@ -656,5 +640,21 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
             }
             return deserializedBatchTask;
         });
+    }
+
+    /*
+     * Resource usage statistics for the Task.
+     */
+    @Generated
+    private BatchTaskStatistics taskStatistics;
+
+    /**
+     * Get the taskStatistics property: Resource usage statistics for the Task.
+     *
+     * @return the taskStatistics value.
+     */
+    @Generated
+    public BatchTaskStatistics getTaskStatistics() {
+        return this.taskStatistics;
     }
 }

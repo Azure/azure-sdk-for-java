@@ -39,6 +39,7 @@ import com.azure.resourcemanager.hybridconnectivity.fluent.SolutionConfiguration
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner;
 import com.azure.resourcemanager.hybridconnectivity.implementation.models.SolutionConfigurationListResult;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,7 +124,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("solutionConfiguration") String solutionConfiguration,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SolutionConfigurationInner properties, Context context);
+            @BodyParam("application/json") SolutionConfigurationUpdate properties, Context context);
 
         @Patch("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}")
         @ExpectedResponses({ 200 })
@@ -133,7 +134,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("solutionConfiguration") String solutionConfiguration,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SolutionConfigurationInner properties, Context context);
+            @BodyParam("application/json") SolutionConfigurationUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}")
@@ -427,7 +428,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionConfigurationInner>> updateWithResponseAsync(String resourceUri,
-        String solutionConfiguration, SolutionConfigurationInner properties) {
+        String solutionConfiguration, SolutionConfigurationUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -465,7 +466,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionConfigurationInner> updateAsync(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationInner properties) {
+        SolutionConfigurationUpdate properties) {
         return updateWithResponseAsync(resourceUri, solutionConfiguration, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -484,7 +485,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionConfigurationInner> updateWithResponse(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationInner properties, Context context) {
+        SolutionConfigurationUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -523,7 +524,7 @@ public final class SolutionConfigurationsClientImpl implements SolutionConfigura
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionConfigurationInner update(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationInner properties) {
+        SolutionConfigurationUpdate properties) {
         return updateWithResponse(resourceUri, solutionConfiguration, properties, Context.NONE).getValue();
     }
 
