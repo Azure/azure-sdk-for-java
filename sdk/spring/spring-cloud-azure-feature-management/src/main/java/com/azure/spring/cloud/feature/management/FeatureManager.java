@@ -227,7 +227,7 @@ public class FeatureManager {
         if (telemetryPublisher != null && event.getFeature() != null
             && event.getFeature().getTelemetry() != null
             && event.getFeature().getTelemetry().isEnabled()) {
-            telemetryPublisher.publishTelemetry(event);
+            telemetryPublisher.publish(event);
         }
     }
 
