@@ -170,6 +170,7 @@ public class RntbdRequestManagerTests {
     @Test(groups = { "unit" })
     public void multipleSslHandshakeCompletionEventTest() {
         // Test for receiving multiple SslHandshakeCompletionEvent, the IdleStateHandler should be added only once
+        int LONG_TIMEOUT_NANOS = 100000000;
         SslContext sslContextMock = Mockito.mock(SslContext.class);
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
             new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
@@ -203,8 +204,8 @@ public class RntbdRequestManagerTests {
         Mockito.when(completionEvent.isSuccess()).thenReturn(true);
         rntbdRequestManager.userEventTriggered(channelHandlerContextMock, completionEvent);
         Mockito.when(channelHandlerContextMock.pipeline().get(IdleStateHandler.class.toString())).thenReturn(new IdleStateHandler(
-            100000000,
-            100000000,
+            LONG_TIMEOUT_NANOS,
+            LONG_TIMEOUT_NANOS,
             0,
             TimeUnit.NANOSECONDS));
         rntbdRequestManager.userEventTriggered(channelHandlerContextMock, completionEvent);
