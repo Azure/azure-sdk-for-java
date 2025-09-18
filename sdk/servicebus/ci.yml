@@ -12,12 +12,14 @@ trigger:
       - sdk/servicebus/azure-messaging-servicebus/
       - sdk/servicebus/azure-messaging-servicebus-stress/
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/
+      - sdk/servicebus/azure-resourcemanager-servicebus/
       - sdk/servicebus/build/
     exclude:
       - sdk/servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-stress/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
+      - sdk/servicebus/azure-resourcemanager-servicebus/pom.xml
 
 pr:
   branches:
@@ -32,18 +34,28 @@ pr:
       - sdk/servicebus/azure-messaging-servicebus/
       - sdk/servicebus/azure-messaging-servicebus-stress/
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/
+      - sdk/servicebus/azure-resourcemanager-servicebus/
       - sdk/servicebus/build/
     exclude:
       - sdk/servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-stress/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
+      - sdk/servicebus/azure-resourcemanager-servicebus/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
   displayName: 'Release depends on live tests'
   type: boolean
   default: true
+- name: release_azuremessagingservicebus
+  displayName: 'azure-messaging-servicebus'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerservicebus
+  displayName: 'azure-resourcemanager-servicebus'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -53,6 +65,11 @@ extends:
       - name: azure-messaging-servicebus
         groupId: com.azure
         safeName: azuremessagingservicebus
+        releaseInBatch: ${{ parameters.release_azuremessagingservicebus }}
+      - name: azure-resourcemanager-servicebus
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicebus
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerservicebus }}
     AdditionalModules:
       - name: azure-messaging-servicebus-track2-perf
         groupId: com.azure

@@ -248,7 +248,7 @@
     "args": "--tag=package-2025-05-01 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
   },
   "servicebus": {
-    "dir": "azure-resourcemanager-servicebus",
+    "dir": "../servicebus/azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
     "args": "--tag=package-2021-11 --enable-sync-stack=false",
