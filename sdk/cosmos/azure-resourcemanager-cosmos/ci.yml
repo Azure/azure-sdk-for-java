@@ -37,7 +37,7 @@ parameters:
     default: false
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: cosmos/azure-resourcemanager-cosmos
     SDKType: client
