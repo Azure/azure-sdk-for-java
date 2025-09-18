@@ -34,7 +34,7 @@ parameters:
   - name: release_azureresourcemanagercosmos
     displayName: 'azure-resourcemanager-cosmos'
     type: boolean
-    default: false
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
