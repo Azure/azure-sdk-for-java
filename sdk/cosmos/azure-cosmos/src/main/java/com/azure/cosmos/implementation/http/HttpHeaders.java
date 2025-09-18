@@ -118,7 +118,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     /**
-     * Get {@link Map} representation of the HttpHeaders collection.
+     * Get {@link Map} representation of the HttpHeaders collection with lower casing header name.
      *
      * @return the headers as map
      */
