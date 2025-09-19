@@ -5,7 +5,6 @@
 ### Features Added
 
 - Added mapping for `enduser.pseudo.id` attribute to `user_Id` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506)
-- Add de-duping flag for standard/otel metrics & support for conditionally sending otel metrics to Breeze ([#46680](https://github.com/Azure/azure-sdk-for-java/pull/46680)
 
 ### Breaking Changes
 
