@@ -18,7 +18,7 @@ public final class Variant {
     private Object configurationValue;
 
     @JsonProperty("status_override")
-    private String statusOverride = "None";
+    private String statusOverride;
 
     /**
      * Default constructor.
