@@ -1390,7 +1390,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         String containerLink = BridgeInternal.getLink(asyncContainer);
 
         try {
-            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "1");
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "1");
             contextClient
                 .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
                 .doOnNext(feedResponse -> {
@@ -1400,14 +1400,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .blockLast();
 
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
         } finally {
-            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
         }
 
         try {
-            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "-1");
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "-1");
             contextClient
                 .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
                 .doOnNext(feedResponse -> {
@@ -1417,10 +1416,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .blockLast();
 
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
         } finally {
-            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
         }
 
         try {
@@ -1433,10 +1431,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .blockLast();
 
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
         } finally {
-            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
         }
     }
 
