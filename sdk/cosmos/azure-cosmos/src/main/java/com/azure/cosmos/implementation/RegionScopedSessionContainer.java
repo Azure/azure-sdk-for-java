@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -445,14 +446,23 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         StringBuilder result = new StringBuilder();
         if (tokens != null) {
             for (Iterator<Map.Entry<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<String,  ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> entry = iterator.next();
+                Map.Entry<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> entry = iterator.next();
 
                 String partitionKeyRangeId = entry.getKey();
-                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getSessionToken().convertToString();
 
-                result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
-                if (iterator.hasNext()) {
-                    result = result.append(",");
+                Optional<ISessionToken> sessionToken = entry.getValue().get(PartitionScopedRegionLevelProgress.GLOBAL_PROGRESS_KEY).getSessionToken();
+
+                if (sessionToken.isPresent()) {
+
+                    ISessionToken sessionTokenInner = sessionToken.get();
+                    String sessionTokenAsString = sessionTokenInner.convertToString();
+
+                    result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
+                    if (iterator.hasNext()) {
+                        result = result.append(",");
+                    }
+                } else {
+                    logger.warn("No session token present for partitionKeyRangeId {} in global progress", partitionKeyRangeId);
                 }
             }
         }
@@ -487,7 +497,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             return false;
         }
 
-        if (partitionScopedRegionLevelProgress.getHasPartitionSeenNonPointRequestsForDocuments(partitionKeyRangeId)) {
+        if (partitionScopedRegionLevelProgress.useGlobalSessionTokenForPartitionKeyRangeId(partitionKeyRangeId)) {
             return false;
         }
 
