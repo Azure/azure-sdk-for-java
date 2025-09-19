@@ -1,4 +1,4 @@
 directory: specification/quota/Quota.Management
-commit: 7ef261c6f76ff2eca73bd185426085449477ea7f
+commit: 180b3d38b484507810c2ed2f747dd7cd11443cca
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

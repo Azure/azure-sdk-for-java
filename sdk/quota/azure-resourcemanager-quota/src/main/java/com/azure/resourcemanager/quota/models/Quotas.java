@@ -16,34 +16,34 @@ public interface Quotas {
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource.
      */
-    Response<CurrentQuotaLimitBase> getWithResponse(String scope, String resourceName, Context context);
+    Response<CurrentQuotaLimitBase> getWithResponse(String resourceName, String scope, Context context);
 
     /**
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource.
      */
-    CurrentQuotaLimitBase get(String scope, String resourceName);
+    CurrentQuotaLimitBase get(String resourceName, String scope);
 
     /**
      * Get a list of current quota limits of all resources for the specified scope. The response from this GET operation

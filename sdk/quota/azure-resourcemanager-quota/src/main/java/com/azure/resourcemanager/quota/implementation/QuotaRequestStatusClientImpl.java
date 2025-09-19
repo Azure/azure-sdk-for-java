@@ -116,8 +116,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,16 +125,12 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * specific location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String scope, String id) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope) {
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -146,8 +142,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,16 +151,16 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * specific location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotaRequestDetailsInner> getAsync(String scope, String id) {
-        return getWithResponseAsync(scope, id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<QuotaRequestDetailsInner> getAsync(String id, String scope) {
+        return getWithResponseAsync(id, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -173,17 +169,12 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaRequestDetailsInner> getWithResponse(String scope, String id, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+    public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
+        if (id == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (scope == null) {
             throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (id == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, id, accept, context);
@@ -193,8 +184,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,8 +193,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * specific location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QuotaRequestDetailsInner get(String scope, String id) {
-        return getWithResponse(scope, id, Context.NONE).getValue();
+    public QuotaRequestDetailsInner get(String id, String scope) {
+        return getWithResponse(id, scope, Context.NONE).getValue();
     }
 
     /**

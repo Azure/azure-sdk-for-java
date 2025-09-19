@@ -159,27 +159,23 @@ public final class QuotasClientImpl implements QuotasClient {
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotasGetResponse> getWithResponseAsync(String scope, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+    private Mono<QuotasGetResponse> getWithResponseAsync(String resourceName, String scope) {
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -192,30 +188,30 @@ public final class QuotasClientImpl implements QuotasClient {
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> getAsync(String scope, String resourceName) {
-        return getWithResponseAsync(scope, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CurrentQuotaLimitBaseInner> getAsync(String resourceName, String scope) {
+        return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,18 +219,13 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return the quota limit of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QuotasGetResponse getWithResponse(String scope, String resourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
+    public QuotasGetResponse getWithResponse(String resourceName, String scope, Context context) {
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName, accept,
@@ -245,19 +236,19 @@ public final class QuotasClientImpl implements QuotasClient {
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
      * quota limit that can be submitted with a PUT request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner get(String scope, String resourceName) {
-        return getWithResponse(scope, resourceName, Context.NONE).getValue();
+    public CurrentQuotaLimitBaseInner get(String resourceName, String scope) {
+        return getWithResponse(resourceName, scope, Context.NONE).getValue();
     }
 
     /**
@@ -269,11 +260,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -281,17 +272,13 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String scope, String resourceName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             return Mono
@@ -316,11 +303,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -328,19 +315,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrUpdateWithResponse(String scope, String resourceName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             throw LOGGER.atError()
@@ -363,11 +345,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,19 +358,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrUpdateWithResponse(String scope, String resourceName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             throw LOGGER.atError()
@@ -411,11 +388,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,9 +401,9 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
-        beginCreateOrUpdateAsync(String scope, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        beginCreateOrUpdateAsync(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(scope, resourceName, createQuotaRequest);
+            = createOrUpdateWithResponseAsync(resourceName, scope, createQuotaRequest);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
             this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class,
             this.client.getContext());
@@ -441,11 +418,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -454,8 +431,8 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
-        beginCreateOrUpdate(String scope, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Response<BinaryData> response = createOrUpdateWithResponse(scope, resourceName, createQuotaRequest);
+        beginCreateOrUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceName, scope, createQuotaRequest);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
             CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, Context.NONE);
     }
@@ -469,11 +446,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,8 +460,8 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
-        String scope, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        Response<BinaryData> response = createOrUpdateWithResponse(scope, resourceName, createQuotaRequest, context);
+        String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceName, scope, createQuotaRequest, context);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
             CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, context);
     }
@@ -498,11 +475,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -510,9 +487,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(String scope, String resourceName,
+    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginCreateOrUpdateAsync(scope, resourceName, createQuotaRequest).last()
+        return beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -525,11 +502,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -537,9 +514,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner createOrUpdate(String scope, String resourceName,
+    public CurrentQuotaLimitBaseInner createOrUpdate(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginCreateOrUpdate(scope, resourceName, createQuotaRequest).getFinalResult();
+        return beginCreateOrUpdate(resourceName, scope, createQuotaRequest).getFinalResult();
     }
 
     /**
@@ -551,11 +528,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,9 +541,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner createOrUpdate(String scope, String resourceName,
+    public CurrentQuotaLimitBaseInner createOrUpdate(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginCreateOrUpdate(scope, resourceName, createQuotaRequest, context).getFinalResult();
+        return beginCreateOrUpdate(resourceName, scope, createQuotaRequest, context).getFinalResult();
     }
 
     /**
@@ -577,11 +554,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -589,17 +566,13 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String scope, String resourceName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             return Mono
@@ -623,11 +596,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -635,19 +608,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateWithResponse(String scope, String resourceName,
+    private Response<BinaryData> updateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             throw LOGGER.atError()
@@ -669,11 +637,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -682,19 +650,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateWithResponse(String scope, String resourceName,
+    private Response<BinaryData> updateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (createQuotaRequest == null) {
             throw LOGGER.atError()
@@ -716,11 +679,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -729,8 +692,8 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
-        beginUpdateAsync(String scope, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(scope, resourceName, createQuotaRequest);
+        beginUpdateAsync(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, scope, createQuotaRequest);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
             this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class,
             this.client.getContext());
@@ -744,11 +707,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -756,9 +719,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(String scope,
-        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Response<BinaryData> response = updateWithResponse(scope, resourceName, createQuotaRequest);
+    public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
+        beginUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        Response<BinaryData> response = updateWithResponse(resourceName, scope, createQuotaRequest);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
             CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, Context.NONE);
     }
@@ -771,11 +734,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,9 +747,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(String scope,
-        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        Response<BinaryData> response = updateWithResponse(scope, resourceName, createQuotaRequest, context);
+    public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner>
+        beginUpdate(String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
+        Response<BinaryData> response = updateWithResponse(resourceName, scope, createQuotaRequest, context);
         return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(response,
             CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, context);
     }
@@ -799,11 +762,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,9 +774,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> updateAsync(String scope, String resourceName,
+    private Mono<CurrentQuotaLimitBaseInner> updateAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginUpdateAsync(scope, resourceName, createQuotaRequest).last()
+        return beginUpdateAsync(resourceName, scope, createQuotaRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -825,11 +788,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -837,9 +800,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner update(String scope, String resourceName,
+    public CurrentQuotaLimitBaseInner update(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginUpdate(scope, resourceName, createQuotaRequest).getFinalResult();
+        return beginUpdate(resourceName, scope, createQuotaRequest).getFinalResult();
     }
 
     /**
@@ -850,11 +813,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed
      * status of the request.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,9 +826,9 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner update(String scope, String resourceName,
+    public CurrentQuotaLimitBaseInner update(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginUpdate(scope, resourceName, createQuotaRequest, context).getFinalResult();
+        return beginUpdate(resourceName, scope, createQuotaRequest, context).getFinalResult();
     }
 
     /**

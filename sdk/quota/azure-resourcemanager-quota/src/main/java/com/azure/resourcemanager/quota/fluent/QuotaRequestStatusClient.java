@@ -19,8 +19,8 @@ public interface QuotaRequestStatusClient {
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,14 +29,14 @@ public interface QuotaRequestStatusClient {
      * specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaRequestDetailsInner> getWithResponse(String scope, String id, Context context);
+    Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context);
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,7 +44,7 @@ public interface QuotaRequestStatusClient {
      * specific location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaRequestDetailsInner get(String scope, String id);
+    QuotaRequestDetailsInner get(String id, String scope);
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the

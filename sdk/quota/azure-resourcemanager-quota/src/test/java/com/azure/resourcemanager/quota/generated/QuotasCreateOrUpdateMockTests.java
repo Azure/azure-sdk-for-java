@@ -34,8 +34,8 @@ public final class QuotasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CurrentQuotaLimitBase response = manager.quotas()
-            .define("r")
-            .withExistingScope("vk")
+            .define("vk")
+            .withExistingScope("r")
             .withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
                 .withName(new ResourceName().withValue("iby"))
                 .withResourceType("shfwpracstwity")

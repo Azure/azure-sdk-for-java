@@ -44,9 +44,9 @@ public final class CurrentQuotaLimitBaseImpl
         return this.serviceManager;
     }
 
-    private String scope;
-
     private String resourceName;
+
+    private String scope;
 
     public CurrentQuotaLimitBaseImpl withExistingScope(String scope) {
         this.scope = scope;
@@ -56,14 +56,14 @@ public final class CurrentQuotaLimitBaseImpl
     public CurrentQuotaLimitBase create() {
         this.innerObject = serviceManager.serviceClient()
             .getQuotas()
-            .createOrUpdate(scope, resourceName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceName, scope, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CurrentQuotaLimitBase create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getQuotas()
-            .createOrUpdate(scope, resourceName, this.innerModel(), context);
+            .createOrUpdate(resourceName, scope, this.innerModel(), context);
         return this;
     }
 
@@ -79,13 +79,13 @@ public final class CurrentQuotaLimitBaseImpl
 
     public CurrentQuotaLimitBase apply() {
         this.innerObject
-            = serviceManager.serviceClient().getQuotas().update(scope, resourceName, this.innerModel(), Context.NONE);
+            = serviceManager.serviceClient().getQuotas().update(resourceName, scope, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CurrentQuotaLimitBase apply(Context context) {
         this.innerObject
-            = serviceManager.serviceClient().getQuotas().update(scope, resourceName, this.innerModel(), context);
+            = serviceManager.serviceClient().getQuotas().update(resourceName, scope, this.innerModel(), context);
         return this;
     }
 
@@ -93,21 +93,21 @@ public final class CurrentQuotaLimitBaseImpl
         com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
     }
 
     public CurrentQuotaLimitBase refresh() {
         this.innerObject
-            = serviceManager.serviceClient().getQuotas().getWithResponse(scope, resourceName, Context.NONE).getValue();
+            = serviceManager.serviceClient().getQuotas().getWithResponse(resourceName, scope, Context.NONE).getValue();
         return this;
     }
 
     public CurrentQuotaLimitBase refresh(Context context) {
         this.innerObject
-            = serviceManager.serviceClient().getQuotas().getWithResponse(scope, resourceName, context).getValue();
+            = serviceManager.serviceClient().getQuotas().getWithResponse(resourceName, scope, context).getValue();
         return this;
     }
 

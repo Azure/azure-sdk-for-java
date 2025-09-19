@@ -23,9 +23,9 @@ public final class QuotaUpdateSamples {
      */
     public static void quotasRequestPatchForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         CurrentQuotaLimitBase resource = manager.quotas()
-            .getWithResponse(
+            .getWithResponse("standardFSv2Family",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
-                "standardFSv2Family", com.azure.core.util.Context.NONE)
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))
@@ -43,9 +43,9 @@ public final class QuotaUpdateSamples {
      */
     public static void quotasRequestPatchForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
         CurrentQuotaLimitBase resource = manager.quotas()
-            .getWithResponse(
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus",
-                "MinPublicIpInterNetworkPrefixLength", com.azure.core.util.Context.NONE)
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))

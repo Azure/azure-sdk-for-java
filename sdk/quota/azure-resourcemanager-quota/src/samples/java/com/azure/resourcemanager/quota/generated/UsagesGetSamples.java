@@ -18,9 +18,9 @@ public final class UsagesGetSamples {
      */
     public static void quotasUsagesRequestForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.usages()
-            .getWithResponse(
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                "MinPublicIpInterNetworkPrefixLength", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,8 +33,8 @@ public final class UsagesGetSamples {
      */
     public static void quotasUsagesRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.usages()
-            .getWithResponse(
+            .getWithResponse("standardNDSFamily",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "standardNDSFamily", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

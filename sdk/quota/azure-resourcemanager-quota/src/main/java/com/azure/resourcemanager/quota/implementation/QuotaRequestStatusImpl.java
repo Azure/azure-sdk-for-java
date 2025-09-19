@@ -27,8 +27,8 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
         this.serviceManager = serviceManager;
     }
 
-    public Response<QuotaRequestDetails> getWithResponse(String scope, String id, Context context) {
-        Response<QuotaRequestDetailsInner> inner = this.serviceClient().getWithResponse(scope, id, context);
+    public Response<QuotaRequestDetails> getWithResponse(String id, String scope, Context context) {
+        Response<QuotaRequestDetailsInner> inner = this.serviceClient().getWithResponse(id, scope, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
@@ -37,8 +37,8 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
         }
     }
 
-    public QuotaRequestDetails get(String scope, String id) {
-        QuotaRequestDetailsInner inner = this.serviceClient().get(scope, id);
+    public QuotaRequestDetails get(String id, String scope) {
+        QuotaRequestDetailsInner inner = this.serviceClient().get(id, scope);
         if (inner != null) {
             return new QuotaRequestDetailsImpl(inner, this.manager());
         } else {

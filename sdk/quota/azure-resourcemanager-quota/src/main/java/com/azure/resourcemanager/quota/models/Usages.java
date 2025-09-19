@@ -15,33 +15,33 @@ public interface Usages {
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource.
      */
-    Response<CurrentUsagesBase> getWithResponse(String scope, String resourceName, Context context);
+    Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context);
 
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource.
      */
-    CurrentUsagesBase get(String scope, String resourceName);
+    CurrentUsagesBase get(String resourceName, String scope);
 
     /**
      * Get a list of current usage for all resources for the scope specified.

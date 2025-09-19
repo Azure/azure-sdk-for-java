@@ -113,27 +113,23 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsagesGetResponse> getWithResponseAsync(String scope, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+    private Mono<UsagesGetResponse> getWithResponseAsync(String resourceName, String scope) {
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -145,29 +141,29 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentUsagesBaseInner> getAsync(String scope, String resourceName) {
-        return getWithResponseAsync(scope, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CurrentUsagesBaseInner> getAsync(String resourceName, String scope) {
+        return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -175,18 +171,13 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return the current usage of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsagesGetResponse getWithResponse(String scope, String resourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
+    public UsagesGetResponse getWithResponse(String resourceName, String scope, Context context) {
         if (resourceName == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName, accept,
@@ -196,19 +187,19 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the current usage of a resource.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param resourceName Resource name for a given resource provider. For example:
      * - SKU name for Microsoft.Compute
      * - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
      * For Microsoft.Network PublicIPAddresses.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentUsagesBaseInner get(String scope, String resourceName) {
-        return getWithResponse(scope, resourceName, Context.NONE).getValue();
+    public CurrentUsagesBaseInner get(String resourceName, String scope) {
+        return getWithResponse(resourceName, scope, Context.NONE).getValue();
     }
 
     /**

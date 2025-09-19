@@ -793,9 +793,9 @@ public final class QuotaGetSamples {
      */
     public static void quotasUsagesRequestForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotas()
-            .getWithResponse(
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                "MinPublicIpInterNetworkPrefixLength", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -808,9 +808,9 @@ public final class QuotaGetSamples {
      */
     public static void quotasGetRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotas()
-            .getWithResponse(
+            .getWithResponse("standardNDSFamily",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "standardNDSFamily", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -890,9 +890,9 @@ public final class QuotaUpdateSamples {
      */
     public static void quotasRequestPatchForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         CurrentQuotaLimitBase resource = manager.quotas()
-            .getWithResponse(
+            .getWithResponse("standardFSv2Family",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
-                "standardFSv2Family", com.azure.core.util.Context.NONE)
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))
@@ -910,9 +910,9 @@ public final class QuotaUpdateSamples {
      */
     public static void quotasRequestPatchForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
         CurrentQuotaLimitBase resource = manager.quotas()
-            .getWithResponse(
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus",
-                "MinPublicIpInterNetworkPrefixLength", com.azure.core.util.Context.NONE)
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))
@@ -940,9 +940,9 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestFailed(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -955,9 +955,9 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestStatus(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -970,9 +970,9 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestInProgress(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1017,9 +1017,9 @@ public final class UsagesGetSamples {
      */
     public static void quotasUsagesRequestForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.usages()
-            .getWithResponse(
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                "MinPublicIpInterNetworkPrefixLength", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1032,9 +1032,9 @@ public final class UsagesGetSamples {
      */
     public static void quotasUsagesRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.usages()
-            .getWithResponse(
+            .getWithResponse("standardNDSFamily",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "standardNDSFamily", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -16,8 +16,8 @@ public interface QuotaRequestStatus {
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,21 +25,21 @@ public interface QuotaRequestStatus {
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location along with {@link Response}.
      */
-    Response<QuotaRequestDetails> getWithResponse(String scope, String id, Context context);
+    Response<QuotaRequestDetails> getWithResponse(String id, String scope, Context context);
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
      * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @param id Quota request ID.
+     * @param scope The fully qualified Azure Resource manager identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location.
      */
-    QuotaRequestDetails get(String scope, String id);
+    QuotaRequestDetails get(String id, String scope);
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the

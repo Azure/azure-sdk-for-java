@@ -18,9 +18,9 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestFailed(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,9 +33,9 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestStatus(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -48,8 +48,8 @@ public final class QuotaRequestStatusGetSamples {
      */
     public static void quotaRequestInProgress(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.quotaRequestStatus()
-            .getWithResponse(
+            .getWithResponse("2B5C8515-37D8-4B6A-879B-CD641A2CF605",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                "2B5C8515-37D8-4B6A-879B-CD641A2CF605", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
