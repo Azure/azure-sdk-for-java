@@ -199,7 +199,7 @@ public final class AzureCommunicationSMSServiceImplBuilder implements
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureCommunicationSMSServiceImplBuilder.
      */
@@ -217,7 +217,7 @@ public final class AzureCommunicationSMSServiceImplBuilder implements
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureCommunicationSMSServiceImplBuilder.
      */
@@ -235,7 +235,7 @@ public final class AzureCommunicationSMSServiceImplBuilder implements
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureCommunicationSMSServiceImplBuilder.
      */
@@ -247,14 +247,14 @@ public final class AzureCommunicationSMSServiceImplBuilder implements
 
     /**
      * Builds an instance of AzureCommunicationSMSServiceImpl with the provided parameters.
-     * 
+     *
      * @return an instance of AzureCommunicationSMSServiceImpl.
      */
     @Generated
     public AzureCommunicationSMSServiceImpl buildClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2026-01-23";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-08-01-preview";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationSMSServiceImpl client = new AzureCommunicationSMSServiceImpl(localPipeline,

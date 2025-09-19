@@ -126,6 +126,8 @@ If no service version is specified, the latest supported version will be used. A
 For the TelcoMessagingClient:
 
 ```java readme-sample-createTelcoMessagingClientWithApiVersion
+String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
 TelcoMessagingClient telcoMessagingClient = new TelcoMessagingClientBuilder()
     .connectionString(connectionString)
     .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
@@ -216,7 +218,7 @@ String messageId = "message-id-from-send-operation";
 
 try {
     DeliveryReport deliveryReport = deliveryReportsClient.getDeliveryReport(messageId);
-    
+
     System.out.println("Delivery Status: " + deliveryReport.getDeliveryStatus());
     System.out.println("Received Timestamp: " + deliveryReport.getReceivedTimestamp());
     if (deliveryReport.getDeliveryStatusDetails() != null) {

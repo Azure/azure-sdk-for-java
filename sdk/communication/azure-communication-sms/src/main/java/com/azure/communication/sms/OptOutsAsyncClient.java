@@ -61,8 +61,7 @@ public final class OptOutsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OptOutResult>> addOptOut(String from, Iterable<String> to) {
-        return addOptOutWithResponse(from, to, Context.NONE)
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        return addOptOutWithResponse(from, to, Context.NONE).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -83,13 +82,10 @@ public final class OptOutsAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return serviceClient.getOptOuts().addWithResponseAsync(request, contextValue)
-                    .map(response -> new SimpleResponse<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        convertToOptOutResults(response.getValue())
-                    ));
+                return serviceClient.getOptOuts()
+                    .addWithResponseAsync(request, contextValue)
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), convertToOptOutResults(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -130,7 +126,8 @@ public final class OptOutsAsyncClient {
      * @return A list of opt-out results with HTTP response information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<OptOutResult>>> removeOptOutWithResponse(String from, Iterable<String> to, Context context) {
+    public Mono<Response<List<OptOutResult>>> removeOptOutWithResponse(String from, Iterable<String> to,
+        Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
@@ -139,13 +136,10 @@ public final class OptOutsAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return serviceClient.getOptOuts().removeWithResponseAsync(request, contextValue)
-                    .map(response -> new SimpleResponse<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        convertToOptOutResults(response.getValue())
-                    ));
+                return serviceClient.getOptOuts()
+                    .removeWithResponseAsync(request, contextValue)
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), convertToOptOutResults(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -186,7 +180,8 @@ public final class OptOutsAsyncClient {
      * @return A list of opt-out check results with HTTP response information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<OptOutCheckResult>>> checkOptOutWithResponse(String from, Iterable<String> to, Context context) {
+    public Mono<Response<List<OptOutCheckResult>>> checkOptOutWithResponse(String from, Iterable<String> to,
+        Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
@@ -195,13 +190,10 @@ public final class OptOutsAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return serviceClient.getOptOuts().checkWithResponseAsync(request, contextValue)
-                    .map(response -> new SimpleResponse<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        convertToOptOutCheckResults(response.getValue())
-                    ));
+                return serviceClient.getOptOuts()
+                    .checkWithResponseAsync(request, contextValue)
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), convertToOptOutCheckResults(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -211,12 +203,13 @@ public final class OptOutsAsyncClient {
     private OptOutRequest createOptOutRequest(String from, Iterable<String> to) {
         List<OptOutRecipient> recipients = new ArrayList<>();
         for (String recipient : to) {
+            if (recipient == null) {
+                throw new NullPointerException("'to' cannot contain null values.");
+            }
             recipients.add(new OptOutRecipient().setTo(recipient));
         }
 
-        return new OptOutRequest()
-            .setFrom(from)
-            .setRecipients(recipients);
+        return new OptOutRequest().setFrom(from).setRecipients(recipients);
     }
 
     private List<OptOutResult> convertToOptOutResults(OptOutResponse response) {
@@ -224,12 +217,9 @@ public final class OptOutsAsyncClient {
             return new ArrayList<>();
         }
 
-        return response.getValue().stream()
-            .map(item -> new OptOutResult(
-                item.getTo(),
-                item.getHttpStatusCode(),
-                item.getErrorMessage()
-            ))
+        return response.getValue()
+            .stream()
+            .map(item -> new OptOutResult(item.getTo(), item.getHttpStatusCode(), item.getErrorMessage()))
             .collect(Collectors.toList());
     }
 
@@ -238,13 +228,10 @@ public final class OptOutsAsyncClient {
             return new ArrayList<>();
         }
 
-        return response.getValue().stream()
-            .map(item -> new OptOutCheckResult(
-                item.getTo(),
-                item.getHttpStatusCode(),
-                item.isOptedOut(),
-                item.getErrorMessage()
-            ))
+        return response.getValue()
+            .stream()
+            .map(item -> new OptOutCheckResult(item.getTo(), item.getHttpStatusCode(), item.isOptedOut(),
+                item.getErrorMessage()))
             .collect(Collectors.toList());
     }
 }

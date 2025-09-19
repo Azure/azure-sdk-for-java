@@ -131,7 +131,8 @@ public final class OptOutsClient {
      * @return A list of opt-out check results with HTTP response information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<OptOutCheckResult>> checkOptOutWithResponse(String from, Iterable<String> to, Context context) {
+    public Response<List<OptOutCheckResult>> checkOptOutWithResponse(String from, Iterable<String> to,
+        Context context) {
         return asyncClient.checkOptOutWithResponse(from, to, context).block();
     }
 }

@@ -5,6 +5,7 @@ package com.azure.communication.sms;
 
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.SmsImpl;
+import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.implementation.models.SmsSendResponseItem;
 import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsRecipient;
@@ -152,6 +153,8 @@ public final class SmsAsyncClient {
 
     private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message,
         SmsSendOptions options) {
+        validateSmsSendOptions(options);
+
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
 
@@ -164,5 +167,19 @@ public final class SmsAsyncClient {
         }
         request.setFrom(from).setSmsRecipients(recipients).setMessage(message).setSmsSendOptions(options);
         return request;
+    }
+
+    private void validateSmsSendOptions(SmsSendOptions options) {
+        if (options != null && options.getMessagingConnect() != null) {
+            MessagingConnectOptions messagingConnect = options.getMessagingConnect();
+            if (messagingConnect.getApiKey() == null || messagingConnect.getApiKey().trim().isEmpty()) {
+                throw new IllegalArgumentException(
+                    "MessagingConnect apiKey cannot be null or empty when MessagingConnect is provided.");
+            }
+            if (messagingConnect.getPartner() == null || messagingConnect.getPartner().trim().isEmpty()) {
+                throw new IllegalArgumentException(
+                    "MessagingConnect partner cannot be null or empty when MessagingConnect is provided.");
+            }
+        }
     }
 }

@@ -6,6 +6,9 @@ import java.util.Arrays;
 import com.azure.communication.sms.SmsAsyncClient;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
+import com.azure.communication.sms.SmsServiceVersion;
+import com.azure.communication.sms.TelcoMessagingClient;
+import com.azure.communication.sms.TelcoMessagingClientBuilder;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -165,5 +168,29 @@ public class ReadmeSamples {
             System.out.println(ex.getMessage());
         }
         // END: readme-sample-sendMessageTroubleShooting
+    }
+
+    public SmsClient createSmsClientWithApiVersion() {
+        // BEGIN: readme-sample-createSmsClientWithApiVersion
+        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
+        SmsClient smsClient = new SmsClientBuilder()
+            .connectionString(connectionString)
+            .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
+            .buildClient();
+        // END: readme-sample-createSmsClientWithApiVersion
+
+        return smsClient;
+    }
+
+    public void createTelcoMessagingClientWithApiVersion() {
+        // BEGIN: readme-sample-createTelcoMessagingClientWithApiVersion
+        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
+        TelcoMessagingClient telcoMessagingClient = new TelcoMessagingClientBuilder()
+            .connectionString(connectionString)
+            .serviceVersion(SmsServiceVersion.V2026_01_23)  // Specify API version
+            .buildClient();
+        // END: readme-sample-createTelcoMessagingClientWithApiVersion
     }
 }

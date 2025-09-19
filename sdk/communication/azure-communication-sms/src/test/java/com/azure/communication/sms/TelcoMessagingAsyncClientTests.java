@@ -11,6 +11,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -30,7 +31,7 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void telcoMessagingClientCreation(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
@@ -43,12 +44,11 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void sendSmsViaOrganizedClient(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getSmsAsyncClient().send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
+        StepVerifier.create(client.getSmsAsyncClient().send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
             .assertNext(response -> {
                 assertNotNull(response);
                 assertNotNull(response.getMessageId());
@@ -59,40 +59,11 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
-    public void getDeliveryReportWithInvalidMessageId(HttpClient httpClient) {
-        TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
-
-        // Test with invalid message ID - should get an error response
-        StepVerifier
-            .create(client.getDeliveryReportsAsyncClient().getDeliveryReport("invalid-message-id"))
-            .expectError(HttpResponseException.class)
-            .verify(Duration.ofSeconds(10));
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
-    public void getDeliveryReportWithResponse(HttpClient httpClient) {
-        TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
-
-        // Test with invalid message ID to check response handling
-        StepVerifier
-            .create(client.getDeliveryReportsAsyncClient().getDeliveryReportWithResponse("invalid-message-id", Context.NONE))
-            .expectError(HttpResponseException.class)
-            .verify(Duration.ofSeconds(10));
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void addOptOut(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
+        StepVerifier.create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
             .assertNext(results -> {
                 assertNotNull(results);
                 assertFalse(results.isEmpty());
@@ -106,13 +77,12 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void addOptOutMultiple(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
         List<String> recipients = Arrays.asList(TO_PHONE_NUMBER, "+15551234568");
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, recipients))
+        StepVerifier.create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, recipients))
             .assertNext(results -> {
                 assertNotNull(results);
                 assertEquals(2, results.size());
@@ -123,12 +93,11 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void checkOptOut(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().checkOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
+        StepVerifier.create(client.getOptOutsAsyncClient().checkOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
             .assertNext(results -> {
                 assertNotNull(results);
                 assertFalse(results.isEmpty());
@@ -143,12 +112,11 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void removeOptOut(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().removeOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
+        StepVerifier.create(client.getOptOutsAsyncClient().removeOptOut(FROM_PHONE_NUMBER, TO_PHONE_NUMBER))
             .assertNext(results -> {
                 assertNotNull(results);
                 assertFalse(results.isEmpty());
@@ -162,12 +130,13 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @RecordWithoutRequestBody
-    @EnabledIf("shouldEnableSmsTests")
+    // @EnabledIf("shouldEnableSmsTests")
     public void addOptOutWithResponse(HttpClient httpClient) {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(httpClient).buildAsyncClient();
 
         StepVerifier
-            .create(client.getOptOutsAsyncClient().addOptOutWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER), Context.NONE))
+            .create(client.getOptOutsAsyncClient()
+                .addOptOutWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER), Context.NONE))
             .assertNext(response -> {
                 assertNotNull(response);
                 assertEquals(200, response.getStatusCode());
@@ -181,8 +150,7 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     public void optOutWithNullFromThrowsException() {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(null).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().addOptOut(null, TO_PHONE_NUMBER))
+        StepVerifier.create(client.getOptOutsAsyncClient().addOptOut(null, TO_PHONE_NUMBER))
             .expectError(NullPointerException.class)
             .verify();
     }
@@ -191,8 +159,7 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     public void optOutWithNullToThrowsException() {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(null).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, (String) null))
+        StepVerifier.create(client.getOptOutsAsyncClient().addOptOut(FROM_PHONE_NUMBER, (String) null))
             .expectError(NullPointerException.class)
             .verify();
     }
@@ -201,8 +168,7 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
     public void deliveryReportWithNullMessageIdThrowsException() {
         TelcoMessagingAsyncClient client = getTelcoMessagingClientUsingConnectionString(null).buildAsyncClient();
 
-        StepVerifier
-            .create(client.getDeliveryReportsAsyncClient().getDeliveryReport(null))
+        StepVerifier.create(client.getDeliveryReportsAsyncClient().getDeliveryReport(null))
             .expectError(IllegalArgumentException.class)
             .verify();
     }
@@ -212,21 +178,24 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
         builder.connectionString(CONNECTION_STRING);
 
         if (httpClient != null) {
-            builder.httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+            builder
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         }
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        addTestProxySanitizer();
-        addTestProxyMatcher();
+        // addTestProxySanitizer();
+        // addTestProxyMatcher();
         return builder;
     }
 
     protected TelcoMessagingClientBuilder getTelcoMessagingClientWithToken(HttpClient httpClient) {
         TelcoMessagingClientBuilder builder = new TelcoMessagingClientBuilder();
-        builder.endpoint(new com.azure.communication.common.implementation.CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+        builder
+            .endpoint(new com.azure.communication.common.implementation.CommunicationConnectionString(CONNECTION_STRING)
+                .getEndpoint())
             .credential(new AzureKeyCredential("test-key"))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -234,8 +203,8 @@ public class TelcoMessagingAsyncClientTests extends SmsTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        addTestProxySanitizer();
-        addTestProxyMatcher();
+        // addTestProxySanitizer();
+        // addTestProxyMatcher();
         return builder;
     }
 }

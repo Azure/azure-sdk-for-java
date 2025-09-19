@@ -36,6 +36,9 @@ public final class DeliveryReportsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeliveryReport> getDeliveryReport(String outgoingMessageId) {
+        if (outgoingMessageId == null) {
+            return Mono.error(new IllegalArgumentException("'outgoingMessageId' cannot be null."));
+        }
         return getDeliveryReportWithResponse(outgoingMessageId, Context.NONE)
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -53,21 +56,18 @@ public final class DeliveryReportsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeliveryReport>> getDeliveryReportWithResponse(String outgoingMessageId, Context context) {
-        return serviceClient.getDeliveryReports()
-            .getWithResponseAsync(outgoingMessageId, context)
-            .map(response -> {
-                Object responseValue = response.getValue();
-                if (responseValue instanceof DeliveryReport) {
-                    return new SimpleResponse<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        (DeliveryReport) responseValue
-                    );
-                } else {
-                    // Handle the case where the response is not a DeliveryReport
-                    throw new HttpResponseException("Unexpected response type", response);
-                }
-            });
+        if (outgoingMessageId == null) {
+            return Mono.error(new IllegalArgumentException("'outgoingMessageId' cannot be null."));
+        }
+        return serviceClient.getDeliveryReports().getWithResponseAsync(outgoingMessageId, context).map(response -> {
+            Object responseValue = response.getValue();
+            if (responseValue instanceof DeliveryReport) {
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    (DeliveryReport) responseValue);
+            } else {
+                // Handle the case where the response is not a DeliveryReport
+                throw new RuntimeException("Unexpected response type: " + responseValue.getClass().getName());
+            }
+        });
     }
 }

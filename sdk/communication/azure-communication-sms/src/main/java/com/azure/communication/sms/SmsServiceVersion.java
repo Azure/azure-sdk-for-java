@@ -15,6 +15,11 @@ public enum SmsServiceVersion implements ServiceVersion {
     V2021_03_07("2021-03-07"),
 
     /**
+     * Service version {@code 2025-08-01-preview}.
+     */
+    V2025_08_01_PREVIEW("2025-08-01-preview"),
+
+    /**
      * Service version {@code 2026-01-23}.
      */
     V2026_01_23("2026-01-23");
@@ -39,6 +44,6 @@ public enum SmsServiceVersion implements ServiceVersion {
      * @return the latest {@link SmsServiceVersion}
      */
     public static SmsServiceVersion getLatest() {
-        return V2026_01_23;
+        return V2025_08_01_PREVIEW;
     }
 }

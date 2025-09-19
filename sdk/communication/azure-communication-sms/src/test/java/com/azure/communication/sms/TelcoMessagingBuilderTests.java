@@ -19,9 +19,8 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
 
     @Test
     public void createClientWithConnectionString() {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildClient();
+        TelcoMessagingClient client
+            = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING).buildClient();
 
         assertNotNull(client);
         assertNotNull(client.getSmsClient());
@@ -31,9 +30,8 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
 
     @Test
     public void createAsyncClientWithConnectionString() {
-        TelcoMessagingAsyncClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildAsyncClient();
+        TelcoMessagingAsyncClient client
+            = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING).buildAsyncClient();
 
         assertNotNull(client);
         assertNotNull(client.getSmsAsyncClient());
@@ -44,16 +42,14 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createClientWithTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK
-            ? new MockTokenCredential()
-            : null; // Use real credential in live tests
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new MockTokenCredential() : null; // Use real credential in live tests
 
         if (tokenCredential != null) {
-            TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-                .endpoint("https://contoso.communication.azure.com/")
-                .credential(tokenCredential)
-                .httpClient(httpClient)
-                .buildClient();
+            TelcoMessagingClient client
+                = new TelcoMessagingClientBuilder().endpoint("https://contoso.communication.azure.com/")
+                    .credential(tokenCredential)
+                    .httpClient(httpClient)
+                    .buildClient();
 
             assertNotNull(client);
         }
@@ -61,10 +57,10 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
 
     @Test
     public void createClientWithAzureKeyCredential() {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .endpoint("https://contoso.communication.azure.com/")
-            .credential(new AzureKeyCredential("test-key"))
-            .buildClient();
+        TelcoMessagingClient client
+            = new TelcoMessagingClientBuilder().endpoint("https://contoso.communication.azure.com/")
+                .credential(new AzureKeyCredential("test-key"))
+                .buildClient();
 
         assertNotNull(client);
     }
@@ -72,35 +68,28 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
     @Test
     public void createClientWithoutCredentialThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new TelcoMessagingClientBuilder()
-                .endpoint("https://contoso.communication.azure.com/")
-                .buildClient();
+            new TelcoMessagingClientBuilder().endpoint("https://contoso.communication.azure.com/").buildClient();
         });
     }
 
     @Test
     public void createClientWithoutEndpointThrowsException() {
         assertThrows(NullPointerException.class, () -> {
-            new TelcoMessagingClientBuilder()
-                .credential(new AzureKeyCredential("test-key"))
-                .buildClient();
+            new TelcoMessagingClientBuilder().credential(new AzureKeyCredential("test-key")).buildClient();
         });
     }
 
     @Test
     public void createClientWithInvalidConnectionStringThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new TelcoMessagingClientBuilder()
-                .connectionString("invalid-connection-string")
-                .buildClient();
+            new TelcoMessagingClientBuilder().connectionString("invalid-connection-string").buildClient();
         });
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createClientWithCustomHttpClient(HttpClient httpClient) {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        TelcoMessagingClient client = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING)
             .httpClient(httpClient)
             .buildClient();
 
@@ -109,18 +98,7 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
 
     @Test
     public void createClientWithServiceVersion() {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .serviceVersion(SmsServiceVersion.V2021_03_07)
-            .buildClient();
-
-        assertNotNull(client);
-    }
-
-    @Test
-    public void createClientWithServiceVersion() {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        TelcoMessagingClient client = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING)
             .serviceVersion(SmsServiceVersion.V2021_03_07)
             .buildClient();
 
@@ -129,8 +107,7 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
 
     @Test
     public void createClientWithLatestServiceVersion() {
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        TelcoMessagingClient client = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING)
             .serviceVersion(SmsServiceVersion.getLatest())
             .buildClient();
 
@@ -141,8 +118,7 @@ public class TelcoMessagingBuilderTests extends SmsTestBase {
     public void createClientWithConfiguration() {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        TelcoMessagingClient client = new TelcoMessagingClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        TelcoMessagingClient client = new TelcoMessagingClientBuilder().connectionString(CONNECTION_STRING)
             .configuration(configuration)
             .buildClient();
 

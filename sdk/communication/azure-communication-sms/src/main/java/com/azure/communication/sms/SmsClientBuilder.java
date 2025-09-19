@@ -309,12 +309,11 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
             builderPipeline = createHttpPipeline(httpClient);
         }
 
-        SmsServiceVersion buildServiceVersion = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
+        SmsServiceVersion buildServiceVersion
+            = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
 
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
-        clientBuilder.endpoint(endpoint)
-            .pipeline(builderPipeline)
-            .apiVersion(buildServiceVersion.getVersion());
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline).apiVersion(buildServiceVersion.getVersion());
 
         return clientBuilder.buildClient();
     }

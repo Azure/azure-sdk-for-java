@@ -3,6 +3,7 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.sms.implementation.models.MessagingConnectOptions;
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
@@ -13,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class SmsClientTests extends SmsTestBase {
@@ -166,6 +169,132 @@ public class SmsClientTests extends SmsTestBase {
         String bodyRequest = response.getRequest().getBodyAsBinaryData().toString();
         assertTrue(bodyRequest.contains("repeatabilityRequestId"));
         assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsWithDeliveryReportTimeout(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsWithDeliveryReportTimeoutSync");
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setDeliveryReportTimeoutInSeconds(60);
+        options.setTag("TimeoutTest");
+
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        assertHappyPath(sendResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsWithMessagingConnect(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsWithMessagingConnectSync");
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+
+        MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
+        messagingConnect.setApiKey("test-api-key-123");
+        messagingConnect.setPartner("TestPartner");
+        options.setMessagingConnect(messagingConnect);
+
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        assertHappyPath(sendResult);
+    }
+
+    @Test
+    public void sendSmsWithMessagingConnectValidation_MissingApiKey() {
+        // Arrange - use a simple mock client without recording
+        SmsClient simpleClient = new SmsClientBuilder()
+            .connectionString("endpoint=https://example.communication.azure.com/;accesskey=fake_key")
+            .buildClient();
+
+        SmsSendOptions options = new SmsSendOptions();
+        MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
+        messagingConnect.setPartner("TestPartner"); // API key is missing
+        options.setMessagingConnect(messagingConnect);
+
+        // Action & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            simpleClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        });
+        assertTrue(exception.getMessage().contains("MessagingConnect apiKey cannot be null or empty"));
+    }
+
+    @Test
+    public void sendSmsWithMessagingConnectValidation_MissingPartner() {
+        // Arrange - use a simple mock client without recording
+        SmsClient simpleClient = new SmsClientBuilder()
+            .connectionString("endpoint=https://example.communication.azure.com/;accesskey=fake_key")
+            .buildClient();
+
+        SmsSendOptions options = new SmsSendOptions();
+        MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
+        messagingConnect.setApiKey("test-api-key-123"); // Partner is missing
+        options.setMessagingConnect(messagingConnect);
+
+        // Action & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            simpleClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        });
+        assertTrue(exception.getMessage().contains("MessagingConnect partner cannot be null or empty"));
+    }
+
+    @Test
+    public void sendSmsWithMessagingConnectValidation_EmptyApiKey() {
+        // Arrange - use a simple mock client without recording
+        SmsClient simpleClient = new SmsClientBuilder()
+            .connectionString("endpoint=https://example.communication.azure.com/;accesskey=fake_key")
+            .buildClient();
+
+        SmsSendOptions options = new SmsSendOptions();
+        MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
+        messagingConnect.setApiKey("   "); // Empty/whitespace API key
+        messagingConnect.setPartner("TestPartner");
+        options.setMessagingConnect(messagingConnect);
+
+        // Action & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            simpleClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        });
+        assertTrue(exception.getMessage().contains("MessagingConnect apiKey cannot be null or empty"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestSerializationWithNewFields(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsRequestSerializationWithNewFields");
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setDeliveryReportTimeoutInSeconds(120);
+        options.setTag("SerializationTest");
+
+        MessagingConnectOptions messagingConnect = new MessagingConnectOptions();
+        messagingConnect.setApiKey("serialization-test-key");
+        messagingConnect.setPartner("SerializationPartner");
+        options.setMessagingConnect(messagingConnect);
+
+        // Action & Assert
+        Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER,
+            Arrays.asList(TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
+        String bodyRequest = response.getRequest().getBodyAsBinaryData().toString();
+
+        // Verify that the new fields are properly serialized in the request
+        assertTrue(bodyRequest.contains("deliveryReportTimeoutInSeconds"));
+        assertTrue(bodyRequest.contains("120"));
+        assertTrue(bodyRequest.contains("messagingConnect"));
+        assertTrue(bodyRequest.contains("serialization-test-key"));
+        assertTrue(bodyRequest.contains("SerializationPartner"));
+
+        for (SmsSendResult result : response.getValue()) {
+            assertHappyPath(result);
+        }
     }
 
     private SmsClient setupSyncClient(SmsClientBuilder builder, String testName) {

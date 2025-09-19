@@ -45,10 +45,10 @@ import java.util.Objects;
  * TelcoMessagingClientBuilder that creates TelcoMessagingAsyncClient and TelcoMessagingClient.
  */
 @ServiceClientBuilder(serviceClients = { TelcoMessagingClient.class, TelcoMessagingAsyncClient.class })
-public final class TelcoMessagingClientBuilder implements AzureKeyCredentialTrait<TelcoMessagingClientBuilder>,
-    ConfigurationTrait<TelcoMessagingClientBuilder>, ConnectionStringTrait<TelcoMessagingClientBuilder>,
-    EndpointTrait<TelcoMessagingClientBuilder>, HttpTrait<TelcoMessagingClientBuilder>,
-    TokenCredentialTrait<TelcoMessagingClientBuilder> {
+public final class TelcoMessagingClientBuilder
+    implements AzureKeyCredentialTrait<TelcoMessagingClientBuilder>, ConfigurationTrait<TelcoMessagingClientBuilder>,
+    ConnectionStringTrait<TelcoMessagingClientBuilder>, EndpointTrait<TelcoMessagingClientBuilder>,
+    HttpTrait<TelcoMessagingClientBuilder>, TokenCredentialTrait<TelcoMessagingClientBuilder> {
 
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -160,9 +160,7 @@ public final class TelcoMessagingClientBuilder implements AzureKeyCredentialTrai
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey));
+        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -312,17 +310,18 @@ public final class TelcoMessagingClientBuilder implements AzureKeyCredentialTrai
             builderPipeline = createHttpPipeline();
         }
 
-        SmsServiceVersion buildServiceVersion = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
+        SmsServiceVersion buildServiceVersion
+            = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
 
-        return new AzureCommunicationSMSServiceImplBuilder()
-            .endpoint(endpoint)
+        return new AzureCommunicationSMSServiceImplBuilder().endpoint(endpoint)
             .pipeline(builderPipeline)
             .apiVersion(buildServiceVersion.getVersion())
             .buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
         HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
@@ -355,8 +354,7 @@ public final class TelcoMessagingClientBuilder implements AzureKeyCredentialTrai
 
         policies.add(new HttpLoggingPolicy(buildLogOptions));
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(buildClientOptions)
             .build();
