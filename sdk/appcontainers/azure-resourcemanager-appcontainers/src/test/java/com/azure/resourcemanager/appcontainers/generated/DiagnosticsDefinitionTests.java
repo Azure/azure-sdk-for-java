@@ -14,17 +14,18 @@ public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsDefinition model = BinaryData.fromString(
-            "{\"id\":\"nhl\",\"name\":\"rqnkkzjcjbtr\",\"description\":\"ehvvib\",\"author\":\"jj\",\"category\":\"oqbeitpkxzt\",\"supportTopicList\":[{\"id\":\"klf\",\"pesId\":\"dgfcwqmp\"}],\"analysisTypes\":[\"qxzhem\",\"yhohujswtwkozzwc\",\"lkb\"],\"type\":\"pfajnjwltlwtjj\",\"score\":82.267136}")
+            "{\"id\":\"ivhjknidi\",\"name\":\"qjxgpnrhgovfgp\",\"description\":\"qmhhaowj\",\"author\":\"zvuporqzdfuydz\",\"category\":\"fvxcnqmxqpswo\",\"supportTopicList\":[{\"id\":\"hl\",\"pesId\":\"dhbemzqkzszu\"},{\"id\":\"wtglxx\",\"pesId\":\"jfpgpicrmn\"},{\"id\":\"rgmqgjs\",\"pesId\":\"pqcbfrmbodthsq\"}],\"analysisTypes\":[\"riibakclacj\",\"rnxousxauzlwvsg\",\"wohqfzizvu\",\"mmkjsvthnwpztek\"],\"type\":\"mribiat\",\"score\":96.43654}")
             .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("qxzhem", model.analysisTypes().get(0));
+        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsDefinition model
-            = new DiagnosticsDefinition().withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("qxzhem", "yhohujswtwkozzwc", "lkb"));
+        DiagnosticsDefinition model = new DiagnosticsDefinition()
+            .withSupportTopicList(
+                Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
+            .withAnalysisTypes(Arrays.asList("riibakclacj", "rnxousxauzlwvsg", "wohqfzizvu", "mmkjsvthnwpztek"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("qxzhem", model.analysisTypes().get(0));
+        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
     }
 }

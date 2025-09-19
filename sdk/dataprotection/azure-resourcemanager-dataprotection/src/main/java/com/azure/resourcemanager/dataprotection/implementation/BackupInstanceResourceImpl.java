@@ -16,6 +16,7 @@ import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
 import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.ValidateForModifyBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
 import java.util.Collections;
 import java.util.Map;
@@ -151,6 +152,17 @@ public final class BackupInstanceResourceImpl
     public OperationJobExtendedInfo adhocBackup(TriggerBackupRequest parameters, Context context) {
         return serviceManager.backupInstances()
             .adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+    }
+
+    public OperationJobExtendedInfo validateForModifyBackup(ValidateForModifyBackupRequest parameters) {
+        return serviceManager.backupInstances()
+            .validateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters);
+    }
+
+    public OperationJobExtendedInfo validateForModifyBackup(ValidateForModifyBackupRequest parameters,
+        Context context) {
+        return serviceManager.backupInstances()
+            .validateForModifyBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
     public void triggerRehydrate(AzureBackupRehydrationRequest parameters) {

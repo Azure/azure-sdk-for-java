@@ -23,7 +23,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * A reference to the Azure Virtual Machines Marketplace Image or the custom Virtual Machine Image to use.
      */
     @Generated
-    private final ImageReference imageReference;
+    private final BatchVmImageReference imageReference;
 
     /*
      * The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in the Pool. The Batch Compute Node
@@ -77,7 +77,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * containerSettings property, and all other Tasks may specify it.
      */
     @Generated
-    private ContainerConfiguration containerConfiguration;
+    private BatchContainerConfiguration containerConfiguration;
 
     /*
      * The disk encryption configuration for the pool. If specified, encryption is performed on each node in the pool
@@ -104,7 +104,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * Settings for the operating system disk of the Virtual Machine.
      */
     @Generated
-    private OSDisk osDisk;
+    private BatchOsDisk osDisk;
 
     /*
      * Specifies the security profile settings for the virtual machine or virtual machine scale set.
@@ -122,25 +122,13 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     private ServiceArtifactReference serviceArtifactReference;
 
     /**
-     * Creates an instance of VirtualMachineConfiguration class.
-     *
-     * @param imageReference the imageReference value to set.
-     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
-     */
-    @Generated
-    public VirtualMachineConfiguration(ImageReference imageReference, String nodeAgentSkuId) {
-        this.imageReference = imageReference;
-        this.nodeAgentSkuId = nodeAgentSkuId;
-    }
-
-    /**
      * Get the imageReference property: A reference to the Azure Virtual Machines Marketplace Image or the custom
      * Virtual Machine Image to use.
      *
      * @return the imageReference value.
      */
     @Generated
-    public ImageReference getImageReference() {
+    public BatchVmImageReference getImageReference() {
         return this.imageReference;
     }
 
@@ -265,22 +253,8 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the containerConfiguration value.
      */
     @Generated
-    public ContainerConfiguration getContainerConfiguration() {
+    public BatchContainerConfiguration getContainerConfiguration() {
         return this.containerConfiguration;
-    }
-
-    /**
-     * Set the containerConfiguration property: The container configuration for the Pool. If specified, setup is
-     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager
-     * Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
-     *
-     * @param containerConfiguration the containerConfiguration value to set.
-     * @return the VirtualMachineConfiguration object itself.
-     */
-    @Generated
-    public VirtualMachineConfiguration setContainerConfiguration(ContainerConfiguration containerConfiguration) {
-        this.containerConfiguration = containerConfiguration;
-        return this;
     }
 
     /**
@@ -363,20 +337,8 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the osDisk value.
      */
     @Generated
-    public OSDisk getOsDisk() {
+    public BatchOsDisk getOsDisk() {
         return this.osDisk;
-    }
-
-    /**
-     * Set the osDisk property: Settings for the operating system disk of the Virtual Machine.
-     *
-     * @param osDisk the osDisk value to set.
-     * @return the VirtualMachineConfiguration object itself.
-     */
-    @Generated
-    public VirtualMachineConfiguration setOsDisk(OSDisk osDisk) {
-        this.osDisk = osDisk;
-        return this;
     }
 
     /**
@@ -465,23 +427,23 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     @Generated
     public static VirtualMachineConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ImageReference imageReference = null;
+            BatchVmImageReference imageReference = null;
             String nodeAgentSkuId = null;
             WindowsConfiguration windowsConfiguration = null;
             List<DataDisk> dataDisks = null;
             String licenseType = null;
-            ContainerConfiguration containerConfiguration = null;
+            BatchContainerConfiguration containerConfiguration = null;
             DiskEncryptionConfiguration diskEncryptionConfiguration = null;
             BatchNodePlacementConfiguration nodePlacementConfiguration = null;
             List<VMExtension> extensions = null;
-            OSDisk osDisk = null;
+            BatchOsDisk osDisk = null;
             SecurityProfile securityProfile = null;
             ServiceArtifactReference serviceArtifactReference = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("imageReference".equals(fieldName)) {
-                    imageReference = ImageReference.fromJson(reader);
+                    imageReference = BatchVmImageReference.fromJson(reader);
                 } else if ("nodeAgentSKUId".equals(fieldName)) {
                     nodeAgentSkuId = reader.getString();
                 } else if ("windowsConfiguration".equals(fieldName)) {
@@ -491,7 +453,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
                 } else if ("licenseType".equals(fieldName)) {
                     licenseType = reader.getString();
                 } else if ("containerConfiguration".equals(fieldName)) {
-                    containerConfiguration = ContainerConfiguration.fromJson(reader);
+                    containerConfiguration = BatchContainerConfiguration.fromJson(reader);
                 } else if ("diskEncryptionConfiguration".equals(fieldName)) {
                     diskEncryptionConfiguration = DiskEncryptionConfiguration.fromJson(reader);
                 } else if ("nodePlacementConfiguration".equals(fieldName)) {
@@ -499,7 +461,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
                 } else if ("extensions".equals(fieldName)) {
                     extensions = reader.readArray(reader1 -> VMExtension.fromJson(reader1));
                 } else if ("osDisk".equals(fieldName)) {
-                    osDisk = OSDisk.fromJson(reader);
+                    osDisk = BatchOsDisk.fromJson(reader);
                 } else if ("securityProfile".equals(fieldName)) {
                     securityProfile = SecurityProfile.fromJson(reader);
                 } else if ("serviceArtifactReference".equals(fieldName)) {
@@ -522,5 +484,43 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
             deserializedVirtualMachineConfiguration.serviceArtifactReference = serviceArtifactReference;
             return deserializedVirtualMachineConfiguration;
         });
+    }
+
+    /**
+     * Set the containerConfiguration property: The container configuration for the Pool. If specified, setup is
+     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager
+     * Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
+     *
+     * @param containerConfiguration the containerConfiguration value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setContainerConfiguration(BatchContainerConfiguration containerConfiguration) {
+        this.containerConfiguration = containerConfiguration;
+        return this;
+    }
+
+    /**
+     * Creates an instance of VirtualMachineConfiguration class.
+     *
+     * @param imageReference the imageReference value to set.
+     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
+     */
+    @Generated
+    public VirtualMachineConfiguration(BatchVmImageReference imageReference, String nodeAgentSkuId) {
+        this.imageReference = imageReference;
+        this.nodeAgentSkuId = nodeAgentSkuId;
+    }
+
+    /**
+     * Set the osDisk property: Settings for the operating system disk of the Virtual Machine.
+     *
+     * @param osDisk the osDisk value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setOsDisk(BatchOsDisk osDisk) {
+        this.osDisk = osDisk;
+        return this;
     }
 }

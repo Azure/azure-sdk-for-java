@@ -22,9 +22,11 @@
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
+    <module>sdk/authorization</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
     <module>sdk/avs</module>
@@ -39,6 +41,7 @@
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
+    <module>sdk/cdn</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
     <module>sdk/clientcore</module>
@@ -46,15 +49,19 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/compute</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computerecommender</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
     <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
@@ -90,6 +97,8 @@
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
+    <module>sdk/disconnectedoperations</module>
+    <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
     <module>sdk/durabletask</module>
@@ -159,10 +168,12 @@
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
+    <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
+    <module>sdk/network</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
@@ -188,6 +199,7 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/privatedns</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
@@ -200,6 +212,7 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -230,13 +243,13 @@
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/springappdiscovery</module>
+    <module>sdk/sql</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
     <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -249,6 +262,7 @@
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
+    <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
     <module>sdk/vision</module>
@@ -256,6 +270,7 @@
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>
+    <module>sdk/workloadorchestration</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

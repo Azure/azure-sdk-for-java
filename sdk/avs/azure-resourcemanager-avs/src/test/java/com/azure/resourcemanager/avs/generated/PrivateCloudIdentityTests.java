@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateCloudIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateCloudIdentity model = BinaryData
-            .fromString("{\"principalId\":\"zcjrvxdjzlmwlx\",\"tenantId\":\"ug\",\"type\":\"SystemAssigned\"}")
-            .toObject(PrivateCloudIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        PrivateCloudIdentity model
+            = BinaryData.fromString("{\"principalId\":\"ofd\",\"tenantId\":\"uusdttouwa\",\"type\":\"None\"}")
+                .toObject(PrivateCloudIdentity.class);
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateCloudIdentity model = new PrivateCloudIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
+        PrivateCloudIdentity model = new PrivateCloudIdentity().withType(ResourceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(PrivateCloudIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 }

@@ -18,14 +18,47 @@ import java.io.IOException;
 public final class ConnectedEnvironmentStorageProperties
     implements JsonSerializable<ConnectedEnvironmentStorageProperties> {
     /*
+     * Provisioning state of the storage.
+     */
+    private ConnectedEnvironmentStorageProvisioningState provisioningState;
+
+    /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
+
+    /*
      * Azure file properties
      */
     private AzureFileProperties azureFile;
+
+    /*
+     * SMB storage properties
+     */
+    private SmbStorage smb;
 
     /**
      * Creates an instance of ConnectedEnvironmentStorageProperties class.
      */
     public ConnectedEnvironmentStorageProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the storage.
+     * 
+     * @return the provisioningState value.
+     */
+    public ConnectedEnvironmentStorageProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -49,6 +82,26 @@ public final class ConnectedEnvironmentStorageProperties
     }
 
     /**
+     * Get the smb property: SMB storage properties.
+     * 
+     * @return the smb value.
+     */
+    public SmbStorage smb() {
+        return this.smb;
+    }
+
+    /**
+     * Set the smb property: SMB storage properties.
+     * 
+     * @param smb the smb value to set.
+     * @return the ConnectedEnvironmentStorageProperties object itself.
+     */
+    public ConnectedEnvironmentStorageProperties withSmb(SmbStorage smb) {
+        this.smb = smb;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +109,9 @@ public final class ConnectedEnvironmentStorageProperties
     public void validate() {
         if (azureFile() != null) {
             azureFile().validate();
+        }
+        if (smb() != null) {
+            smb().validate();
         }
     }
 
@@ -66,6 +122,7 @@ public final class ConnectedEnvironmentStorageProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("azureFile", this.azureFile);
+        jsonWriter.writeJsonField("smb", this.smb);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,8 +142,15 @@ public final class ConnectedEnvironmentStorageProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("azureFile".equals(fieldName)) {
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.provisioningState
+                        = ConnectedEnvironmentStorageProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.deploymentErrors = reader.getString();
+                } else if ("azureFile".equals(fieldName)) {
                     deserializedConnectedEnvironmentStorageProperties.azureFile = AzureFileProperties.fromJson(reader);
+                } else if ("smb".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.smb = SmbStorage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

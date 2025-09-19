@@ -14,21 +14,21 @@ public final class SupportedFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedFeature model = BinaryData.fromString(
-            "{\"featureName\":\"onasxifto\",\"supportStatus\":\"PublicPreview\",\"exposureControlledFeatures\":[\"f\",\"wesgogczh\",\"nnxk\"]}")
+            "{\"featureName\":\"qkdlw\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"mlkxtrqjfs\"]}")
             .toObject(SupportedFeature.class);
-        Assertions.assertEquals("onasxifto", model.featureName());
-        Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("f", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("qkdlw", model.featureName());
+        Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.supportStatus());
+        Assertions.assertEquals("mlkxtrqjfs", model.exposureControlledFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedFeature model = new SupportedFeature().withFeatureName("onasxifto")
-            .withSupportStatus(FeatureSupportStatus.PUBLIC_PREVIEW)
-            .withExposureControlledFeatures(Arrays.asList("f", "wesgogczh", "nnxk"));
+        SupportedFeature model = new SupportedFeature().withFeatureName("qkdlw")
+            .withSupportStatus(FeatureSupportStatus.ALPHA_PREVIEW)
+            .withExposureControlledFeatures(Arrays.asList("mlkxtrqjfs"));
         model = BinaryData.fromObject(model).toObject(SupportedFeature.class);
-        Assertions.assertEquals("onasxifto", model.featureName());
-        Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("f", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("qkdlw", model.featureName());
+        Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.supportStatus());
+        Assertions.assertEquals("mlkxtrqjfs", model.exposureControlledFeatures().get(0));
     }
 }

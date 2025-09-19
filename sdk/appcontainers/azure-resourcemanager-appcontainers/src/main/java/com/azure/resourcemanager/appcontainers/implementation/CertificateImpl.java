@@ -89,18 +89,15 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     public Certificate create() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Certificate create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName, this.innerModel(), context);
         return this;
     }
 
@@ -118,18 +115,15 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     public Certificate apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsCertificates()
-            .updateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, updateCertificateEnvelope,
-                Context.NONE)
-            .getValue();
+            .update(resourceGroupName, connectedEnvironmentName, certificateName, updateCertificateEnvelope,
+                Context.NONE);
         return this;
     }
 
     public Certificate apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsCertificates()
-            .updateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, updateCertificateEnvelope,
-                context)
-            .getValue();
+            .update(resourceGroupName, connectedEnvironmentName, certificateName, updateCertificateEnvelope, context);
         return this;
     }
 
@@ -185,6 +179,6 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

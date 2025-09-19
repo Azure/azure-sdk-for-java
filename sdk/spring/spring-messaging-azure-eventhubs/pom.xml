@@ -46,20 +46,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.20.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.20.9</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.2.9</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>3.5.2</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>3.5.3</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.15.2</version> <!-- {x-version-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.15.3</version> <!-- {x-version-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.9</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -111,13 +111,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -129,7 +129,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.8</version> <!-- {x-version-update;springboot3_io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.9</version> <!-- {x-version-update;springboot3_io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -174,10 +174,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.15.2]</include> <!-- {x-include-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.2.9]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.15.3]</include> <!-- {x-include-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.2.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[3.5.2]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[3.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

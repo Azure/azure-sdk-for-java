@@ -6,12 +6,21 @@ import com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull
 import com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.TaskContext
+import org.apache.spark.executor.TaskMetrics
 import org.apache.spark.sql.execution.metric.SQLMetric
 import org.apache.spark.util.AccumulatorV2
 
 import java.lang.reflect.Method
 import java.util.Locale
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
+class SparkInternalsBridge {
+  // Only used in ChangeFeedMetricsListener, which is easier for test validation
+  def getInternalCustomTaskMetricsAsSQLMetric(
+                                              knownCosmosMetricNames: Set[String],
+                                              taskMetrics: TaskMetrics) : Map[String, SQLMetric] = {
+    SparkInternalsBridge.getInternalCustomTaskMetricsAsSQLMetricInternal(knownCosmosMetricNames, taskMetrics)
+  }
+}
 
 object SparkInternalsBridge extends BasicLoggingTrait {
   private val SPARK_REFLECTION_ACCESS_ALLOWED_PROPERTY = "COSMOS.SPARK_REFLECTION_ACCESS_ALLOWED"
@@ -40,20 +49,23 @@ object SparkInternalsBridge extends BasicLoggingTrait {
   private final lazy val reflectionAccessAllowed = new AtomicBoolean(getSparkReflectionAccessAllowed)
 
   def getInternalCustomTaskMetricsAsSQLMetric(knownCosmosMetricNames: Set[String]) : Map[String, SQLMetric] = {
+    Option.apply(TaskContext.get()) match {
+      case Some(taskCtx) => getInternalCustomTaskMetricsAsSQLMetric(knownCosmosMetricNames, taskCtx.taskMetrics())
+      case None => Map.empty[String, SQLMetric]
+    }
+  }
+
+  def getInternalCustomTaskMetricsAsSQLMetric(knownCosmosMetricNames: Set[String], taskMetrics: TaskMetrics) : Map[String, SQLMetric] = {
 
     if (!reflectionAccessAllowed.get) {
       Map.empty[String, SQLMetric]
     } else {
-      Option.apply(TaskContext.get()) match {
-        case Some(taskCtx) => getInternalCustomTaskMetricsAsSQLMetricInternal(knownCosmosMetricNames, taskCtx)
-        case None => Map.empty[String, SQLMetric]
-      }
+      getInternalCustomTaskMetricsAsSQLMetricInternal(knownCosmosMetricNames, taskMetrics)
     }
   }
 
-  private def getAccumulators(taskCtx: TaskContext): Option[Seq[AccumulatorV2[_, _]]] = {
+  private def getAccumulators(taskMetrics: TaskMetrics): Option[Seq[AccumulatorV2[_, _]]] = {
     try {
-      val taskMetrics: Object = taskCtx.taskMetrics()
       val method = Option(accumulatorsMethod.get) match {
         case Some(existing) => existing
         case None =>
@@ -78,8 +90,8 @@ object SparkInternalsBridge extends BasicLoggingTrait {
 
   private def getInternalCustomTaskMetricsAsSQLMetricInternal(
                                                                knownCosmosMetricNames: Set[String],
-                                                               taskCtx: TaskContext): Map[String, SQLMetric] = {
-    getAccumulators(taskCtx) match {
+                                                               taskMetrics: TaskMetrics): Map[String, SQLMetric] = {
+    getAccumulators(taskMetrics) match {
       case Some(accumulators) => accumulators
         .filter(accumulable => accumulable.isInstanceOf[SQLMetric]
           && accumulable.name.isDefined

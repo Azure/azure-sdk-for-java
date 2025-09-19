@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingMeterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingMeterProperties model = BinaryData
-            .fromString(
-                "{\"category\":\"dslfhotwmcy\",\"meterType\":\"wlbjnpgacftade\",\"displayName\":\"nltyfsoppusuesnz\"}")
-            .toObject(BillingMeterProperties.class);
-        Assertions.assertEquals("dslfhotwmcy", model.category());
-        Assertions.assertEquals("wlbjnpgacftade", model.meterType());
-        Assertions.assertEquals("nltyfsoppusuesnz", model.displayName());
+        BillingMeterProperties model
+            = BinaryData.fromString("{\"category\":\"xorrqnb\",\"meterType\":\"czvyifq\",\"displayName\":\"kdvjsll\"}")
+                .toObject(BillingMeterProperties.class);
+        Assertions.assertEquals("xorrqnb", model.category());
+        Assertions.assertEquals("czvyifq", model.meterType());
+        Assertions.assertEquals("kdvjsll", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingMeterProperties model = new BillingMeterProperties().withCategory("dslfhotwmcy")
-            .withMeterType("wlbjnpgacftade")
-            .withDisplayName("nltyfsoppusuesnz");
+        BillingMeterProperties model
+            = new BillingMeterProperties().withCategory("xorrqnb").withMeterType("czvyifq").withDisplayName("kdvjsll");
         model = BinaryData.fromObject(model).toObject(BillingMeterProperties.class);
-        Assertions.assertEquals("dslfhotwmcy", model.category());
-        Assertions.assertEquals("wlbjnpgacftade", model.meterType());
-        Assertions.assertEquals("nltyfsoppusuesnz", model.displayName());
+        Assertions.assertEquals("xorrqnb", model.category());
+        Assertions.assertEquals("czvyifq", model.meterType());
+        Assertions.assertEquals("kdvjsll", model.displayName());
     }
 }

@@ -22,7 +22,7 @@ public final class ExperimentsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"yxbaaabjyvayf\",\"tenantId\":\"m\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wzsyyceuzs\":{\"principalId\":\"zqogse\",\"clientId\":\"evfdnwnwm\"},\"bpaxhexiilivpdt\":{\"principalId\":\"bjudpfrxtrthzv\",\"clientId\":\"tdwkqbrq\"},\"oaxoruzfgsqu\":{\"principalId\":\"r\",\"clientId\":\"d\"}}},\"properties\":{\"provisioningState\":\"Failed\",\"steps\":[{\"name\":\"xxle\",\"branches\":[{\"name\":\"ramxjezwlwnw\",\"actions\":[]},{\"name\":\"uqlcvydy\",\"actions\":[]}]},{\"name\":\"atdooaojkniod\",\"branches\":[{\"name\":\"oebwnujhemms\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"dkcrodt\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"nfwjlfltkacjvefk\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"foakgg\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}]},\"location\":\"agaowpulpqblylsy\",\"tags\":{\"zuempsbzkf\":\"jnsjervtiagxsd\",\"dxrbuukzcle\":\"beyvpnqicvinvkjj\",\"fn\":\"yhmlwpaztzp\"},\"id\":\"ckw\",\"name\":\"fz\",\"type\":\"whxxbuyqax\"}";
+            = "{\"identity\":{\"principalId\":\"fcqdpsq\",\"tenantId\":\"vpsvuoymgcce\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"edkowepbqpcrfk\":{\"principalId\":\"ypql\",\"clientId\":\"eokerqwkyhkobopg\"},\"y\":{\"principalId\":\"ccsnjvcdwxlpq\",\"clientId\":\"ftnkhtj\"},\"ywkbirryuzhlhkjo\":{\"principalId\":\"gwfqatmt\",\"clientId\":\"tmdvypgikdgs\"},\"ool\":{\"principalId\":\"vqqaatjinrvgo\",\"clientId\":\"mfiibfggj\"}}},\"properties\":{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"kvtkkg\",\"branches\":[{\"name\":\"qwjygvja\",\"actions\":[]},{\"name\":\"vblm\",\"actions\":[]},{\"name\":\"vkzuhbxvvyhgso\",\"actions\":[]},{\"name\":\"byrqufeg\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"vwz\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"nhlmctlpdng\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}]},\"location\":\"gbmhrixkwmyi\",\"tags\":{\"hbpnaixexccbd\":\"veg\",\"htpwij\":\"eaxhcexdrrvqahqk\",\"bfvoowvrv\":\"hyjsvfycx\",\"jqppyostronzmy\":\"t\"},\"id\":\"gfipnsxk\",\"name\":\"cwaekrrjre\",\"type\":\"fxtsgum\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ExperimentsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Experiment response = manager.experiments()
-            .getByResourceGroupWithResponse("mzqa", "krmnjijpxacqqud", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("lvdnkfx", "semdwzrmu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("agaowpulpqblylsy", response.location());
-        Assertions.assertEquals("jnsjervtiagxsd", response.tags().get("zuempsbzkf"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("xxle", response.steps().get(0).name());
-        Assertions.assertEquals("ramxjezwlwnw", response.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("dkcrodt", response.selectors().get(0).id());
+        Assertions.assertEquals("gbmhrixkwmyi", response.location());
+        Assertions.assertEquals("veg", response.tags().get("hbpnaixexccbd"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("kvtkkg", response.steps().get(0).name());
+        Assertions.assertEquals("qwjygvja", response.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("vwz", response.selectors().get(0).id());
     }
 }

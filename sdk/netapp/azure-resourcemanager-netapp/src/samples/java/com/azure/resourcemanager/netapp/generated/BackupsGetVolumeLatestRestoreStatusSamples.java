@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BackupsGetVolumeLatestRestoreStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Volumes_LatestRestoreStatus.
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_LatestRestoreStatus.
      * json
      */
     /**

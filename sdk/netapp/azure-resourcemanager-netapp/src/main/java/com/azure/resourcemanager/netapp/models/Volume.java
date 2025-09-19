@@ -217,6 +217,16 @@ public interface Volume {
     VolumePropertiesDataProtection dataProtection();
 
     /**
+     * Gets the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit();
+
+    /**
      * Gets the isRestoring property: Restoring.
      * 
      * @return the isRestoring value.
@@ -513,6 +523,13 @@ public interface Volume {
     String originatingResourceId();
 
     /**
+     * Gets the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    Long inheritedSizeInBytes();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -650,6 +667,7 @@ public interface Volume {
             DefinitionStages.WithServiceLevel, DefinitionStages.WithExportPolicy, DefinitionStages.WithProtocolTypes,
             DefinitionStages.WithSnapshotId, DefinitionStages.WithDeleteBaseSnapshot, DefinitionStages.WithBackupId,
             DefinitionStages.WithNetworkFeatures, DefinitionStages.WithVolumeType, DefinitionStages.WithDataProtection,
+            DefinitionStages.WithAcceptGrowCapacityPoolForShortTermCloneSplit,
             DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
             DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
@@ -828,6 +846,26 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify acceptGrowCapacityPoolForShortTermCloneSplit.
+         */
+        interface WithAcceptGrowCapacityPoolForShortTermCloneSplit {
+            /**
+             * Specifies the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term
+             * clone volume, if the parent pool does not have enough space to accommodate the volume after split, it
+             * will be automatically resized, which will lead to increased billing. To accept capacity pool size auto
+             * grow and create a short term clone volume, set the property as accepted..
+             * 
+             * @param acceptGrowCapacityPoolForShortTermCloneSplit While auto splitting the short term clone volume, if
+             * the parent pool does not have enough space to accommodate the volume after split, it will be
+             * automatically resized, which will lead to increased billing. To accept capacity pool size auto grow and
+             * create a short term clone volume, set the property as accepted.
+             * @return the next definition stage.
+             */
+            WithCreate withAcceptGrowCapacityPoolForShortTermCloneSplit(
+                AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit);
         }
 
         /**
@@ -1644,6 +1682,30 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void resetCifsPassword(Context context);
+
+    /**
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume splitCloneFromParent();
+
+    /**
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume splitCloneFromParent(Context context);
 
     /**
      * Break file locks

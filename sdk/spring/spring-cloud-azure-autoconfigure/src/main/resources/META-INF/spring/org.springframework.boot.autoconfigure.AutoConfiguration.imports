@@ -9,7 +9,6 @@ com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppCon
 com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsMessagingAutoConfiguration
-com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.eventgrid.AzureEventGridAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaBinderOAuth2AutoConfiguration

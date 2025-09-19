@@ -3,12 +3,14 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.changeFeedMetrics.ChangeFeedMetricsTracker
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
 private object PartitionMetadata {
@@ -114,20 +116,41 @@ private[cosmos] case class PartitionMetadata
     )
   }
 
-  def getWeightedLsnGap: Long = {
+  def getWeightedLsnGap(
+                        isChangeFeed: Boolean,
+                        partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Long = {
     val progressFactor = math.max(this.getAndValidateLatestLsn - this.startLsn, 0)
     if (progressFactor == 0) {
       0
     } else {
-      val averageItemsPerLsn = getAvgItemsPerLsn
+      val effectiveItemsPerLsn = this.getAvgItemsPerLsn(isChangeFeed, partitionMetricsMap)
 
-      val weightedGap: Double = progressFactor * averageItemsPerLsn
+      val weightedGap: Double = progressFactor * effectiveItemsPerLsn
       // Any double less than 1 gets rounded to 0 when toLong is invoked
       weightedGap.toLong.max(1)
     }
   }
 
-  def getAvgItemsPerLsn: Double = {
+  def getAvgItemsPerLsn(isChangeFeed: Boolean,
+                        partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None): Double = {
+    var itemsPerLsnFromMetricsOpt: Option[Double] = None
+    if (isChangeFeed) {
+      partitionMetricsMap match {
+        case Some(metricsMap) =>
+          if (metricsMap.containsKey(this.feedRange)) {
+            itemsPerLsnFromMetricsOpt = partitionMetricsMap.get.get(this.feedRange).getWeightedChangeFeedItemsPerLsn
+          }
+        case None =>
+      }
+    }
+
+    itemsPerLsnFromMetricsOpt match {
+      case Some(itemsPerLsnFromMetrics) => itemsPerLsnFromMetrics
+      case None => getDefaultAvgItemsPerLsn
+    }
+  }
+
+  def getDefaultAvgItemsPerLsn: Double = {
     if (this.firstLsn.isEmpty) {
       math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn)
     } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn - this.firstLsn.get) <= 0) {

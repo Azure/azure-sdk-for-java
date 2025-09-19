@@ -13,21 +13,21 @@ public final class WorkloadNetworkVMGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupProperties model = BinaryData.fromString(
-            "{\"displayName\":\"fnljky\",\"members\":[\"vuujq\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":8952255815532571231}")
+            "{\"displayName\":\"dzgtil\",\"members\":[\"nfhqlyvijouwivk\",\"oyzunbixxr\",\"ikvcpwp\",\"clrcivtsox\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":6008082652066611938}")
             .toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("fnljky", model.displayName());
-        Assertions.assertEquals("vuujq", model.members().get(0));
-        Assertions.assertEquals(8952255815532571231L, model.revision());
+        Assertions.assertEquals("dzgtil", model.displayName());
+        Assertions.assertEquals("nfhqlyvijouwivk", model.members().get(0));
+        Assertions.assertEquals(6008082652066611938L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("fnljky")
-            .withMembers(Arrays.asList("vuujq"))
-            .withRevision(8952255815532571231L);
+        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("dzgtil")
+            .withMembers(Arrays.asList("nfhqlyvijouwivk", "oyzunbixxr", "ikvcpwp", "clrcivtsox"))
+            .withRevision(6008082652066611938L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("fnljky", model.displayName());
-        Assertions.assertEquals("vuujq", model.members().get(0));
-        Assertions.assertEquals(8952255815532571231L, model.revision());
+        Assertions.assertEquals("dzgtil", model.displayName());
+        Assertions.assertEquals("nfhqlyvijouwivk", model.members().get(0));
+        Assertions.assertEquals(6008082652066611938L, model.revision());
     }
 }

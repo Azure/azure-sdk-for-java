@@ -5,6 +5,7 @@
 package com.azure.compute.batch.implementation;
 
 import com.azure.compute.batch.BatchServiceVersion;
+import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -22,10 +23,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -65,7 +62,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -79,7 +76,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public BatchServiceVersion getServiceVersion() {
@@ -93,7 +90,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -107,7 +104,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -116,7 +113,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     * 
+     *
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
      * @param serviceVersion Service version.
      */
@@ -127,7 +124,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
      * @param serviceVersion Service version.
@@ -138,7 +135,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
@@ -161,70 +158,49 @@ public final class BatchClientImpl {
     public interface BatchClientService {
         @Get("/applications")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listApplications(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/applications")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listApplicationsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/applications/{applicationId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getApplication(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/applications/{applicationId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getApplicationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/poolusagemetrics")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPoolUsageMetrics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/poolusagemetrics")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolUsageMetricsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/pools")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
@@ -232,10 +208,7 @@ public final class BatchClientImpl {
 
         @Post("/pools")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
@@ -243,88 +216,63 @@ public final class BatchClientImpl {
 
         @Get("/pools")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPools(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/pools")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deletePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deletePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Boolean>> poolExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Boolean> poolExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/pools/{poolId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updatePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
@@ -333,10 +281,7 @@ public final class BatchClientImpl {
 
         @Patch("/pools/{poolId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updatePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
@@ -345,122 +290,89 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> evaluatePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> evaluatePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> resizePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> resizePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/stopresize")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> stopPoolResize(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/stopresize")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> stopPoolResizeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replacePoolProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
@@ -469,10 +381,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replacePoolPropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
@@ -481,114 +390,81 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/removenodes")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> removeNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/removenodes")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> removeNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/supportedimages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listSupportedImages(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/supportedimages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listSupportedImagesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/nodecounts")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPoolNodeCounts(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/nodecounts")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolNodeCountsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -597,10 +473,7 @@ public final class BatchClientImpl {
 
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -609,10 +482,7 @@ public final class BatchClientImpl {
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -621,10 +491,7 @@ public final class BatchClientImpl {
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -633,74 +500,53 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
@@ -708,10 +554,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
@@ -719,90 +562,63 @@ public final class BatchClientImpl {
 
         @Get("/jobs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}/jobs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobsFromSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}/jobs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobsFromScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatus(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobPreparationAndReleaseTaskStatusSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/taskcounts")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getJobTaskCounts(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/taskcounts")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getJobTaskCountsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/certificates")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createCertificate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -811,10 +627,7 @@ public final class BatchClientImpl {
 
         @Post("/certificates")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createCertificateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -823,30 +636,21 @@ public final class BatchClientImpl {
 
         @Get("/certificates")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listCertificates(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listCertificatesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> cancelCertificateDeletion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -854,10 +658,7 @@ public final class BatchClientImpl {
 
         @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> cancelCertificateDeletionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -865,10 +666,7 @@ public final class BatchClientImpl {
 
         @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteCertificate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -876,10 +674,7 @@ public final class BatchClientImpl {
 
         @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteCertificateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -887,10 +682,7 @@ public final class BatchClientImpl {
 
         @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getCertificate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -898,10 +690,7 @@ public final class BatchClientImpl {
 
         @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getCertificateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
             @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
@@ -909,68 +698,49 @@ public final class BatchClientImpl {
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Boolean>> jobScheduleExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Boolean> jobScheduleExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
@@ -979,10 +749,7 @@ public final class BatchClientImpl {
 
         @Patch("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
@@ -991,10 +758,7 @@ public final class BatchClientImpl {
 
         @Put("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
@@ -1003,10 +767,7 @@ public final class BatchClientImpl {
 
         @Put("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
@@ -1015,70 +776,49 @@ public final class BatchClientImpl {
 
         @Post("/jobschedules/{jobScheduleId}/disable")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/disable")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -1087,10 +827,7 @@ public final class BatchClientImpl {
 
         @Post("/jobschedules")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -1099,30 +836,21 @@ public final class BatchClientImpl {
 
         @Get("/jobschedules")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobSchedules(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobSchedulesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -1131,10 +859,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -1143,30 +868,21 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listTasks(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listTasksSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/addtaskcollection")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> createTaskCollection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -1175,10 +891,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/addtaskcollection")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> createTaskCollectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
@@ -1187,10 +900,7 @@ public final class BatchClientImpl {
 
         @Delete("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1198,10 +908,7 @@ public final class BatchClientImpl {
 
         @Delete("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1209,10 +916,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1220,10 +924,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1231,10 +932,7 @@ public final class BatchClientImpl {
 
         @Put("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
@@ -1243,10 +941,7 @@ public final class BatchClientImpl {
 
         @Put("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
@@ -1255,10 +950,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listSubTasks(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1266,10 +958,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listSubTasksSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1277,10 +966,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1288,10 +974,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1299,10 +982,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> reactivateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1310,10 +990,7 @@ public final class BatchClientImpl {
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> reactivateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1321,10 +998,7 @@ public final class BatchClientImpl {
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1332,10 +1006,7 @@ public final class BatchClientImpl {
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1343,10 +1014,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1354,10 +1022,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1365,10 +1030,7 @@ public final class BatchClientImpl {
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> getTaskFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1376,10 +1038,7 @@ public final class BatchClientImpl {
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> getTaskFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
@@ -1387,10 +1046,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listTaskFiles(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1398,10 +1054,7 @@ public final class BatchClientImpl {
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listTaskFilesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1409,10 +1062,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
@@ -1421,10 +1071,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
@@ -1433,10 +1080,7 @@ public final class BatchClientImpl {
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
@@ -1444,10 +1088,7 @@ public final class BatchClientImpl {
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
@@ -1455,36 +1096,27 @@ public final class BatchClientImpl {
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1492,10 +1124,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1503,10 +1132,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> rebootNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1514,10 +1140,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> rebootNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1525,10 +1148,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> startNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1536,10 +1156,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> startNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1547,10 +1164,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> reimageNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1558,10 +1172,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> reimageNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1569,10 +1180,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deallocateNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1580,10 +1188,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deallocateNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1591,10 +1196,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1602,10 +1204,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1613,10 +1212,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1624,10 +1220,7 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1635,10 +1228,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getNodeRemoteLoginSettings(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1646,10 +1236,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getNodeRemoteLoginSettingsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1657,56 +1244,41 @@ public final class BatchClientImpl {
 
         @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> uploadNodeLogs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> uploadNodeLogsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getNodeExtension(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
@@ -1714,10 +1286,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getNodeExtensionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
@@ -1725,10 +1294,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodeExtensions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1736,10 +1302,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/extensions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodeExtensionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1747,10 +1310,7 @@ public final class BatchClientImpl {
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1758,10 +1318,7 @@ public final class BatchClientImpl {
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1769,10 +1326,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> getNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1780,10 +1334,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> getNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1791,10 +1342,7 @@ public final class BatchClientImpl {
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> getNodeFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1802,10 +1350,7 @@ public final class BatchClientImpl {
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> getNodeFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
@@ -1813,10 +1358,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodeFiles(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1824,10 +1366,7 @@ public final class BatchClientImpl {
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodeFilesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1835,320 +1374,224 @@ public final class BatchClientImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listApplicationsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listApplicationsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPoolUsageMetricsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolUsageMetricsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPoolsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listSupportedImagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listSupportedImagesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listPoolNodeCountsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listPoolNodeCountsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobsFromScheduleNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobsFromScheduleNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobPreparationAndReleaseTaskStatusNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listCertificatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listCertificatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listJobSchedulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listTasksNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listTasksNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listSubTasksNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listSubTasksNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listTaskFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listTaskFilesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodeExtensionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodeExtensionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listNodeFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<BinaryData> listNodeFilesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -2156,7 +1599,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -2166,7 +1609,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2175,7 +1618,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2187,12 +1630,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
@@ -2208,7 +1648,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -2218,7 +1658,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2227,7 +1667,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2239,12 +1679,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedFlux}.
      */
@@ -2279,7 +1716,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -2289,7 +1726,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2298,7 +1735,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2310,12 +1747,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2329,7 +1763,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -2339,7 +1773,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2348,7 +1782,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2360,12 +1794,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -2400,7 +1831,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Application.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about Applications and versions that are not yet
@@ -2410,13 +1841,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2428,15 +1859,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -2451,7 +1879,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Application.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about Applications and versions that are not yet
@@ -2461,13 +1889,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2479,15 +1907,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
-     * 
+     *
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response}.
      */
@@ -2501,7 +1926,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2512,7 +1937,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2532,7 +1957,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2544,12 +1969,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -2566,7 +1988,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2577,7 +1999,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2597,7 +2019,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2609,12 +2031,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2649,7 +2068,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2660,7 +2079,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2680,7 +2099,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2692,12 +2111,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2712,7 +2128,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2723,7 +2139,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2743,7 +2159,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2755,12 +2171,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -2795,7 +2208,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Pool to the specified Account.
-     * 
+     *
      * When naming Pools, avoid including sensitive information such as user names or
      * secret project names. This information may appear in telemetry logs accessible
      * to Microsoft Support engineers.
@@ -2803,13 +2216,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2898,9 +2311,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3059,8 +2472,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -3088,13 +2501,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3107,7 +2517,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Pool to the specified Account.
-     * 
+     *
      * When naming Pools, avoid including sensitive information such as user names or
      * secret project names. This information may appear in telemetry logs accessible
      * to Microsoft Support engineers.
@@ -3115,13 +2525,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3210,9 +2620,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3371,8 +2781,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -3400,13 +2810,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3423,7 +2830,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -3439,7 +2846,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3536,9 +2943,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -3747,8 +3154,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -3787,12 +3194,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse} on successful completion
      * of {@link Mono}.
      */
@@ -3812,7 +3216,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -3828,7 +3232,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3925,9 +3329,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -4136,8 +3540,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -4176,12 +3580,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -4219,7 +3620,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4235,7 +3636,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4332,9 +3733,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -4543,8 +3944,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -4583,12 +3984,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4606,7 +4004,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4622,7 +4020,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4719,9 +4117,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -4930,8 +4328,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -4970,12 +4368,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -5009,7 +4404,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Pool from the specified Account.
-     * 
+     *
      * When you request that a Pool be deleted, the following actions occur: the Pool
      * state is set to deleting; any ongoing resize operation on the Pool are stopped;
      * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
@@ -5026,7 +4421,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5053,13 +4448,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5071,7 +4463,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Pool from the specified Account.
-     * 
+     *
      * When you request that a Pool be deleted, the following actions occur: the Pool
      * state is set to deleting; any ongoing resize operation on the Pool are stopped;
      * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
@@ -5088,7 +4480,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5115,13 +4507,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5137,7 +4526,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5165,18 +4554,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return basic properties of a Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5192,7 +4579,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5220,18 +4607,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return basic properties of a Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5247,7 +4632,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -5279,7 +4664,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5376,9 +4761,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -5587,8 +4972,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -5627,13 +5012,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Pool along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -5650,7 +5032,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -5682,7 +5064,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5779,9 +5161,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -5990,8 +5372,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -6030,13 +5412,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6048,7 +5427,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Pool.
-     * 
+     *
      * This only replaces the Pool properties specified in the request. For example,
      * if the Pool has a StartTask associated with it, and a request does not specify
      * a StartTask element, then the Pool keeps the existing StartTask.
@@ -6056,7 +5435,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6084,7 +5463,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6237,9 +5616,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -6328,8 +5707,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -6356,14 +5735,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6377,7 +5753,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Pool.
-     * 
+     *
      * This only replaces the Pool properties specified in the request. For example,
      * if the Pool has a StartTask associated with it, and a request does not specify
      * a StartTask element, then the Pool keeps the existing StartTask.
@@ -6385,7 +5761,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6413,7 +5789,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6566,9 +5942,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -6657,8 +6033,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -6685,14 +6061,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6709,18 +6082,15 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6736,18 +6106,15 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6759,7 +6126,7 @@ public final class BatchClientImpl {
 
     /**
      * Enables automatic scaling for a Pool.
-     * 
+     *
      * You cannot enable automatic scaling on a Pool if a resize operation is in
      * progress on the Pool. If automatic scaling of the Pool is currently disabled,
      * you must specify a valid autoscale formula as part of the request. If automatic
@@ -6770,7 +6137,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6798,7 +6165,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6807,28 +6174,25 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Enables automatic scaling for a Pool.
-     * 
+     *
      * You cannot enable automatic scaling on a Pool if a resize operation is in
      * progress on the Pool. If automatic scaling of the Pool is currently disabled,
      * you must specify a valid autoscale formula as part of the request. If automatic
@@ -6839,7 +6203,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6867,7 +6231,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6876,28 +6240,25 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.enablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, content, requestOptions, Context.NONE);
+            poolId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
-     * 
+     *
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool. The Pool must have auto
      * scaling enabled in order to evaluate a formula.
@@ -6905,13 +6266,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6919,9 +6280,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6940,32 +6301,29 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
-     * 
+     *
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.evaluatePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
-     * 
+     *
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool. The Pool must have auto
      * scaling enabled in order to evaluate a formula.
@@ -6973,13 +6331,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6987,9 +6345,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7008,31 +6366,28 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
-     * 
+     *
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.evaluatePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, content, requestOptions, Context.NONE);
+            poolId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
-     * 
+     *
      * You can only resize a Pool when its allocation state is steady. If the Pool is
      * already resizing, the request fails with status code 409. When you resize a
      * Pool, the Pool's allocation state changes from steady to resizing. You cannot
@@ -7044,7 +6399,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7072,7 +6427,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7083,28 +6438,25 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.resizePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
-     * 
+     *
      * You can only resize a Pool when its allocation state is steady. If the Pool is
      * already resizing, the request fails with status code 409. When you resize a
      * Pool, the Pool's allocation state changes from steady to resizing. You cannot
@@ -7116,7 +6468,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7144,7 +6496,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7155,27 +6507,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.resizePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Stops an ongoing resize operation on the Pool.
-     * 
+     *
      * This does not restore the Pool to its previous state before the resize
      * operation: it only stops any further changes being made, and the Pool maintains
      * its current state. After stopping, the Pool stabilizes at the number of Compute
@@ -7187,7 +6536,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7214,13 +6563,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7232,7 +6578,7 @@ public final class BatchClientImpl {
 
     /**
      * Stops an ongoing resize operation on the Pool.
-     * 
+     *
      * This does not restore the Pool to its previous state before the resize
      * operation: it only stops any further changes being made, and the Pool maintains
      * its current state. After stopping, the Pool stabilizes at the number of Compute
@@ -7244,7 +6590,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7271,13 +6617,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7289,7 +6632,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Pool.
-     * 
+     *
      * This fully replaces all the updatable properties of the Pool. For example, if
      * the Pool has a StartTask associated with it and if StartTask is not specified
      * with this request, then the Batch service will remove the existing StartTask.
@@ -7297,13 +6640,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7382,14 +6725,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7403,7 +6743,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Pool.
-     * 
+     *
      * This fully replaces all the updatable properties of the Pool. For example, if
      * the Pool has a StartTask associated with it and if StartTask is not specified
      * with this request, then the Batch service will remove the existing StartTask.
@@ -7411,13 +6751,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7496,14 +6836,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7517,7 +6854,7 @@ public final class BatchClientImpl {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * 
+     *
      * This operation can only run when the allocation state of the Pool is steady.
      * When this operation runs, the allocation state changes from steady to resizing.
      * Each request may remove up to 100 nodes.
@@ -7525,7 +6862,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7553,7 +6890,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7565,28 +6902,25 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeNodes(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * 
+     *
      * This operation can only run when the allocation state of the Pool is steady.
      * When this operation runs, the allocation state changes from steady to resizing.
      * Each request may remove up to 100 nodes.
@@ -7594,7 +6928,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7622,7 +6956,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7634,22 +6968,19 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.removeNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -7658,7 +6989,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7670,7 +7001,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7694,12 +7025,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -7719,7 +7047,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7731,7 +7059,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7755,12 +7083,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -7798,7 +7123,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7810,7 +7135,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7834,12 +7159,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7857,7 +7179,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7869,7 +7191,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7893,12 +7215,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
      */
@@ -7939,7 +7258,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7951,7 +7270,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7979,12 +7298,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -8006,7 +7322,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8018,7 +7334,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8046,12 +7362,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -8091,7 +7404,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8103,7 +7416,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8131,12 +7444,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8156,7 +7466,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8168,7 +7478,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8196,12 +7506,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
      */
@@ -8236,7 +7543,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Job.
-     * 
+     *
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
@@ -8249,7 +7556,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -8278,13 +7585,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8296,7 +7600,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Job.
-     * 
+     *
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
@@ -8309,7 +7613,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -8338,13 +7642,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8360,7 +7661,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -8392,7 +7693,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8619,9 +7920,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -8747,8 +8048,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -8780,7 +8081,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -8821,13 +8122,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8843,7 +8141,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -8875,7 +8173,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9102,9 +8400,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -9230,8 +8528,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -9263,7 +8561,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -9304,13 +8602,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9322,7 +8617,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job.
-     * 
+     *
      * This replaces only the Job properties specified in the request. For example, if
      * the Job has constraints, and a request does not specify the constraints
      * element, then the Job keeps the existing constraints.
@@ -9330,7 +8625,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9358,7 +8653,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9460,9 +8755,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -9619,8 +8914,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -9654,19 +8949,16 @@ public final class BatchClientImpl {
      *     ]
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9680,7 +8972,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job.
-     * 
+     *
      * This replaces only the Job properties specified in the request. For example, if
      * the Job has constraints, and a request does not specify the constraints
      * element, then the Job keeps the existing constraints.
@@ -9688,7 +8980,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9716,7 +9008,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9818,9 +9110,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -9977,8 +9269,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -10012,19 +9304,16 @@ public final class BatchClientImpl {
      *     ]
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10037,7 +9326,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job.
-     * 
+     *
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -10045,7 +9334,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10073,7 +9362,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10300,9 +9589,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -10428,8 +9717,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -10461,7 +9750,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10502,14 +9791,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10523,7 +9809,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job.
-     * 
+     *
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -10531,7 +9817,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10559,7 +9845,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10786,9 +10072,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -10914,8 +10200,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -10947,7 +10233,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10988,14 +10274,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11008,7 +10291,7 @@ public final class BatchClientImpl {
 
     /**
      * Disables the specified Job, preventing new Tasks from running.
-     * 
+     *
      * The Batch Service immediately moves the Job to the disabling state. Batch then
      * uses the disableTasks parameter to determine what to do with the currently
      * running Tasks of the Job. The Job remains in the disabling state until the
@@ -11021,7 +10304,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11049,7 +10332,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11057,28 +10340,25 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData content,
+    public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Disables the specified Job, preventing new Tasks from running.
-     * 
+     *
      * The Batch Service immediately moves the Job to the disabling state. Batch then
      * uses the disableTasks parameter to determine what to do with the currently
      * running Tasks of the Job. The Job remains in the disabling state until the
@@ -11091,7 +10371,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11119,7 +10399,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11127,27 +10407,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobWithResponse(String jobId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.disableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Enables the specified Job, allowing new Tasks to run.
-     * 
+     *
      * When you call this API, the Batch service sets a disabled Job to the enabling
      * state. After the this operation is completed, the Job moves to the active
      * state, and scheduling of new Tasks under the Job resumes. The Batch service
@@ -11158,7 +10435,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11185,13 +10462,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11203,7 +10477,7 @@ public final class BatchClientImpl {
 
     /**
      * Enables the specified Job, allowing new Tasks to run.
-     * 
+     *
      * When you call this API, the Batch service sets a disabled Job to the enabling
      * state. After the this operation is completed, the Job moves to the active
      * state, and scheduling of new Tasks under the Job resumes. The Batch service
@@ -11214,7 +10488,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11241,13 +10515,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11259,7 +10530,7 @@ public final class BatchClientImpl {
 
     /**
      * Terminates the specified Job, marking it as completed.
-     * 
+     *
      * When a Terminate Job request is received, the Batch service sets the Job to the
      * terminating state. The Batch service then terminates any running Tasks
      * associated with the Job and runs any required Job release Tasks. Then the Job
@@ -11270,7 +10541,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -11302,7 +10573,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11310,13 +10581,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11334,7 +10602,7 @@ public final class BatchClientImpl {
 
     /**
      * Terminates the specified Job, marking it as completed.
-     * 
+     *
      * When a Terminate Job request is received, the Batch service sets the Job to the
      * terminating state. The Batch service then terminates any running Tasks
      * associated with the Job and runs any required Job release Tasks. Then the Job
@@ -11345,7 +10613,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -11377,7 +10645,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11385,13 +10653,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11409,7 +10674,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Job to the specified Account.
-     * 
+     *
      * The Batch service supports two ways to control the work done as part of a Job.
      * In the first approach, the user specifies a Job Manager Task. The Batch service
      * launches this Task when it is ready to start the Job. The Job Manager Task
@@ -11423,13 +10688,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11648,9 +10913,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -11776,8 +11041,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -11809,7 +11074,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11817,13 +11082,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11836,7 +11098,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Job to the specified Account.
-     * 
+     *
      * The Batch service supports two ways to control the work done as part of a Job.
      * In the first approach, the user specifies a Job Manager Task. The Batch service
      * launches this Task when it is ready to start the Job. The Job Manager Task
@@ -11850,13 +11112,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -12075,9 +11337,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -12203,8 +11465,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -12236,7 +11498,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12244,13 +11506,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -12267,7 +11526,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -12283,7 +11542,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -12510,9 +11769,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -12638,8 +11897,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -12671,7 +11930,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12712,12 +11971,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -12737,7 +11993,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -12753,7 +12009,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -12980,9 +12236,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -13108,8 +12364,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -13141,7 +12397,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13182,12 +12438,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -13225,7 +12478,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -13241,7 +12494,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -13468,9 +12721,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -13596,8 +12849,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -13629,7 +12882,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13670,12 +12923,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -13693,7 +12943,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -13709,7 +12959,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -13936,9 +13186,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -14064,8 +13314,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -14097,7 +13347,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14138,12 +13388,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -14181,7 +13428,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -14197,7 +13444,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -14424,9 +13671,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -14552,8 +13799,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -14585,7 +13832,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14626,13 +13873,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -14653,7 +13897,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -14669,7 +13913,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -14896,9 +14140,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -15024,8 +14268,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -15057,7 +14301,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -15098,13 +14342,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -15142,7 +14383,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -15158,7 +14399,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -15385,9 +14626,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -15513,8 +14754,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -15546,7 +14787,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -15587,13 +14828,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -15612,7 +14850,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -15628,7 +14866,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -15855,9 +15093,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -15983,8 +15221,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -16016,7 +15254,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -16057,13 +15295,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -16098,7 +15333,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -16109,7 +15344,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16123,7 +15358,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16171,13 +15406,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -16195,7 +15427,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -16206,7 +15438,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16220,7 +15452,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16268,13 +15500,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedFlux}.
      */
@@ -16311,7 +15540,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -16322,7 +15551,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16336,7 +15565,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16384,13 +15613,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job along with {@link PagedResponse}.
      */
@@ -16407,7 +15633,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -16418,7 +15644,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16432,7 +15658,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16480,13 +15706,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
      */
@@ -16522,7 +15745,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the Task counts for the specified Job.
-     * 
+     *
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
      * state are counted as running. Note that the numbers returned may not always be
@@ -16531,13 +15754,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16558,15 +15781,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
-     * 
+     *
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -16580,7 +15800,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the Task counts for the specified Job.
-     * 
+     *
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
      * state are counted as running. Note that the numbers returned may not always be
@@ -16589,13 +15809,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16616,15 +15836,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
-     * 
+     *
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed along with {@link Response}.
      */
@@ -16641,13 +15858,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16669,19 +15886,16 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param certificate The Certificate to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16699,13 +15913,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16727,19 +15941,16 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param certificate The Certificate to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16756,7 +15967,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16770,7 +15981,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16792,18 +16003,15 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -16823,7 +16031,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16837,7 +16045,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16859,18 +16067,15 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -16908,7 +16113,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16922,7 +16127,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -16944,18 +16149,15 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16973,7 +16175,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16987,7 +16189,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -17009,18 +16211,15 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -17054,7 +16253,7 @@ public final class BatchClientImpl {
 
     /**
      * Cancels a failed deletion of a Certificate from the specified Account.
-     * 
+     *
      * If you try to delete a Certificate that is being used by a Pool or Compute
      * Node, the status of the Certificate changes to deleteFailed. If you decide that
      * you want to continue using the Certificate, you can use this operation to set
@@ -17066,19 +16265,16 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17091,7 +16287,7 @@ public final class BatchClientImpl {
 
     /**
      * Cancels a failed deletion of a Certificate from the specified Account.
-     * 
+     *
      * If you try to delete a Certificate that is being used by a Pool or Compute
      * Node, the status of the Certificate changes to deleteFailed. If you decide that
      * you want to continue using the Certificate, you can use this operation to set
@@ -17103,19 +16299,16 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17128,7 +16321,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Certificate from the specified Account.
-     * 
+     *
      * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
      * it. Before you can delete a Certificate, you must therefore make sure that the
      * Certificate is not associated with any existing Pools, the Certificate is not
@@ -17142,19 +16335,16 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17167,7 +16357,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Certificate from the specified Account.
-     * 
+     *
      * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
      * it. Before you can delete a Certificate, you must therefore make sure that the
      * Certificate is not associated with any existing Pools, the Certificate is not
@@ -17181,19 +16371,16 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17210,7 +16397,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -17218,7 +16405,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -17240,20 +16427,17 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Certificate along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -17271,7 +16455,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -17279,7 +16463,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -17301,20 +16485,17 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17331,7 +16512,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17359,18 +16540,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17387,7 +16566,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17415,18 +16594,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17438,7 +16615,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Job Schedule from the specified Account.
-     * 
+     *
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
      * the Compute Nodes are also deleted (the retention period is ignored). The Job
@@ -17448,7 +16625,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -17477,13 +16654,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17496,7 +16670,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Job Schedule from the specified Account.
-     * 
+     *
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
      * the Compute Nodes are also deleted (the retention period is ignored). The Job
@@ -17506,7 +16680,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -17535,13 +16709,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17557,7 +16728,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -17589,7 +16760,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -17619,7 +16790,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17830,9 +17001,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -17958,8 +17129,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -18021,13 +17192,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job Schedule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -18045,7 +17213,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -18077,7 +17245,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -18107,7 +17275,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18318,9 +17486,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -18446,8 +17614,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -18509,13 +17677,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job Schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -18527,7 +17692,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job Schedule.
-     * 
+     *
      * This replaces only the Job Schedule properties specified in the request. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will keep the existing schedule. Changes to a Job Schedule only
@@ -18537,7 +17702,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -18565,7 +17730,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -18585,7 +17750,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18796,9 +17961,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -18924,8 +18089,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -18963,14 +18128,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -18985,7 +18147,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job Schedule.
-     * 
+     *
      * This replaces only the Job Schedule properties specified in the request. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will keep the existing schedule. Changes to a Job Schedule only
@@ -18995,7 +18157,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -19023,7 +18185,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -19043,7 +18205,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19254,9 +18416,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -19382,8 +18544,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -19421,14 +18583,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -19442,7 +18601,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job Schedule.
-     * 
+     *
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -19452,7 +18611,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -19480,7 +18639,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -19510,7 +18669,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19721,9 +18880,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -19849,8 +19008,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -19912,14 +19071,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -19934,7 +19090,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job Schedule.
-     * 
+     *
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -19944,7 +19100,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -19972,7 +19128,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -20002,7 +19158,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20213,9 +19369,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -20341,8 +19497,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -20404,14 +19560,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20425,13 +19578,13 @@ public final class BatchClientImpl {
 
     /**
      * Disables a Job Schedule.
-     * 
+     *
      * No new Jobs will be created until the Job Schedule is enabled again.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20458,13 +19611,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20477,13 +19627,13 @@ public final class BatchClientImpl {
 
     /**
      * Disables a Job Schedule.
-     * 
+     *
      * No new Jobs will be created until the Job Schedule is enabled again.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20510,13 +19660,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20532,7 +19679,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20559,13 +19706,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20582,7 +19726,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20609,13 +19753,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20631,7 +19772,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -20660,13 +19801,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20683,7 +19821,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -20712,13 +19850,10 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20734,13 +19869,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -20762,7 +19897,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20973,9 +20108,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -21101,8 +20236,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -21140,13 +20275,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -21164,13 +20296,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -21192,7 +20324,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -21403,9 +20535,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -21531,8 +20663,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -21570,13 +20702,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -21593,7 +20722,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -21609,7 +20738,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -21639,7 +20768,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -21850,9 +20979,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -21978,8 +21107,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -22041,12 +21170,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -22066,7 +21192,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -22082,7 +21208,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -22112,7 +21238,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -22323,9 +21449,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -22451,8 +21577,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -22514,12 +21640,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -22557,7 +21680,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -22573,7 +21696,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -22603,7 +21726,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -22814,9 +21937,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -22942,8 +22065,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -23005,12 +22128,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23028,7 +22148,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -23044,7 +22164,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -23074,7 +22194,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -23285,9 +22405,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -23413,8 +22533,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -23476,12 +22596,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -23515,7 +22632,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Task to the specified Job.
-     * 
+     *
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
      * Task has not completed within 180 days of being added it will be terminated by
      * the Batch service and left in whatever state it was in at that time.
@@ -23523,13 +22640,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -23662,14 +22779,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23683,7 +22797,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Task to the specified Job.
-     * 
+     *
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
      * Task has not completed within 180 days of being added it will be terminated by
      * the Batch service and left in whatever state it was in at that time.
@@ -23691,13 +22805,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -23830,14 +22944,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23850,7 +22961,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -23858,7 +22969,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -23874,7 +22985,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24062,13 +23173,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -24084,7 +23192,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -24092,7 +23200,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24108,7 +23216,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24296,13 +23404,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -24336,7 +23441,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -24344,7 +23449,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24360,7 +23465,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24548,13 +23653,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24568,7 +23670,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -24576,7 +23678,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24592,7 +23694,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24780,13 +23882,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -24820,7 +23919,7 @@ public final class BatchClientImpl {
 
     /**
      * Adds a collection of Tasks to the specified Job.
-     * 
+     *
      * Note that each Task must have a unique ID. The Batch service may not return the
      * results for each Task in the same order the Tasks were submitted in this
      * request. If the server times out or the connection is closed during the
@@ -24839,13 +23938,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24982,9 +24081,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -24996,7 +24095,7 @@ public final class BatchClientImpl {
      *             lastModified: OffsetDateTime (Optional)
      *             location: String (Optional)
      *             error (Optional): {
-     *                 code: String (Required)
+     *                 code: String (Optional)
      *                 message (Optional): {
      *                     lang: String (Optional)
      *                     value: String (Optional)
@@ -25013,16 +24112,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of adding a collection of Tasks to a Job along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @return the result of creating a collection of Tasks to a Job along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTaskCollectionWithResponseAsync(String jobId, BinaryData taskCollection,
@@ -25036,7 +24132,7 @@ public final class BatchClientImpl {
 
     /**
      * Adds a collection of Tasks to the specified Job.
-     * 
+     *
      * Note that each Task must have a unique ID. The Batch service may not return the
      * results for each Task in the same order the Tasks were submitted in this
      * request. If the server times out or the connection is closed during the
@@ -25055,13 +24151,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -25198,9 +24294,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -25212,7 +24308,7 @@ public final class BatchClientImpl {
      *             lastModified: OffsetDateTime (Optional)
      *             location: String (Optional)
      *             error (Optional): {
-     *                 code: String (Required)
+     *                 code: String (Optional)
      *                 message (Optional): {
      *                     lang: String (Optional)
      *                     value: String (Optional)
@@ -25229,15 +24325,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of adding a collection of Tasks to a Job along with {@link Response}.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @return the result of creating a collection of Tasks to a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection,
@@ -25250,7 +24343,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Task from the specified Job.
-     * 
+     *
      * When a Task is deleted, all of the files in its directory on the Compute Node
      * where it ran are also deleted (regardless of the retention time). For
      * multi-instance Tasks, the delete Task operation applies synchronously to the
@@ -25260,7 +24353,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25287,14 +24380,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25307,7 +24397,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Task from the specified Job.
-     * 
+     *
      * When a Task is deleted, all of the files in its directory on the Compute Node
      * where it ran are also deleted (regardless of the retention time). For
      * multi-instance Tasks, the delete Task operation applies synchronously to the
@@ -25317,7 +24407,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25344,14 +24434,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25363,7 +24450,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Task.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -25371,7 +24458,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -25403,7 +24490,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -25591,16 +24678,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -25614,7 +24698,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Task.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -25622,7 +24706,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -25654,7 +24738,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -25842,16 +24926,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
-     * 
+     *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task along with {@link Response}.
      */
@@ -25868,7 +24949,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25896,7 +24977,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26084,15 +25165,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26110,7 +25188,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26138,7 +25216,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26326,15 +25404,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26349,13 +25424,13 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26363,7 +25438,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26403,14 +25478,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -26428,13 +25500,13 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26442,7 +25514,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26482,14 +25554,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -26504,13 +25573,13 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26518,7 +25587,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26558,14 +25627,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26581,13 +25647,13 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26595,7 +25661,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -26635,14 +25701,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -26656,7 +25719,7 @@ public final class BatchClientImpl {
 
     /**
      * Terminates the specified Task.
-     * 
+     *
      * When the Task has been terminated, it moves to the completed state. For
      * multi-instance Tasks, the terminate Task operation applies synchronously to the
      * primary task; subtasks are then terminated asynchronously in the background.
@@ -26664,7 +25727,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26691,14 +25754,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26711,7 +25771,7 @@ public final class BatchClientImpl {
 
     /**
      * Terminates the specified Task.
-     * 
+     *
      * When the Task has been terminated, it moves to the completed state. For
      * multi-instance Tasks, the terminate Task operation applies synchronously to the
      * primary task; subtasks are then terminated asynchronously in the background.
@@ -26719,7 +25779,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26746,14 +25806,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26766,7 +25823,7 @@ public final class BatchClientImpl {
     /**
      * Reactivates a Task, allowing it to run again even if its retry count has been
      * exhausted.
-     * 
+     *
      * Reactivation makes a Task eligible to be retried again up to its maximum retry
      * count. The Task's state is changed to active. As the Task is no longer in the
      * completed state, any previous exit code or failure information is no longer
@@ -26778,7 +25835,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26805,14 +25862,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26826,7 +25880,7 @@ public final class BatchClientImpl {
     /**
      * Reactivates a Task, allowing it to run again even if its retry count has been
      * exhausted.
-     * 
+     *
      * Reactivation makes a Task eligible to be retried again up to its maximum retry
      * count. The Task's state is changed to active. As the Task is no longer in the
      * completed state, any previous exit code or failure information is no longer
@@ -26838,7 +25892,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26865,14 +25919,11 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26888,7 +25939,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -26898,15 +25949,12 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26923,7 +25971,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -26933,15 +25981,12 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26958,7 +26003,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26981,21 +26026,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27012,7 +26054,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27035,21 +26077,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27066,7 +26105,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27085,15 +26124,12 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Task file along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -27111,7 +26147,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27130,15 +26166,12 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Task file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27155,7 +26188,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27170,7 +26203,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27187,14 +26220,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -27215,7 +26245,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27230,7 +26260,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27247,14 +26277,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedFlux}.
      */
@@ -27293,7 +26320,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27308,7 +26335,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27325,14 +26352,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
@@ -27352,7 +26376,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27367,7 +26391,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27384,14 +26408,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -27426,20 +26447,20 @@ public final class BatchClientImpl {
 
     /**
      * Adds a user Account to the specified Compute Node.
-     * 
+     *
      * You can add a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27451,15 +26472,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27473,20 +26491,20 @@ public final class BatchClientImpl {
 
     /**
      * Adds a user Account to the specified Compute Node.
-     * 
+     *
      * You can add a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27498,15 +26516,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27520,27 +26535,24 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a user Account from the specified Compute Node.
-     * 
+     *
      * You can delete a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27553,27 +26565,24 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a user Account from the specified Compute Node.
-     * 
+     *
      * You can delete a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27586,7 +26595,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the password and expiration time of a user Account on the specified Compute Node.
-     * 
+     *
      * This operation replaces of all the updatable properties of the Account. For
      * example, if the expiryTime element is not specified, the current value is
      * replaced with the default value, not left unmodified. You can update a user
@@ -27595,13 +26604,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27611,31 +26620,28 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
-        BinaryData content, RequestOptions requestOptions) {
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, userName, accept, content, requestOptions, context));
+                contentType, poolId, nodeId, userName, accept, parameters, requestOptions, context));
     }
 
     /**
      * Updates the password and expiration time of a user Account on the specified Compute Node.
-     * 
+     *
      * This operation replaces of all the updatable properties of the Account. For
      * example, if the expiryTime element is not specified, the current value is
      * replaced with the default value, not left unmodified. You can update a user
@@ -27644,13 +26650,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27660,25 +26666,22 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData content,
-        RequestOptions requestOptions) {
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, userName, accept, content, requestOptions, Context.NONE);
+            poolId, nodeId, userName, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -27687,7 +26690,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -27695,7 +26698,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -27860,14 +26863,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -27885,7 +26885,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -27893,7 +26893,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28058,14 +27058,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28077,13 +27074,13 @@ public final class BatchClientImpl {
 
     /**
      * Restarts the specified Compute Node.
-     * 
+     *
      * You can restart a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28097,7 +27094,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28105,14 +27102,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28131,13 +27125,13 @@ public final class BatchClientImpl {
 
     /**
      * Restarts the specified Compute Node.
-     * 
+     *
      * You can restart a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28151,7 +27145,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28159,14 +27153,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28184,25 +27175,22 @@ public final class BatchClientImpl {
 
     /**
      * Starts the specified Compute Node.
-     * 
+     *
      * You can start a Compute Node only if it has been deallocated.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28215,25 +27203,22 @@ public final class BatchClientImpl {
 
     /**
      * Starts the specified Compute Node.
-     * 
+     *
      * You can start a Compute Node only if it has been deallocated.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28245,7 +27230,7 @@ public final class BatchClientImpl {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * 
+     *
      * You can reinstall the operating system on a Compute Node only if it is in an
      * idle or running state. This API can be invoked only on Pools created with the
      * cloud service configuration property.
@@ -28253,7 +27238,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28267,7 +27252,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28275,14 +27260,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28301,7 +27283,7 @@ public final class BatchClientImpl {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * 
+     *
      * You can reinstall the operating system on a Compute Node only if it is in an
      * idle or running state. This API can be invoked only on Pools created with the
      * cloud service configuration property.
@@ -28309,7 +27291,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28323,7 +27305,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28331,14 +27313,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28356,13 +27335,13 @@ public final class BatchClientImpl {
 
     /**
      * Deallocates the specified Compute Node.
-     * 
+     *
      * You can deallocate a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28376,7 +27355,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28384,14 +27363,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28410,13 +27386,13 @@ public final class BatchClientImpl {
 
     /**
      * Deallocates the specified Compute Node.
-     * 
+     *
      * You can deallocate a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28430,7 +27406,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28438,14 +27414,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28463,14 +27436,14 @@ public final class BatchClientImpl {
 
     /**
      * Disables Task scheduling on the specified Compute Node.
-     * 
+     *
      * You can disable Task scheduling on a Compute Node only if its current
      * scheduling state is enabled.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28484,7 +27457,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28492,14 +27465,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28518,14 +27488,14 @@ public final class BatchClientImpl {
 
     /**
      * Disables Task scheduling on the specified Compute Node.
-     * 
+     *
      * You can disable Task scheduling on a Compute Node only if its current
      * scheduling state is enabled.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28539,7 +27509,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28547,14 +27517,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28573,26 +27540,23 @@ public final class BatchClientImpl {
 
     /**
      * Enables Task scheduling on the specified Compute Node.
-     * 
+     *
      * You can enable Task scheduling on a Compute Node only if its current scheduling
      * state is disabled.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28605,26 +27569,23 @@ public final class BatchClientImpl {
 
     /**
      * Enables Task scheduling on the specified Compute Node.
-     * 
+     *
      * You can enable Task scheduling on a Compute Node only if its current scheduling
      * state is disabled.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28637,20 +27598,20 @@ public final class BatchClientImpl {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * 
+     *
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28659,16 +27620,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
-     * 
+     *
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -28683,20 +27641,20 @@ public final class BatchClientImpl {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * 
+     *
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28705,16 +27663,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
-     * 
+     *
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node along with {@link Response}.
      */
@@ -28729,7 +27684,7 @@ public final class BatchClientImpl {
     /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure
      * Blob Storage.
-     * 
+     *
      * This is for gathering Azure Batch service log files in an automated fashion
      * from Compute Nodes if you are experiencing an error and wish to escalate to
      * Azure support. The Azure Batch service log files should be shared with Azure
@@ -28738,13 +27693,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28757,9 +27712,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28768,33 +27723,30 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadNodeLogsWithResponseAsync(String poolId, String nodeId, BinaryData content,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadNodeLogsWithResponseAsync(String poolId, String nodeId,
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.uploadNodeLogs(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, accept, content, requestOptions, context));
+                contentType, poolId, nodeId, accept, parameters, requestOptions, context));
     }
 
     /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure
      * Blob Storage.
-     * 
+     *
      * This is for gathering Azure Batch service log files in an automated fashion
      * from Compute Nodes if you are experiencing an error and wish to escalate to
      * Azure support. The Azure Batch service log files should be shared with Azure
@@ -28803,13 +27755,13 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28822,9 +27774,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -28833,25 +27785,22 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData content,
+    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.uploadNodeLogsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, accept, content, requestOptions, Context.NONE);
+            poolId, nodeId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -28860,7 +27809,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -28874,7 +27823,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29039,13 +27988,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -29065,7 +28011,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29079,7 +28025,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29244,13 +28190,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -29288,7 +28231,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29302,7 +28245,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29467,13 +28410,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -29491,7 +28431,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29505,7 +28445,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29670,13 +28610,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -29714,7 +28651,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -29722,7 +28659,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29762,15 +28699,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node Extension along with {@link Response} on successful
      * completion of {@link Mono}.
      */
@@ -29788,7 +28722,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -29796,7 +28730,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29836,15 +28770,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -29861,7 +28792,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29872,7 +28803,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29912,14 +28843,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
@@ -29940,7 +28868,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29951,7 +28879,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -29991,14 +28919,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -30036,7 +28961,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30047,7 +28972,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30087,14 +29012,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30113,7 +29035,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30124,7 +29046,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30164,14 +29086,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
      */
@@ -30210,7 +29129,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -30220,15 +29139,12 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30245,7 +29161,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -30255,15 +29171,12 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30280,7 +29193,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30303,21 +29216,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30334,7 +29244,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30357,21 +29267,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30388,7 +29295,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30407,15 +29314,12 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Compute Node file along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -30433,7 +29337,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30452,15 +29356,12 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Compute Node file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30477,7 +29378,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30490,7 +29391,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30507,14 +29408,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -30535,7 +29433,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30548,7 +29446,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30565,14 +29463,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedFlux}.
      */
@@ -30611,7 +29506,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30624,7 +29519,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30641,14 +29536,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
@@ -30668,7 +29560,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30681,7 +29573,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30698,14 +29590,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -30740,10 +29629,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30755,13 +29644,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
@@ -30778,10 +29664,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30793,13 +29679,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30814,10 +29697,10 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30829,13 +29712,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -30852,10 +29732,10 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30867,13 +29747,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -30888,10 +29765,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Pools which be mounted.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30988,9 +29865,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -31199,8 +30076,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -31239,13 +30116,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse} on successful completion
      * of {@link Mono}.
      */
@@ -31262,10 +30136,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Pools which be mounted.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -31362,9 +30236,9 @@ public final class BatchClientImpl {
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -31573,8 +30447,8 @@ public final class BatchClientImpl {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -31613,13 +30487,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -31633,10 +30504,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -31660,13 +30531,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -31682,10 +30550,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -31709,13 +30577,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -31731,7 +30596,7 @@ public final class BatchClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -31759,15 +30624,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listPoolNodeCountsNextSinglePageAsync(String nextLink,
@@ -31782,7 +30644,7 @@ public final class BatchClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -31810,14 +30672,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listPoolNodeCountsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -31830,10 +30689,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Jobs in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -32060,9 +30919,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -32188,8 +31047,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -32221,7 +31080,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -32262,13 +31121,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -32284,10 +31140,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Jobs in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -32514,9 +31370,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -32642,8 +31498,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -32675,7 +31531,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -32716,13 +31572,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -32736,10 +31589,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Jobs that have been created under the specified Job Schedule.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -32966,9 +31819,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -33094,8 +31947,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -33127,7 +31980,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -33168,13 +32021,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -33190,10 +32040,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Jobs that have been created under the specified Job Schedule.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33420,9 +32270,9 @@ public final class BatchClientImpl {
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -33548,8 +32398,8 @@ public final class BatchClientImpl {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
@@ -33581,7 +32431,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -33622,13 +32472,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -33644,10 +32491,10 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33695,13 +32542,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -33719,10 +32563,10 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33770,13 +32614,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job along with {@link PagedResponse}.
      */
@@ -33792,10 +32633,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Certificates that have been added to the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33817,19 +32658,16 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -33846,10 +32684,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Certificates that have been added to the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33871,19 +32709,16 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Required)
+     *     data: byte[] (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -33897,10 +32732,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Job Schedules in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -33930,7 +32765,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -34141,9 +32976,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -34269,8 +33104,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -34332,13 +33167,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -34355,10 +33187,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Job Schedules in the specified Account.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -34388,7 +33220,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -34599,9 +33431,9 @@ public final class BatchClientImpl {
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -34727,8 +33559,8 @@ public final class BatchClientImpl {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
@@ -34790,13 +33622,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -34810,10 +33639,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35001,13 +33830,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -35024,10 +33850,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35215,13 +34041,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -35236,10 +34059,10 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35279,13 +34102,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
@@ -35303,10 +34123,10 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35346,13 +34166,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -35366,10 +34183,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the files in a Task's directory on its Compute Node.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35386,13 +34203,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -35409,10 +34223,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the files in a Task's directory on its Compute Node.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35429,13 +34243,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
@@ -35450,10 +34261,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes in the specified Pool.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35618,13 +34429,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -35641,10 +34449,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes in the specified Pool.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35809,13 +34617,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -35829,10 +34634,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35872,13 +34677,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
@@ -35894,10 +34696,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35937,13 +34739,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -35957,10 +34756,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the files in Task directories on the specified Compute Node.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -35977,13 +34776,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -36000,10 +34796,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the files in Task directories on the specified Compute Node.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -36020,13 +34816,10 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node along with {@link PagedResponse}.
      */

@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+- Upgraded Vert.x from `4.5.15` to `4.5.17`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+
 ## 1.1.0 (2025-08-07)
 
 ### Other Changes

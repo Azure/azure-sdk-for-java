@@ -22,7 +22,6 @@ import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
-import org.apache.logging.log4j.Level
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -58,6 +57,7 @@ private[spark] object CosmosConfigNames {
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
   val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
   val ClientCertSendChain = "spark.cosmos.auth.aad.clientCertSendChain"
+  val Audience = "spark.cosmos.auth.aad.audience"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -131,6 +131,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
+  val ChangeFeedPerformanceMonitoringEnabled = "spark.cosmos.changeFeed.performance.monitoring.enabled"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -180,6 +181,7 @@ private[spark] object CosmosConfigNames {
     ClientSecret,
     ClientCertPemBase64,
     ClientCertSendChain,
+    Audience,
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,
@@ -253,6 +255,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
     ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
+    ChangeFeedPerformanceMonitoringEnabled,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -1301,34 +1304,6 @@ private[spark] object DiagnosticsConfig {
     helpMessage = "The metric collection interval in seconds. A negative value will disable metric "
       + "collection in Azure Monitor.")
 
-
-  private val diagnosticsAzureMonitorLogLevel = CosmosConfigEntry[Level](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogLevel,
-    mandatory = false,
-    defaultValue = Some(Level.INFO),
-    parseFromStringFunction = text => if (Option(text).getOrElse("").isEmpty) {
-      Level.OFF
-    } else {
-      Level.toLevel(text)
-    },
-    helpMessage = "The log-level of logs emitted to the Azure-Monitor log4j appender. Any logs with lower "
-      + "log-level will not be captured in Azure-Monitor. 'Off' results in disabling log collection in Azure Monitor.")
-
-  private val diagnosticsAzureMonitorLogSamplingIntervalInSeconds = CosmosConfigEntry[Int](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogSamplingIntervalInSeconds,
-    mandatory = false,
-    defaultValue = Some(60),
-    parseFromStringFunction = text => text.toInt,
-    helpMessage = "The interval (in seconds) for which the max count of sample-in logs (with severity less than warning) is applied.")
-
-  private val diagnosticsAzureMonitorLogSamplingMaxCount = CosmosConfigEntry[Int](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogSamplingMaxCount,
-    mandatory = false,
-    defaultValue = Some(100000),
-    parseFromStringFunction = text => text.toInt,
-    helpMessage = s"Max. number of logs (with severity less than warning) sampled-in per interval. This can be "
-      + s"used to force an upper-limit of informational logs to be emitted.")
-
   private val diagnosticsSamplingIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingIntervalInSeconds,
     mandatory = false,
     defaultValue = Some(60),
@@ -1418,10 +1393,7 @@ private[spark] object DiagnosticsConfig {
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingRate).get,
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingMaxCount).get,
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingIntervalInSeconds).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogLevel).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingMaxCount).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingIntervalInSeconds).get
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get
         )
 
       AzureMonitorConfig.validateConfigUniqueness(azMonConfigCandidate)
@@ -2170,7 +2142,8 @@ private case class CosmosChangeFeedConfig
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long],
   batchCheckpointLocation: Option[String],
-  ignoreOffsetWhenInvalid: Boolean
+  ignoreOffsetWhenInvalid: Boolean,
+  performanceMonitoringEnabled: Boolean
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -2201,6 +2174,7 @@ private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
   private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
+  private val DefaultPerformanceMonitoringEnabled: Boolean = true
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -2250,6 +2224,14 @@ private object CosmosChangeFeedConfig {
       "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
       "feed will be processed from the previous position.")
 
+  private val performanceMonitoringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ChangeFeedPerformanceMonitoringEnabled,
+    mandatory = false,
+    defaultValue = Some(DefaultPerformanceMonitoringEnabled),
+    parseFromStringFunction = enabled => enabled.toBoolean,
+    helpMessage = "A Flag to indicate whether enable change feed performance monitoring." +
+     " When enabled, custom task metrics will be tracked internally, which will be used to dynamically tuning the change feed micro-batch size.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -2274,6 +2256,7 @@ private object CosmosChangeFeedConfig {
       case _ => None
     }
     val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
+    val performanceMonitoringEnabledParsed = CosmosConfigEntry.parse(cfg, performanceMonitoringEnabled)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
@@ -2281,7 +2264,8 @@ private object CosmosChangeFeedConfig {
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed,
       batchCheckpointLocationParsed,
-      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid)
+      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid),
+      performanceMonitoringEnabledParsed.get
     )
   }
 }
