@@ -2,13 +2,9 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
-### Features Added
+#### Dependency Updates
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Updated `api-version` of ComputeRP to `2025-04-01`.
 
 ## 2.53.2 (2025-08-27)
 
