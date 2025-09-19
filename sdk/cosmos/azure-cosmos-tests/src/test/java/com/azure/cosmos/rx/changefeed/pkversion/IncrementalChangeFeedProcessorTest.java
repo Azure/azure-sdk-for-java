@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.changefeed.pkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.ConsistencyLevel;
@@ -10,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.SplitTestsRetryAnalyzer;
 import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -1377,6 +1379,66 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = 20 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void readPartitionKeyRangesWithSuppressedPageSize() {
+
+        AsyncDocumentClient contextClient = BridgeInternal.getContextClient(this.client);
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
+        String containerLink = BridgeInternal.getLink(asyncContainer);
+
+        try {
+            System.setProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT", "true");
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "1");
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() <= 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } finally {
+            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
+        }
+
+        try {
+            System.setProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT", "false");
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "1");
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() > 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } finally {
+            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
+        }
+
+        try {
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() > 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } finally {
+            System.clearProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT");
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE");
         }
     }
 
