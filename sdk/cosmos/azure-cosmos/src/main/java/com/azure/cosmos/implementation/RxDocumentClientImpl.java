@@ -4862,6 +4862,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+            qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
+        }
+
         return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
@@ -6177,15 +6182,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
-
-        // Override the max item count for partition key range read feed if the
-        // corresponding config is set to suppress the default value.
-        // NOTE: This is a way to prevent metadata throttles when the account has several 1000s of physical partitions
-        if (ResourceType.PartitionKeyRange.equals(resourceType)) {
-            if (Configs.isReadFeedOfPartitionKeyRangePageSizeSuppressed()) {
-                maxPageSize = Configs.getMaxItemCountForReadFeedOfPartitionKeyRange();
-            }
-        }
 
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging

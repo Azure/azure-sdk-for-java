@@ -10,7 +10,7 @@
 
 #### Other Changes
 * Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
-* Added an option to suppress max item count retrieved from service for `PartitionKeyRange` resource. - [PR 46700]()
+* Added an option to suppress max item count retrieved from service for `PartitionKeyRange` resource. - [PR 46761](https://github.com/Azure/azure-sdk-for-java/pull/46761)
 
 ### 4.74.0 (2025-09-05)
 

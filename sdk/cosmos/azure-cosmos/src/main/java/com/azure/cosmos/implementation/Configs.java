@@ -360,13 +360,8 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
-    // Config to suppress ReadFeed of PartitionKeyRange page size
-    private static final String DEFAULT_IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT = "false";
-    private static final String IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT = "COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT";
-    private static final String IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT_VARIABLE = "COSMOS_IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT";
-
     // Config to indicate page size when suppress PK range page size is true
-    private static final int DEFAULT_MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE = 100;
+    private static final int DEFAULT_MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE = -1;
     private static final String MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE = "COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE";
     private static final String MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE_VARIABLE = "COSMOS_MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE";
 
@@ -1228,16 +1223,6 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
-    }
-
-    public static boolean isReadFeedOfPartitionKeyRangePageSizeSuppressed() {
-        String isSuppressPageSizeOfReadFeedOfPartitionKeyRange = System.getProperty(
-            IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT_VARIABLE)),
-                DEFAULT_IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT));
-
-        return Boolean.parseBoolean(isSuppressPageSizeOfReadFeedOfPartitionKeyRange);
     }
 
     public static int getMaxItemCountForReadFeedOfPartitionKeyRange() {

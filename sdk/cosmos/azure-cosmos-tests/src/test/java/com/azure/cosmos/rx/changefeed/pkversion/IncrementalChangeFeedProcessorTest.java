@@ -1390,7 +1390,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         String containerLink = BridgeInternal.getLink(asyncContainer);
 
         try {
-            System.setProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT", "true");
             System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "1");
             contextClient
                 .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
@@ -1408,8 +1407,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         try {
-            System.setProperty("COSMOS.IS_SUPPRESS_READ_FEED_PK_RANGE_MAX_ITEM_COUNT", "false");
-            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "1");
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_WHEN_SUPPRESSED_READ_FEED_PK_RANGE", "-1");
             contextClient
                 .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
                 .doOnNext(feedResponse -> {
