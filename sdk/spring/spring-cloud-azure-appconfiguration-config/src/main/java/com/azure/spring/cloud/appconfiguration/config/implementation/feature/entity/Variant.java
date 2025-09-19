@@ -36,7 +36,7 @@ public final class Variant {
     public Variant(String name, Object configurationValue, String statusOverride) {
         this.name = name;
         this.configurationValue = configurationValue;
-        this.statusOverride = statusOverride != null ? statusOverride : "None";
+        this.statusOverride = statusOverride;
     }
 
     /**
@@ -78,6 +78,6 @@ public final class Variant {
      * @param statusOverride the statusOverride to set
      */
     public void setStatusOverride(String statusOverride) {
-        this.statusOverride = statusOverride != null ? statusOverride : "None";
+        this.statusOverride = statusOverride;
     }
 }
