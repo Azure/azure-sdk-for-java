@@ -292,7 +292,7 @@ public class FeatureManager {
         List<String> groups = targetingContext.getGroups();
         String variantName = null;
 
-        if (StringUtils.hasText(targetingContext.getUserId())) {
+        if (StringUtils.hasText(targetingContext.getUserId()) && allocation.getUser() != null) {
             // Loop through all user allocations
             for (UserAllocation userAllocation : allocation.getUser()) {
                 if (!evaluationOptions.isIgnoreCase()
@@ -308,7 +308,7 @@ public class FeatureManager {
                 }
             }
         }
-        if (variantName == null) {
+        if (variantName == null && allocation.getGroup() != null) {
             for (GroupAllocation groupAllocation : allocation.getGroup()) {
                 for (String allocationGroup : groupAllocation.getGroups()) {
                     if (!evaluationOptions.isIgnoreCase() && groups.contains(allocationGroup)) {
