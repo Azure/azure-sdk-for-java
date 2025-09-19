@@ -118,7 +118,7 @@ public final class TestUtils {
 
         String sas = blobServiceClient.getBlobContainerClient(blobContainerName)
             .generateUserDelegationSas(sasValues, userDelegationKey);
-        return "BlobEndpoint=https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/;" + "SharedAccessSignature=?"
+        return "https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/;" + "SharedAccessSignature=?"
             + sas;
     }
 
