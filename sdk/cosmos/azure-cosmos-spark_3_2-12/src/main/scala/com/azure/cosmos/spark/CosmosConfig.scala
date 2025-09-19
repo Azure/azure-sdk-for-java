@@ -69,7 +69,7 @@ private[spark] object CosmosConfigNames {
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
   val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
-  val FeedRangeRefreshIntervalInMinutes = "spark.cosmos.feedRange.refreshIntervalInMinutes"
+  val FeedRangeRefreshIntervalInMinutes = "spark.cosmos.metadata.feedRange.refreshIntervalInMinutes"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -1937,7 +1937,7 @@ private object CosmosContainerConfig {
     if (feedRangeRefreshIntervalInMinutesOpt.isDefined) {
       assert(
         feedRangeRefreshIntervalInMinutesOpt.get >=1,
-        "Config 'spark.cosmos.feedRange.refreshIntervalInMinutes' can not be lower than 1 min")
+        "Config 'spark.cosmos.metadata.feedRange.refreshIntervalInMinutes' can not be lower than 1 min")
     }
     CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInMinutesOpt)
   }
