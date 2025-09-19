@@ -1934,6 +1934,11 @@ private object CosmosContainerConfig {
     val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
     val feedRangeRefreshIntervalInMinutesOpt = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier)
+    if (feedRangeRefreshIntervalInMinutesOpt.isDefined) {
+      assert(
+        feedRangeRefreshIntervalInMinutesOpt.get >=1,
+        "Config 'spark.cosmos.feedRange.refreshIntervalInMinutes' can not be lower than 1 min")
+    }
     CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInMinutesOpt)
   }
 }
