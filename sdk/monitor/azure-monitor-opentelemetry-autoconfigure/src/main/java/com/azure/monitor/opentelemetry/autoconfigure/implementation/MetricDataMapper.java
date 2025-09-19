@@ -53,12 +53,18 @@ public class MetricDataMapper {
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME
         = AttributeKey.stringKey("applicationinsights.internal.metric_name");
+    public static final String MS_SENT_TO_AMW_ATTR = "_MS.SentToAMW";
+    private static final String METRICS_TO_LOG_ANALYTICS_ENABLED
+        = "APPLICATIONINSIGHTS_METRICS_TO_LOGANALYTICS_ENABLED";
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
+    private final Boolean otlpExporterEnabled;
+    private final boolean metricsToLAEnabled;
+
     static {
-        // HTTP unstable metrics to be excluded via Otel auto instrumentation
+        // HTTP unstable metrics to be excluded via OTel auto instrumentation
         OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.client.duration");
         OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.server.duration");
 
@@ -71,8 +77,17 @@ public class MetricDataMapper {
 
     public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         boolean captureHttpServer4xxAsError) {
+        this(telemetryInitializer, captureHttpServer4xxAsError, null);
+    }
+
+    public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+        boolean captureHttpServer4xxAsError, Boolean otlpExporterEnabled) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
+        this.otlpExporterEnabled = otlpExporterEnabled;
+
+        String metricsToLaEnvVar = System.getenv(METRICS_TO_LOG_ANALYTICS_ENABLED);
+        this.metricsToLAEnabled = metricsToLaEnvVar == null || "true".equalsIgnoreCase(metricsToLaEnvVar);
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
@@ -80,7 +95,7 @@ public class MetricDataMapper {
         if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric
                 = OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            if (isPreAggregatedStandardMetric) {
+            if (isPreAggregatedStandardMetric) { // we want standard metrics to always be sent to Breeze
                 List<TelemetryItem> preAggregatedStandardMetrics
                     = convertOtelMetricToAzureMonitorMetric(metricData, true);
                 preAggregatedStandardMetrics.forEach(consumer::accept);
@@ -92,8 +107,11 @@ public class MetricDataMapper {
                 && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
                 return;
             }
-            List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
-            stableOtelMetrics.forEach(consumer::accept);
+
+            if (metricsToLAEnabled && !isPreAggregatedStandardMetric) {
+                List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
+                stableOtelMetrics.forEach(consumer::accept);
+            }
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
@@ -109,7 +127,7 @@ public class MetricDataMapper {
 
             builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
             updateMetricPointBuilder(builder, metricData, pointData, captureHttpServer4xxAsError,
-                isPreAggregatedStandardMetric);
+                isPreAggregatedStandardMetric, this.otlpExporterEnabled);
 
             telemetryItems.add(builder.build());
         }
@@ -118,7 +136,8 @@ public class MetricDataMapper {
 
     // visible for testing
     public static void updateMetricPointBuilder(MetricTelemetryBuilder metricTelemetryBuilder, MetricData metricData,
-        PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric) {
+        PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric,
+        Boolean otlpExporterEnabled) {
         checkArgument(metricData != null, "MetricData cannot be null.");
 
         MetricPointBuilder pointBuilder = new MetricPointBuilder();
@@ -176,6 +195,9 @@ public class MetricDataMapper {
         }
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
+        if (otlpExporterEnabled != null) {
+            metricTelemetryBuilder.addProperty(MS_SENT_TO_AMW_ATTR, otlpExporterEnabled ? "True" : "False");
+        }
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
