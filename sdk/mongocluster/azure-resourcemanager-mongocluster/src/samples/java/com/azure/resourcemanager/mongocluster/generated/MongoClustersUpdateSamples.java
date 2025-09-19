@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -45,28 +45,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchSSDv2.json
-     */
-    /**
-     * Sample code: Updates the Premium SSDv2 size, IOPS and throughput on a Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void updatesThePremiumSSDv2SizeIOPSAndThroughputOnAMongoClusterResource(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties().withStorage(new StorageProperties().withSizeGb(128L)
-                .withType(StorageType.PREMIUM_SSDV2)
-                .withIops(5000L)
-                .withThroughput(1000L)))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -85,7 +64,26 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDisableNativeAuth.json
+     */
+    /**
+     * Sample code: Updates the allowed authentication modes to remove Native authentication.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
+                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -103,7 +101,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -121,7 +119,26 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PatchDataApi.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchSSDv2.json
+     */
+    /**
+     * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesThePremiumSSDv2SizeOnAMongoClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties()
+                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDataApi.json
      */
     /**
      * Sample code: Enables data API on a mongo cluster resource.
@@ -140,7 +157,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_Update.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.
