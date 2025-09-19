@@ -232,13 +232,13 @@ public class PartitionScopedRegionLevelProgress {
 
         Optional<RegionLevelProgress> globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GLOBAL_PROGRESS_KEY);
 
-        if (globalLevelProgress.isEmpty()) {
+        if (!globalLevelProgress.isPresent()) {
             throw constructInternalServerErrorException(request, "globalLevelProgress cannot be null!");
         }
 
         Optional<ISessionToken> globalSessionToken = globalLevelProgress.get().getSessionToken();
 
-        if (globalSessionToken.isEmpty()) {
+        if (!globalSessionToken.isPresent()) {
             throw constructInternalServerErrorException(request, "globalLevelProgress cannot be null!");
         }
 
@@ -259,7 +259,7 @@ public class PartitionScopedRegionLevelProgress {
 
         Optional<RegionLevelProgress> baseLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, firstEffectivePreferredReadableRegion);
 
-        if (baseLevelProgress.isEmpty() || baseLevelProgress.get().getSessionToken().isEmpty()) {
+        if (!baseLevelProgress.isPresent() || !baseLevelProgress.get().getSessionToken().isPresent()) {
             request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token corresponding to first preferred readable region doesn't exist.");
             return globalSessionToken.get();
         }
@@ -334,7 +334,7 @@ public class PartitionScopedRegionLevelProgress {
 
                     Optional<ISessionToken> globalSessionTokenInner = globalLevelProgressInner.getSessionToken();
 
-                    if (globalSessionTokenInner.isEmpty()) {
+                    if (!globalSessionTokenInner.isPresent()) {
                         throw constructInternalServerErrorException(request, "globalLevelProgress.get().getSessionToken() cannot be null!");
                     } else {
                         request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token recorded prior since region specific progress for region - " + normalizedRegionName + " could not be found even though the bloom filter indicated that the partition key has probably seen requests routed to this region.");
