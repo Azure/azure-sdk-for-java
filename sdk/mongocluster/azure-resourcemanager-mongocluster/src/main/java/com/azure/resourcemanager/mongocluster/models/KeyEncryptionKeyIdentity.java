@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -79,19 +78,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identityType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property identityType in model KeyEncryptionKeyIdentity"));
-        }
-        if (userAssignedIdentityResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property userAssignedIdentityResourceId in model KeyEncryptionKeyIdentity"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyIdentity.class);
 
     /**
      * {@inheritDoc}
@@ -110,7 +97,6 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyEncryptionKeyIdentity if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyEncryptionKeyIdentity.
      */
     public static KeyEncryptionKeyIdentity fromJson(JsonReader jsonReader) throws IOException {
