@@ -69,6 +69,7 @@ private[spark] object CosmosConfigNames {
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
   val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
+  val FeedRangeRefreshIntervalInMinutes = "spark.cosmos.feedRange.refreshIntervalInMinutes"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -197,6 +198,7 @@ private[spark] object CosmosConfigNames {
     ProactiveConnectionInitializationDurationInSeconds,
     GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
+    FeedRangeRefreshIntervalInMinutes,
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadConsistencyStrategy,
@@ -1183,7 +1185,7 @@ private object CosmosViewRepositoryConfig {
   }
 }
 
-private[cosmos] case class CosmosContainerConfig(database: String, container: String)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String, feedRangeRefreshIntervalInMinutesOpt: Option[Long])
 
 private[spark] case class DiagnosticsConfig
 (
@@ -1915,6 +1917,11 @@ private object CosmosContainerConfig {
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
+  private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Long](key = CosmosConfigNames.FeedRangeRefreshIntervalInMinutes,
+    mandatory = false,
+    parseFromStringFunction = refreshIntervalInMinutes => refreshIntervalInMinutes.toLong,
+    helpMessage = "Cosmos DB Container feed range refresh interval")
+
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
     this.parseCosmosContainerConfig(cfg, None, None)
   }
@@ -1926,8 +1933,8 @@ private object CosmosContainerConfig {
 
     val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
-
-    CosmosContainerConfig(databaseOpt, containerOpt)
+    val feedRangeRefreshIntervalInMinutesOpt = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier)
+    CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInMinutesOpt)
   }
 }
 

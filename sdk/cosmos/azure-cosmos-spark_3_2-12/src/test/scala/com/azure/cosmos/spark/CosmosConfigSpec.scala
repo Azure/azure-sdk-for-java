@@ -1501,6 +1501,17 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxRetryNoProgressIntervalInSeconds shouldEqual 314
   }
 
+  "CosmosContainerConfig" should "parse feed range refresh interval" in {
+    val containerConfig = Map(
+      "spark.cosmos.database" -> "TestDatabase",
+      "spark.cosmos.database" -> "TestContainer",
+      "spark.cosmos.feedRange.refreshIntervalInMinutes" -> "10"
+    )
+
+    val parsedConfig = CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
+    parsedConfig.feedRangeRefreshIntervalInMinutesOpt.get shouldEqual 10L
+  }
+
   private case class PatchColumnConfigParameterTest
   (
    isValid: Boolean,
