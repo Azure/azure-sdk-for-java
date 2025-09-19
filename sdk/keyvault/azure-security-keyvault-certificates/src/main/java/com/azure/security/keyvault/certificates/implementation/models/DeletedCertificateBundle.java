@@ -61,7 +61,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     private byte[] cer;
 
     /*
-     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12'.
      */
     @Generated
     private String contentType;
@@ -73,7 +73,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     private CertificateAttributes attributes;
 
     /*
-     * Application specific metadata in the form of key-value pairs
+     * Application specific metadata in the form of key-value pairs.
      */
     @Generated
     private Map<String, String> tags;
@@ -175,7 +175,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
 
     /**
      * Get the contentType property: The content type of the secret. eg. 'application/x-pem-file' or
-     * 'application/x-pkcs12',.
+     * 'application/x-pkcs12'.
      * 
      * @return the contentType value.
      */
