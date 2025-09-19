@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added mapping for `enduser.pseudo.id` attribute to `user_AuthenticatedId` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506)
+- Added mapping for `enduser.pseudo.id` attribute to `user_Id` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506)
 
 ### Breaking Changes
 

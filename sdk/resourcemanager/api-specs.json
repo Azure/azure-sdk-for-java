@@ -159,7 +159,7 @@
     "args": "--tag=package-locks-2016-09 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "monitor": {
-    "dir": "azure-resourcemanager-monitor",
+    "dir": "../monitor/azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
     "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit --enable-sync-stack=false",
