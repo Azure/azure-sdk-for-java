@@ -103,7 +103,7 @@ public class LoggerTelemetryPublisherTest {
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
@@ -127,7 +127,7 @@ public class LoggerTelemetryPublisherTest {
         when(variantMock.getName()).thenReturn("fake-variant");
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
@@ -150,7 +150,7 @@ public class LoggerTelemetryPublisherTest {
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
@@ -181,7 +181,7 @@ public class LoggerTelemetryPublisherTest {
         when(variantMock.getName()).thenReturn("fake-variant");
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
@@ -202,7 +202,7 @@ public class LoggerTelemetryPublisherTest {
     void nullEvaluationEventTest(TestInfo testInfo) {
         when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(null);
+        publisher.publish(null);
 
         // Ensure no logs are generated
         assertEquals(0, listAppender.list.size());
@@ -214,7 +214,7 @@ public class LoggerTelemetryPublisherTest {
         EvaluationEvent evaluationEvent = new EvaluationEvent(null);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         // Ensure no logs are generated
         assertEquals(0, listAppender.list.size());
@@ -228,7 +228,7 @@ public class LoggerTelemetryPublisherTest {
         evaluationEvent.setReason(VariantAssignmentReason.DEFAULT_WHEN_ENABLED);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
@@ -255,7 +255,7 @@ public class LoggerTelemetryPublisherTest {
         when(variantMock.getName()).thenReturn("fake-variant");
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
-        publisher.publishTelemetry(evaluationEvent);
+        publisher.publish(evaluationEvent);
 
         logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
