@@ -243,9 +243,12 @@ public class BlobCheckpointStore implements CheckpointStore {
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-        if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
+        if (checkpoint == null
+            || (checkpoint.getSequenceNumber() == null
+                && checkpoint.getOffset() == null
+                && CoreUtils.isNullOrEmpty(checkpoint.getOffsetString()))) {
             throw LOGGER.logExceptionAsWarning(Exceptions.propagate(new IllegalStateException(
-                "Both sequence number and offset cannot be null when updating a checkpoint")));
+                "At least one of sequence number or offset information (offset or offsetString) must be provided when updating a checkpoint")));
         }
 
         String partitionId = checkpoint.getPartitionId();
@@ -259,8 +262,14 @@ public class BlobCheckpointStore implements CheckpointStore {
         String sequenceNumber
             = checkpoint.getSequenceNumber() == null ? null : String.valueOf(checkpoint.getSequenceNumber());
 
+        String offset;
+        if (CoreUtils.isNullOrEmpty(checkpoint.getOffsetString())) {
+            offset = Objects.toString(checkpoint.getOffset(), null);
+        } else {
+            offset = checkpoint.getOffsetString();
+        }
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
-        metadata.put(OFFSET, checkpoint.getOffsetString());
+        metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
         return blobAsyncClient.exists().flatMap(exists -> {
