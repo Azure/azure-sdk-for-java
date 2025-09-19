@@ -98,20 +98,6 @@ public final class SpotPlacementScoresResponseInner implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (desiredSizes() != null) {
-            desiredSizes().forEach(e -> e.validate());
-        }
-        if (placementScores() != null) {
-            placementScores().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -51,17 +51,6 @@ public final class PlaywrightWorkspaceQuotaProperties implements JsonSerializabl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (freeTrial() != null) {
-            freeTrial().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

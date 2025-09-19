@@ -73,14 +73,6 @@ public final class SaasProperties implements JsonSerializable<SaasProperties> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

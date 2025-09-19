@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.BranchesClient;
@@ -181,28 +180,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BranchInner>> getWithResponseAsync(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -246,32 +223,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BranchInner> getWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, organizationName, projectName, branchName, accept, context);
@@ -310,33 +261,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String organizationName, String projectName, String branchName, BranchInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -362,38 +286,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, BranchInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -418,38 +310,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, BranchInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -600,28 +460,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, context))
@@ -663,32 +501,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, context);
     }
@@ -724,25 +536,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BranchInner>> listSinglePageAsync(String resourceGroupName, String organizationName,
         String projectName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -783,28 +576,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BranchListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, Context.NONE);
@@ -827,28 +598,6 @@ public final class BranchesClientImpl implements BranchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BranchListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, context);
@@ -904,13 +653,6 @@ public final class BranchesClientImpl implements BranchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BranchInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<BranchInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -929,15 +671,6 @@ public final class BranchesClientImpl implements BranchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BranchListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -957,20 +690,9 @@ public final class BranchesClientImpl implements BranchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BranchInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<BranchListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BranchesClientImpl.class);
 }

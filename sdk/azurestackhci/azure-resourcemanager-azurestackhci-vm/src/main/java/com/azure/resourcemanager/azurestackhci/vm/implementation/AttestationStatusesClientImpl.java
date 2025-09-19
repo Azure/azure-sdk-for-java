@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.AttestationStatusesClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.models.AttestationStatusInner;
 import reactor.core.publisher.Mono;
@@ -89,13 +88,6 @@ public final class AttestationStatusesClientImpl implements AttestationStatusesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationStatusInner>> getWithResponseAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -129,15 +121,6 @@ public final class AttestationStatusesClientImpl implements AttestationStatusesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationStatusInner> getWithResponse(String resourceUri, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
@@ -155,6 +138,4 @@ public final class AttestationStatusesClientImpl implements AttestationStatusesC
     public AttestationStatusInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AttestationStatusesClientImpl.class);
 }

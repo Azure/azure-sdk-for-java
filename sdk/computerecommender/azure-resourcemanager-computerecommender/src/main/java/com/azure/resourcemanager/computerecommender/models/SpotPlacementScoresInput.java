@@ -124,17 +124,6 @@ public final class SpotPlacementScoresInput implements JsonSerializable<SpotPlac
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (desiredSizes() != null) {
-            desiredSizes().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computerecommender.fluent.SpotPlacementScoresClient;
 import com.azure.resourcemanager.computerecommender.fluent.models.ComputeDiagnosticBaseInner;
 import com.azure.resourcemanager.computerecommender.fluent.models.SpotPlacementScoresResponseInner;
@@ -108,17 +107,6 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputeDiagnosticBaseInner>> getWithResponseAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -152,20 +140,6 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputeDiagnosticBaseInner> getWithResponse(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, accept, context);
@@ -199,23 +173,6 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpotPlacementScoresResponseInner>> postWithResponseAsync(String location,
         SpotPlacementScoresInput spotPlacementScoresInput) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (spotPlacementScoresInput == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter spotPlacementScoresInput is required and cannot be null."));
-        } else {
-            spotPlacementScoresInput.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -257,27 +214,6 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SpotPlacementScoresResponseInner> postWithResponse(String location,
         SpotPlacementScoresInput spotPlacementScoresInput, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (spotPlacementScoresInput == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter spotPlacementScoresInput is required and cannot be null."));
-        } else {
-            spotPlacementScoresInput.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -299,6 +235,4 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
     public SpotPlacementScoresResponseInner post(String location, SpotPlacementScoresInput spotPlacementScoresInput) {
         return postWithResponse(location, spotPlacementScoresInput, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SpotPlacementScoresClientImpl.class);
 }

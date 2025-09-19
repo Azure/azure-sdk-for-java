@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
@@ -287,18 +286,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -334,20 +321,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -367,20 +340,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -429,14 +388,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -468,16 +419,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, Context.NONE);
@@ -496,16 +437,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
@@ -553,22 +484,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateCloudInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -606,24 +521,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateCloudInner> getByResourceGroupWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
@@ -658,27 +555,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateCloudName, PrivateCloudInner privateCloud) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloud == null) {
-            return Mono.error(new IllegalArgumentException("Parameter privateCloud is required and cannot be null."));
-        } else {
-            privateCloud.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -702,30 +578,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudInner privateCloud) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloud == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloud is required and cannot be null."));
-        } else {
-            privateCloud.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -748,30 +600,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudInner privateCloud, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloud == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloud is required and cannot be null."));
-        } else {
-            privateCloud.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -906,28 +734,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloudUpdate == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudUpdate is required and cannot be null."));
-        } else {
-            privateCloudUpdate.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -951,30 +757,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloudUpdate == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudUpdate is required and cannot be null."));
-        } else {
-            privateCloudUpdate.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -997,30 +779,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (privateCloudUpdate == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudUpdate is required and cannot be null."));
-        } else {
-            privateCloudUpdate.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1154,22 +912,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
@@ -1188,24 +930,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
@@ -1224,24 +948,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
@@ -1355,22 +1061,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateVcenterPasswordWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(
                 context -> service.rotateVcenterPassword(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1390,24 +1080,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateVcenterPasswordWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.rotateVcenterPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
@@ -1426,24 +1098,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateVcenterPasswordWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.rotateVcenterPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
@@ -1560,22 +1214,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rotateNsxtPasswordWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.rotateNsxtPassword(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
@@ -1594,24 +1232,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateNsxtPasswordWithResponse(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.rotateNsxtPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
@@ -1630,24 +1250,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rotateNsxtPasswordWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.rotateNsxtPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
@@ -1765,22 +1367,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdminCredentialsInner>> listAdminCredentialsWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAdminCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1818,24 +1404,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminCredentialsInner> listAdminCredentialsWithResponse(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.listAdminCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
@@ -1868,13 +1436,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PrivateCloudInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -1893,15 +1454,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1921,15 +1473,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1948,13 +1491,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listInSubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1975,15 +1511,6 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listInSubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res
             = service.listInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2003,21 +1530,10 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateCloudInner> listInSubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateCloudList> res
             = service.listInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudsClientImpl.class);
 }
