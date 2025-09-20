@@ -51,6 +51,9 @@
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "AdditionalArgs": [
+        "-DargLine=\"-Dio.netty.handler.ssl.noOpenSsl=true\""
+      ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
