@@ -6,12 +6,14 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyState;
+import com.azure.resourcemanager.storage.models.Action;
 import com.azure.resourcemanager.storage.models.ActiveDirectoryProperties;
 import com.azure.resourcemanager.storage.models.ActiveDirectoryPropertiesAccountType;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.DefaultAction;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.EncryptionIdentity;
 import com.azure.resourcemanager.storage.models.EncryptionService;
@@ -20,6 +22,7 @@ import com.azure.resourcemanager.storage.models.ExpirationAction;
 import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
+import com.azure.resourcemanager.storage.models.IpRule;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.KeySource;
 import com.azure.resourcemanager.storage.models.KeyType;
@@ -27,6 +30,7 @@ import com.azure.resourcemanager.storage.models.KeyVaultProperties;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
+import com.azure.resourcemanager.storage.models.Placement;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.ResourceAccessRule;
 import com.azure.resourcemanager.storage.models.RoutingChoice;
@@ -34,8 +38,10 @@ import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.SkuName;
+import com.azure.resourcemanager.storage.models.SmbOAuthSettings;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
+import com.azure.resourcemanager.storage.models.ZonePlacementPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +51,7 @@ import java.util.Map;
  */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
@@ -70,7 +76,31 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountLeverageIPv6Ability.json
+     */
+    /**
+     * Sample code: StorageAccountUpdateEnableIpv6Features.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountUpdateEnableIpv6Features(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters()
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withIpv6Rules(Arrays
+                            .asList(new IpRule().withIpAddressOrRange("2001:0db8:85a3::/64").withAction(Action.ALLOW)))
+                        .withDefaultAction(DefaultAction.DENY))
+                    .withDualStackEndpointPreference(new DualStackEndpointPreference().withPublishIpv6Endpoint(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
@@ -106,8 +136,75 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountUpdate_placement.json
+     */
+    /**
+     * Sample code: StorageAccountUpdate_placement.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountUpdatePlacement(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters()
+                    .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicy.ANY))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG))
+                    .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                    .withIsSftpEnabled(true)
+                    .withIsLocalUserEnabled(true)
+                    .withEnableExtendedGroups(true)
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withResourceAccessRules(Arrays.asList(new ResourceAccessRule()
+                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                            .withResourceId(
+                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
+                        .withDefaultAction(DefaultAction.ALLOW))
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
+                    .withAllowBlobPublicAccess(false)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                    .withAllowSharedKeyAccess(true)
+                    .withDefaultToOAuthAuthentication(false),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableAD.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableSmbOAuth.
+     * json
+     */
+    /**
+     * Sample code: StorageAccountEnableSmbOAuth.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountEnableSmbOAuth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters()
+                    .withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication()
+                        .withDirectoryServiceOptions(DirectoryServiceOptions.NONE)
+                        .withSmbOAuthSettings(new SmbOAuthSettings().withIsSmbOAuthEnabled(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -134,7 +231,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
@@ -174,7 +271,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
@@ -216,7 +313,51 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableCMK.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountUpdate_zones.
+     * json
+     */
+    /**
+     * Sample code: StorageAccountUpdate_zones.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountUpdateZones(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters().withZones(Arrays.asList("1"))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG))
+                    .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                    .withIsSftpEnabled(true)
+                    .withIsLocalUserEnabled(true)
+                    .withEnableExtendedGroups(true)
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withResourceAccessRules(Arrays.asList(new ResourceAccessRule()
+                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                            .withResourceId(
+                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
+                        .withDefaultAction(DefaultAction.ALLOW))
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
+                    .withAllowBlobPublicAccess(false)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                    .withAllowSharedKeyAccess(true)
+                    .withDefaultToOAuthAuthentication(false),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -242,7 +383,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -284,7 +425,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**

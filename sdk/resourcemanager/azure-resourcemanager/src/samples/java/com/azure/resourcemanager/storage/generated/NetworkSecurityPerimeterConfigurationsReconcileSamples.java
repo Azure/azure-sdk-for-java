@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * NetworkSecurityPerimeterConfigurationReconcile.json
      */
     /**

@@ -14,7 +14,7 @@ import java.util.Map;
 public final class QueueCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/QueueOperationPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/QueueOperationPut.json
      */
     /**
      * Sample code: QueueOperationPut.
@@ -32,7 +32,7 @@ public final class QueueCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/QueueOperationPutWithMetadata
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/QueueOperationPutWithMetadata
      * .json
      */
     /**

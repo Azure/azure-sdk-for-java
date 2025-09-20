@@ -15,7 +15,7 @@ import com.azure.resourcemanager.storage.models.ShareAccessTier;
 public final class FileSharesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_ProvisionedV2.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_ProvisionedV2.
      * json
      */
     /**
@@ -35,7 +35,7 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_AccessTier.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_AccessTier.json
      */
     /**
      * Sample code: PutShares with Access Tier.
@@ -53,7 +53,7 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_NFS.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_NFS.json
      */
     /**
      * Sample code: Create NFS Shares.
@@ -72,7 +72,7 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_PaidBursting.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_PaidBursting.
      * json
      */
     /**
@@ -95,7 +95,7 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut.json
      */
     /**
      * Sample code: PutShares.

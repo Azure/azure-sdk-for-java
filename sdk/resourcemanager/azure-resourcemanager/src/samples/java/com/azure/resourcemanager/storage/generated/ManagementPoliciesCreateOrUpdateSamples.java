@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicyColdTierActions.json
      */
     /**
@@ -75,7 +75,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
@@ -127,7 +127,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
@@ -165,7 +165,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicyHotTierActions.json
      */
     /**
@@ -203,7 +203,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
@@ -243,7 +243,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicy.json
      */
     /**
@@ -301,7 +301,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
      */
     /**
@@ -340,7 +340,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
      */
     /**
