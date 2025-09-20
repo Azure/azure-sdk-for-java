@@ -12,15 +12,26 @@ import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.core.query.QueryByExampleCriteriaBuilder;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
@@ -30,8 +41,10 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
  * @param <T> the type of the domain class managed by this repository.
  * @param <K> the type of the id of the domain class managed by this repository.
  */
-public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
+public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K>, ReactiveQueryByExampleExecutor<T> {
 
+    private static final String EXAMPLE_MUST_NOT_BE_NULL = "Example must not be null";
+    private static final String QUERY_FUNCTION_MUST_NOT_BE_NULL = "Query function must not be null";
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
 
@@ -282,4 +295,130 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
 
+    @Override
+    public <S extends T> Mono<S> findOne(Example<S> example) {
+        return new ReactiveFluentQueryByExample<>(example, example.getProbeType()).one();
+    }
+
+    @Override
+    public <S extends T> Flux<S> findAll(Example<S> example) {
+        return new ReactiveFluentQueryByExample<>(example, example.getProbeType()).all();
+    }
+
+    @Override
+    public <S extends T> Flux<S> findAll(Example<S> example, Sort sort) {
+        return new ReactiveFluentQueryByExample<>(example, example.getProbeType()).sortBy(sort).all();
+    }
+
+    @Override
+    public <S extends T> Mono<Long> count(Example<S> example) {
+        return new ReactiveFluentQueryByExample<>(example, example.getProbeType()).count();
+    }
+
+    @Override
+    public <S extends T> Mono<Boolean> exists(Example<S> example) {
+        return new ReactiveFluentQueryByExample<>(example, example.getProbeType()).exists();
+    }
+
+    @Override
+    public <S extends T, R, P extends Publisher<R>> P findBy(Example<S> example, Function<FluentQuery.ReactiveFluentQuery<S>, P> queryFunction) {
+
+        Assert.notNull(example, EXAMPLE_MUST_NOT_BE_NULL);
+        Assert.notNull(queryFunction, QUERY_FUNCTION_MUST_NOT_BE_NULL);
+
+        return queryFunction.apply(new ReactiveFluentQueryByExample<>(example, example.getProbeType()));
+    }
+
+    /**
+     * {@link org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery} using {@link Example}.
+     */
+    class ReactiveFluentQueryByExample<S, T> extends ReactiveFluentQuerySupport<Example<S>, T> {
+
+        ReactiveFluentQueryByExample(Example<S> example, Class<T> resultType) {
+            this(example, Sort.unsorted(), 0, resultType, Collections.emptyList());
+        }
+
+        ReactiveFluentQueryByExample(Example<S> example, Sort sort, int limit, Class<T> resultType, List<String> fieldsToInclude) {
+            super(example, sort, limit, resultType, fieldsToInclude);
+        }
+
+        @Override
+        protected <R> ReactiveFluentQueryByExample<S, R> create(Example<S> predicate, Sort sort, int limit, Class<R> resultType,
+                                                                List<String> fieldsToInclude) {
+            return new ReactiveFluentQueryByExample<>(predicate, sort, limit, resultType, fieldsToInclude);
+        }
+
+        @Override
+        public Mono<T> one() {
+            Flux<T> result = cosmosOperations.find(createQuery(), getResultType(), entityInformation.getContainerName());
+            return result.collectList().flatMap(it -> {
+
+                if (it.isEmpty()) {
+                    return Mono.empty();
+                }
+
+                if (it.size() > 1) {
+                    return Mono.error(
+                        new IncorrectResultSizeDataAccessException("Query " + getResultType() + " returned non unique result", 1));
+                }
+
+                return Mono.just(it.get(0));
+            });
+        }
+
+        @Override
+        public Mono<T> first() {
+            return this.all().next();
+        }
+
+        @Override
+        public Flux<T> all() {
+            return cosmosOperations.find(createQuery(), getResultType(), entityInformation.getContainerName());
+        }
+
+        @Override
+        public Mono<Page<T>> page(Pageable pageable) {
+
+            Assert.notNull(pageable, "Pageable must not be null");
+
+            Mono<List<T>> items = cosmosOperations.find(
+                    createQuery(q -> q.with(pageable)),
+                    getResultType(),
+                    entityInformation.getContainerName())
+                .collectList();
+
+            return items.flatMap(content -> ReactivePageableExecutionUtils.getPage(content, pageable, this.count()));
+        }
+
+        @Override
+        public Mono<Long> count() {
+            return cosmosOperations.count(createQuery(), entityInformation.getContainerName());
+        }
+
+        @Override
+        public Mono<Boolean> exists() {
+            return cosmosOperations.exists(createQuery(), entityInformation.getJavaType(), entityInformation.getContainerName());
+        }
+
+        private CosmosQuery createQuery() {
+            return createQuery(UnaryOperator.identity());
+        }
+
+        private CosmosQuery createQuery(UnaryOperator<CosmosQuery> queryCustomizer) {
+
+            Criteria predicate = QueryByExampleCriteriaBuilder.getPredicate(getPredicate());
+            CosmosQuery query = new CosmosQuery(predicate);
+
+            if (getSort().isSorted()) {
+                query.with(getSort());
+            }
+
+            query.withLimit(getLimit());
+
+            query = queryCustomizer.apply(query);
+
+            return query;
+        }
+
+    }
 }
