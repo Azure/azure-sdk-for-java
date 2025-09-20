@@ -13,7 +13,7 @@ import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
  */
 public final class MongoClustersPromoteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_ForcePromoteReplica.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ForcePromoteReplica.json
      */
     /**
      * Sample code: Promotes a replica Mongo Cluster resource to a primary role.

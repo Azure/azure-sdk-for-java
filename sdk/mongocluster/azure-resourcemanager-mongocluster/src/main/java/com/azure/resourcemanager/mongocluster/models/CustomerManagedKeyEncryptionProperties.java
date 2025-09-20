@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,21 +80,10 @@ public final class CustomerManagedKeyEncryptionProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyEncryptionKeyIdentity() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property keyEncryptionKeyIdentity in model CustomerManagedKeyEncryptionProperties"));
-        } else {
+        if (keyEncryptionKeyIdentity() != null) {
             keyEncryptionKeyIdentity().validate();
         }
-        if (keyEncryptionKeyUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property keyEncryptionKeyUrl in model CustomerManagedKeyEncryptionProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CustomerManagedKeyEncryptionProperties.class);
 
     /**
      * {@inheritDoc}
@@ -114,7 +102,6 @@ public final class CustomerManagedKeyEncryptionProperties
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomerManagedKeyEncryptionProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomerManagedKeyEncryptionProperties.
      */
     public static CustomerManagedKeyEncryptionProperties fromJson(JsonReader jsonReader) throws IOException {
