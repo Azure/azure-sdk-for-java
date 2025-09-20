@@ -212,7 +212,7 @@ private class ChangeFeedMicroBatchStream
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
       val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-        container, changeFeedConfig, partitioningConfig, Some(streamId))
+        container, containerConfig, changeFeedConfig, partitioningConfig, Some(streamId))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }

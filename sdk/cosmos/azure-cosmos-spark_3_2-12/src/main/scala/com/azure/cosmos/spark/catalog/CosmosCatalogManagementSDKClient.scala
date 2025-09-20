@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
@@ -170,7 +170,9 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
             .asScala
             .flatMap(containerResultInner => {
                 SFlux.zip(
-                    ContainerFeedRangesCache.getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
+                    ContainerFeedRangesCache.getFeedRanges(
+                        cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName),
+                        None),
                     readContainerThroughputProperties(databaseName, containerName)
                         .map(Some(_))
                         .onErrorResume((throwable: Throwable) => {

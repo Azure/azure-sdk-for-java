@@ -42,7 +42,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val firstLsn = None
@@ -119,7 +119,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val firstLsn = None
@@ -196,7 +196,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val firstLsn = None
@@ -273,7 +273,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val maxRows = 10
@@ -348,7 +348,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val maxRows = 10
@@ -439,7 +439,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val maxRows = 10
@@ -513,7 +513,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val maxRows = 10
@@ -579,7 +579,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       azureMonitorConfig = None
     )
 
-    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val docSizeInKB = rnd.nextInt()
     val maxRows = 10

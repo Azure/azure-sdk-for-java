@@ -17,4 +17,8 @@ class CosmosConstantsSpec extends UnitSpec {
     CosmosConstants.userAgentSuffix shouldBe
       s"SparkConnector|${CosmosConstants.currentName}|${CosmosConstants.currentVersion}"
   }
+
+  "ContainerFeedRangeConfig" should "be able to get feed range refresh interval" in {
+    CosmosConstants.ContainerFeedRangeConfigs.FeedRangeRefreshIntervalInMinutes shouldEqual 2L
+  }
 }

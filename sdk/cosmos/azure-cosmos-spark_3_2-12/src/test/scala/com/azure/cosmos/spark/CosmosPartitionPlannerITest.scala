@@ -265,7 +265,7 @@ class CosmosPartitionPlannerITest
     )
 
     val initialOffset = CosmosPartitionPlanner.createInitialOffset(
-      mockContainer, changeFeedConfig, partitioningConfig, streamId = Some(testId))
+      mockContainer, containerConfig, changeFeedConfig, partitioningConfig, streamId = Some(testId))
 
     //scalastyle:off null
     initialOffset should not equal null

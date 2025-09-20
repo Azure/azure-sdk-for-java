@@ -64,6 +64,7 @@ private abstract class CosmosWriterBase(
     if (cosmosWriteConfig.bulkEnabled) {
       new BulkWriter(
         container,
+        cosmosTargetContainerConfig,
         partitionKeyDefinition,
         cosmosWriteConfig,
         diagnosticsConfig,
@@ -135,6 +136,7 @@ private abstract class CosmosWriterBase(
             val bulkWriterForRetry =
               new BulkWriter(
                 container,
+                cosmosTargetContainerConfig,
                 partitionKeyDefinition,
                 cosmosWriteConfig,
                 diagnosticsConfig,
