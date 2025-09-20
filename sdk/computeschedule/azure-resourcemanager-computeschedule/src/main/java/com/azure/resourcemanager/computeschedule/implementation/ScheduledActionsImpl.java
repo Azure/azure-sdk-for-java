@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.computeschedule.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -17,12 +16,7 @@ import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOpe
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationErrorsResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
-import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsResponse;
 import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationResponse;
@@ -38,13 +32,6 @@ import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRespon
 import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.computeschedule.models.HibernateResourceOperationResponse;
-import com.azure.resourcemanager.computeschedule.models.Occurrence;
-import com.azure.resourcemanager.computeschedule.models.RecurringActionsResourceOperationResult;
-import com.azure.resourcemanager.computeschedule.models.ResourceAttachRequest;
-import com.azure.resourcemanager.computeschedule.models.ResourceDetachRequest;
-import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
-import com.azure.resourcemanager.computeschedule.models.ScheduledAction;
-import com.azure.resourcemanager.computeschedule.models.ScheduledActionResource;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActions;
 import com.azure.resourcemanager.computeschedule.models.StartResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
@@ -317,263 +304,11 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         }
     }
 
-    public Response<ScheduledAction> getByResourceGroupWithResponse(String resourceGroupName,
-        String scheduledActionName, Context context) {
-        Response<ScheduledActionInner> inner
-            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScheduledActionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ScheduledAction getByResourceGroup(String resourceGroupName, String scheduledActionName) {
-        ScheduledActionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, scheduledActionName);
-        if (inner != null) {
-            return new ScheduledActionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public void deleteByResourceGroup(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().delete(resourceGroupName, scheduledActionName);
-    }
-
-    public void delete(String resourceGroupName, String scheduledActionName, Context context) {
-        this.serviceClient().delete(resourceGroupName, scheduledActionName, context);
-    }
-
-    public PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ScheduledActionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ScheduledAction> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ScheduledActionInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ScheduledAction> list() {
-        PagedIterable<ScheduledActionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ScheduledAction> list(Context context) {
-        PagedIterable<ScheduledActionInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName) {
-        PagedIterable<ScheduledActionResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ScheduledActionResource> listResources(String resourceGroupName, String scheduledActionName,
-        Context context) {
-        PagedIterable<ScheduledActionResourceInner> inner
-            = this.serviceClient().listResources(resourceGroupName, scheduledActionName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionResourceImpl(inner1, this.manager()));
-    }
-
-    public Response<RecurringActionsResourceOperationResult> attachResourcesWithResponse(String resourceGroupName,
-        String scheduledActionName, ResourceAttachRequest body, Context context) {
-        Response<RecurringActionsResourceOperationResultInner> inner
-            = this.serviceClient().attachResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public RecurringActionsResourceOperationResult attachResources(String resourceGroupName, String scheduledActionName,
-        ResourceAttachRequest body) {
-        RecurringActionsResourceOperationResultInner inner
-            = this.serviceClient().attachResources(resourceGroupName, scheduledActionName, body);
-        if (inner != null) {
-            return new RecurringActionsResourceOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<RecurringActionsResourceOperationResult> detachResourcesWithResponse(String resourceGroupName,
-        String scheduledActionName, ResourceDetachRequest body, Context context) {
-        Response<RecurringActionsResourceOperationResultInner> inner
-            = this.serviceClient().detachResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public RecurringActionsResourceOperationResult detachResources(String resourceGroupName, String scheduledActionName,
-        ResourceDetachRequest body) {
-        RecurringActionsResourceOperationResultInner inner
-            = this.serviceClient().detachResources(resourceGroupName, scheduledActionName, body);
-        if (inner != null) {
-            return new RecurringActionsResourceOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<RecurringActionsResourceOperationResult> patchResourcesWithResponse(String resourceGroupName,
-        String scheduledActionName, ResourcePatchRequest body, Context context) {
-        Response<RecurringActionsResourceOperationResultInner> inner
-            = this.serviceClient().patchResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public RecurringActionsResourceOperationResult patchResources(String resourceGroupName, String scheduledActionName,
-        ResourcePatchRequest body) {
-        RecurringActionsResourceOperationResultInner inner
-            = this.serviceClient().patchResources(resourceGroupName, scheduledActionName, body);
-        if (inner != null) {
-            return new RecurringActionsResourceOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Void> disableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
-        return this.serviceClient().disableWithResponse(resourceGroupName, scheduledActionName, context);
-    }
-
-    public void disable(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().disable(resourceGroupName, scheduledActionName);
-    }
-
-    public Response<Void> enableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
-        return this.serviceClient().enableWithResponse(resourceGroupName, scheduledActionName, context);
-    }
-
-    public void enable(String resourceGroupName, String scheduledActionName) {
-        this.serviceClient().enable(resourceGroupName, scheduledActionName);
-    }
-
-    public Response<RecurringActionsResourceOperationResult> cancelNextOccurrenceWithResponse(String resourceGroupName,
-        String scheduledActionName, CancelOccurrenceRequest body, Context context) {
-        Response<RecurringActionsResourceOperationResultInner> inner = this.serviceClient()
-            .cancelNextOccurrenceWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public RecurringActionsResourceOperationResult cancelNextOccurrence(String resourceGroupName,
-        String scheduledActionName, CancelOccurrenceRequest body) {
-        RecurringActionsResourceOperationResultInner inner
-            = this.serviceClient().cancelNextOccurrence(resourceGroupName, scheduledActionName, body);
-        if (inner != null) {
-            return new RecurringActionsResourceOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Occurrence> triggerManualOccurrenceWithResponse(String resourceGroupName,
-        String scheduledActionName, Context context) {
-        Response<OccurrenceInner> inner
-            = this.serviceClient().triggerManualOccurrenceWithResponse(resourceGroupName, scheduledActionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OccurrenceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Occurrence triggerManualOccurrence(String resourceGroupName, String scheduledActionName) {
-        OccurrenceInner inner = this.serviceClient().triggerManualOccurrence(resourceGroupName, scheduledActionName);
-        if (inner != null) {
-            return new OccurrenceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public ScheduledAction getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE).getValue();
-    }
-
-    public Response<ScheduledAction> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        this.delete(resourceGroupName, scheduledActionName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String scheduledActionName = ResourceManagerUtils.getValueFromIdByName(id, "scheduledActions");
-        if (scheduledActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'scheduledActions'.", id)));
-        }
-        this.delete(resourceGroupName, scheduledActionName, context);
-    }
-
     private ScheduledActionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager() {
         return this.serviceManager;
-    }
-
-    public ScheduledActionImpl define(String name) {
-        return new ScheduledActionImpl(name, this.manager());
     }
 }
