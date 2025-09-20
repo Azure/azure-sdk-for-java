@@ -1,5 +1,6 @@
 # Release History
 # (Unreleased)
+Upgrade Spring Boot dependencies version to 3.5.6 and Spring Cloud dependencies version to 2025.0.0
 Upgrade Spring Boot dependencies version to 3.5.5 and Spring Cloud dependencies version to 2025.0.0
 
 ### Spring Cloud Azure Autoconfigure
