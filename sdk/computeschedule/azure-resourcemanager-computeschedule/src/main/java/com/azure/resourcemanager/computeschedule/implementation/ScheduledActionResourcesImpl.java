@@ -6,8 +6,8 @@ package com.azure.resourcemanager.computeschedule.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourcesInner;
-import com.azure.resourcemanager.computeschedule.models.ScheduledActionProperties;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionResources;
+import com.azure.resourcemanager.computeschedule.models.ScheduledActionsExtensionProperties;
 
 public final class ScheduledActionResourcesImpl implements ScheduledActionResources {
     private ScheduledActionResourcesInner innerObject;
@@ -32,7 +32,7 @@ public final class ScheduledActionResourcesImpl implements ScheduledActionResour
         return this.innerModel().type();
     }
 
-    public ScheduledActionProperties properties() {
+    public ScheduledActionsExtensionProperties properties() {
         return this.innerModel().properties();
     }
 
