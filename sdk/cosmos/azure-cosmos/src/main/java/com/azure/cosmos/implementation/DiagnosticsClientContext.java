@@ -64,7 +64,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
-                generator.writeStringField("isPpafEnabled", Configs.isPerPartitionAutomaticFailoverEnabled());
+                generator.writeStringField("isPpafEnabled", clientConfig.isPerPartitionAutomaticFailoverEnabledAsString);
                 generator.writeStringField("isFalseProgSessionTokenMergeEnabled", Configs.isSessionTokenFalseProgressMergeEnabled() ? "true" : "false");
                 generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
@@ -132,6 +132,7 @@ public interface DiagnosticsClientContext {
         private String sessionRetryOptionsAsString;
         private String regionScopedSessionContainerOptionsAsString;
         private String partitionLevelCircuitBreakerConfigAsString;
+        private String isPerPartitionAutomaticFailoverEnabledAsString;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -249,6 +250,17 @@ public interface DiagnosticsClientContext {
                 this.partitionLevelCircuitBreakerConfigAsString = "";
             } else {
                 this.partitionLevelCircuitBreakerConfigAsString = partitionLevelCircuitBreakerConfig.getConfigAsString();
+            }
+
+            return this;
+        }
+
+        public DiagnosticsClientConfig withIsPerPartitionAutomaticFailoverEnabled(boolean isPpafEnabled) {
+
+            if (isPpafEnabled) {
+                this.isPerPartitionAutomaticFailoverEnabledAsString = "true";
+            } else {
+                this.isPerPartitionAutomaticFailoverEnabledAsString = "false";
             }
 
             return this;

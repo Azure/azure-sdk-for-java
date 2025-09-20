@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
@@ -46,12 +47,15 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
+    private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true"));
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
     private final ReentrantReadWriteLock.ReadLock databaseAccountReadLock;
 
     private volatile Throwable latestDatabaseRefreshError;
+
+    private volatile Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier;
 
     public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
         this.latestDatabaseRefreshError = latestDatabaseRefreshError;
@@ -365,6 +369,16 @@ public class GlobalEndpointManager implements AutoCloseable {
                                 databaseAccount.getThinClientReadableLocations();
                         this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
 
+                        if (this.hasPerPartitionAutomaticFailoverConfigChanged(databaseAccount)) {
+                            Boolean currentPerPartitionAutomaticFailoverEnabledFromService = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
+                            this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.set(Boolean.TRUE.equals(currentPerPartitionAutomaticFailoverEnabledFromService));
+
+                            if (this.perPartitionAutomaticFailoverConfigModifier != null) {
+                                logger.warn("Per partition automatic failover enabled: {}, applying modifier", currentPerPartitionAutomaticFailoverEnabledFromService);
+                                this.perPartitionAutomaticFailoverConfigModifier.apply(databaseAccount);
+                            }
+                        }
+
                         this.setLatestDatabaseRefreshError(null);
                     } finally {
                         this.databaseAccountWriteLock.unlock();
@@ -410,5 +424,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         } finally {
             this.databaseAccountReadLock.unlock();
         }
+    }
+
+    public void setPerPartitionAutomaticFailoverConfigModifier(Function<DatabaseAccount, Void> perPartitionAutomaticFailoverConfigModifier) {
+        this.perPartitionAutomaticFailoverConfigModifier = perPartitionAutomaticFailoverConfigModifier;
+    }
+
+    private boolean hasPerPartitionAutomaticFailoverConfigChanged(DatabaseAccount databaseAccount) {
+        Boolean currentPerPartitionAutomaticFailoverEnabledFromService = databaseAccount.isPerPartitionFailoverBehaviorEnabled();
+        return currentPerPartitionAutomaticFailoverEnabledFromService != null && !Objects.equals(currentPerPartitionAutomaticFailoverEnabledFromService, this.lastRecordedPerPartitionAutomaticFailoverEnabledOnClient.get());
     }
 }
