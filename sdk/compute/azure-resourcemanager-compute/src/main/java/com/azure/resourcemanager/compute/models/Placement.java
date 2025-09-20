@@ -13,18 +13,19 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Describes the user-defined constraints for virtual machine hardware placement.
+ * Describes the user-defined constraints for resource hardware placement.
  */
 @Fluent
 public final class Placement implements JsonSerializable<Placement> {
     /*
-     * Specifies the policy for virtual machine's placement in availability zone. Possible values are: **Any** - An
-     * availability zone will be automatically picked by system as part of virtual machine creation.
+     * Specifies the policy for resource's placement in availability zone. Possible values are: **Any** (used for
+     * Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically
+     * picked by system as part of resource creation.
      */
     private ZonePlacementPolicyType zonePlacementPolicy;
 
     /*
-     * This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any',
+     * This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any'/'Auto',
      * availability zone selected by the system must be present in the list of availability zones passed with
      * 'includeZones'. If 'includeZones' is not provided, all availability zones in region will be considered for
      * selection.
@@ -32,7 +33,7 @@ public final class Placement implements JsonSerializable<Placement> {
     private List<String> includeZones;
 
     /*
-     * This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any',
+     * This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any'/'Auto',
      * availability zone selected by the system must not be present in the list of availability zones passed with
      * 'excludeZones'. If 'excludeZones' is not provided, all availability zones in region will be considered for
      * selection.
@@ -46,9 +47,9 @@ public final class Placement implements JsonSerializable<Placement> {
     }
 
     /**
-     * Get the zonePlacementPolicy property: Specifies the policy for virtual machine's placement in availability zone.
-     * Possible values are: **Any** - An availability zone will be automatically picked by system as part of virtual
-     * machine creation.
+     * Get the zonePlacementPolicy property: Specifies the policy for resource's placement in availability zone.
+     * Possible values are: **Any** (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An
+     * availability zone will be automatically picked by system as part of resource creation.
      * 
      * @return the zonePlacementPolicy value.
      */
@@ -57,9 +58,9 @@ public final class Placement implements JsonSerializable<Placement> {
     }
 
     /**
-     * Set the zonePlacementPolicy property: Specifies the policy for virtual machine's placement in availability zone.
-     * Possible values are: **Any** - An availability zone will be automatically picked by system as part of virtual
-     * machine creation.
+     * Set the zonePlacementPolicy property: Specifies the policy for resource's placement in availability zone.
+     * Possible values are: **Any** (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An
+     * availability zone will be automatically picked by system as part of resource creation.
      * 
      * @param zonePlacementPolicy the zonePlacementPolicy value to set.
      * @return the Placement object itself.
@@ -71,9 +72,9 @@ public final class Placement implements JsonSerializable<Placement> {
 
     /**
      * Get the includeZones property: This property supplements the 'zonePlacementPolicy' property. If
-     * 'zonePlacementPolicy' is set to 'Any', availability zone selected by the system must be present in the list of
-     * availability zones passed with 'includeZones'. If 'includeZones' is not provided, all availability zones in
-     * region will be considered for selection.
+     * 'zonePlacementPolicy' is set to 'Any'/'Auto', availability zone selected by the system must be present in the
+     * list of availability zones passed with 'includeZones'. If 'includeZones' is not provided, all availability zones
+     * in region will be considered for selection.
      * 
      * @return the includeZones value.
      */
@@ -83,9 +84,9 @@ public final class Placement implements JsonSerializable<Placement> {
 
     /**
      * Set the includeZones property: This property supplements the 'zonePlacementPolicy' property. If
-     * 'zonePlacementPolicy' is set to 'Any', availability zone selected by the system must be present in the list of
-     * availability zones passed with 'includeZones'. If 'includeZones' is not provided, all availability zones in
-     * region will be considered for selection.
+     * 'zonePlacementPolicy' is set to 'Any'/'Auto', availability zone selected by the system must be present in the
+     * list of availability zones passed with 'includeZones'. If 'includeZones' is not provided, all availability zones
+     * in region will be considered for selection.
      * 
      * @param includeZones the includeZones value to set.
      * @return the Placement object itself.
@@ -97,9 +98,9 @@ public final class Placement implements JsonSerializable<Placement> {
 
     /**
      * Get the excludeZones property: This property supplements the 'zonePlacementPolicy' property. If
-     * 'zonePlacementPolicy' is set to 'Any', availability zone selected by the system must not be present in the list
-     * of availability zones passed with 'excludeZones'. If 'excludeZones' is not provided, all availability zones in
-     * region will be considered for selection.
+     * 'zonePlacementPolicy' is set to 'Any'/'Auto', availability zone selected by the system must not be present in the
+     * list of availability zones passed with 'excludeZones'. If 'excludeZones' is not provided, all availability zones
+     * in region will be considered for selection.
      * 
      * @return the excludeZones value.
      */
@@ -109,9 +110,9 @@ public final class Placement implements JsonSerializable<Placement> {
 
     /**
      * Set the excludeZones property: This property supplements the 'zonePlacementPolicy' property. If
-     * 'zonePlacementPolicy' is set to 'Any', availability zone selected by the system must not be present in the list
-     * of availability zones passed with 'excludeZones'. If 'excludeZones' is not provided, all availability zones in
-     * region will be considered for selection.
+     * 'zonePlacementPolicy' is set to 'Any'/'Auto', availability zone selected by the system must not be present in the
+     * list of availability zones passed with 'excludeZones'. If 'excludeZones' is not provided, all availability zones
+     * in region will be considered for selection.
      * 
      * @param excludeZones the excludeZones value to set.
      * @return the Placement object itself.

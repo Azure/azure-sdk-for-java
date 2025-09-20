@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class VirtualMachinesInstallPatchesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineExamples/VirtualMachine_InstallPatches.json
      */
     /**
@@ -36,7 +36,9 @@ public final class VirtualMachinesInstallPatchesSamples {
                     .withWindowsParameters(new WindowsParameters()
                         .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.CRITICAL,
                             VMGuestPatchClassificationWindows.SECURITY))
-                        .withMaxPatchPublishDate(OffsetDateTime.parse("2020-11-19T02:36:43.0539904+00:00"))),
+                        .withMaxPatchPublishDate(OffsetDateTime.parse("2020-11-19T02:36:43.0539904+00:00"))
+                        .withPatchNameMasksToInclude(Arrays.asList("*SQL*"))
+                        .withPatchNameMasksToExclude(Arrays.asList("*Windows*"))),
                 com.azure.core.util.Context.NONE);
     }
 }

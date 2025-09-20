@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
+import com.azure.resourcemanager.compute.models.ScheduleProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import java.io.IOException;
@@ -30,10 +31,13 @@ public final class CapacityReservationInner extends Resource {
     private CapacityReservationProperties innerProperties;
 
     /*
-     * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set.
-     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. Refer to
-     * List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for
-     * supported values.
+     * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. For
+     * Block capacity reservations, sku.capacity can only accept values 1, 2, 4, 8, 16, 32, 64. Currently VM Skus with
+     * the capability called 'CapacityReservationSupported' set to true are supported. When
+     * 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
+     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
      */
     private Sku sku;
 
@@ -79,8 +83,11 @@ public final class CapacityReservationInner extends Resource {
 
     /**
      * Get the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
-     * required to be set. Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are
-     * supported. Refer to List Microsoft.Compute SKUs in a region
+     * required to be set. For Block capacity reservations, sku.capacity can only accept values 1, 2, 4, 8, 16, 32, 64.
+     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. When
+     * 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
      * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
      * 
      * @return the sku value.
@@ -91,8 +98,11 @@ public final class CapacityReservationInner extends Resource {
 
     /**
      * Set the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
-     * required to be set. Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are
-     * supported. Refer to List Microsoft.Compute SKUs in a region
+     * required to be set. For Block capacity reservations, sku.capacity can only accept values 1, 2, 4, 8, 16, 32, 64.
+     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. When
+     * 'CapacityReservationSupported' is true, the SKU capability also specifies the
+     * 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block)
+     * that the SKU supports. Refer to List Microsoft.Compute SKUs in a region
      * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
      * 
      * @param sku the sku value to set.
@@ -247,6 +257,37 @@ public final class CapacityReservationInner extends Resource {
      */
     public OffsetDateTime timeCreated() {
         return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Get the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @return the scheduleProfile value.
+     */
+    public ScheduleProfile scheduleProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduleProfile();
+    }
+
+    /**
+     * Set the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @param scheduleProfile the scheduleProfile value to set.
+     * @return the CapacityReservationInner object itself.
+     */
+    public CapacityReservationInner withScheduleProfile(ScheduleProfile scheduleProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CapacityReservationProperties();
+        }
+        this.innerProperties().withScheduleProfile(scheduleProfile);
+        return this;
     }
 
     /**
