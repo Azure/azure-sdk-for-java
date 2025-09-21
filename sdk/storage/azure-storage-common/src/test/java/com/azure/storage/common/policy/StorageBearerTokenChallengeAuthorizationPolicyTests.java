@@ -270,6 +270,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         }
 
         List<TokenRequestContext> captured = credential.getContexts();
+        // fails here with expected: <3> but was: <1>
         assertEquals(tenants.length, captured.size());
         for (int i = 0; i < tenants.length; i++) {
             TokenRequestContext ctx = captured.get(i);
