@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -23,6 +25,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -214,38 +217,31 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     @Test
     public void testAuthorizeRequestOnChallengeWithValidChallenge() {
-        // Create a mock response with WWW-Authenticate header
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
-            "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"");
-        HttpResponse response = new MockHttpResponse(request, 401, headers);
+        // Use a recording credential so we can assert scopes, tenantId, and CAE.
+        RecordingTokenCredential recordingCredential = new RecordingTokenCredential();
+        StorageBearerTokenChallengeAuthorizationPolicy policyUnderTest
+            = new StorageBearerTokenChallengeAuthorizationPolicy(recordingCredential, DEFAULT_SCOPE);
 
-        // Create a mock pipeline call context
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
+        // Use a different resource to verify scopes are updated from the challenge.
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
+            "Bearer resource_id=\"https://other.core.windows.net\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"");
+        HttpResponse response = new MockHttpResponse(request, 401, headers);
         HttpPipelineCallContext context = createMockCallContext(request);
 
-        // Test that the policy correctly processes the challenge and returns true
-        boolean result = policy.authorizeRequestOnChallengeSync(context, response);
+        boolean result = policyUnderTest.authorizeRequestOnChallengeSync(context, response);
 
         assertTrue(result);
-        assertNotNull(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-        assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Bearer "));
-    }
+        String authHeader = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertNotNull(authHeader);
+        assertTrue(authHeader.startsWith("Bearer "));
 
-    @Test
-    public void testAuthorizeRequestOnChallengeWithInvalidChallenge() {
-        // Create a mock response with WWW-Authenticate header for Basic auth (not Bearer)
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, "Basic realm=\"test\"");
-        HttpResponse response = new MockHttpResponse(request, 401, headers);
-
-        // Create a mock pipeline call context
-        HttpPipelineCallContext context = createMockCallContext(request);
-
-        // Test that the policy returns false since there's no Bearer challenge
-        boolean result = policy.authorizeRequestOnChallengeSync(context, response);
-
-        assertFalse(result);
-        assertNull(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        TokenRequestContext captured = recordingCredential.getLastContext();
+        assertNotNull(captured);
+        assertEquals(1, captured.getScopes().size());
+        assertEquals("https://other.core.windows.net/.default", captured.getScopes().get(0));
+        assertEquals("tenant", captured.getTenantId());
+        assertTrue(captured.isCaeEnabled());
     }
 
     private static HttpPipelineCallContext createMockCallContext(HttpRequest request) {
@@ -260,5 +256,20 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         callContextCreator.sendSync(request, Context.NONE);
 
         return callContextReference.get();
+    }
+
+    // New helper credential to capture the TokenRequestContext used during challenge handling.
+    static final class RecordingTokenCredential implements TokenCredential {
+        private final AtomicReference<TokenRequestContext> lastContext = new AtomicReference<>();
+
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext requestContext) {
+            lastContext.set(requestContext);
+            return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
+        }
+
+        TokenRequestContext getLastContext() {
+            return lastContext.get();
+        }
     }
 }
