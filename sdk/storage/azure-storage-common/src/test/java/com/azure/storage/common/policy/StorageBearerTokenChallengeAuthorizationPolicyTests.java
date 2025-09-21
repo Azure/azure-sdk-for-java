@@ -28,13 +28,14 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.findBearer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -244,6 +245,41 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         assertTrue(captured.isCaeEnabled());
     }
 
+    @Test
+    public void testAuthorizeRequestOnChallengeWithMultipleTenants() {
+        RecordingTokenCredential credential = new RecordingTokenCredential();
+        StorageBearerTokenChallengeAuthorizationPolicy policyUnderTest
+            = new StorageBearerTokenChallengeAuthorizationPolicy(credential, DEFAULT_SCOPE);
+
+        String[] tenants = { "tenantA", "72f988bf-86f1-41af-91ab-2d7cd011db47", "my-tenant" };
+
+        for (String tenant : tenants) {
+            HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
+                "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/"
+                    + tenant + "/oauth2/authorize\"");
+            HttpResponse response = new MockHttpResponse(request, 401, headers);
+            HttpPipelineCallContext context = createMockCallContext(request);
+
+            boolean handled = policyUnderTest.authorizeRequestOnChallengeSync(context, response);
+            assertTrue(handled, "Challenge should be handled for tenant: " + tenant);
+
+            String authHeader = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            assertNotNull(authHeader);
+            assertTrue(authHeader.startsWith("Bearer "));
+        }
+
+        List<TokenRequestContext> captured = credential.getContexts();
+        assertEquals(tenants.length, captured.size());
+        for (int i = 0; i < tenants.length; i++) {
+            TokenRequestContext ctx = captured.get(i);
+            assertEquals(1, ctx.getScopes().size());
+            assertEquals("https://storage.azure.com/.default", ctx.getScopes().get(0));
+            assertEquals(tenants[i], ctx.getTenantId());
+            assertTrue(ctx.isCaeEnabled());
+        }
+    }
+
     private static HttpPipelineCallContext createMockCallContext(HttpRequest request) {
         AtomicReference<HttpPipelineCallContext> callContextReference = new AtomicReference<>();
 
@@ -261,15 +297,26 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     // New helper credential to capture the TokenRequestContext used during challenge handling.
     static final class RecordingTokenCredential implements TokenCredential {
         private final AtomicReference<TokenRequestContext> lastContext = new AtomicReference<>();
+        private final List<TokenRequestContext> contexts = new ArrayList<>();
 
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext requestContext) {
-            lastContext.set(requestContext);
+            // Snapshot to avoid mutation side-effects if the same instance is reused.
+            TokenRequestContext snapshot
+                = new TokenRequestContext().addScopes(requestContext.getScopes().toArray(new String[0]))
+                    .setTenantId(requestContext.getTenantId())
+                    .setCaeEnabled(requestContext.isCaeEnabled());
+            lastContext.set(snapshot);
+            contexts.add(snapshot);
             return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
         }
 
         TokenRequestContext getLastContext() {
             return lastContext.get();
+        }
+
+        List<TokenRequestContext> getContexts() {
+            return contexts;
         }
     }
 }
