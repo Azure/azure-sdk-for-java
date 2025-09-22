@@ -1185,7 +1185,7 @@ private object CosmosViewRepositoryConfig {
   }
 }
 
-private[cosmos] case class CosmosContainerConfig(database: String, container: String, feedRangeRefreshIntervalInSeconds: Int)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String, feedRangeRefreshIntervalInSecondsOpt: Option[Long])
 
 private[spark] case class DiagnosticsConfig
 (
@@ -1899,9 +1899,8 @@ private object CosmosSerializationConfig {
 }
 
 private object CosmosContainerConfig {
-  private[spark] val DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 2 * 60;
-  private[spark] val MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 1 * 60;
-  private[spark] val MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 30 * 60;
+  private[spark] val MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 1L * 60
+  private[spark] val MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 30L * 60
 
   private[spark] val DATABASE_NAME_KEY = CosmosConfigNames.Database
   private[spark] val CONTAINER_NAME_KEY = CosmosConfigNames.Container
@@ -1921,11 +1920,10 @@ private object CosmosContainerConfig {
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
-  private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Int](key = CosmosConfigNames.FeedRangeRefreshIntervalInSeconds,
+  private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Long](key = CosmosConfigNames.FeedRangeRefreshIntervalInSeconds,
     mandatory = false,
-    defaultValue = Some(DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS),
-    parseFromStringFunction = refreshIntervalInSeconds => refreshIntervalInSeconds.toInt,
-    helpMessage = "The time interval in minutes to refresh the internal partition key range cache, valid between [120, 1800]. By default it is 120 seconds.")
+    parseFromStringFunction = refreshIntervalInSeconds => refreshIntervalInSeconds.toLong,
+    helpMessage = "The time interval in seconds to refresh the internal partition key range cache, valid between [60, 1800]. By default it is 120 seconds.")
 
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
     this.parseCosmosContainerConfig(cfg, None, None)
@@ -1938,14 +1936,16 @@ private object CosmosContainerConfig {
 
     val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
-    val feedRangeRefreshIntervalInSeconds = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier).get
+    val feedRangeRefreshIntervalInSecondsOpt = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier)
 
-    assert(
-      feedRangeRefreshIntervalInSeconds >= MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS
-       && feedRangeRefreshIntervalInSeconds <= MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS,
-      s"Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [$MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS, $MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS]")
+    if (feedRangeRefreshIntervalInSecondsOpt.isDefined) {
+      assert(
+        feedRangeRefreshIntervalInSecondsOpt.get >= MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS
+         && feedRangeRefreshIntervalInSecondsOpt.get <= MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS,
+        s"Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [$MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS, $MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS]")
+    }
 
-    CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInSeconds)
+    CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInSecondsOpt)
   }
 }
 

@@ -191,7 +191,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
 
     ContainerFeedRangesCache
-      .getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSeconds)
+      .getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt)
       .map(feedRangeList =>
         partitioningConfig.feedRangeFiler match {
           case Some(epkRangesInScope) => feedRangeList
@@ -673,7 +673,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             clientCacheItems(1))
 
         ContainerFeedRangesCache
-          .getFeedRanges(container, cosmosContainerConfig.feedRangeRefreshIntervalInSeconds)
+          .getFeedRanges(container, cosmosContainerConfig.feedRangeRefreshIntervalInSecondsOpt)
           .map(feedRanges => feedRanges
             .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
             .toArray)

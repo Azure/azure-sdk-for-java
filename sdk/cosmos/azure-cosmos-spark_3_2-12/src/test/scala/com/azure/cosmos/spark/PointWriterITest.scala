@@ -789,7 +789,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
       try {
-        val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
+        val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
         val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
@@ -1309,7 +1309,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
           try {
-              val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
+              val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
               val writeConfig = CosmosWriteConfig(
                   ItemWriteStrategy.ItemOverwrite,
                   5,
