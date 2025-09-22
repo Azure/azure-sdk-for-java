@@ -223,7 +223,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -279,7 +279,7 @@
         <dependency>
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>2.0.0-beta.1</version>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-data-appconfiguration;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -293,7 +293,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -381,7 +381,7 @@
         <dependency>
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>2.0.0-beta.1</version>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-data-appconfiguration;dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>
