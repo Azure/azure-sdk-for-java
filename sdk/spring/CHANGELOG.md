@@ -1,6 +1,6 @@
 # Release History
 
-## 6.0.0 (2025-09-19)
+## 6.0.0 (2025-09-22)
 - This release is compatible with Spring Boot 3.5.0-3.5.5. (Note: 3.5.x (x>5) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
 
@@ -24,7 +24,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus-co
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
-Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#600-2025-09-19) for more details.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#600-2025-09-22) for more details.
 
 ## 5.23.0 (2025-08-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.4, 3.4.0-3.4.8, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.5.x (x>4) and 3.4.y (y>8) should be supported, but they aren't tested with this release.)
