@@ -1509,7 +1509,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     )
 
     val parsedConfig = CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
-    parsedConfig.feedRangeRefreshIntervalInSecondsOpt.get shouldEqual 10L
+    parsedConfig.feedRangeRefreshIntervalInSecondsOpt.get shouldEqual 240L
   }
 
   "CosmosContainerConfig" should "throw for invalid feed range refresh interval" in {
