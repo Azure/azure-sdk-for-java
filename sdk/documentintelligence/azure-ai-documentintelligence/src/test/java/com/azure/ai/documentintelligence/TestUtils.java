@@ -62,26 +62,14 @@ public final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
-    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
+    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<>();
     static {
         EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
     }
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-    public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
-    public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL");
-    public static final String STORAGE_ACCOUNT_NAME = GLOBAL_CONFIGURATION.get("AZURE_STORAGE_ACCOUNT_NAME");
+    public static final String STORAGE_ACCOUNT_NAME = GLOBAL_CONFIGURATION.get("STORAGE_ACCOUNT_NAME");
     public static final String SELECTION_MARK_DATA_CONTAINER_NAME
         = GLOBAL_CONFIGURATION.get("SELECTION_MARK_DATA_CONTAINER_NAME");
     public static final String MULTIPAGE_TRAINING_DATA_CONTAINER_NAME
@@ -102,7 +90,7 @@ public final class TestUtils {
     /**
      * Get a blob container SAS connection string.
      */
-    public static String getContainerSasConnectionString(String blobContainerName) {
+    public static String getContainerSasConnectionString(String containerName) {
         BlobServiceClient blobServiceClient
             = new BlobServiceClientBuilder().endpoint("https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/")
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -111,15 +99,14 @@ public final class TestUtils {
         UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(
             java.time.OffsetDateTime.now().minusMinutes(5), java.time.OffsetDateTime.now().plusHours(1));
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
-            java.time.OffsetDateTime.now().plusHours(1),
+            java.time.OffsetDateTime.now().plusHours(3),
             new BlobContainerSasPermission().setReadPermission(true).setWritePermission(true).setListPermission(true))
                 .setStartTime(java.time.OffsetDateTime.now().minusMinutes(5))
                 .setProtocol(HTTPS_ONLY);
 
-        String sas = blobServiceClient.getBlobContainerClient(blobContainerName)
+        String sas = blobServiceClient.getBlobContainerClient(containerName)
             .generateUserDelegationSas(sasValues, userDelegationKey);
-        return "https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/;" + "SharedAccessSignature=?"
-            + sas;
+        return "https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/" + containerName + "?" + sas;
     }
 
     static void urlRunner(Consumer<String> testRunner, String fileName) {
