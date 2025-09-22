@@ -190,6 +190,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public void close() {
         this.isClosed = true;
+        this.perPartitionAutomaticFailoverConfigModifier = null;
         this.scheduler.dispose();
         logger.debug("GlobalEndpointManager closed.");
     }
