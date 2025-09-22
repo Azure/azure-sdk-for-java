@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_UserDelete.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserDelete.json
      */
     /**
      * Sample code: Deletes a user on a Mongo Cluster resource.

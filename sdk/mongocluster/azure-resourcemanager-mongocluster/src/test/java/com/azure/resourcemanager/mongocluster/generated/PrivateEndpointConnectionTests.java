@@ -13,12 +13,12 @@ public final class PrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnection model = BinaryData.fromString(
-            "{\"properties\":{\"groupIds\":[\"dvpjhulsuuvmk\",\"ozkrwfndiodjpslw\",\"jdpvwryo\"],\"privateEndpoint\":{\"id\":\"oacctaza\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ahbc\",\"actionsRequired\":\"ffdfdosygexpa\"},\"provisioningState\":\"Deleting\"},\"id\":\"hmsbzjhcrzevdp\",\"name\":\"lxaolthqtrgqjbp\",\"type\":\"zfsinzgvf\"}")
+            "{\"properties\":{\"groupIds\":[\"pjhulsuuvmkj\",\"zkrwfn\",\"iodjp\"],\"privateEndpoint\":{\"id\":\"ej\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ryo\",\"actionsRequired\":\"soacctazakl\"},\"provisioningState\":\"Succeeded\"},\"id\":\"bcryffdfd\",\"name\":\"sy\",\"type\":\"expa\"}")
             .toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ahbc", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ffdfdosygexpa",
+        Assertions.assertEquals("ryo", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("soacctazakl",
             model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }
