@@ -53,7 +53,7 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
      * 
      * @param evaluationEvent The evaluation event to be published.
      */
-    public void publishTelemetry(EvaluationEvent evaluationEvent) {
+    public void publish(EvaluationEvent evaluationEvent) {
         if (evaluationEvent == null || evaluationEvent.getFeature() == null) {
             return;
         }
@@ -65,7 +65,7 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
         Map<String, String> eventProperties = new HashMap<>(Map.of(
                 FEATURE_NAME, feature.getId(),
                 ENABLED, String.valueOf(evaluationEvent.isEnabled()),
-                REASON, evaluationEvent.getReason().getType(),
+                REASON, evaluationEvent.getReason().getValue(),
                 VERSION, EVALUATION_EVENT_VERSION));
 
         if (variant != null) {

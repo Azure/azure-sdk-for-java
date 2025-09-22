@@ -17,6 +17,6 @@ public interface TelemetryPublisher {
      *
      * @param evaluationEvent The evaluation event to be published.
      */
-    void publishTelemetry(EvaluationEvent evaluationEvent);
+    void publish(EvaluationEvent evaluationEvent);
 
 }
