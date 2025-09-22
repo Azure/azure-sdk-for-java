@@ -34,7 +34,12 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Async client for sending SMS messages with Azure Communication SMS Service.
+ *
+ * @deprecated This class is deprecated. Please use {@link TelcoMessagingAsyncClient#getSmsAsyncClient()} instead.
+ * The TelcoMessagingAsyncClient provides organized access to SMS functionality through specialized sub-clients.
+ * For example: {@code telcoMessagingAsyncClient.getSmsAsyncClient().send(from, to, message)}
  */
+@Deprecated
 @ServiceClient(builder = SmsClientBuilder.class, isAsync = true)
 public final class SmsAsyncClient {
     private final SmsImpl smsClient;

@@ -43,7 +43,12 @@ import java.util.Objects;
 
 /**
  * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
+ *
+ * @deprecated This class is deprecated. Please use {@link TelcoMessagingClientBuilder} instead.
+ * The TelcoMessagingClientBuilder provides organized access to SMS functionality through specialized sub-clients.
+ * For example: {@code new TelcoMessagingClientBuilder().connectionString(connectionString).buildClient().getSmsClient()}
  */
+@Deprecated
 @ServiceClientBuilder(serviceClients = { SmsClient.class, SmsAsyncClient.class })
 public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClientBuilder>,
     ConfigurationTrait<SmsClientBuilder>, ConnectionStringTrait<SmsClientBuilder>, EndpointTrait<SmsClientBuilder>,

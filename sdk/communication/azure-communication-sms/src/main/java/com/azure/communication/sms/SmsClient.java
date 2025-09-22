@@ -13,7 +13,12 @@ import com.azure.core.util.Context;
 
 /**
  * Client for sending SMS messages with Azure Communication SMS Services.
+ *
+ * @deprecated This class is deprecated. Please use {@link TelcoMessagingClient#getSmsClient()} instead.
+ * The TelcoMessagingClient provides organized access to SMS functionality through specialized sub-clients.
+ * For example: {@code telcoMessagingClient.getSmsClient().send(from, to, message)}
  */
+@Deprecated
 @ServiceClient(builder = SmsClientBuilder.class)
 public final class SmsClient {
     private final SmsAsyncClient smsAsyncClient;
