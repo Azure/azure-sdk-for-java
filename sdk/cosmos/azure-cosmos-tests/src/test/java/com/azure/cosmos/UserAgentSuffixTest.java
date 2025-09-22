@@ -54,7 +54,6 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
         assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent");
         validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "TestUserAgent");
     }
 
