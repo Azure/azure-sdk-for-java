@@ -233,7 +233,7 @@ public final class OnlineExperimentationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteMetric(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("experimentMetricId") String experimentMetricId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/experiment-metrics/{experimentMetricId}")
         @ExpectedResponses({ 204 })
@@ -243,7 +243,7 @@ public final class OnlineExperimentationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteMetricSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("experimentMetricId") String experimentMetricId,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/experiment-metrics")
         @ExpectedResponses({ 200 })
@@ -698,8 +698,9 @@ public final class OnlineExperimentationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMetricWithResponseAsync(String experimentMetricId,
         RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteMetric(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), experimentMetricId, requestOptions, context));
+            this.getServiceVersion().getVersion(), experimentMetricId, accept, requestOptions, context));
     }
 
     /**
@@ -730,8 +731,9 @@ public final class OnlineExperimentationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteMetricWithResponse(String experimentMetricId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.deleteMetricSync(this.getEndpoint(), this.getServiceVersion().getVersion(), experimentMetricId,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
