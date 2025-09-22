@@ -73,20 +73,6 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (logs() != null) {
-            logs().validate();
-        }
-        if (metrics() != null) {
-            metrics().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

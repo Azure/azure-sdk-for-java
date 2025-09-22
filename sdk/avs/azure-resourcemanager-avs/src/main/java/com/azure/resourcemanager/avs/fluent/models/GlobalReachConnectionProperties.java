@@ -153,14 +153,6 @@ public final class GlobalReachConnectionProperties implements JsonSerializable<G
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
