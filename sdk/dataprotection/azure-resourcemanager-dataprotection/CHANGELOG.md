@@ -1,14 +1,289 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2025-09-22)
 
-### Features Added
+- Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ClientDiscoveryValueForSingleApi` was removed
 
-### Other Changes
+#### `models.AksVolumeTypes` was removed
+
+#### `models.DppWorkerRequest` was removed
+
+#### `models.DppTrackedResource` was removed
+
+#### `models.ClientDiscoveryDisplay` was removed
+
+#### `models.BackupInstanceResourceList` was removed
+
+#### `models.AzureBackupFindRestorableTimeRangesRequestResource` was removed
+
+#### `models.AzureBackupJobResourceList` was removed
+
+#### `models.DeletedBackupInstanceResourceList` was removed
+
+#### `models.ClientDiscoveryForProperties` was removed
+
+#### `models.ClientDiscoveryResponse` was removed
+
+#### `models.ClientDiscoveryForLogSpecification` was removed
+
+#### `models.DppBaseResourceList` was removed
+
+#### `models.BaseBackupPolicyResourceList` was removed
+
+#### `models.ResourceGuardProxyBaseResourceList` was removed
+
+#### `models.ResourceGuardResourceList` was removed
+
+#### `models.ClientDiscoveryForServiceSpecification` was removed
+
+#### `models.BackupVaultResourceList` was removed
+
+#### `models.AzureBackupRecoveryPointResourceList` was removed
+
+#### `models.DppProxyResource` was removed
+
+#### `models.DppBaseTrackedResource` was removed
+
+#### `models.ResourceGuards` was modified
+
+* `getBackupSecurityPinRequestsObjects(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getDefaultBackupSecurityPinRequestsObject(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getDefaultBackupSecurityPinRequestsObjectWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getBackupSecurityPinRequestsObjects(java.lang.String,java.lang.String)` was removed
+
+#### `models.ResourceMoveDetails` was modified
+
+* `withStartTimeUtc(java.lang.String)` was removed
+* `withTargetResourcePath(java.lang.String)` was removed
+* `withSourceResourcePath(java.lang.String)` was removed
+* `withCompletionTimeUtc(java.lang.String)` was removed
+* `withOperationId(java.lang.String)` was removed
+
+#### `models.JobExtendedInfo` was modified
+
+* `withAdditionalDetails(java.util.Map)` was removed
+
+#### `models.BackupVaultOperationResultsGetHeaders` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withRetryAfter(java.lang.Integer)` was removed
+* `withAzureAsyncOperation(java.lang.String)` was removed
+
+#### `models.BackupInstanceResource` was modified
+
+* `models.OperationJobExtendedInfo validateForModifyBackup(models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` -> `void validateForModifyBackup(models.ValidateForModifyBackupRequest,com.azure.core.util.Context)`
+* `models.OperationJobExtendedInfo validateForModifyBackup(models.ValidateForModifyBackupRequest)` -> `void validateForModifyBackup(models.ValidateForModifyBackupRequest)`
+
+#### `models.SupportedFeature` was modified
+
+* `withFeatureName(java.lang.String)` was removed
+* `withSupportStatus(models.FeatureSupportStatus)` was removed
+* `withExposureControlledFeatures(java.util.List)` was removed
+
+#### `models.RestorableTimeRange` was modified
+
+* `withObjectType(java.lang.String)` was removed
+* `withEndTime(java.lang.String)` was removed
+* `withStartTime(java.lang.String)` was removed
+
+#### `models.BackupVaultResource$Definition` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.DppResourceList` was modified
+
+* `models.DppResourceList withNextLink(java.lang.String)` -> `models.DppResourceList withNextLink(java.lang.String)`
+
+#### `models.ProtectionStatusDetails` was modified
+
+* `withStatus(models.Status)` was removed
+* `withErrorDetails(models.UserFacingError)` was removed
+
+#### `DataProtectionManager` was modified
+
+* `fluent.DataProtectionClient serviceClient()` -> `fluent.DataProtectionManagementClient serviceClient()`
+
+#### `models.DeletedBackupInstance` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withDataSourceInfo(models.Datasource)` was removed
+* `withObjectType(java.lang.String)` was removed
+* `withIdentityDetails(models.IdentityDetails)` was removed
+* `withValidationType(models.ValidationType)` was removed
+* `withPolicyInfo(models.PolicyInfo)` was removed
+* `withDatasourceAuthCredentials(models.AuthCredentials)` was removed
+* `withDataSourceSetInfo(models.DatasourceSet)` was removed
+
+#### `models.BackupVaultResource` was modified
+
+* `etag()` was removed
+
+#### `models.RestoreJobRecoveryPointDetails` was modified
+
+* `withRecoveryPointId(java.lang.String)` was removed
+* `withRecoveryPointTime(java.time.OffsetDateTime)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `models.UserFacingError` was modified
+
+* `withMessage(java.lang.String)` was removed
+* `withDetails(java.util.List)` was removed
+* `withCode(java.lang.String)` was removed
+* `withRecommendedAction(java.util.List)` was removed
+* `withIsRetryable(java.lang.Boolean)` was removed
+* `withProperties(java.util.Map)` was removed
+* `withInnerError(models.InnerError)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withIsUserError(java.lang.Boolean)` was removed
+
+#### `models.UserFacingWarningDetail` was modified
+
+* `withResourceName(java.lang.String)` was removed
+* `withWarning(models.UserFacingError)` was removed
+
+#### `models.InnerError` was modified
+
+* `withAdditionalInfo(java.util.Map)` was removed
+* `withEmbeddedInnerError(models.InnerError)` was removed
+* `withCode(java.lang.String)` was removed
+
+#### `models.AzureBackupFindRestorableTimeRangesResponse` was modified
+
+* `withRestorableTimeRanges(java.util.List)` was removed
+* `withObjectType(java.lang.String)` was removed
+
+#### `models.FeatureValidationResponse` was modified
+
+* `withFeatures(java.util.List)` was removed
+* `withFeatureType(models.FeatureType)` was removed
+
+#### `models.DppTrackedResourceList` was modified
+
+* `models.DppTrackedResourceList withNextLink(java.lang.String)` -> `models.DppTrackedResourceList withNextLink(java.lang.String)`
+
+#### `models.OperationResultsGetHeaders` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `withRetryAfter(java.lang.Integer)` was removed
+* `withAzureAsyncOperation(java.lang.String)` was removed
+
+#### `models.JobSubTask` was modified
+
+* `withTaskId(int)` was removed
+* `withAdditionalDetails(java.util.Map)` was removed
+* `withTaskName(java.lang.String)` was removed
+* `withTaskStatus(java.lang.String)` was removed
+
+#### `models.BackupInstances` was modified
+
+* `models.OperationJobExtendedInfo validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest)` -> `void validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest)`
+* `models.OperationJobExtendedInfo validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` -> `void validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest,com.azure.core.util.Context)`
+
+#### `models.RecoveryPointDataStoreDetails` was modified
+
+* `withId(java.lang.String)` was removed
+* `withVisible(java.lang.Boolean)` was removed
+* `withMetadata(java.lang.String)` was removed
+* `withState(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `withExpiryTime(java.time.OffsetDateTime)` was removed
+* `withCreationTime(java.time.OffsetDateTime)` was removed
+
+#### `models.ResourceGuardResource$Definition` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `withRetentionTagVersion(java.lang.String)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withRecoveryPointType(java.lang.String)` was removed
+* `withRecoveryPointId(java.lang.String)` was removed
+* `withRecoveryPointDataStoresDetails(java.util.List)` was removed
+* `withRecoveryPointState(models.RecoveryPointCompletionState)` was removed
+* `withRetentionTagName(java.lang.String)` was removed
+* `withPolicyName(java.lang.String)` was removed
+* `withPolicyVersion(java.lang.String)` was removed
+* `withRecoveryPointTime(java.time.OffsetDateTime)` was removed
+
+#### `models.AzureBackupJob` was modified
+
+* `withDestinationDataStoreName(java.lang.String)` was removed
+* `withIsUserTriggered(boolean)` was removed
+* `withDuration(java.lang.String)` was removed
+* `withEtag(java.lang.String)` was removed
+* `withProgressEnabled(boolean)` was removed
+* `withDataSourceName(java.lang.String)` was removed
+* `withDataSourceLocation(java.lang.String)` was removed
+* `withSourceDataStoreName(java.lang.String)` was removed
+* `withSubscriptionId(java.lang.String)` was removed
+* `withSupportedActions(java.util.List)` was removed
+* `withDataSourceType(java.lang.String)` was removed
+* `withOperationCategory(java.lang.String)` was removed
+* `withSourceSubscriptionId(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withActivityId(java.lang.String)` was removed
+* `withStartTime(java.time.OffsetDateTime)` was removed
+* `withBackupInstanceFriendlyName(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDataSourceId(java.lang.String)` was removed
+* `withDataSourceSetName(java.lang.String)` was removed
+* `withVaultName(java.lang.String)` was removed
+* `withSourceResourceGroup(java.lang.String)` was removed
+
+#### `models.ResourceGuardResource` was modified
+
+* `etag()` was removed
+
+### Features Added
+
+* `models.AKSVolumeTypes` was added
+
+* `models.OperationDisplay` was added
+
+* `models.Origin` was added
+
+* `models.GetBackupSecurityPinRequestsObjects` was added
+
+* `models.ActionType` was added
+
+* `models.GetDefaultBackupSecurityPinRequestsObjects` was added
+
+* `models.Operation` was added
+
+#### `models.BackupVaultResource$Definition` was modified
+
+* `withETag(java.lang.String)` was added
+
+#### `DataProtectionManager` was modified
+
+* `getDefaultBackupSecurityPinRequestsObjects()` was added
+* `getBackupSecurityPinRequestsObjects()` was added
+
+#### `models.BackupVaultResource` was modified
+
+* `eTag()` was added
+
+#### `models.DppBaseResource` was modified
+
+* `systemData()` was added
+
+#### `models.ResourceGuardResource$Definition` was modified
+
+* `withETag(java.lang.String)` was added
+
+#### `models.ResourceGuardResource` was modified
+
+* `eTag()` was added
 
 ## 1.4.0 (2025-08-15)
 

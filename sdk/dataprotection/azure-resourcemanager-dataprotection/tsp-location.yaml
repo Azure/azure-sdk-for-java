@@ -1,0 +1,4 @@
+directory: specification/dataprotection/resource-manager/Microsoft.DataProtection/DataProtection
+commit: f4d79a1a326481435d1240987885204b57ae5129
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
