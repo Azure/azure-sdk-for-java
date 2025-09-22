@@ -18,7 +18,7 @@ import scala.collection.JavaConverters._
 
 private[spark] object ContainerFeedRangesCache {
   private val rnd = Random
-  private val RANDOM_IN_MS = 1000
+  private val RANDOM_IN_MS = 5000
   private val DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 120L
   private val cache = new TrieMap[String, CachedFeedRanges]
 
