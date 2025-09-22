@@ -172,7 +172,7 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 SFlux.zip(
                     ContainerFeedRangesCache.getFeedRanges(
                         cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName),
-                        None),
+                        120),
                     readContainerThroughputProperties(databaseName, containerName)
                         .map(Some(_))
                         .onErrorResume((throwable: Throwable) => {

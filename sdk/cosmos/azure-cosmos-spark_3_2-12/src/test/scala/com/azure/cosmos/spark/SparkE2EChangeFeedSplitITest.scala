@@ -51,7 +51,7 @@ class SparkE2EChangeFeedSplitITest
     "spark.cosmos.changeFeed.startFrom" -> "Beginning",
     "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
     "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation,
-    "spark.cosmos.metadata.feedRange.refreshIntervalInMinutes" -> Int.MaxValue.toString // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
+    "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "1800" // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
    )
 
    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()

@@ -88,20 +88,4 @@ private[cosmos] object CosmosConstants {
        .orElse(sys.env.get(MetricsHistoryDecayFactorEnvName))
        .getOrElse(DefaultMetricsHistoryDecayFactor).toDouble
   }
-
-  object ContainerFeedRangeConfigs {
-    private val FeedRangeRefreshIntervalPropertyName = "spark.cosmos.metadata.feedRange.refreshInterval.minutes"
-    private val FeedRangeRefreshIntervalEnvName = "SPARK.COSMOS.METADATA.FEEDRANGE.REFRESHINTERVAL.MINUTES"
-    private val DefaultFeedRangeRefreshIntervalInMinutes = "2"
-    val FeedRangeRefreshIntervalInMinutes: Long = {
-      val refreshInterval = Option(System.getProperty(FeedRangeRefreshIntervalPropertyName))
-       .orElse(sys.env.get(FeedRangeRefreshIntervalEnvName))
-       .getOrElse(DefaultFeedRangeRefreshIntervalInMinutes).toLong
-      assert(
-        refreshInterval >=1,
-        "Config 'spark.cosmos.metadata.feedRange.refreshInterval.minutes' and 'SPARK.COSMOS.METADATA.FEEDRANGE.REFRESHINTERVAL.MINUTES' can not be lower than 1 min")
-
-      refreshInterval
-    }
-  }
 }

@@ -248,7 +248,7 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
             .flatMap(containerResponse => {
                 SFlux
                     .zip(
-                        ContainerFeedRangesCache.getFeedRanges(container, None),
+                        ContainerFeedRangesCache.getFeedRanges(container, 120),
                         readContainerThroughputProperties(databaseName, containerName)
                             .map(Some(_))
                             .onErrorResume((throwable: Throwable) => {

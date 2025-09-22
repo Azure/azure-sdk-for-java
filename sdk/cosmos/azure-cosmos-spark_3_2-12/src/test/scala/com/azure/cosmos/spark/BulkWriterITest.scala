@@ -31,7 +31,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
     val metricsPublisher = new TestOutputMetricsPublisher
@@ -73,7 +73,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
     val bulkWriter = new BulkWriter(
@@ -122,7 +122,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
     try {
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
       val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
       val bulkWriter = new BulkWriter(
@@ -189,7 +189,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
     try {
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
       val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
       val metricsPublisher = new TestOutputMetricsPublisher
@@ -246,7 +246,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
     val metricsPublisher = new TestOutputMetricsPublisher
@@ -315,7 +315,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
     val bulkWriter = new BulkWriter(
@@ -407,7 +407,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
     val bulkWriter = new BulkWriter(
       container,
@@ -443,7 +443,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwriteIfNotModified,
       5,
@@ -567,7 +567,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -697,7 +697,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val partitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -777,7 +777,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -861,7 +861,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -922,7 +922,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -1000,7 +1000,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -1062,7 +1062,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -1139,7 +1139,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
       try {
-        val containerConfig = CosmosContainerConfig(createdContainer.getDatabase.getId, createdContainer.getId, None)
+        val containerConfig = CosmosContainerConfig(createdContainer.getDatabase.getId, createdContainer.getId, 120)
         val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
@@ -1201,7 +1201,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -1272,7 +1272,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
   "Bulk Writer" should "throw exception if no valid operations are included in patch operation" in {
     val container = getContainer
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val partitionKeyPath = StringUtils.join(partitionKeyDefinition.getPaths, "")
@@ -1306,7 +1306,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val container = getContainer
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
 
     val metricsPublisher = new TestOutputMetricsPublisher
       // if the item does not exists, patchBulkUpdate essentially will create those items
@@ -1357,7 +1357,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemBulkUpdate,
           5,
@@ -1405,7 +1405,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
       val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
 
-    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+    val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
     val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
@@ -1486,7 +1486,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
       val partitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
       val writeConfig = CosmosWriteConfig(
             ItemWriteStrategy.ItemOverwrite,
             5,
@@ -1543,7 +1543,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val container = getContainer
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
       val writeConfig = CosmosWriteConfig(
             ItemWriteStrategy.ItemOverwrite,
             5,
@@ -1608,7 +1608,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       val container = getContainer
       val containerProperties = container.read().block().getProperties
       val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+      val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, 120)
       val writeConfig = CosmosWriteConfig(
             ItemWriteStrategy.ItemOverwrite,
             5,
