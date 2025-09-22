@@ -42,11 +42,11 @@
     <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
     <module>../../containerregistry/azure-resourcemanager-containerregistry/pom.xml</module>
     <module>../../containerservice/azure-resourcemanager-containerservice/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-cosmos/pom.xml</module>
+    <module>../../cosmos/azure-resourcemanager-cosmos/pom.xml</module>
     <module>../../dns/azure-resourcemanager-dns/pom.xml</module>
     <module>../../eventhubs/azure-resourcemanager-eventhubs/pom.xml</module>
     <module>../../keyvault/azure-resourcemanager-keyvault/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-monitor/pom.xml</module>
+    <module>../../monitor/azure-resourcemanager-monitor/pom.xml</module>
     <module>../../msi/azure-resourcemanager-msi/pom.xml</module>
     <module>../../network/azure-resourcemanager-network/pom.xml</module>
     <module>../../privatedns/azure-resourcemanager-privatedns/pom.xml</module>
