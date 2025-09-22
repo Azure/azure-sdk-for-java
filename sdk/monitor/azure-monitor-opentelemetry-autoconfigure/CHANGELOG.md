@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-09-19)
 
 ### Features Added
 
@@ -9,10 +9,6 @@
 ### Breaking Changes
 
 - Updated mapping for `enduser.id` attribute from `user_Id` to `user_AuthenticatedId` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506)
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.3.0 (2025-08-01)
 

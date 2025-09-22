@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.ListLocalUserIncludeParam;
 public final class LocalUsersOperationListSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/LocalUsersListNFSv3Enabled.
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/LocalUsersListNFSv3Enabled.
      * json
      */
     /**
@@ -30,7 +30,7 @@ public final class LocalUsersOperationListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/LocalUsersList.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/LocalUsersList.json
      */
     /**
      * Sample code: ListLocalUsers.

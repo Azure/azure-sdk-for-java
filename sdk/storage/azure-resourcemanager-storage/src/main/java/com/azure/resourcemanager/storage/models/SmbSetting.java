@@ -45,6 +45,11 @@ public final class SmbSetting implements JsonSerializable<SmbSetting> {
      */
     private String channelEncryption;
 
+    /*
+     * Encryption in transit setting.
+     */
+    private EncryptionInTransit encryptionInTransit;
+
     /**
      * Creates an instance of SmbSetting class.
      */
@@ -160,6 +165,26 @@ public final class SmbSetting implements JsonSerializable<SmbSetting> {
     }
 
     /**
+     * Get the encryptionInTransit property: Encryption in transit setting.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    public EncryptionInTransit encryptionInTransit() {
+        return this.encryptionInTransit;
+    }
+
+    /**
+     * Set the encryptionInTransit property: Encryption in transit setting.
+     * 
+     * @param encryptionInTransit the encryptionInTransit value to set.
+     * @return the SmbSetting object itself.
+     */
+    public SmbSetting withEncryptionInTransit(EncryptionInTransit encryptionInTransit) {
+        this.encryptionInTransit = encryptionInTransit;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -167,6 +192,9 @@ public final class SmbSetting implements JsonSerializable<SmbSetting> {
     public void validate() {
         if (multichannel() != null) {
             multichannel().validate();
+        }
+        if (encryptionInTransit() != null) {
+            encryptionInTransit().validate();
         }
     }
 
@@ -181,6 +209,7 @@ public final class SmbSetting implements JsonSerializable<SmbSetting> {
         jsonWriter.writeStringField("authenticationMethods", this.authenticationMethods);
         jsonWriter.writeStringField("kerberosTicketEncryption", this.kerberosTicketEncryption);
         jsonWriter.writeStringField("channelEncryption", this.channelEncryption);
+        jsonWriter.writeJsonField("encryptionInTransit", this.encryptionInTransit);
         return jsonWriter.writeEndObject();
     }
 
@@ -209,6 +238,8 @@ public final class SmbSetting implements JsonSerializable<SmbSetting> {
                     deserializedSmbSetting.kerberosTicketEncryption = reader.getString();
                 } else if ("channelEncryption".equals(fieldName)) {
                     deserializedSmbSetting.channelEncryption = reader.getString();
+                } else if ("encryptionInTransit".equals(fieldName)) {
+                    deserializedSmbSetting.encryptionInTransit = EncryptionInTransit.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
