@@ -27,7 +27,7 @@ public final class ConnectedEnvironmentsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.connectedEnvironments().delete("gdphtvdula", "vl", com.azure.core.util.Context.NONE);
+        manager.connectedEnvironments().delete("zpatqtd", "swxspvckojaz", com.azure.core.util.Context.NONE);
 
     }
 }

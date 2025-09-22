@@ -28,7 +28,7 @@ public final class WorkloadNetworksDeleteDnsServiceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.workloadNetworks()
-            .deleteDnsService("jeokbzefezrxccz", "rtle", "pqxbkwvzgnzvdf", com.azure.core.util.Context.NONE);
+            .deleteDnsService("vnynkb", "etnjuhpsprkz", "aupia", com.azure.core.util.Context.NONE);
 
     }
 }

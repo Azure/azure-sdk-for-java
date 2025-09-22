@@ -15,6 +15,7 @@ import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -74,9 +75,11 @@ public class AzurePowerShellCredentialTest {
     @Test
     public void testClaimsChallengeThrowsCredentialUnavailableException() {
         // Test with claims provided
+        String claims = "{\"access_token\":{\"essential\":true}}";
+        String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
+
         TokenRequestContext requestWithClaims
-            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims("{\"access_token\":{\"essential\":true}}");
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
 
         AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
 
@@ -85,7 +88,7 @@ public class AzurePowerShellCredentialTest {
             .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
                 && throwable.getMessage().contains("Claims challenges are not supported")
                 && throwable.getMessage().contains("Connect-AzAccount -ClaimsChallenge")
-                && throwable.getMessage().contains("access_token"))
+                && throwable.getMessage().contains(encodedClaims))
             .verify();
     }
 
@@ -153,9 +156,11 @@ public class AzurePowerShellCredentialTest {
     @Test
     public void testClaimsChallengeEscapesSingleQuotes() {
         // Test with claims that contain single quotes (needs proper PowerShell escaping)
+        String claims = "{\\\"access_token\\\":{\\\"claim\\\":\\\"value's test\\\"}}";
+        String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
+
         TokenRequestContext requestWithClaims
-            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
-                .setClaims("{\"access_token\":{\"claim\":\"value's test\"}}");
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
 
         AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
 
@@ -163,8 +168,7 @@ public class AzurePowerShellCredentialTest {
         StepVerifier.create(credential.getToken(requestWithClaims))
             .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
                 && throwable.getMessage().contains("Connect-AzAccount -ClaimsChallenge")
-                && throwable.getMessage().contains("value''s test")  // Single quote should be escaped to ''
-            )
+                && throwable.getMessage().contains(encodedClaims))
             .verify();
     }
 }

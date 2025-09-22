@@ -17,7 +17,7 @@ public final class AwsCloudProfileTests {
             .toObject(AwsCloudProfile.class);
         Assertions.assertEquals("i", model.accountId());
         Assertions.assertEquals("npvswjdkirso", model.excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.isOrganizationalAccount());
+        Assertions.assertFalse(model.isOrganizationalAccount());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,6 +28,6 @@ public final class AwsCloudProfileTests {
         model = BinaryData.fromObject(model).toObject(AwsCloudProfile.class);
         Assertions.assertEquals("i", model.accountId());
         Assertions.assertEquals("npvswjdkirso", model.excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.isOrganizationalAccount());
+        Assertions.assertFalse(model.isOrganizationalAccount());
     }
 }

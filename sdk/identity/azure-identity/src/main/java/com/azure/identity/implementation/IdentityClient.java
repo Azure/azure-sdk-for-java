@@ -34,7 +34,7 @@ import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
-import com.microsoft.aad.msal4j.MsalJsonParsingException;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -364,6 +364,11 @@ public class IdentityClient extends IdentityClientBase {
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
             }
+
+            if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+                String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+                azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
+            }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }
@@ -497,9 +502,12 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
-        StringBuilder connectAzCommand
-            = new StringBuilder("Connect-AzAccount -ClaimsChallenge '").append(request.getClaims().replace("'", "''"))  // Escape single quotes for PowerShell
-                .append("'");
+        StringBuilder connectAzCommand = new StringBuilder("Connect-AzAccount -ClaimsChallenge '");
+
+        // Use IdentityUtil.ensureBase64Encoded for the claims
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        connectAzCommand.append(encodedClaims.replace("'", "''"))  // Escape single quotes for PowerShell
+            .append("'");
 
         // Add tenant if available
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
@@ -584,8 +592,11 @@ public class IdentityClient extends IdentityClientBase {
                 }
             }))
             .onErrorMap(t -> {
-                if (options.isChained() && t instanceof MsalJsonParsingException) {
-                    return new CredentialUnavailableException("Managed Identity authentication is not available.", t);
+                if (options.isChained() && t instanceof MsalServiceException) {
+                    if (t.getMessage().contains("Authentication unavailable")) {
+                        return new CredentialUnavailableException("Managed Identity authentication is not available.",
+                            t);
+                    }
                 }
                 return new ClientAuthenticationException(
                     "Managed Identity authentication failed, see inner exception" + " for more information.", null, t);

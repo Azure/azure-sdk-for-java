@@ -27,7 +27,8 @@ public final class CertificatesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.certificates().deleteWithResponse("xqlaps", "ssov", "xpavid", com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .deleteWithResponse("hmqmiwxzf", "vzucqfgufjnb", "wbmwdukinhl", com.azure.core.util.Context.NONE);
 
     }
 }

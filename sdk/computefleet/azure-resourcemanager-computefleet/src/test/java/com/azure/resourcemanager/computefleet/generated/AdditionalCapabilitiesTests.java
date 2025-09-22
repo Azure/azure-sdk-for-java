@@ -13,8 +13,8 @@ public final class AdditionalCapabilitiesTests {
     public void testDeserialize() throws Exception {
         AdditionalCapabilities model = BinaryData.fromString("{\"ultraSSDEnabled\":false,\"hibernationEnabled\":false}")
             .toObject(AdditionalCapabilities.class);
-        Assertions.assertEquals(false, model.ultraSSDEnabled());
-        Assertions.assertEquals(false, model.hibernationEnabled());
+        Assertions.assertFalse(model.ultraSSDEnabled());
+        Assertions.assertFalse(model.hibernationEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -22,7 +22,7 @@ public final class AdditionalCapabilitiesTests {
         AdditionalCapabilities model
             = new AdditionalCapabilities().withUltraSSDEnabled(false).withHibernationEnabled(false);
         model = BinaryData.fromObject(model).toObject(AdditionalCapabilities.class);
-        Assertions.assertEquals(false, model.ultraSSDEnabled());
-        Assertions.assertEquals(false, model.hibernationEnabled());
+        Assertions.assertFalse(model.ultraSSDEnabled());
+        Assertions.assertFalse(model.hibernationEnabled());
     }
 }

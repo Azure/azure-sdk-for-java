@@ -1,5 +1,16 @@
 ## Release History
 
+### 4.40.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* Added improvement to reduce partition planning time for large containers. - See [46727](https://github.com/Azure/azure-sdk-for-java/pull/46727)
+
 ### 4.39.0 (2025-09-05)
 
 #### Bugs Fixed

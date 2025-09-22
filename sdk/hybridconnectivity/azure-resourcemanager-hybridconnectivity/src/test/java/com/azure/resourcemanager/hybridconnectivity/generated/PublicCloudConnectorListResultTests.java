@@ -13,15 +13,15 @@ public final class PublicCloudConnectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicCloudConnectorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"rcjxvsnbyxqabn\",\"excludedAccounts\":[\"pcyshu\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"j\"},\"location\":\"btoqcjmkljavbqid\",\"tags\":{\"dj\":\"jzyulpk\",\"xzlocxscp\":\"rlkhbzhfepgzgq\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"},{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"ionpimexg\",\"excludedAccounts\":[\"gcpo\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"mvdjwzrlovmc\"},\"location\":\"hijco\",\"tags\":{\"ukdkexxppofmxa\":\"tbzaqsqsycbkbfk\",\"jpgd\":\"c\"},\"id\":\"toc\",\"name\":\"j\",\"type\":\"hvpmoue\"},{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"dzxibqeojnxqbzvd\",\"excludedAccounts\":[\"wndeicbtwnp\"],\"isOrganizationalAccount\":false},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"rhcffcydd\"},\"location\":\"mjthjqkwp\",\"tags\":{\"igdtopbob\":\"cxmqciwqvhkhix\"},\"id\":\"og\",\"name\":\"m\",\"type\":\"w\"},{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"m\",\"excludedAccounts\":[\"rzayv\",\"t\",\"gvdfgiotkftutq\",\"ln\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Canceled\",\"connectorPrimaryIdentifier\":\"gnxkrxdqmidtth\"},\"location\":\"vqdra\",\"tags\":{\"gehoqfbowskany\":\"yb\",\"rvynhzgpph\":\"tzlcuiywgqywgn\"},\"id\":\"cgyncocpecf\",\"name\":\"m\",\"type\":\"coofsxlzev\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"vddntwn\",\"excludedAccounts\":[\"cbtwnpzaoqvuh\",\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"dtopbob\"},\"location\":\"ghmewuam\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}],\"nextLink\":\"hzgpphrcgyncocpe\"}")
             .toObject(PublicCloudConnectorListResult.class);
-        Assertions.assertEquals("btoqcjmkljavbqid", model.value().get(0).location());
-        Assertions.assertEquals("jzyulpk", model.value().get(0).tags().get("dj"));
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.value().get(0).properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("pcyshu",
+        Assertions.assertEquals("ghmewuam", model.value().get(0).location());
+        Assertions.assertEquals("rzayv", model.value().get(0).tags().get("t"));
+        Assertions.assertEquals("vddntwn", model.value().get(0).properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("cbtwnpzaoqvuh",
             model.value().get(0).properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(true, model.value().get(0).properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertTrue(model.value().get(0).properties().awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, model.value().get(0).properties().hostType());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals("hzgpphrcgyncocpe", model.nextLink());
     }
 }

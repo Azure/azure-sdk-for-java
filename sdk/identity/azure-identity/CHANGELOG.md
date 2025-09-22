@@ -1,19 +1,36 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
-
-- Added claims challenge handling support to `AzureCliCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
-- Added claims challenge handling support to `AzurePowerShellCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
+## 1.19.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.18.0 (2025-09-16)
+
+### Features Added
+
+- Added claims challenge support to `AzureDeveloperCliCredential`. Claims provided in `TokenRequestContext` are now passed to Azure Developer CLI via the `--claims` parameter, requiring azd CLI 1.18.1 or higher. Also enhanced error handling to extract user-friendly messages from JSON output and provide clear version compatibility warnings when the `--claims` flag is unsupported.
+- Added claims challenge handling support to `AzureCliCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
+- Added claims challenge handling support to `AzurePowerShellCredential`. When a token request includes claims, the credential will now throw a `CredentialUnavailableException` with instructions to use Azure PowerShell directly with the appropriate `-ClaimsChallenge` parameter.
+- Added `AzureIdentityEnvVars` expandable string enum for type-safe environment variable names used in Azure Identity credentials.
+- Added `requireEnvVars(AzureIdentityEnvVars... envVars)` method to `DefaultAzureCredentialBuilder` to enforce the presence of specific environment variables at build time. When configured, the credential will throw an `IllegalStateException` during `build()` if any of the specified environment variables are missing or empty.
+
+### Bugs Fixed
 - Fixed `AzurePowerShellCredential` handling of XML header responses and `/Date(epochTime)/` time format parsing that previously caused `JsonParsingException`. [#46572](https://github.com/Azure/azure-sdk-for-java/pull/46572)
 - Fixed `AzureDeveloperCliCredential` hanging when `AZD_DEBUG` environment variable is set by adding `--no-prompt` flag to the `azd auth token` command.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `com.microsoft.azure:msal4j` from version `1.22.0` to version `1.23.1`.
 
 ## 1.17.0 (2025-08-08)
 

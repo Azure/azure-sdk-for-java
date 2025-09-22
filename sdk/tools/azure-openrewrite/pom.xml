@@ -188,7 +188,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+          <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -223,7 +223,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -287,7 +287,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class NetAppVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetAppVolume model = BinaryData.fromString("{\"id\":\"pumnz\"}").toObject(NetAppVolume.class);
-        Assertions.assertEquals("pumnz", model.id());
+        NetAppVolume model = BinaryData.fromString("{\"id\":\"rvqdra\"}").toObject(NetAppVolume.class);
+        Assertions.assertEquals("rvqdra", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetAppVolume model = new NetAppVolume().withId("pumnz");
+        NetAppVolume model = new NetAppVolume().withId("rvqdra");
         model = BinaryData.fromObject(model).toObject(NetAppVolume.class);
-        Assertions.assertEquals("pumnz", model.id());
+        Assertions.assertEquals("rvqdra", model.id());
     }
 }

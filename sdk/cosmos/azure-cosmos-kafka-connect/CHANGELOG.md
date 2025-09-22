@@ -7,6 +7,12 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 2.5.1 (2025-08-22)
+
+#### Bugs Fixed
 * Fixed an issue where `CosmosSourceConnector` got stuck when restart - See [PR 46378](https://github.com/Azure/azure-sdk-for-java/pull/46378)
 * Fixed `BadRequestException` in `CosmosSourceConnector` when using `azure.cosmos.source.containers.includeAll=true` - See [PR 46389](https://github.com/Azure/azure-sdk-for-java/pull/46389)
 * Fixed `NullPointerException` in `CosmosSourceConnector` when using `azure.cosmos.source.changeFeed.mode=AllVersionsAndDeletes` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
