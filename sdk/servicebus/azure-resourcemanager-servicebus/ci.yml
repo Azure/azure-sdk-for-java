@@ -36,7 +36,7 @@ parameters:
   default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: servicebus/azure-resourcemanager-servicebus
     Artifacts:
