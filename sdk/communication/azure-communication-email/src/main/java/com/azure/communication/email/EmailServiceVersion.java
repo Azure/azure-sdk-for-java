@@ -12,7 +12,10 @@ public enum EmailServiceVersion implements ServiceVersion {
     V2023_03_31("2023-03-31"),
 
     /** Enum value 2024-07-01-preview. */
-    V2024_07_01_Preview("2024-07-01-preview");
+    V2024_07_01_Preview("2024-07-01-preview"),
+
+    /** Enum value 2025-09-01. */
+    V2025_09_01("2025-09-01");
 
     private final String version;
 
@@ -31,6 +34,6 @@ public enum EmailServiceVersion implements ServiceVersion {
      * @return The latest {@link EmailServiceVersion}.
      */
     public static EmailServiceVersion getLatest() {
-        return V2024_07_01_Preview;
+        return V2025_09_01;
     }
 }

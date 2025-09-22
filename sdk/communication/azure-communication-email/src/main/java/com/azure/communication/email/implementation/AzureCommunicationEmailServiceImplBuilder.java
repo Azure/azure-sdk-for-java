@@ -4,322 +4,83 @@
 
 package com.azure.communication.email.implementation;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.EndpointTrait;
-import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-/**
- * A builder for creating a new instance of the AzureCommunicationEmailService type.
- */
+/** A builder for creating a new instance of the AzureCommunicationEmailService type. */
 @ServiceClientBuilder(serviceClients = { AzureCommunicationEmailServiceImpl.class })
-public final class AzureCommunicationEmailServiceImplBuilder implements
-    HttpTrait<AzureCommunicationEmailServiceImplBuilder>, ConfigurationTrait<AzureCommunicationEmailServiceImplBuilder>,
-    AzureKeyCredentialTrait<AzureCommunicationEmailServiceImplBuilder>,
-    EndpointTrait<AzureCommunicationEmailServiceImplBuilder> {
-    @Generated
-    private static final String SDK_NAME = "name";
-
-    @Generated
-    private static final String SDK_VERSION = "version";
-
-    @Generated
-    private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-communication-email.properties");
-
-    @Generated
-    private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /**
-     * Create an instance of the AzureCommunicationEmailServiceImplBuilder.
-     */
-    @Generated
-    public AzureCommunicationEmailServiceImplBuilder() {
-        this.pipelinePolicies = new ArrayList<>();
-    }
-
+public final class AzureCommunicationEmailServiceImplBuilder {
     /*
-     * The HTTP pipeline to send requests through.
+     * The communication resource, for example
+     * https://my-resource.communication.azure.com
      */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /*
-     * The logging configuration for HTTP requests and responses.
-     */
-    @Generated
-    private HttpLogOptions httpLogOptions;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /*
-     * The client options such as application ID and custom headers to set on a request.
-     */
-    @Generated
-    private ClientOptions clientOptions;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /*
-     * The retry options to configure retry policy for failed requests.
-     */
-    @Generated
-    private RetryOptions retryOptions;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder retryOptions(RetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
-        pipelinePolicies.add(customPolicy);
-        return this;
-    }
-
-    /*
-     * The configuration store that is used during construction of the service client.
-     */
-    @Generated
-    private Configuration configuration;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /*
-     * The AzureKeyCredential used for authentication.
-     */
-    @Generated
-    private AzureKeyCredential azureKeyCredential;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationEmailServiceImplBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
-        return this;
-    }
-
-    /*
-     * The service endpoint
-     */
-    @Generated
     private String endpoint;
 
     /**
-     * {@inheritDoc}.
+     * Sets The communication resource, for example https://my-resource.communication.azure.com.
+     *
+     * @param endpoint the endpoint value.
+     * @return the AzureCommunicationEmailServiceImplBuilder.
      */
-    @Generated
-    @Override
     public AzureCommunicationEmailServiceImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
 
     /*
-     * Api Version
+     * The HTTP pipeline to send requests through
      */
-    @Generated
-    private String apiVersion;
+    private HttpPipeline pipeline;
 
     /**
-     * Sets Api Version.
-     * 
-     * @param apiVersion the apiVersion value.
+     * Sets The HTTP pipeline to send requests through.
+     *
+     * @param pipeline the pipeline value.
      * @return the AzureCommunicationEmailServiceImplBuilder.
      */
-    @Generated
-    public AzureCommunicationEmailServiceImplBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public AzureCommunicationEmailServiceImplBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
         return this;
     }
 
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated
     private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureCommunicationEmailServiceImplBuilder.
      */
-    @Generated
     public AzureCommunicationEmailServiceImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
-    /*
-     * The retry policy that will attempt to retry failed requests, if applicable.
-     */
-    @Generated
-    private RetryPolicy retryPolicy;
-
-    /**
-     * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
-     * @param retryPolicy the retryPolicy value.
-     * @return the AzureCommunicationEmailServiceImplBuilder.
-     */
-    @Generated
-    public AzureCommunicationEmailServiceImplBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        return this;
-    }
-
     /**
      * Builds an instance of AzureCommunicationEmailServiceImpl with the provided parameters.
-     * 
+     *
      * @return an instance of AzureCommunicationEmailServiceImpl.
      */
-    @Generated
     public AzureCommunicationEmailServiceImpl buildClient() {
-        this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-07-01-preview";
-        SerializerAdapter localSerializerAdapter
-            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        AzureCommunicationEmailServiceImpl client = new AzureCommunicationEmailServiceImpl(localPipeline,
-            localSerializerAdapter, this.endpoint, localApiVersion);
+        if (pipeline == null) {
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
+        }
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        AzureCommunicationEmailServiceImpl client
+            = new AzureCommunicationEmailServiceImpl(pipeline, serializerAdapter, endpoint);
         return client;
-    }
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
-
-    @Generated
-    private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
-        if (headers != null) {
-            policies.add(new AddHeadersPolicy(headers));
-        }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
-        policies.add(new AddDatePolicy());
-        if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
-        }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
-        return httpPipeline;
     }
 }
