@@ -7,12 +7,6 @@
 - Consumers can now provide a value for the `ContentId` property when sending emails with attachments.
   This allows consumers to reference attachments in the email body using the `cid` scheme. The `ContentId` property can be set on the `EmailAttachment` object.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.24 (2025-08-21)
 
 ### Other Changes
