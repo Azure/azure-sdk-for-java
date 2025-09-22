@@ -13,7 +13,6 @@
     <module>azure-resourcemanager-appplatform</module>
     <module>azure-resourcemanager-perf</module>
     <module>azure-resourcemanager-samples</module>
-    <module>azure-resourcemanager-servicebus</module>
     <module>azure-resourcemanager-test</module>
   </modules>
 </project>
