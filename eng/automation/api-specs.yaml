@@ -5,6 +5,8 @@
   # suffix: suffix for sdk automation, usually it is due to premium sdk
 app:
   service: appcontainers
+app/Microsoft.App/ContainerApps:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -17,6 +19,8 @@ azurestackhci/Microsoft.AzureStackHCI/StackHCI:
   service: azurestackhci
 cdn:
   suffix: generated
+certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
+  service: certificateregistration
 compute:
   suffix: generated
 containerinstance:
@@ -48,6 +52,8 @@ dnc:
   service: delegatednetwork
 dns:
   suffix: generated
+domainregistration/Microsoft.DomainRegistration/DomainRegistration:
+  service: domainregistration
 eventhub:
   service: eventhubs
   suffix: generated
