@@ -1,8 +1,4 @@
-<!--
- Copyright (c) Microsoft Corporation. All rights reserved.
- Licensed under the MIT License. See License.txt in the project root for
- license information.
--->
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -13,12 +9,12 @@
   </parent>
 
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-servicebus</artifactId>
-  <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
+  <artifactId>azure-resourcemanager-cosmos</artifactId>
+  <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for ServiceBus Management</name>
-  <description>This package contains Microsoft Azure ServiceBus Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
+  <name>Microsoft Azure SDK for CosmosDB Management</name>
+  <description>This package contains Microsoft Azure CosmosDB SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -37,12 +33,14 @@
 
   <properties>
     <!-- RMJacoco -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-opens com.azure.resourcemanager.servicebus/com.azure.resourcemanager.servicebus=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
 
+      --add-opens com.azure.resourcemanager.cosmos/com.azure.resourcemanager.cosmos=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
@@ -73,6 +71,24 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-storage</artifactId>
+      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-network</artifactId>
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
@@ -91,7 +107,7 @@
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
           <artifactId>azure-resourcemanager-test</artifactId>
-          <version>2.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
