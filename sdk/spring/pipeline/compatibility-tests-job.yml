@@ -32,6 +32,7 @@ jobs:
             - 'sdk/authorization/azure-resourcemanager-authorization'
             - 'sdk/core'
             - 'sdk/cosmos/azure-cosmos'
+            - 'sdk/cosmos/azure-resourcemanager-cosmos'
             - 'sdk/cdn/azure-resourcemanager-cdn'
             - 'sdk/compute/azure-resourcemanager-compute'
             - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
