@@ -132,7 +132,7 @@ public interface DiagnosticsClientContext {
         private String sessionRetryOptionsAsString;
         private String regionScopedSessionContainerOptionsAsString;
         private String partitionLevelCircuitBreakerConfigAsString;
-        private String isPerPartitionAutomaticFailoverEnabledAsString;
+        private String isPerPartitionAutomaticFailoverEnabledAsString = "false";
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
