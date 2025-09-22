@@ -277,7 +277,10 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
 # Returns the maven (really sonatype) publish status of a package id and version.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  # oss.sonatype.org seems to have started returning 403 for our agents. Based on https://central.sonatype.org/faq/403-error-central it is likely
+  # because some agent is trying to query the directory too frequently. So we will attempt to query the raw maven repo itself.
+  # $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  $uri = "https://repo1.maven.org/maven2/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
   $attempt = 1
   while ($attempt -le 3)
