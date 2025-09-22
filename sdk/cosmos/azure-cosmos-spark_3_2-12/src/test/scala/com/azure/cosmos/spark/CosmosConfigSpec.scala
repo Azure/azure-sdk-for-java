@@ -1505,7 +1505,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     val containerConfig = Map(
       "spark.cosmos.database" -> "TestDatabase",
       "spark.cosmos.container" -> "TestContainer",
-      "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "10"
+      "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "240"
     )
 
     val parsedConfig = CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
@@ -1523,7 +1523,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
       CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
       fail("Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [60, 1800]")
     } catch {
-      case _: AssertionError =>
+      case assertError: AssertionError =>
+        assertError.getMessage shouldEqual "assertion failed: Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [60, 1800]"
       case _ => fail("expecting AssertionError for invalid spark.cosmos.metadata.feedRange.refreshIntervalInSeconds")
     }
   }
