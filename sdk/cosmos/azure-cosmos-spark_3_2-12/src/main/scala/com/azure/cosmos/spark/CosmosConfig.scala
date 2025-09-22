@@ -1923,9 +1923,9 @@ private object CosmosContainerConfig {
 
   private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Int](key = CosmosConfigNames.FeedRangeRefreshIntervalInSeconds,
     mandatory = false,
-    defaultValue = DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS,
+    defaultValue = Some(DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS),
     parseFromStringFunction = refreshIntervalInSeconds => refreshIntervalInSeconds.toInt,
-    helpMessage = "Cosmos DB Container feed range refresh interval. By default it is 2 mins.")
+    helpMessage = "The time interval in minutes to refresh the internal partition key range cache, valid between [120, 1800]. By default it is 120 seconds.")
 
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
     this.parseCosmosContainerConfig(cfg, None, None)
