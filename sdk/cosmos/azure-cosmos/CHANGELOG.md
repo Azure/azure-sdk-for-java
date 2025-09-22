@@ -3,7 +3,7 @@
 ### 4.75.0-beta.1 (Unreleased)
 
 #### Features Added
-* AAD Auth: Adds a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
+* AAD Auth: Added a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
 
 #### Breaking Changes
 
