@@ -81,12 +81,12 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
         networkManager = NetworkManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile);
 
         computeFleetManager = ComputeFleetManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .withPolicy(new ProviderRegistrationPolicy(networkManager.resourceManager()))
             .authenticate(credential, profile);
 
@@ -118,6 +118,18 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             String loadBalancerName = "loadBalancer" + randomPadding();
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
+
+            resourceManager.providers().register("Microsoft.Network");
+            Provider provider = resourceManager.providers().getByName("Microsoft.Network");
+            while (!"Registered".equals(provider.registrationState())) {
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+                provider = resourceManager.providers().getByName("Microsoft.Network");
+            }
+
             // @embedmeStart
             Network network = networkManager.networks()
                 .define(vnetName)
@@ -142,17 +154,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .attach()
                 .withSku(LoadBalancerSkuType.STANDARD)
                 .create();
-
-            resourceManager.providers().register("Microsoft.AzureFleet");
-            Provider provider = resourceManager.providers().getByName("Microsoft.AzureFleet");
-            while (!"Registered".equals(provider.registrationState())) {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    break;
-                }
-                provider = resourceManager.providers().getByName("Microsoft.AzureFleet");
-            }
 
             fleet = computeFleetManager.fleets()
                 .define(fleetName)
