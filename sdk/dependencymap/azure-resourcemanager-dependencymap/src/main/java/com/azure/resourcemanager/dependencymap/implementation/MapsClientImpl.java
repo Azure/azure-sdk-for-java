@@ -35,11 +35,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dependencymap.fluent.MapsClient;
+import com.azure.resourcemanager.dependencymap.fluent.models.ExportDependenciesOperationResultInner;
+import com.azure.resourcemanager.dependencymap.fluent.models.GetDependencyViewForAllMachinesOperationResultInner;
 import com.azure.resourcemanager.dependencymap.fluent.models.MapsResourceInner;
 import com.azure.resourcemanager.dependencymap.implementation.models.MapsResourceListResult;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsWithConnectedMachineForFocusedMachineRequest;
+import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForAllMachinesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.MapsResourceTagsUpdate;
 import java.nio.ByteBuffer;
@@ -248,25 +251,41 @@ public final class MapsClientImpl implements MapsClient {
             @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") GetConnectionsForProcessOnFocusedMachineRequest body, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportDependencies(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
-            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ExportDependenciesRequest body, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> exportDependenciesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
-            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ExportDependenciesRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForAllMachines")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getDependencyViewForAllMachines(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetDependencyViewForAllMachinesRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForAllMachines")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> getDependencyViewForAllMachinesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetDependencyViewForAllMachinesRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1589,15 +1608,16 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportDependenciesWithResponseAsync(String resourceGroupName,
         String mapName, ExportDependenciesRequest body) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.exportDependencies(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body, context))
+                this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1616,8 +1636,9 @@ public final class MapsClientImpl implements MapsClient {
     private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
         ExportDependenciesRequest body) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.exportDependenciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, Context.NONE);
     }
 
     /**
@@ -1636,8 +1657,9 @@ public final class MapsClientImpl implements MapsClient {
     private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
         ExportDependenciesRequest body, Context context) {
         final String contentType = "application/json";
+        final String accept = "application/json";
         return service.exportDependenciesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, body, context);
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context);
     }
 
     /**
@@ -1652,11 +1674,12 @@ public final class MapsClientImpl implements MapsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExportDependenciesAsync(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body) {
+    private PollerFlux<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
+        beginExportDependenciesAsync(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportDependenciesWithResponseAsync(resourceGroupName, mapName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<ExportDependenciesOperationResultInner, ExportDependenciesOperationResultInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExportDependenciesOperationResultInner.class,
+            ExportDependenciesOperationResultInner.class, this.client.getContext());
     }
 
     /**
@@ -1671,10 +1694,12 @@ public final class MapsClientImpl implements MapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body) {
+    public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
+        beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
         Response<BinaryData> response = exportDependenciesWithResponse(resourceGroupName, mapName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<ExportDependenciesOperationResultInner, ExportDependenciesOperationResultInner>getLroResult(
+            response, ExportDependenciesOperationResultInner.class, ExportDependenciesOperationResultInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1690,10 +1715,13 @@ public final class MapsClientImpl implements MapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body, Context context) {
+    public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
+        beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
+            Context context) {
         Response<BinaryData> response = exportDependenciesWithResponse(resourceGroupName, mapName, body, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<ExportDependenciesOperationResultInner, ExportDependenciesOperationResultInner>getLroResult(
+            response, ExportDependenciesOperationResultInner.class, ExportDependenciesOperationResultInner.class,
+            context);
     }
 
     /**
@@ -1705,11 +1733,11 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> exportDependenciesAsync(String resourceGroupName, String mapName,
-        ExportDependenciesRequest body) {
+    private Mono<ExportDependenciesOperationResultInner> exportDependenciesAsync(String resourceGroupName,
+        String mapName, ExportDependenciesRequest body) {
         return beginExportDependenciesAsync(resourceGroupName, mapName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1723,10 +1751,12 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body) {
-        beginExportDependencies(resourceGroupName, mapName, body).getFinalResult();
+    public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body) {
+        return beginExportDependencies(resourceGroupName, mapName, body).getFinalResult();
     }
 
     /**
@@ -1739,11 +1769,201 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
-        Context context) {
-        beginExportDependencies(resourceGroupName, mapName, body, context).getFinalResult();
+    public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
+        ExportDependenciesRequest body, Context context) {
+        return beginExportDependencies(resourceGroupName, mapName, body, context).getFinalResult();
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getDependencyViewForAllMachinesWithResponseAsync(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getDependencyViewForAllMachines(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, contentType,
+                accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getDependencyViewForAllMachinesWithResponse(String resourceGroupName, String mapName,
+        GetDependencyViewForAllMachinesRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getDependencyViewForAllMachinesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getDependencyViewForAllMachinesWithResponse(String resourceGroupName, String mapName,
+        GetDependencyViewForAllMachinesRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getDependencyViewForAllMachinesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, contentType, accept, body, context);
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of dependencies for all machines.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<GetDependencyViewForAllMachinesOperationResultInner>, GetDependencyViewForAllMachinesOperationResultInner>
+        beginGetDependencyViewForAllMachinesAsync(String resourceGroupName, String mapName,
+            GetDependencyViewForAllMachinesRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getDependencyViewForAllMachinesWithResponseAsync(resourceGroupName, mapName, body);
+        return this.client
+            .<GetDependencyViewForAllMachinesOperationResultInner, GetDependencyViewForAllMachinesOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GetDependencyViewForAllMachinesOperationResultInner.class,
+                GetDependencyViewForAllMachinesOperationResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of dependencies for all machines.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<GetDependencyViewForAllMachinesOperationResultInner>, GetDependencyViewForAllMachinesOperationResultInner>
+        beginGetDependencyViewForAllMachines(String resourceGroupName, String mapName,
+            GetDependencyViewForAllMachinesRequest body) {
+        Response<BinaryData> response = getDependencyViewForAllMachinesWithResponse(resourceGroupName, mapName, body);
+        return this.client
+            .<GetDependencyViewForAllMachinesOperationResultInner, GetDependencyViewForAllMachinesOperationResultInner>getLroResult(
+                response, GetDependencyViewForAllMachinesOperationResultInner.class,
+                GetDependencyViewForAllMachinesOperationResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of dependencies for all machines.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<GetDependencyViewForAllMachinesOperationResultInner>, GetDependencyViewForAllMachinesOperationResultInner>
+        beginGetDependencyViewForAllMachines(String resourceGroupName, String mapName,
+            GetDependencyViewForAllMachinesRequest body, Context context) {
+        Response<BinaryData> response
+            = getDependencyViewForAllMachinesWithResponse(resourceGroupName, mapName, body, context);
+        return this.client
+            .<GetDependencyViewForAllMachinesOperationResultInner, GetDependencyViewForAllMachinesOperationResultInner>getLroResult(
+                response, GetDependencyViewForAllMachinesOperationResultInner.class,
+                GetDependencyViewForAllMachinesOperationResultInner.class, context);
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetDependencyViewForAllMachinesOperationResultInner> getDependencyViewForAllMachinesAsync(
+        String resourceGroupName, String mapName, GetDependencyViewForAllMachinesRequest body) {
+        return beginGetDependencyViewForAllMachinesAsync(resourceGroupName, mapName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetDependencyViewForAllMachinesOperationResultInner getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body) {
+        return beginGetDependencyViewForAllMachines(resourceGroupName, mapName, body).getFinalResult();
+    }
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetDependencyViewForAllMachinesOperationResultInner getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body, Context context) {
+        return beginGetDependencyViewForAllMachines(resourceGroupName, mapName, body, context).getFinalResult();
     }
 
     /**
