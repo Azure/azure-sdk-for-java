@@ -14,6 +14,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.computefleet.models.FleetUpdate;
+import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
@@ -141,6 +142,17 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
                 .attach()
                 .withSku(LoadBalancerSkuType.STANDARD)
                 .create();
+
+            resourceManager.providers().register("Microsoft.AzureFleet");
+            Provider provider = resourceManager.providers().getByName("Microsoft.AzureFleet");
+            while (!"Registered".equals(provider.registrationState())) {
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    break;
+                }
+                provider = resourceManager.providers().getByName("Microsoft.AzureFleet");
+            }
 
             fleet = computeFleetManager.fleets()
                 .define(fleetName)
