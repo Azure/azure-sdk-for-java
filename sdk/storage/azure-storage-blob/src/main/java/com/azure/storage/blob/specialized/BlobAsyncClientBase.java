@@ -1254,10 +1254,7 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders()))));
+            return withContext(context -> downloadContentWithResponseHelper(options, requestConditions, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1296,21 +1293,32 @@ public class BlobAsyncClientBase {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, DownloadContentValidationOptions contentValidationOptions) {
         try {
-            return withContext(context -> {
-                if (contentValidationOptions != null && (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled())) {
-                    return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
-                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                                data, r.getDeserializedHeaders())));
-                } else {
-                    return downloadStreamWithResponse(null, options, requestConditions, false, context)
-                        .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                            .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                                data, r.getDeserializedHeaders())));
-                }
-            });
+            return withContext(context -> downloadContentWithResponseHelper(options, requestConditions, contentValidationOptions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Helper method to consolidate downloadContentWithResponse logic for both overloads.
+     */
+    private Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponseHelper(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, DownloadContentValidationOptions contentValidationOptions, Context context) {
+        
+        // Determine if content validation is needed
+        boolean hasContentValidation = contentValidationOptions != null && 
+            (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled());
+        
+        if (hasContentValidation) {
+            return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
+                .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        data, r.getDeserializedHeaders())));
+        } else {
+            return downloadStreamWithResponse(null, options, requestConditions, false, context)
+                .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        data, r.getDeserializedHeaders())));
         }
     }
 
@@ -1383,13 +1391,27 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, DownloadContentValidationOptions contentValidationOptions, Context context) {
+        
+        // Consolidate validation logic - check if any content validation is needed
+        boolean hasContentValidation = contentValidationOptions != null && 
+            (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled());
+        
         // For backward compatibility, if no content validation options are provided, use the original method
-        if (contentValidationOptions == null || (!contentValidationOptions.isStructuredMessageValidationEnabled() && !contentValidationOptions.isMd5ValidationEnabled())) {
+        if (!hasContentValidation) {
             return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context);
         }
 
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = getRangeContentMd5 || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()) ? true : null;
+        
+        // Determine MD5 validation: properly consider both getRangeContentMd5 parameter and validation options
+        // MD5 validation is enabled if:
+        // 1. getRangeContentMd5 is explicitly true, OR
+        // 2. contentValidationOptions.isMd5ValidationEnabled() is true
+        Boolean getMD5 = null;
+        if (getRangeContentMd5 || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled())) {
+            getMD5 = true;
+        }
+        
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
@@ -1419,12 +1441,12 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                // Apply structured message decoding if enabled
-                Flux<ByteBuffer> decodedStream = response.getValue();
+                // Apply structured message decoding if enabled - this allows both MD5 and structured message to coexist
+                Flux<ByteBuffer> processedStream = response.getValue();
                 if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
                     // Use the content length from headers to determine expected length for structured message decoding
                     Long contentLength = blobDownloadHeaders.getContentLength();
-                    decodedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(response.getValue(), contentLength, contentValidationOptions);
+                    processedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(response.getValue(), contentLength, contentValidationOptions);
                 }
 
                 // The resume function takes throwable and offset at the destination.
@@ -1457,35 +1479,11 @@ public class BlobAsyncClientBase {
                     }
                 };
 
-                // Create a new response with the decoded stream
-                StreamResponse decodedResponse = new StreamResponse() {
-                    @Override
-                    public int getStatusCode() {
-                        return response.getStatusCode();
-                    }
-
-                    @Override
-                    public HttpHeaders getHeaders() {
-                        return response.getHeaders();
-                    }
-
-                    @Override
-                    public Flux<ByteBuffer> getValue() {
-                        return decodedStream;
-                    }
-
-                    @Override
-                    public HttpRequest getRequest() {
-                        return response.getRequest();
-                    }
-
-                    @Override
-                    public void close() {
-                        response.close();
-                    }
-                };
-
-                return BlobDownloadAsyncResponseConstructorProxy.create(decodedResponse, onDownloadErrorResume, finalOptions);
+                // Create a new response with the processed stream (which may include structured message decoding)
+                // Use the same approach as the original method to maintain consistency
+                return BlobDownloadAsyncResponseConstructorProxy.create(
+                    new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), 
+                        processedStream, blobDownloadHeaders), onDownloadErrorResume, finalOptions);
             });
     }
 
