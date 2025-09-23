@@ -411,7 +411,6 @@ jobs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -SourcesDirectory $(Build.SourcesDirectory)
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
 
