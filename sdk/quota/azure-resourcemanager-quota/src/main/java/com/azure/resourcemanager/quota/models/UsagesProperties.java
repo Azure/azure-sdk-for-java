@@ -132,20 +132,6 @@ public final class UsagesProperties implements JsonSerializable<UsagesProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (usages() != null) {
-            usages().validate();
-        }
-        if (name() != null) {
-            name().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

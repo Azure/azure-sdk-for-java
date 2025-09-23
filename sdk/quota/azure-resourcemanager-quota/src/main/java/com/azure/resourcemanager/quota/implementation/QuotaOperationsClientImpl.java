@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 import com.azure.resourcemanager.quota.implementation.models.OperationList;
@@ -102,10 +101,6 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResponseInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -136,11 +131,6 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationResponseInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperationList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
@@ -159,11 +149,6 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationResponseInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperationList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
@@ -209,13 +194,6 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResponseInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<OperationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -234,15 +212,6 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationResponseInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -261,20 +230,9 @@ public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationResponseInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(QuotaOperationsClientImpl.class);
 }

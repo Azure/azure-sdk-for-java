@@ -177,20 +177,6 @@ public final class QuotaProperties implements JsonSerializable<QuotaProperties> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (limit() != null) {
-            limit().validate();
-        }
-        if (name() != null) {
-            name().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
