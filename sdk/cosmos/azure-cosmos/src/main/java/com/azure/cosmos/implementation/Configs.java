@@ -360,6 +360,11 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    // Config to indicate page size when suppress PK range page size is true
+    private static final int DEFAULT_MAX_ITEM_COUNT_READ_FEED_PK_RANGE = -1;
+    private static final String MAX_ITEM_COUNT_READ_FEED_PK_RANGE = "COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE";
+    private static final String MAX_ITEM_COUNT_READ_FEED_PK_RANGE_VARIABLE = "COSMOS_MAX_ITEM_COUNT_READ_FEED_PK_RANGE";
+
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
@@ -1218,6 +1223,16 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static int getMaxItemCountForReadFeedOfPartitionKeyRange() {
+        String maxItemCountForReadFeedOfPartitionKeyRange = System.getProperty(
+            MAX_ITEM_COUNT_READ_FEED_PK_RANGE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(MAX_ITEM_COUNT_READ_FEED_PK_RANGE_VARIABLE)),
+                String.valueOf(DEFAULT_MAX_ITEM_COUNT_READ_FEED_PK_RANGE)));
+
+        return Integer.parseInt(maxItemCountForReadFeedOfPartitionKeyRange);
     }
 
     public static String getAzureMonitorConnectionString() {

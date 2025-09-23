@@ -4862,6 +4862,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+            qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
+        }
+
         return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
