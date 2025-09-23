@@ -9,6 +9,7 @@ pip3 install --upgrade PyYAML requests 2>&1
 echo Install tsp-client
 cd eng/common/tsp-client
 npm ci 2>&1
+cd ../../..
 
 cat << EOF > $2
 {"envs": {"PATH": "$JAVA_HOME_11_X64/bin:$PATH", "JAVA_HOME": "$JAVA_HOME_11_X64"}}
