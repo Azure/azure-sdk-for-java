@@ -7,7 +7,7 @@ We recommend [azure-resourcemanager-appcontainers](https://learn.microsoft.com/j
 Refer to [Azure Spring Apps retirement announcement](https://aka.ms/asaretirement) for the retirement details and how to migrate to the new services.
 Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
-### Breaking changes
+### Breaking Changes
 
 - Updated dependency scope of `azure-resourcemanager-resources` and `azure-storage-file-share` to `provided`.
 
