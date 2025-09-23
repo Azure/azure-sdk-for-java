@@ -102,17 +102,6 @@ public final class GroupQuotaRequestBaseProperties implements JsonSerializable<G
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerName() != null) {
-            innerName().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

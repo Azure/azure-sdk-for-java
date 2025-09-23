@@ -132,21 +132,6 @@ public final class GroupQuotaLimitProperties extends GroupQuotaDetails {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (innerName() != null) {
-            innerName().validate();
-        }
-        if (allocatedToSubscriptions() != null) {
-            allocatedToSubscriptions().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

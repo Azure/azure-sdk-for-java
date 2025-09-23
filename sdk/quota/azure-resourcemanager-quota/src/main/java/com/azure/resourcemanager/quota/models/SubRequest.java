@@ -123,20 +123,6 @@ public final class SubRequest implements JsonSerializable<SubRequest> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() != null) {
-            name().validate();
-        }
-        if (limit() != null) {
-            limit().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

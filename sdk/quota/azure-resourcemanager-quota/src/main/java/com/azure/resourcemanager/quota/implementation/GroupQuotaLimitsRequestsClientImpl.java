@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.GroupQuotaLimitsRequestsClient;
@@ -167,24 +166,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubmittedResourceRequestStatusInner>> listSinglePageAsync(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -234,27 +215,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SubmittedResourceRequestStatusList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -281,27 +241,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SubmittedResourceRequestStatusList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -379,27 +318,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotaLimitListInner groupQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (groupQuotaRequest != null) {
-            groupQuotaRequest.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -429,30 +347,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotaLimitListInner groupQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (groupQuotaRequest != null) {
-            groupQuotaRequest.validate();
-        }
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, groupQuotaRequest, Context.NONE);
@@ -481,30 +375,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotaLimitListInner groupQuotaRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (groupQuotaRequest != null) {
-            groupQuotaRequest.validate();
-        }
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, groupQuotaRequest, context);
@@ -778,20 +648,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubmittedResourceRequestStatusInner>> getWithResponseAsync(String managementGroupId,
         String groupQuotaName, String requestId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (requestId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -832,23 +688,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubmittedResourceRequestStatusInner> getWithResponse(String managementGroupId,
         String groupQuotaName, String requestId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (requestId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, requestId, accept, context);
@@ -882,13 +721,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubmittedResourceRequestStatusInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SubmittedResourceRequestStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -907,15 +739,6 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SubmittedResourceRequestStatusList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -935,21 +758,10 @@ public final class GroupQuotaLimitsRequestsClientImpl implements GroupQuotaLimit
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubmittedResourceRequestStatusInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SubmittedResourceRequestStatusList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GroupQuotaLimitsRequestsClientImpl.class);
 }
