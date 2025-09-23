@@ -14,7 +14,6 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.computefleet.models.FleetUpdate;
-import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
@@ -81,12 +80,12 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
         networkManager = NetworkManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
         computeFleetManager = ComputeFleetManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(networkManager.resourceManager()))
             .authenticate(credential, profile);
 
@@ -118,18 +117,6 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             String loadBalancerName = "loadBalancer" + randomPadding();
             String adminUser = "adminUser" + randomPadding();
             String adminPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
-
-            resourceManager.providers().register("Microsoft.Network");
-            Provider provider = resourceManager.providers().getByName("Microsoft.Network");
-            while (!"Registered".equals(provider.registrationState())) {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    break;
-                }
-                provider = resourceManager.providers().getByName("Microsoft.Network");
-            }
-
             // @embedmeStart
             Network network = networkManager.networks()
                 .define(vnetName)
