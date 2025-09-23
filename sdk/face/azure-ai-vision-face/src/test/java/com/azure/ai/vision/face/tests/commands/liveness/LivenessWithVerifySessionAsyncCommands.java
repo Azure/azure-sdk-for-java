@@ -5,10 +5,8 @@ package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.ai.vision.face.tests.function.FunctionUtils;
-import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessionSyncCommands {
@@ -18,9 +16,9 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
         this.mAsyncClient = asyncClient;
     }
 
-    public Mono<CreateLivenessWithVerifySessionResult>
-        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
-        return mAsyncClient.createLivenessWithVerifySession(content, verifyImage);
+    public Mono<LivenessWithVerifySession>
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content) {
+        return mAsyncClient.createLivenessWithVerifySession(content);
     }
 
     public Mono<LivenessWithVerifySession> getLivenessWithVerifySessionResult(String sessionId) {
@@ -32,9 +30,9 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
     }
 
     @Override
-    public CreateLivenessWithVerifySessionResult
-        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
-        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
+    public LivenessWithVerifySession
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content) {
+        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content));
     }
 
     @Override
