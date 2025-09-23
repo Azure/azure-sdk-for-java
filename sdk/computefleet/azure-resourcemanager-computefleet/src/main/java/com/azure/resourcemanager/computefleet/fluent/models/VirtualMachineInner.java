@@ -19,6 +19,11 @@ import java.io.IOException;
 @Immutable
 public final class VirtualMachineInner implements JsonSerializable<VirtualMachineInner> {
     /*
+     * The name of the virtual machine.
+     */
+    private String name;
+
+    /*
      * The compute RP resource id of the virtual machine.
      * subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}
      */
@@ -44,6 +49,15 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
      * Creates an instance of VirtualMachineInner class.
      */
     private VirtualMachineInner() {
+    }
+
+    /**
+     * Get the name property: The name of the virtual machine.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -109,7 +123,9 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
                     deserializedVirtualMachineInner.id = reader.getString();
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedVirtualMachineInner.operationStatus = VMOperationStatus.fromString(reader.getString());
