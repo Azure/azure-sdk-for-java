@@ -6453,6 +6453,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.throughputControlStore.close();
             }
 
+            this.perPartitionFailoverConfigModifier = null;
             logger.info("Shutting down completed.");
         } else {
             logger.warn("Already shutdown!");
