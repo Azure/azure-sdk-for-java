@@ -384,7 +384,7 @@ com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-quota;1.1.0;2.0.0
+com.azure.resourcemanager:azure-resourcemanager-quota;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0;1.1.0-beta.1
