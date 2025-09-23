@@ -1,4 +1,4 @@
 directory: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/loadtesting
-commit: 681c15ad9028f91b3f4978625527fd461b57f4fa
+commit: 05584a1019e75159b0dc70a6751afaa2c77868e6
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
