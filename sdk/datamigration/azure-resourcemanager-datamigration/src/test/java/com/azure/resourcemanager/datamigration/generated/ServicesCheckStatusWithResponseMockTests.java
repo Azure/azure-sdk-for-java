@@ -21,7 +21,7 @@ public final class ServicesCheckStatusWithResponseMockTests {
     @Test
     public void testCheckStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"agentVersion\":\"zplusdekpdzzms\",\"agentConfiguration\":\"datapgvokyejidbd\",\"status\":\"squnycwztlv\",\"vmSize\":\"snmr\",\"supportedTaskTypes\":[\"jtrepwpwfkcaux\",\"va\",\"cpfpdofuckcl\",\"txluevs\"]}";
+            = "{\"agentVersion\":\"huao\",\"agentConfiguration\":\"datajkehwvumosqi\",\"status\":\"amqprlo\",\"vmSize\":\"ugejcvjkjyczcmt\",\"supportedTaskTypes\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ServicesCheckStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataMigrationServiceStatusResponse response = manager.services()
-            .checkStatusWithResponse("to", "uwhttnzqsaqmeb", com.azure.core.util.Context.NONE)
+            .checkStatusWithResponse("iibntojo", "fnybydhuihaouw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zplusdekpdzzms", response.agentVersion());
-        Assertions.assertEquals("squnycwztlv", response.status());
-        Assertions.assertEquals("snmr", response.vmSize());
-        Assertions.assertEquals("jtrepwpwfkcaux", response.supportedTaskTypes().get(0));
+        Assertions.assertEquals("huao", response.agentVersion());
+        Assertions.assertEquals("amqprlo", response.status());
+        Assertions.assertEquals("ugejcvjkjyczcmt", response.vmSize());
+        Assertions.assertEquals("lajdyoljeqyxq", response.supportedTaskTypes().get(0));
     }
 }
