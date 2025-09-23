@@ -28,7 +28,8 @@ public final class TasksDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.tasks()
-            .deleteWithResponse("x", "aqawbmpspfeylql", "cvvuj", "xayg", false, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("pjlwyxe", "znmxr", "omckewvmyifopx", "jjtpdyzoutxfptof", true,
+                com.azure.core.util.Context.NONE);
 
     }
 }

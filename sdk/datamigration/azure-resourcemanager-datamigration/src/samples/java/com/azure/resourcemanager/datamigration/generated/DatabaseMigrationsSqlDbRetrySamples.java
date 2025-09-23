@@ -8,23 +8,23 @@ import com.azure.resourcemanager.datamigration.models.MigrationOperationInput;
 import java.util.UUID;
 
 /**
- * Samples for DatabaseMigrationsSqlMi Cancel.
+ * Samples for DatabaseMigrationsSqlDb Retry.
  */
-public final class DatabaseMigrationsSqlMiCancelSamples {
+public final class DatabaseMigrationsSqlDbRetrySamples {
     /*
      * x-ms-original-file:
      * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
-     * SqlMiCancelDatabaseMigration.json
+     * SqlDbRetryDatabaseMigration.json
      */
     /**
-     * Sample code: Stop ongoing migration for the database.
+     * Sample code: Retry Database Migration resource.
      * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void
-        stopOngoingMigrationForTheDatabase(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager.databaseMigrationsSqlMis()
-            .cancel("testrg", "managedInstance1", "db1", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("4124fe90-d1b6-4b50-b4d9-46d02381f59a")), com.azure.core.util.Context.NONE);
+        retryDatabaseMigrationResource(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.databaseMigrationsSqlDbs()
+            .retry("testrg", "sqldbinstance", "db1", new MigrationOperationInput().withMigrationOperationId(
+                UUID.fromString("9a90bb84-e70f-46f7-b0ae-1aef5b3b9f07")), com.azure.core.util.Context.NONE);
     }
 }

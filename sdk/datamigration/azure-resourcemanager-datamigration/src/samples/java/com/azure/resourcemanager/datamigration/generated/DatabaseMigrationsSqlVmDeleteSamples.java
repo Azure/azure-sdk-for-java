@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.datamigration.generated;
 
 /**
- * Samples for SqlMigrationServices ListMigrations.
+ * Samples for DatabaseMigrationsSqlVm Delete.
  */
-public final class SqlMigrationServicesListMigrationsSamples {
+public final class DatabaseMigrationsSqlVmDeleteSamples {
     /*
      * x-ms-original-file:
      * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
-     * ListMigrationsBySqlMigrationService.json
+     * SqlVmDeleteDatabaseMigration.json
      */
     /**
-     * Sample code: List database migrations attached to the service.
+     * Sample code: Create or Update Database Migration resource with Minimum parameters.
      * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void listDatabaseMigrationsAttachedToTheService(
+    public static void createOrUpdateDatabaseMigrationResourceWithMinimumParameters(
         com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager.sqlMigrationServices().listMigrations("testrg", "service1", com.azure.core.util.Context.NONE);
+        manager.databaseMigrationsSqlVms().delete("testrg", "testvm", "db1", null, com.azure.core.util.Context.NONE);
     }
 }
