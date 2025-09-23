@@ -10,6 +10,9 @@ the state of the current codebase.
 If the regenerated code is different than the current codebase this will report the differences and exit with a failure
 status.
 
+.PARAMETER SourcesDirectory
+The root directory of the repository. This is typically set to $(Build.SourcesDirectory) in an Azure DevOps pipeline.
+
 .PARAMETER ServiceDirectories
 The service directories that will be searched for either 'Update-Codegeneration.ps1' or 'tsp-location.yaml' files to
 run code regeneration. If this parameter is not specified, the script will not check any directories and will exit
@@ -25,6 +28,9 @@ less than 1, it will default to 1.
 #>
 
 param(
+  [Parameter(Mandatory=$true)]
+  [string]$SourcesDirectory,
+
   [Parameter(Mandatory = $false)]
   [string]$ServiceDirectories,
 
@@ -133,7 +139,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
 }
 
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
+  $output = (& npm ci --prefix "$SourcesDirectory/eng/common/tsp-client" 2>&1)
   if ($LASTEXITCODE -ne 0) {
     Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
@@ -168,7 +174,7 @@ $generateScript = {
     Push-Location $directory
     try {
       try {
-        $generateOutput = (& tsp-client update 2>&1)
+        $generateOutput = (& npx --prefix "$SourcesDirectory/eng/common/tsp-client" tsp-client update 2>&1)
         if ($LastExitCode -ne 0) {
           Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
           throw
