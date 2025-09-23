@@ -22,7 +22,7 @@ public final class MapsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\"},\"location\":\"newmdwzjeiachbo\",\"tags\":{\"eeh\":\"lnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"maajrmvdjwzrlo\",\"tags\":{\"qsycbkbfkgu\":\"lwhijcoejctbzaq\",\"axcfjpgddtocjjx\":\"dkexxppofm\",\"eojnxqbzvddn\":\"vpmouexhdzxib\",\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class MapsListMockTests {
 
         PagedIterable<MapsResource> response = manager.maps().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("newmdwzjeiachbo", response.iterator().next().location());
-        Assertions.assertEquals("lnrosfqp", response.iterator().next().tags().get("eeh"));
+        Assertions.assertEquals("maajrmvdjwzrlo", response.iterator().next().location());
+        Assertions.assertEquals("lwhijcoejctbzaq", response.iterator().next().tags().get("qsycbkbfkgu"));
     }
 }

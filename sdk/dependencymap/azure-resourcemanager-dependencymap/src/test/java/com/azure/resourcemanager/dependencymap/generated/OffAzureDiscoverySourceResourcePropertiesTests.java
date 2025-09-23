@@ -12,17 +12,16 @@ public final class OffAzureDiscoverySourceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OffAzureDiscoverySourceResourceProperties model = BinaryData
-            .fromString(
-                "{\"sourceType\":\"OffAzure\",\"provisioningState\":\"Deleting\",\"sourceId\":\"jbiksqrglssai\"}")
+            .fromString("{\"sourceType\":\"OffAzure\",\"provisioningState\":\"Provisioning\",\"sourceId\":\"ot\"}")
             .toObject(OffAzureDiscoverySourceResourceProperties.class);
-        Assertions.assertEquals("jbiksqrglssai", model.sourceId());
+        Assertions.assertEquals("ot", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OffAzureDiscoverySourceResourceProperties model
-            = new OffAzureDiscoverySourceResourceProperties().withSourceId("jbiksqrglssai");
+            = new OffAzureDiscoverySourceResourceProperties().withSourceId("ot");
         model = BinaryData.fromObject(model).toObject(OffAzureDiscoverySourceResourceProperties.class);
-        Assertions.assertEquals("jbiksqrglssai", model.sourceId());
+        Assertions.assertEquals("ot", model.sourceId());
     }
 }

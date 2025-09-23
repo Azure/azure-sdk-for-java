@@ -323,8 +323,9 @@ public interface MapsResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void exportDependencies(ExportDependenciesRequest body);
+    ExportDependenciesOperationResult exportDependencies(ExportDependenciesRequest body);
 
     /**
      * Export dependencies.
@@ -334,6 +335,32 @@ public interface MapsResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void exportDependencies(ExportDependenciesRequest body, Context context);
+    ExportDependenciesOperationResult exportDependencies(ExportDependenciesRequest body, Context context);
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    GetDependencyViewForAllMachinesOperationResult
+        getDependencyViewForAllMachines(GetDependencyViewForAllMachinesRequest body);
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    GetDependencyViewForAllMachinesOperationResult
+        getDependencyViewForAllMachines(GetDependencyViewForAllMachinesRequest body, Context context);
 }
