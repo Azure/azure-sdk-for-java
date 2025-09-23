@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contoso/ci.yml
+      - sdk/contoso/azure-resourcemanager-contoso/
+    exclude:
+      - sdk/contoso/pom.xml
+      - sdk/contoso/azure-resourcemanager-contoso/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contoso/ci.yml
+      - sdk/contoso/azure-resourcemanager-contoso/
+    exclude:
+      - sdk/contoso/pom.xml
+      - sdk/contoso/azure-resourcemanager-contoso/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontoso
+    displayName: azure-resourcemanager-contoso
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: contoso
+    Artifacts:
+      - name: azure-resourcemanager-contoso
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontoso
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontoso }}
