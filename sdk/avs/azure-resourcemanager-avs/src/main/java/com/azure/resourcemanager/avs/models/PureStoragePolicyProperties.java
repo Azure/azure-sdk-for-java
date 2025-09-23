@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -86,26 +85,6 @@ public final class PureStoragePolicyProperties implements JsonSerializable<PureS
     public PureStoragePolicyProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (storagePolicyDefinition() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storagePolicyDefinition in model PureStoragePolicyProperties"));
-        }
-        if (storagePoolId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storagePoolId in model PureStoragePolicyProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PureStoragePolicyProperties.class);
 
     /**
      * {@inheritDoc}

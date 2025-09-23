@@ -644,23 +644,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (driveConfiguration() != null) {
-            driveConfiguration().forEach(e -> e.validate());
-        }
-        if (bgpConfiguration() != null) {
-            bgpConfiguration().validate();
-        }
-        if (proxyUrlConfiguration() != null) {
-            proxyUrlConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

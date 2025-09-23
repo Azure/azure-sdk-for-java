@@ -125,20 +125,6 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (source() != null) {
-            source().validate();
-        }
-        if (target() != null) {
-            target().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

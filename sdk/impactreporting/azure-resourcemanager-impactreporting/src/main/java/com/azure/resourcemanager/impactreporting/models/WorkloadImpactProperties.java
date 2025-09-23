@@ -6,7 +6,6 @@ package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -431,49 +430,6 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
         this.clientIncidentDetails = clientIncidentDetails;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (startDateTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property startDateTime in model WorkloadImpactProperties"));
-        }
-        if (impactedResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property impactedResourceId in model WorkloadImpactProperties"));
-        }
-        if (impactCategory() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property impactCategory in model WorkloadImpactProperties"));
-        }
-        if (performance() != null) {
-            performance().forEach(e -> e.validate());
-        }
-        if (connectivity() != null) {
-            connectivity().validate();
-        }
-        if (additionalProperties() != null) {
-            additionalProperties().validate();
-        }
-        if (errorDetails() != null) {
-            errorDetails().validate();
-        }
-        if (workload() != null) {
-            workload().validate();
-        }
-        if (clientIncidentDetails() != null) {
-            clientIncidentDetails().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadImpactProperties.class);
 
     /**
      * {@inheritDoc}

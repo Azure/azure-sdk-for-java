@@ -11,6 +11,13 @@ import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineInner;
  */
 public interface VirtualMachine {
     /**
+     * Gets the name property: The name of the virtual machine.
+     * 
+     * @return the name value.
+     */
+    String name();
+
+    /**
      * Gets the id property: The compute RP resource id of the virtual machine.
      * subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}.
      * 

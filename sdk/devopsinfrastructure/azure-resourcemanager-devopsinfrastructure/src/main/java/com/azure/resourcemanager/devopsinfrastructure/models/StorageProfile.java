@@ -74,17 +74,6 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dataDisks() != null) {
-            dataDisks().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

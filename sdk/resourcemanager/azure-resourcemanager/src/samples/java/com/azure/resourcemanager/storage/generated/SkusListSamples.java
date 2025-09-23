@@ -10,7 +10,20 @@ package com.azure.resourcemanager.storage.generated;
 public final class SkusListSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/SKUList.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/SKUListWithLocationInfo.json
+     */
+    /**
+     * Sample code: SKUListWithLocationInfo.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void sKUListWithLocationInfo(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts().manager().serviceClient().getSkus().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/SKUList.json
      */
     /**
      * Sample code: SkuList.

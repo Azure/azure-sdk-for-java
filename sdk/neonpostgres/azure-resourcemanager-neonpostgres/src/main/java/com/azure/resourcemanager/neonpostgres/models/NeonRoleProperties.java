@@ -191,17 +191,6 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (attributes() != null) {
-            attributes().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

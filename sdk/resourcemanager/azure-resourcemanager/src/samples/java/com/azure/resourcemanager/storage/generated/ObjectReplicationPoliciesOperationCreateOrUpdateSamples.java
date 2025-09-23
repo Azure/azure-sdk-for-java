@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateObjectReplicationPolicyOnSource.json
      */
     /**
@@ -46,7 +46,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateObjectReplicationPolicyOnDestination.json
      */
     /**
@@ -77,7 +77,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateObjectReplicationPolicyOnDestination.json
      */
     /**
@@ -102,7 +102,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountUpdateObjectReplicationPolicyOnSource.json
      */
     /**

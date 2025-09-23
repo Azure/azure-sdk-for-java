@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.WorkflowVersionsClient;
@@ -203,27 +202,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowVersionInner>> getWithResponseAsync(String resourceGroupName, String contextName,
         String workflowName, String versionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -267,32 +245,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowVersionInner> getWithResponse(String resourceGroupName, String contextName,
         String workflowName, String versionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, contextName, workflowName, versionName, accept, context);
@@ -332,32 +284,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String contextName, String workflowName, String versionName, WorkflowVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -383,38 +309,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         String workflowName, String versionName, WorkflowVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -439,38 +333,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         String workflowName, String versionName, WorkflowVersionInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -625,32 +487,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String contextName,
         String workflowName, String versionName, WorkflowVersionInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -676,38 +512,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, WorkflowVersionInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -732,38 +536,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, WorkflowVersionInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -914,27 +686,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String contextName,
         String workflowName, String versionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, context))
@@ -956,32 +707,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, Context.NONE);
     }
@@ -1002,32 +727,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (versionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter versionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, context);
     }
@@ -1161,24 +860,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listByWorkflowSinglePageAsync(String resourceGroupName,
         String contextName, String workflowName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkflow(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1220,28 +901,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowVersionInner> listByWorkflowSinglePage(String resourceGroupName, String contextName,
         String workflowName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkflowVersionListResult> res
             = service.listByWorkflowSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1265,28 +924,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowVersionInner> listByWorkflowSinglePage(String resourceGroupName, String contextName,
         String workflowName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (contextName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contextName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkflowVersionListResult> res
             = service.listByWorkflowSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1345,13 +982,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listByWorkflowNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkflowNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -1371,15 +1001,6 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowVersionInner> listByWorkflowNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkflowVersionListResult> res
             = service.listByWorkflowNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1399,21 +1020,10 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowVersionInner> listByWorkflowNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkflowVersionListResult> res
             = service.listByWorkflowNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WorkflowVersionsClientImpl.class);
 }

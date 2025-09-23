@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.playwrighttesting.fluent.AccountQuotasClient;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountQuotaInner;
 import com.azure.resourcemanager.playwrighttesting.implementation.models.AccountQuotaListResult;
@@ -131,24 +130,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountQuotaInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         QuotaNames quotaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (quotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter quotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -188,28 +169,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountQuotaInner> getWithResponse(String resourceGroupName, String accountName,
         QuotaNames quotaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (quotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter quotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, quotaName, accept, context);
@@ -245,21 +204,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountQuotaInner>> listByAccountSinglePageAsync(String resourceGroupName,
         String accountName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -297,24 +241,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountSinglePage(String resourceGroupName, String accountName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AccountQuotaListResult> res
             = service.listByAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -337,24 +263,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountSinglePage(String resourceGroupName, String accountName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AccountQuotaListResult> res
             = service.listByAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -409,13 +317,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountQuotaInner>> listByAccountNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -435,15 +336,6 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AccountQuotaListResult> res
             = service.listByAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -463,21 +355,10 @@ public final class AccountQuotasClientImpl implements AccountQuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccountQuotaInner> listByAccountNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AccountQuotaListResult> res
             = service.listByAccountNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AccountQuotasClientImpl.class);
 }

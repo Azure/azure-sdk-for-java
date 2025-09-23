@@ -67,17 +67,6 @@ public final class AvsConnectionInner implements JsonSerializable<AvsConnectionI
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (serviceInitializationHandle() != null) {
-            serviceInitializationHandle().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
