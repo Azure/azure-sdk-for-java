@@ -1,6 +1,5 @@
 # Azure OpenAI: OpenAI Assistants client library for Java
 
-> [!IMPORTANT]
 > This client library won't receive updates in its current form.
 > To use newer OpenAI features, please use the official [OpenAI Java library][openai_java]
 > For Azure specific functionality, we are providing migration guides in azure-ai-openai-stainless.
