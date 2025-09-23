@@ -47,6 +47,11 @@ public final class SessionContainer implements JsonSerializable<SessionContainer
      */
     private SessionContainerResources resources;
 
+    /*
+     * List of probes for the container.
+     */
+    private List<SessionProbe> probes;
+
     /**
      * Creates an instance of SessionContainer class.
      */
@@ -174,6 +179,26 @@ public final class SessionContainer implements JsonSerializable<SessionContainer
     }
 
     /**
+     * Get the probes property: List of probes for the container.
+     * 
+     * @return the probes value.
+     */
+    public List<SessionProbe> probes() {
+        return this.probes;
+    }
+
+    /**
+     * Set the probes property: List of probes for the container.
+     * 
+     * @param probes the probes value to set.
+     * @return the SessionContainer object itself.
+     */
+    public SessionContainer withProbes(List<SessionProbe> probes) {
+        this.probes = probes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -184,6 +209,9 @@ public final class SessionContainer implements JsonSerializable<SessionContainer
         }
         if (resources() != null) {
             resources().validate();
+        }
+        if (probes() != null) {
+            probes().forEach(e -> e.validate());
         }
     }
 
@@ -199,6 +227,7 @@ public final class SessionContainer implements JsonSerializable<SessionContainer
         jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("env", this.env, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeArrayField("probes", this.probes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -232,6 +261,9 @@ public final class SessionContainer implements JsonSerializable<SessionContainer
                     deserializedSessionContainer.env = env;
                 } else if ("resources".equals(fieldName)) {
                     deserializedSessionContainer.resources = SessionContainerResources.fromJson(reader);
+                } else if ("probes".equals(fieldName)) {
+                    List<SessionProbe> probes = reader.readArray(reader1 -> SessionProbe.fromJson(reader1));
+                    deserializedSessionContainer.probes = probes;
                 } else {
                     reader.skipChildren();
                 }

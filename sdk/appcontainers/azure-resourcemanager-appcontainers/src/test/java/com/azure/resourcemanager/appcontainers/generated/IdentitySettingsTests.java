@@ -12,17 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentitySettings model
-            = BinaryData.fromString("{\"identity\":\"v\",\"lifecycle\":\"None\"}").toObject(IdentitySettings.class);
-        Assertions.assertEquals("v", model.identity());
+        IdentitySettings model = BinaryData.fromString("{\"identity\":\"mejzanlfzxia\",\"lifecycle\":\"None\"}")
+            .toObject(IdentitySettings.class);
+        Assertions.assertEquals("mejzanlfzxia", model.identity());
         Assertions.assertEquals(IdentitySettingsLifeCycle.NONE, model.lifecycle());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentitySettings model = new IdentitySettings().withIdentity("v").withLifecycle(IdentitySettingsLifeCycle.NONE);
+        IdentitySettings model
+            = new IdentitySettings().withIdentity("mejzanlfzxia").withLifecycle(IdentitySettingsLifeCycle.NONE);
         model = BinaryData.fromObject(model).toObject(IdentitySettings.class);
-        Assertions.assertEquals("v", model.identity());
+        Assertions.assertEquals("mejzanlfzxia", model.identity());
         Assertions.assertEquals(IdentitySettingsLifeCycle.NONE, model.lifecycle());
     }
 }

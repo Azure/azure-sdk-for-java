@@ -28,7 +28,7 @@ public final class ContainerAppsSourceControlsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.containerAppsSourceControls()
-            .delete("qnhttwdowrczfj", "nnuxxrkkmhm", "ulwempdc", com.azure.core.util.Context.NONE);
+            .delete("kvc", "wpvlcjbvyezjwjkq", "nbwhiieyoz", "r", true, false, com.azure.core.util.Context.NONE);
 
     }
 }

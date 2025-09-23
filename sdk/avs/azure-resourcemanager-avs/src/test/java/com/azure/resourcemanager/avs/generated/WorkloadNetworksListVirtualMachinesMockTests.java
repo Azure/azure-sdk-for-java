@@ -22,7 +22,7 @@ public final class WorkloadNetworksListVirtualMachinesMockTests {
     @Test
     public void testListVirtualMachines() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"xwpndfcpf\",\"vmType\":\"EDGE\"},\"id\":\"hjtwkjaosrx\",\"name\":\"zvoamktc\",\"type\":\"iosmgbzahgxqdly\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"ndlqvtwknvgmmbu\",\"vmType\":\"SERVICE\"},\"id\":\"atmqaqkuea\",\"name\":\"groeshoyg\",\"type\":\"cbyfqxkf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class WorkloadNetworksListVirtualMachinesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadNetworkVirtualMachine> response = manager.workloadNetworks()
-            .listVirtualMachines("fmpcycilrmca", "kggnoxu", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkVirtualMachine> response
+            = manager.workloadNetworks().listVirtualMachines("kukjtasb", "wispkxk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwpndfcpf", response.iterator().next().displayName());
+        Assertions.assertEquals("ndlqvtwknvgmmbu", response.iterator().next().displayName());
     }
 }

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JavaComponentsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Delete.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * JavaComponents_Delete.json
      */
     /**
      * Sample code: Delete Java Component.

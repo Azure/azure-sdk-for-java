@@ -23,6 +23,11 @@ public final class WorkloadProfile implements JsonSerializable<WorkloadProfile> 
     private String name;
 
     /*
+     * Whether to use a FIPS-enabled OS. Supported only for dedicated workload profiles.
+     */
+    private Boolean enableFips;
+
+    /*
      * Workload profile type for the workloads to run on.
      */
     private String workloadProfileType;
@@ -60,6 +65,26 @@ public final class WorkloadProfile implements JsonSerializable<WorkloadProfile> 
      */
     public WorkloadProfile withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the enableFips property: Whether to use a FIPS-enabled OS. Supported only for dedicated workload profiles.
+     * 
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.enableFips;
+    }
+
+    /**
+     * Set the enableFips property: Whether to use a FIPS-enabled OS. Supported only for dedicated workload profiles.
+     * 
+     * @param enableFips the enableFips value to set.
+     * @return the WorkloadProfile object itself.
+     */
+    public WorkloadProfile withEnableFips(Boolean enableFips) {
+        this.enableFips = enableFips;
         return this;
     }
 
@@ -150,6 +175,7 @@ public final class WorkloadProfile implements JsonSerializable<WorkloadProfile> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("workloadProfileType", this.workloadProfileType);
+        jsonWriter.writeBooleanField("enableFips", this.enableFips);
         jsonWriter.writeNumberField("minimumCount", this.minimumCount);
         jsonWriter.writeNumberField("maximumCount", this.maximumCount);
         return jsonWriter.writeEndObject();
@@ -175,6 +201,8 @@ public final class WorkloadProfile implements JsonSerializable<WorkloadProfile> 
                     deserializedWorkloadProfile.name = reader.getString();
                 } else if ("workloadProfileType".equals(fieldName)) {
                     deserializedWorkloadProfile.workloadProfileType = reader.getString();
+                } else if ("enableFips".equals(fieldName)) {
+                    deserializedWorkloadProfile.enableFips = reader.getNullable(JsonReader::getBoolean);
                 } else if ("minimumCount".equals(fieldName)) {
                     deserializedWorkloadProfile.minimumCount = reader.getNullable(JsonReader::getInt);
                 } else if ("maximumCount".equals(fieldName)) {

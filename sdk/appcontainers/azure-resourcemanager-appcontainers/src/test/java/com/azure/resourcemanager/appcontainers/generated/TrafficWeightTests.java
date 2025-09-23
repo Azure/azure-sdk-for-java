@@ -12,24 +12,24 @@ public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficWeight model = BinaryData.fromString(
-            "{\"revisionName\":\"vxdjzlmwlxkvugf\",\"weight\":693329650,\"latestRevision\":true,\"label\":\"jvzunluthnnp\"}")
+            "{\"revisionName\":\"dwmsweypqwd\",\"weight\":1064810748,\"latestRevision\":true,\"label\":\"cnxqhuexmkttlst\"}")
             .toObject(TrafficWeight.class);
-        Assertions.assertEquals("vxdjzlmwlxkvugf", model.revisionName());
-        Assertions.assertEquals(693329650, model.weight());
-        Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("jvzunluthnnp", model.label());
+        Assertions.assertEquals("dwmsweypqwd", model.revisionName());
+        Assertions.assertEquals(1064810748, model.weight());
+        Assertions.assertTrue(model.latestRevision());
+        Assertions.assertEquals("cnxqhuexmkttlst", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model = new TrafficWeight().withRevisionName("vxdjzlmwlxkvugf")
-            .withWeight(693329650)
+        TrafficWeight model = new TrafficWeight().withRevisionName("dwmsweypqwd")
+            .withWeight(1064810748)
             .withLatestRevision(true)
-            .withLabel("jvzunluthnnp");
+            .withLabel("cnxqhuexmkttlst");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("vxdjzlmwlxkvugf", model.revisionName());
-        Assertions.assertEquals(693329650, model.weight());
-        Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("jvzunluthnnp", model.label());
+        Assertions.assertEquals("dwmsweypqwd", model.revisionName());
+        Assertions.assertEquals(1064810748, model.weight());
+        Assertions.assertTrue(model.latestRevision());
+        Assertions.assertEquals("cnxqhuexmkttlst", model.label());
     }
 }

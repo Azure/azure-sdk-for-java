@@ -43,6 +43,7 @@ import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -509,9 +510,9 @@ public class BlobTestBase extends TestProxyTestBase {
      * <p>
      * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
-     * long. The value is going to be a best guess and should be played with to allow test passes to succeed
+     * long. The value is going to be the best guess and should be played with to allow test passes to succeed
      * <p>
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
      * Timeouts</a>
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
@@ -1235,6 +1236,51 @@ public class BlobTestBase extends TestProxyTestBase {
 
             int requestDelaySeconds = 4;
             return Mono.delay(Duration.ofSeconds(requestDelaySeconds)).then(Mono.just(response));
+        }
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
         }
     }
 }
