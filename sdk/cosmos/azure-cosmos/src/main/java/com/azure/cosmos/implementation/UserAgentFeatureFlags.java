@@ -16,7 +16,10 @@ package com.azure.cosmos.implementation;
  */
 public enum UserAgentFeatureFlags {
     PerPartitionAutomaticFailover(1),
-    PerPartitionCircuitBreaker(1 << 1);
+    PerPartitionCircuitBreaker(1 << 1),
+    ThinClient(1 << 2),
+    // BinaryEncoding(1 << 3),
+    Http2(1 << 4);
 
     private final int value;
 
