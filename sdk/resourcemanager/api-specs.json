@@ -1,6 +1,6 @@
 {
   "appplatform": {
-    "dir": "azure-resourcemanager-appplatform",
+    "dir": "../appplatform/azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
     "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --enable-sync-stack=false"
