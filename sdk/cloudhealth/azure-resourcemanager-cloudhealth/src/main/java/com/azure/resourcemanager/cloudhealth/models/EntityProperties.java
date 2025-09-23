@@ -307,26 +307,6 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (canvasPosition() != null) {
-            canvasPosition().validate();
-        }
-        if (icon() != null) {
-            icon().validate();
-        }
-        if (signals() != null) {
-            signals().validate();
-        }
-        if (alerts() != null) {
-            alerts().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -138,23 +138,6 @@ public final class StorageTaskPreviewBlobProperties implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().forEach(e -> e.validate());
-        }
-        if (metadata() != null) {
-            metadata().forEach(e -> e.validate());
-        }
-        if (tags() != null) {
-            tags().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

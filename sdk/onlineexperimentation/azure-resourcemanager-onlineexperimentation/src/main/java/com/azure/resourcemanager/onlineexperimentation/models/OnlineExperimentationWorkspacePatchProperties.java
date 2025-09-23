@@ -109,17 +109,6 @@ public final class OnlineExperimentationWorkspacePatchProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (encryption() != null) {
-            encryption().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.disconnectedoperations.fluent.ImagesClient;
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.ImageDownloadResultInner;
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.ImageInner;
@@ -154,21 +153,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByDisconnectedOperationSinglePageAsync(String resourceGroupName,
         String name, String filter, Integer top, Integer skip) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -236,23 +220,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationSinglePage(String resourceGroupName, String name,
         String filter, Integer top, Integer skip) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ImageListResult> res
             = service.listByDisconnectedOperationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -278,23 +245,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationSinglePage(String resourceGroupName, String name,
         String filter, Integer top, Integer skip, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ImageListResult> res
             = service.listByDisconnectedOperationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -358,24 +308,6 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ImageInner>> getWithResponseAsync(String resourceGroupName, String name, String imageName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -415,27 +347,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageInner> getWithResponse(String resourceGroupName, String name, String imageName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, name, imageName, accept, context);
@@ -471,24 +382,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ImageDownloadResultInner>> listDownloadUriWithResponseAsync(String resourceGroupName,
         String name, String imageName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDownloadUri(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -529,27 +422,6 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageDownloadResultInner> listDownloadUriWithResponse(String resourceGroupName, String name,
         String imageName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.listDownloadUriSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, name, imageName, accept, context);
@@ -583,13 +455,6 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByDisconnectedOperationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.listByDisconnectedOperationNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -609,15 +474,6 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ImageListResult> res
             = service.listByDisconnectedOperationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -637,21 +493,10 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImageInner> listByDisconnectedOperationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ImageListResult> res
             = service.listByDisconnectedOperationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ImagesClientImpl.class);
 }

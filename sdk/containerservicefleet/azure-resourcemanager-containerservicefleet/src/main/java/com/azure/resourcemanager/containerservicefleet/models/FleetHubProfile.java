@@ -140,20 +140,6 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (apiServerAccessProfile() != null) {
-            apiServerAccessProfile().validate();
-        }
-        if (agentProfile() != null) {
-            agentProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

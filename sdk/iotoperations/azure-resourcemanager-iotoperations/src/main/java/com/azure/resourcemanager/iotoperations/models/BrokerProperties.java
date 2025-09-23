@@ -193,29 +193,6 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (advanced() != null) {
-            advanced().validate();
-        }
-        if (cardinality() != null) {
-            cardinality().validate();
-        }
-        if (diagnostics() != null) {
-            diagnostics().validate();
-        }
-        if (diskBackedMessageBuffer() != null) {
-            diskBackedMessageBuffer().validate();
-        }
-        if (generateResourceLimits() != null) {
-            generateResourceLimits().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

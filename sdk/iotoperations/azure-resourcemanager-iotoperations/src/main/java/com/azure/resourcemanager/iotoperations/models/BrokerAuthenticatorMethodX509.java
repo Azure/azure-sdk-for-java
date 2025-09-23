@@ -75,21 +75,6 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (authorizationAttributes() != null) {
-            authorizationAttributes().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

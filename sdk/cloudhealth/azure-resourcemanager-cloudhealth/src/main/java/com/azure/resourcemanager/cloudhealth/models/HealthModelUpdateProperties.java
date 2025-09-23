@@ -51,17 +51,6 @@ public final class HealthModelUpdateProperties implements JsonSerializable<Healt
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (discovery() != null) {
-            discovery().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

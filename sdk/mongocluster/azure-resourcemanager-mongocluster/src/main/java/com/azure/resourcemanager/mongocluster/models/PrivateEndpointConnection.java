@@ -97,17 +97,6 @@ public final class PrivateEndpointConnection extends ProxyResource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
