@@ -3,6 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
+import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
+import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
+import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -14,7 +17,8 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import java.io.File;
+import org.junit.jupiter.params.provider.Arguments;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,17 +26,12 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestProxyTestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
-import static com.azure.storage.common.sas.SasProtocol.*;
+import static com.azure.storage.common.sas.SasProtocol.HTTPS_ONLY;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -62,10 +61,6 @@ public final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
-    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<>();
-    static {
-        EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
-    }
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
@@ -88,9 +83,13 @@ public final class TestUtils {
     }
 
     /**
-     * Get a blob container SAS connection string.
+     * Get a blob container SAS URL.
      */
-    public static String getContainerSasConnectionString(String containerName) {
+    private static String getContainerSasUrl(String containerName, boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "https://isPlaybackmode";
+        }
+
         BlobServiceClient blobServiceClient
             = new BlobServiceClientBuilder().endpoint("https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/")
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -109,15 +108,13 @@ public final class TestUtils {
         return "https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/" + containerName + "?" + sas;
     }
 
-    static void urlRunner(Consumer<String> testRunner, String fileName) {
-        testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
+    static String urlSource(String fileName) {
+        return URL_TEST_FILE_FORMAT + fileName;
     }
 
-    static void getDataRunnerHelper(BiConsumer<byte[], Long> testRunner, String fileName) {
-        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-
+    static byte[] getData(String fileName) {
         try {
-            testRunner.accept(Files.readAllBytes(Paths.get(LOCAL_FILE_PATH + fileName)), fileLength);
+            return Files.readAllBytes(Paths.get(LOCAL_FILE_PATH + fileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         } catch (IOException e) {
@@ -125,48 +122,22 @@ public final class TestUtils {
         }
     }
 
-    public static void getTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
-    }
-
-    public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
-    }
-
-    public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
-    }
-
-    public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
-    }
-
-    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner,
-        boolean isPlaybackMode) {
-        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode),
-            getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
-    }
-
     /**
      * Get the training data set SAS Url value based on the test running mode.
      *
      * @return the training data set Url
      */
-    private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(TRAINING_DATA_CONTAINER_NAME);
+    public static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return getContainerSasUrl(TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
      * Get the multipage training data set SAS Url value based on the test running mode.
      *
-     * @return the multipgae training data set Url
+     * @return the multipage training data set Url
      */
-    private static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(MULTIPAGE_TRAINING_DATA_CONTAINER_NAME);
+    public static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
+        return getContainerSasUrl(MULTIPAGE_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -174,10 +145,8 @@ public final class TestUtils {
      *
      * @return the selection marks training data set Url
      */
-    private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(SELECTION_MARK_DATA_CONTAINER_NAME);
+    public static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
+        return getContainerSasUrl(SELECTION_MARK_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -185,10 +154,8 @@ public final class TestUtils {
      *
      * @return the training data set Url for classifiers
      */
-    private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(CLASSIFIER_TRAINING_DATA_CONTAINER_NAME);
+    public static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return getContainerSasUrl(CLASSIFIER_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -196,10 +163,8 @@ public final class TestUtils {
      *
      * @return the training data set Url
      */
-    private static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME);
+    public static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
+        return getContainerSasUrl(BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -207,10 +172,8 @@ public final class TestUtils {
      *
      * @return the training data set Url
      */
-    private static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : getContainerSasConnectionString(BATCH_TRAINING_DATA_CONTAINER_NAME);
+    public static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return getContainerSasUrl(BATCH_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -224,11 +187,9 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients().forEach(httpClient -> {
-            Arrays.stream(DocumentIntelligenceServiceVersion.values())
-                .filter(TestUtils::shouldServiceVersionBeTested)
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-        });
+        getHttpClients().forEach(httpClient -> Arrays.stream(DocumentIntelligenceServiceVersion.values())
+            .filter(TestUtils::shouldServiceVersionBeTested)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
@@ -273,5 +234,15 @@ public final class TestUtils {
             new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..resultUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+    }
+
+    static ClassifierDocumentTypeDetails createBlobContentSource(String containerUrl, String prefix) {
+        return new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource(containerUrl).setPrefix(prefix));
+    }
+
+    static ClassifierDocumentTypeDetails createBlobFileListContentSource(String containerUrl, String fileList) {
+        return new ClassifierDocumentTypeDetails()
+            .setAzureBlobFileListSource(new AzureBlobFileListContentSource(containerUrl, fileList));
     }
 }

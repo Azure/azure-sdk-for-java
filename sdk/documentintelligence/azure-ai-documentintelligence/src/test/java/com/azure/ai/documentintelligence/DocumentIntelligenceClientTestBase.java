@@ -25,8 +25,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.documentintelligence.TestUtils.EXPECTED_MERCHANT_NAME;
@@ -106,23 +104,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         return builder;
     }
 
-    void dataRunner(BiConsumer<byte[], Long> testRunner, String fileName) {
-        TestUtils.getDataRunnerHelper(testRunner, fileName);
-    }
-
-    void buildModelRunner(Consumer<String> testRunner) {
-        TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void buildBatchModelRunner(BiConsumer<String, String> testRunner) {
-        TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void beginClassifierRunner(Consumer<String> testRunner) {
-        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void validateJpegReceiptData(AnalyzeResult actualAnalyzeResult) {
+    static void validateJpegReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 
         // pages
@@ -144,7 +126,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
 
     }
 
-    void validateInvoiceData(AnalyzeResult analyzeResult) {
+    static void validateInvoiceData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-invoice", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -202,7 +184,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         Assertions.assertNotNull(analyzeResult.getPages());
     }
 
-    void validateIdentityData(AnalyzeResult analyzeResult) {
+    static void validateIdentityData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-idDocument", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -249,7 +231,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNotNull(licensePageFields.get("Restrictions").getConfidence());
     }
 
-    void validateGermanContentData(AnalyzeResult analyzeResult) {
+    static void validateGermanContentData(AnalyzeResult analyzeResult) {
         assertNotNull(analyzeResult.getPages());
         assertEquals(1, analyzeResult.getPages().size());
         analyzeResult.getPages().forEach(documentPage -> {
@@ -274,7 +256,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         }
     }
 
-    void validateContentData(AnalyzeResult analyzeResult) {
+    static void validateContentData(AnalyzeResult analyzeResult) {
         assertNotNull(analyzeResult.getPages());
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertTrue(documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
@@ -303,7 +285,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNull(analyzeResult.getDocuments());
     }
 
-    void validateDocumentPage(DocumentPage documentPage) {
+    static void validateDocumentPage(DocumentPage documentPage) {
         assertNotNull(documentPage.getLines());
         documentPage.getLines().forEach(documentLine -> {
             validateBoundingBoxData(documentLine.getPolygon());
@@ -317,10 +299,10 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
     }
 
-    void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
+    static void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
         List<DocumentPage> documentPages = actualAnalyzeResult.getPages();
         Assertions.assertEquals(1, documentPages.size());
-        documentPages.forEach(this::validateDocumentPage);
+        documentPages.forEach(DocumentIntelligenceClientTestBase::validateDocumentPage);
         int[][] table = new int[][] { { 5, 4, 20 }, { 3, 2, 6 } };
         Assertions.assertEquals(2, actualAnalyzeResult.getTables().size());
         for (int i = 0; i < actualAnalyzeResult.getTables().size(); i++) {
@@ -374,7 +356,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
     }
 
-    void validateW2Data(AnalyzeResult analyzeResult) {
+    static void validateW2Data(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-tax.us.w2", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -465,17 +447,17 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals(37160.56f, w2Fields.get("WagesTipsAndOtherCompensation").getValueNumber(), 0.01);
     }
 
-    private void validateBoundingBoxData(List<Double> points) {
+    private static void validateBoundingBoxData(List<Double> points) {
         assertNotNull(points);
         assertEquals(8, points.size());
     }
 
-    private void validateReceipt(AnalyzeResult actualAnalyzeResult) {
+    private static void validateReceipt(AnalyzeResult actualAnalyzeResult) {
         Assertions.assertEquals("prebuilt-receipt", actualAnalyzeResult.getModelId());
         assertNotNull(actualAnalyzeResult.getPages());
     }
 
-    private void validateJpegReceiptFields(Map<String, DocumentField> actualFields) {
+    private static void validateJpegReceiptFields(Map<String, DocumentField> actualFields) {
         actualFields.forEach((key, documentField) -> {
             if (documentField.getBoundingRegions() != null) {
                 Assertions.assertEquals(1, documentField.getBoundingRegions().get(0).getPageNumber());

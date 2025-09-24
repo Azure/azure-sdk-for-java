@@ -42,10 +42,6 @@
       "type": "string",
       "defaultValue": "selectionmark-v3"
     },
-    "blobResourceId": {
-      "type": "string",
-      "defaultValue": "[resourceId('4d042dc6-fe17-4698-a23f-ec6a8d1e98f4', 'static-test-resources', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
-    },
     "multiPageTestingDataContainer": {
       "type": "string",
       "defaultValue": "multipage-training-data-v3"
@@ -109,14 +105,6 @@
     "MULTIPAGE_TRAINING_DATA_CONTAINER_NAME": {
       "type": "string",
       "value": "[parameters('multiPageTestingDataContainer')]"
-    },
-    "DOCUMENTINTELLIGENCE_TARGET_RESOURCE_REGION": {
-      "type": "string",
-      "value": "[parameters('location')]"
-    },
-    "DOCUMENTINTELLIGENCE_TARGET_RESOURCE_ID": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName'))]"
     }
   }
 }
