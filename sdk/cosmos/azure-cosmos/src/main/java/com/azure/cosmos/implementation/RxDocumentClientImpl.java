@@ -6193,11 +6193,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
-            request -> readFeed(request)
-                .map(response -> feedResponseAccessor.createFeedResponse(
-                                    response,
-                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                                    klass));
+            request -> {
+                MetadataThrottlingRetryPolicy metadataThrottlingRetryPolicy = new MetadataThrottlingRetryPolicy(
+                    BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)
+                );
+
+                return ObservableHelper.inlineIfPossibleAsObs(
+                    () -> readFeed(request)
+                        .map(response -> feedResponseAccessor.createFeedResponse(
+                            response,
+                            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                            klass)),
+                    metadataThrottlingRetryPolicy);
+            };
 
         return Paginator
             .getPaginatedQueryResultAsObservable(

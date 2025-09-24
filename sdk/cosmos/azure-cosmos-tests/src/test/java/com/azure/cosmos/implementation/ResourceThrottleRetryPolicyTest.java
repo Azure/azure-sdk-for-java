@@ -54,6 +54,6 @@ public class ResourceThrottleRetryPolicyTest {
         ShouldRetryResult shouldRetryResult = retryPolicy.shouldRetry(cosmosException).block();
 
         assertThat(shouldRetryResult.shouldRetry).isEqualTo(shouldRetry);
-        assertThat(shouldRetryResult.backOffTime.toMillis()).isEqualTo(shouldRetryDelay);
+        assertThat(shouldRetryResult.backOffTime.get().toMillis()).isEqualTo(shouldRetryDelay);
     }
 }

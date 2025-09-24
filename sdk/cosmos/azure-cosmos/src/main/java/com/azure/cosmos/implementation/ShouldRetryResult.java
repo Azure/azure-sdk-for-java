@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ShouldRetryResult {
     public final static ShouldRetryResult NO_RETRY =
@@ -13,7 +14,7 @@ public class ShouldRetryResult {
     /// <summary>
     /// How long to wait before next retry. 0 indicates retry immediately.
     /// </summary>
-    public final Duration backOffTime;
+    public AtomicReference<Duration> backOffTime;
     public final Exception exception;
     public final Quadruple<Boolean, Boolean, Duration, Integer> policyArg;
     public boolean shouldRetry;
@@ -21,7 +22,7 @@ public class ShouldRetryResult {
 
     private ShouldRetryResult(Duration dur, Exception e, boolean shouldRetry,
                               Quadruple<Boolean, Boolean, Duration, Integer> policyArg, boolean nonRelatedException) {
-        this.backOffTime = dur;
+        this.backOffTime = new AtomicReference<>(dur);
         this.exception = e;
         this.shouldRetry = shouldRetry;
         this.policyArg = policyArg;
@@ -84,5 +85,11 @@ public class ShouldRetryResult {
         } else {
             throw this.exception;
         }
+    }
+
+    public ShouldRetryResult withRandomSalt(int randomSaltInMillis) {
+        Duration updatedDuration = this.backOffTime.get().plusMillis(randomSaltInMillis);
+        this.backOffTime.set(updatedDuration);
+        return this;
     }
 }

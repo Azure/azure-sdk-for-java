@@ -355,12 +355,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Mono<OpenConnectionResponse> enqueueOpenConnectionTaskForRetry(
             OpenConnectionTask openConnectionTask,
             ShouldRetryResult retryResult) {
-        if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
+        if (retryResult.backOffTime.get() == Duration.ZERO || retryResult.backOffTime == null) {
             this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
             return Mono.empty();
         } else {
             return Mono
-                    .delay(retryResult.backOffTime)
+                    .delay(retryResult.backOffTime.get())
                     .flatMap(ignore -> {
                         this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
                         return Mono.empty();

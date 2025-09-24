@@ -38,7 +38,7 @@ public class RetryUtils {
                     addStatusSubStatusCodeOnRetryContext(retryContext, clientException, s.nonRelatedException);
 
                 if (s.backOffTime != null) {
-                    return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis()), CosmosSchedulers.COSMOS_PARALLEL).flux();
+                    return Mono.delay(Duration.ofMillis(s.backOffTime.get().toMillis()), CosmosSchedulers.COSMOS_PARALLEL).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
                 } else {
@@ -107,14 +107,14 @@ public class RetryUtils {
                 }
 
                 if (inBackoffAlternateCallbackMethod != null
-                        && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
+                        && shouldRetryResult.backOffTime.get().compareTo(minBackoffForInBackoffCallback) > 0) {
                     StopWatch stopwatch = new StopWatch();
                     startStopWatch(stopwatch);
                     return inBackoffAlternateCallbackMethod.apply(shouldRetryResult.policyArg)
                             .onErrorResume(recursiveWithAlternateFunc(callbackMethod, retryPolicy,
                                     inBackoffAlternateCallbackMethod, shouldRetryResult, stopwatch,
                                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector));
-                } else if (shouldRetryResult.backOffTime == Duration.ZERO) {
+                } else if (shouldRetryResult.backOffTime.get() == Duration.ZERO) {
                     return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector);
                 } else {
@@ -125,7 +125,7 @@ public class RetryUtils {
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector);
                     })
                         .delaySubscription(
-                            Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()),
+                            Duration.ofMillis(shouldRetryResult.backOffTime.get().toMillis()),
                             CosmosSchedulers.COSMOS_PARALLEL);
                 }
             });
@@ -178,8 +178,8 @@ public class RetryUtils {
             stopStopWatch(stopwatch);
             logger.info("Failed inBackoffAlternateCallback with {}, proceeding with retry. Time taken: {}ms",
                     e.toString(), stopwatch.getTime());
-            Duration backoffTime = shouldRetryResult.backOffTime.toMillis() > stopwatch.getTime()
-                    ? Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() - stopwatch.getTime())
+            Duration backoffTime = shouldRetryResult.backOffTime.get().toMillis() > stopwatch.getTime()
+                    ? Duration.ofMillis(shouldRetryResult.backOffTime.get().toMillis() - stopwatch.getTime())
                     : Duration.ZERO;
             return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, shouldRetryResult,
                     minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
