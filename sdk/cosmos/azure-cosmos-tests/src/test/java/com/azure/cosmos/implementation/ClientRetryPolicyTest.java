@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import java.util.Map;
+import java.util.HashMap;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
@@ -44,7 +47,73 @@ public class ClientRetryPolicyTest {
             { OperationType.QueryPlan, ResourceType.Document, Boolean.FALSE, TEST_DOCUMENT_PATH, Boolean.TRUE }
         };
     }
+    
+        @Test(groups = "unit")
+        public void requestRateTooLargeOnMetadataRequest() throws Exception {
+            ThrottlingRetryOptions throttlingRetryOptions =
+                new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(1);
+            GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+            GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+    
+            Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+            Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+            ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
+                mockDiagnosticsClientContext(),
+                endpointManager,
+                true,
+                throttlingRetryOptions,
+                null,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+    
+            // Create throttling exception with retry delay
+            Map<String, String> headers = new HashMap<>();
+            headers.put(
+                HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
+                "1000");
+            headers.put(WFConstants.BackendHeaders.SUB_STATUS,
+                Integer.toString(HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE));
+            RequestRateTooLargeException throttlingException = new RequestRateTooLargeException(null, 1, "1", headers);
+    
+            // Create metadata request
+            RxDocumentServiceRequest metadataRequests = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+                OperationType.ReadFeed, "/dbs/db/colls/col/pkranges", ResourceType.PartitionKeyRange);
+            metadataRequests.requestContext = new DocumentServiceRequestContext();
+            metadataRequests.requestContext.routeToLocation(0, true);
+    
+            clientRetryPolicy.onBeforeSendRequest(metadataRequests);
+    
+            // Verify retries with MetadataThrottlingRetryPolicy behavior
+            for (int i = 0; i < 2; i++) {
+                Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(throttlingException);
+                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                    .nullException()
+                    .shouldRetry(true)
+                    .build());
+            }
 
+            // create document request
+            RxDocumentServiceRequest documentRequest = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+                OperationType.Read, "/dbs/db/colls/col/pkranges", ResourceType.Document);
+            documentRequest.requestContext = new DocumentServiceRequestContext();
+            documentRequest.requestContext.routeToLocation(0, true);
+            clientRetryPolicy.onBeforeSendRequest(documentRequest);
+
+            Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(throttlingException);
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .nullException()
+                .shouldRetry(true)
+                .build());
+
+            shouldRetry = clientRetryPolicy.shouldRetry(throttlingException);
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .shouldRetry(false)
+                .build());
+        }
+    
     @DataProvider(name = "tcpNetworkFailureOnWriteArgProvider")
     public static Object[][] tcpNetworkFailureOnWriteArgProvider() {
         return new Object[][]{

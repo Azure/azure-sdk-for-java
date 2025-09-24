@@ -679,7 +679,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                                 getItemOperationDiagnostics(itemOperation),
                                 this.operationContextText,
                                 getThreadInfo());
-                            return this.enqueueForRetry(result.backOffTime.get(), groupSink, itemOperation, thresholds);
+                            return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
                             // reduce log noise level for commonly expected/normal status codes
                             if (response.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
@@ -832,7 +832,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         TContext actualContext = this.getActualContext(itemOperation);
         return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
             if (result.shouldRetry) {
-                return this.enqueueForRetry(result.backOffTime.get(), groupSink, itemBulkOperation, thresholds);
+                return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
             } else {
                 return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                     itemOperation, exception, actualContext));

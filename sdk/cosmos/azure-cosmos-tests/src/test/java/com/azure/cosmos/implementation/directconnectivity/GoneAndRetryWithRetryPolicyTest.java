@@ -53,28 +53,28 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(0);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(0);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(1);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(2);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(2);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(4);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
@@ -132,28 +132,28 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(0);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(0);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForNotYetFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(1);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForNotYetFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(2);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(2);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForNotYetFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(4);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
     }
 
     /**
@@ -214,28 +214,28 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(0);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(0);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(1);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(2);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(2);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(goneExceptionForFlushedRequestSupplier.get());
         shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
-        assertThat(shouldRetryResult.backOffTime.get().getSeconds()).isEqualTo(4);
+        assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
     }
 
     /**
@@ -381,9 +381,9 @@ public class GoneAndRetryWithRetryPolicyTest {
         ShouldRetryResult retryResult,
         Integer saltValueInMs) {
         assertThat(retryResult.shouldRetry).isTrue();
-        assertThat(retryResult.backOffTime.get().toMillis() >= 0).isTrue();
-        assertThat(retryResult.backOffTime.get().toMillis() > expectedDelayInMs - saltValueInMs).isTrue();
-        assertThat(retryResult.backOffTime.get().toMillis() < expectedDelayInMs + saltValueInMs).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() >= 0).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() > expectedDelayInMs - saltValueInMs).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() < expectedDelayInMs + saltValueInMs).isTrue();
     }
 
     /**
