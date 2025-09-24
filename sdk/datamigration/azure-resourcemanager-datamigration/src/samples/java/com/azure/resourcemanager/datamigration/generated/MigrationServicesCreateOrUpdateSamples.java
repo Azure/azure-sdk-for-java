@@ -10,7 +10,7 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class MigrationServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateMigrationServiceMIN.json
      */
     /**
@@ -29,7 +29,7 @@ public final class MigrationServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateMigrationServiceMAX.json
      */
     /**

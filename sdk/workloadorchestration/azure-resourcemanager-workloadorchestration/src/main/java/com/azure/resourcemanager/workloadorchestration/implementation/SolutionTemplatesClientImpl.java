@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.SolutionTemplatesClient;
@@ -277,22 +276,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionTemplateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String solutionTemplateName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -330,24 +313,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
         String solutionTemplateName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, accept, context);
@@ -382,27 +347,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String solutionTemplateName, SolutionTemplateInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -426,30 +370,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -472,30 +392,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -631,27 +527,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionTemplateInner>> updateWithResponseAsync(String resourceGroupName,
         String solutionTemplateName, SolutionTemplateInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -694,30 +569,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateInner> updateWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -756,27 +607,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createVersionWithResponseAsync(String resourceGroupName,
         String solutionTemplateName, SolutionTemplateVersionWithUpdateTypeInner body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -800,29 +630,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -845,29 +652,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         SolutionTemplateVersionWithUpdateTypeInner body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1004,27 +788,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> removeVersionWithResponseAsync(String resourceGroupName,
         String solutionTemplateName, VersionParameter body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.removeVersion(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1046,29 +809,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         VersionParameter body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         return service.removeVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, contentType, body, Context.NONE);
@@ -1089,29 +829,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeVersionWithResponse(String resourceGroupName, String solutionTemplateName,
         VersionParameter body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         return service.removeVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, contentType, body, context);
@@ -1238,22 +955,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String solutionTemplateName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, context))
@@ -1272,24 +973,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String solutionTemplateName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, Context.NONE);
     }
@@ -1308,24 +991,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String solutionTemplateName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (solutionTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter solutionTemplateName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, solutionTemplateName, context);
     }
@@ -1438,18 +1103,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SolutionTemplateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1485,20 +1138,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1519,20 +1158,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1581,14 +1206,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SolutionTemplateInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1620,16 +1237,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -1648,16 +1255,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -1704,13 +1301,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SolutionTemplateInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1731,15 +1321,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1759,15 +1340,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1787,13 +1359,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SolutionTemplateInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1814,15 +1379,6 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1842,21 +1398,10 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionTemplateInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SolutionTemplateListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SolutionTemplatesClientImpl.class);
 }

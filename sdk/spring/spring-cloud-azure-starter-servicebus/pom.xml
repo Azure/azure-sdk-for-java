@@ -7,7 +7,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
 
   <name>Spring Cloud Azure Starter Service Bus</name>
   <description>Spring Cloud Azure Starter Service Bus</description>
@@ -90,7 +90,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

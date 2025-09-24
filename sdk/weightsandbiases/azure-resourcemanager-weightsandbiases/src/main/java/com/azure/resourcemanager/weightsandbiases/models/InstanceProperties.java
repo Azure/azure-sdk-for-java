@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.weightsandbiases.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -136,38 +135,6 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
         this.singleSignOnProperties = singleSignOnProperties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (marketplace() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property marketplace in model InstanceProperties"));
-        } else {
-            marketplace().validate();
-        }
-        if (user() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property user in model InstanceProperties"));
-        } else {
-            user().validate();
-        }
-        if (partnerProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property partnerProperties in model InstanceProperties"));
-        } else {
-            partnerProperties().validate();
-        }
-        if (singleSignOnProperties() != null) {
-            singleSignOnProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(InstanceProperties.class);
 
     /**
      * {@inheritDoc}

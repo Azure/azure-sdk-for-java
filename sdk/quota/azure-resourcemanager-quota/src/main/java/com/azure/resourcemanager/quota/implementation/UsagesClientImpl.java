@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.UsagesClient;
 import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
 import com.azure.resourcemanager.quota.implementation.models.UsagesLimits;
@@ -125,12 +124,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UsagesGetResponse> getWithResponseAsync(String resourceName, String scope) {
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), scope,
@@ -172,13 +165,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagesGetResponse getWithResponse(String resourceName, String scope, Context context) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName, accept,
             context);
@@ -214,13 +200,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listSinglePageAsync(String scope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -256,14 +235,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listSinglePage(String scope) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<UsagesLimits> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, Context.NONE);
@@ -283,14 +254,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listSinglePage(String scope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<UsagesLimits> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, context);
@@ -342,13 +305,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CurrentUsagesBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -367,15 +323,6 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<UsagesLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -394,20 +341,9 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentUsagesBaseInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<UsagesLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UsagesClientImpl.class);
 }

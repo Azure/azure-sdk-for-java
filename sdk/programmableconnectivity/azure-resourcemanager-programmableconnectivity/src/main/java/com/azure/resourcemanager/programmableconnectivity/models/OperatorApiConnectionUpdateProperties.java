@@ -155,20 +155,6 @@ public final class OperatorApiConnectionUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (saasProperties() != null) {
-            saasProperties().validate();
-        }
-        if (configuredApplication() != null) {
-            configuredApplication().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

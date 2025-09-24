@@ -349,39 +349,6 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
@@ -662,23 +661,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeallocateResourceOperationResponseInner>> virtualMachinesSubmitDeallocateWithResponseAsync(
         String locationparameter, SubmitDeallocateRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -721,26 +703,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateWithResponse(
         String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -779,23 +741,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HibernateResourceOperationResponseInner>>
         virtualMachinesSubmitHibernateWithResponseAsync(String locationparameter, SubmitHibernateRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -838,26 +783,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateWithResponse(
         String locationparameter, SubmitHibernateRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -894,23 +819,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StartResourceOperationResponseInner>>
         virtualMachinesSubmitStartWithResponseAsync(String locationparameter, SubmitStartRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -951,26 +859,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartWithResponse(
         String locationparameter, SubmitStartRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1008,23 +896,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeallocateResourceOperationResponseInner>> virtualMachinesExecuteDeallocateWithResponseAsync(
         String locationparameter, ExecuteDeallocateRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1067,26 +938,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
         String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1125,23 +976,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HibernateResourceOperationResponseInner>> virtualMachinesExecuteHibernateWithResponseAsync(
         String locationparameter, ExecuteHibernateRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1184,26 +1018,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
         String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1241,23 +1055,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StartResourceOperationResponseInner>>
         virtualMachinesExecuteStartWithResponseAsync(String locationparameter, ExecuteStartRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1300,26 +1097,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(
         String locationparameter, ExecuteStartRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1357,23 +1134,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceOperationResponseInner>>
         virtualMachinesExecuteCreateWithResponseAsync(String locationparameter, ExecuteCreateRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1416,26 +1176,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(
         String locationparameter, ExecuteCreateRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteCreateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1473,23 +1213,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteResourceOperationResponseInner>>
         virtualMachinesExecuteDeleteWithResponseAsync(String locationparameter, ExecuteDeleteRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1532,26 +1255,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(
         String locationparameter, ExecuteDeleteRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteDeleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1589,23 +1292,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GetOperationStatusResponseInner>> virtualMachinesGetOperationStatusWithResponseAsync(
         String locationparameter, GetOperationStatusRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1646,26 +1332,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(
         String locationparameter, GetOperationStatusRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1702,23 +1368,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CancelOperationsResponseInner>> virtualMachinesCancelOperationsWithResponseAsync(
         String locationparameter, CancelOperationsRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1759,26 +1408,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String locationparameter,
         CancelOperationsRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesCancelOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1816,23 +1445,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GetOperationErrorsResponseInner>> virtualMachinesGetOperationErrorsWithResponseAsync(
         String locationparameter, GetOperationErrorsRequest requestBody) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1875,26 +1487,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsWithResponse(
         String locationparameter, GetOperationErrorsRequest requestBody, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationparameter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter locationparameter is required and cannot be null."));
-        }
-        if (requestBody == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter requestBody is required and cannot be null."));
-        } else {
-            requestBody.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesGetOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1931,22 +1523,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1984,24 +1560,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
@@ -2036,27 +1594,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String scheduledActionName, ScheduledActionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2080,30 +1617,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2126,30 +1639,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2284,27 +1773,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> updateWithResponseAsync(String resourceGroupName,
         String scheduledActionName, ScheduledActionUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2347,30 +1815,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> updateWithResponse(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2408,22 +1852,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
@@ -2442,24 +1870,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, Context.NONE);
     }
@@ -2478,24 +1888,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String scheduledActionName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
@@ -2608,18 +2000,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2655,20 +2035,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -2689,20 +2055,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -2751,14 +2103,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2790,16 +2134,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -2818,16 +2152,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -2876,22 +2200,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionResourceInner>> listResourcesSinglePageAsync(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listResources(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2931,24 +2239,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceListResponse> res
             = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2971,24 +2261,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceListResponse> res
             = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3047,27 +2319,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecurringActionsResourceOperationResultInner>> attachResourcesWithResponseAsync(
         String resourceGroupName, String scheduledActionName, ResourceAttachRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3112,29 +2363,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> attachResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourceAttachRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.attachResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3174,27 +2402,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecurringActionsResourceOperationResultInner>> detachResourcesWithResponseAsync(
         String resourceGroupName, String scheduledActionName, ResourceDetachRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3239,29 +2446,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> detachResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourceDetachRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.detachResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3301,27 +2485,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecurringActionsResourceOperationResultInner>> patchResourcesWithResponseAsync(
         String resourceGroupName, String scheduledActionName, ResourcePatchRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3366,29 +2529,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> patchResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourcePatchRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.patchResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3425,22 +2565,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableWithResponseAsync(String resourceGroupName, String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.disable(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
@@ -3475,24 +2599,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
@@ -3523,22 +2629,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableWithResponseAsync(String resourceGroupName, String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.enable(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context))
@@ -3573,24 +2663,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(String resourceGroupName, String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, context);
     }
@@ -3624,27 +2696,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecurringActionsResourceOperationResultInner>> cancelNextOccurrenceWithResponseAsync(
         String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3689,29 +2740,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> cancelNextOccurrenceWithResponse(
         String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.cancelNextOccurrenceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3750,22 +2778,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OccurrenceInner>> triggerManualOccurrenceWithResponseAsync(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3806,24 +2818,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OccurrenceInner> triggerManualOccurrenceWithResponse(String resourceGroupName,
         String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.triggerManualOccurrenceSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, scheduledActionName, accept, context);
@@ -3856,13 +2850,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3883,15 +2870,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -3911,15 +2889,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -3939,13 +2908,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3966,15 +2928,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -3994,15 +2947,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScheduledActionListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -4022,13 +2966,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduledActionResourceInner>> listResourcesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -4048,15 +2985,6 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceListResponse> res
             = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -4076,21 +3004,10 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScheduledActionResourceInner> listResourcesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceListResponse> res
             = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionsClientImpl.class);
 }

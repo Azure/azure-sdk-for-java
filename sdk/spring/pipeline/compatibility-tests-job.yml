@@ -27,6 +27,7 @@ jobs:
             - '**/*.xml'
             - 'common/perf-test-core'
             - 'sdk/appconfiguration/azure-data-appconfiguration'
+            - 'sdk/appplatform/azure-resourcemanager-appplatform'
             - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
             - 'sdk/appservice/azure-resourcemanager-appservice'
             - 'sdk/authorization/azure-resourcemanager-authorization'

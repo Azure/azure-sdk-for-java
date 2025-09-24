@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionAllocationRequestsClient;
@@ -172,34 +171,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (allocateQuotaRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter allocateQuotaRequest is required and cannot be null."));
-        } else {
-            allocateQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -230,38 +201,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (allocateQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter allocateQuotaRequest is required and cannot be null."));
-        } else {
-            allocateQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -292,38 +231,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (allocateQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter allocateQuotaRequest is required and cannot be null."));
-        } else {
-            allocateQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -514,28 +421,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaAllocationRequestStatusInner>> getWithResponseAsync(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String allocationId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (allocationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter allocationId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -582,32 +467,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaAllocationRequestStatusInner> getWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String allocationId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (allocationId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter allocationId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             this.client.getSubscriptionId(), groupQuotaName, resourceProviderName, allocationId, accept, context);
@@ -655,28 +514,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaAllocationRequestStatusInner>> listSinglePageAsync(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -735,32 +572,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaAllocationRequestStatusList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -791,32 +602,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listSinglePage(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (filter == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaAllocationRequestStatusList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
@@ -892,13 +677,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaAllocationRequestStatusInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<QuotaAllocationRequestStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -917,15 +695,6 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaAllocationRequestStatusList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -945,22 +714,10 @@ public final class GroupQuotaSubscriptionAllocationRequestsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaAllocationRequestStatusInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaAllocationRequestStatusList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER
-        = new ClientLogger(GroupQuotaSubscriptionAllocationRequestsClientImpl.class);
 }

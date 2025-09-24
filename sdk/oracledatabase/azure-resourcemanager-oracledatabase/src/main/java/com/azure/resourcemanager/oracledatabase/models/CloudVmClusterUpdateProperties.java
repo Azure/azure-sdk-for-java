@@ -335,20 +335,6 @@ public final class CloudVmClusterUpdateProperties implements JsonSerializable<Cl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (fileSystemConfigurationDetails() != null) {
-            fileSystemConfigurationDetails().forEach(e -> e.validate());
-        }
-        if (dataCollectionOptions() != null) {
-            dataCollectionOptions().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.51.0-beta.1 (Unreleased)
+## 2.52.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.51.0 (2025-09-23)
+
+Please note, this package has been deprecated and will no longer be maintained after 03/31/2025.
+We recommend [azure-resourcemanager-appcontainers](https://learn.microsoft.com/java/api/overview/azure/resourcemanager-appcontainers-readme) and [azure-resourcemanager-containerservice](https://learn.microsoft.com/java/api/overview/azure/resourcemanager-containerservice-readme) as the replacement libraries.
+Refer to [Azure Spring Apps retirement announcement](https://aka.ms/asaretirement) for the retirement details and how to migrate to the new services.
+Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
+### Breaking Changes
+
+- Updated dependency scope of `azure-resourcemanager-resources` and `azure-storage-file-share` to `provided`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.50.5 (2025-08-27)
 

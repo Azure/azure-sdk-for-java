@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
 import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.quota.implementation.models.QuotaRequestDetailsList;
@@ -126,12 +125,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope) {
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), scope, id, accept, context))
@@ -170,12 +163,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
-        if (id == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter id is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, id, accept, context);
     }
@@ -220,13 +207,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String scope, String filter, Integer top,
         String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), scope, filter,
@@ -304,14 +284,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listSinglePage(String scope, String filter, Integer top,
         String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaRequestDetailsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             scope, filter, top, skiptoken, accept, Context.NONE);
@@ -343,14 +315,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listSinglePage(String scope, String filter, Integer top,
         String skiptoken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaRequestDetailsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             scope, filter, top, skiptoken, accept, context);
@@ -416,13 +380,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -441,15 +398,6 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaRequestDetailsList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -469,21 +417,10 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaRequestDetailsInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaRequestDetailsList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(QuotaRequestStatusClientImpl.class);
 }

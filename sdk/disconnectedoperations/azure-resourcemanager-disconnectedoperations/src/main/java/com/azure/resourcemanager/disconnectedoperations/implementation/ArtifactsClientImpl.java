@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.disconnectedoperations.fluent.ArtifactsClient;
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.ArtifactDownloadResultInner;
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.ArtifactInner;
@@ -155,24 +154,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArtifactInner>> listByParentSinglePageAsync(String resourceGroupName, String name,
         String imageName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -213,27 +194,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentSinglePage(String resourceGroupName, String name,
         String imageName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ArtifactListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -257,27 +217,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentSinglePage(String resourceGroupName, String name, String imageName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ArtifactListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -337,27 +276,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactInner>> getWithResponseAsync(String resourceGroupName, String name, String imageName,
         String artifactName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
-        if (artifactName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -399,31 +317,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactInner> getWithResponse(String resourceGroupName, String name, String imageName,
         String artifactName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
-        if (artifactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, name, imageName, artifactName, accept, context);
@@ -461,27 +354,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactDownloadResultInner>> listDownloadUriWithResponseAsync(String resourceGroupName,
         String name, String imageName, String artifactName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
-        if (artifactName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDownloadUri(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -524,31 +396,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactDownloadResultInner> listDownloadUriWithResponse(String resourceGroupName, String name,
         String imageName, String artifactName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (imageName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
-        }
-        if (artifactName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.listDownloadUriSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, name, imageName, artifactName, accept, context);
@@ -584,13 +431,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArtifactInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -610,15 +450,6 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ArtifactListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -638,21 +469,10 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ArtifactListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ArtifactsClientImpl.class);
 }

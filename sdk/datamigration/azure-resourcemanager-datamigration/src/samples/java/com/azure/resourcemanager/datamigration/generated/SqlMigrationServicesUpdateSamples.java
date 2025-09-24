@@ -14,7 +14,7 @@ import java.util.Map;
 public final class SqlMigrationServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * UpdateSqlMigrationService.json
      */
     /**

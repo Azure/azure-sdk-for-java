@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datamigration.fluent.models.RegenAuthKeysInner;
 public final class SqlMigrationServicesRegenerateAuthKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * RegenAuthKeysSqlMigrationService.json
      */
     /**
