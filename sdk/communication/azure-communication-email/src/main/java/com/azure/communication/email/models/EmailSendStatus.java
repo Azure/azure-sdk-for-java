@@ -26,11 +26,12 @@ public final class EmailSendStatus extends ExpandableStringEnum<EmailSendStatus>
     public static final EmailSendStatus CANCELED = fromString("Canceled");
 
     /**
-     * Creates a new instance of EmailSendStatus.
-     * This constructor is private to prevent direct instantiation; use the predefined constants
-     * or {@link #fromString(String)} to obtain instances (including newer service-defined values).
+     * Creates a new instance of EmailSendStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    private EmailSendStatus() {
+    @Deprecated
+    public EmailSendStatus() {
     }
 
     /**
