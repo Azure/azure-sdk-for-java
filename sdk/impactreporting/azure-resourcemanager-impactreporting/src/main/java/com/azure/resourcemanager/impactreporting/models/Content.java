@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -72,24 +71,6 @@ public final class Content implements JsonSerializable<Content> {
         this.description = description;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (title() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property title in model Content"));
-        }
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property description in model Content"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Content.class);
 
     /**
      * {@inheritDoc}

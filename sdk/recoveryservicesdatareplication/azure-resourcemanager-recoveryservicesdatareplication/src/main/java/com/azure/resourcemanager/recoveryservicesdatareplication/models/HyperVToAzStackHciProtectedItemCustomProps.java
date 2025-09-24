@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -802,90 +801,6 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
     public OffsetDateTime lastReplicationUpdateTime() {
         return this.lastReplicationUpdateTime;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (targetHciClusterId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetHciClusterId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (targetArcClusterCustomLocationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetArcClusterCustomLocationId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property fabricDiscoveryMachineId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (disksToInclude() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property disksToInclude in model HyperVToAzStackHciProtectedItemCustomProps"));
-        } else {
-            disksToInclude().forEach(e -> e.validate());
-        }
-        if (nicsToInclude() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property nicsToInclude in model HyperVToAzStackHciProtectedItemCustomProps"));
-        } else {
-            nicsToInclude().forEach(e -> e.validate());
-        }
-        if (targetResourceGroupId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetResourceGroupId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (storageContainerId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageContainerId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (hyperVGeneration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hyperVGeneration in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (dynamicMemoryConfig() != null) {
-            dynamicMemoryConfig().validate();
-        }
-        if (runAsAccountId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property runAsAccountId in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (sourceFabricAgentName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceFabricAgentName in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (targetFabricAgentName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetFabricAgentName in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (customLocationRegion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customLocationRegion in model HyperVToAzStackHciProtectedItemCustomProps"));
-        }
-        if (protectedDisks() != null) {
-            protectedDisks().forEach(e -> e.validate());
-        }
-        if (protectedNics() != null) {
-            protectedNics().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciProtectedItemCustomProps.class);
 
     /**
      * {@inheritDoc}

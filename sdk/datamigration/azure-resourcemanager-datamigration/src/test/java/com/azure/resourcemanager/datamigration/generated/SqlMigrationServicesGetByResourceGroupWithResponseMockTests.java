@@ -21,7 +21,7 @@ public final class SqlMigrationServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"fqi\",\"integrationRuntimeState\":\"vppwooajeyyjm\"},\"systemData\":{\"createdBy\":\"izxpxhnzlsle\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-09-03T18:52:13Z\",\"lastModifiedBy\":\"kj\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-08-06T12:47:27Z\"},\"location\":\"wadeghzt\",\"tags\":{\"wwmejjqhddwvmqx\":\"vczdjiahuqymjzu\",\"fqpgaixwrgr\":\"yookyfozkbnzxby\",\"swqi\":\"kderf\"},\"id\":\"wepwoggg\",\"name\":\"cwn\",\"type\":\"htfmcqbsudzpgc\"}";
+            = "{\"properties\":{\"provisioningState\":\"bo\",\"integrationRuntimeState\":\"bmdqrxyglae\"},\"systemData\":{\"createdBy\":\"flwtjdt\",\"createdByType\":\"Application\",\"createdAt\":\"2021-07-14T15:54:26Z\",\"lastModifiedBy\":\"oyycuxdtz\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-11T04:15:03Z\"},\"location\":\"dudgcozzomeh\",\"tags\":{\"juxkqll\":\"ntolamlb\",\"pvwdtgckzdqiq\":\"z\",\"kwx\":\"lrat\",\"lhpryjfzihuio\":\"auwxsuykznhrfgsl\"},\"id\":\"eo\",\"name\":\"pajtfeyvkbd\",\"type\":\"dd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SqlMigrationServicesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SqlMigrationService response = manager.sqlMigrationServices()
-            .getByResourceGroupWithResponse("lcwe", "kfecjvxf", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("jqwahoyi", "axqvjweiwtczkddn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wadeghzt", response.location());
-        Assertions.assertEquals("vczdjiahuqymjzu", response.tags().get("wwmejjqhddwvmqx"));
+        Assertions.assertEquals("dudgcozzomeh", response.location());
+        Assertions.assertEquals("ntolamlb", response.tags().get("juxkqll"));
     }
 }

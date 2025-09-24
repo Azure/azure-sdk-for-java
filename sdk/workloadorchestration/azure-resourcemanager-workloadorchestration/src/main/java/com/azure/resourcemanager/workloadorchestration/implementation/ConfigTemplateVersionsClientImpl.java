@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadorchestration.fluent.ConfigTemplateVersionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.ConfigTemplateVersionListResult;
@@ -136,26 +135,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigTemplateVersionInner>> getWithResponseAsync(String resourceGroupName,
         String configTemplateName, String configTemplateVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configTemplateName is required and cannot be null."));
-        }
-        if (configTemplateVersionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter configTemplateVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -197,29 +176,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateVersionInner> getWithResponse(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter configTemplateName is required and cannot be null."));
-        }
-        if (configTemplateVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter configTemplateVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, configTemplateName, configTemplateVersionName, accept, context);
@@ -257,22 +213,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigTemplateVersionInner>>
         listByConfigTemplateSinglePageAsync(String resourceGroupName, String configTemplateName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configTemplateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configTemplateName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByConfigTemplate(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -312,24 +252,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateSinglePage(String resourceGroupName,
         String configTemplateName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter configTemplateName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ConfigTemplateVersionListResult> res
             = service.listByConfigTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -352,24 +274,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateSinglePage(String resourceGroupName,
         String configTemplateName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configTemplateName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter configTemplateName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ConfigTemplateVersionListResult> res
             = service.listByConfigTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -425,13 +329,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigTemplateVersionInner>> listByConfigTemplateNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -452,15 +349,6 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ConfigTemplateVersionListResult> res
             = service.listByConfigTemplateNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -481,21 +369,10 @@ public final class ConfigTemplateVersionsClientImpl implements ConfigTemplateVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigTemplateVersionInner> listByConfigTemplateNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ConfigTemplateVersionListResult> res
             = service.listByConfigTemplateNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigTemplateVersionsClientImpl.class);
 }

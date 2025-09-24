@@ -13,8 +13,8 @@ import com.azure.resourcemanager.datamigration.models.MigrateSyncCompleteCommand
 public final class TasksCommandSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
-     * Tasks_Command.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Command.
+     * json
      */
     /**
      * Sample code: Tasks_Command.

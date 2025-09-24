@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.VirtualMachinesClient;
@@ -166,25 +165,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -226,28 +206,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<VirtualMachinesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, Context.NONE);
@@ -270,28 +228,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<VirtualMachinesList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, context);
@@ -351,29 +287,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -417,32 +330,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, clusterName, virtualMachineId, accept, context);
@@ -484,35 +371,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     private Mono<Response<Flux<ByteBuffer>>> restrictMovementWithResponseAsync(String resourceGroupName,
         String privateCloudName, String clusterName, String virtualMachineId,
         VirtualMachineRestrictMovement restrictMovement) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
-        if (restrictMovement == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restrictMovement is required and cannot be null."));
-        } else {
-            restrictMovement.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.restrictMovement(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -537,38 +395,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restrictMovementWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
-        if (restrictMovement == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter restrictMovement is required and cannot be null."));
-        } else {
-            restrictMovement.validate();
-        }
         final String contentType = "application/json";
         return service.restrictMovementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
@@ -592,38 +418,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restrictMovementWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String virtualMachineId, VirtualMachineRestrictMovement restrictMovement, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
-        if (restrictMovement == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter restrictMovement is required and cannot be null."));
-        } else {
-            restrictMovement.validate();
-        }
         final String contentType = "application/json";
         return service.restrictMovementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, virtualMachineId,
@@ -767,13 +561,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -792,15 +579,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<VirtualMachinesList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -820,20 +598,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VirtualMachineInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<VirtualMachinesList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesClientImpl.class);
 }

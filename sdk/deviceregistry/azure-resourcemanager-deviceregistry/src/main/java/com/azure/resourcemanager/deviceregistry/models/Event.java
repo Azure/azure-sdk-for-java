@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -82,27 +81,6 @@ public final class Event extends EventBase {
         super.withTopic(topic);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Event"));
-        }
-        if (eventNotifier() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property eventNotifier in model Event"));
-        }
-        if (topic() != null) {
-            topic().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Event.class);
 
     /**
      * {@inheritDoc}

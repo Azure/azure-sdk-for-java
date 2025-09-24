@@ -267,7 +267,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus;5.23.0;5.24.0-beta.
 com.azure.spring:spring-cloud-azure-testcontainers;5.23.0;5.24.0-beta.1
 com.azure:azure-spring-data-cosmos;5.23.0;5.24.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.54.0;2.55.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appplatform;2.50.5;2.51.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.53.2;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.2;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.2;2.54.0-beta.1
@@ -341,7 +341,7 @@ com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-databox;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-datamigration;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.3;1.0.0-beta.4
@@ -384,7 +384,7 @@ com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-quota;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-quota;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0;1.1.0-beta.1
@@ -464,7 +464,7 @@ com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
@@ -506,7 +506,6 @@ com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computerecommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
@@ -543,6 +542,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
+unreleased_com.azure.resourcemanager:azure-resourcemanager-storage;2.54.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

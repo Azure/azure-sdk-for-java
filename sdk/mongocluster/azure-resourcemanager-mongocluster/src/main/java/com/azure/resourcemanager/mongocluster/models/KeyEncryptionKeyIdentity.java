@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -72,26 +71,6 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
         this.userAssignedIdentityResourceId = userAssignedIdentityResourceId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (identityType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property identityType in model KeyEncryptionKeyIdentity"));
-        }
-        if (userAssignedIdentityResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property userAssignedIdentityResourceId in model KeyEncryptionKeyIdentity"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyIdentity.class);
 
     /**
      * {@inheritDoc}

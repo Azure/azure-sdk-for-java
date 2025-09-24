@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -98,28 +97,6 @@ public final class ApplicationServerConfiguration implements JsonSerializable<Ap
         this.instanceCount = instanceCount;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subnetId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subnetId in model ApplicationServerConfiguration"));
-        }
-        if (virtualMachineConfiguration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property virtualMachineConfiguration in model ApplicationServerConfiguration"));
-        } else {
-            virtualMachineConfiguration().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ApplicationServerConfiguration.class);
 
     /**
      * {@inheritDoc}

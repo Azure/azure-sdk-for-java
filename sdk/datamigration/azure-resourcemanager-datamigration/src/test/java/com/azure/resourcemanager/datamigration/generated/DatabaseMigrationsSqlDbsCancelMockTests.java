@@ -31,7 +31,7 @@ public final class DatabaseMigrationsSqlDbsCancelMockTests {
 
         manager.databaseMigrationsSqlDbs()
             .cancel("cfculzj", "mhpfywvy", "dqpz", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("33744b1a-6774-4d39-b3ab-56301fbcdb9f")), com.azure.core.util.Context.NONE);
+                UUID.fromString("1ec1fcff-7ce6-4cf5-83a5-16439d8a75a9")), com.azure.core.util.Context.NONE);
 
     }
 }

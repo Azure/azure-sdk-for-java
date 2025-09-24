@@ -1354,6 +1354,8 @@ public final class TasksClientImpl implements TasksClient {
     }
 
     /**
+     * Get tasks in a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1379,6 +1381,8 @@ public final class TasksClientImpl implements TasksClient {
     }
 
     /**
+     * Get tasks in a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1405,6 +1409,8 @@ public final class TasksClientImpl implements TasksClient {
     }
 
     /**
+     * Get tasks in a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
