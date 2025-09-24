@@ -23,7 +23,7 @@ public final class DbSystemShapesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"shapeFamily\":\"aylp\",\"shapeName\":\"rsqqwztcm\",\"availableCoreCount\":544384144,\"minimumCoreCount\":899185817,\"runtimeMinimumCoreCount\":96806467,\"coreCountIncrement\":425084059,\"minStorageCount\":719164524,\"maxStorageCount\":307394034,\"availableDataStoragePerServerInTbs\":67.57833265628484,\"availableMemoryPerNodeInGbs\":410402456,\"availableDbNodePerNodeInGbs\":747482669,\"minCoreCountPerNode\":1559049034,\"availableMemoryInGbs\":1859736200,\"minMemoryPerNodeInGbs\":207202962,\"availableDbNodeStorageInGbs\":1342941735,\"minDbNodeStoragePerNodeInGbs\":1297569440,\"availableDataStorageInTbs\":660736772,\"minDataStorageInTbs\":2021763833,\"minimumNodeCount\":1992665604,\"maximumNodeCount\":127913719,\"availableCoreCountPerNode\":919245965,\"computeModel\":\"ECPU\",\"areServerTypesSupported\":true,\"displayName\":\"gywwpgjxs\"},\"id\":\"tf\",\"name\":\"jgicgaao\",\"type\":\"pttaqutd\"}]}";
+            = "{\"value\":[{\"properties\":{\"shapeFamily\":\"lwywae\",\"shapeName\":\"czg\",\"availableCoreCount\":2053734603,\"minimumCoreCount\":1104824413,\"runtimeMinimumCoreCount\":1910653936,\"coreCountIncrement\":1439896312,\"minStorageCount\":1083020573,\"maxStorageCount\":812614891,\"availableDataStoragePerServerInTbs\":32.10262069012182,\"availableMemoryPerNodeInGbs\":456362101,\"availableDbNodePerNodeInGbs\":2024574994,\"minCoreCountPerNode\":967931451,\"availableMemoryInGbs\":1690447004,\"minMemoryPerNodeInGbs\":1388002199,\"availableDbNodeStorageInGbs\":1164284213,\"minDbNodeStoragePerNodeInGbs\":533977012,\"availableDataStorageInTbs\":1111002496,\"minDataStorageInTbs\":867262862,\"minimumNodeCount\":657973878,\"maximumNodeCount\":536619974,\"availableCoreCountPerNode\":1460091990,\"computeModel\":\"ECPU\",\"areServerTypesSupported\":false,\"displayName\":\"yvteowxvgpiudeu\",\"shapeAttributes\":[\"xzecpaxwkufykhvu\"]},\"id\":\"epmrut\",\"name\":\"nabaobnslujd\",\"type\":\"ltymkmvguihywart\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,33 +32,34 @@ public final class DbSystemShapesListByLocationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DbSystemShape> response
-            = manager.dbSystemShapes().listByLocation("fwyfwlwxjwet", "psihcla", com.azure.core.util.Context.NONE);
+        PagedIterable<DbSystemShape> response = manager.dbSystemShapes()
+            .listByLocation("swankltytmh", "roznnhdrlktgj", "sggux", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aylp", response.iterator().next().properties().shapeFamily());
-        Assertions.assertEquals("rsqqwztcm", response.iterator().next().properties().shapeName());
-        Assertions.assertEquals(544384144, response.iterator().next().properties().availableCoreCount());
-        Assertions.assertEquals(899185817, response.iterator().next().properties().minimumCoreCount());
-        Assertions.assertEquals(96806467, response.iterator().next().properties().runtimeMinimumCoreCount());
-        Assertions.assertEquals(425084059, response.iterator().next().properties().coreCountIncrement());
-        Assertions.assertEquals(719164524, response.iterator().next().properties().minStorageCount());
-        Assertions.assertEquals(307394034, response.iterator().next().properties().maxStorageCount());
-        Assertions.assertEquals(67.57833265628484D,
+        Assertions.assertEquals("lwywae", response.iterator().next().properties().shapeFamily());
+        Assertions.assertEquals("czg", response.iterator().next().properties().shapeName());
+        Assertions.assertEquals(2053734603, response.iterator().next().properties().availableCoreCount());
+        Assertions.assertEquals(1104824413, response.iterator().next().properties().minimumCoreCount());
+        Assertions.assertEquals(1910653936, response.iterator().next().properties().runtimeMinimumCoreCount());
+        Assertions.assertEquals(1439896312, response.iterator().next().properties().coreCountIncrement());
+        Assertions.assertEquals(1083020573, response.iterator().next().properties().minStorageCount());
+        Assertions.assertEquals(812614891, response.iterator().next().properties().maxStorageCount());
+        Assertions.assertEquals(32.10262069012182D,
             response.iterator().next().properties().availableDataStoragePerServerInTbs());
-        Assertions.assertEquals(410402456, response.iterator().next().properties().availableMemoryPerNodeInGbs());
-        Assertions.assertEquals(747482669, response.iterator().next().properties().availableDbNodePerNodeInGbs());
-        Assertions.assertEquals(1559049034, response.iterator().next().properties().minCoreCountPerNode());
-        Assertions.assertEquals(1859736200, response.iterator().next().properties().availableMemoryInGbs());
-        Assertions.assertEquals(207202962, response.iterator().next().properties().minMemoryPerNodeInGbs());
-        Assertions.assertEquals(1342941735, response.iterator().next().properties().availableDbNodeStorageInGbs());
-        Assertions.assertEquals(1297569440, response.iterator().next().properties().minDbNodeStoragePerNodeInGbs());
-        Assertions.assertEquals(660736772, response.iterator().next().properties().availableDataStorageInTbs());
-        Assertions.assertEquals(2021763833, response.iterator().next().properties().minDataStorageInTbs());
-        Assertions.assertEquals(1992665604, response.iterator().next().properties().minimumNodeCount());
-        Assertions.assertEquals(127913719, response.iterator().next().properties().maximumNodeCount());
-        Assertions.assertEquals(919245965, response.iterator().next().properties().availableCoreCountPerNode());
+        Assertions.assertEquals(456362101, response.iterator().next().properties().availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(2024574994, response.iterator().next().properties().availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(967931451, response.iterator().next().properties().minCoreCountPerNode());
+        Assertions.assertEquals(1690447004, response.iterator().next().properties().availableMemoryInGbs());
+        Assertions.assertEquals(1388002199, response.iterator().next().properties().minMemoryPerNodeInGbs());
+        Assertions.assertEquals(1164284213, response.iterator().next().properties().availableDbNodeStorageInGbs());
+        Assertions.assertEquals(533977012, response.iterator().next().properties().minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(1111002496, response.iterator().next().properties().availableDataStorageInTbs());
+        Assertions.assertEquals(867262862, response.iterator().next().properties().minDataStorageInTbs());
+        Assertions.assertEquals(657973878, response.iterator().next().properties().minimumNodeCount());
+        Assertions.assertEquals(536619974, response.iterator().next().properties().maximumNodeCount());
+        Assertions.assertEquals(1460091990, response.iterator().next().properties().availableCoreCountPerNode());
         Assertions.assertEquals(ComputeModel.ECPU, response.iterator().next().properties().computeModel());
-        Assertions.assertTrue(response.iterator().next().properties().areServerTypesSupported());
-        Assertions.assertEquals("gywwpgjxs", response.iterator().next().properties().displayName());
+        Assertions.assertFalse(response.iterator().next().properties().areServerTypesSupported());
+        Assertions.assertEquals("yvteowxvgpiudeu", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("xzecpaxwkufykhvu", response.iterator().next().properties().shapeAttributes().get(0));
     }
 }

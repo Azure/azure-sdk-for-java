@@ -12,10 +12,10 @@ public final class AllConnectionStringTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllConnectionStringType model
-            = BinaryData.fromString("{\"high\":\"xmrhu\",\"low\":\"wp\",\"medium\":\"sutrgjup\"}")
+            = BinaryData.fromString("{\"high\":\"pvruudlg\",\"low\":\"bth\",\"medium\":\"tgk\"}")
                 .toObject(AllConnectionStringType.class);
-        Assertions.assertEquals("xmrhu", model.high());
-        Assertions.assertEquals("wp", model.low());
-        Assertions.assertEquals("sutrgjup", model.medium());
+        Assertions.assertEquals("pvruudlg", model.high());
+        Assertions.assertEquals("bth", model.low());
+        Assertions.assertEquals("tgk", model.medium());
     }
 }

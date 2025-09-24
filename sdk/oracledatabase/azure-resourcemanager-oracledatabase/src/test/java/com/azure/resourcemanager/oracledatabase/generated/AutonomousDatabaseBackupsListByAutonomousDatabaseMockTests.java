@@ -22,7 +22,7 @@ public final class AutonomousDatabaseBackupsListByAutonomousDatabaseMockTests {
     @Test
     public void testListByAutonomousDatabase() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"autonomousDatabaseOcid\":\"tu\",\"databaseSizeInTbs\":25.005421930354444,\"dbVersion\":\"kwr\",\"displayName\":\"nkqbhsyrq\",\"ocid\":\"jqhden\",\"isAutomatic\":false,\"isRestorable\":false,\"lifecycleDetails\":\"akdkifmjnnawtqab\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":338982677,\"sizeInTbs\":40.92865413253386,\"timeAvailableTil\":\"2021-05-03T21:10:06Z\",\"timeStarted\":\"eyirdhlisngw\",\"timeEnded\":\"qqmpizruwnpqx\",\"backupType\":\"Incremental\",\"provisioningState\":\"Failed\"},\"id\":\"ngjsaasi\",\"name\":\"xtmkzjvkviir\",\"type\":\"gfgrwsdp\"}]}";
+            = "{\"value\":[{\"properties\":{\"autonomousDatabaseOcid\":\"s\",\"databaseSizeInTbs\":77.00589648245675,\"dbVersion\":\"lmliowxihspnxwqa\",\"displayName\":\"epzwaklsbsbqq\",\"ocid\":\"gwwrxaomzis\",\"isAutomatic\":true,\"isRestorable\":true,\"lifecycleDetails\":\"ezkhhltnjadhqo\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":1275493501,\"sizeInTbs\":79.29256064321507,\"timeAvailableTil\":\"2021-07-31T20:48:08Z\",\"timeStarted\":\"bpcms\",\"timeEnded\":\"byrrueqth\",\"backupType\":\"Full\",\"provisioningState\":\"Failed\"},\"id\":\"scbbxig\",\"name\":\"hxiidlopedb\",\"type\":\"dpyqyybxubmd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class AutonomousDatabaseBackupsListByAutonomousDatabaseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AutonomousDatabaseBackup> response = manager.autonomousDatabaseBackups()
-            .listByAutonomousDatabase("tlmj", "yuojqtobaxk", com.azure.core.util.Context.NONE);
+            .listByAutonomousDatabase("izxqltgrd", "gypxrxvbfihwuhvc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nkqbhsyrq", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(338982677, response.iterator().next().properties().retentionPeriodInDays());
+        Assertions.assertEquals("epzwaklsbsbqq", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(1275493501, response.iterator().next().properties().retentionPeriodInDays());
     }
 }
