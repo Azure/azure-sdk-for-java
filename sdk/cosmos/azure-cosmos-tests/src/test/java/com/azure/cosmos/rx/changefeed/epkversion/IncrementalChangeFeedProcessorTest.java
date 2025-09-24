@@ -300,7 +300,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     for (JsonNode item : feedResponse.getResults()) {
                         if (item.get("timestamp") != null) {
                             initialTimestamp.set(item.get("timestamp").asText());
-                            logger.info(String.format("Found timestamp: %s", initialTimestamp));
+                            logger.info("Found timestamp: %s", initialTimestamp);
                         }
                     }
                     return Mono.empty();
@@ -331,7 +331,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     for (JsonNode item : feedResponse.getResults()) {
                         if (item.get("timestamp") != null) {
                             newTimestamp.set(item.get("timestamp").asText());
-                            logger.info(String.format("Found timestamp: %s", newTimestamp));
+                            logger.info("Found timestamp: %s", newTimestamp);
                         }
                     }
                     return Mono.empty();
