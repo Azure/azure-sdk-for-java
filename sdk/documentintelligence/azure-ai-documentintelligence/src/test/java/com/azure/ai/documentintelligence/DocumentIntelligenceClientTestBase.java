@@ -17,7 +17,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
@@ -62,7 +61,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
             builder.credential(new MockTokenCredential());
             setMatchers();
         } else if (interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isLiveMode()) {
             builder.credential(new AzurePowerShellCredentialBuilder().build());
@@ -93,7 +92,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
             builder.credential(new MockTokenCredential());
             setMatchers();
         } else if (interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isLiveMode()) {
             builder.credential(new AzurePowerShellCredentialBuilder().build());
