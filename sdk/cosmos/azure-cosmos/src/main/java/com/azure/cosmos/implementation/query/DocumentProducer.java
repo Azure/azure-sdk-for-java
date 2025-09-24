@@ -209,8 +209,9 @@ class DocumentProducer<T> {
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
                         qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
                         qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-                    client.getGlobalEndpointManager(),
-                    client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                        client.getGlobalEndpointManager(),
+                        client.getGlobalPartitionEndpointManagerForCircuitBreaker(),
+                        false
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
