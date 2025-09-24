@@ -123,7 +123,7 @@ public class ReadmeSamples {
 
     public void getBlobClient5() {
         // BEGIN: readme-sample-getBlobClient5
-        // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
+        // Only one "?" is needed here. If the SAS token starts with "?", please remove one "?".
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
             .buildClient();

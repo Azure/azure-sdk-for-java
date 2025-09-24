@@ -284,7 +284,7 @@ BlobClient blobClient = new BlobClientBuilder()
 or
 
 ```java readme-sample-getBlobClient5
-// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
+// Only one "?" is needed here. If the SAS token starts with "?", please remove one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();
