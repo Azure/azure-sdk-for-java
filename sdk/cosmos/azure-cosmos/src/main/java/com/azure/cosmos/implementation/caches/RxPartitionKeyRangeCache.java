@@ -244,7 +244,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 return Mono.just(updatedMap);
             })
             .doFinally(signal -> {
-                if(metaDataDiagnosticsContext != null) {
+                if (metaDataDiagnosticsContext != null) {
                     Instant pkRangesCallEndTime = Instant.now();
                     MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
                         new MetadataDiagnosticsContext.MetadataDiagnostics(
