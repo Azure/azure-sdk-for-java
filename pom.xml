@@ -20,9 +20,9 @@
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
-    <module>sdk/appplatform</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appplatform</module>
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -65,6 +65,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contoso</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
