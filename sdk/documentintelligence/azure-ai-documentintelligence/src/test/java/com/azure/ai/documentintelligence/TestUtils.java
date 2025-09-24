@@ -6,11 +6,17 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -244,5 +250,52 @@ public final class TestUtils {
     static ClassifierDocumentTypeDetails createBlobFileListContentSource(String containerUrl, String fileList) {
         return new ClassifierDocumentTypeDetails()
             .setAzureBlobFileListSource(new AzureBlobFileListContentSource(containerUrl, fileList));
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.LIVE) {
+            TokenCredential pipelineCredential = tryGetPipelineCredential();
+            if (pipelineCredential != null) {
+                return pipelineCredential;
+            }
+            return new AzureCliCredentialBuilder().build();
+        } else if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
+    }
+
+    /**
+     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
+     * Azure DevOps. If not, returns null.
+     *
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
+     */
+    @SuppressWarnings("deprecation")
+    private static TokenCredential tryGetPipelineCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
     }
 }

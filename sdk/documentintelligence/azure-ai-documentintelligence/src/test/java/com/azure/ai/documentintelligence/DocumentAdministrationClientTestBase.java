@@ -18,9 +18,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -49,16 +46,13 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
             = new DocumentIntelligenceAdministrationClientBuilder().endpoint(endpoint)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .serviceVersion(serviceVersion);
+                .serviceVersion(serviceVersion)
+                .credential(TestUtils.getTestTokenCredential(testContextManager.getTestMode()));
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
             setMatchers();
         } else if (interceptorManager.isRecordMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
 
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
