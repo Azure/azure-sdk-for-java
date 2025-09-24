@@ -74,7 +74,7 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
         List<PartitionKeyRange> orderedRanges = sortedRanges.stream().map(range -> range.left).collect(Collectors.toList());
 
         if (!isCompleteSetOfRanges(orderedRanges)) {
-            logger.warn("isCompleteSetOfRanges, return null instead");
+            logger.warn("Partition key ranges are incomplete - missing ranges detected in the set. Returning null.");
             return null;
         }
 
