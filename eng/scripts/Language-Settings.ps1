@@ -30,7 +30,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
   if ($serviceDirectory) {
     $searchPath = Join-Path $sdkRoot $serviceDirectory
     Write-Verbose "searchPath=$searchPath"
-    [array]$ymlFiles = Get-ChildItem -Recurse -Path $searchPath "ci*.yml" | Where-Object { $_.PSIsContainer -eq $false}
+    [array]$ymlFiles = Get-ChildItem -Path $searchPath "ci*.yml" | Where-Object { $_.PSIsContainer -eq $false}
   } else {
     # The reason for the exclude folders are POM only releases (nothing is built) or
     # the service directory sits outside of the engineering system

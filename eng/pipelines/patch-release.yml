@@ -23,7 +23,7 @@ extends:
       - name: azure-resourcemanager-cosmos
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos
-        ServiceDirectory: cosmos
+        ServiceDirectory: cosmos/azure-resourcemanager-cosmos
       - name: azure-resourcemanager-eventhubs
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventhubs
@@ -67,7 +67,7 @@ extends:
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstorage
-        ServiceDirectory: storage
+        ServiceDirectory: storage/azure-resourcemanager-storage
       - name: azure-resourcemanager-cdn
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercdn
