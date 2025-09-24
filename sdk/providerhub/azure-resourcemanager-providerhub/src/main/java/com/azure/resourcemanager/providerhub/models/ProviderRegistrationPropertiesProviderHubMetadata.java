@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ProviderRegistrationPropertiesProviderHubMetadata model.
+ * The provider hub metadata.
  */
 @Fluent
 public final class ProviderRegistrationPropertiesProviderHubMetadata extends ProviderHubMetadata {
@@ -53,6 +53,36 @@ public final class ProviderRegistrationPropertiesProviderHubMetadata extends Pro
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProviderRegistrationPropertiesProviderHubMetadata
+        withDirectRpRoleDefinitionId(String directRpRoleDefinitionId) {
+        super.withDirectRpRoleDefinitionId(directRpRoleDefinitionId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProviderRegistrationPropertiesProviderHubMetadata
+        withRegionalAsyncOperationResourceTypeName(String regionalAsyncOperationResourceTypeName) {
+        super.withRegionalAsyncOperationResourceTypeName(regionalAsyncOperationResourceTypeName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProviderRegistrationPropertiesProviderHubMetadata
+        withGlobalAsyncOperationResourceTypeName(String globalAsyncOperationResourceTypeName) {
+        super.withGlobalAsyncOperationResourceTypeName(globalAsyncOperationResourceTypeName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +110,9 @@ public final class ProviderRegistrationPropertiesProviderHubMetadata extends Pro
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("providerAuthentication", providerAuthentication());
         jsonWriter.writeJsonField("thirdPartyProviderAuthorization", thirdPartyProviderAuthorization());
+        jsonWriter.writeStringField("directRpRoleDefinitionId", directRpRoleDefinitionId());
+        jsonWriter.writeStringField("regionalAsyncOperationResourceTypeName", regionalAsyncOperationResourceTypeName());
+        jsonWriter.writeStringField("globalAsyncOperationResourceTypeName", globalAsyncOperationResourceTypeName());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +143,15 @@ public final class ProviderRegistrationPropertiesProviderHubMetadata extends Pro
                 } else if ("thirdPartyProviderAuthorization".equals(fieldName)) {
                     deserializedProviderRegistrationPropertiesProviderHubMetadata.withThirdPartyProviderAuthorization(
                         ProviderHubMetadataThirdPartyProviderAuthorization.fromJson(reader));
+                } else if ("directRpRoleDefinitionId".equals(fieldName)) {
+                    deserializedProviderRegistrationPropertiesProviderHubMetadata
+                        .withDirectRpRoleDefinitionId(reader.getString());
+                } else if ("regionalAsyncOperationResourceTypeName".equals(fieldName)) {
+                    deserializedProviderRegistrationPropertiesProviderHubMetadata
+                        .withRegionalAsyncOperationResourceTypeName(reader.getString());
+                } else if ("globalAsyncOperationResourceTypeName".equals(fieldName)) {
+                    deserializedProviderRegistrationPropertiesProviderHubMetadata
+                        .withGlobalAsyncOperationResourceTypeName(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

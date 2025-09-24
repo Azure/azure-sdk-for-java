@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ServiceDeleteOperation_example.json
+     * x-ms-original-file: 2025-06-01-preview/ServiceDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a service.

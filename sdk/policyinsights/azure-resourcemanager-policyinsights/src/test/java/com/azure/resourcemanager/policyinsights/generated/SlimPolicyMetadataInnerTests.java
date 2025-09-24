@@ -11,7 +11,7 @@ public final class SlimPolicyMetadataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SlimPolicyMetadataInner model = BinaryData.fromString(
-            "{\"properties\":{\"metadataId\":\"ijaeukm\",\"category\":\"ieekpndzaa\",\"title\":\"udqmeqwigpibudq\",\"owner\":\"xebeybpmz\",\"additionalContentUrl\":\"rtffyaqitmh\",\"metadata\":\"dataioqaqhvs\"},\"id\":\"fuqyrxpdlcgqlsi\",\"type\":\"jqfrddgamquh\",\"name\":\"srsjuivfc\"}")
+            "{\"properties\":{\"metadataId\":\"cxkjibnxmysuxswq\",\"category\":\"tvlwijpsttexoq\",\"title\":\"wcyyufmhruncu\",\"owner\":\"qspkcdqzhlctd\",\"additionalContentUrl\":\"nqndyfpchrqbn\",\"metadata\":\"datarcgegydcwboxjum\"},\"id\":\"qoli\",\"type\":\"raiouaubrjtl\",\"name\":\"xfuojrn\"}")
             .toObject(SlimPolicyMetadataInner.class);
     }
 

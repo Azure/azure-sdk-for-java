@@ -1,18 +1,32 @@
 # Release History
 
-## 1.1.0-beta.1 (2025-06-04)
-
-- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
-* `implementation.models.UserListResult` was added
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.1 (2025-07-23)
+
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.ManagedServiceIdentity` was added
 
 * `models.DatabaseRole` was added
 
 * `models.IdentityProvider` was added
 
 * `models.User` was added
+
+* `models.ManagedServiceIdentityType` was added
 
 * `models.EntraIdentityProviderProperties` was added
 
@@ -22,17 +36,23 @@
 
 * `models.UserProperties` was added
 
+* `models.CustomerManagedKeyEncryptionProperties` was added
+
 * `models.EntraPrincipalType` was added
 
 * `models.EntraIdentityProvider` was added
 
 * `models.DataApiMode` was added
 
+* `models.KeyEncryptionKeyIdentityType` was added
+
 * `models.User$DefinitionStages` was added
 
 * `models.UserRole` was added
 
 * `models.User$Definition` was added
+
+* `models.EncryptionProperties` was added
 
 * `models.AuthenticationMode` was added
 
@@ -44,34 +64,55 @@
 
 * `models.DataApiProperties` was added
 
+* `models.UserAssignedIdentity` was added
+
 * `models.User$Update` was added
+
+#### `models.MongoCluster$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.MongoClusterProperties` was modified
 
-* `authConfig()` was added
-* `withDataApi(models.DataApiProperties)` was added
+* `encryption()` was added
 * `withAuthConfig(models.AuthConfigProperties)` was added
+* `withEncryption(models.EncryptionProperties)` was added
 * `dataApi()` was added
+* `withDataApi(models.DataApiProperties)` was added
+* `authConfig()` was added
+
+#### `models.MongoClusterUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
 
 #### `models.StorageProperties` was modified
 
-* `type()` was added
-* `withType(models.StorageType)` was added
 * `withThroughput(java.lang.Long)` was added
 * `iops()` was added
 * `withIops(java.lang.Long)` was added
+* `type()` was added
 * `throughput()` was added
+* `withType(models.StorageType)` was added
 
 #### `MongoClusterManager` was modified
 
 * `users()` was added
 
+#### `models.MongoCluster` was modified
+
+* `identity()` was added
+
+#### `models.MongoCluster$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
 #### `models.MongoClusterUpdateProperties` was modified
 
-* `dataApi()` was added
-* `withDataApi(models.DataApiProperties)` was added
 * `authConfig()` was added
+* `dataApi()` was added
 * `withAuthConfig(models.AuthConfigProperties)` was added
+* `withDataApi(models.DataApiProperties)` was added
 
 ## 1.0.0 (2024-09-25)
 

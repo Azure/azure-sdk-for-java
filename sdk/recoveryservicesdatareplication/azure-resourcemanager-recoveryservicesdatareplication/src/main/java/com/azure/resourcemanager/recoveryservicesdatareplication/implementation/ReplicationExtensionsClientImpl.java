@@ -112,25 +112,23 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ReplicationExtensionInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("replicationExtensionName") String replicationExtensionName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("replicationExtensionName") String replicationExtensionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions/{replicationExtensionName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("replicationExtensionName") String replicationExtensionName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("replicationExtensionName") String replicationExtensionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationExtensions")
@@ -590,9 +588,9 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
             return Mono.error(
                 new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -633,10 +631,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
                 .log(
                     new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
     }
 
     /**
@@ -677,9 +673,8 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
                 .log(
                     new IllegalArgumentException("Parameter replicationExtensionName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, replicationExtensionName, context);
     }
 
     /**
@@ -958,7 +953,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ReplicationExtensionModel list operation along with {@link PagedResponse} on successful
+     * @return the list of replication extensions in the given vault along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -984,7 +979,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ReplicationExtensionModel list operation along with {@link PagedResponse}.
+     * @return the list of replication extensions in the given vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listNextSinglePage(String nextLink) {
@@ -1012,7 +1007,7 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ReplicationExtensionModel list operation along with {@link PagedResponse}.
+     * @return the list of replication extensions in the given vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicationExtensionInner> listNextSinglePage(String nextLink, Context context) {

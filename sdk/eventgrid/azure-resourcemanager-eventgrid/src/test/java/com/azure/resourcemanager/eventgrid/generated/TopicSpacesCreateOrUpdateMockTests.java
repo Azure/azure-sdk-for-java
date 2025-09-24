@@ -22,7 +22,7 @@ public final class TopicSpacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ih\",\"topicTemplates\":[\"kzsrz\",\"ffjilzfbpnt\",\"gkensckhbmcarmo\"],\"provisioningState\":\"Succeeded\"},\"id\":\"kwykuqdndxl\",\"name\":\"kh\",\"type\":\"gga\"}";
+            = "{\"properties\":{\"description\":\"iwlwkfflaqwmwqo\",\"topicTemplates\":[\"lteatn\",\"gefzj\",\"njtqbg\"],\"provisioningState\":\"Succeeded\"},\"id\":\"thnvxwtdqtcbjd\",\"name\":\"tqyhkxuns\",\"type\":\"ujqgbbjvo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class TopicSpacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TopicSpace response = manager.topicSpaces()
-            .define("bdxmd")
-            .withExistingNamespace("oewyhxessmvrkd", "sqeq")
-            .withDescription("br")
-            .withTopicTemplates(Arrays.asList("jppp", "tlpd", "bfm"))
+            .define("clzjwaqdz")
+            .withExistingNamespace("bkurklpiig", "uzkeutuip")
+            .withDescription("ewuwxyllz")
+            .withTopicTemplates(Arrays.asList("vtzqw"))
             .create();
 
-        Assertions.assertEquals("ih", response.description());
-        Assertions.assertEquals("kzsrz", response.topicTemplates().get(0));
+        Assertions.assertEquals("iwlwkfflaqwmwqo", response.description());
+        Assertions.assertEquals("lteatn", response.topicTemplates().get(0));
     }
 }

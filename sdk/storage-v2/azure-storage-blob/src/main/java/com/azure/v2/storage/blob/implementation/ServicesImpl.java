@@ -32,6 +32,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.InputStream;
@@ -55,6 +56,11 @@ public final class ServicesImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of ServicesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -62,6 +68,7 @@ public final class ServicesImpl {
     ServicesImpl(AzureBlobStorageImpl client) {
         this.service = ServicesService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -181,11 +188,14 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(BlobServiceProperties blobServiceProperties, Integer timeout,
         String requestId, RequestContext requestContext) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
-            blobServiceProperties, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetProperties", requestContext,
+            updatedContext -> {
+                final String restype = "service";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                    requestId, blobServiceProperties, accept, updatedContext);
+            });
     }
 
     /**
@@ -207,11 +217,14 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceProperties> getPropertiesWithResponse(Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> {
+                final String restype = "service";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -232,11 +245,14 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceStatistics> getStatisticsWithResponse(Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
-        return service.getStatistics(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetStatistics", requestContext,
+            updatedContext -> {
+                final String restype = "service";
+                final String comp = "stats";
+                final String accept = "application/xml";
+                return service.getStatistics(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -269,18 +285,22 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<BlobContainersSegment> res = service.listBlobContainersSegment(this.client.getUrl(), comp, prefix,
-            marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId,
-            accept, RequestContext.none());
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment",
+            RequestContext.none(), updatedContext -> {
+                final String comp = "list";
+                final String accept = "application/xml";
+                String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                    ? null
+                    : listBlobContainersIncludeType.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                Response<BlobContainersSegment> res = service.listBlobContainersSegment(this.client.getUrl(), comp,
+                    prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+                return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().getBlobContainerItems(), null,
+                    res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
+            });
     }
 
     /**
@@ -314,18 +334,22 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId, RequestContext requestContext) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<BlobContainersSegment> res = service.listBlobContainersSegment(this.client.getUrl(), comp, prefix,
-            marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId,
-            accept, requestContext);
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment", requestContext,
+            updatedContext -> {
+                final String comp = "list";
+                final String accept = "application/xml";
+                String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                    ? null
+                    : listBlobContainersIncludeType.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                Response<BlobContainersSegment> res = service.listBlobContainersSegment(this.client.getUrl(), comp,
+                    prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+                return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().getBlobContainerItems(), null,
+                    res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
+            });
     }
 
     /**
@@ -469,11 +493,14 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout,
         String requestId, RequestContext requestContext) {
-        final String restype = "service";
-        final String comp = "userdelegationkey";
-        final String accept = "application/xml";
-        return service.getUserDelegationKey(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
-            requestId, keyInfo, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetUserDelegationKey", requestContext,
+            updatedContext -> {
+                final String restype = "service";
+                final String comp = "userdelegationkey";
+                final String accept = "application/xml";
+                return service.getUserDelegationKey(this.client.getUrl(), restype, comp, timeout,
+                    this.client.getVersion(), requestId, keyInfo, accept, updatedContext);
+            });
     }
 
     /**
@@ -492,11 +519,14 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(Integer timeout, String requestId, RequestContext requestContext) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.getAccountInfo(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
-            accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> {
+                final String restype = "account";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.getAccountInfo(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -520,10 +550,13 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> submitBatchWithResponse(long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId, RequestContext requestContext) {
-        final String comp = "batch";
-        final String accept = "application/xml";
-        return service.submitBatch(this.client.getUrl(), comp, contentLength, multipartContentType, timeout,
-            this.client.getVersion(), requestId, body, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SubmitBatch", requestContext,
+            updatedContext -> {
+                final String comp = "batch";
+                final String accept = "application/xml";
+                return service.submitBatch(this.client.getUrl(), comp, contentLength, multipartContentType, timeout,
+                    this.client.getVersion(), requestId, body, accept, updatedContext);
+            });
     }
 
     /**
@@ -557,15 +590,18 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FilterBlobSegment> filterBlobsWithResponse(Integer timeout, String requestId, String where,
         String marker, Integer maxresults, List<FilterBlobsIncludeItem> include, RequestContext requestContext) {
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.filterBlobs(this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, where,
-            marker, maxresults, includeConverted, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.FilterBlobs", requestContext,
+            updatedContext -> {
+                final String comp = "blobs";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.filterBlobs(this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId,
+                    where, marker, maxresults, includeConverted, accept, updatedContext);
+            });
     }
 
     /**
@@ -581,11 +617,15 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId) {
-        final String accept = "application/xml";
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink, this.client.getUrl(),
-            this.client.getVersion(), requestId, accept, RequestContext.none());
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment",
+            RequestContext.none(), updatedContext -> {
+                final String accept = "application/xml";
+                Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink,
+                    this.client.getUrl(), this.client.getVersion(), requestId, accept, updatedContext);
+                return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().getBlobContainerItems(), null,
+                    res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
+            });
     }
 
     /**
@@ -603,11 +643,15 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId,
         RequestContext requestContext) {
-        final String accept = "application/xml";
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink, this.client.getUrl(),
-            this.client.getVersion(), requestId, accept, requestContext);
-        return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment", requestContext,
+            updatedContext -> {
+                final String accept = "application/xml";
+                Response<BlobContainersSegment> res = service.listBlobContainersSegmentNext(nextLink,
+                    this.client.getUrl(), this.client.getVersion(), requestId, accept, updatedContext);
+                return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().getBlobContainerItems(), null,
+                    res.getValue().getNextMarker() != null ? res.getValue().getNextMarker() : null, null, null, null);
+            });
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);

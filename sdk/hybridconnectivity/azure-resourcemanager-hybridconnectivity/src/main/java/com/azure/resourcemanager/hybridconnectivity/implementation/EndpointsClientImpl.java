@@ -134,24 +134,22 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") EndpointResourceInner endpointResource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "endpointName", encoded = true) String endpointName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "endpointName", encoded = true) String endpointName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints")
@@ -592,10 +590,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
         if (endpointName == null) {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                endpointName, accept, context))
+                endpointName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -640,9 +637,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
-            accept, context);
+            context);
     }
 
     /**

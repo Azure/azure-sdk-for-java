@@ -18,14 +18,12 @@ import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -483,7 +481,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -493,7 +491,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.
@@ -860,29 +858,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    public LdapServerType ldapServerType() {
-        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
-    }
-
-    /**
-     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @param ldapServerType the ldapServerType value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLdapServerType(LdapServerType ldapServerType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLdapServerType(ldapServerType);
-        return this;
-    }
-
-    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -999,10 +974,7 @@ public final class VolumeInner extends Resource {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @return the unixPermissions value.
      */
@@ -1015,10 +987,7 @@ public final class VolumeInner extends Resource {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeInner object itself.
@@ -1363,29 +1332,6 @@ public final class VolumeInner extends Resource {
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.innerProperties() == null ? null : this.innerProperties().language();
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLanguage(VolumeLanguage language) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLanguage(language);
-        return this;
     }
 
     /**

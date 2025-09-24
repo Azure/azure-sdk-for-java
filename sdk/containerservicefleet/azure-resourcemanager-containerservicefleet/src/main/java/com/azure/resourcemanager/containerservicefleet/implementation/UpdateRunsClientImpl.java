@@ -114,7 +114,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") UpdateRunInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -122,9 +122,9 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName, @PathParam("updateRunName") String updateRunName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -132,7 +132,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
             @PathParam("fleetName") String fleetName, @PathParam("updateRunName") String updateRunName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns")
@@ -742,10 +742,9 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
         if (updateRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter updateRunName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -786,10 +785,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter updateRunName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, Context.NONE);
     }
 
     /**
@@ -830,9 +827,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter updateRunName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateRunName, context);
     }
 
     /**

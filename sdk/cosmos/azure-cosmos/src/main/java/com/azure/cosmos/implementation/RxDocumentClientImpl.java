@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -69,7 +70,8 @@ import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -125,7 +127,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -185,6 +186,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
         ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
 
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -270,6 +274,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private final boolean useThinClient;
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
@@ -532,10 +537,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
-                    this.tokenCredentialScopes = new String[] {
-//                    AadTokenAuthorizationHelper.AAD_AUTH_TOKEN_COSMOS_WINDOWS_SCOPE,
-                        serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default"
-                    };
+                    String scopeOverride = Configs.getAadScopeOverride();
+                    String defaultScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
+                    String scopeToUse = (scopeOverride != null && !scopeOverride.isEmpty()) ? scopeOverride : defaultScope;
+
+                    this.tokenCredentialScopes = new String[] { scopeToUse };
                     this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
                         .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
                     this.authorizationTokenType = AuthorizationTokenType.AadToken;
@@ -602,6 +608,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
+            this.useThinClient = Configs.isThinClientEnabled()
+                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
+                && this.connectionPolicy.getHttp2ConnectionConfig() != null
+                && ImplementationBridgeHelpers
+                    .Http2ConnectionConfigHelper
+                    .getHttp2ConnectionConfigAccessor()
+                    .isEffectivelyEnabled(
+                        this.connectionPolicy.getHttp2ConnectionConfig()
+                    );
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -844,7 +859,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {}", endpoint);
+                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient);
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -1174,26 +1189,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(nonNullQueryOptions));
 
-        // Trying to put this logic as low as the query pipeline
-        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
-        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
-            this.collectionCache,
-            null,
-            resourceLink,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions));
-
-
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
         state.registerDiagnosticsFactory(
             diagnosticsFactory::reset,
             diagnosticsFactory::merge);
 
+        // Trying to put this logic as low as the query pipeline
+        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            resourceLink,
+            qryOptAccessor.getProperties(nonNullQueryOptions),
+            qryOptAccessor.getHeaders(nonNullQueryOptions),
+            this.sessionContainer,
+            diagnosticsFactory);
+
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
                                 () -> createQueryInternal(
-                                    diagnosticsFactory, resourceLink, sqlQuery, state.getQueryOptions(), klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
-                                invalidPartitionExceptionRetryPolicy
+                                    diagnosticsFactory,
+                                    resourceLink,
+                                    sqlQuery,
+                                    state.getQueryOptions(),
+                                    klass,
+                                    resourceTypeEnum,
+                                    queryClient,
+                                    correlationActivityId,
+                                    isQueryCancelledOnTimeout),
+                    staleResourceRetryPolicy
                             ).flatMap(result -> {
                                 diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
                                 return Mono.just(result);
@@ -2440,14 +2464,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRxDocumentServiceRequest) {
 
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
 
-        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+
+        DocumentClientRetryPolicy finalRetryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                collectionLink);
+
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -2472,7 +2497,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         scopedDiagnosticsFactory,
                         requestReference,
                         crossRegionAvailabilityContextForRxDocumentServiceRequest),
-                requestRetryPolicy),
+                finalRetryPolicyInstance),
             scopedDiagnosticsFactory
         ), requestReference, endToEndPolicyConfig);
     }
@@ -2828,12 +2853,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
 
-        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        DocumentClientRetryPolicy finalRetryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                collectionLink);;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -2970,14 +2995,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        if (nonNullRequestOptions.getPartitionKey() == null) {
-            String collectionLink = Utils.getCollectionName(documentLink);
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
-                collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
-        }
-        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+
+        DocumentClientRetryPolicy finalRequestRetryPolicy =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -3001,7 +3024,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         scopedDiagnosticsFactory,
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
-                    requestRetryPolicy),
+                    finalRequestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference, endToEndPolicyConfig);
     }
 
@@ -3306,7 +3329,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        DocumentClientRetryPolicy documentClientRetryPolicy =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3516,7 +3543,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3704,7 +3734,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        DocumentClientRetryPolicy retryPolicyInstance =
+            this.getRetryPolicyForPointOperation(
+                scopedDiagnosticsFactory,
+                nonNullRequestOptions,
+                Utils.getCollectionName(documentLink));
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3846,6 +3880,121 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (ctx) -> diagnosticsFactory.merge(ctx)
         );
 
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            qryOptAccessor.getProperties(state.getQueryOptions()),
+            qryOptAccessor.getHeaders(state.getQueryOptions()),
+            this.sessionContainer,
+            diagnosticsFactory);
+
+        return ObservableHelper
+            .inlineIfPossibleAsObs(
+                () -> readMany(itemIdentityList, collectionLink, state, diagnosticsFactory, klass),
+                staleResourceRetryPolicy
+            )
+            .map(feedList -> {
+                // aggregating the result to construct a FeedResponse and aggregate RUs.
+                List<T> finalList = new ArrayList<>();
+                HashMap<String, String> headers = new HashMap<>();
+                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
+                double requestCharge = 0;
+                for (FeedResponse<T> page : feedList) {
+                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                        ModelBridgeInternal.queryMetrics(page);
+                    if (pageQueryMetrics != null) {
+                        pageQueryMetrics.forEach(
+                            aggregatedQueryMetrics::putIfAbsent);
+                    }
+
+                    requestCharge += page.getRequestCharge();
+                    finalList.addAll(page.getResults());
+                    aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                }
+
+                // NOTE: This CosmosDiagnostics instance intentionally isn't captured in the
+                // ScopedDiagnosticsFactory - and a such won't be included in the diagnostics of the
+                // CosmosDiagnosticsContext - which is fine, because the CosmosDiagnosticsContext
+                // contains the "real" CosmosDiagnostics instances (which will also be used
+                // for diagnostics purposes - like metrics, logging etc.
+                // this artificial CosmosDiagnostics with the aggregated RU/s etc. is simply
+                // to maintain the API contract that a FeedResponse returns one CosmosDiagnostics
+                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    aggregatedDiagnostics, aggregateRequestStatistics);
+
+                state.mergeDiagnosticsContext();
+                CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                if (ctx != null) {
+                    ctxAccessor.recordOperation(
+                        ctx,
+                        200,
+                        0,
+                        finalList.size(),
+                        requestCharge,
+                        aggregatedDiagnostics,
+                        null
+                    );
+                    diagnosticsAccessor
+                        .setDiagnosticsContext(
+                            aggregatedDiagnostics,
+                            ctx);
+                }
+
+                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                    .toString(requestCharge));
+                FeedResponse<T> frp = BridgeInternal
+                    .createFeedResponseWithQueryMetrics(
+                        finalList,
+                        headers,
+                        aggregatedQueryMetrics,
+                        null,
+                        false,
+                        false,
+                        aggregatedDiagnostics);
+                return frp;
+            })
+            .onErrorMap(throwable -> {
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException)throwable;
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                    if (diagnostics != null) {
+                        state.mergeDiagnosticsContext();
+                        CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                        if (ctx != null) {
+                            ctxAccessor.recordOperation(
+                                ctx,
+                                cosmosException.getStatusCode(),
+                                cosmosException.getSubStatusCode(),
+                                0,
+                                cosmosException.getRequestCharge(),
+                                diagnostics,
+                                throwable
+                            );
+                            diagnosticsAccessor
+                                .setDiagnosticsContext(
+                                    diagnostics,
+                                    state.getDiagnosticsContextSnapshot());
+                        }
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
+    }
+
+
+    private <T> Mono<List<FeedResponse<T>>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        String collectionLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass) {
+
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
             OperationType.Query,
@@ -3936,99 +4085,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Collections.unmodifiableMap(rangeQueryMap));
 
                             // merge results from point reads and queries
-                            return Flux.merge(pointReads, queries)
-                                       .collectList()
-                                       // aggregating the result to construct a FeedResponse and aggregate RUs.
-                                       .map(feedList -> {
-                                           List<T> finalList = new ArrayList<>();
-                                           HashMap<String, String> headers = new HashMap<>();
-                                           ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                           Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
-                                           double requestCharge = 0;
-                                           for (FeedResponse<T> page : feedList) {
-                                               ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
-                                                   ModelBridgeInternal.queryMetrics(page);
-                                               if (pageQueryMetrics != null) {
-                                                   pageQueryMetrics.forEach(
-                                                       aggregatedQueryMetrics::putIfAbsent);
-                                               }
-
-                                               requestCharge += page.getRequestCharge();
-                                               finalList.addAll(page.getResults());
-                                               aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
-                                           }
-
-                                           // NOTE: This CosmosDiagnostics instance intentionally isn't captured in the
-                                           // ScopedDiagnosticsFactory - and a ssuch won't be included in the diagnostics of the
-                                           // CosmosDiagnosticsContext - which is fine, because the CosmosDiagnosticsContext
-                                           // contains the "real" CosmosDiagnostics instances (which will also be used
-                                           // for diagnostics purposes - like metrics, logging etc.
-                                           // this artificial CosmosDiagnostics with the aggregated RU/s etc. si simply
-                                           // to maintain the API contract that a FeedResponse returns one CosmosDiagnostics
-                                           CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                           diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                               aggregatedDiagnostics, aggregateRequestStatistics);
-
-                                           state.mergeDiagnosticsContext();
-                                           CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                           if (ctx != null) {
-                                               ctxAccessor.recordOperation(
-                                                   ctx,
-                                                   200,
-                                                   0,
-                                                   finalList.size(),
-                                                   requestCharge,
-                                                   aggregatedDiagnostics,
-                                                   null
-                                               );
-                                               diagnosticsAccessor
-                                                   .setDiagnosticsContext(
-                                                       aggregatedDiagnostics,
-                                                       ctx);
-                                           }
-
-                                           headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                               .toString(requestCharge));
-                                           FeedResponse<T> frp = BridgeInternal
-                                               .createFeedResponseWithQueryMetrics(
-                                                   finalList,
-                                                   headers,
-                                                   aggregatedQueryMetrics,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   aggregatedDiagnostics);
-                                           return frp;
-                                       });
-                        })
-                        .onErrorMap(throwable -> {
-                            if (throwable instanceof CosmosException) {
-                                CosmosException cosmosException = (CosmosException)throwable;
-                                CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
-                                if (diagnostics != null) {
-                                    state.mergeDiagnosticsContext();
-                                    CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                    if (ctx != null) {
-                                        ctxAccessor.recordOperation(
-                                            ctx,
-                                            cosmosException.getStatusCode(),
-                                            cosmosException.getSubStatusCode(),
-                                            0,
-                                            cosmosException.getRequestCharge(),
-                                            diagnostics,
-                                            throwable
-                                        );
-                                        diagnosticsAccessor
-                                            .setDiagnosticsContext(
-                                                diagnostics,
-                                                state.getDiagnosticsContextSnapshot());
-                                    }
-                                }
-
-                                return cosmosException;
-                            }
-
-                            return throwable;
+                            return Flux.merge(pointReads, queries).collectList();
                         });
                 }
             );
@@ -4491,7 +4548,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
         final CosmosChangeFeedRequestOptions requestOptions,
-        Class<T> classOfT) {
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
@@ -4502,45 +4560,92 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            requestOptions);
+            requestOptions,
+            diagnosticsClientContext);
 
         return changeFeedQueryImpl.executeAsync();
     }
 
     @Override
-    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
+    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(
+        String collectionLink,
+        ChangeFeedOperationState state,
+        Class<T> classOfT) {
 
-        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        state.registerDiagnosticsFactory(
+            diagnosticsFactory::reset,
+            diagnosticsFactory::merge);
 
-        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            changeFeedOptionsAccessor.getProperties(state.getChangeFeedOptions()),
+            changeFeedOptionsAccessor.getHeaders(state.getChangeFeedOptions()),
+            this.sessionContainer,
+            diagnosticsFactory);
 
-        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
-        this.operationPolicies.forEach(policy -> {
-            try {
-                policy.process(operationDetails);
-            } catch (RuntimeException exception) {
-                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
-                throw(exception);
-            }
-        });
+        return ObservableHelper
+            .fluxInlineIfPossibleAsObs(
+                () -> this.queryDocumentChangeFeedFromPagedFluxInternal(collectionLink, state, classOfT, diagnosticsFactory),
+                staleResourceRetryPolicy)
+            .flatMap(result -> {
+                diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
+                return Mono.just(result);
+            })
+            .onErrorMap(throwable -> {
+                diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
+                return throwable;
+            })
+            .doOnCancel(() -> diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot()));
+    }
 
-        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
-            ? optionsImpl.getReadConsistencyStrategy()
-            : null;
+    private <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFluxInternal(
+        String collectionLink,
+        ChangeFeedOperationState state,
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
-        ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
-            .getEffectiveReadConsistencyStrategy(
-                ResourceType.Document,
-                OperationType.ReadFeed,
-                requestLevelReadConsistencyStrategy,
-                this.readConsistencyStrategy);
+        return this.getCollectionCache()
+            .resolveByNameAsync(null, collectionLink, null)
+            .flatMapMany(collection -> {
+                if (collection == null) {
+                    throw new IllegalStateException("Collection can not be null");
+                }
 
-        ctxAccessor.setRequestOptions(
-            state.getDiagnosticsContextSnapshot(),
-            optionsImpl,
-            effectiveReadConsistencyStrategy);
+                CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
 
-        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
+                CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+                CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+                this.operationPolicies.forEach(policy -> {
+                    try {
+                        policy.process(operationDetails);
+                    } catch (RuntimeException exception) {
+                        logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                        throw(exception);
+                    }
+                });
+
+                ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
+                    ? optionsImpl.getReadConsistencyStrategy()
+                    : null;
+
+                ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
+                    .getEffectiveReadConsistencyStrategy(
+                        ResourceType.Document,
+                        OperationType.ReadFeed,
+                        requestLevelReadConsistencyStrategy,
+                        this.readConsistencyStrategy);
+
+                ctxAccessor.setRequestOptions(
+                    state.getDiagnosticsContextSnapshot(),
+                    optionsImpl,
+                    effectiveReadConsistencyStrategy);
+
+                return queryDocumentChangeFeed(collection, clonedOptions, classOfT, diagnosticsClientContext);
+            });
     }
 
     @Override
@@ -4617,12 +4722,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-            // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
-            InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+            StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
                 this.collectionCache,
                 null,
                 resourceLink,
-                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions));
+                qryOptAccessor.getProperties(effectiveOptions),
+                qryOptAccessor.getHeaders(effectiveOptions),
+                this.sessionContainer,
+                diagnosticsFactory);
 
             Flux<FeedResponse<T>> innerFlux = ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
@@ -4662,7 +4769,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             isQueryCancelledOnTimeout);
                     });
                 },
-                invalidPartitionExceptionRetryPolicy);
+                staleResourceRetryPolicy);
 
             if (orderedApplicableRegionsForSpeculation.size() < 2) {
                 return innerFlux;
@@ -4921,7 +5028,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
-                                                         boolean disableAutomaticIdGeneration) {
+                                                         boolean disableAutomaticIdGeneration,
+                                                         boolean disableStaledResourceExceptionHandling) {
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -4938,6 +5046,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        if (!disableStaledResourceExceptionHandling) {
+            documentClientRetryPolicy = new StaleResourceRetryPolicy(
+                this.collectionCache,
+                documentClientRetryPolicy,
+                collectionLink,
+                nonNullRequestOptions.getProperties(),
+                nonNullRequestOptions.getHeaders(),
+                this.sessionContainer,
+                scopedDiagnosticsFactory);
+        }
+
+        final DocumentClientRetryPolicy finalRetryPolicy = documentClientRetryPolicy;
+
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -4947,7 +5068,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         collectionLink,
                         serverBatchRequest,
                         options,
-                        documentClientRetryPolicy,
+                        finalRetryPolicy,
                         disableAutomaticIdGeneration,
                         requestReference), documentClientRetryPolicy),
                 scopedDiagnosticsFactory
@@ -6117,7 +6238,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
             // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-            if (useThinClient()) {
+            if (useThinClient) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
             }
             return this.populateHeadersAsync(request, RequestVerb.GET)
@@ -6244,9 +6365,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
     @Override
-    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
+    public void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
 
+        this.enableThroughputControlStore();
+        this.throughputControlStore.enableSDKThroughputControlGroup(group, throughputQueryMono);
+    }
+
+    @Override
+    public void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
+        checkNotNull(group, "Argument 'group' can not be null");
+
+        this.enableThroughputControlStore();
+        this.throughputControlStore.enableServerThroughputControlGroup(group);
+    }
+
+    private synchronized void enableThroughputControlStore() {
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
             this.throughputControlStore =
                 new ThroughputControlStore(
@@ -6260,8 +6394,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.gatewayProxy.enableThroughputControl(throughputControlStore);
             }
         }
-
-        this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     @Override
@@ -6289,6 +6421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
+        this.thinProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override
@@ -6337,11 +6470,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<List<FeedRange>> getFeedRanges(String collectionLink, boolean forceRefresh) {
-        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
-            new HashMap<>());
+            new HashMap<>(),
+            new HashMap<>(),
+            this.sessionContainer,
+            null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             this,
@@ -6350,22 +6486,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionLink,
             null);
 
-        invalidPartitionExceptionRetryPolicy.onBeforeSendRequest(request);
+        staleResourceRetryPolicy.onBeforeSendRequest(request);
 
         return ObservableHelper.inlineIfPossibleAsObs(
-            () -> getFeedRangesInternal(request, collectionLink, forceRefresh),
-            invalidPartitionExceptionRetryPolicy);
+            () -> getFeedRangesInternal(request, collectionLink, forceRefresh, staleResourceRetryPolicy),
+            staleResourceRetryPolicy);
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(
         RxDocumentServiceRequest request,
         String collectionLink,
-        boolean forceRefresh) {
+        boolean forceRefresh,
+        DocumentClientRetryPolicy retryPolicy) {
 
         logger.debug("getFeedRange collectionLink=[{}] - forceRefresh={}", collectionLink, forceRefresh);
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
+        }
+
+        if (request != null) {
+            retryPolicy.onBeforeSendRequest(request);
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null,
@@ -7683,14 +7824,47 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public boolean useThinClient() {
-        return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
+        return useThinClient;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        return useThinClient()
-            && this.globalEndpointManager.hasThinClientReadLocations()
-            && ((request.getResourceType() == ResourceType.Document &&
-                (request.getOperationType().isPointOperation() || request.getOperationType() == OperationType.Query)));
+        if (!useThinClient
+            || !this.globalEndpointManager.hasThinClientReadLocations()
+            || request.getResourceType() != ResourceType.Document) {
+
+            return false;
+        }
+
+        OperationType operationType = request.getOperationType();
+
+        return operationType.isPointOperation()
+                    || operationType == OperationType.Query
+                    || operationType == OperationType.Batch
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
+    }
+
+    private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
+        DiagnosticsClientContext diagnosticsClientContext,
+        RequestOptions requestOptions,
+        String collectionLink) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' can not be null");
+
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(diagnosticsClientContext);
+        if (requestOptions.getPartitionKey() == null) {
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, requestOptions);
+        }
+
+        requestRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            requestRetryPolicy,
+            collectionLink,
+            requestOptions.getProperties(),
+            requestOptions.getHeaders(),
+            this.sessionContainer,
+            diagnosticsClientContext);
+
+        return requestRetryPolicy;
     }
 
     @FunctionalInterface

@@ -144,7 +144,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") UpdateSapDatabaseInstanceRequest properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,10 +152,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("databaseInstanceName") String databaseInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("databaseInstanceName") String databaseInstanceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -163,8 +162,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("databaseInstanceName") String databaseInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("databaseInstanceName") String databaseInstanceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances")
@@ -853,11 +851,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             return Mono
                 .error(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
-                accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -900,9 +895,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
             Context.NONE);
     }
 
@@ -946,10 +940,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
     }
 
     /**

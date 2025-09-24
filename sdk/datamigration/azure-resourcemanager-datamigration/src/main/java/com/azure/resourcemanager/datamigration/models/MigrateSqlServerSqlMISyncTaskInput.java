@@ -17,10 +17,36 @@ import java.util.List;
  */
 @Fluent
 public final class MigrateSqlServerSqlMISyncTaskInput extends SqlServerSqlMISyncTaskInput {
+    /*
+     * Number of database migrations to start in parallel
+     */
+    private Float numberOfParallelDatabaseMigrations;
+
     /**
      * Creates an instance of MigrateSqlServerSqlMISyncTaskInput class.
      */
     public MigrateSqlServerSqlMISyncTaskInput() {
+    }
+
+    /**
+     * Get the numberOfParallelDatabaseMigrations property: Number of database migrations to start in parallel.
+     * 
+     * @return the numberOfParallelDatabaseMigrations value.
+     */
+    public Float numberOfParallelDatabaseMigrations() {
+        return this.numberOfParallelDatabaseMigrations;
+    }
+
+    /**
+     * Set the numberOfParallelDatabaseMigrations property: Number of database migrations to start in parallel.
+     * 
+     * @param numberOfParallelDatabaseMigrations the numberOfParallelDatabaseMigrations value to set.
+     * @return the MigrateSqlServerSqlMISyncTaskInput object itself.
+     */
+    public MigrateSqlServerSqlMISyncTaskInput
+        withNumberOfParallelDatabaseMigrations(Float numberOfParallelDatabaseMigrations) {
+        this.numberOfParallelDatabaseMigrations = numberOfParallelDatabaseMigrations;
+        return this;
     }
 
     /**
@@ -138,6 +164,7 @@ public final class MigrateSqlServerSqlMISyncTaskInput extends SqlServerSqlMISync
         jsonWriter.writeJsonField("targetConnectionInfo", targetConnectionInfo());
         jsonWriter.writeJsonField("azureApp", azureApp());
         jsonWriter.writeJsonField("backupFileShare", backupFileShare());
+        jsonWriter.writeNumberField("numberOfParallelDatabaseMigrations", this.numberOfParallelDatabaseMigrations);
         return jsonWriter.writeEndObject();
     }
 
@@ -175,6 +202,9 @@ public final class MigrateSqlServerSqlMISyncTaskInput extends SqlServerSqlMISync
                         .withAzureApp(AzureActiveDirectoryApp.fromJson(reader));
                 } else if ("backupFileShare".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMISyncTaskInput.withBackupFileShare(FileShare.fromJson(reader));
+                } else if ("numberOfParallelDatabaseMigrations".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskInput.numberOfParallelDatabaseMigrations
+                        = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

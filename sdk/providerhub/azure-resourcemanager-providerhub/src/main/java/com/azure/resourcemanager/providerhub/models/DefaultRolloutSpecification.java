@@ -19,44 +19,54 @@ import java.util.List;
 @Fluent
 public class DefaultRolloutSpecification implements JsonSerializable<DefaultRolloutSpecification> {
     /*
-     * The canary property.
+     * The expedited rollout definition.
+     */
+    private DefaultRolloutSpecificationExpeditedRollout expeditedRollout;
+
+    /*
+     * The canary traffic region configuration.
      */
     private DefaultRolloutSpecificationCanary canary;
 
     /*
-     * The lowTraffic property.
+     * The low traffic region configuration.
      */
     private DefaultRolloutSpecificationLowTraffic lowTraffic;
 
     /*
-     * The mediumTraffic property.
+     * The medium traffic region configuration.
      */
     private DefaultRolloutSpecificationMediumTraffic mediumTraffic;
 
     /*
-     * The highTraffic property.
+     * The high traffic region configuration.
      */
     private DefaultRolloutSpecificationHighTraffic highTraffic;
 
     /*
-     * The restOfTheWorldGroupOne property.
+     * The rest of the world group one region configuration.
      */
     private DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne;
 
     /*
-     * The restOfTheWorldGroupTwo property.
+     * The rest of the world group two region configuration.
      */
     private DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo;
 
     /*
-     * The providerRegistration property.
+     * The provider registration.
      */
     private DefaultRolloutSpecificationProviderRegistration providerRegistration;
 
     /*
-     * The resourceTypeRegistrations property.
+     * The resource type registrations.
      */
     private List<ResourceTypeRegistrationInner> resourceTypeRegistrations;
+
+    /*
+     * The auto provisioning config.
+     */
+    private DefaultRolloutSpecificationAutoProvisionConfig autoProvisionConfig;
 
     /**
      * Creates an instance of DefaultRolloutSpecification class.
@@ -65,7 +75,28 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the canary property: The canary property.
+     * Get the expeditedRollout property: The expedited rollout definition.
+     * 
+     * @return the expeditedRollout value.
+     */
+    public DefaultRolloutSpecificationExpeditedRollout expeditedRollout() {
+        return this.expeditedRollout;
+    }
+
+    /**
+     * Set the expeditedRollout property: The expedited rollout definition.
+     * 
+     * @param expeditedRollout the expeditedRollout value to set.
+     * @return the DefaultRolloutSpecification object itself.
+     */
+    public DefaultRolloutSpecification
+        withExpeditedRollout(DefaultRolloutSpecificationExpeditedRollout expeditedRollout) {
+        this.expeditedRollout = expeditedRollout;
+        return this;
+    }
+
+    /**
+     * Get the canary property: The canary traffic region configuration.
      * 
      * @return the canary value.
      */
@@ -74,7 +105,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the canary property: The canary property.
+     * Set the canary property: The canary traffic region configuration.
      * 
      * @param canary the canary value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -85,7 +116,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the lowTraffic property: The lowTraffic property.
+     * Get the lowTraffic property: The low traffic region configuration.
      * 
      * @return the lowTraffic value.
      */
@@ -94,7 +125,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the lowTraffic property: The lowTraffic property.
+     * Set the lowTraffic property: The low traffic region configuration.
      * 
      * @param lowTraffic the lowTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -105,7 +136,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the mediumTraffic property: The mediumTraffic property.
+     * Get the mediumTraffic property: The medium traffic region configuration.
      * 
      * @return the mediumTraffic value.
      */
@@ -114,7 +145,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the mediumTraffic property: The mediumTraffic property.
+     * Set the mediumTraffic property: The medium traffic region configuration.
      * 
      * @param mediumTraffic the mediumTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -125,7 +156,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the highTraffic property: The highTraffic property.
+     * Get the highTraffic property: The high traffic region configuration.
      * 
      * @return the highTraffic value.
      */
@@ -134,7 +165,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the highTraffic property: The highTraffic property.
+     * Set the highTraffic property: The high traffic region configuration.
      * 
      * @param highTraffic the highTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -145,7 +176,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the restOfTheWorldGroupOne property: The restOfTheWorldGroupOne property.
+     * Get the restOfTheWorldGroupOne property: The rest of the world group one region configuration.
      * 
      * @return the restOfTheWorldGroupOne value.
      */
@@ -154,7 +185,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the restOfTheWorldGroupOne property: The restOfTheWorldGroupOne property.
+     * Set the restOfTheWorldGroupOne property: The rest of the world group one region configuration.
      * 
      * @param restOfTheWorldGroupOne the restOfTheWorldGroupOne value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -166,7 +197,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the restOfTheWorldGroupTwo property: The restOfTheWorldGroupTwo property.
+     * Get the restOfTheWorldGroupTwo property: The rest of the world group two region configuration.
      * 
      * @return the restOfTheWorldGroupTwo value.
      */
@@ -175,7 +206,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the restOfTheWorldGroupTwo property: The restOfTheWorldGroupTwo property.
+     * Set the restOfTheWorldGroupTwo property: The rest of the world group two region configuration.
      * 
      * @param restOfTheWorldGroupTwo the restOfTheWorldGroupTwo value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -187,7 +218,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the providerRegistration property: The providerRegistration property.
+     * Get the providerRegistration property: The provider registration.
      * 
      * @return the providerRegistration value.
      */
@@ -196,7 +227,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the providerRegistration property: The providerRegistration property.
+     * Set the providerRegistration property: The provider registration.
      * 
      * @param providerRegistration the providerRegistration value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -208,7 +239,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Get the resourceTypeRegistrations property: The resourceTypeRegistrations property.
+     * Get the resourceTypeRegistrations property: The resource type registrations.
      * 
      * @return the resourceTypeRegistrations value.
      */
@@ -217,7 +248,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
-     * Set the resourceTypeRegistrations property: The resourceTypeRegistrations property.
+     * Set the resourceTypeRegistrations property: The resource type registrations.
      * 
      * @param resourceTypeRegistrations the resourceTypeRegistrations value to set.
      * @return the DefaultRolloutSpecification object itself.
@@ -229,11 +260,35 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     }
 
     /**
+     * Get the autoProvisionConfig property: The auto provisioning config.
+     * 
+     * @return the autoProvisionConfig value.
+     */
+    public DefaultRolloutSpecificationAutoProvisionConfig autoProvisionConfig() {
+        return this.autoProvisionConfig;
+    }
+
+    /**
+     * Set the autoProvisionConfig property: The auto provisioning config.
+     * 
+     * @param autoProvisionConfig the autoProvisionConfig value to set.
+     * @return the DefaultRolloutSpecification object itself.
+     */
+    public DefaultRolloutSpecification
+        withAutoProvisionConfig(DefaultRolloutSpecificationAutoProvisionConfig autoProvisionConfig) {
+        this.autoProvisionConfig = autoProvisionConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (expeditedRollout() != null) {
+            expeditedRollout().validate();
+        }
         if (canary() != null) {
             canary().validate();
         }
@@ -258,6 +313,9 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+        if (autoProvisionConfig() != null) {
+            autoProvisionConfig().validate();
+        }
     }
 
     /**
@@ -266,6 +324,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expeditedRollout", this.expeditedRollout);
         jsonWriter.writeJsonField("canary", this.canary);
         jsonWriter.writeJsonField("lowTraffic", this.lowTraffic);
         jsonWriter.writeJsonField("mediumTraffic", this.mediumTraffic);
@@ -275,6 +334,7 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
         jsonWriter.writeJsonField("providerRegistration", this.providerRegistration);
         jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("autoProvisionConfig", this.autoProvisionConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -293,7 +353,10 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("canary".equals(fieldName)) {
+                if ("expeditedRollout".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.expeditedRollout
+                        = DefaultRolloutSpecificationExpeditedRollout.fromJson(reader);
+                } else if ("canary".equals(fieldName)) {
                     deserializedDefaultRolloutSpecification.canary = DefaultRolloutSpecificationCanary.fromJson(reader);
                 } else if ("lowTraffic".equals(fieldName)) {
                     deserializedDefaultRolloutSpecification.lowTraffic
@@ -317,6 +380,9 @@ public class DefaultRolloutSpecification implements JsonSerializable<DefaultRoll
                     List<ResourceTypeRegistrationInner> resourceTypeRegistrations
                         = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
                     deserializedDefaultRolloutSpecification.resourceTypeRegistrations = resourceTypeRegistrations;
+                } else if ("autoProvisionConfig".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.autoProvisionConfig
+                        = DefaultRolloutSpecificationAutoProvisionConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

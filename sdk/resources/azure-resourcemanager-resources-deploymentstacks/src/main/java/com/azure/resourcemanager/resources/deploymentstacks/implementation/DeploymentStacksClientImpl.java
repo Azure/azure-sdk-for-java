@@ -76,7 +76,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DeploymentStacksMana")
+    @ServiceInterface(name = "DeploymentStacksManagementClientDeploymentStacks")
     public interface DeploymentStacksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacks")

@@ -33,6 +33,16 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     private List<UpdateGroupStatus> groups;
 
     /*
+     * The list of Gates that will run before this UpdateStage.
+     */
+    private List<UpdateRunGateStatus> beforeGates;
+
+    /*
+     * The list of Gates that will run after this UpdateStage.
+     */
+    private List<UpdateRunGateStatus> afterGates;
+
+    /*
      * The status of the wait period configured on the UpdateStage.
      */
     private WaitStatus afterStageWaitStatus;
@@ -71,6 +81,24 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     }
 
     /**
+     * Get the beforeGates property: The list of Gates that will run before this UpdateStage.
+     * 
+     * @return the beforeGates value.
+     */
+    public List<UpdateRunGateStatus> beforeGates() {
+        return this.beforeGates;
+    }
+
+    /**
+     * Get the afterGates property: The list of Gates that will run after this UpdateStage.
+     * 
+     * @return the afterGates value.
+     */
+    public List<UpdateRunGateStatus> afterGates() {
+        return this.afterGates;
+    }
+
+    /**
      * Get the afterStageWaitStatus property: The status of the wait period configured on the UpdateStage.
      * 
      * @return the afterStageWaitStatus value.
@@ -90,6 +118,12 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
         }
         if (groups() != null) {
             groups().forEach(e -> e.validate());
+        }
+        if (beforeGates() != null) {
+            beforeGates().forEach(e -> e.validate());
+        }
+        if (afterGates() != null) {
+            afterGates().forEach(e -> e.validate());
         }
         if (afterStageWaitStatus() != null) {
             afterStageWaitStatus().validate();
@@ -127,6 +161,14 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
                 } else if ("groups".equals(fieldName)) {
                     List<UpdateGroupStatus> groups = reader.readArray(reader1 -> UpdateGroupStatus.fromJson(reader1));
                     deserializedUpdateStageStatus.groups = groups;
+                } else if ("beforeGates".equals(fieldName)) {
+                    List<UpdateRunGateStatus> beforeGates
+                        = reader.readArray(reader1 -> UpdateRunGateStatus.fromJson(reader1));
+                    deserializedUpdateStageStatus.beforeGates = beforeGates;
+                } else if ("afterGates".equals(fieldName)) {
+                    List<UpdateRunGateStatus> afterGates
+                        = reader.readArray(reader1 -> UpdateRunGateStatus.fromJson(reader1));
+                    deserializedUpdateStageStatus.afterGates = afterGates;
                 } else if ("afterStageWaitStatus".equals(fieldName)) {
                     deserializedUpdateStageStatus.afterStageWaitStatus = WaitStatus.fromJson(reader);
                 } else {

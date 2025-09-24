@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberUpdateProperties;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The type used for update operations of the FleetMember.
@@ -57,6 +58,29 @@ public final class FleetMemberUpdate implements JsonSerializable<FleetMemberUpda
             this.innerProperties = new FleetMemberUpdateProperties();
         }
         this.innerProperties().withGroup(group);
+        return this;
+    }
+
+    /**
+     * Get the labels property: The labels for the fleet member.
+     * 
+     * @return the labels value.
+     */
+    public Map<String, String> labels() {
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
+    }
+
+    /**
+     * Set the labels property: The labels for the fleet member.
+     * 
+     * @param labels the labels value to set.
+     * @return the FleetMemberUpdate object itself.
+     */
+    public FleetMemberUpdate withLabels(Map<String, String> labels) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FleetMemberUpdateProperties();
+        }
+        this.innerProperties().withLabels(labels);
         return this;
     }
 

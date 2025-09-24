@@ -4,6 +4,6 @@
 
 /**
  * Package containing the implementations for ProviderHub.
- * Microsoft ProviderHub.
+ * Provider Hub.
  */
 package com.azure.resourcemanager.providerhub.implementation;

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 /**
- * Defines values for MarketplaceType.
+ * The marketplace type.
  */
 public enum MarketplaceType {
     /**

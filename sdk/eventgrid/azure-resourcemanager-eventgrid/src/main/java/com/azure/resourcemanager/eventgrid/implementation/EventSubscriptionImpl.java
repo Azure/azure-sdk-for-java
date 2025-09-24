@@ -180,14 +180,6 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
-        return serviceManager.eventSubscriptions().getFullUrlWithResponse(scope, eventSubscriptionName, context);
-    }
-
-    public EventSubscriptionFullUrl getFullUrl() {
-        return serviceManager.eventSubscriptions().getFullUrl(scope, eventSubscriptionName);
-    }
-
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context) {
         return serviceManager.eventSubscriptions()
             .getDeliveryAttributesWithResponse(scope, eventSubscriptionName, context);
@@ -195,6 +187,14 @@ public final class EventSubscriptionImpl
 
     public DeliveryAttributeListResult getDeliveryAttributes() {
         return serviceManager.eventSubscriptions().getDeliveryAttributes(scope, eventSubscriptionName);
+    }
+
+    public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
+        return serviceManager.eventSubscriptions().getFullUrlWithResponse(scope, eventSubscriptionName, context);
+    }
+
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.eventSubscriptions().getFullUrl(scope, eventSubscriptionName);
     }
 
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {
@@ -291,6 +291,6 @@ public final class EventSubscriptionImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

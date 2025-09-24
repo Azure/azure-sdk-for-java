@@ -56,72 +56,72 @@
       io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
 
-    <netty.version>4.1.118.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    <netty.version>4.1.126.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http2</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-common</artifactId>
-      <version>4.1.118.Final</version>  <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+      <version>4.1.126.Final</version>  <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler-proxy</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-resolver;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-resolver;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies on core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -129,14 +129,14 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
       <classifier>linux-x86_64</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
       <classifier>linux-x86_64</classifier>
       <scope>test</scope>
     </dependency>
@@ -144,14 +144,14 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
       <classifier>osx-x86_64</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-kqueue</artifactId>
-      <version>4.1.118.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+      <version>4.1.126.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
       <classifier>osx-x86_64</classifier>
       <scope>test</scope>
     </dependency>
@@ -159,50 +159,56 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.http2</groupId>
       <artifactId>http2-server</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty.http2:http2-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty.http2:http2-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-alpn-conscrypt-server</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-conscrypt-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-conscrypt-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.conscrypt</groupId>
       <artifactId>conscrypt-openjdk-uber</artifactId>
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -212,21 +218,21 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-buffer:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                <include>io.netty:netty-codec:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
-                <include>io.netty:netty-codec-http:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                <include>io.netty:netty-codec-http2:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                <include>io.netty:netty-common:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
-                <include>io.netty:netty-handler:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
-                <include>io.netty:netty-handler-proxy:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
-                <include>io.netty:netty-resolver:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-resolver;external_dependency} -->
-                <include>io.netty:netty-resolver-dns:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns;external_dependency} -->
-                <include>io.netty:netty-transport:[4.1.118.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+                <include>io.netty:netty-buffer:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.netty:netty-codec:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http2:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>io.netty:netty-common:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
+                <include>io.netty:netty-handler:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                <include>io.netty:netty-handler-proxy:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                <include>io.netty:netty-resolver:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-resolver;external_dependency} -->
+                <include>io.netty:netty-resolver-dns:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns;external_dependency} -->
+                <include>io.netty:netty-transport:[4.1.126.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

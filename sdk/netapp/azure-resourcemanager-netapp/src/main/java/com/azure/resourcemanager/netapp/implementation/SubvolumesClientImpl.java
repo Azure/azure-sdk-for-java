@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
@@ -72,13 +74,23 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetAppManagementClie")
+    @ServiceInterface(name = "NetAppManagementClientSubvolumes")
     public interface SubvolumesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubvolumesList>> listByVolume(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SubvolumesList> listByVolumeSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -96,10 +108,33 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SubvolumeInfoInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubvolumeInfoInner body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -120,10 +155,33 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubvolumePatchRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -142,10 +200,28 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> getMetadataSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubvolumesList>> listByVolumeNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SubvolumesList> listByVolumeNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -205,54 +281,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Subvolumes along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeSinglePageAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByVolume(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
-                poolName, volumeName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List of all the subvolumes
-     * 
-     * Returns a list of the subvolumes in the volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,18 +302,98 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Subvolumes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubvolumeInfoInner> listByVolumeSinglePage(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubvolumesList> res
+            = service.listByVolumeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                accountName, poolName, volumeName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List of all the subvolumes
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Subvolumes as paginated response with {@link PagedFlux}.
+     * @return list of Subvolumes along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubvolumeInfoInner> listByVolumeAsync(String resourceGroupName, String accountName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubvolumeInfoInner> listByVolumeSinglePage(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        return new PagedFlux<>(
-            () -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName, context),
-            nextLink -> listByVolumeNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubvolumesList> res
+            = service.listByVolumeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -305,7 +413,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName));
+        return new PagedIterable<>(() -> listByVolumeSinglePage(resourceGroupName, accountName, poolName, volumeName),
+            nextLink -> listByVolumeNextSinglePage(nextLink));
     }
 
     /**
@@ -326,7 +435,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName, context));
+        return new PagedIterable<>(
+            () -> listByVolumeSinglePage(resourceGroupName, accountName, poolName, volumeName, context),
+            nextLink -> listByVolumeNextSinglePage(nextLink, context));
     }
 
     /**
@@ -389,55 +500,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        if (subvolumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get the path associated with the subvolumeName
-     * 
-     * Returns the path associated with the subvolumeName provided.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -469,8 +531,39 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubvolumeInfoInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (subvolumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -562,47 +655,111 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return subvolume Information properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumeInfoInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (subvolumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Create or clone a new subvolume
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
+     * @param body Subvolume object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subvolume Information properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (subvolumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -642,34 +799,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of subvolume Information properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, poolName,
-            volumeName, subvolumeName, body, context);
-        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
-    }
-
-    /**
-     * Create or clone a new subvolume
-     * 
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @param body Subvolume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -678,8 +807,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body) {
-        return this.beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(response, SubvolumeInfoInner.class,
+            SubvolumeInfoInner.class, Context.NONE);
     }
 
     /**
@@ -703,8 +834,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body,
         Context context) {
-        return this.beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(response, SubvolumeInfoInner.class,
+            SubvolumeInfoInner.class, context);
     }
 
     /**
@@ -741,31 +874,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or clone a new subvolume
-     * 
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @param body Subvolume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -774,7 +882,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, SubvolumeInfoInner body) {
-        return createAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).block();
+        return beginCreate(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).getFinalResult();
     }
 
     /**
@@ -797,7 +905,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, SubvolumeInfoInner body, Context context) {
-        return createAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context).block();
+        return beginCreate(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -867,47 +976,111 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return subvolume Information properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumePatchRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (subvolumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Update a subvolume
+     * 
+     * Patch a subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
+     * @param body Subvolume object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subvolume Information properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (subvolumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -947,34 +1120,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of subvolume Information properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, poolName,
-            volumeName, subvolumeName, body, context);
-        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
-    }
-
-    /**
-     * Update a subvolume
-     * 
-     * Patch a subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @param body Subvolume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -983,8 +1128,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(response, SubvolumeInfoInner.class,
+            SubvolumeInfoInner.class, Context.NONE);
     }
 
     /**
@@ -1008,8 +1155,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(response, SubvolumeInfoInner.class,
+            SubvolumeInfoInner.class, context);
     }
 
     /**
@@ -1046,31 +1195,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
      * @param body Subvolume object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a subvolume
-     * 
-     * Patch a subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @param body Subvolume object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1079,7 +1203,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, SubvolumePatchRequest body) {
-        return updateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).block();
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).getFinalResult();
     }
 
     /**
@@ -1102,7 +1226,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, SubvolumePatchRequest body, Context context) {
-        return updateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context).block();
+        return beginUpdate(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
+            .getFinalResult();
     }
 
     /**
@@ -1165,42 +1290,100 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (subvolumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete a subvolume
+     * 
+     * Delete subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (subvolumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1238,32 +1421,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a subvolume
-     * 
-     * Delete subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1272,8 +1429,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1295,8 +1453,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1331,29 +1490,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
-        String subvolumeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a subvolume
-     * 
-     * Delete subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1361,7 +1497,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName) {
-        deleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).block();
+        beginDelete(resourceGroupName, accountName, poolName, volumeName, subvolumeName).getFinalResult();
     }
 
     /**
@@ -1382,7 +1518,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, Context context) {
-        deleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).block();
+        beginDelete(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).getFinalResult();
     }
 
     /**
@@ -1445,42 +1581,100 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified subvolume along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> getMetadataWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (subvolumeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getMetadataSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Describe a subvolume
+     * 
+     * Get details of the specified subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified subvolume along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the specified subvolume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getMetadataWithResponseAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName, String subvolumeName, Context context) {
+    private Response<BinaryData> getMetadataWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
         if (subvolumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getMetadata(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.getMetadataSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1518,33 +1712,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of details of the specified subvolume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadataAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = getMetadataWithResponseAsync(resourceGroupName, accountName, poolName,
-            volumeName, subvolumeName, context);
-        return this.client.<SubvolumeModelInner, SubvolumeModelInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SubvolumeModelInner.class, SubvolumeModelInner.class, context);
-    }
-
-    /**
-     * Describe a subvolume
-     * 
-     * Get details of the specified subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1553,8 +1720,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName) {
-        return this.beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getMetadataWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        return this.client.<SubvolumeModelInner, SubvolumeModelInner>getLroResult(response, SubvolumeModelInner.class,
+            SubvolumeModelInner.class, Context.NONE);
     }
 
     /**
@@ -1576,8 +1745,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
         String accountName, String poolName, String volumeName, String subvolumeName, Context context) {
-        return this.beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = getMetadataWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+        return this.client.<SubvolumeModelInner, SubvolumeModelInner>getLroResult(response, SubvolumeModelInner.class,
+            SubvolumeModelInner.class, context);
     }
 
     /**
@@ -1612,30 +1783,6 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param subvolumeName The name of the subvolume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified subvolume on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeModelInner> getMetadataAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, String subvolumeName, Context context) {
-        return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Describe a subvolume
-     * 
-     * Get details of the specified subvolume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1644,7 +1791,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName) {
-        return getMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).block();
+        return beginGetMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName).getFinalResult();
     }
 
     /**
@@ -1666,10 +1813,13 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
-        return getMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).block();
+        return beginGetMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
+            .getFinalResult();
     }
 
     /**
+     * List of all the subvolumes
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1696,6 +1846,37 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
+     * List of all the subvolumes
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Subvolumes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubvolumeInfoInner> listByVolumeNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubvolumesList> res
+            = service.listByVolumeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List of all the subvolumes
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1703,21 +1884,25 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Subvolumes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Subvolumes along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<SubvolumeInfoInner> listByVolumeNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByVolumeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<SubvolumesList> res
+            = service.listByVolumeNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubvolumesClientImpl.class);
 }

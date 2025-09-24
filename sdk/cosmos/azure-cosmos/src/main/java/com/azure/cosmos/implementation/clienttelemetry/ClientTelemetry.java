@@ -91,7 +91,7 @@ public class ClientTelemetry {
         assert(clientTelemetryAccessor != null);
         this.clientMetricsEnabled = clientTelemetryAccessor
             .isClientMetricsEnabled(clientTelemetryConfig);
-        this.metadataHttpClient = getHttpClientForIMDS();
+        this.metadataHttpClient = getHttpClientForIMDS(configs);
     }
 
     public ClientTelemetryInfo getClientTelemetryInfo() {
@@ -121,6 +121,32 @@ public class ClientTelemetry {
         return diagnosticsClientConfig.getMachineId();
     }
 
+    public static String blockingGetOrLoadMachineId(
+        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
+
+        AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
+
+        if (metadataSnapshot == null) {
+            loadAzureVmMetaData(null).block();
+        }
+
+        metadataSnapshot = azureVmMetaDataSingleton.get();
+
+        if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
+            String machineId = VM_ID_PREFIX + metadataSnapshot.getVmId();
+            if (diagnosticsClientConfig != null) {
+                diagnosticsClientConfig.withMachineId(machineId);
+            }
+            return machineId;
+        }
+
+        if (diagnosticsClientConfig == null) {
+            return "";
+        }
+
+        return diagnosticsClientConfig.getMachineId();
+    }
+
     public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {
         try {
             doubleHistogram.recordValue(value);
@@ -134,16 +160,16 @@ public class ClientTelemetry {
     }
 
     public Mono<?> init() {
-        return loadAzureVmMetaData();
+        return loadAzureVmMetaData(this);
     }
 
     public void close() {
         logger.debug("GlobalEndpointManager closed.");
     }
 
-    private HttpClient getHttpClientForIMDS() {
+    private static HttpClient getHttpClientForIMDS(Configs configs) {
         // Proxy is not supported for azure instance metadata service
-        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
+        HttpClientConfig httpClientConfig = new HttpClientConfig(configs)
                 .withMaxIdleConnectionTimeout(IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT)
                 .withPoolSize(IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE)
                 .withNetworkRequestTimeout(IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT)
@@ -159,7 +185,7 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private Mono<?> loadAzureVmMetaData() {
+    private static Mono<?> loadAzureVmMetaData(ClientTelemetry thisPtr) {
         if (Configs.shouldDisableIMDSAccess()) {
             logger.info("Access to IMDS to get Azure VM metadata is disabled");
             return Mono.empty();
@@ -167,7 +193,9 @@ public class ClientTelemetry {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null) {
-            this.populateAzureVmMetaData(metadataSnapshot);
+            if (thisPtr != null) {
+                thisPtr.populateAzureVmMetaData(metadataSnapshot);
+            }
             return Mono.empty();
         }
 
@@ -183,14 +211,17 @@ public class ClientTelemetry {
         HttpHeaders httpHeaders = new HttpHeaders(headers);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
-        Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
+        HttpClient httpClient = thisPtr != null ? thisPtr.metadataHttpClient : getHttpClientForIMDS(new Configs());
+        Mono<HttpResponse> httpResponseMono =  httpClient.send(httpRequest);
 
         return httpResponseMono
             .flatMap(HttpResponse::bodyAsString)
             .map(ClientTelemetry::parse)
             .doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
-                this.populateAzureVmMetaData(metadata);
+                if (thisPtr != null) {
+                    thisPtr.populateAzureVmMetaData(metadata);
+                }
             }).onErrorResume(throwable -> {
                 logger.info("Client is not on azure vm");
                 logger.debug("Unable to get azure vm metadata", throwable);

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ProviderHubMetadataThirdPartyProviderAuthorization model.
+ * The third party provider authorization.
  */
 @Fluent
 public final class ProviderHubMetadataThirdPartyProviderAuthorization extends ThirdPartyProviderAuthorization {

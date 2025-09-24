@@ -24,7 +24,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
-import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.qpid.proton.amqp.Symbol.getSymbol;
@@ -101,9 +100,10 @@ public class EventDataTest {
     public void testSystemProperties() {
         // Act
         final long sequenceNumber = 5L;
+        final String offsetString = "hello";
         final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
-        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
+        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), offsetString);
         properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
         properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
 
@@ -119,12 +119,15 @@ public class EventDataTest {
         final Map<String, Object> systemProperties = eventData.getSystemProperties();
 
         Assertions.assertEquals(properties.size(), systemProperties.size());
-        Assertions.assertEquals(OFFSET, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(offsetString, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(sequenceNumber, systemProperties.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME, systemProperties.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
 
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
-        Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(offsetString, eventData.getOffsetString());
+
+        // Null because it could not be parsed into a number.
+        Assertions.assertNull(eventData.getOffset());
         Assertions.assertEquals(sequenceNumber, eventData.getSequenceNumber());
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
     }

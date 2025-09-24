@@ -14,21 +14,21 @@ public final class NamespaceTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceTopicProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleted\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":851546423}")
+            "{\"provisioningState\":\"Updating\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1786870924}")
             .toObject(NamespaceTopicProperties.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.inputSchema());
-        Assertions.assertEquals(851546423, model.eventRetentionInDays());
+        Assertions.assertEquals(1786870924, model.eventRetentionInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceTopicProperties model = new NamespaceTopicProperties().withPublisherType(PublisherType.CUSTOM)
             .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-            .withEventRetentionInDays(851546423);
+            .withEventRetentionInDays(1786870924);
         model = BinaryData.fromObject(model).toObject(NamespaceTopicProperties.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.inputSchema());
-        Assertions.assertEquals(851546423, model.eventRetentionInDays());
+        Assertions.assertEquals(1786870924, model.eventRetentionInDays());
     }
 }

@@ -169,7 +169,9 @@ public final class OperationDetailInner implements JsonSerializable<OperationDet
         jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
         jsonWriter.writeJsonField("display", this.display);
         jsonWriter.writeStringField("origin", this.origin);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -35,6 +35,16 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      */
     private Integer afterStageWaitInSeconds;
 
+    /*
+     * A list of Gates that will be created before this Stage is executed.
+     */
+    private List<GateConfiguration> beforeGates;
+
+    /*
+     * A list of Gates that will be created after this Stage is executed.
+     */
+    private List<GateConfiguration> afterGates;
+
     /**
      * Creates an instance of UpdateStage class.
      */
@@ -106,6 +116,46 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
+     * Get the beforeGates property: A list of Gates that will be created before this Stage is executed.
+     * 
+     * @return the beforeGates value.
+     */
+    public List<GateConfiguration> beforeGates() {
+        return this.beforeGates;
+    }
+
+    /**
+     * Set the beforeGates property: A list of Gates that will be created before this Stage is executed.
+     * 
+     * @param beforeGates the beforeGates value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withBeforeGates(List<GateConfiguration> beforeGates) {
+        this.beforeGates = beforeGates;
+        return this;
+    }
+
+    /**
+     * Get the afterGates property: A list of Gates that will be created after this Stage is executed.
+     * 
+     * @return the afterGates value.
+     */
+    public List<GateConfiguration> afterGates() {
+        return this.afterGates;
+    }
+
+    /**
+     * Set the afterGates property: A list of Gates that will be created after this Stage is executed.
+     * 
+     * @param afterGates the afterGates value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withAfterGates(List<GateConfiguration> afterGates) {
+        this.afterGates = afterGates;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +167,12 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         }
         if (groups() != null) {
             groups().forEach(e -> e.validate());
+        }
+        if (beforeGates() != null) {
+            beforeGates().forEach(e -> e.validate());
+        }
+        if (afterGates() != null) {
+            afterGates().forEach(e -> e.validate());
         }
     }
 
@@ -131,6 +187,8 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +215,14 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
                     deserializedUpdateStage.groups = groups;
                 } else if ("afterStageWaitInSeconds".equals(fieldName)) {
                     deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("beforeGates".equals(fieldName)) {
+                    List<GateConfiguration> beforeGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateStage.beforeGates = beforeGates;
+                } else if ("afterGates".equals(fieldName)) {
+                    List<GateConfiguration> afterGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateStage.afterGates = afterGates;
                 } else {
                     reader.skipChildren();
                 }

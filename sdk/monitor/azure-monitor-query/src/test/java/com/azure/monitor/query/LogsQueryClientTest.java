@@ -78,9 +78,9 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
 

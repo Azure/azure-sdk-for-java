@@ -783,7 +783,8 @@ public final class CosmosDiagnosticsContext {
                 gatewayStats.getResponsePayloadSizeInBytes(),
                 gatewayStats.getStatusCode(),
                 gatewayStats.getSubStatusCode(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                gatewayStats.getEndpoint()
             );
 
             requestInfo.add(info);
@@ -851,7 +852,8 @@ public final class CosmosDiagnosticsContext {
                 responsePayloadLength,
                 statusCode,
                 subStatusCode,
-                events
+                events,
+                resultDiagnostics.getStorePhysicalAddressAsString()
             );
 
             requestInfo.add(info);
@@ -914,7 +916,8 @@ public final class CosmosDiagnosticsContext {
                 0,
                 0,
                 0,
-                new ArrayList<>()
+                new ArrayList<>(),
+                addressResolutionStatistics.getTargetEndpoint()
             );
 
             requestInfo.add(info);

@@ -11,7 +11,8 @@ public final class ResourceSkuCostsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuCosts model = BinaryData
-            .fromString("{\"meterID\":\"t\",\"quantity\":1479872096701654032,\"extendedUnit\":\"pjhulsuuvmkj\"}")
+            .fromString(
+                "{\"meterID\":\"ftswibyrcdlbhsh\",\"quantity\":885852348663181026,\"extendedUnit\":\"cstwity\"}")
             .toObject(ResourceSkuCosts.class);
     }
 

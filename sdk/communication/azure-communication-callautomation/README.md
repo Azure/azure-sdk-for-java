@@ -22,7 +22,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.4.0-beta.2</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -98,7 +98,7 @@ If timeout was not set when calling "waitForEventProcessorAsync", the default ti
 
 ## Troubleshooting
 
-If you recieve a CommunicationErrorException with the messagae: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
+If you receive a CommunicationErrorException with the message: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
 the call, or participants did not accept the call before the call timed out.
 
 If you fail to start a call because of an HMAC validation error, be sure your access key is correct, and

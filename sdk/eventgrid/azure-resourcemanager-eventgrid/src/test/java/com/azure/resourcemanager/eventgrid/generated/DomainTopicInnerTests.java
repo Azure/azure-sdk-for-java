@@ -10,9 +10,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainTopicInner;
 public final class DomainTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DomainTopicInner model = BinaryData
-            .fromString(
-                "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"lbg\",\"name\":\"cdui\",\"type\":\"r\"}")
+        DomainTopicInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"oakggkfpag\",\"name\":\"owpulpq\",\"type\":\"lyls\"}")
             .toObject(DomainTopicInner.class);
     }
 

@@ -114,36 +114,8 @@ public class LocationCache {
     }
 
 
-    /***
-     * Get the list of available read endpoints.
-     * The list will not be filtered by preferred region list.
-     *
-     * @return
-     */
-    public List<URI> getAvailableReadEndpoints() {
-        // TODO (nehrao1): Integrate thinclient endpoints into fault injection
-        // TODO (nehrao1): https://github.com/Azure/azure-sdk-for-java/issues/44429
-        return this.locationInfo.availableReadRegionalRoutingContexts.stream()
-            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
-            .collect(Collectors.toList());
-    }
-
     public List<RegionalRoutingContext> getAvailableReadRegionalRoutingContexts() {
         return this.locationInfo.availableReadRegionalRoutingContexts;
-    }
-
-    /***
-     * Get the list of available write endpoints.
-     * The list will not be filtered by preferred region list.
-     *
-     * @return
-     */
-    public List<URI> getAvailableWriteEndpoints() {
-        // TODO(nehrao1): Integrate thinclient endpoints into fault injection
-        // TODO(nehrao1): https://github.com/Azure/azure-sdk-for-java/issues/44429
-        return this.locationInfo.availableWriteRegionalRoutingContexts.stream()
-            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
-            .collect(Collectors.toList());
     }
 
     public List<RegionalRoutingContext> getAvailableWriteRegionalRoutingContexts() {
@@ -547,7 +519,7 @@ public class LocationCache {
         return isExcludedRegionsConfiguredOnRequest || isExcludedRegionsConfiguredOnClient;
     }
 
-    public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
+    public RegionalRoutingContext resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
         Utils.ValueHolder<RegionalRoutingContext> endpointValueHolder = new Utils.ValueHolder<>();
         if (writeOnly) {
             Utils.tryGetValue(this.locationInfo.availableWriteRegionalRoutingContextsByRegionName, region, endpointValueHolder);
@@ -556,8 +528,7 @@ public class LocationCache {
         }
 
         if (endpointValueHolder.v != null) {
-            // TODO: Figure out how to integrate thinclient into fault injection
-            return endpointValueHolder.v.getGatewayRegionalEndpoint();
+            return endpointValueHolder.v;
         }
 
         throw new IllegalArgumentException("Can not find service endpoint for region " + region);

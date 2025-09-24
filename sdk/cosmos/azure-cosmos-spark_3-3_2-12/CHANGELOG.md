@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.38.0-beta.1 (Unreleased)
+### 4.40.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,25 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.39.0 (2025-09-05)
+
+#### Bugs Fixed
+* Reverted known issue due to shading log4j (which was introduced in 4.38.1). - See [PR 46546](https://github.com/Azure/azure-sdk-for-java/pull/46546) and [PR 46608](https://github.com/Azure/azure-sdk-for-java/pull/46608)
+* Added change feed performance monitoring which is used to improve end lsn calculation in `CosmosPartitionPlanner`. - See [PR 46320](https://github.com/Azure/azure-sdk-for-java/pull/46320)
+* Added `spark.cosmos.auth.aad.audience` as a valid configuration option to allow using AAD tokens with custom audiences. - See [PR 46554](https://github.com/Azure/azure-sdk-for-java/pull/46554)
+
+### 4.38.1 (2025-08-22)
+
+**NOTE: This version has a known issue due to shading log4j - Please use more recent versions >= 4.38.2 or 4.38.0 instead**
+
+#### Other Changes
+* Added log4j-core to the list of shaded packages to avoid conflicts when customers use log4j in a different version. **NOTE: This change caused known issue - Please use a more recent version instead** - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/46451)
+
+### 4.38.0 (2025-07-31)
+
+#### Features Added
+* Added telemetry support by adding OTEL span attribute naming schemes, introducing Azure Monitor integration, and sampled diagnostics. - See [PR 45924](https://github.com/Azure/azure-sdk-for-java/pull/45924)
 
 ### 4.37.2 (2025-05-14)
 
@@ -35,6 +54,8 @@
 * Fixed an issue in change feed where under certain rare race conditions records could be skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
 
 ### 4.36.0 (2025-01-14)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.36.0 and above especially if using all versions and deletes change feed.
 
 #### Features Added
 * Added the udfs `GetFeedRangesForContainer` and `GetOverlappingFeedRange` to ease mapping of cosmos partition key to databricks table partition key. - See [PR 43092](https://github.com/Azure/azure-sdk-for-java/pull/43092)
@@ -51,8 +72,6 @@
 * Fixed an issue when using `ChangeFeed` causing some cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
 
 ### 4.34.0 (2024-10-10)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.34.0 and above.
 #### Bugs Fixed
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
 

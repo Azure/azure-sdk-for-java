@@ -4,6 +4,6 @@
 
 /**
  * Package containing the inner data models for ProviderHub.
- * Microsoft ProviderHub.
+ * Provider Hub.
  */
 package com.azure.resourcemanager.providerhub.fluent.models;

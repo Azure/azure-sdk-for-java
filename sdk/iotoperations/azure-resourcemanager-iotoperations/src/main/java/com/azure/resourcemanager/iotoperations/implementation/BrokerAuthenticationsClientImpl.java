@@ -112,7 +112,7 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BrokerAuthenticationResourceInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -120,9 +120,9 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,7 +130,7 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("brokerName") String brokerName, @PathParam("authenticationName") String authenticationName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications")
@@ -632,11 +632,8 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             return Mono
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName,
-                accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -681,9 +678,8 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName,
             Context.NONE);
     }
 
@@ -729,10 +725,8 @@ public final class BrokerAuthenticationsClientImpl implements BrokerAuthenticati
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, authenticationName, context);
     }
 
     /**

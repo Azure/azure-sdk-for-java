@@ -1458,6 +1458,31 @@ public final class NodeTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @return the isOutboundOnly value.
+     */
+    public Boolean isOutboundOnly() {
+        return this.innerProperties() == null ? null : this.innerProperties().isOutboundOnly();
+    }
+
+    /**
+     * Set the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @param isOutboundOnly the isOutboundOnly value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withIsOutboundOnly(Boolean isOutboundOnly) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withIsOutboundOnly(isOutboundOnly);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

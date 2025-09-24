@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsRequest;
@@ -24,27 +24,34 @@ public final class PolicyRestrictionsCheckAtSubscriptionScopeWithResponseMockTes
     @Test
     public void testCheckAtSubscriptionScopeWithResponse() throws Exception {
         String responseStr
-            = "{\"fieldRestrictions\":[{\"field\":\"ooajeyyjmjjx\",\"restrictions\":[{\"result\":\"Removed\",\"defaultValue\":\"nzlslekc\",\"values\":[\"zkjtyqpdwadeg\"],\"policy\":{}},{\"result\":\"Required\",\"defaultValue\":\"svczdjiahuqy\",\"values\":[\"ucwwmejjqhd\",\"wvmqxi\",\"ookyfoz\"],\"policy\":{}},{\"result\":\"Deny\",\"defaultValue\":\"by\",\"values\":[\"pgaixwrgrkkderf\",\"swqi\",\"wepwoggg\"],\"policy\":{}}]},{\"field\":\"nxhtf\",\"restrictions\":[{\"result\":\"Deny\",\"defaultValue\":\"d\",\"values\":[\"chzpgfqumjdj\",\"hzghgod\",\"ynrceqavfdbdf\"],\"policy\":{}},{\"result\":\"Deny\",\"defaultValue\":\"naj\",\"values\":[\"jyyqmkw\",\"hvcw\",\"oqdejkluxxr\"],\"policy\":{}},{\"result\":\"Required\",\"defaultValue\":\"zmsxgamtdt\",\"values\":[\"pt\",\"uzdprmim\",\"ljdp\",\"qfxy\"],\"policy\":{}},{\"result\":\"Removed\",\"defaultValue\":\"tbaewhte\",\"values\":[\"amfmxtllfl\",\"ymqcnrrfijhgga\",\"qbgamkli\",\"irw\"],\"policy\":{}}]},{\"field\":\"fhsdpzouhkt\",\"restrictions\":[{\"result\":\"Deny\",\"defaultValue\":\"njxrd\",\"values\":[\"t\",\"llygta\",\"czcxdfw\",\"a\"],\"policy\":{}},{\"result\":\"Required\",\"defaultValue\":\"xrljphraspi\",\"values\":[\"imixlmdbgice\",\"fgsmdrjuqb\",\"xtokljmtz\",\"paxwfqty\"],\"policy\":{}}]}],\"contentEvaluationResult\":{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"tungbsoljckmiigz\",\"policySetDefinitionId\":\"uck\",\"policyDefinitionReferenceId\":\"dsk\",\"policyAssignmentId\":\"tiiqqcqikclsmaln\"},\"evaluationResult\":\"woykdnonaaxwm\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"cwnynlleiq\",\"policySetDefinitionId\":\"bgvsbtsertoxadh\",\"policyDefinitionReferenceId\":\"vjhxmnrqst\",\"policyAssignmentId\":\"metwml\"},\"evaluationResult\":\"cvnpv\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"q\",\"policySetDefinitionId\":\"i\",\"policyDefinitionReferenceId\":\"lzmvcdsvmwbi\",\"policyAssignmentId\":\"kdtfo\"},\"evaluationResult\":\"fiybxqich\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"ekivycpzcvdizulr\",\"policySetDefinitionId\":\"bhtrezpzlpryfm\",\"policyDefinitionReferenceId\":\"dutzfkg\",\"policyAssignmentId\":\"no\"},\"evaluationResult\":\"ccgndjgdprig\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{}],\"ifNotExistsDetails\":{}}}]}}";
+            = "{\"fieldRestrictions\":[{\"field\":\"wud\",\"restrictions\":[{\"result\":\"Removed\",\"defaultValue\":\"jkehwvumosqi\",\"values\":[\"mqprlobru\",\"ejcvjkjyczcmta\"],\"policy\":{},\"policyEffect\":\"ajdyoljeqyxqfmz\",\"reason\":\"zzhravrcjkjym\"},{\"result\":\"Removed\",\"defaultValue\":\"cxhnqxgzxlerm\",\"values\":[\"rghskir\",\"npupkcbkfuk\",\"l\"],\"policy\":{},\"policyEffect\":\"vtsdydshkpafy\",\"reason\":\"oowwziz\"},{\"result\":\"Required\",\"defaultValue\":\"f\",\"values\":[\"stifgufyjf\",\"kqiyvnd\",\"okgw\"],\"policy\":{},\"policyEffect\":\"mzqhrqp\",\"reason\":\"lpe\"},{\"result\":\"Required\",\"defaultValue\":\"xluea\",\"values\":[\"bbgsimwej\"],\"policy\":{},\"policyEffect\":\"kbpjzobdwbcpra\",\"reason\":\"kuhydtnaczkfwfat\"}]},{\"field\":\"wphn\",\"restrictions\":[{\"result\":\"Audit\",\"defaultValue\":\"gtqcumecsaaqgoq\",\"values\":[\"uy\",\"sbskowkrbhz\",\"rb\"],\"policy\":{},\"policyEffect\":\"mqowiuasfgqg\",\"reason\":\"yhfaimqvd\"},{\"result\":\"Deny\",\"defaultValue\":\"kgyfpeoehgfmqm\",\"values\":[\"ixvlz\",\"xplhpeva\",\"yntvzjyielbq\"],\"policy\":{},\"policyEffect\":\"bqvknmpecqxgiq\",\"reason\":\"ifubnsnstlpwqp\"}]},{\"field\":\"xjkhtupsv\",\"restrictions\":[{\"result\":\"Audit\",\"defaultValue\":\"iyxfwkztsmsfbevy\",\"values\":[\"nfhkqytkztado\",\"gfzdgjfcycrsvl\",\"yyhigqkzjuqw\"],\"policy\":{},\"policyEffect\":\"quzxpixhyoipnf\",\"reason\":\"gsoscienezfvb\"},{\"result\":\"Required\",\"defaultValue\":\"fkbpjn\",\"values\":[\"kwwnthropmdud\",\"yiurztvktjh\",\"fecqkoqyouerga\",\"hpuzxkpye\"],\"policy\":{},\"policyEffect\":\"dyldhgyedzfzqiy\",\"reason\":\"htdereun\"}]}],\"contentEvaluationResult\":{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"hpjlwyxedznmxrf\",\"policySetDefinitionId\":\"ckewvm\",\"policyDefinitionReferenceId\":\"fopxf\",\"policyAssignmentId\":\"tpdyzoutxfptof\"},\"evaluationResult\":\"nuywe\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{}],\"ifNotExistsDetails\":{},\"reason\":\"gaaqw\"},\"effectDetails\":{\"policyEffect\":\"jpytp\"}},{\"policyInfo\":{\"policyDefinitionId\":\"dnogehlufbor\",\"policySetDefinitionId\":\"nukkfaxzsvb\",\"policyDefinitionReferenceId\":\"yjisskobq\",\"policyAssignmentId\":\"lflioewyhxessm\"},\"evaluationResult\":\"kdpsqeqfbd\",\"evaluationDetails\":{\"evaluatedExpressions\":[{}],\"ifNotExistsDetails\":{},\"reason\":\"br\"},\"effectDetails\":{\"policyEffect\":\"jppp\"}}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CheckRestrictionsResult response = manager.policyRestrictions()
-            .checkAtSubscriptionScopeWithResponse(
-                new CheckRestrictionsRequest()
-                    .withResourceDetails(new CheckRestrictionsResourceDetails().withResourceContent("datasqsnxf")
-                        .withApiVersion("ufeapdrbzyvb")
-                        .withScope("adulpodkaxp"))
-                    .withPendingFields(Arrays.asList(
-                        new PendingField().withField("kzhmhj").withValues(Arrays.asList("tdeluqrojadhfzt")),
-                        new PendingField().withField("raysrkgzkyhu")
-                            .withValues(Arrays.asList("uwpzqx", "cweakfec", "vxfaqufqizj")))),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        CheckRestrictionsResult response
+            = manager.policyRestrictions()
+                .checkAtSubscriptionScopeWithResponse(
+                    new CheckRestrictionsRequest()
+                        .withResourceDetails(new CheckRestrictionsResourceDetails().withResourceContent("dataiqikvllr")
+                            .withApiVersion("p")
+                            .withScope("lxkoi"))
+                        .withPendingFields(
+                            Arrays
+                                .asList(
+                                    new PendingField().withField("rawrqkzawbunmp")
+                                        .withValues(Arrays.asList("wzlweeprn", "jzltkaszfjs", "scbduxapgrcqebmv",
+                                            "djomlnwsbvvdl")),
+                                    new PendingField().withField("flxkqesdfeds")
+                                        .withValues(Arrays.asList("ancoinmphymcqid", "ltvdhqnufbx", "e")),
+                                    new PendingField().withField("i").withValues(Arrays.asList("ojovfnybydh"))))
+                        .withIncludeAuditEffect(true),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
     }
 }

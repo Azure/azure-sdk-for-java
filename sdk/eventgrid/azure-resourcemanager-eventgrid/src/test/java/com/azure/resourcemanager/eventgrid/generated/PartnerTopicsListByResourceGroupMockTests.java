@@ -26,7 +26,7 @@ public final class PartnerTopicsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"a2acd50d-8952-4bed-b9ae-a22c3a031691\",\"source\":\"k\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"hkxfpwhdyslbklgl\":{\"description\":\"krknf\",\"displayName\":\"ugjqyckgtxkrdt\",\"documentationUrl\":\"crcjdklotcsubmz\",\"dataSchemaUrl\":\"nsvob\"},\"ylztp\":{\"description\":\"nkkw\",\"displayName\":\"qshwyqxridt\",\"documentationUrl\":\"saqjmkgx\",\"dataSchemaUrl\":\"queu\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-11-05T00:30:38Z\",\"provisioningState\":\"Creating\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"k\",\"messageForActivation\":\"vezefkhkqtwqle\"},\"identity\":{\"type\":\"None\",\"principalId\":\"as\",\"tenantId\":\"zcntogffjwajnrtw\",\"userAssignedIdentities\":{\"nhemvwfnqqw\":{\"principalId\":\"kifmxawo\",\"clientId\":\"fzknhrkmjqncfvds\"},\"muymvec\":{\"principalId\":\"vndrwbgodtg\",\"clientId\":\"ssgwjfkain\"},\"nrddclzeqoz\":{\"principalId\":\"tscbgmusai\",\"clientId\":\"dscnkzzo\"},\"pam\":{\"principalId\":\"hlbzqixbnjrqvzy\",\"clientId\":\"xozony\"}}},\"location\":\"udpabcreuwzos\",\"tags\":{\"dubewgzy\":\"xvcvasormrexz\",\"zrtdbakr\":\"baduvecovsdq\"},\"id\":\"imzfvpp\",\"name\":\"eqsifjmclngygnhr\",\"type\":\"ombcdtajdopggo\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"989c271b-e9fb-4b5d-8214-8d3c323a94f5\",\"source\":\"mzrqraz\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"gbsfsgsaenwldf\":{\"description\":\"laslksk\",\"displayName\":\"qj\",\"documentationUrl\":\"baihxjtgzg\",\"dataSchemaUrl\":\"iywbqgro\"},\"yckhefrbhseue\":{\"description\":\"ljql\",\"displayName\":\"pmrjctryl\",\"documentationUrl\":\"xebuhsxrznmg\",\"dataSchemaUrl\":\"al\"},\"s\":{\"description\":\"gpxebjludcayt\",\"displayName\":\"raxdt\",\"documentationUrl\":\"yjmgtnsewo\",\"dataSchemaUrl\":\"ly\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-28T10:44:47Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"e\",\"messageForActivation\":\"sehq\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"twjwdsdlzm\",\"tenantId\":\"erxxxoteehkhowgo\",\"userAssignedIdentities\":{\"wbmpspfeylqloc\":{\"principalId\":\"xowpcbapn\",\"clientId\":\"raq\"},\"avxjfiuofpiei\":{\"principalId\":\"ujexayglxrk\",\"clientId\":\"nmzpas\"},\"yhydvikmfn\":{\"principalId\":\"lvs\",\"clientId\":\"ywjopac\"},\"ydyeuy\":{\"principalId\":\"millxgjs\",\"clientId\":\"zwgsoriobije\"}}},\"location\":\"hbo\",\"tags\":{\"wybriopdwe\":\"r\",\"norwaigsio\":\"f\"},\"id\":\"tqkmvjanxvzf\",\"name\":\"f\",\"type\":\"tj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,34 +36,34 @@ public final class PartnerTopicsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerTopic> response = manager.partnerTopics()
-            .listByResourceGroup("eocfkumcfjxok", "elsy", 1811444232, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("mcxqqxmyzklao", "n", 1551780859, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("udpabcreuwzos", response.iterator().next().location());
-        Assertions.assertEquals("xvcvasormrexz", response.iterator().next().tags().get("dubewgzy"));
-        Assertions.assertEquals(IdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("as", response.iterator().next().identity().principalId());
-        Assertions.assertEquals("zcntogffjwajnrtw", response.iterator().next().identity().tenantId());
-        Assertions.assertEquals("kifmxawo",
-            response.iterator().next().identity().userAssignedIdentities().get("nhemvwfnqqw").principalId());
-        Assertions.assertEquals("fzknhrkmjqncfvds",
-            response.iterator().next().identity().userAssignedIdentities().get("nhemvwfnqqw").clientId());
-        Assertions.assertEquals(UUID.fromString("a2acd50d-8952-4bed-b9ae-a22c3a031691"),
+        Assertions.assertEquals("hbo", response.iterator().next().location());
+        Assertions.assertEquals("r", response.iterator().next().tags().get("wybriopdwe"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("twjwdsdlzm", response.iterator().next().identity().principalId());
+        Assertions.assertEquals("erxxxoteehkhowgo", response.iterator().next().identity().tenantId());
+        Assertions.assertEquals("xowpcbapn",
+            response.iterator().next().identity().userAssignedIdentities().get("wbmpspfeylqloc").principalId());
+        Assertions.assertEquals("raq",
+            response.iterator().next().identity().userAssignedIdentities().get("wbmpspfeylqloc").clientId());
+        Assertions.assertEquals(UUID.fromString("989c271b-e9fb-4b5d-8214-8d3c323a94f5"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("k", response.iterator().next().source());
+        Assertions.assertEquals("mzrqraz", response.iterator().next().source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.iterator().next().eventTypeInfo().kind());
-        Assertions.assertEquals("krknf",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("hkxfpwhdyslbklgl").description());
-        Assertions.assertEquals("ugjqyckgtxkrdt",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("hkxfpwhdyslbklgl").displayName());
-        Assertions.assertEquals("crcjdklotcsubmz",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("hkxfpwhdyslbklgl").documentationUrl());
-        Assertions.assertEquals("nsvob",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("hkxfpwhdyslbklgl").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T00:30:38Z"),
+        Assertions.assertEquals("laslksk",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").description());
+        Assertions.assertEquals("qj",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").displayName());
+        Assertions.assertEquals("baihxjtgzg",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").documentationUrl());
+        Assertions.assertEquals("iywbqgro",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T10:44:47Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED,
-            response.iterator().next().activationState());
-        Assertions.assertEquals("k", response.iterator().next().partnerTopicFriendlyDescription());
-        Assertions.assertEquals("vezefkhkqtwqle", response.iterator().next().messageForActivation());
+        Assertions.assertEquals(PartnerTopicActivationState.ACTIVATED, response.iterator().next().activationState());
+        Assertions.assertEquals("e", response.iterator().next().partnerTopicFriendlyDescription());
+        Assertions.assertEquals("sehq", response.iterator().next().messageForActivation());
     }
 }

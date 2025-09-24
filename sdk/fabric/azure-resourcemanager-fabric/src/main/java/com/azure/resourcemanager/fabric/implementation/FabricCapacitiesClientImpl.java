@@ -137,23 +137,23 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FabricCapacityUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities")
@@ -189,41 +189,41 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/resume")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/resume")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> resumeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/suspend")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> suspend(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}/suspend")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> suspendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("capacityName") String capacityName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Fabric/locations/{location}/checkNameAvailability")
         @ExpectedResponses({ 200 })
@@ -1013,10 +1013,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1051,9 +1050,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1088,9 +1086,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**
@@ -1488,10 +1485,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resume(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1526,9 +1522,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1563,9 +1558,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**
@@ -1697,10 +1691,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
         if (capacityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.suspend(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1735,9 +1728,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
 
     /**
@@ -1772,9 +1764,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
 
     /**

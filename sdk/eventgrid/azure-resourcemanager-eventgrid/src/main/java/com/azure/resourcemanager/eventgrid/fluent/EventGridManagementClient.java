@@ -90,6 +90,13 @@ public interface EventGridManagementClient {
     DomainTopicsClient getDomainTopics();
 
     /**
+     * Gets the DomainTopicEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the DomainTopicEventSubscriptionsClient object.
+     */
+    DomainTopicEventSubscriptionsClient getDomainTopicEventSubscriptions();
+
+    /**
      * Gets the TopicEventSubscriptionsClient object to access its operations.
      * 
      * @return the TopicEventSubscriptionsClient object.
@@ -104,13 +111,6 @@ public interface EventGridManagementClient {
     DomainEventSubscriptionsClient getDomainEventSubscriptions();
 
     /**
-     * Gets the NamespaceTopicEventSubscriptionsClient object to access its operations.
-     * 
-     * @return the NamespaceTopicEventSubscriptionsClient object.
-     */
-    NamespaceTopicEventSubscriptionsClient getNamespaceTopicEventSubscriptions();
-
-    /**
      * Gets the EventSubscriptionsClient object to access its operations.
      * 
      * @return the EventSubscriptionsClient object.
@@ -118,18 +118,18 @@ public interface EventGridManagementClient {
     EventSubscriptionsClient getEventSubscriptions();
 
     /**
-     * Gets the DomainTopicEventSubscriptionsClient object to access its operations.
-     * 
-     * @return the DomainTopicEventSubscriptionsClient object.
-     */
-    DomainTopicEventSubscriptionsClient getDomainTopicEventSubscriptions();
-
-    /**
      * Gets the SystemTopicEventSubscriptionsClient object to access its operations.
      * 
      * @return the SystemTopicEventSubscriptionsClient object.
      */
     SystemTopicEventSubscriptionsClient getSystemTopicEventSubscriptions();
+
+    /**
+     * Gets the NamespaceTopicEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the NamespaceTopicEventSubscriptionsClient object.
+     */
+    NamespaceTopicEventSubscriptionsClient getNamespaceTopicEventSubscriptions();
 
     /**
      * Gets the PartnerTopicEventSubscriptionsClient object to access its operations.
@@ -160,18 +160,18 @@ public interface EventGridManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the TopicsClient object to access its operations.
-     * 
-     * @return the TopicsClient object.
-     */
-    TopicsClient getTopics();
-
-    /**
      * Gets the PartnerConfigurationsClient object to access its operations.
      * 
      * @return the PartnerConfigurationsClient object.
      */
     PartnerConfigurationsClient getPartnerConfigurations();
+
+    /**
+     * Gets the PartnerDestinationsClient object to access its operations.
+     * 
+     * @return the PartnerDestinationsClient object.
+     */
+    PartnerDestinationsClient getPartnerDestinations();
 
     /**
      * Gets the PartnerNamespacesClient object to access its operations.
@@ -193,6 +193,13 @@ public interface EventGridManagementClient {
      * @return the PartnerTopicsClient object.
      */
     PartnerTopicsClient getPartnerTopics();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 
     /**
      * Gets the PermissionBindingsClient object to access its operations.
@@ -221,6 +228,13 @@ public interface EventGridManagementClient {
      * @return the SystemTopicsClient object.
      */
     SystemTopicsClient getSystemTopics();
+
+    /**
+     * Gets the TopicsClient object to access its operations.
+     * 
+     * @return the TopicsClient object.
+     */
+    TopicsClient getTopics();
 
     /**
      * Gets the ExtensionTopicsClient object to access its operations.

@@ -1,5 +1,11 @@
 # Azure Monitor Query client library for Java
 
+> This package is deprecated in favor of the new libraries [azure-monitor-query-metrics](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics)
+and [azure-monitor-query-logs](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs), available as of August 2025.
+While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. For transition support, read the migration
+guides for [migrating to azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-logs.md)
+and [migrating to azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-metrics.md).
+
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
 - [Logs](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
@@ -66,7 +72,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.6.0-beta.1</version>
+    <version>1.5.9</version>
 </dependency>
 ```
 

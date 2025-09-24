@@ -33,7 +33,6 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -238,7 +237,6 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (regionalRoutingContext != null) {
-
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
                 String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
@@ -271,6 +269,9 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
+            gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
+            gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
+            gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
@@ -910,6 +911,9 @@ public class ClientSideRequestStatistics {
         private Set<String> sessionTokenEvaluationResults;
         private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
+        private String endpoint;
+        private String requestThroughputControlGroupName;
+        private String requestThroughputControlGroupConfig;
 
         public String getSessionToken() {
             return sessionToken;
@@ -975,6 +979,18 @@ public class ClientSideRequestStatistics {
             return perPartitionFailoverInfoHolder;
         }
 
+        public String getEndpoint() {
+            return this.endpoint;
+        }
+
+        public String getRequestThroughputControlGroupName() {
+            return this.requestThroughputControlGroupName;
+        }
+
+        public String getRequestThroughputControlGroupConfig() {
+            return this.requestThroughputControlGroupConfig;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -999,6 +1015,7 @@ public class ClientSideRequestStatistics {
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
+                this.writeNonNullStringField(jsonGenerator, "endpoint", gatewayStatistics.getEndpoint());
 
                 if (StringUtils.isEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
                     this.writeNonEmptyStringArrayField(
@@ -1011,6 +1028,8 @@ public class ClientSideRequestStatistics {
                 this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerInfoHolder", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
                 this.writeNonNullObjectField(jsonGenerator, "perPartitionFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
+                this.writeNonNullStringField(jsonGenerator, "requestTCG", gatewayStatistics.getRequestThroughputControlGroupName());
+                this.writeNonNullStringField(jsonGenerator, "requestTCGConfig", gatewayStatistics.getRequestThroughputControlGroupConfig());
                 jsonGenerator.writeEndObject();
             }
 

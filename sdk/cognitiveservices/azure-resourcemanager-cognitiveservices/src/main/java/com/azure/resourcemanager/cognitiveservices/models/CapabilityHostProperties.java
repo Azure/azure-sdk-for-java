@@ -38,17 +38,18 @@ public final class CapabilityHostProperties extends ResourceBase {
     private CapabilityHostProvisioningState provisioningState;
 
     /*
-     * List of Storage connections.
+     * List of connection names from those available in the account or project to be used as a storage resource.
      */
     private List<String> storageConnections;
 
     /*
-     * List of Thread storage connections.
+     * List of connection names from those available in the account or project to be used for Thread storage.
      */
     private List<String> threadStorageConnections;
 
     /*
-     * List of VectorStore connections.
+     * List of connection names from those available in the account or project to be used for vector database (e.g.
+     * CosmosDB).
      */
     private List<String> vectorStoreConnections;
 
@@ -128,7 +129,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Get the storageConnections property: List of Storage connections.
+     * Get the storageConnections property: List of connection names from those available in the account or project to
+     * be used as a storage resource.
      * 
      * @return the storageConnections value.
      */
@@ -137,7 +139,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Set the storageConnections property: List of Storage connections.
+     * Set the storageConnections property: List of connection names from those available in the account or project to
+     * be used as a storage resource.
      * 
      * @param storageConnections the storageConnections value to set.
      * @return the CapabilityHostProperties object itself.
@@ -148,7 +151,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Get the threadStorageConnections property: List of Thread storage connections.
+     * Get the threadStorageConnections property: List of connection names from those available in the account or
+     * project to be used for Thread storage.
      * 
      * @return the threadStorageConnections value.
      */
@@ -157,7 +161,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Set the threadStorageConnections property: List of Thread storage connections.
+     * Set the threadStorageConnections property: List of connection names from those available in the account or
+     * project to be used for Thread storage.
      * 
      * @param threadStorageConnections the threadStorageConnections value to set.
      * @return the CapabilityHostProperties object itself.
@@ -168,7 +173,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Get the vectorStoreConnections property: List of VectorStore connections.
+     * Get the vectorStoreConnections property: List of connection names from those available in the account or project
+     * to be used for vector database (e.g. CosmosDB).
      * 
      * @return the vectorStoreConnections value.
      */
@@ -177,7 +183,8 @@ public final class CapabilityHostProperties extends ResourceBase {
     }
 
     /**
-     * Set the vectorStoreConnections property: List of VectorStore connections.
+     * Set the vectorStoreConnections property: List of connection names from those available in the account or project
+     * to be used for vector database (e.g. CosmosDB).
      * 
      * @param vectorStoreConnections the vectorStoreConnections value to set.
      * @return the CapabilityHostProperties object itself.

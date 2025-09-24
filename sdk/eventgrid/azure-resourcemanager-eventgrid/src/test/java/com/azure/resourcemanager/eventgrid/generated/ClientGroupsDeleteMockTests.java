@@ -27,7 +27,7 @@ public final class ClientGroupsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.clientGroups().delete("aglt", "xoe", "onql", com.azure.core.util.Context.NONE);
+        manager.clientGroups().delete("gbvoffbkk", "vdxaexqokmyrljia", "zbnobr", com.azure.core.util.Context.NONE);
 
     }
 }

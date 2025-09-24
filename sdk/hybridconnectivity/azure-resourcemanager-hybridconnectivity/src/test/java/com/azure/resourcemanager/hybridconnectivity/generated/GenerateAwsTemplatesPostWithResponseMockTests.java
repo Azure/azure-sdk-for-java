@@ -11,7 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
-import com.azure.resourcemanager.hybridconnectivity.models.PostResponse;
+import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateResponse;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypeSettings;
 import java.nio.charset.StandardCharsets;
@@ -34,14 +34,11 @@ public final class GenerateAwsTemplatesPostWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PostResponse response = manager.generateAwsTemplates()
-            .postWithResponse(
-                new GenerateAwsTemplateRequest().withConnectorId("qyib")
-                    .withSolutionTypes(Arrays.asList(
-                        new SolutionTypeSettings().withSolutionType("fluszdtm")
-                            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf())),
-                        new SolutionTypeSettings().withSolutionType("dbutauvfbtkuwhh")
-                            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf())))),
+        GenerateAwsTemplateResponse response = manager.generateAwsTemplates()
+            .postWithResponse(new GenerateAwsTemplateRequest().withConnectorId("ld")
+                .withSolutionTypes(Arrays.asList(new SolutionTypeSettings().withSolutionType("xcxrsl")
+                    .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf("yzvqt",
+                        "yhrfouyftaakcpw", "luicpdggkzzlvmbm", "iyq", "jw", "wuoegrpk", "wsbpfvm", "axmodfvuef"))))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

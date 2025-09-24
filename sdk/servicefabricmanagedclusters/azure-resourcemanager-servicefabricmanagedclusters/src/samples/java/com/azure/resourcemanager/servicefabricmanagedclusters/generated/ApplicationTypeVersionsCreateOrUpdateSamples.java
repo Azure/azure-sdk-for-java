@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ApplicationTypeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationTypeVersionPutOperation_example.json
+     * x-ms-original-file: 2025-06-01-preview/ApplicationTypeVersionPutOperation_example.json
      */
     /**
      * Sample code: Put an application type version.

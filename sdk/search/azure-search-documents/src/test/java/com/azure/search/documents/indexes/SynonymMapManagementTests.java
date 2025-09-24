@@ -52,7 +52,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
             return; // Running in PLAYBACK, no need to cleanup.
         }
 
-        SearchIndexClient cleanupClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        SearchIndexClient cleanupClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBaseResource;
@@ -22,24 +22,24 @@ public final class DppResourceGuardProxiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"vqtanarfdlpuk\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"neizjcpe\",\"defaultResourceRequest\":\"khnmgbrou\"},{\"vaultCriticalOperation\":\"dbhfhp\",\"defaultResourceRequest\":\"azjzo\"},{\"vaultCriticalOperation\":\"jxhpdulontacn\",\"defaultResourceRequest\":\"w\"}],\"lastUpdatedTime\":\"htuevrhrljy\",\"description\":\"gwxhnsduugwbsreu\"},\"id\":\"q\",\"name\":\"fuarenlvhht\",\"type\":\"lnvnafvvkyfedev\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"iwfbrkwpzdqtvhcs\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"qaxsipietgbebjf\",\"defaultResourceRequest\":\"bmoichd\"},{\"vaultCriticalOperation\":\"nfpubntnbatz\",\"defaultResourceRequest\":\"qs\"}],\"lastUpdatedTime\":\"saaelca\",\"description\":\"cjuhplrvkm\"},\"id\":\"wmj\",\"name\":\"lgfggcvk\",\"type\":\"y\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceGuardProxyBaseResource> response
-            = manager.dppResourceGuardProxies().list("axmqeqal", "hjnhgwydyynfsvk", com.azure.core.util.Context.NONE);
+            = manager.dppResourceGuardProxies().list("nrefqyh", "otoihiqa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vqtanarfdlpuk", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions.assertEquals("neizjcpe",
+        Assertions.assertEquals("iwfbrkwpzdqtvhcs", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions.assertEquals("qaxsipietgbebjf",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("khnmgbrou",
+        Assertions.assertEquals("bmoichd",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("htuevrhrljy", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("gwxhnsduugwbsreu", response.iterator().next().properties().description());
+        Assertions.assertEquals("saaelca", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("cjuhplrvkm", response.iterator().next().properties().description());
     }
 }

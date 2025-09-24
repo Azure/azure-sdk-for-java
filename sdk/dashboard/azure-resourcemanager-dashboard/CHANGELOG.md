@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,122 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2025-07-21)
+
+- Azure Resource Manager Dashboard client library for Java. This package contains Microsoft Azure SDK for Dashboard Management SDK. The Microsoft.Dashboard Rest API spec. Package api-version 2024-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Bugs Fixed
+
+- Fixed bug on update of `ManagedGrafana`.
+
+## 1.2.0-beta.1 (2025-07-14)
+
+- Azure Resource Manager Dashboard client library for Java. This package contains Microsoft Azure SDK for Dashboard Management SDK. The Microsoft.Dashboard Rest API spec. Package api-version 2024-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.GrafanasUpdateResponse` was removed
+
+#### `models.GrafanasUpdateHeaders` was removed
+
+#### `models.ManagedPrivateEndpointModelListResponse` was removed
+
+#### `models.ManagedGrafanaListResponse` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.SaasSubscriptionDetails` was modified
+
+* `withPublisherId(java.lang.String)` was removed
+* `withOfferId(java.lang.String)` was removed
+* `withTerm(models.SubscriptionTerm)` was removed
+* `withPlanId(java.lang.String)` was removed
+
+#### `models.MarketplaceTrialQuota` was modified
+
+* `withAvailablePromotion(models.AvailablePromotion)` was removed
+* `withTrialStartAt(java.time.OffsetDateTime)` was removed
+* `withTrialEndAt(java.time.OffsetDateTime)` was removed
+* `withGrafanaResourceId(java.lang.String)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `models.SubscriptionTerm` was modified
+
+* `withStartDate(java.time.OffsetDateTime)` was removed
+* `withEndDate(java.time.OffsetDateTime)` was removed
+* `withTermUnit(java.lang.String)` was removed
+
+### Features Added
+
+* `models.UnifiedAlertingScreenshots` was added
+
+* `models.ManagedDashboards` was added
+
+* `models.IntegrationFabricProperties` was added
+
+* `models.ManagedDashboard$DefinitionStages` was added
+
+* `models.IntegrationFabricPropertiesUpdateParameters` was added
+
+* `models.IntegrationFabric$DefinitionStages` was added
+
+* `models.Security` was added
+
+* `models.IntegrationFabric$Update` was added
+
+* `models.Users` was added
+
+* `models.ManagedDashboard$UpdateStages` was added
+
+* `models.IntegrationFabric$Definition` was added
+
+* `models.ManagedDashboard` was added
+
+* `models.ManagedDashboard$Definition` was added
+
+* `models.IntegrationFabricUpdateParameters` was added
+
+* `models.IntegrationFabrics` was added
+
+* `models.ManagedDashboardUpdateParameters` was added
+
+* `models.IntegrationFabric` was added
+
+* `models.Snapshots` was added
+
+* `models.IntegrationFabric$UpdateStages` was added
+
+* `models.ManagedDashboard$Update` was added
+
+#### `DashboardManager` was modified
+
+* `managedDashboards()` was added
+* `integrationFabrics()` was added
+
+#### `models.GrafanaConfigurations` was modified
+
+* `withSecurity(models.Security)` was added
+* `withUsers(models.Users)` was added
+* `snapshots()` was added
+* `unifiedAlertingScreenshots()` was added
+* `withUnifiedAlertingScreenshots(models.UnifiedAlertingScreenshots)` was added
+* `withSnapshots(models.Snapshots)` was added
+* `security()` was added
+* `users()` was added
 
 ## 1.1.0 (2024-12-13)
 

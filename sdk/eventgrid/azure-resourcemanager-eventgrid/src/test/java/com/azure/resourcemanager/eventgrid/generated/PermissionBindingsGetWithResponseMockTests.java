@@ -22,7 +22,7 @@ public final class PermissionBindingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"qjumovs\",\"topicSpaceName\":\"pbvzopaxmfmvsmcw\",\"permission\":\"Subscriber\",\"clientGroupName\":\"xdtnqifbs\",\"provisioningState\":\"Creating\"},\"id\":\"iauesugmocpcjy\",\"name\":\"boel\",\"type\":\"gttwfldsi\"}";
+            = "{\"properties\":{\"description\":\"ekd\",\"topicSpaceName\":\"vuftrsvjmnsvu\",\"permission\":\"Publisher\",\"clientGroupName\":\"tvolefcj\",\"provisioningState\":\"Deleting\"},\"id\":\"kdb\",\"name\":\"otfbjampqoclann\",\"type\":\"xynlsuqb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PermissionBindingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PermissionBinding response = manager.permissionBindings()
-            .getWithResponse("ovanyrva", "rtgelg", "ewikfyaqandmym", com.azure.core.util.Context.NONE)
+            .getWithResponse("igfoujjcxgdqmr", "hnzkwopswnyinxu", "rrxyxwjezbfqpl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qjumovs", response.description());
-        Assertions.assertEquals("pbvzopaxmfmvsmcw", response.topicSpaceName());
-        Assertions.assertEquals(PermissionType.SUBSCRIBER, response.permission());
-        Assertions.assertEquals("xdtnqifbs", response.clientGroupName());
+        Assertions.assertEquals("ekd", response.description());
+        Assertions.assertEquals("vuftrsvjmnsvu", response.topicSpaceName());
+        Assertions.assertEquals(PermissionType.PUBLISHER, response.permission());
+        Assertions.assertEquals("tvolefcj", response.clientGroupName());
     }
 }

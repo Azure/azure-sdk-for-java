@@ -144,7 +144,7 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") UpdateSapCentralInstanceRequest properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,10 +152,9 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("centralInstanceName") String centralInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("centralInstanceName") String centralInstanceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances/{centralInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -163,8 +162,7 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("centralInstanceName") String centralInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("centralInstanceName") String centralInstanceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/centralInstances")
@@ -850,11 +848,8 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             return Mono
                 .error(new IllegalArgumentException("Parameter centralInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName, accept,
-                context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -897,9 +892,8 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter centralInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName,
             Context.NONE);
     }
 
@@ -943,10 +937,8 @@ public final class SapCentralServerInstancesClientImpl implements SapCentralServ
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter centralInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
     }
 
     /**

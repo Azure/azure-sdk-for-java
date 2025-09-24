@@ -4,8 +4,7 @@
 
 /**
  * Package containing the inner data models for HealthbotClient.
- * Microsoft Healthcare Bot is a cloud platform that empowers developers in Healthcare organizations to build and deploy
- * their compliant, AI-powered virtual health assistants and health bots, that help them improve processes and reduce
- * costs.
+ * Azure Health Bot is a cloud platform that empowers developers in Healthcare organizations to build and deploy their
+ * compliant, AI-powered virtual health assistants and health bots, that help them improve processes and reduce costs.
  */
 package com.azure.resourcemanager.healthbot.fluent.models;

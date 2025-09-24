@@ -20,99 +20,111 @@ public final class SkuSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuSetting model = BinaryData.fromString(
-            "{\"name\":\"xbkwv\",\"tier\":\"nzvdfbzdixzmq\",\"size\":\"odawopqhewjptmcg\",\"family\":\"ostzelndlatu\",\"kind\":\"zlbiojlvfhrbbpn\",\"locations\":[\"cwwyyur\",\"ochpprpr\",\"nmokayzejnhlbk\",\"bzpcpiljhahzvec\"],\"locationInfo\":[{\"location\":\"bnwieholew\",\"zones\":[\"uubw\",\"fqsfa\",\"aqtferr\"],\"zoneDetails\":[{\"name\":[\"kmfx\",\"pjwogqqno\",\"pud\"],\"capabilities\":[{\"name\":\"btqwpwyawbzas\",\"value\":\"bucljgkyexaogu\"},{\"name\":\"aipidsdaultxi\",\"value\":\"jumfqwazlnq\"},{\"name\":\"mcjn\",\"value\":\"zqdqxt\"},{\"name\":\"jw\",\"value\":\"nyfusfzsvtuikzh\"}]}],\"extendedLocations\":[\"glcfhmlrqryxyn\",\"nzrdpsovwxz\",\"ptgoeiybbabp\",\"hv\"],\"type\":\"NotSpecified\"}],\"requiredQuotaIds\":[\"ntjlr\",\"gjkskyrioov\",\"idsxwaabzmifry\"],\"requiredFeatures\":[\"mmaxrizkzobgo\",\"xlhslnel\",\"ieixynllxe\"],\"capacity\":{\"minimum\":1222388745,\"maximum\":2008141079,\"default\":1839785994,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"cawjutifdwfmvi\",\"quantity\":817044673,\"extendedUnit\":\"jbt\"},{\"meterId\":\"zhraglkafh\",\"quantity\":1272146098,\"extendedUnit\":\"ujeickp\"},{\"meterId\":\"vcpopmxe\",\"quantity\":62072923,\"extendedUnit\":\"ltyjedexxmlfmk\"},{\"meterId\":\"scazuawxtzxpu\",\"quantity\":1528230497,\"extendedUnit\":\"bzxrvxcushsphai\"}],\"capabilities\":[{\"name\":\"yasflvgsgzwy\",\"value\":\"akoi\"},{\"name\":\"knsmjblmljhlnymz\",\"value\":\"tqyryuzcbmqqv\"},{\"name\":\"mv\",\"value\":\"fgtayxonsup\"}]}")
+            "{\"name\":\"kev\",\"tier\":\"ltjcrspxk\",\"size\":\"r\",\"family\":\"lfg\",\"kind\":\"nnnoytz\",\"locations\":[\"ewxigpxvk\",\"maupxvpi\",\"dfaifyzyzeyuube\"],\"locationInfo\":[{\"location\":\"zlfytoit\",\"zones\":[\"gvfltgvdihoynkr\",\"wetwkdr\",\"yrucpcunnuzdq\",\"moenodnaien\"],\"zoneDetails\":[{\"name\":[\"ndnelqkaadlknw\"],\"capabilities\":[{\"name\":\"nniyopetxi\",\"value\":\"cnrly\"},{\"name\":\"nucaephblkwqpat\",\"value\":\"bqsdtcjbctvi\"},{\"name\":\"uzqymtuowog\",\"value\":\"gitsqh\"},{\"name\":\"vbrzcdb\",\"value\":\"nfzndscxmxeat\"}]}],\"extendedLocations\":[\"mwnrdj\",\"ibqbnaomhjrm\",\"u\"],\"type\":\"CustomLocation\"},{\"location\":\"xljalfihc\",\"zones\":[\"bc\",\"nc\",\"exxqcwg\",\"xf\"],\"zoneDetails\":[{\"name\":[\"okzwjjzrlt\",\"xldzyyfytpqsix\"],\"capabilities\":[{\"name\":\"puj\",\"value\":\"vyqlkjuvsmbmslzo\"}]},{\"name\":[\"wzdbpqvybefgv\",\"x\",\"okcvtlubses\"],\"capabilities\":[{\"name\":\"uartrhunlpiryky\",\"value\":\"ndzfqivjreuyk\"}]},{\"name\":[\"nwagl\",\"bxoeeonql\",\"fwmyymv\"],\"capabilities\":[{\"name\":\"pb\",\"value\":\"fckdvez\"},{\"name\":\"rcssbzhddubbnq\",\"value\":\"b\"},{\"name\":\"h\",\"value\":\"alehpav\"},{\"name\":\"wugiqjti\",\"value\":\"gqgdminictteajoh\"}]}],\"extendedLocations\":[\"spnbonhpcz\",\"kmktpvwxqcseh\",\"hkhufm\",\"qumq\"],\"type\":\"NotSpecified\"}],\"requiredQuotaIds\":[\"zulo\",\"saeuzanhsfnhsenw\"],\"requiredFeatures\":[\"zf\",\"gqjclidftujwj\",\"ufwbeqrku\"],\"capacity\":{\"minimum\":1778291019,\"maximum\":1870712650,\"default\":1258720981,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"dvhazcvjy\",\"quantity\":303692628,\"extendedUnit\":\"wbqerzwxiytxtd\"},{\"meterId\":\"ukvlb\",\"quantity\":891860577,\"extendedUnit\":\"dstyouam\"},{\"meterId\":\"ewres\",\"quantity\":432107365,\"extendedUnit\":\"egmmuteyxe\"}],\"capabilities\":[{\"name\":\"qigijiitnspxlzde\",\"value\":\"ygr\"}]}")
             .toObject(SkuSetting.class);
-        Assertions.assertEquals("xbkwv", model.name());
-        Assertions.assertEquals("nzvdfbzdixzmq", model.tier());
-        Assertions.assertEquals("odawopqhewjptmcg", model.size());
-        Assertions.assertEquals("ostzelndlatu", model.family());
-        Assertions.assertEquals("zlbiojlvfhrbbpn", model.kind());
-        Assertions.assertEquals("cwwyyur", model.locations().get(0));
-        Assertions.assertEquals("bnwieholew", model.locationInfo().get(0).location());
-        Assertions.assertEquals("uubw", model.locationInfo().get(0).zones().get(0));
-        Assertions.assertEquals("kmfx", model.locationInfo().get(0).zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("btqwpwyawbzas",
+        Assertions.assertEquals("kev", model.name());
+        Assertions.assertEquals("ltjcrspxk", model.tier());
+        Assertions.assertEquals("r", model.size());
+        Assertions.assertEquals("lfg", model.family());
+        Assertions.assertEquals("nnnoytz", model.kind());
+        Assertions.assertEquals("ewxigpxvk", model.locations().get(0));
+        Assertions.assertEquals("zlfytoit", model.locationInfo().get(0).location());
+        Assertions.assertEquals("gvfltgvdihoynkr", model.locationInfo().get(0).zones().get(0));
+        Assertions.assertEquals("ndnelqkaadlknw", model.locationInfo().get(0).zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("nniyopetxi",
             model.locationInfo().get(0).zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("bucljgkyexaogu",
+        Assertions.assertEquals("cnrly",
             model.locationInfo().get(0).zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("glcfhmlrqryxyn", model.locationInfo().get(0).extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.locationInfo().get(0).type());
-        Assertions.assertEquals("ntjlr", model.requiredQuotaIds().get(0));
-        Assertions.assertEquals("mmaxrizkzobgo", model.requiredFeatures().get(0));
-        Assertions.assertEquals(1222388745, model.capacity().minimum());
-        Assertions.assertEquals(2008141079, model.capacity().maximum());
-        Assertions.assertEquals(1839785994, model.capacity().defaultProperty());
+        Assertions.assertEquals("mwnrdj", model.locationInfo().get(0).extendedLocations().get(0));
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.locationInfo().get(0).type());
+        Assertions.assertEquals("zulo", model.requiredQuotaIds().get(0));
+        Assertions.assertEquals("zf", model.requiredFeatures().get(0));
+        Assertions.assertEquals(1778291019, model.capacity().minimum());
+        Assertions.assertEquals(1870712650, model.capacity().maximum());
+        Assertions.assertEquals(1258720981, model.capacity().defaultProperty());
         Assertions.assertEquals(SkuScaleType.NONE, model.capacity().scaleType());
-        Assertions.assertEquals("cawjutifdwfmvi", model.costs().get(0).meterId());
-        Assertions.assertEquals(817044673, model.costs().get(0).quantity());
-        Assertions.assertEquals("jbt", model.costs().get(0).extendedUnit());
-        Assertions.assertEquals("yasflvgsgzwy", model.capabilities().get(0).name());
-        Assertions.assertEquals("akoi", model.capabilities().get(0).value());
+        Assertions.assertEquals("dvhazcvjy", model.costs().get(0).meterId());
+        Assertions.assertEquals(303692628, model.costs().get(0).quantity());
+        Assertions.assertEquals("wbqerzwxiytxtd", model.costs().get(0).extendedUnit());
+        Assertions.assertEquals("qigijiitnspxlzde", model.capabilities().get(0).name());
+        Assertions.assertEquals("ygr", model.capabilities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuSetting model
-            = new SkuSetting().withName("xbkwv")
-                .withTier("nzvdfbzdixzmq")
-                .withSize("odawopqhewjptmcg")
-                .withFamily("ostzelndlatu")
-                .withKind("zlbiojlvfhrbbpn")
-                .withLocations(Arrays.asList("cwwyyur", "ochpprpr", "nmokayzejnhlbk", "bzpcpiljhahzvec"))
-                .withLocationInfo(
-                    Arrays.asList(new SkuLocationInfo().withLocation("bnwieholew")
-                        .withZones(Arrays.asList("uubw", "fqsfa", "aqtferr"))
-                        .withZoneDetails(
-                            Arrays.asList(new SkuZoneDetail().withName(Arrays.asList("kmfx", "pjwogqqno", "pud"))
-                                .withCapabilities(Arrays.asList(
-                                    new SkuCapability().withName("btqwpwyawbzas").withValue("bucljgkyexaogu"),
-                                    new SkuCapability().withName("aipidsdaultxi").withValue("jumfqwazlnq"),
-                                    new SkuCapability().withName("mcjn").withValue("zqdqxt"),
-                                    new SkuCapability().withName("jw").withValue("nyfusfzsvtuikzh")))))
-                        .withExtendedLocations(Arrays.asList("glcfhmlrqryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv"))
-                        .withType(ExtendedLocationType.NOT_SPECIFIED)))
-                .withRequiredQuotaIds(Arrays.asList("ntjlr", "gjkskyrioov", "idsxwaabzmifry"))
-                .withRequiredFeatures(Arrays.asList("mmaxrizkzobgo", "xlhslnel", "ieixynllxe"))
-                .withCapacity(new SkuSettingCapacity().withMinimum(1222388745)
-                    .withMaximum(2008141079)
-                    .withDefaultProperty(1839785994)
-                    .withScaleType(SkuScaleType.NONE))
-                .withCosts(Arrays.asList(
-                    new SkuCost().withMeterId("cawjutifdwfmvi").withQuantity(817044673).withExtendedUnit("jbt"),
-                    new SkuCost().withMeterId("zhraglkafh").withQuantity(1272146098).withExtendedUnit("ujeickp"),
-                    new SkuCost().withMeterId("vcpopmxe").withQuantity(62072923).withExtendedUnit("ltyjedexxmlfmk"),
-                    new SkuCost().withMeterId("scazuawxtzxpu")
-                        .withQuantity(1528230497)
-                        .withExtendedUnit("bzxrvxcushsphai")))
-                .withCapabilities(Arrays.asList(new SkuCapability().withName("yasflvgsgzwy").withValue("akoi"),
-                    new SkuCapability().withName("knsmjblmljhlnymz").withValue("tqyryuzcbmqqv"),
-                    new SkuCapability().withName("mv").withValue("fgtayxonsup")));
+        SkuSetting model = new SkuSetting().withName("kev")
+            .withTier("ltjcrspxk")
+            .withSize("r")
+            .withFamily("lfg")
+            .withKind("nnnoytz")
+            .withLocations(Arrays.asList("ewxigpxvk", "maupxvpi", "dfaifyzyzeyuube"))
+            .withLocationInfo(Arrays.asList(
+                new SkuLocationInfo().withLocation("zlfytoit")
+                    .withZones(Arrays.asList("gvfltgvdihoynkr", "wetwkdr", "yrucpcunnuzdq", "moenodnaien"))
+                    .withZoneDetails(Arrays.asList(new SkuZoneDetail().withName(Arrays.asList("ndnelqkaadlknw"))
+                        .withCapabilities(Arrays.asList(new SkuCapability().withName("nniyopetxi").withValue("cnrly"),
+                            new SkuCapability().withName("nucaephblkwqpat").withValue("bqsdtcjbctvi"),
+                            new SkuCapability().withName("uzqymtuowog").withValue("gitsqh"),
+                            new SkuCapability().withName("vbrzcdb").withValue("nfzndscxmxeat")))))
+                    .withExtendedLocations(Arrays.asList("mwnrdj", "ibqbnaomhjrm", "u"))
+                    .withType(ExtendedLocationType.CUSTOM_LOCATION),
+                new SkuLocationInfo().withLocation("xljalfihc")
+                    .withZones(Arrays.asList("bc", "nc", "exxqcwg", "xf"))
+                    .withZoneDetails(
+                        Arrays
+                            .asList(
+                                new SkuZoneDetail().withName(Arrays.asList("okzwjjzrlt", "xldzyyfytpqsix"))
+                                    .withCapabilities(Arrays
+                                        .asList(new SkuCapability().withName("puj").withValue("vyqlkjuvsmbmslzo"))),
+                                new SkuZoneDetail()
+                                    .withName(Arrays.asList("wzdbpqvybefgv", "x", "okcvtlubses"))
+                                    .withCapabilities(Arrays.asList(
+                                        new SkuCapability().withName("uartrhunlpiryky").withValue("ndzfqivjreuyk"))),
+                                new SkuZoneDetail().withName(Arrays.asList("nwagl", "bxoeeonql", "fwmyymv"))
+                                    .withCapabilities(
+                                        Arrays.asList(new SkuCapability().withName("pb").withValue("fckdvez"),
+                                            new SkuCapability().withName("rcssbzhddubbnq").withValue("b"),
+                                            new SkuCapability().withName("h").withValue("alehpav"),
+                                            new SkuCapability().withName("wugiqjti").withValue("gqgdminictteajoh")))))
+                    .withExtendedLocations(Arrays.asList("spnbonhpcz", "kmktpvwxqcseh", "hkhufm", "qumq"))
+                    .withType(ExtendedLocationType.NOT_SPECIFIED)))
+            .withRequiredQuotaIds(Arrays.asList("zulo", "saeuzanhsfnhsenw"))
+            .withRequiredFeatures(Arrays.asList("zf", "gqjclidftujwj", "ufwbeqrku"))
+            .withCapacity(new SkuSettingCapacity().withMinimum(1778291019)
+                .withMaximum(1870712650)
+                .withDefaultProperty(1258720981)
+                .withScaleType(SkuScaleType.NONE))
+            .withCosts(Arrays.asList(
+                new SkuCost().withMeterId("dvhazcvjy").withQuantity(303692628).withExtendedUnit("wbqerzwxiytxtd"),
+                new SkuCost().withMeterId("ukvlb").withQuantity(891860577).withExtendedUnit("dstyouam"),
+                new SkuCost().withMeterId("ewres").withQuantity(432107365).withExtendedUnit("egmmuteyxe")))
+            .withCapabilities(Arrays.asList(new SkuCapability().withName("qigijiitnspxlzde").withValue("ygr")));
         model = BinaryData.fromObject(model).toObject(SkuSetting.class);
-        Assertions.assertEquals("xbkwv", model.name());
-        Assertions.assertEquals("nzvdfbzdixzmq", model.tier());
-        Assertions.assertEquals("odawopqhewjptmcg", model.size());
-        Assertions.assertEquals("ostzelndlatu", model.family());
-        Assertions.assertEquals("zlbiojlvfhrbbpn", model.kind());
-        Assertions.assertEquals("cwwyyur", model.locations().get(0));
-        Assertions.assertEquals("bnwieholew", model.locationInfo().get(0).location());
-        Assertions.assertEquals("uubw", model.locationInfo().get(0).zones().get(0));
-        Assertions.assertEquals("kmfx", model.locationInfo().get(0).zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("btqwpwyawbzas",
+        Assertions.assertEquals("kev", model.name());
+        Assertions.assertEquals("ltjcrspxk", model.tier());
+        Assertions.assertEquals("r", model.size());
+        Assertions.assertEquals("lfg", model.family());
+        Assertions.assertEquals("nnnoytz", model.kind());
+        Assertions.assertEquals("ewxigpxvk", model.locations().get(0));
+        Assertions.assertEquals("zlfytoit", model.locationInfo().get(0).location());
+        Assertions.assertEquals("gvfltgvdihoynkr", model.locationInfo().get(0).zones().get(0));
+        Assertions.assertEquals("ndnelqkaadlknw", model.locationInfo().get(0).zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("nniyopetxi",
             model.locationInfo().get(0).zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("bucljgkyexaogu",
+        Assertions.assertEquals("cnrly",
             model.locationInfo().get(0).zoneDetails().get(0).capabilities().get(0).value());
-        Assertions.assertEquals("glcfhmlrqryxyn", model.locationInfo().get(0).extendedLocations().get(0));
-        Assertions.assertEquals(ExtendedLocationType.NOT_SPECIFIED, model.locationInfo().get(0).type());
-        Assertions.assertEquals("ntjlr", model.requiredQuotaIds().get(0));
-        Assertions.assertEquals("mmaxrizkzobgo", model.requiredFeatures().get(0));
-        Assertions.assertEquals(1222388745, model.capacity().minimum());
-        Assertions.assertEquals(2008141079, model.capacity().maximum());
-        Assertions.assertEquals(1839785994, model.capacity().defaultProperty());
+        Assertions.assertEquals("mwnrdj", model.locationInfo().get(0).extendedLocations().get(0));
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.locationInfo().get(0).type());
+        Assertions.assertEquals("zulo", model.requiredQuotaIds().get(0));
+        Assertions.assertEquals("zf", model.requiredFeatures().get(0));
+        Assertions.assertEquals(1778291019, model.capacity().minimum());
+        Assertions.assertEquals(1870712650, model.capacity().maximum());
+        Assertions.assertEquals(1258720981, model.capacity().defaultProperty());
         Assertions.assertEquals(SkuScaleType.NONE, model.capacity().scaleType());
-        Assertions.assertEquals("cawjutifdwfmvi", model.costs().get(0).meterId());
-        Assertions.assertEquals(817044673, model.costs().get(0).quantity());
-        Assertions.assertEquals("jbt", model.costs().get(0).extendedUnit());
-        Assertions.assertEquals("yasflvgsgzwy", model.capabilities().get(0).name());
-        Assertions.assertEquals("akoi", model.capabilities().get(0).value());
+        Assertions.assertEquals("dvhazcvjy", model.costs().get(0).meterId());
+        Assertions.assertEquals(303692628, model.costs().get(0).quantity());
+        Assertions.assertEquals("wbqerzwxiytxtd", model.costs().get(0).extendedUnit());
+        Assertions.assertEquals("qigijiitnspxlzde", model.capabilities().get(0).name());
+        Assertions.assertEquals("ygr", model.capabilities().get(0).value());
     }
 }

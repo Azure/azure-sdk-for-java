@@ -170,65 +170,59 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") PrivateCloudUpdate privateCloudUpdate,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateVcenterPassword")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> rotateVcenterPassword(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateVcenterPassword")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> rotateVcenterPasswordSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateNsxtPassword")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> rotateNsxtPassword(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateNsxtPassword")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> rotateNsxtPasswordSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/listAdminCredentials")
@@ -1176,10 +1170,9 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1213,9 +1206,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1250,9 +1242,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
 
     /**
@@ -1380,11 +1371,10 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.rotateVcenterPassword(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+                    this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1418,9 +1408,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.rotateVcenterPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1455,9 +1444,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.rotateVcenterPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
 
     /**
@@ -1588,10 +1576,9 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.rotateNsxtPassword(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1625,9 +1612,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.rotateNsxtPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -1662,9 +1648,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.rotateNsxtPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, context);
     }
 
     /**
