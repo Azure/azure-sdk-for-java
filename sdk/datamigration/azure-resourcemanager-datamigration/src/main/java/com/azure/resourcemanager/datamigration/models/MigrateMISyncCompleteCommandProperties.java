@@ -9,6 +9,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,11 +17,11 @@ import java.util.List;
  * Properties for the command that completes online migration for an Azure SQL Database Managed Instance.
  */
 @Fluent
-public final class MigrateMISyncCompleteCommandProperties extends CommandProperties {
+public final class MigrateMISyncCompleteCommandProperties extends CommandPropertiesInner {
     /*
      * Command type.
      */
-    private String commandType = "Migrate.SqlServer.AzureDbSqlMi.Complete";
+    private CommandType commandType = CommandType.MIGRATE_SQL_SERVER_AZURE_DB_SQL_MI_COMPLETE;
 
     /*
      * Command input
@@ -31,6 +32,16 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
      * Command output. This is ignored if submitted.
      */
     private MigrateMISyncCompleteCommandOutput output;
+
+    /*
+     * The state of the command. This is ignored if submitted.
+     */
+    private CommandState state;
+
+    /*
+     * Array of errors. This is ignored if submitted.
+     */
+    private List<ManagementError> errors;
 
     /**
      * Creates an instance of MigrateMISyncCompleteCommandProperties class.
@@ -44,7 +55,7 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
      * @return the commandType value.
      */
     @Override
-    public String commandType() {
+    public CommandType commandType() {
         return this.commandType;
     }
 
@@ -78,6 +89,26 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
     }
 
     /**
+     * Get the state property: The state of the command. This is ignored if submitted.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public CommandState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the errors property: Array of errors. This is ignored if submitted.
+     * 
+     * @return the errors value.
+     */
+    @Override
+    public List<ManagementError> errors() {
+        return this.errors;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -98,7 +129,7 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("commandType", this.commandType);
+        jsonWriter.writeStringField("commandType", this.commandType == null ? null : this.commandType.toString());
         jsonWriter.writeJsonField("input", this.input);
         return jsonWriter.writeEndObject();
     }
@@ -121,12 +152,13 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
 
                 if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedMigrateMISyncCompleteCommandProperties.withErrors(errors);
+                    deserializedMigrateMISyncCompleteCommandProperties.errors = errors;
                 } else if ("state".equals(fieldName)) {
-                    deserializedMigrateMISyncCompleteCommandProperties
-                        .withState(CommandState.fromString(reader.getString()));
+                    deserializedMigrateMISyncCompleteCommandProperties.state
+                        = CommandState.fromString(reader.getString());
                 } else if ("commandType".equals(fieldName)) {
-                    deserializedMigrateMISyncCompleteCommandProperties.commandType = reader.getString();
+                    deserializedMigrateMISyncCompleteCommandProperties.commandType
+                        = CommandType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedMigrateMISyncCompleteCommandProperties.input
                         = MigrateMISyncCompleteCommandInput.fromJson(reader);

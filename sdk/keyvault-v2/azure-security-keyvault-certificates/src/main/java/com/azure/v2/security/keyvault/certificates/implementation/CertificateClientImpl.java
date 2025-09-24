@@ -30,7 +30,6 @@ import com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaul
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -45,6 +44,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -109,7 +109,7 @@ public final class CertificateClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(CertificateClientService.class, this.httpPipeline);
+        this.service = CertificateClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -421,7 +421,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -465,26 +465,33 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending) {
-        return new PagedIterable<>((pagingOptions) -> getCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
-    }
-
-    /**
-     * List certificates in a specified key vault
-     * 
-     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate list result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificates() {
-        final Integer maxresults = null;
-        final Boolean includePending = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -506,9 +513,33 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getCertificatesSinglePage(maxresults, includePending, requestContext),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificatesSinglePage(maxresults, includePending, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -535,25 +566,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Deletes a certificate from a specified key vault.
-     * 
-     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
-     * to remove individual versions of a certificate object. This operation requires the certificates/delete
-     * permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     * when it will be purged.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedCertificateBundle deleteCertificate(String certificateName) {
-        return deleteCertificateWithResponse(certificateName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Sets the certificate contacts for the specified key vault.
      * 
      * Sets the certificate contacts for the specified key vault. This operation requires the
@@ -572,23 +584,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.setCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             contentType, accept, contacts, requestContext);
-    }
-
-    /**
-     * Sets the certificate contacts for the specified key vault.
-     * 
-     * Sets the certificate contacts for the specified key vault. This operation requires the
-     * certificates/managecontacts permission.
-     * 
-     * @param contacts The contacts for the key vault certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Contacts setCertificateContacts(Contacts contacts) {
-        return setCertificateContactsWithResponse(contacts, RequestContext.none()).getValue();
     }
 
     /**
@@ -611,21 +606,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Lists the certificate contacts for a specified key vault.
-     * 
-     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
-     * This operation requires the certificates/managecontacts permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Contacts getCertificateContacts() {
-        return getCertificateContactsWithResponse(RequestContext.none()).getValue();
-    }
-
-    /**
      * Deletes the certificate contacts for a specified key vault.
      * 
      * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
@@ -642,21 +622,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.deleteCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
             requestContext);
-    }
-
-    /**
-     * Deletes the certificate contacts for a specified key vault.
-     * 
-     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
-     * certificates/managecontacts permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the contacts for the vault certificates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Contacts deleteCertificateContacts() {
-        return deleteCertificateContactsWithResponse(RequestContext.none()).getValue();
     }
 
     /**
@@ -678,7 +643,7 @@ public final class CertificateClientImpl {
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -702,7 +667,7 @@ public final class CertificateClientImpl {
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -720,25 +685,33 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
-    }
-
-    /**
-     * List certificate issuers for a specified key vault.
-     * 
-     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate issuer list result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateIssuerItem> getCertificateIssuers() {
-        final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificateIssuersSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
     }
 
     /**
@@ -759,8 +732,33 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificateIssuers")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificateIssuersSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -788,25 +786,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Sets the specified certificate issuer.
-     * 
-     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
-     * certificates/setissuers permission.
-     * 
-     * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
-     * the service. The value provided should not include personally identifiable or sensitive information.
-     * @param parameter Certificate issuer set parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle setCertificateIssuer(String issuerName, CertificateIssuerSetParameters parameter) {
-        return setCertificateIssuerWithResponse(issuerName, parameter, RequestContext.none()).getValue();
-    }
-
-    /**
      * Updates the specified certificate issuer.
      * 
      * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
@@ -830,24 +809,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Updates the specified certificate issuer.
-     * 
-     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
-     * operation requires the certificates/setissuers permission.
-     * 
-     * @param issuerName The name of the issuer.
-     * @param parameter Certificate issuer update parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle updateCertificateIssuer(String issuerName, CertificateIssuerUpdateParameters parameter) {
-        return updateCertificateIssuerWithResponse(issuerName, parameter, RequestContext.none()).getValue();
-    }
-
-    /**
      * Lists the specified certificate issuer.
      * 
      * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
@@ -865,23 +826,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.getCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), issuerName,
             accept, requestContext);
-    }
-
-    /**
-     * Lists the specified certificate issuer.
-     * 
-     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * 
-     * @param issuerName The name of the issuer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle getCertificateIssuer(String issuerName) {
-        return getCertificateIssuerWithResponse(issuerName, RequestContext.none()).getValue();
     }
 
     /**
@@ -906,23 +850,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Deletes the specified certificate issuer.
-     * 
-     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
-     * operation requires the certificates/manageissuers/deleteissuers permission.
-     * 
-     * @param issuerName The name of the issuer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issuer for Key Vault certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssuerBundle deleteCertificateIssuer(String issuerName) {
-        return deleteCertificateIssuerWithResponse(issuerName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates a new certificate.
      * 
      * If this is the first version, the certificate resource is created. This operation requires the
@@ -944,25 +871,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.createCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
             contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Creates a new certificate.
-     * 
-     * If this is the first version, the certificate resource is created. This operation requires the
-     * certificates/create permission.
-     * 
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     * of running the service. The value provided should not include personally identifiable or sensitive information.
-     * @param parameters The parameters to create a certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation createCertificate(String certificateName, CertificateCreateParameters parameters) {
-        return createCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -992,27 +900,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Imports a certificate into a specified key vault.
-     * 
-     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
-     * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
-     * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
-     * accept a key in PKCS#8 format.
-     * 
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
-     * of running the service. The value provided should not include personally identifiable or sensitive information.
-     * @param parameters The parameters to import the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate bundle consists of a certificate (X509) plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle importCertificate(String certificateName, CertificateImportParameters parameters) {
-        return importCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * List the versions of a certificate.
      * 
      * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
@@ -1032,7 +919,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), certificateName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1057,7 +944,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), certificateName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1076,8 +963,33 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -1095,8 +1007,33 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -1118,9 +1055,33 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getCertificateVersions")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1142,23 +1103,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.getCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             certificateName, accept, requestContext);
-    }
-
-    /**
-     * Lists the policy for a certificate.
-     * 
-     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
-     * This operation requires the certificates/get permission.
-     * 
-     * @param certificateName The name of the certificate in a given key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return management policy for a certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatePolicy getCertificatePolicy(String certificateName) {
-        return getCertificatePolicyWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1185,33 +1129,14 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Updates the policy for a certificate.
-     * 
-     * Set specified members in the certificate policy. Leave others as null. This operation requires the
-     * certificates/update permission.
-     * 
-     * @param certificateName The name of the certificate in the given vault.
-     * @param certificatePolicy The policy for the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return management policy for a certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy certificatePolicy) {
-        return updateCertificatePolicyWithResponse(certificateName, certificatePolicy, RequestContext.none())
-            .getValue();
-    }
-
-    /**
      * Updates the specified attributes associated with the given certificate.
      * 
      * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
      * are the certificate's attributes. This operation requires the certificates/update permission.
      * 
      * @param certificateName The name of the certificate in the given key vault.
-     * @param certificateVersion The version of the certificate.
      * @param parameters The parameters for certificate update.
+     * @param certificateVersion The version of the certificate.
      * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1219,33 +1144,12 @@ public final class CertificateClientImpl {
      * @return a certificate bundle consists of a certificate (X509) plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateBundle> updateCertificateWithResponse(String certificateName, String certificateVersion,
-        CertificateUpdateParameters parameters, RequestContext requestContext) {
+    public Response<CertificateBundle> updateCertificateWithResponse(String certificateName,
+        CertificateUpdateParameters parameters, String certificateVersion, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
             certificateVersion, contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Updates the specified attributes associated with the given certificate.
-     * 
-     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
-     * are the certificate's attributes. This operation requires the certificates/update permission.
-     * 
-     * @param certificateName The name of the certificate in the given key vault.
-     * @param certificateVersion The version of the certificate.
-     * @param parameters The parameters for certificate update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate bundle consists of a certificate (X509) plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle updateCertificate(String certificateName, String certificateVersion,
-        CertificateUpdateParameters parameters) {
-        return updateCertificateWithResponse(certificateName, certificateVersion, parameters, RequestContext.none())
-            .getValue();
     }
 
     /**
@@ -1273,26 +1177,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Gets information about a certificate.
-     * 
-     * Gets information about a specific certificate. This operation requires the certificates/get permission.
-     * 
-     * @param certificateName The name of the certificate in the given vault.
-     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
-     * latest version of the certificate is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a certificate.
-     * 
-     * Gets information about a specific certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle getCertificate(String certificateName, String certificateVersion) {
-        return getCertificateWithResponse(certificateName, certificateVersion, RequestContext.none()).getValue();
-    }
-
-    /**
      * Updates a certificate operation.
      * 
      * Updates a certificate creation operation that is already in progress. This operation requires the
@@ -1313,26 +1197,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.updateCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             certificateName, contentType, accept, certificateOperation, requestContext);
-    }
-
-    /**
-     * Updates a certificate operation.
-     * 
-     * Updates a certificate creation operation that is already in progress. This operation requires the
-     * certificates/update permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @param certificateOperation The certificate operation response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation updateCertificateOperation(String certificateName,
-        CertificateOperationUpdateParameter certificateOperation) {
-        return updateCertificateOperationWithResponse(certificateName, certificateOperation, RequestContext.none())
-            .getValue();
     }
 
     /**
@@ -1359,25 +1223,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Gets the creation operation of a certificate.
-     * 
-     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
-     * permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the creation operation of a certificate.
-     * 
-     * Gets the creation operation associated with a specified certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation getCertificateOperation(String certificateName) {
-        return getCertificateOperationWithResponse(certificateName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Deletes the creation operation for a specific certificate.
      * 
      * Deletes the creation operation for a specified certificate that is in the process of being created. The
@@ -1396,23 +1241,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.deleteCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             certificateName, accept, requestContext);
-    }
-
-    /**
-     * Deletes the creation operation for a specific certificate.
-     * 
-     * Deletes the creation operation for a specified certificate that is in the process of being created. The
-     * certificate is no longer created. This operation requires the certificates/update permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate operation is returned in case of asynchronous requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateOperation deleteCertificateOperation(String certificateName) {
-        return deleteCertificateOperationWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1439,24 +1267,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Merges a certificate or a certificate chain with a key pair existing on the server.
-     * 
-     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
-     * currently available in the service. This operation requires the certificates/create permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @param parameters The parameters to merge certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate bundle consists of a certificate (X509) plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle mergeCertificate(String certificateName, CertificateMergeParameters parameters) {
-        return mergeCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Backs up the specified certificate.
      * 
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
@@ -1475,23 +1285,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.backupCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
             accept, requestContext);
-    }
-
-    /**
-     * Backs up the specified certificate.
-     * 
-     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
-     * will be downloaded. This operation requires the certificates/backup permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backup certificate result, containing the backup blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupCertificateResult backupCertificate(String certificateName) {
-        return backupCertificateWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1517,23 +1310,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Restores a backed up certificate to a vault.
-     * 
-     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
-     * certificates/restore permission.
-     * 
-     * @param parameters The parameters to restore the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate bundle consists of a certificate (X509) plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle restoreCertificate(CertificateRestoreParameters parameters) {
-        return restoreCertificateWithResponse(parameters, RequestContext.none()).getValue();
-    }
-
-    /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      * 
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
@@ -1555,7 +1331,7 @@ public final class CertificateClientImpl {
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1581,7 +1357,7 @@ public final class CertificateClientImpl {
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1601,27 +1377,33 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
-    }
-
-    /**
-     * Lists the deleted certificates in the specified vault currently available for recovery.
-     * 
-     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
-     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
-     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     * 
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of certificates that have been deleted in this vault.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificateItem> getDeletedCertificates() {
-        final Integer maxresults = null;
-        final Boolean includePending = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -1644,9 +1426,33 @@ public final class CertificateClientImpl {
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending, requestContext),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "getDeletedCertificates")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return getDeletedCertificatesSinglePage(maxresults, includePending, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1673,25 +1479,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Retrieves information about the specified deleted certificate.
-     * 
-     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
-     * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
-     * the certificates/get permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
-     * when it will be purged.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedCertificateBundle getDeletedCertificate(String certificateName) {
-        return getDeletedCertificateWithResponse(certificateName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Permanently deletes the specified deleted certificate.
      * 
      * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
@@ -1710,23 +1497,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.purgeDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             certificateName, accept, requestContext);
-    }
-
-    /**
-     * Permanently deletes the specified deleted certificate.
-     * 
-     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
-     * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
-     * operation requires the certificate/purge permission.
-     * 
-     * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeDeletedCertificate(String certificateName) {
-        purgeDeletedCertificateWithResponse(certificateName, RequestContext.none());
     }
 
     /**
@@ -1752,24 +1522,6 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Recovers the deleted certificate back to its current version under /certificates.
-     * 
-     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
-     * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
-     * deleted certificate's attributes). This operation requires the certificates/recover permission.
-     * 
-     * @param certificateName The name of the deleted certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate bundle consists of a certificate (X509) plus its attributes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateBundle recoverDeletedCertificate(String certificateName) {
-        return recoverDeletedCertificateWithResponse(certificateName, RequestContext.none()).getValue();
-    }
-
-    /**
      * List certificates in a specified key vault
      * 
      * Get the next page of items.
@@ -1786,7 +1538,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res
             = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1808,7 +1560,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res
             = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1828,7 +1580,7 @@ public final class CertificateClientImpl {
         Response<CertificateIssuerListResult> res
             = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1850,7 +1602,7 @@ public final class CertificateClientImpl {
         Response<CertificateIssuerListResult> res
             = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1870,7 +1622,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res
             = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1892,7 +1644,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> res
             = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1912,7 +1664,7 @@ public final class CertificateClientImpl {
         Response<DeletedCertificateListResult> res
             = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -1934,6 +1686,8 @@ public final class CertificateClientImpl {
         Response<DeletedCertificateListResult> res
             = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateClientImpl.class);
 }

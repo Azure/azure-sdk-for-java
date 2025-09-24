@@ -22,7 +22,7 @@ public class StoreResponseTest {
         headerMap.put("key2", "value2");
 
         ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
-        StoreResponse sp = new StoreResponse(200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
+        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBodyAsJson().get("id").asText()).isEqualTo(content);
@@ -39,7 +39,7 @@ public class StoreResponseTest {
         headerMap.put("KEY3", "value3");
 
         ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
-        StoreResponse sp = new StoreResponse(200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
+        StoreResponse sp = new StoreResponse(null, 200, headerMap, new ByteBufInputStream(buffer, true), buffer.readableBytes());
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBodyAsJson().get("id").asText()).isEqualTo(content);

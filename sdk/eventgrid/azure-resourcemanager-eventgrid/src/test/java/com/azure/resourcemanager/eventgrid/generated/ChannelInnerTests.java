@@ -11,9 +11,12 @@ import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
+import com.azure.resourcemanager.eventgrid.models.ResourceMoveChangeHistory;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +25,7 @@ public final class ChannelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChannelInner model = BinaryData.fromString(
-            "{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"oizh\",\"resourceGroupName\":\"rxybqsoq\",\"name\":\"gkdmb\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"qes\":{\"description\":\"ufpdznrbtcqq\",\"displayName\":\"qglhq\",\"documentationUrl\":\"ufo\",\"dataSchemaUrl\":\"jywif\"}}},\"source\":\"gdf\"},\"messageForActivation\":\"lzl\",\"provisioningState\":\"Canceled\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-02-26T02:19:15Z\"},\"id\":\"mrvktsizntoc\",\"name\":\"pa\",\"type\":\"uajpsquc\"}")
+            "{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"oizh\",\"resourceGroupName\":\"rxybqsoq\",\"name\":\"gkdmb\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"qes\":{\"description\":\"ufpdznrbtcqq\",\"displayName\":\"qglhq\",\"documentationUrl\":\"ufo\",\"dataSchemaUrl\":\"jywif\"}}},\"source\":\"gdf\"},\"partnerDestinationInfo\":{\"endpointType\":\"PartnerDestinationInfo\",\"azureSubscriptionId\":\"zlhjxrifkwmrvkt\",\"resourceGroupName\":\"zntocipaouajps\",\"name\":\"cmpoyfdkfogkny\",\"endpointServiceContext\":\"ofjdde\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"eupewnwreitjz\",\"resourceGroupName\":\"lusarh\",\"changedTimeUtc\":\"2021-11-04T00:37:18Z\"}]},\"messageForActivation\":\"qhsmyurkdtml\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-01-05T18:43:06Z\"},\"id\":\"txukcdmp\",\"name\":\"rcryuanzwuxzdxta\",\"type\":\"rlhm\"}")
             .toObject(ChannelInner.class);
         Assertions.assertEquals(ChannelType.PARTNER_TOPIC, model.channelType());
         Assertions.assertEquals("oizh", model.partnerTopicInfo().azureSubscriptionId());
@@ -38,10 +41,20 @@ public final class ChannelInnerTests {
         Assertions.assertEquals("jywif",
             model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("qes").dataSchemaUrl());
         Assertions.assertEquals("gdf", model.partnerTopicInfo().source());
-        Assertions.assertEquals("lzl", model.messageForActivation());
-        Assertions.assertEquals(ChannelProvisioningState.CANCELED, model.provisioningState());
+        Assertions.assertEquals("zlhjxrifkwmrvkt", model.partnerDestinationInfo().azureSubscriptionId());
+        Assertions.assertEquals("zntocipaouajps", model.partnerDestinationInfo().resourceGroupName());
+        Assertions.assertEquals("cmpoyfdkfogkny", model.partnerDestinationInfo().name());
+        Assertions.assertEquals("ofjdde", model.partnerDestinationInfo().endpointServiceContext());
+        Assertions.assertEquals("eupewnwreitjz",
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).azureSubscriptionId());
+        Assertions.assertEquals("lusarh",
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).resourceGroupName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T00:37:18Z"),
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).changedTimeUtc());
+        Assertions.assertEquals("qhsmyurkdtml", model.messageForActivation());
+        Assertions.assertEquals(ChannelProvisioningState.SUCCEEDED, model.provisioningState());
         Assertions.assertEquals(ReadinessState.ACTIVATED, model.readinessState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T02:19:15Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T18:43:06Z"), model.expirationTimeIfNotActivatedUtc());
     }
 
     @org.junit.jupiter.api.Test
@@ -57,10 +70,18 @@ public final class ChannelInnerTests {
                             .withDocumentationUrl("ufo")
                             .withDataSchemaUrl("jywif"))))
                 .withSource("gdf"))
-            .withMessageForActivation("lzl")
-            .withProvisioningState(ChannelProvisioningState.CANCELED)
+            .withPartnerDestinationInfo(new PartnerDestinationInfo().withAzureSubscriptionId("zlhjxrifkwmrvkt")
+                .withResourceGroupName("zntocipaouajps")
+                .withName("cmpoyfdkfogkny")
+                .withEndpointServiceContext("ofjdde")
+                .withResourceMoveChangeHistory(
+                    Arrays.asList(new ResourceMoveChangeHistory().withAzureSubscriptionId("eupewnwreitjz")
+                        .withResourceGroupName("lusarh")
+                        .withChangedTimeUtc(OffsetDateTime.parse("2021-11-04T00:37:18Z")))))
+            .withMessageForActivation("qhsmyurkdtml")
+            .withProvisioningState(ChannelProvisioningState.SUCCEEDED)
             .withReadinessState(ReadinessState.ACTIVATED)
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-02-26T02:19:15Z"));
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-01-05T18:43:06Z"));
         model = BinaryData.fromObject(model).toObject(ChannelInner.class);
         Assertions.assertEquals(ChannelType.PARTNER_TOPIC, model.channelType());
         Assertions.assertEquals("oizh", model.partnerTopicInfo().azureSubscriptionId());
@@ -76,10 +97,20 @@ public final class ChannelInnerTests {
         Assertions.assertEquals("jywif",
             model.partnerTopicInfo().eventTypeInfo().inlineEventTypes().get("qes").dataSchemaUrl());
         Assertions.assertEquals("gdf", model.partnerTopicInfo().source());
-        Assertions.assertEquals("lzl", model.messageForActivation());
-        Assertions.assertEquals(ChannelProvisioningState.CANCELED, model.provisioningState());
+        Assertions.assertEquals("zlhjxrifkwmrvkt", model.partnerDestinationInfo().azureSubscriptionId());
+        Assertions.assertEquals("zntocipaouajps", model.partnerDestinationInfo().resourceGroupName());
+        Assertions.assertEquals("cmpoyfdkfogkny", model.partnerDestinationInfo().name());
+        Assertions.assertEquals("ofjdde", model.partnerDestinationInfo().endpointServiceContext());
+        Assertions.assertEquals("eupewnwreitjz",
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).azureSubscriptionId());
+        Assertions.assertEquals("lusarh",
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).resourceGroupName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T00:37:18Z"),
+            model.partnerDestinationInfo().resourceMoveChangeHistory().get(0).changedTimeUtc());
+        Assertions.assertEquals("qhsmyurkdtml", model.messageForActivation());
+        Assertions.assertEquals(ChannelProvisioningState.SUCCEEDED, model.provisioningState());
         Assertions.assertEquals(ReadinessState.ACTIVATED, model.readinessState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T02:19:15Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T18:43:06Z"), model.expirationTimeIfNotActivatedUtc());
     }
 
     // Use "Map.of" if available

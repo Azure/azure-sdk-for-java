@@ -46,10 +46,10 @@ public final class RequestRetryOptions {
      * <p>This value should be based on the bandwidth available to the host machine and proximity to the Storage
      * service, a good starting point may be 60 seconds per MB of anticipated payload size.</p>
      * @param retryDelayInMs Optional. Specifies the amount of delay to use before retrying an operation, default value
-     * is {@code 4ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code 30ms}
-     * when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
+     * is {@code 4_000ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code
+     * 30_000ms} when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
      * @param maxRetryDelayInMs Optional. Specifies the maximum delay allowed before retrying an operation, default
-     * value is {@code 120ms}.
+     * value is {@code 120_000ms}.
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      *
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
@@ -224,7 +224,7 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Calculates how long to delay before sending the next request.
+     * Calculates how long in milliseconds to delay before sending the next request.
      *
      * @param tryCount An {@code int} indicating which try we are on.
      * @return A {@code long} value of how many milliseconds to delay.
@@ -258,7 +258,8 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * Creates new {@link RequestRetryOptions} from {@link RetryOptions} and let specify storage specific parameters.
+     * Creates new {@link RequestRetryOptions} from {@link RetryOptions} and let the user specify storage specific
+     * parameters.
      *
      * @param retryOptions The {@link RetryOptions}.
      * @param tryTimeout Optional. Specified the maximum time allowed before a request is cancelled and

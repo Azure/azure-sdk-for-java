@@ -11,6 +11,8 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberUpdate;
+import java.util.Collections;
+import java.util.Map;
 
 public final class FleetMemberImpl implements FleetMember, FleetMember.Definition, FleetMember.Update {
     private FleetMemberInner innerObject;
@@ -47,6 +49,15 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
 
     public FleetMemberProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public Map<String, String> labels() {
+        Map<String, String> inner = this.innerModel().labels();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public FleetMemberStatus status() {
@@ -166,6 +177,16 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
             return this;
         } else {
             this.updateProperties.withGroup(group);
+            return this;
+        }
+    }
+
+    public FleetMemberImpl withLabels(Map<String, String> labels) {
+        if (isInCreateMode()) {
+            this.innerModel().withLabels(labels);
+            return this;
+        } else {
+            this.updateProperties.withLabels(labels);
             return this;
         }
     }

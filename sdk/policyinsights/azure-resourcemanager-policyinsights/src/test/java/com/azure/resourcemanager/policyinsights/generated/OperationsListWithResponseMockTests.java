@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.OperationsListResults;
@@ -21,23 +21,23 @@ public final class OperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"@odata.count\":254983116,\"value\":[{\"name\":\"rxylaypd\",\"isDataAction\":true,\"display\":{\"provider\":\"lf\",\"resource\":\"huriwhjdfr\",\"operation\":\"sshrmnkcclpc\",\"description\":\"ogkscxj\"}}]}";
+            = "{\"@odata.count\":783229015,\"value\":[{\"name\":\"pegqxsorch\",\"isDataAction\":true,\"display\":{\"provider\":\"xz\",\"resource\":\"lbeqvh\",\"operation\":\"b\",\"description\":\"wxs\"}},{\"name\":\"jgg\",\"isDataAction\":false,\"display\":{\"provider\":\"fha\",\"resource\":\"mibuyd\",\"operation\":\"urn\",\"description\":\"updyttqm\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationsListResults response
             = manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("rxylaypd", response.value().get(0).name());
-        Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("lf", response.value().get(0).display().provider());
-        Assertions.assertEquals("huriwhjdfr", response.value().get(0).display().resource());
-        Assertions.assertEquals("sshrmnkcclpc", response.value().get(0).display().operation());
-        Assertions.assertEquals("ogkscxj", response.value().get(0).display().description());
+        Assertions.assertEquals("pegqxsorch", response.value().get(0).name());
+        Assertions.assertTrue(response.value().get(0).isDataAction());
+        Assertions.assertEquals("xz", response.value().get(0).display().provider());
+        Assertions.assertEquals("lbeqvh", response.value().get(0).display().resource());
+        Assertions.assertEquals("b", response.value().get(0).display().operation());
+        Assertions.assertEquals("wxs", response.value().get(0).display().description());
     }
 }

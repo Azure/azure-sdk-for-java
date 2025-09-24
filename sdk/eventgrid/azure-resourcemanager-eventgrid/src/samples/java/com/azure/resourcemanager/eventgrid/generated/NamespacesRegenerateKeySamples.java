@@ -12,8 +12,8 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
 public final class NamespacesRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Namespaces_RegenerateKey.
-     * json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
+     * Namespaces_RegenerateKey.json
      */
     /**
      * Sample code: Namespaces_RegenerateKey.

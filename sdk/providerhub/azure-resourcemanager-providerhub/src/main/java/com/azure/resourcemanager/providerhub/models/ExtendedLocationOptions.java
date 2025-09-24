@@ -17,14 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class ExtendedLocationOptions implements JsonSerializable<ExtendedLocationOptions> {
     /*
-     * The type property.
+     * The type.
      */
-    private String type;
+    private ExtendedLocationType type;
 
     /*
      * The supportedPolicy property.
      */
-    private String supportedPolicy;
+    private ResourceTypeExtendedLocationPolicy supportedPolicy;
 
     /**
      * Creates an instance of ExtendedLocationOptions class.
@@ -33,21 +33,21 @@ public final class ExtendedLocationOptions implements JsonSerializable<ExtendedL
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type.
      * 
      * @return the type value.
      */
-    public String type() {
+    public ExtendedLocationType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The type.
      * 
      * @param type the type value to set.
      * @return the ExtendedLocationOptions object itself.
      */
-    public ExtendedLocationOptions withType(String type) {
+    public ExtendedLocationOptions withType(ExtendedLocationType type) {
         this.type = type;
         return this;
     }
@@ -57,7 +57,7 @@ public final class ExtendedLocationOptions implements JsonSerializable<ExtendedL
      * 
      * @return the supportedPolicy value.
      */
-    public String supportedPolicy() {
+    public ResourceTypeExtendedLocationPolicy supportedPolicy() {
         return this.supportedPolicy;
     }
 
@@ -67,7 +67,7 @@ public final class ExtendedLocationOptions implements JsonSerializable<ExtendedL
      * @param supportedPolicy the supportedPolicy value to set.
      * @return the ExtendedLocationOptions object itself.
      */
-    public ExtendedLocationOptions withSupportedPolicy(String supportedPolicy) {
+    public ExtendedLocationOptions withSupportedPolicy(ResourceTypeExtendedLocationPolicy supportedPolicy) {
         this.supportedPolicy = supportedPolicy;
         return this;
     }
@@ -86,8 +86,9 @@ public final class ExtendedLocationOptions implements JsonSerializable<ExtendedL
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeStringField("supportedPolicy", this.supportedPolicy);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("supportedPolicy",
+            this.supportedPolicy == null ? null : this.supportedPolicy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -107,9 +108,10 @@ public final class ExtendedLocationOptions implements JsonSerializable<ExtendedL
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedExtendedLocationOptions.type = reader.getString();
+                    deserializedExtendedLocationOptions.type = ExtendedLocationType.fromString(reader.getString());
                 } else if ("supportedPolicy".equals(fieldName)) {
-                    deserializedExtendedLocationOptions.supportedPolicy = reader.getString();
+                    deserializedExtendedLocationOptions.supportedPolicy
+                        = ResourceTypeExtendedLocationPolicy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

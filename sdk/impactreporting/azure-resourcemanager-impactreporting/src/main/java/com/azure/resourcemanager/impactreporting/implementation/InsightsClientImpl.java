@@ -119,23 +119,23 @@ public final class InsightsClientImpl implements InsightsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") InsightInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -545,10 +545,9 @@ public final class InsightsClientImpl implements InsightsClient {
         if (insightName == null) {
             return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), workloadImpactName, insightName, accept, context))
+                this.client.getSubscriptionId(), workloadImpactName, insightName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -598,9 +597,8 @@ public final class InsightsClientImpl implements InsightsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), workloadImpactName, insightName, accept, context);
+            this.client.getSubscriptionId(), workloadImpactName, insightName, context);
     }
 
     /**

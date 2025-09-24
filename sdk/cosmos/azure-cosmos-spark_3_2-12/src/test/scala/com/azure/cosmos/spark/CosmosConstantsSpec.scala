@@ -15,6 +15,6 @@ class CosmosConstantsSpec extends UnitSpec {
 
   "UserAgentSuffix" should "combine name and version" in {
     CosmosConstants.userAgentSuffix shouldBe
-      s"SparkConnector/${CosmosConstants.currentName}/${CosmosConstants.currentVersion}"
+      s"SparkConnector|${CosmosConstants.currentName}|${CosmosConstants.currentVersion}"
   }
 }

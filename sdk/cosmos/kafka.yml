@@ -30,8 +30,6 @@ extends:
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean install'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:

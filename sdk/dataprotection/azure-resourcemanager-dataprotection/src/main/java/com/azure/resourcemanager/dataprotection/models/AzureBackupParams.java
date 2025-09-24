@@ -71,7 +71,6 @@ public final class AzureBackupParams extends BackupParameters {
      */
     @Override
     public void validate() {
-        super.validate();
         if (backupType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));

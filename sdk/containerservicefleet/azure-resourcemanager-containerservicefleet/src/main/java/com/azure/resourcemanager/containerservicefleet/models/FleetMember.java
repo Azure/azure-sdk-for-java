@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservicefleet.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of FleetMember.
@@ -74,6 +75,13 @@ public interface FleetMember {
     FleetMemberProvisioningState provisioningState();
 
     /**
+     * Gets the labels property: The labels for the fleet member.
+     * 
+     * @return the labels value.
+     */
+    Map<String, String> labels();
+
+    /**
      * Gets the status property: Status information of the last operation for fleet member.
      * 
      * @return the status value.
@@ -130,7 +138,7 @@ public interface FleetMember {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithClusterResourceId, DefinitionStages.WithGroup,
-            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithLabels, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -178,6 +186,19 @@ public interface FleetMember {
         }
 
         /**
+         * The stage of the FleetMember definition allowing to specify labels.
+         */
+        interface WithLabels {
+            /**
+             * Specifies the labels property: The labels for the fleet member..
+             * 
+             * @param labels The labels for the fleet member.
+             * @return the next definition stage.
+             */
+            WithCreate withLabels(Map<String, String> labels);
+        }
+
+        /**
          * The stage of the FleetMember definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -214,7 +235,7 @@ public interface FleetMember {
     /**
      * The template for FleetMember update.
      */
-    interface Update extends UpdateStages.WithGroup, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithGroup, UpdateStages.WithLabels, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -246,6 +267,19 @@ public interface FleetMember {
              * @return the next definition stage.
              */
             Update withGroup(String group);
+        }
+
+        /**
+         * The stage of the FleetMember update allowing to specify labels.
+         */
+        interface WithLabels {
+            /**
+             * Specifies the labels property: The labels for the fleet member..
+             * 
+             * @param labels The labels for the fleet member.
+             * @return the next definition stage.
+             */
+            Update withLabels(Map<String, String> labels);
         }
 
         /**

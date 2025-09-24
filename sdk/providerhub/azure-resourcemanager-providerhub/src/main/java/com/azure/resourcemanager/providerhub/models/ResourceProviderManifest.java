@@ -12,102 +12,151 @@ import java.util.List;
  */
 public interface ResourceProviderManifest {
     /**
-     * Gets the providerAuthentication property: The providerAuthentication property.
+     * Gets the providerAuthentication property: The provider authentication.
      * 
      * @return the providerAuthentication value.
      */
     ResourceProviderManifestProviderAuthentication providerAuthentication();
 
     /**
-     * Gets the providerAuthorizations property: The providerAuthorizations property.
+     * Gets the providerAuthorizations property: The provider authorizations.
      * 
      * @return the providerAuthorizations value.
      */
     List<ResourceProviderAuthorization> providerAuthorizations();
 
     /**
-     * Gets the namespace property: The namespace property.
+     * Gets the namespace property: The namespace.
      * 
      * @return the namespace value.
      */
     String namespace();
 
     /**
-     * Gets the providerVersion property: The providerVersion property.
+     * Gets the services property: The services.
+     * 
+     * @return the services value.
+     */
+    List<ResourceProviderService> services();
+
+    /**
+     * Gets the serviceName property: The service name.
+     * 
+     * @return the serviceName value.
+     */
+    String serviceName();
+
+    /**
+     * Gets the providerVersion property: The provider version.
      * 
      * @return the providerVersion value.
      */
     String providerVersion();
 
     /**
-     * Gets the providerType property: The providerType property.
+     * Gets the providerType property: The provider type.
      * 
      * @return the providerType value.
      */
     ResourceProviderType providerType();
 
     /**
-     * Gets the requiredFeatures property: The requiredFeatures property.
+     * Gets the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
     List<String> requiredFeatures();
 
     /**
-     * Gets the featuresRule property: The featuresRule property.
+     * Gets the featuresRule property: The features rule.
      * 
      * @return the featuresRule value.
      */
     ResourceProviderManifestFeaturesRule featuresRule();
 
     /**
-     * Gets the requestHeaderOptions property: The requestHeaderOptions property.
+     * Gets the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
      */
     ResourceProviderManifestRequestHeaderOptions requestHeaderOptions();
 
     /**
-     * Gets the resourceTypes property: The resourceTypes property.
+     * Gets the resourceTypes property: The resource types.
      * 
      * @return the resourceTypes value.
      */
     List<ResourceType> resourceTypes();
 
     /**
-     * Gets the management property: The management property.
+     * Gets the management property: The resource provider management.
      * 
      * @return the management value.
      */
     ResourceProviderManifestManagement management();
 
     /**
-     * Gets the capabilities property: The capabilities property.
+     * Gets the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
     List<ResourceProviderCapabilities> capabilities();
 
     /**
-     * Gets the metadata property: Anything.
+     * Gets the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @return the crossTenantTokenValidation value.
+     */
+    CrossTenantTokenValidation crossTenantTokenValidation();
+
+    /**
+     * Gets the metadata property: The metadata.
      * 
      * @return the metadata value.
      */
     Object metadata();
 
     /**
-     * Gets the globalNotificationEndpoints property: The globalNotificationEndpoints property.
+     * Gets the globalNotificationEndpoints property: The global notification endpoints.
      * 
      * @return the globalNotificationEndpoints value.
      */
     List<ResourceProviderEndpoint> globalNotificationEndpoints();
 
     /**
-     * Gets the reRegisterSubscriptionMetadata property: The reRegisterSubscriptionMetadata property.
+     * Gets the reRegisterSubscriptionMetadata property: The re-register subscription metadata.
      * 
      * @return the reRegisterSubscriptionMetadata value.
      */
     ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata();
+
+    /**
+     * Gets the enableTenantLinkedNotification property: Whether tenant linked notification is enabled.
+     * 
+     * @return the enableTenantLinkedNotification value.
+     */
+    Boolean enableTenantLinkedNotification();
+
+    /**
+     * Gets the notifications property: The notifications.
+     * 
+     * @return the notifications value.
+     */
+    List<Notification> notifications();
+
+    /**
+     * Gets the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @return the linkedNotificationRules value.
+     */
+    List<FanoutLinkedNotificationRule> linkedNotificationRules();
+
+    /**
+     * Gets the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @return the resourceProviderAuthorizationRules value.
+     */
+    ResourceProviderAuthorizationRules resourceProviderAuthorizationRules();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManifestInner object.

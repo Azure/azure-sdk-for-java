@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceTypeRegistrationPropertiesFeaturesRule model.
+ * The features rule.
  */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesFeaturesRule extends FeaturesRule {

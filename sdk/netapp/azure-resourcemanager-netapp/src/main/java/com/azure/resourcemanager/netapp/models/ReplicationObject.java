@@ -52,17 +52,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
      */
     private List<DestinationReplication> destinationReplications;
 
-    /*
-     * Property that only applies to external replications. Provides a machine-readable value for the status of the
-     * external replication setup.
-     */
-    private ExternalReplicationSetupStatus externalReplicationSetupStatus;
-
-    /*
-     * Contains human-readable instructions on what the next step is to finish the external replication setup.
-     */
-    private String externalReplicationSetupInfo;
-
     /**
      * Creates an instance of ReplicationObject class.
      */
@@ -182,26 +171,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
-     * Get the externalReplicationSetupStatus property: Property that only applies to external replications. Provides a
-     * machine-readable value for the status of the external replication setup.
-     * 
-     * @return the externalReplicationSetupStatus value.
-     */
-    public ExternalReplicationSetupStatus externalReplicationSetupStatus() {
-        return this.externalReplicationSetupStatus;
-    }
-
-    /**
-     * Get the externalReplicationSetupInfo property: Contains human-readable instructions on what the next step is to
-     * finish the external replication setup.
-     * 
-     * @return the externalReplicationSetupInfo value.
-     */
-    public String externalReplicationSetupInfo() {
-        return this.externalReplicationSetupInfo;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -261,11 +230,6 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                     List<DestinationReplication> destinationReplications
                         = reader.readArray(reader1 -> DestinationReplication.fromJson(reader1));
                     deserializedReplicationObject.destinationReplications = destinationReplications;
-                } else if ("externalReplicationSetupStatus".equals(fieldName)) {
-                    deserializedReplicationObject.externalReplicationSetupStatus
-                        = ExternalReplicationSetupStatus.fromString(reader.getString());
-                } else if ("externalReplicationSetupInfo".equals(fieldName)) {
-                    deserializedReplicationObject.externalReplicationSetupInfo = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

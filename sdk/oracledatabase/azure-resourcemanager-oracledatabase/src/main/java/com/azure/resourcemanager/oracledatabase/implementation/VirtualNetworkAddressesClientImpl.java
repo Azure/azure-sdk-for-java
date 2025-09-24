@@ -116,7 +116,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             @PathParam("virtualnetworkaddressname") String virtualnetworkaddressname,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -124,10 +124,9 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudvmclustername") String cloudvmclustername,
-            @PathParam("virtualnetworkaddressname") String virtualnetworkaddressname,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("virtualnetworkaddressname") String virtualnetworkaddressname, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,8 +134,7 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudvmclustername") String cloudvmclustername,
-            @PathParam("virtualnetworkaddressname") String virtualnetworkaddressname,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("virtualnetworkaddressname") String virtualnetworkaddressname, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses")
@@ -610,11 +608,8 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualnetworkaddressname is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname,
-                accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -655,9 +650,8 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
                 .log(new IllegalArgumentException(
                     "Parameter virtualnetworkaddressname is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname, accept,
+            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname,
             Context.NONE);
     }
 
@@ -699,10 +693,8 @@ public final class VirtualNetworkAddressesClientImpl implements VirtualNetworkAd
                 .log(new IllegalArgumentException(
                     "Parameter virtualnetworkaddressname is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context);
     }
 
     /**

@@ -70,7 +70,6 @@ public final class CustomCopyOption extends CopyOption {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

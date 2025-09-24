@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations.
@@ -20,7 +22,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
     /*
      * Task type.
      */
-    private String taskType = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync";
+    private TaskType taskType = TaskType.MIGRATE_POSTGRE_SQL_AZURE_DB_FOR_POSTGRE_SQL_SYNC_V2;
 
     /*
      * Task input
@@ -31,6 +33,21 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
      * Task output. This is ignored if submitted.
      */
     private List<MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput> output;
+
+    /*
+     * task id
+     */
+    private String taskId;
+
+    /*
+     * DateTime in UTC when the task was created
+     */
+    private String createdOn;
+
+    /*
+     * whether the task can be cloned or not
+     */
+    private Boolean isCloneable;
 
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties class.
@@ -44,7 +61,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -79,6 +96,75 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
     }
 
     /**
+     * Get the taskId property: task id.
+     * 
+     * @return the taskId value.
+     */
+    public String taskId() {
+        return this.taskId;
+    }
+
+    /**
+     * Set the taskId property: task id.
+     * 
+     * @param taskId the taskId value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties withTaskId(String taskId) {
+        this.taskId = taskId;
+        return this;
+    }
+
+    /**
+     * Get the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @return the createdOn value.
+     */
+    public String createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @param createdOn the createdOn value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties withCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /**
+     * Get the isCloneable property: whether the task can be cloned or not.
+     * 
+     * @return the isCloneable value.
+     */
+    public Boolean isCloneable() {
+        return this.isCloneable;
+    }
+
+    /**
+     * Set the isCloneable property: whether the task can be cloned or not.
+     * 
+     * @param isCloneable the isCloneable value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties withIsCloneable(Boolean isCloneable) {
+        this.isCloneable = isCloneable;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -102,8 +188,12 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("createdOn", this.createdOn);
+        jsonWriter.writeBooleanField("isCloneable", this.isCloneable);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,10 +221,15 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties
                         .withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.taskType = reader.getString();
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.taskType
+                        = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.input
                         = MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.fromJson(reader);
@@ -142,6 +237,13 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
                     List<MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput> output = reader
                         .readArray(reader1 -> MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.fromJson(reader1));
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.output = output;
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.taskId = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.createdOn = reader.getString();
+                } else if ("isCloneable".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.isCloneable
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

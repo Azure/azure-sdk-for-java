@@ -11,18 +11,10 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
-    <Class name="io.clientcore.http.stress.HttpPatch" />
-  </Match>
-  <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
       <Class name="io.clientcore.http.stress.HttpGet" />
       <Class name="io.clientcore.http.stress.HttpPatch" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="REC_CATCH_EXCEPTION" />
-    <Class name="io.clientcore.http.stress.HttpGet" />
   </Match>
 </FindBugsFilter>

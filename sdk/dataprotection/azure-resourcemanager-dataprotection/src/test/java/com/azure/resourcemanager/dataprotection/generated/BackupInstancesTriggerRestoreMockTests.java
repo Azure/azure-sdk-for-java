@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
@@ -26,26 +26,27 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesTriggerRestoreMockTests {
     @Test
     public void testTriggerRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"asylwx\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"mfgvxirpghriypo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        OperationJobExtendedInfo response = manager.backupInstances()
-            .triggerRestore("a", "llibphbqzmizak", "kan", new AzureBackupRestoreRequest()
-                .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                    .withRestoreLocation("dnjzh"))
-                .withSourceDataStoreType(SourceDataStoreType.SNAPSHOT_STORE)
-                .withSourceResourceId("ylhjlm")
-                .withResourceGuardOperationRequests(Arrays.asList("xprimrsop"))
-                .withIdentityDetails(
-                    new IdentityDetails().withUseSystemAssignedIdentity(true).withUserAssignedIdentityArmUrl("meisls")),
-                com.azure.core.util.Context.NONE);
+        OperationJobExtendedInfo response
+            = manager.backupInstances()
+                .triggerRestore("evy", "yhsgz", "czbgomfgbeg", new AzureBackupRestoreRequest()
+                    .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
+                        .withRestoreLocation("leohibetnluankr"))
+                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                    .withSourceResourceId("eeebtijvacv")
+                    .withResourceGuardOperationRequests(Arrays.asList("z", "qqxlajr", "wxacevehj", "uyxoaf"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl("tfaeyl")),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("asylwx", response.jobId());
+        Assertions.assertEquals("mfgvxirpghriypo", response.jobId());
     }
 }

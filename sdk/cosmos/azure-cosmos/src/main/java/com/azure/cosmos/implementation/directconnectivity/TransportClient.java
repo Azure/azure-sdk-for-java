@@ -49,7 +49,7 @@ public abstract class TransportClient implements AutoCloseable {
 
     public abstract void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 
-    protected abstract GlobalEndpointManager getGlobalEndpointManager();
+    public abstract GlobalEndpointManager getGlobalEndpointManager();
 
     public abstract ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
 

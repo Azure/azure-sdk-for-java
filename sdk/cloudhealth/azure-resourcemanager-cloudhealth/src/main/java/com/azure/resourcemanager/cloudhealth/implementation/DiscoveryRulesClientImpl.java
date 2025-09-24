@@ -111,7 +111,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") DiscoveryRuleInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,10 +119,9 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("discoveryRuleName") String discoveryRuleName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("discoveryRuleName") String discoveryRuleName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,8 +129,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("discoveryRuleName") String discoveryRuleName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("discoveryRuleName") String discoveryRuleName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules")
@@ -462,9 +460,9 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -522,9 +520,8 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     /**

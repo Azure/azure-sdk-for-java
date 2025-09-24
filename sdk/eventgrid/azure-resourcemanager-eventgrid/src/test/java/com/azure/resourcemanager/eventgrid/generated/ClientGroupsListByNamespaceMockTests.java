@@ -22,7 +22,7 @@ public final class ClientGroupsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"sbzhd\",\"query\":\"b\",\"provisioningState\":\"Failed\"},\"id\":\"b\",\"name\":\"h\",\"type\":\"alehpav\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"tmol\",\"query\":\"ywmpinmzvfkneer\",\"provisioningState\":\"Failed\"},\"id\":\"knsjulugd\",\"name\":\"bnhrxlelfjhkeiz\",\"type\":\"pihtdmiwjekpt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,10 @@ public final class ClientGroupsListByNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ClientGroup> response = manager.clientGroups()
-            .listByNamespace("fwmyymv", "dbpb", "fckdvez", 1420169641, com.azure.core.util.Context.NONE);
+            .listByNamespace("lpbcjtrpz", "yudivbxnhsqeaeo", "qelwgdhuruzytza", 430723655,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sbzhd", response.iterator().next().description());
-        Assertions.assertEquals("b", response.iterator().next().query());
+        Assertions.assertEquals("tmol", response.iterator().next().description());
+        Assertions.assertEquals("ywmpinmzvfkneer", response.iterator().next().query());
     }
 }

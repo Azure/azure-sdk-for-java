@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupsUnderBackupVaultRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/
      * BackupsUnderBackupVault_SingleFileRestore.json
      */
     /**

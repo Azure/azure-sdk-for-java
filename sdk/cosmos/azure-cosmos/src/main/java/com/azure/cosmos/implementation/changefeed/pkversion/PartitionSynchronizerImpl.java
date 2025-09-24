@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
@@ -17,8 +16,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 
@@ -55,15 +57,19 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
+        Map<String, List<String>> leaseTokenMap = new ConcurrentHashMap<>();
+
         return this.enumPartitionKeyRanges()
-            .map(Resource::getId)
+            .map(partitionKeyRange -> {
+                leaseTokenMap.put(partitionKeyRange.getId(), partitionKeyRange.getParents());
+                return partitionKeyRange.getId();
+            })
             .collectList()
             .flatMap( partitionKeyRangeIds -> {
                 logger.info(
                     "Checking whether leases for any partition is missing - partitions - {}",
                     String.join(", ", partitionKeyRangeIds));
-                Set<String> leaseTokens = new HashSet<>(partitionKeyRangeIds);
-                return this.createLeases(leaseTokens).then();
+                return this.createLeases(leaseTokenMap).then();
             })
             .onErrorResume( throwable -> {
                 logger.error("Failed to create missing leases.", throwable);
@@ -143,41 +149,45 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     }
 
     /**
-     * Creates leases if they do not exist. This might happen on initial start or if some lease was unexpectedly lost.
+     * Creates leases if they do not exist for the partition or partition's parent partitions.
+     * This might happen on initial start or if some lease was unexpectedly lost.
      * <p>
      * Leases are created without the continuation token. It means partitions will be read according to
      *   'From Beginning' or 'From current time'.
      * Same applies also to split partitions. We do not search for parent lease and take continuation token since this
      *   might end up of reprocessing all the events since the split.
      *
-     * @param leaseTokens a hash set of all the lease tokens.
+     * @param leaseTokenMap a map of all the lease tokens and their mapping parent lease tokens.
      * @return a deferred computation of this call.
      */
-    private Flux<Lease> createLeases(Set<String> leaseTokens)
+    private Flux<Lease> createLeases(Map<String, List<String>> leaseTokenMap)
     {
-        Set<String> addedLeaseTokens = new HashSet<>(leaseTokens);
-
+        List<String> leaseTokensToBeAdded = new ArrayList<>();
         return this.leaseContainer.getAllLeases()
-            .map(lease -> {
-                if (lease != null) {
-                    logger.debug("Found an existing lease document for partition {}", lease.getLeaseToken());
-                    // Get leases after getting ranges, to make sure that no other hosts checked in continuation for
-                    //   split partition after we got leases.
-                    addedLeaseTokens.remove(lease.getLeaseToken());
-                }
+            .map(lease -> lease.getLeaseToken())
+            .collectList()
+            .flatMapMany(existingLeaseTokens -> {
+                // only create lease documents if there is no existing lease document matching the partition or its parent partitions
+                leaseTokensToBeAdded.addAll(
+                    leaseTokenMap.entrySet().stream()
+                        .filter(entry -> !existingLeaseTokens.contains(entry.getKey()))
+                        .filter(entry -> entry.getValue() == null ||
+                            entry.getValue().isEmpty() ||
+                            entry.getValue().stream().noneMatch(existingLeaseTokens::contains))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList())
+                );
 
-                return lease;
+                logger.info("Missing lease documents for partitions: [{}]", String.join(", ", leaseTokensToBeAdded));
+                return Flux.fromIterable(leaseTokensToBeAdded);
             })
-            .thenMany(Flux.fromIterable(addedLeaseTokens)
-                .flatMap( addedRangeId -> {
-                    logger.debug("Adding a new lease document for partition {}", addedRangeId);
-
-                    return this.leaseManager.createLeaseIfNotExist(addedRangeId, null);
-                }, this.degreeOfParallelism)
-                .map( lease -> {
-                    logger.info("Added new lease document for partition {}", lease.getLeaseToken());
-                    return lease;
-                })
-            );
+            .flatMap(leaseTokenToBeAdded -> {
+                logger.debug("Adding a new lease document for partition {}", leaseTokenToBeAdded);
+                return this.leaseManager.createLeaseIfNotExist(leaseTokenToBeAdded, null);
+            }, this.degreeOfParallelism)
+            .map(lease -> {
+                logger.info("Added new lease document for partition {}", lease.getLeaseToken());
+                return lease;
+            });
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TrafficRegionCategory.
+ * The next traffic region.
  */
 public final class TrafficRegionCategory extends ExpandableStringEnum<TrafficRegionCategory> {
     /**

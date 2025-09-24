@@ -140,21 +140,21 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SiteUpdate properties,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("servicegroupName") String servicegroupName,
-            @PathParam("siteName") String siteName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("siteName") String siteName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("servicegroupName") String servicegroupName, @PathParam("siteName") String siteName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -751,10 +751,9 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         if (siteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                servicegroupName, siteName, accept, context))
+                servicegroupName, siteName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -799,9 +798,8 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
-            accept, context);
+            context);
     }
 
     /**

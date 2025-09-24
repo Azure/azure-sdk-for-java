@@ -147,20 +147,6 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The WorkloadNetworksClient object to access its operations.
-     */
-    private final WorkloadNetworksClient workloadNetworks;
-
-    /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    public WorkloadNetworksClient getWorkloadNetworks() {
-        return this.workloadNetworks;
-    }
-
-    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -175,31 +161,45 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The LocationsClient object to access its operations.
+     * The AddonsClient object to access its operations.
      */
-    private final LocationsClient locations;
+    private final AddonsClient addons;
 
     /**
-     * Gets the LocationsClient object to access its operations.
+     * Gets the AddonsClient object to access its operations.
      * 
-     * @return the LocationsClient object.
+     * @return the AddonsClient object.
      */
-    public LocationsClient getLocations() {
-        return this.locations;
+    public AddonsClient getAddons() {
+        return this.addons;
     }
 
     /**
-     * The PrivateCloudsClient object to access its operations.
+     * The AuthorizationsClient object to access its operations.
      */
-    private final PrivateCloudsClient privateClouds;
+    private final AuthorizationsClient authorizations;
 
     /**
-     * Gets the PrivateCloudsClient object to access its operations.
+     * Gets the AuthorizationsClient object to access its operations.
      * 
-     * @return the PrivateCloudsClient object.
+     * @return the AuthorizationsClient object.
      */
-    public PrivateCloudsClient getPrivateClouds() {
-        return this.privateClouds;
+    public AuthorizationsClient getAuthorizations() {
+        return this.authorizations;
+    }
+
+    /**
+     * The CloudLinksClient object to access its operations.
+     */
+    private final CloudLinksClient cloudLinks;
+
+    /**
+     * Gets the CloudLinksClient object to access its operations.
+     * 
+     * @return the CloudLinksClient object.
+     */
+    public CloudLinksClient getCloudLinks() {
+        return this.cloudLinks;
     }
 
     /**
@@ -231,34 +231,6 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The HcxEnterpriseSitesClient object to access its operations.
-     */
-    private final HcxEnterpriseSitesClient hcxEnterpriseSites;
-
-    /**
-     * Gets the HcxEnterpriseSitesClient object to access its operations.
-     * 
-     * @return the HcxEnterpriseSitesClient object.
-     */
-    public HcxEnterpriseSitesClient getHcxEnterpriseSites() {
-        return this.hcxEnterpriseSites;
-    }
-
-    /**
-     * The AuthorizationsClient object to access its operations.
-     */
-    private final AuthorizationsClient authorizations;
-
-    /**
-     * Gets the AuthorizationsClient object to access its operations.
-     * 
-     * @return the AuthorizationsClient object.
-     */
-    public AuthorizationsClient getAuthorizations() {
-        return this.authorizations;
-    }
-
-    /**
      * The GlobalReachConnectionsClient object to access its operations.
      */
     private final GlobalReachConnectionsClient globalReachConnections;
@@ -273,45 +245,59 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The CloudLinksClient object to access its operations.
+     * The HcxEnterpriseSitesClient object to access its operations.
      */
-    private final CloudLinksClient cloudLinks;
+    private final HcxEnterpriseSitesClient hcxEnterpriseSites;
 
     /**
-     * Gets the CloudLinksClient object to access its operations.
+     * Gets the HcxEnterpriseSitesClient object to access its operations.
      * 
-     * @return the CloudLinksClient object.
+     * @return the HcxEnterpriseSitesClient object.
      */
-    public CloudLinksClient getCloudLinks() {
-        return this.cloudLinks;
+    public HcxEnterpriseSitesClient getHcxEnterpriseSites() {
+        return this.hcxEnterpriseSites;
     }
 
     /**
-     * The AddonsClient object to access its operations.
+     * The HostsClient object to access its operations.
      */
-    private final AddonsClient addons;
+    private final HostsClient hosts;
 
     /**
-     * Gets the AddonsClient object to access its operations.
+     * Gets the HostsClient object to access its operations.
      * 
-     * @return the AddonsClient object.
+     * @return the HostsClient object.
      */
-    public AddonsClient getAddons() {
-        return this.addons;
+    public HostsClient getHosts() {
+        return this.hosts;
     }
 
     /**
-     * The VirtualMachinesClient object to access its operations.
+     * The IscsiPathsClient object to access its operations.
      */
-    private final VirtualMachinesClient virtualMachines;
+    private final IscsiPathsClient iscsiPaths;
 
     /**
-     * Gets the VirtualMachinesClient object to access its operations.
+     * Gets the IscsiPathsClient object to access its operations.
      * 
-     * @return the VirtualMachinesClient object.
+     * @return the IscsiPathsClient object.
      */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
+    public IscsiPathsClient getIscsiPaths() {
+        return this.iscsiPaths;
+    }
+
+    /**
+     * The LocationsClient object to access its operations.
+     */
+    private final LocationsClient locations;
+
+    /**
+     * Gets the LocationsClient object to access its operations.
+     * 
+     * @return the LocationsClient object.
+     */
+    public LocationsClient getLocations() {
+        return this.locations;
     }
 
     /**
@@ -329,17 +315,45 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The ScriptPackagesClient object to access its operations.
+     * The PrivateCloudsClient object to access its operations.
      */
-    private final ScriptPackagesClient scriptPackages;
+    private final PrivateCloudsClient privateClouds;
 
     /**
-     * Gets the ScriptPackagesClient object to access its operations.
+     * Gets the PrivateCloudsClient object to access its operations.
      * 
-     * @return the ScriptPackagesClient object.
+     * @return the PrivateCloudsClient object.
      */
-    public ScriptPackagesClient getScriptPackages() {
-        return this.scriptPackages;
+    public PrivateCloudsClient getPrivateClouds() {
+        return this.privateClouds;
+    }
+
+    /**
+     * The ProvisionedNetworksClient object to access its operations.
+     */
+    private final ProvisionedNetworksClient provisionedNetworks;
+
+    /**
+     * Gets the ProvisionedNetworksClient object to access its operations.
+     * 
+     * @return the ProvisionedNetworksClient object.
+     */
+    public ProvisionedNetworksClient getProvisionedNetworks() {
+        return this.provisionedNetworks;
+    }
+
+    /**
+     * The PureStoragePoliciesClient object to access its operations.
+     */
+    private final PureStoragePoliciesClient pureStoragePolicies;
+
+    /**
+     * Gets the PureStoragePoliciesClient object to access its operations.
+     * 
+     * @return the PureStoragePoliciesClient object.
+     */
+    public PureStoragePoliciesClient getPureStoragePolicies() {
+        return this.pureStoragePolicies;
     }
 
     /**
@@ -371,45 +385,17 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The IscsiPathsClient object to access its operations.
+     * The ScriptPackagesClient object to access its operations.
      */
-    private final IscsiPathsClient iscsiPaths;
+    private final ScriptPackagesClient scriptPackages;
 
     /**
-     * Gets the IscsiPathsClient object to access its operations.
+     * Gets the ScriptPackagesClient object to access its operations.
      * 
-     * @return the IscsiPathsClient object.
+     * @return the ScriptPackagesClient object.
      */
-    public IscsiPathsClient getIscsiPaths() {
-        return this.iscsiPaths;
-    }
-
-    /**
-     * The HostsClient object to access its operations.
-     */
-    private final HostsClient hosts;
-
-    /**
-     * Gets the HostsClient object to access its operations.
-     * 
-     * @return the HostsClient object.
-     */
-    public HostsClient getHosts() {
-        return this.hosts;
-    }
-
-    /**
-     * The ProvisionedNetworksClient object to access its operations.
-     */
-    private final ProvisionedNetworksClient provisionedNetworks;
-
-    /**
-     * Gets the ProvisionedNetworksClient object to access its operations.
-     * 
-     * @return the ProvisionedNetworksClient object.
-     */
-    public ProvisionedNetworksClient getProvisionedNetworks() {
-        return this.provisionedNetworks;
+    public ScriptPackagesClient getScriptPackages() {
+        return this.scriptPackages;
     }
 
     /**
@@ -427,17 +413,31 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The PureStoragePoliciesClient object to access its operations.
+     * The VirtualMachinesClient object to access its operations.
      */
-    private final PureStoragePoliciesClient pureStoragePolicies;
+    private final VirtualMachinesClient virtualMachines;
 
     /**
-     * Gets the PureStoragePoliciesClient object to access its operations.
+     * Gets the VirtualMachinesClient object to access its operations.
      * 
-     * @return the PureStoragePoliciesClient object.
+     * @return the VirtualMachinesClient object.
      */
-    public PureStoragePoliciesClient getPureStoragePolicies() {
-        return this.pureStoragePolicies;
+    public VirtualMachinesClient getVirtualMachines() {
+        return this.virtualMachines;
+    }
+
+    /**
+     * The WorkloadNetworksClient object to access its operations.
+     */
+    private final WorkloadNetworksClient workloadNetworks;
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    public WorkloadNetworksClient getWorkloadNetworks() {
+        return this.workloadNetworks;
     }
 
     /**
@@ -458,27 +458,27 @@ public final class AvsClientImpl implements AvsClient {
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
         this.apiVersion = "2024-09-01";
-        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.locations = new LocationsClientImpl(this);
-        this.privateClouds = new PrivateCloudsClientImpl(this);
+        this.addons = new AddonsClientImpl(this);
+        this.authorizations = new AuthorizationsClientImpl(this);
+        this.cloudLinks = new CloudLinksClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.datastores = new DatastoresClientImpl(this);
-        this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
-        this.authorizations = new AuthorizationsClientImpl(this);
         this.globalReachConnections = new GlobalReachConnectionsClientImpl(this);
-        this.cloudLinks = new CloudLinksClientImpl(this);
-        this.addons = new AddonsClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
+        this.hosts = new HostsClientImpl(this);
+        this.iscsiPaths = new IscsiPathsClientImpl(this);
+        this.locations = new LocationsClientImpl(this);
         this.placementPolicies = new PlacementPoliciesClientImpl(this);
-        this.scriptPackages = new ScriptPackagesClientImpl(this);
+        this.privateClouds = new PrivateCloudsClientImpl(this);
+        this.provisionedNetworks = new ProvisionedNetworksClientImpl(this);
+        this.pureStoragePolicies = new PureStoragePoliciesClientImpl(this);
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
         this.scriptExecutions = new ScriptExecutionsClientImpl(this);
-        this.iscsiPaths = new IscsiPathsClientImpl(this);
-        this.hosts = new HostsClientImpl(this);
-        this.provisionedNetworks = new ProvisionedNetworksClientImpl(this);
+        this.scriptPackages = new ScriptPackagesClientImpl(this);
         this.skus = new SkusClientImpl(this);
-        this.pureStoragePolicies = new PureStoragePoliciesClientImpl(this);
+        this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
     }
 
     /**

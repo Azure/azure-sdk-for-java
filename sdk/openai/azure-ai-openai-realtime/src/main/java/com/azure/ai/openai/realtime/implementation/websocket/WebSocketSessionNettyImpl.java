@@ -5,6 +5,7 @@ package com.azure.ai.openai.realtime.implementation.websocket;
 
 import com.azure.ai.openai.realtime.models.ConnectFailedException;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -43,7 +44,7 @@ import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
 
-    private static final int MAX_FRAME_SIZE = 65536;
+    private static final int MAX_FRAME_SIZE = Configuration.getGlobalConfiguration().get("AZURE_MAX_FRAME_SIZE", 65536);
 
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionNettyImpl.class);
     private final MessageEncoder messageEncoder;

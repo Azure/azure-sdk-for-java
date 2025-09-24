@@ -16,42 +16,41 @@ public final class AttestationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttestationInner model = BinaryData.fromString(
-            "{\"properties\":{\"policyAssignmentId\":\"ja\",\"policyDefinitionReferenceId\":\"rnnqb\",\"complianceState\":\"Compliant\",\"expiresOn\":\"2021-08-20T17:43:41Z\",\"owner\":\"xqltgrd\",\"comments\":\"ypxrx\",\"evidence\":[{\"description\":\"hwuhvctaf\",\"sourceUri\":\"bxrblmliowxihspn\"},{\"description\":\"qagnepzwakl\",\"sourceUri\":\"sbq\"}],\"provisioningState\":\"agwwrxaom\",\"lastComplianceStateChangeAt\":\"2021-09-07T06:13:10Z\",\"assessmentDate\":\"2021-02-08T21:13:20Z\",\"metadata\":\"datarczezkhhlt\"},\"id\":\"adhqoa\",\"name\":\"jqoyueayfbpcm\",\"type\":\"plby\"}")
+            "{\"properties\":{\"policyAssignmentId\":\"iyfjjkbajbuscg\",\"policyDefinitionReferenceId\":\"u\",\"complianceState\":\"Compliant\",\"expiresOn\":\"2021-07-25T21:28:26Z\",\"owner\":\"lev\",\"comments\":\"clujyx\",\"evidence\":[{\"description\":\"zgsjgkzzlta\",\"sourceUri\":\"bzf\"},{\"description\":\"vwmbjlzqsczpg\",\"sourceUri\":\"wnapfdq\"},{\"description\":\"wf\",\"sourceUri\":\"tnuwjtkschgc\"}],\"provisioningState\":\"y\",\"lastComplianceStateChangeAt\":\"2021-09-07T14:18:39Z\",\"assessmentDate\":\"2021-04-28T02:09:32Z\",\"metadata\":\"dataq\"},\"id\":\"vyeldot\",\"name\":\"v\",\"type\":\"kwiswskukjtas\"}")
             .toObject(AttestationInner.class);
-        Assertions.assertEquals("ja", model.policyAssignmentId());
-        Assertions.assertEquals("rnnqb", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("iyfjjkbajbuscg", model.policyAssignmentId());
+        Assertions.assertEquals("u", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ComplianceState.COMPLIANT, model.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T17:43:41Z"), model.expiresOn());
-        Assertions.assertEquals("xqltgrd", model.owner());
-        Assertions.assertEquals("ypxrx", model.comments());
-        Assertions.assertEquals("hwuhvctaf", model.evidence().get(0).description());
-        Assertions.assertEquals("bxrblmliowxihspn", model.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T21:13:20Z"), model.assessmentDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T21:28:26Z"), model.expiresOn());
+        Assertions.assertEquals("lev", model.owner());
+        Assertions.assertEquals("clujyx", model.comments());
+        Assertions.assertEquals("zgsjgkzzlta", model.evidence().get(0).description());
+        Assertions.assertEquals("bzf", model.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T02:09:32Z"), model.assessmentDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationInner model
-            = new AttestationInner().withPolicyAssignmentId("ja")
-                .withPolicyDefinitionReferenceId("rnnqb")
-                .withComplianceState(ComplianceState.COMPLIANT)
-                .withExpiresOn(OffsetDateTime.parse("2021-08-20T17:43:41Z"))
-                .withOwner("xqltgrd")
-                .withComments("ypxrx")
-                .withEvidence(Arrays.asList(
-                    new AttestationEvidence().withDescription("hwuhvctaf").withSourceUri("bxrblmliowxihspn"),
-                    new AttestationEvidence().withDescription("qagnepzwakl").withSourceUri("sbq")))
-                .withAssessmentDate(OffsetDateTime.parse("2021-02-08T21:13:20Z"))
-                .withMetadata("datarczezkhhlt");
+        AttestationInner model = new AttestationInner().withPolicyAssignmentId("iyfjjkbajbuscg")
+            .withPolicyDefinitionReferenceId("u")
+            .withComplianceState(ComplianceState.COMPLIANT)
+            .withExpiresOn(OffsetDateTime.parse("2021-07-25T21:28:26Z"))
+            .withOwner("lev")
+            .withComments("clujyx")
+            .withEvidence(Arrays.asList(new AttestationEvidence().withDescription("zgsjgkzzlta").withSourceUri("bzf"),
+                new AttestationEvidence().withDescription("vwmbjlzqsczpg").withSourceUri("wnapfdq"),
+                new AttestationEvidence().withDescription("wf").withSourceUri("tnuwjtkschgc")))
+            .withAssessmentDate(OffsetDateTime.parse("2021-04-28T02:09:32Z"))
+            .withMetadata("dataq");
         model = BinaryData.fromObject(model).toObject(AttestationInner.class);
-        Assertions.assertEquals("ja", model.policyAssignmentId());
-        Assertions.assertEquals("rnnqb", model.policyDefinitionReferenceId());
+        Assertions.assertEquals("iyfjjkbajbuscg", model.policyAssignmentId());
+        Assertions.assertEquals("u", model.policyDefinitionReferenceId());
         Assertions.assertEquals(ComplianceState.COMPLIANT, model.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T17:43:41Z"), model.expiresOn());
-        Assertions.assertEquals("xqltgrd", model.owner());
-        Assertions.assertEquals("ypxrx", model.comments());
-        Assertions.assertEquals("hwuhvctaf", model.evidence().get(0).description());
-        Assertions.assertEquals("bxrblmliowxihspn", model.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T21:13:20Z"), model.assessmentDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T21:28:26Z"), model.expiresOn());
+        Assertions.assertEquals("lev", model.owner());
+        Assertions.assertEquals("clujyx", model.comments());
+        Assertions.assertEquals("zgsjgkzzlta", model.evidence().get(0).description());
+        Assertions.assertEquals("bzf", model.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T02:09:32Z"), model.assessmentDate());
     }
 }

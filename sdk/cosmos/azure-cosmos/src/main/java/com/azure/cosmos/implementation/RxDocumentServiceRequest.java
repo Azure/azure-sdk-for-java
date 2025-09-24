@@ -85,6 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    public volatile boolean isBarrierRequest = false;
     private volatile Duration responseTimeout;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
@@ -954,6 +955,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isAllVersionsAndDeletesChangeFeedMode() {
+        String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
+        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
+    }
+
     public boolean isWritingToMaster() {
         return operationType.isWriteOperation() && resourceType.isMasterResource();
     }
@@ -1084,8 +1090,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
         } else if (options instanceof CosmosQueryRequestOptions) {
-            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions(
-                (CosmosQueryRequestOptions) options);
+            return ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getProperties((CosmosQueryRequestOptions) options);
         } else if (options instanceof CosmosChangeFeedRequestOptions) {
             return ModelBridgeInternal.getPropertiesFromChangeFeedRequestOptions(
                 (CosmosChangeFeedRequestOptions) options);
@@ -1168,6 +1176,12 @@ public class RxDocumentServiceRequest implements Cloneable {
     public void setPriorityLevel(PriorityLevel priorityLevel) {
         if (priorityLevel != null) {
             this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
+        }
+    }
+
+    public void setThroughputBucket(Integer throughputBucket) {
+        if (throughputBucket != null) {
+            this.headers.put(HttpConstants.HttpHeaders.THROUGHPUT_BUCKET, throughputBucket.toString());
         }
     }
 

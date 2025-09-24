@@ -146,25 +146,23 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") UpdateSapVirtualInstanceRequest properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances")
@@ -982,10 +980,9 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
             return Mono.error(
                 new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1020,9 +1017,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, Context.NONE);
     }
 
     /**
@@ -1058,9 +1054,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, context);
     }
 
     /**
@@ -2461,8 +2456,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2489,7 +2484,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -2517,7 +2512,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
@@ -2544,8 +2539,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2572,7 +2567,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -2600,7 +2595,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {

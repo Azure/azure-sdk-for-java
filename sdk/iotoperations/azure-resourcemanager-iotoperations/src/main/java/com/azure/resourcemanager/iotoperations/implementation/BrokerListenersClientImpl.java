@@ -112,7 +112,7 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BrokerListenerResourceInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -120,9 +120,9 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("brokerName") String brokerName, @PathParam("listenerName") String listenerName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,7 +130,7 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("brokerName") String brokerName, @PathParam("listenerName") String listenerName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners")
@@ -625,11 +625,9 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
         if (listenerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -674,10 +672,8 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, Context.NONE);
     }
 
     /**
@@ -722,10 +718,8 @@ public final class BrokerListenersClientImpl implements BrokerListenersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter listenerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, listenerName, context);
     }
 
     /**

@@ -34,16 +34,28 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
     private final List<KnowledgeAgentModel> models;
 
     /*
-     * The targetIndexes property.
+     * The knowledgeSources property.
      */
     @Generated
-    private final List<KnowledgeAgentTargetIndex> targetIndexes;
+    private final List<KnowledgeSourceReference> knowledgeSources;
+
+    /*
+     * The outputConfiguration property.
+     */
+    @Generated
+    private KnowledgeAgentOutputConfiguration outputConfiguration;
 
     /*
      * Guardrails to limit how much resources are utilized for a single agent retrieval request.
      */
     @Generated
     private KnowledgeAgentRequestLimits requestLimits;
+
+    /*
+     * Instructions considered by the knowledge agent when developing query plan.
+     */
+    @Generated
+    private String retrievalInstructions;
 
     /*
      * The ETag of the agent.
@@ -74,14 +86,14 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @param name the name value to set.
      * @param models the models value to set.
-     * @param targetIndexes the targetIndexes value to set.
+     * @param knowledgeSources the knowledgeSources value to set.
      */
     @Generated
     public KnowledgeAgent(String name, List<KnowledgeAgentModel> models,
-        List<KnowledgeAgentTargetIndex> targetIndexes) {
+        List<KnowledgeSourceReference> knowledgeSources) {
         this.name = name;
         this.models = models;
-        this.targetIndexes = targetIndexes;
+        this.knowledgeSources = knowledgeSources;
     }
 
     /**
@@ -105,13 +117,35 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
     }
 
     /**
-     * Get the targetIndexes property: The targetIndexes property.
+     * Get the knowledgeSources property: The knowledgeSources property.
      * 
-     * @return the targetIndexes value.
+     * @return the knowledgeSources value.
      */
     @Generated
-    public List<KnowledgeAgentTargetIndex> getTargetIndexes() {
-        return this.targetIndexes;
+    public List<KnowledgeSourceReference> getKnowledgeSources() {
+        return this.knowledgeSources;
+    }
+
+    /**
+     * Get the outputConfiguration property: The outputConfiguration property.
+     * 
+     * @return the outputConfiguration value.
+     */
+    @Generated
+    public KnowledgeAgentOutputConfiguration getOutputConfiguration() {
+        return this.outputConfiguration;
+    }
+
+    /**
+     * Set the outputConfiguration property: The outputConfiguration property.
+     * 
+     * @param outputConfiguration the outputConfiguration value to set.
+     * @return the KnowledgeAgent object itself.
+     */
+    @Generated
+    public KnowledgeAgent setOutputConfiguration(KnowledgeAgentOutputConfiguration outputConfiguration) {
+        this.outputConfiguration = outputConfiguration;
+        return this;
     }
 
     /**
@@ -135,6 +169,30 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
     @Generated
     public KnowledgeAgent setRequestLimits(KnowledgeAgentRequestLimits requestLimits) {
         this.requestLimits = requestLimits;
+        return this;
+    }
+
+    /**
+     * Get the retrievalInstructions property: Instructions considered by the knowledge agent when developing query
+     * plan.
+     * 
+     * @return the retrievalInstructions value.
+     */
+    @Generated
+    public String getRetrievalInstructions() {
+        return this.retrievalInstructions;
+    }
+
+    /**
+     * Set the retrievalInstructions property: Instructions considered by the knowledge agent when developing query
+     * plan.
+     * 
+     * @param retrievalInstructions the retrievalInstructions value to set.
+     * @return the KnowledgeAgent object itself.
+     */
+    @Generated
+    public KnowledgeAgent setRetrievalInstructions(String retrievalInstructions) {
+        this.retrievalInstructions = retrievalInstructions;
         return this;
     }
 
@@ -225,8 +283,11 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("models", this.models, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("targetIndexes", this.targetIndexes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("knowledgeSources", this.knowledgeSources,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("outputConfiguration", this.outputConfiguration);
         jsonWriter.writeJsonField("requestLimits", this.requestLimits);
+        jsonWriter.writeStringField("retrievalInstructions", this.retrievalInstructions);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeStringField("description", this.description);
@@ -249,9 +310,11 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
             String name = null;
             boolean modelsFound = false;
             List<KnowledgeAgentModel> models = null;
-            boolean targetIndexesFound = false;
-            List<KnowledgeAgentTargetIndex> targetIndexes = null;
+            boolean knowledgeSourcesFound = false;
+            List<KnowledgeSourceReference> knowledgeSources = null;
+            KnowledgeAgentOutputConfiguration outputConfiguration = null;
             KnowledgeAgentRequestLimits requestLimits = null;
+            String retrievalInstructions = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             String description = null;
@@ -265,11 +328,15 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
                 } else if ("models".equals(fieldName)) {
                     models = reader.readArray(reader1 -> KnowledgeAgentModel.fromJson(reader1));
                     modelsFound = true;
-                } else if ("targetIndexes".equals(fieldName)) {
-                    targetIndexes = reader.readArray(reader1 -> KnowledgeAgentTargetIndex.fromJson(reader1));
-                    targetIndexesFound = true;
+                } else if ("knowledgeSources".equals(fieldName)) {
+                    knowledgeSources = reader.readArray(reader1 -> KnowledgeSourceReference.fromJson(reader1));
+                    knowledgeSourcesFound = true;
+                } else if ("outputConfiguration".equals(fieldName)) {
+                    outputConfiguration = KnowledgeAgentOutputConfiguration.fromJson(reader);
                 } else if ("requestLimits".equals(fieldName)) {
                     requestLimits = KnowledgeAgentRequestLimits.fromJson(reader);
+                } else if ("retrievalInstructions".equals(fieldName)) {
+                    retrievalInstructions = reader.getString();
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -280,9 +347,11 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
                     reader.skipChildren();
                 }
             }
-            if (nameFound && modelsFound && targetIndexesFound) {
-                KnowledgeAgent deserializedKnowledgeAgent = new KnowledgeAgent(name, models, targetIndexes);
+            if (nameFound && modelsFound && knowledgeSourcesFound) {
+                KnowledgeAgent deserializedKnowledgeAgent = new KnowledgeAgent(name, models, knowledgeSources);
+                deserializedKnowledgeAgent.outputConfiguration = outputConfiguration;
                 deserializedKnowledgeAgent.requestLimits = requestLimits;
+                deserializedKnowledgeAgent.retrievalInstructions = retrievalInstructions;
                 deserializedKnowledgeAgent.eTag = eTag;
                 deserializedKnowledgeAgent.encryptionKey = encryptionKey;
                 deserializedKnowledgeAgent.description = description;
@@ -296,8 +365,8 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
             if (!modelsFound) {
                 missingProperties.add("models");
             }
-            if (!targetIndexesFound) {
-                missingProperties.add("targetIndexes");
+            if (!knowledgeSourcesFound) {
+                missingProperties.add("knowledgeSources");
             }
 
             throw new IllegalStateException(

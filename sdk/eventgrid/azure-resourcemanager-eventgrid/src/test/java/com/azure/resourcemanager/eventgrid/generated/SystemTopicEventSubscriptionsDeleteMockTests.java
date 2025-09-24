@@ -28,7 +28,7 @@ public final class SystemTopicEventSubscriptionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.systemTopicEventSubscriptions()
-            .delete("jfncjwvuagfqw", "ltngvmreupt", "klzmijajw", com.azure.core.util.Context.NONE);
+            .delete("jmztnlmso", "dtmvecdhdyswcrp", "veajczxvlgsrg", com.azure.core.util.Context.NONE);
 
     }
 }

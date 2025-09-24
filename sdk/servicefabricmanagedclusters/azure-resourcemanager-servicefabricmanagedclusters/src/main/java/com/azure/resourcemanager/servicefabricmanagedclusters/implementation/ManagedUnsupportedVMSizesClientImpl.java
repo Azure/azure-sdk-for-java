@@ -363,8 +363,8 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedVMSizeInner>> listNextSinglePageAsync(String nextLink) {
@@ -389,8 +389,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link PagedResponse}.
+     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedVMSizeInner> listNextSinglePage(String nextLink) {
@@ -418,8 +417,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link PagedResponse}.
+     * @return the lists of unsupported vm sizes for Service Fabric Managed Clusters along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedVMSizeInner> listNextSinglePage(String nextLink, Context context) {

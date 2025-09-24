@@ -13,33 +13,33 @@ public final class DatabaseFileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseFileInfo model = BinaryData.fromString(
-            "{\"databaseName\":\"ldawkzbaliourqha\",\"id\":\"uhashsfwx\",\"logicalName\":\"owzxcu\",\"physicalFullName\":\"cjooxdjebwpucwwf\",\"restoreFullName\":\"vbvmeu\",\"fileType\":\"Fulltext\",\"sizeMB\":18.24537793289579}")
+            "{\"databaseName\":\"mmrqz\",\"id\":\"rjvpglydzgkrvqee\",\"logicalName\":\"oepry\",\"physicalFullName\":\"nwy\",\"restoreFullName\":\"zdmovzv\",\"fileType\":\"Log\",\"sizeMB\":22.16915385779131}")
             .toObject(DatabaseFileInfo.class);
-        Assertions.assertEquals("ldawkzbaliourqha", model.databaseName());
-        Assertions.assertEquals("uhashsfwx", model.id());
-        Assertions.assertEquals("owzxcu", model.logicalName());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.physicalFullName());
-        Assertions.assertEquals("vbvmeu", model.restoreFullName());
-        Assertions.assertEquals(DatabaseFileType.FULLTEXT, model.fileType());
-        Assertions.assertEquals(18.24537793289579D, model.sizeMB());
+        Assertions.assertEquals("mmrqz", model.databaseName());
+        Assertions.assertEquals("rjvpglydzgkrvqee", model.id());
+        Assertions.assertEquals("oepry", model.logicalName());
+        Assertions.assertEquals("nwy", model.physicalFullName());
+        Assertions.assertEquals("zdmovzv", model.restoreFullName());
+        Assertions.assertEquals(DatabaseFileType.LOG, model.fileType());
+        Assertions.assertEquals(22.16915385779131D, model.sizeMB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseFileInfo model = new DatabaseFileInfo().withDatabaseName("ldawkzbaliourqha")
-            .withId("uhashsfwx")
-            .withLogicalName("owzxcu")
-            .withPhysicalFullName("cjooxdjebwpucwwf")
-            .withRestoreFullName("vbvmeu")
-            .withFileType(DatabaseFileType.FULLTEXT)
-            .withSizeMB(18.24537793289579D);
+        DatabaseFileInfo model = new DatabaseFileInfo().withDatabaseName("mmrqz")
+            .withId("rjvpglydzgkrvqee")
+            .withLogicalName("oepry")
+            .withPhysicalFullName("nwy")
+            .withRestoreFullName("zdmovzv")
+            .withFileType(DatabaseFileType.LOG)
+            .withSizeMB(22.16915385779131D);
         model = BinaryData.fromObject(model).toObject(DatabaseFileInfo.class);
-        Assertions.assertEquals("ldawkzbaliourqha", model.databaseName());
-        Assertions.assertEquals("uhashsfwx", model.id());
-        Assertions.assertEquals("owzxcu", model.logicalName());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.physicalFullName());
-        Assertions.assertEquals("vbvmeu", model.restoreFullName());
-        Assertions.assertEquals(DatabaseFileType.FULLTEXT, model.fileType());
-        Assertions.assertEquals(18.24537793289579D, model.sizeMB());
+        Assertions.assertEquals("mmrqz", model.databaseName());
+        Assertions.assertEquals("rjvpglydzgkrvqee", model.id());
+        Assertions.assertEquals("oepry", model.logicalName());
+        Assertions.assertEquals("nwy", model.physicalFullName());
+        Assertions.assertEquals("zdmovzv", model.restoreFullName());
+        Assertions.assertEquals(DatabaseFileType.LOG, model.fileType());
+        Assertions.assertEquals(22.16915385779131D, model.sizeMB());
     }
 }

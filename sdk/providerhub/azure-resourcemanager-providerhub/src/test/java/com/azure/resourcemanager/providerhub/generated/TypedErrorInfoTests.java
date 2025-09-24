@@ -12,14 +12,14 @@ public final class TypedErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TypedErrorInfo model
-            = BinaryData.fromString("{\"type\":\"qbex\",\"info\":\"datacqibycnojv\"}").toObject(TypedErrorInfo.class);
-        Assertions.assertEquals("qbex", model.type());
+            = BinaryData.fromString("{\"type\":\"xcug\",\"info\":\"datajooxdjebw\"}").toObject(TypedErrorInfo.class);
+        Assertions.assertEquals("xcug", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TypedErrorInfo model = new TypedErrorInfo().withType("qbex");
+        TypedErrorInfo model = new TypedErrorInfo().withType("xcug");
         model = BinaryData.fromObject(model).toObject(TypedErrorInfo.class);
-        Assertions.assertEquals("qbex", model.type());
+        Assertions.assertEquals("xcug", model.type());
     }
 }

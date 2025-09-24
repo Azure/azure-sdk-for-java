@@ -13,25 +13,26 @@ public final class DataMigrationServiceStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataMigrationServiceStatusResponseInner model = BinaryData.fromString(
-            "{\"agentVersion\":\"wzo\",\"status\":\"j\",\"vmSize\":\"elluwfziton\",\"supportedTaskTypes\":[\"fpjkjlxofp\",\"vhpfxxypininmay\"]}")
+            "{\"agentVersion\":\"djpvkvpbjxbkz\",\"agentConfiguration\":\"datakd\",\"status\":\"cjabudurgkakmo\",\"vmSize\":\"hjjklff\",\"supportedTaskTypes\":[\"uwqlgzrfzeey\"]}")
             .toObject(DataMigrationServiceStatusResponseInner.class);
-        Assertions.assertEquals("wzo", model.agentVersion());
-        Assertions.assertEquals("j", model.status());
-        Assertions.assertEquals("elluwfziton", model.vmSize());
-        Assertions.assertEquals("fpjkjlxofp", model.supportedTaskTypes().get(0));
+        Assertions.assertEquals("djpvkvpbjxbkz", model.agentVersion());
+        Assertions.assertEquals("cjabudurgkakmo", model.status());
+        Assertions.assertEquals("hjjklff", model.vmSize());
+        Assertions.assertEquals("uwqlgzrfzeey", model.supportedTaskTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataMigrationServiceStatusResponseInner model
-            = new DataMigrationServiceStatusResponseInner().withAgentVersion("wzo")
-                .withStatus("j")
-                .withVmSize("elluwfziton")
-                .withSupportedTaskTypes(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay"));
+            = new DataMigrationServiceStatusResponseInner().withAgentVersion("djpvkvpbjxbkz")
+                .withAgentConfiguration("datakd")
+                .withStatus("cjabudurgkakmo")
+                .withVmSize("hjjklff")
+                .withSupportedTaskTypes(Arrays.asList("uwqlgzrfzeey"));
         model = BinaryData.fromObject(model).toObject(DataMigrationServiceStatusResponseInner.class);
-        Assertions.assertEquals("wzo", model.agentVersion());
-        Assertions.assertEquals("j", model.status());
-        Assertions.assertEquals("elluwfziton", model.vmSize());
-        Assertions.assertEquals("fpjkjlxofp", model.supportedTaskTypes().get(0));
+        Assertions.assertEquals("djpvkvpbjxbkz", model.agentVersion());
+        Assertions.assertEquals("cjabudurgkakmo", model.status());
+        Assertions.assertEquals("hjjklff", model.vmSize());
+        Assertions.assertEquals("uwqlgzrfzeey", model.supportedTaskTypes().get(0));
     }
 }

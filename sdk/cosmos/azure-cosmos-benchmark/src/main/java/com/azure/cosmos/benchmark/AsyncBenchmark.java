@@ -170,7 +170,11 @@ abstract class AsyncBenchmark<T> {
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
             logger.info("USING AZURE METRIC REGISTRY");
-            telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
+            CosmosMicrometerMetricsOptions metricOptions = new CosmosMicrometerMetricsOptions()
+                .meterRegistry(registry)
+                .applyDiagnosticThresholdsForTransportLevelMeters(true)
+                .setEnabled(true);
+            telemetryConfig.metricsOptions(metricOptions);
         } else {
             registry = configuration.getGraphiteMeterRegistry();
 

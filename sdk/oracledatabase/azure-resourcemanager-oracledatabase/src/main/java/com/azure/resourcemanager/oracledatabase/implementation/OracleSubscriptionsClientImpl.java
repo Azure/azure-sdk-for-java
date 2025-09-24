@@ -143,21 +143,21 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") OracleSubscriptionUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listCloudAccountDetails")
@@ -207,21 +207,23 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/addAzureSubscriptions")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> addAzureSubscriptions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") AzureSubscriptions body, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") AzureSubscriptions body,
+            Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/addAzureSubscriptions")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> addAzureSubscriptionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") AzureSubscriptions body, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") AzureSubscriptions body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -844,10 +846,9 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -870,9 +871,8 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
                 .log(new IllegalArgumentException(
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+            this.client.getSubscriptionId(), Context.NONE);
     }
 
     /**
@@ -896,9 +896,8 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
                 .log(new IllegalArgumentException(
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
+            this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -1480,10 +1479,9 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.addAzureSubscriptions(this.client.getEndpoint(),
-                this.client.getApiVersion(), this.client.getSubscriptionId(), contentType, accept, body, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), contentType, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1514,9 +1512,8 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.addAzureSubscriptionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+            this.client.getSubscriptionId(), contentType, body, Context.NONE);
     }
 
     /**
@@ -1547,9 +1544,8 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
             body.validate();
         }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.addAzureSubscriptionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, context);
+            this.client.getSubscriptionId(), contentType, body, context);
     }
 
     /**

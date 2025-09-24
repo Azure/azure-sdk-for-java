@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -14,9 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Migration level result for Sql server to Azure Sql DB migration.
+ * The MigrateSqlServerSqlDbTaskOutputMigrationLevel model.
  */
-@Immutable
+@Fluent
 public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends MigrateSqlServerSqlDbTaskOutput {
     /*
      * Result type
@@ -64,9 +64,14 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     private String databaseSummary;
 
     /*
+     * Migration Validation Results
+     */
+    private MigrationValidationResult migrationValidationResult;
+
+    /*
      * Migration Report Result, provides unique url for downloading your migration report.
      */
-    private MigrationReportResult migrationReport;
+    private MigrationReportResult migrationReportResult;
 
     /*
      * Source server version
@@ -182,13 +187,47 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     }
 
     /**
-     * Get the migrationReport property: Migration Report Result, provides unique url for downloading your migration
-     * report.
+     * Get the migrationValidationResult property: Migration Validation Results.
      * 
-     * @return the migrationReport value.
+     * @return the migrationValidationResult value.
      */
-    public MigrationReportResult migrationReport() {
-        return this.migrationReport;
+    public MigrationValidationResult migrationValidationResult() {
+        return this.migrationValidationResult;
+    }
+
+    /**
+     * Set the migrationValidationResult property: Migration Validation Results.
+     * 
+     * @param migrationValidationResult the migrationValidationResult value to set.
+     * @return the MigrateSqlServerSqlDbTaskOutputMigrationLevel object itself.
+     */
+    public MigrateSqlServerSqlDbTaskOutputMigrationLevel
+        withMigrationValidationResult(MigrationValidationResult migrationValidationResult) {
+        this.migrationValidationResult = migrationValidationResult;
+        return this;
+    }
+
+    /**
+     * Get the migrationReportResult property: Migration Report Result, provides unique url for downloading your
+     * migration report.
+     * 
+     * @return the migrationReportResult value.
+     */
+    public MigrationReportResult migrationReportResult() {
+        return this.migrationReportResult;
+    }
+
+    /**
+     * Set the migrationReportResult property: Migration Report Result, provides unique url for downloading your
+     * migration report.
+     * 
+     * @param migrationReportResult the migrationReportResult value to set.
+     * @return the MigrateSqlServerSqlDbTaskOutputMigrationLevel object itself.
+     */
+    public MigrateSqlServerSqlDbTaskOutputMigrationLevel
+        withMigrationReportResult(MigrationReportResult migrationReportResult) {
+        this.migrationReportResult = migrationReportResult;
+        return this;
     }
 
     /**
@@ -243,8 +282,11 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
      */
     @Override
     public void validate() {
-        if (migrationReport() != null) {
-            migrationReport().validate();
+        if (migrationValidationResult() != null) {
+            migrationValidationResult().validate();
+        }
+        if (migrationReportResult() != null) {
+            migrationReportResult().validate();
         }
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
@@ -258,6 +300,8 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resultType", this.resultType);
+        jsonWriter.writeJsonField("migrationValidationResult", this.migrationValidationResult);
+        jsonWriter.writeJsonField("migrationReportResult", this.migrationReportResult);
         return jsonWriter.writeEndObject();
     }
 
@@ -301,8 +345,11 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
                     deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.databases = reader.getString();
                 } else if ("databaseSummary".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.databaseSummary = reader.getString();
-                } else if ("migrationReport".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.migrationReport
+                } else if ("migrationValidationResult".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.migrationValidationResult
+                        = MigrationValidationResult.fromJson(reader);
+                } else if ("migrationReportResult".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.migrationReportResult
                         = MigrationReportResult.fromJson(reader);
                 } else if ("sourceServerVersion".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskOutputMigrationLevel.sourceServerVersion = reader.getString();

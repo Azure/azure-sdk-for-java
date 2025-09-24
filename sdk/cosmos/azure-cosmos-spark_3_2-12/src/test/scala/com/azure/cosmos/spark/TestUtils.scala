@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.implementation.{Configs, TestConfigurations}
 import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
@@ -71,18 +71,28 @@ trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
   }
 }
 
-trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
+trait SparkWithMetrics extends Spark {
   this: Suite =>
   //scalastyle:off
 
   override def resetSpark: SparkSession = {
     PartitionMetadataCache.clearCache()
     CosmosClientCache.clearCache()
+
+    val dummyAzMonConnectionString = "InstrumentationKey=12345678-1234-1234-1234-0123456789ab;" +
+      "IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/;" +
+      "LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/;" +
+      "ApplicationId=87654321-1234-1234-1234-0123456789cd"
+    var azMonConnectionString = Option
+      .apply(Configs.getAzureMonitorConnectionString)
+      .getOrElse(dummyAzMonConnectionString)
+
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
-      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
-      .config("spark.cosmos.metrics.intervalInSeconds", "10")
+      .config("spark.cosmos.diagnostics.azureMonitor.enabled", "true")
+      .config("spark.cosmos.diagnostics.azureMonitor.metrics.intervalInSeconds", "10")
+      .config("spark.cosmos.diagnostics.azureMonitor.connectionString", azMonConnectionString)
       .getOrCreate()
 
     LocalJavaFileSystem.applyToSparkSession(spark)
@@ -101,7 +111,7 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
-      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      // .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
       .config("spark.cosmos.metrics.slf4j.enabled", "false")
       .getOrCreate()
 

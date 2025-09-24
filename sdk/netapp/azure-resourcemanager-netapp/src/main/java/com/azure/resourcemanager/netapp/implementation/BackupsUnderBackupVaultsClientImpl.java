@@ -21,8 +21,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
@@ -61,13 +63,24 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetAppManagementClie")
+    @ServiceInterface(name = "NetAppManagementClientBackupsUnderBackupVaults")
     public interface BackupsUnderBackupVaultsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}/restoreFiles")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restoreFiles(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupRestoreFiles body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}/restoreFiles")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> restoreFilesSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
@@ -138,45 +151,102 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
      * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @param body Restore payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(String resourceGroupName, String accountName,
-        String backupVaultName, String backupName, BackupRestoreFiles body, Context context) {
+    private Response<BinaryData> restoreFilesWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupRestoreFiles body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (backupVaultName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
         }
         if (backupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.restoreFiles(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.restoreFilesSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Create a new Backup Restore Files request
+     * 
+     * Restore the specified files from the specified backup to the active filesystem.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> restoreFilesWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupRestoreFiles body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.restoreFilesSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -214,32 +284,6 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
      * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @param body Restore payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestoreFilesAsync(String resourceGroupName, String accountName,
-        String backupVaultName, String backupName, BackupRestoreFiles body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = restoreFilesWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Create a new Backup Restore Files request
-     * 
-     * Restore the specified files from the specified backup to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Restore payload supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,8 +292,9 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupRestoreFiles body) {
-        return this.beginRestoreFilesAsync(resourceGroupName, accountName, backupVaultName, backupName, body)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = restoreFilesWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -271,8 +316,9 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName,
         String backupVaultName, String backupName, BackupRestoreFiles body, Context context) {
-        return this.beginRestoreFilesAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = restoreFilesWithResponse(resourceGroupName, accountName, backupVaultName, backupName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -307,29 +353,6 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
      * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @param body Restore payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restoreFilesAsync(String resourceGroupName, String accountName, String backupVaultName,
-        String backupName, BackupRestoreFiles body, Context context) {
-        return beginRestoreFilesAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a new Backup Restore Files request
-     * 
-     * Restore the specified files from the specified backup to the active filesystem.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param backupName The name of the backup.
-     * @param body Restore payload supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -337,7 +360,7 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restoreFiles(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupRestoreFiles body) {
-        restoreFilesAsync(resourceGroupName, accountName, backupVaultName, backupName, body).block();
+        beginRestoreFiles(resourceGroupName, accountName, backupVaultName, backupName, body).getFinalResult();
     }
 
     /**
@@ -358,6 +381,8 @@ public final class BackupsUnderBackupVaultsClientImpl implements BackupsUnderBac
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restoreFiles(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupRestoreFiles body, Context context) {
-        restoreFilesAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).block();
+        beginRestoreFiles(resourceGroupName, accountName, backupVaultName, backupName, body, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupsUnderBackupVaultsClientImpl.class);
 }

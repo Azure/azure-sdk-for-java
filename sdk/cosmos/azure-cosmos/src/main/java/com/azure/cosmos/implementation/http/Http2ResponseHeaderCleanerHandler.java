@@ -54,10 +54,4 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             ctx.fireChannelRead(msg);
         }
     }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("Header cleaner failed.", cause);
-        ctx.fireExceptionCaught(cause);
-    }
 }

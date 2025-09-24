@@ -16,34 +16,40 @@ public final class ThrottlingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThrottlingRule model = BinaryData.fromString(
-            "{\"action\":\"gkvtmelmqkrhah\",\"metrics\":[{\"type\":\"NotSpecified\",\"limit\":4311555676641493549,\"interval\":\"PT48H37M31S\"},{\"type\":\"NumberOfResources\",\"limit\":6531016586304771464,\"interval\":\"PT145H31M14S\"},{\"type\":\"NumberOfRequests\",\"limit\":4535829174726898901,\"interval\":\"PT125H13M24S\"}],\"requiredFeatures\":[\"exq\"]}")
+            "{\"action\":\"vudwtiukbldng\",\"metrics\":[{\"type\":\"NumberOfResources\",\"limit\":9183547158611084836,\"interval\":\"PT192H57M25S\"},{\"type\":\"NotSpecified\",\"limit\":2857636660248584289,\"interval\":\"PT216H23M56S\"},{\"type\":\"NumberOfResources\",\"limit\":7699505413324678544,\"interval\":\"PT179H47M46S\"},{\"type\":\"NumberOfResources\",\"limit\":2759352392811439395,\"interval\":\"PT86H39M26S\"}],\"requiredFeatures\":[\"gevqznty\",\"mrbpizcdrqj\",\"dpydn\",\"yhxdeoejzicwi\"],\"applicationId\":[\"ttgzfbis\",\"cbkhajdeyeamdph\"]}")
             .toObject(ThrottlingRule.class);
-        Assertions.assertEquals("gkvtmelmqkrhah", model.action());
-        Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.metrics().get(0).type());
-        Assertions.assertEquals(4311555676641493549L, model.metrics().get(0).limit());
-        Assertions.assertEquals(Duration.parse("PT48H37M31S"), model.metrics().get(0).interval());
-        Assertions.assertEquals("exq", model.requiredFeatures().get(0));
+        Assertions.assertEquals("vudwtiukbldng", model.action());
+        Assertions.assertEquals(ThrottlingMetricType.NUMBER_OF_RESOURCES, model.metrics().get(0).type());
+        Assertions.assertEquals(9183547158611084836L, model.metrics().get(0).limit());
+        Assertions.assertEquals(Duration.parse("PT192H57M25S"), model.metrics().get(0).interval());
+        Assertions.assertEquals("gevqznty", model.requiredFeatures().get(0));
+        Assertions.assertEquals("ttgzfbis", model.applicationId().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThrottlingRule model = new ThrottlingRule().withAction("gkvtmelmqkrhah")
+        ThrottlingRule model = new ThrottlingRule().withAction("vudwtiukbldng")
             .withMetrics(Arrays.asList(
-                new ThrottlingMetric().withType(ThrottlingMetricType.NOT_SPECIFIED)
-                    .withLimit(4311555676641493549L)
-                    .withInterval(Duration.parse("PT48H37M31S")),
                 new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_RESOURCES)
-                    .withLimit(6531016586304771464L)
-                    .withInterval(Duration.parse("PT145H31M14S")),
-                new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
-                    .withLimit(4535829174726898901L)
-                    .withInterval(Duration.parse("PT125H13M24S"))))
-            .withRequiredFeatures(Arrays.asList("exq"));
+                    .withLimit(9183547158611084836L)
+                    .withInterval(Duration.parse("PT192H57M25S")),
+                new ThrottlingMetric().withType(ThrottlingMetricType.NOT_SPECIFIED)
+                    .withLimit(2857636660248584289L)
+                    .withInterval(Duration.parse("PT216H23M56S")),
+                new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_RESOURCES)
+                    .withLimit(7699505413324678544L)
+                    .withInterval(Duration.parse("PT179H47M46S")),
+                new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_RESOURCES)
+                    .withLimit(2759352392811439395L)
+                    .withInterval(Duration.parse("PT86H39M26S"))))
+            .withRequiredFeatures(Arrays.asList("gevqznty", "mrbpizcdrqj", "dpydn", "yhxdeoejzicwi"))
+            .withApplicationId(Arrays.asList("ttgzfbis", "cbkhajdeyeamdph"));
         model = BinaryData.fromObject(model).toObject(ThrottlingRule.class);
-        Assertions.assertEquals("gkvtmelmqkrhah", model.action());
-        Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.metrics().get(0).type());
-        Assertions.assertEquals(4311555676641493549L, model.metrics().get(0).limit());
-        Assertions.assertEquals(Duration.parse("PT48H37M31S"), model.metrics().get(0).interval());
-        Assertions.assertEquals("exq", model.requiredFeatures().get(0));
+        Assertions.assertEquals("vudwtiukbldng", model.action());
+        Assertions.assertEquals(ThrottlingMetricType.NUMBER_OF_RESOURCES, model.metrics().get(0).type());
+        Assertions.assertEquals(9183547158611084836L, model.metrics().get(0).limit());
+        Assertions.assertEquals(Duration.parse("PT192H57M25S"), model.metrics().get(0).interval());
+        Assertions.assertEquals("gevqznty", model.requiredFeatures().get(0));
+        Assertions.assertEquals("ttgzfbis", model.applicationId().get(0));
     }
 }

@@ -13,17 +13,23 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import com.azure.resourcemanager.providerhub.models.OperationsContent;
-import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinition;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinitionDisplay;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionDefault;
 import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
+import com.azure.resourcemanager.providerhub.models.OperationsPutContentProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class ProviderHubManagerTests extends TestProxyTestBase {
@@ -36,7 +42,7 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -68,28 +74,46 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @SuppressWarnings("rawtypes")
     public void testCreateOperation() {
-        OperationsContent operationsContent = null;
+        OperationsPutContent operationsContent = null;
         String spaceName = "Microsoft.Contoso" + randomPadding();
         String opeartionName = spaceName + "/Employees/Read";
         try {
             // @embedmeStart
             operationsContent = providerHubManager.operations()
                 .createOrUpdate(spaceName,
-                    new OperationsPutContent()
-                        .withContents(Arrays.asList(new OperationsDefinitionInner().withName(opeartionName)
-                            .withDisplay(new OperationsDefinitionDisplay().withProvider(spaceName)
-                                .withResource("Employees")
-                                .withOperation("Gets/List employee resources")
-                                .withDescription("Read employees")))));
+                    new OperationsPutContentInner().withProperties(new OperationsPutContentProperties()
+                        .withContents(Arrays.asList(new LocalizedOperationDefinition().withName(opeartionName)
+                            .withDisplay(new LocalizedOperationDefinitionDisplay().withDefaultProperty(
+                                new LocalizedOperationDisplayDefinitionDefault().withProvider(spaceName)
+                                    .withResource("Employees")
+                                    .withOperation("Gets/List employee resources")
+                                    .withDescription("Read employees")))))));
             // @embedmeEnd
             Assertions.assertTrue(providerHubManager.operations()
                 .listByProviderRegistration(spaceName)
                 .stream()
-                .filter(operationsDefinition -> spaceName.equals(operationsDefinition.display().provider())
-                    && opeartionName.equals(operationsDefinition.name()))
-                .findAny()
-                .isPresent());
+                .anyMatch(operationsDefinition -> {
+                    if (Objects.nonNull(operationsDefinition.properties())) {
+                        LinkedHashMap properties = (LinkedHashMap) operationsDefinition.properties();
+                        if (Objects.nonNull(properties.get("contents"))) {
+                            List contents = (ArrayList) properties.get("contents");
+                            if (!contents.isEmpty()) {
+                                for (int i = 0; i < contents.size(); i++) {
+                                    LinkedHashMap content = (LinkedHashMap) contents.get(i);
+                                    LinkedHashMap display = (LinkedHashMap) content.get("display");
+                                    LinkedHashMap defaultProperty = (LinkedHashMap) display.get("default");
+                                    if (opeartionName.equals(content.get("name"))
+                                        && spaceName.equals(defaultProperty.get("provider"))) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return false;
+                }));
         } finally {
             if (operationsContent != null) {
                 providerHubManager.operations().delete(spaceName);

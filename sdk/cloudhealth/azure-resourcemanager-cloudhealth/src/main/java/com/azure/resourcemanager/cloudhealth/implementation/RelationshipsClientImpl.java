@@ -111,7 +111,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") RelationshipInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -119,10 +119,9 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("relationshipName") String relationshipName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("relationshipName") String relationshipName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -130,8 +129,7 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
-            @PathParam("relationshipName") String relationshipName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("relationshipName") String relationshipName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships")
@@ -470,10 +468,9 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter relationshipName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -533,9 +530,8 @@ public final class RelationshipsClientImpl implements RelationshipsClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter relationshipName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, relationshipName, context);
     }
 
     /**

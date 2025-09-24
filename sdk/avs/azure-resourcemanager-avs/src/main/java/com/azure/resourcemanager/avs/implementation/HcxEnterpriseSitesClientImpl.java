@@ -130,7 +130,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") HcxEnterpriseSiteInner hcxEnterpriseSite, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -138,10 +138,9 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("hcxEnterpriseSiteName") String hcxEnterpriseSiteName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("hcxEnterpriseSiteName") String hcxEnterpriseSiteName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -149,8 +148,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("hcxEnterpriseSiteName") String hcxEnterpriseSiteName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("hcxEnterpriseSiteName") String hcxEnterpriseSiteName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -624,11 +622,9 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -686,10 +682,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
 
     /**

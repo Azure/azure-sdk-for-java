@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_PrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Get a private endpoint connection on a Mongo Cluster resource.

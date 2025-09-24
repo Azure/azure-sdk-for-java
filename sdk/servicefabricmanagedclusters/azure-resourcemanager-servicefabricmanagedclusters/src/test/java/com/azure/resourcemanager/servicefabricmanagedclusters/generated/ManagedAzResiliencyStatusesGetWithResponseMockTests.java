@@ -20,7 +20,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"baseResourceStatus\":[{\"resourceName\":\"xmvwfg\",\"resourceType\":\"yxonsupe\",\"isZoneResilient\":false,\"details\":\"qnhcvsqltnzoibg\"}],\"isClusterZoneResilient\":false}";
+            = "{\"baseResourceStatus\":[{\"resourceName\":\"ophzfylsgcrp\",\"resourceType\":\"cunezzcezelfw\",\"isZoneResilient\":false,\"details\":\"wx\"}],\"isClusterZoneResilient\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedAzResiliencyStatus response = manager.managedAzResiliencyStatuses()
-            .getWithResponse("mjblmljhlny", "zotqyryuzcb", com.azure.core.util.Context.NONE)
+            .getWithResponse("v", "dibmikostbzbkiwb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

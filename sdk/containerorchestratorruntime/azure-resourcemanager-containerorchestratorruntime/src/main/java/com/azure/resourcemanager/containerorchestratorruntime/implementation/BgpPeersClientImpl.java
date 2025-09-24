@@ -109,22 +109,22 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BgpPeerInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("bgpPeerName") String bgpPeerName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("bgpPeerName") String bgpPeerName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("bgpPeerName") String bgpPeerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers")
@@ -502,10 +502,9 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
         if (bgpPeerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                bgpPeerName, accept, context))
+                bgpPeerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -550,9 +549,8 @@ public final class BgpPeersClientImpl implements BgpPeersClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter bgpPeerName is required and cannot be null."));
         }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, bgpPeerName,
-            accept, context);
+            context);
     }
 
     /**

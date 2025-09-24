@@ -108,19 +108,19 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CopilotSettingsResourceUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.PortalServices/copilotSettings/default")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.PortalServices/copilotSettings/default")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
     }
 
     /**
@@ -376,10 +376,8 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -411,8 +409,7 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
                 .log(new IllegalArgumentException(
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
     /**

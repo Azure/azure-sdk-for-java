@@ -13,10 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestPropertiesTemplateDeploymentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestPropertiesTemplateDeploymentOptions model = BinaryData.fromString(
-            "{\"preflightSupported\":false,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"ContinueDeploymentOnFailure\"]}")
+        ResourceProviderManifestPropertiesTemplateDeploymentOptions model = BinaryData
+            .fromString(
+                "{\"preflightSupported\":false,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"None\"]}")
             .toObject(ResourceProviderManifestPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertEquals(false, model.preflightSupported());
+        Assertions.assertFalse(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 
@@ -24,11 +25,11 @@ public final class ResourceProviderManifestPropertiesTemplateDeploymentOptionsTe
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesTemplateDeploymentOptions model
             = new ResourceProviderManifestPropertiesTemplateDeploymentOptions().withPreflightSupported(false)
-                .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE,
-                    PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE));
+                .withPreflightOptions(
+                    Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, PreflightOption.NONE));
         model
             = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertEquals(false, model.preflightSupported());
+        Assertions.assertFalse(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 }

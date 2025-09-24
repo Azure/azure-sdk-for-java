@@ -12,18 +12,18 @@ public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetryPolicy model
-            = BinaryData.fromString("{\"maxDeliveryAttempts\":1026255480,\"eventTimeToLiveInMinutes\":443622503}")
+            = BinaryData.fromString("{\"maxDeliveryAttempts\":403427600,\"eventTimeToLiveInMinutes\":2126474322}")
                 .toObject(RetryPolicy.class);
-        Assertions.assertEquals(1026255480, model.maxDeliveryAttempts());
-        Assertions.assertEquals(443622503, model.eventTimeToLiveInMinutes());
+        Assertions.assertEquals(403427600, model.maxDeliveryAttempts());
+        Assertions.assertEquals(2126474322, model.eventTimeToLiveInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RetryPolicy model
-            = new RetryPolicy().withMaxDeliveryAttempts(1026255480).withEventTimeToLiveInMinutes(443622503);
+            = new RetryPolicy().withMaxDeliveryAttempts(403427600).withEventTimeToLiveInMinutes(2126474322);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(1026255480, model.maxDeliveryAttempts());
-        Assertions.assertEquals(443622503, model.eventTimeToLiveInMinutes());
+        Assertions.assertEquals(403427600, model.maxDeliveryAttempts());
+        Assertions.assertEquals(2126474322, model.eventTimeToLiveInMinutes());
     }
 }
