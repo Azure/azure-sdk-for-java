@@ -88,8 +88,7 @@ public class ShouldRetryResult {
     }
 
     public ShouldRetryResult withRandomSalt(int randomSaltInMillis) {
-        Duration updatedDuration = this.backOffTime.get().plusMillis(randomSaltInMillis);
-        this.backOffTime.set(updatedDuration);
+        this.backOffTime.updateAndGet(duration -> duration.plusMillis(randomSaltInMillis));
         return this;
     }
 }
