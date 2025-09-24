@@ -1407,9 +1407,12 @@ public class BlobAsyncClientBase {
         // MD5 validation is enabled if:
         // 1. getRangeContentMd5 is explicitly true, OR
         // 2. contentValidationOptions.isMd5ValidationEnabled() is true
-        Boolean getMD5 = null;
+        // Make this effectively final for lambda usage
+        final Boolean finalGetMD5;
         if (getRangeContentMd5 || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled())) {
-            getMD5 = true;
+            finalGetMD5 = true;
+        } else {
+            finalGetMD5 = null;
         }
         
         BlobRequestConditions finalRequestConditions
@@ -1421,7 +1424,7 @@ public class BlobAsyncClientBase {
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
             firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
@@ -1473,17 +1476,51 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, getMD5, context);
+                            eTag, finalGetMD5, context);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
 
-                // Create a new response with the processed stream (which may include structured message decoding)
-                // Use the same approach as the original method to maintain consistency
-                return BlobDownloadAsyncResponseConstructorProxy.create(
-                    new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), 
-                        processedStream, blobDownloadHeaders), onDownloadErrorResume, finalOptions);
+                // Apply structured message decoding if enabled - this allows both MD5 and structured message to coexist
+                if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                    // Use the content length from headers to determine expected length for structured message decoding
+                    Long contentLength = blobDownloadHeaders.getContentLength();
+                    Flux<ByteBuffer> processedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(response.getValue(), contentLength, contentValidationOptions);
+                    
+                    // Create a new StreamResponse with the processed stream
+                    StreamResponse processedResponse = new StreamResponse() {
+                        @Override
+                        public int getStatusCode() {
+                            return response.getStatusCode();
+                        }
+
+                        @Override
+                        public HttpHeaders getHeaders() {
+                            return response.getHeaders();
+                        }
+
+                        @Override
+                        public Flux<ByteBuffer> getValue() {
+                            return processedStream;
+                        }
+
+                        @Override
+                        public HttpRequest getRequest() {
+                            return response.getRequest();
+                        }
+
+                        @Override
+                        public void close() {
+                            response.close();
+                        }
+                    };
+
+                    return BlobDownloadAsyncResponseConstructorProxy.create(processedResponse, onDownloadErrorResume, finalOptions);
+                } else {
+                    // No structured message processing needed, use original response
+                    return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
+                }
             });
     }
 
