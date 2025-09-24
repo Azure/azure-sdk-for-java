@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-storage-queue</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
 
   <name>Spring Messaging Azure Storage Queue</name>
   <description>Spring Messaging Azure Storage Queue</description>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -171,7 +171,7 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-messaging-azure</artifactId>
-          <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+          <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>
