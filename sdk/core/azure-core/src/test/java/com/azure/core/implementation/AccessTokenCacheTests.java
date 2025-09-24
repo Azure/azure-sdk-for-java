@@ -23,6 +23,45 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * and force refresh scenarios.
  */
 public class AccessTokenCacheTests {
+
+    /**
+     * Creates a TokenCredential that tracks refresh count and returns tokens with incrementing suffixes.
+     */
+    private TokenCredential createMockCredential(AtomicLong refreshCount) {
+        return request -> {
+            refreshCount.incrementAndGet();
+            return Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
+        };
+    }
+
+    /**
+     * Creates a synchronous TokenCredential that tracks refresh count.
+     */
+    private TokenCredential createMockSyncCredential(AtomicLong refreshCount) {
+        return new TokenCredential() {
+            @Override
+            public Mono<AccessToken> getToken(TokenRequestContext request) {
+                return Mono.just(getTokenSync(request));
+            }
+
+            @Override
+            public AccessToken getTokenSync(TokenRequestContext request) {
+                refreshCount.incrementAndGet();
+                return new AccessToken("sync-token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1));
+            }
+        };
+    }
+
+    /**
+     * Creates a TokenCredential with a delay that tracks refresh count and returns tokens with incrementing suffixes.
+     */
+    private TokenCredential createMockCredentialWithDelay(AtomicInteger refreshCount, Duration delay) {
+        return request -> {
+            int count = refreshCount.incrementAndGet();
+            return Mono.just(new AccessToken("token-" + count, OffsetDateTime.now().plusHours(1))).delayElement(delay);
+        };
+    }
+
     private static final String SCOPE = "https://management.azure.com/.default";
     private static final String TENANT_ID_1 = "tenant-1";
     private static final String TENANT_ID_2 = "tenant-2";
@@ -31,12 +70,7 @@ public class AccessTokenCacheTests {
     @Test
     public void testTenantIdChangeTriggersForceRefresh() {
         AtomicLong refreshCount = new AtomicLong(0);
-
-        TokenCredential credential = request -> {
-            refreshCount.incrementAndGet();
-            return Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
-        };
-
+        TokenCredential credential = createMockCredential(refreshCount);
         AccessTokenCache cache = new AccessTokenCache(credential);
 
         // First request with tenant1
@@ -71,20 +105,7 @@ public class AccessTokenCacheTests {
     @Test
     public void testTenantIdChangeTriggersForceRefreshSync() {
         AtomicLong refreshCount = new AtomicLong(0);
-
-        TokenCredential credential = new TokenCredential() {
-            @Override
-            public Mono<AccessToken> getToken(TokenRequestContext request) {
-                return Mono.just(getTokenSync(request));
-            }
-
-            @Override
-            public AccessToken getTokenSync(TokenRequestContext request) {
-                refreshCount.incrementAndGet();
-                return new AccessToken("sync-token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1));
-            }
-        };
-
+        TokenCredential credential = createMockSyncCredential(refreshCount);
         AccessTokenCache cache = new AccessTokenCache(credential);
 
         // First request with tenant1
@@ -110,12 +131,7 @@ public class AccessTokenCacheTests {
     @Test
     public void testNullTenantIdHandling() {
         AtomicLong refreshCount = new AtomicLong(0);
-
-        TokenCredential credential = request -> {
-            refreshCount.incrementAndGet();
-            return Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
-        };
-
+        TokenCredential credential = createMockCredential(refreshCount);
         AccessTokenCache cache = new AccessTokenCache(credential);
 
         // First request with null tenant
@@ -157,12 +173,7 @@ public class AccessTokenCacheTests {
     @Test
     public void testTenantIdWithClaimsAndScopesCombined() {
         AtomicLong refreshCount = new AtomicLong(0);
-
-        TokenCredential credential = request -> {
-            refreshCount.incrementAndGet();
-            return Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
-        };
-
+        TokenCredential credential = createMockCredential(refreshCount);
         AccessTokenCache cache = new AccessTokenCache(credential);
 
         // Initial request
@@ -222,11 +233,7 @@ public class AccessTokenCacheTests {
     public void testConcurrentRequestsWithDifferentTenants() {
         AtomicInteger refreshCount = new AtomicInteger(0);
 
-        TokenCredential credential = request -> {
-            int count = refreshCount.incrementAndGet();
-            return Mono.just(new AccessToken("token-" + count, OffsetDateTime.now().plusHours(1)))
-                .delayElement(Duration.ofMillis(100)); // Simulate network delay
-        };
+        TokenCredential credential = createMockCredentialWithDelay(refreshCount, Duration.ofMillis(100));
 
         AccessTokenCache cache = new AccessTokenCache(credential);
 
@@ -257,12 +264,7 @@ public class AccessTokenCacheTests {
     @Test
     public void testEmptyStringTenantIdTreatedAsDifferentFromNull() {
         AtomicLong refreshCount = new AtomicLong(0);
-
-        TokenCredential credential = request -> {
-            refreshCount.incrementAndGet();
-            return Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
-        };
-
+        TokenCredential credential = createMockCredential(refreshCount);
         AccessTokenCache cache = new AccessTokenCache(credential);
 
         // First request with null tenant
