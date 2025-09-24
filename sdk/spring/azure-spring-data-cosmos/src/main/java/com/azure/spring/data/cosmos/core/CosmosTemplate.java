@@ -31,7 +31,10 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.common.BulkWriter;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
+import com.azure.spring.data.cosmos.common.DocumentBulkExecutorOperationStatus;
+import com.azure.spring.data.cosmos.common.OperationContext;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.config.DatabaseThroughputConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -950,35 +953,23 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();
         assert results != null;
 
+        CosmosAsyncContainer container = this.getCosmosAsyncClient().getDatabase(this.getDatabaseName()).getContainer(containerName);
+        DocumentBulkExecutorOperationStatus status = new DocumentBulkExecutorOperationStatus("spring-status");
+        BulkWriter writer = new BulkWriter(container, status);
+
         if (entityInfo.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(results).map(item -> {
+            results.forEach(item -> {
                 T object = toDomainObject(domainType, item);
                 Object id = entityInfo.getId(object);
                 String idString = id != null ? id.toString() : "";
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
-                return CosmosBulkOperations.getDeleteItemOperation(idString,
-                    getPartitionKeyFromValue(entityInfo, object), options);
+                writer.scheduleWrite(CosmosBulkOperations.getDeleteItemOperation(idString,
+                    getPartitionKeyFromValue(entityInfo, object), options,
+                    new OperationContext(id.toString(), status.getOperationId())), id.toString(), item);
             });
 
-            // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
-            // allows it to start at 1 and increase until it finds the appropriate batch size.
-            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-            cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
-
-            this.getCosmosAsyncClient()
-                .getDatabase(this.getDatabaseName())
-                .getContainer(containerName)
-                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
-                .onErrorResume(throwable ->
-                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)",
-                        throwable, this.responseDiagnosticsProcessor))
-                .collectList().block();
-
-            return results.stream()
-                .map(jsonNode -> toDomainObject(domainType, jsonNode))
-                .collect(Collectors.toList());
+            return writer.flush();
         } else {
             return results.stream()
                 .map(item -> deleteItem(item, finalContainerName, domainType))
