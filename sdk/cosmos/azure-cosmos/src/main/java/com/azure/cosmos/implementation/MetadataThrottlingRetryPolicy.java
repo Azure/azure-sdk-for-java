@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MetadataThrottlingRetryPolicy extends ResourceThrottleRetryPolicy {
+public final class MetadataThrottlingRetryPolicy extends ResourceThrottleRetryPolicy {
     private final static int RANDOM_SALT_IN_MS = 100;
     private final static int MAX_ATTEMPT_COUNT = Integer.MAX_VALUE;
     private final static Duration MAX_RETRY_WAIT_TIME = Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1);
