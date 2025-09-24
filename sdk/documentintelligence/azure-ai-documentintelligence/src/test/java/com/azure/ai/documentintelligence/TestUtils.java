@@ -3,9 +3,6 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
-import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -18,11 +15,6 @@ import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.FileNotFoundException;
@@ -37,7 +29,6 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
-import static com.azure.storage.common.sas.SasProtocol.HTTPS_ONLY;
 
 /**
  * Contains helper methods for generating inputs for test methods
@@ -88,32 +79,6 @@ public final class TestUtils {
     private TestUtils() {
     }
 
-    /**
-     * Get a blob container SAS URL.
-     */
-    private static String getContainerSasUrl(String containerName, boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "https://isPlaybackmode";
-        }
-
-        BlobServiceClient blobServiceClient
-            = new BlobServiceClientBuilder().endpoint("https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/")
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
-
-        UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(
-            java.time.OffsetDateTime.now().minusMinutes(5), java.time.OffsetDateTime.now().plusHours(1));
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
-            java.time.OffsetDateTime.now().plusHours(3),
-            new BlobContainerSasPermission().setReadPermission(true).setWritePermission(true).setListPermission(true))
-                .setStartTime(java.time.OffsetDateTime.now().minusMinutes(5))
-                .setProtocol(HTTPS_ONLY);
-
-        String sas = blobServiceClient.getBlobContainerClient(containerName)
-            .generateUserDelegationSas(sasValues, userDelegationKey);
-        return "https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/" + containerName + "?" + sas;
-    }
-
     static String urlSource(String fileName) {
         return URL_TEST_FILE_FORMAT + fileName;
     }
@@ -126,60 +91,6 @@ public final class TestUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    public static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return getContainerSasUrl(TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
-    }
-
-    /**
-     * Get the multipage training data set SAS Url value based on the test running mode.
-     *
-     * @return the multipage training data set Url
-     */
-    public static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
-        return getContainerSasUrl(MULTIPAGE_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
-    }
-
-    /**
-     * Get the selection marks training data set SAS Url value based on the test running mode.
-     *
-     * @return the selection marks training data set Url
-     */
-    public static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
-        return getContainerSasUrl(SELECTION_MARK_DATA_CONTAINER_NAME, isPlaybackMode);
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url for classifiers
-     */
-    public static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return getContainerSasUrl(CLASSIFIER_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    public static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
-        return getContainerSasUrl(BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME, isPlaybackMode);
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    public static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return getContainerSasUrl(BATCH_TRAINING_DATA_CONTAINER_NAME, isPlaybackMode);
     }
 
     /**
@@ -240,16 +151,6 @@ public final class TestUtils {
             new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..resultUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
-    }
-
-    static ClassifierDocumentTypeDetails createBlobContentSource(String containerUrl, String prefix) {
-        return new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource(containerUrl).setPrefix(prefix));
-    }
-
-    static ClassifierDocumentTypeDetails createBlobFileListContentSource(String containerUrl, String fileList) {
-        return new ClassifierDocumentTypeDetails()
-            .setAzureBlobFileListSource(new AzureBlobFileListContentSource(containerUrl, fileList));
     }
 
     /**

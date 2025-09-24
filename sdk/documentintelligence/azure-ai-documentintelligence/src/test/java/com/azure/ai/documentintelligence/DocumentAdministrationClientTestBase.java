@@ -16,7 +16,6 @@ import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 
 import java.time.Duration;
@@ -26,7 +25,7 @@ import static com.azure.ai.documentintelligence.TestUtils.REMOVE_SANITIZER_ID;
 import static com.azure.ai.documentintelligence.TestUtils.getTestProxySanitizers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class DocumentAdministrationClientTestBase extends TestProxyTestBase {
+class DocumentAdministrationClientTestBase extends DocumentIntelligenceTestBase {
     Duration durationTestMode;
     private boolean sanitizersRemoved = false;
 

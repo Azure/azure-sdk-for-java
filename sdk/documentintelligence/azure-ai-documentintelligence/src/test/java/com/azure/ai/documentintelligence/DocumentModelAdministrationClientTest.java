@@ -38,8 +38,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.documentintelligence.TestUtils.createBlobContentSource;
-import static com.azure.ai.documentintelligence.TestUtils.createBlobFileListContentSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -69,7 +67,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void getModelWithResponse(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        String trainingDataSasUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
         DocumentModelDetails documentModelDetails = client
             .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
@@ -110,7 +108,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        String trainingDataSasUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller
             = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
@@ -178,7 +176,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void beginCopy(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        String trainingDataSasUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller
             = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
@@ -209,7 +207,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        String trainingDataSasUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
             = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
@@ -229,7 +227,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        String trainingDataSasUrl = TestUtils.getMultipageTrainingSasUri(interceptorManager.isPlaybackMode());
+        String trainingDataSasUrl = getMultipageTrainingSasUri();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
             = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
@@ -249,7 +247,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        String trainingFilesUrl = TestUtils.getSelectionMarkTrainingSasUri(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getSelectionMarkTrainingSasUri();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
             .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                 .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "filelist.jsonl")))
@@ -271,7 +269,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
 
         try {
-            String trainingDataSasUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+            String trainingDataSasUrl = getTrainingFilesContainerUrl();
             client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
@@ -284,8 +282,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
                 .setPollInterval(durationTestMode)
                 .getFinalResult();
 
-            String trainingFilesUrl
-                = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+            String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
             Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
             documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
             documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
@@ -331,7 +328,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void beginBuildClassifier(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
-        String trainingFilesUrl = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
         Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
         documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
         documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
@@ -359,7 +356,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
         Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
         documentTypes.put("IRS-1040-A", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl"));
         documentTypes.put("IRS-1040-B", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl"));

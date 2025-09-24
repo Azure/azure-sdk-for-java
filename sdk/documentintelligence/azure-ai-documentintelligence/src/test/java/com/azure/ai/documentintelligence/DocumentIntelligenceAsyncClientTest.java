@@ -42,7 +42,6 @@ import static com.azure.ai.documentintelligence.TestUtils.LICENSE_PNG;
 import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.W2_JPG;
-import static com.azure.ai.documentintelligence.TestUtils.createBlobContentSource;
 import static com.azure.ai.documentintelligence.TestUtils.getData;
 import static com.azure.ai.documentintelligence.TestUtils.urlSource;
 import static com.azure.ai.documentintelligence.models.AnalyzeOutputFormat.FIGURES;
@@ -264,7 +263,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
         DocumentIntelligenceAdministrationAsyncClient adminClient
             = getDocumentAdminAsyncClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
         Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
         documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
         documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
@@ -345,9 +344,8 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getBatchTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
-        String trainingFilesResultUrl
-            = TestUtils.getBatchTrainingFilesResultContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getBatchTrainingFilesContainerUrl();
+        String trainingFilesResultUrl = getBatchTrainingFilesResultContainerUrl();
         SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> syncPoller
             = client
                 .beginAnalyzeBatchDocuments("prebuilt-layout",

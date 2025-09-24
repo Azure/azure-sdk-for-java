@@ -13,7 +13,6 @@ import com.azure.ai.documentintelligence.models.LengthUnit;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import org.junit.jupiter.api.Assertions;
 
@@ -32,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
+public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelligenceTestBase {
     Duration durationTestMode;
     private boolean sanitizersRemoved = false;
 

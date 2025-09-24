@@ -44,7 +44,6 @@ import static com.azure.ai.documentintelligence.TestUtils.LAYOUT_SAMPLE;
 import static com.azure.ai.documentintelligence.TestUtils.LICENSE_PNG;
 import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
-import static com.azure.ai.documentintelligence.TestUtils.createBlobContentSource;
 import static com.azure.ai.documentintelligence.TestUtils.getData;
 import static com.azure.ai.documentintelligence.TestUtils.urlSource;
 import static com.azure.ai.documentintelligence.models.AnalyzeOutputFormat.PDF;
@@ -176,7 +175,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeCustomDocument(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getTrainingFilesContainerUrl();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
             .beginBuildDocumentModel(
                 new BuildDocumentModelOptions("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
@@ -206,7 +205,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String modelId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getTrainingFilesContainerUrl();
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
             = adminClient
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
@@ -309,7 +308,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
         Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
         documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
         documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
@@ -343,7 +342,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void testClassifyAnalyze(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getClassifierTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
         Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
         documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
         documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
@@ -421,9 +420,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        String trainingFilesUrl = TestUtils.getBatchTrainingFilesContainerUrl(interceptorManager.isPlaybackMode());
-        String trainingFilesResultUrl
-            = TestUtils.getBatchTrainingFilesResultContainerUrl(interceptorManager.isPlaybackMode());
+        String trainingFilesUrl = getBatchTrainingFilesContainerUrl();
+        String trainingFilesResultUrl = getBatchTrainingFilesResultContainerUrl();
         SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> syncPoller
             = client
                 .beginAnalyzeBatchDocuments("prebuilt-layout",
