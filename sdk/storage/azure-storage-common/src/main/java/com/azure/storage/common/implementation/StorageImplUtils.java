@@ -73,9 +73,6 @@ public class StorageImplUtils {
         Constants.STORAGE_LOG_STRING_TO_SIGN, Constants.STORAGE_LOG_STRING_TO_SIGN,
         Constants.STORAGE_LOG_STRING_TO_SIGN);
 
-    public static final String INVALID_VERSION_HEADER_MESSAGE
-        = "The provided service version is not enabled on this storage account.  Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
-
     private static final String INVALID_BASE64_KEY
         = "'base64Key' was not a valid Base64 scheme. Ensure the Storage account key or SAS key is properly formatted.";
 
@@ -301,27 +298,10 @@ public class StorageImplUtils {
      * @return The converted storage exception message.
      */
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
-        return convertStorageExceptionMessage(message, response, null, null);
-    }
-
-    /**
-     * Converts the storage exception message.
-     *
-     * @param message The storage exception message
-     * @param response The storage service response.
-     * @param errorCode The error code from the response.
-     * @param headerName The header name from the response.
-     * @return The converted storage exception message.
-     */
-    public static String convertStorageExceptionMessage(String message, HttpResponse response, String errorCode,
-        String headerName) {
         if (response != null) {
-            // Handle 403 Forbidden responses by appending detailed logging instructions for signature mismatches.
             if (response.getStatusCode() == 403) {
                 return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
             }
-
-            // Handle HEAD requests specifically by inserting the error code into the message if the body is empty.
             if (response.getRequest() != null
                 && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
@@ -332,14 +312,6 @@ public class StorageImplUtils {
                         + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
                         + message.substring(indexOfEmptyBody + 12);
                 }
-            }
-
-            /*
-             * Provide meaningful error message for x-ms-version mismatch issues.
-             */
-            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
-                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
-                return INVALID_VERSION_HEADER_MESSAGE;
             }
         }
         return message;
@@ -536,7 +508,7 @@ public class StorageImplUtils {
                 throw (Error) cause;
             } else {
                 // Wrap in RuntimeException if it's neither Error nor RuntimeException
-                throw LOGGER.logExceptionAsError(new RuntimeException(cause != null ? cause : e));
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
             }
         }
     }
