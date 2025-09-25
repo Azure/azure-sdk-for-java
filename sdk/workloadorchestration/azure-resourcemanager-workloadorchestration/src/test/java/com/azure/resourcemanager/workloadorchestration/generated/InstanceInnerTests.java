@@ -18,37 +18,38 @@ public final class InstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceInner model = BinaryData.fromString(
-            "{\"properties\":{\"solutionVersionId\":\"rpw\",\"targetId\":\"xeznoi\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"w\"},\"solutionScope\":\"kpnb\",\"status\":{\"lastModified\":\"2021-03-01T09:58:07Z\",\"deployed\":552544194,\"expectedRunningJobId\":2849760,\"runningJobId\":4171905,\"status\":\"fhsxttaugz\",\"statusDetails\":\"faazpxdtnkdmkqjj\",\"generation\":1784311457,\"targetStatuses\":[{\"name\":\"rkpyouaibrebqaay\",\"status\":\"kixqtnqtt\",\"componentStatuses\":[{},{}]}]},\"deploymentTimestampEpoch\":6158670602245383291,\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"kpj\",\"type\":\"CustomLocation\"},\"eTag\":\"m\",\"id\":\"d\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}")
+            "{\"properties\":{\"solutionVersionId\":\"wdsh\",\"targetId\":\"ssnrbgye\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"gaojf\"},\"solutionScope\":\"nc\",\"status\":{\"lastModified\":\"2021-05-09T10:35:28Z\",\"deployed\":2043797639,\"expectedRunningJobId\":1147624677,\"runningJobId\":37194957,\"status\":\"moxoftpi\",\"statusDetails\":\"wycz\",\"generation\":1967043899,\"targetStatuses\":[{\"name\":\"qjlihhyuspska\",\"status\":\"vlmfwdgzxulucv\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"sreuzvxurisjnh\",\"status\":\"txifqj\",\"componentStatuses\":[{},{}]},{\"name\":\"rhublwpcesutrg\",\"status\":\"pauutpw\",\"componentStatuses\":[{},{},{},{}]}]},\"deploymentTimestampEpoch\":2623463508515246746,\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"w\",\"type\":\"CustomLocation\"},\"eTag\":\"fqntcyp\",\"id\":\"jv\",\"name\":\"oimwkslirc\",\"type\":\"zjxvydfcea\"}")
             .toObject(InstanceInner.class);
-        Assertions.assertEquals("rpw", model.properties().solutionVersionId());
-        Assertions.assertEquals("xeznoi", model.properties().targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, model.properties().activeState());
+        Assertions.assertEquals("wdsh", model.properties().solutionVersionId());
+        Assertions.assertEquals("ssnrbgye", model.properties().targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, model.properties().activeState());
         Assertions.assertEquals(ReconciliationState.ACTIVE, model.properties().reconciliationPolicy().state());
-        Assertions.assertEquals("w", model.properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("kpnb", model.properties().solutionScope());
-        Assertions.assertEquals("kpj", model.extendedLocation().name());
+        Assertions.assertEquals("gaojf", model.properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("nc", model.properties().solutionScope());
+        Assertions.assertEquals("w", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceInner model = new InstanceInner()
-            .withProperties(new InstanceProperties().withSolutionVersionId("rpw")
-                .withTargetId("xeznoi")
-                .withActiveState(ActiveState.ACTIVE)
-                .withReconciliationPolicy(
-                    new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE).withInterval("w"))
-                .withSolutionScope("kpnb"))
-            .withExtendedLocation(
-                new ExtendedLocation().withName("kpj").withType(ExtendedLocationType.CUSTOM_LOCATION));
+        InstanceInner model
+            = new InstanceInner()
+                .withProperties(new InstanceProperties().withSolutionVersionId("wdsh")
+                    .withTargetId("ssnrbgye")
+                    .withActiveState(ActiveState.INACTIVE)
+                    .withReconciliationPolicy(new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE)
+                        .withInterval("gaojf"))
+                    .withSolutionScope("nc"))
+                .withExtendedLocation(
+                    new ExtendedLocation().withName("w").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(InstanceInner.class);
-        Assertions.assertEquals("rpw", model.properties().solutionVersionId());
-        Assertions.assertEquals("xeznoi", model.properties().targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, model.properties().activeState());
+        Assertions.assertEquals("wdsh", model.properties().solutionVersionId());
+        Assertions.assertEquals("ssnrbgye", model.properties().targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, model.properties().activeState());
         Assertions.assertEquals(ReconciliationState.ACTIVE, model.properties().reconciliationPolicy().state());
-        Assertions.assertEquals("w", model.properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("kpnb", model.properties().solutionScope());
-        Assertions.assertEquals("kpj", model.extendedLocation().name());
+        Assertions.assertEquals("gaojf", model.properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("nc", model.properties().solutionScope());
+        Assertions.assertEquals("w", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 }

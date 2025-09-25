@@ -12,6 +12,8 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplate;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateProperties;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.RemoveVersionResponse;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
@@ -84,6 +86,8 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
 
     private String configTemplateName;
 
+    private ConfigTemplateUpdate updateProperties;
+
     public ConfigTemplateImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -111,13 +115,14 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplateImpl update() {
+        this.updateProperties = new ConfigTemplateUpdate();
         return this;
     }
 
     public ConfigTemplate apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConfigTemplates()
-            .updateWithResponse(resourceGroupName, configTemplateName, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, configTemplateName, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -125,7 +130,7 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     public ConfigTemplate apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConfigTemplates()
-            .updateWithResponse(resourceGroupName, configTemplateName, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, configTemplateName, updateProperties, context)
             .getValue();
         return this;
     }
@@ -182,12 +187,26 @@ public final class ConfigTemplateImpl implements ConfigTemplate, ConfigTemplate.
     }
 
     public ConfigTemplateImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public ConfigTemplateImpl withProperties(ConfigTemplateProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ConfigTemplateImpl withProperties(ConfigTemplateUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

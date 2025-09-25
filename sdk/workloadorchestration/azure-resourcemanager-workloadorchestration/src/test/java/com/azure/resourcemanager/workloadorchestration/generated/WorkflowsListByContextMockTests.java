@@ -23,7 +23,7 @@ public final class WorkflowsListByContextMockTests {
     @Test
     public void testListByContext() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"tmmkosz\",\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"nsntrpcaqki\",\"type\":\"EdgeZone\"},\"eTag\":\"btfmhklbnldpvcbh\",\"id\":\"zyqu\",\"name\":\"usqxutrpbrr\",\"type\":\"yuuatvlmbjwcolbm\"}]}";
+            = "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"dano\",\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"glmvoka\",\"type\":\"EdgeZone\"},\"eTag\":\"tjctibpvbkaeh\",\"id\":\"mzy\",\"name\":\"dfwakwseivmak\",\"type\":\"hysowljuxlkbect\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class WorkflowsListByContextMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Workflow> response
-            = manager.workflows().listByContext("iarxqiubxdukec", "xdazv", com.azure.core.util.Context.NONE);
+            = manager.workflows().listByContext("x", "pbqhvfdqqjwkr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nsntrpcaqki", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("glmvoka", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
     }
 }
