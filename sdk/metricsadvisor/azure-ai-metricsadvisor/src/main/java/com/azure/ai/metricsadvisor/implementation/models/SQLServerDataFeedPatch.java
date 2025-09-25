@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +19,14 @@ import java.util.List;
 @Fluent
 public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.SQL_SERVER;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private SQLSourceParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of SQLServerDataFeedPatch class.
      */
-    @Generated
     public SQLServerDataFeedPatch() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -55,7 +34,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public SQLSourceParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -66,7 +44,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the SQLServerDataFeedPatch object itself.
      */
-    @Generated
     public SQLServerDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -75,7 +52,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -85,7 +61,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -95,7 +70,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -105,7 +79,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -115,7 +88,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -125,7 +97,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -135,7 +106,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -145,7 +115,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -155,7 +124,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -165,7 +133,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -175,7 +142,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -185,7 +151,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -195,7 +160,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -205,7 +169,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -215,7 +178,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -225,7 +187,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -235,7 +196,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -245,7 +205,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -255,7 +214,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -265,7 +223,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -275,20 +232,17 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SQLServerDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.SQL_SERVER == null ? null : DataSourceType.SQL_SERVER.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -314,8 +268,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -326,9 +278,9 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SQLServerDataFeedPatch if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SQLServerDataFeedPatch.
      */
-    @Generated
     public static SQLServerDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SQLServerDataFeedPatch deserializedSQLServerDataFeedPatch = new SQLServerDataFeedPatch();
@@ -336,15 +288,22 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"SqlServer".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'SqlServer'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedSQLServerDataFeedPatch.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedSQLServerDataFeedPatch.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
                 } else if ("maxConcurrency".equals(fieldName)) {
@@ -387,8 +346,6 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.setCredentialId(reader.getString());
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedSQLServerDataFeedPatch.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedSQLServerDataFeedPatch.dataSourceParameter = SQLSourceParameterPatch.fromJson(reader);
                 } else {

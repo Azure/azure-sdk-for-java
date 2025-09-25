@@ -1,47 +1,44 @@
-# Azure Metrics Advisor for Java
+# Azure Cognitive Service - Metric Advisor for Java
 
 > see https://aka.ms/autorest
 
-This is the AutoRest configuration file for Metrics Advisor.
-
----
-## Getting Started
-To build the SDK for Metrics Advisor, simply [Install AutoRest](https://aka.ms/autorest) and
-in this folder, run:
-
-> `autorest`
-
-To see additional help and options, run:
-
-> `autorest --help`
-
 ### Setup
 ```ps
+Fork and clone https://github.com/Azure/autorest.java
+git checkout main
+git submodule update --init --recursive
+mvn package -Dlocal
+npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest
+autorest --java --use=C:/work/autorest.java
 ```
 
 ### Code generation settings
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.26'
 java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.metricsadvisor
+generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true
 models-subpackage: implementation.models
+context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,PeriodType,AnomalySeverity,AlertQueryTimeMode,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
 default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
 enable-sync-stack: true
-polling: {}
+polling: {} 
+stream-style-serialization: true
 ```
 
 ### Generated types renamed and moved to model

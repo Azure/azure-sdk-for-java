@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class TimeMode extends ExpandableStringEnum<TimeMode> {
     /**
      * Static value AnomalyTime for TimeMode.
      */
-    @Generated
     public static final TimeMode ANOMALY_TIME = fromString("AnomalyTime");
 
     /**
      * Static value CreatedTime for TimeMode.
      */
-    @Generated
     public static final TimeMode CREATED_TIME = fromString("CreatedTime");
 
     /**
      * Static value ModifiedTime for TimeMode.
      */
-    @Generated
     public static final TimeMode MODIFIED_TIME = fromString("ModifiedTime");
 
     /**
@@ -35,7 +31,6 @@ public final class TimeMode extends ExpandableStringEnum<TimeMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public TimeMode() {
     }
@@ -46,7 +41,6 @@ public final class TimeMode extends ExpandableStringEnum<TimeMode> {
      * @param name a name to look for.
      * @return the corresponding TimeMode.
      */
-    @Generated
     public static TimeMode fromString(String name) {
         return fromString(name, TimeMode.class);
     }
@@ -56,7 +50,6 @@ public final class TimeMode extends ExpandableStringEnum<TimeMode> {
      * 
      * @return known TimeMode values.
      */
-    @Generated
     public static Collection<TimeMode> values() {
         return values(TimeMode.class);
     }
