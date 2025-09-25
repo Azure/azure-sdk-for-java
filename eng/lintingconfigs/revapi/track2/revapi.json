@@ -238,7 +238,7 @@
           "code": "java.method.addedToInterface",
           "new": {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*"
+            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager)\\..*"
           },
           "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
         },
