@@ -11,6 +11,13 @@ import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleS
  */
 public interface VirtualMachineScaleSet {
     /**
+     * Gets the name property: The name of the virtualMachineScaleSet.
+     * 
+     * @return the name value.
+     */
+    String name();
+
+    /**
      * Gets the id property: The compute RP resource id of the virtualMachineScaleSet
      * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}".
      * 

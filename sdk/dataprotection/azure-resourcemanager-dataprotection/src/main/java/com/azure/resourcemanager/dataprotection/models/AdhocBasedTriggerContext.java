@@ -71,7 +71,6 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
      */
     @Override
     public void validate() {
-        super.validate();
         if (taggingCriteria() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

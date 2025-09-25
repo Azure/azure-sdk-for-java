@@ -68,6 +68,21 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
   private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[TSparkRow]]](None)
+
+  private val totalChangesCnt = new AtomicLong(0)
+
+  def getTotalChangeFeedItemsCnt: Long = {
+    totalChangesCnt.get()
+  }
+
+  def getLatestContinuationToken: Option[String] = {
+    if (lastContinuationToken == null) {
+      None
+    } else {
+      Some(lastContinuationToken.get())
+    }
+  }
+
   override def hasNext: Boolean = {
     executeWithRetry("hasNextInternal", () => hasNextInternal)
   }
@@ -161,6 +176,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         }
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
         lastContinuationToken.set(feedResponse.getContinuationToken)
+        totalChangesCnt.addAndGet(feedResponse.getResults.size())
 
         if (iteratorCandidate.hasNext && validateNextLsn(iteratorCandidate)) {
           currentItemIterator = Some(iteratorCandidate)

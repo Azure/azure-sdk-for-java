@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -191,21 +190,6 @@ public final class ExportQuery extends BaseExportModel {
         super.withMaskSensitive(maskSensitive);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (query() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property query in model ExportQuery"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExportQuery.class);
 
     /**
      * {@inheritDoc}

@@ -22,7 +22,7 @@ public final class FilesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"dxmdses\",\"properties\":{\"extension\":\"jbjp\",\"filePath\":\"ktlpdibfmthieat\",\"lastModified\":\"2021-05-04T21:31:30Z\",\"mediaType\":\"nminzqplgtki\",\"size\":5372315143065587930},\"systemData\":{\"createdBy\":\"srzfffjilz\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-12-07T23:55:41Z\",\"lastModifiedBy\":\"gkensckhbmcarmo\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-09-01T04:44:35Z\"},\"id\":\"wykuqdnd\",\"name\":\"lykhkg\",\"type\":\"apvd\"}";
+            = "{\"etag\":\"jnhj\",\"properties\":{\"extension\":\"llbsupubdxc\",\"filePath\":\"lhzwh\",\"lastModified\":\"2021-03-30T00:05:16Z\",\"mediaType\":\"bosjjfd\",\"size\":7595063653187632662},\"systemData\":{\"createdBy\":\"fyaytvsly\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-10-20T02:04:01Z\",\"lastModifiedBy\":\"arlcjiwgsxfaiocw\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-03-06T07:41:25Z\"},\"id\":\"gnfg\",\"name\":\"zxbarcbpae\",\"type\":\"zqsym\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,16 @@ public final class FilesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProjectFile response = manager.files()
-            .define("fopxf")
-            .withExistingProject("zwhpjlwyxedz", "mxrfomckew", "my")
-            .withEtag("tpdyzoutxfptof")
-            .withProperties(new ProjectFileProperties().withExtension("uywezygvadg")
-                .withFilePath("qwvkgjpytpmpv")
-                .withMediaType("e"))
+            .define("p")
+            .withExistingProject("nwqsttewu", "cysje", "fjxflpditfno")
+            .withEtag("uxlvrhprrvbwonl")
+            .withProperties(
+                new ProjectFileProperties().withExtension("lvtlrvbst").withFilePath("uy").withMediaType("nttlnrjd"))
             .create();
 
-        Assertions.assertEquals("dxmdses", response.etag());
-        Assertions.assertEquals("jbjp", response.properties().extension());
-        Assertions.assertEquals("ktlpdibfmthieat", response.properties().filePath());
-        Assertions.assertEquals("nminzqplgtki", response.properties().mediaType());
+        Assertions.assertEquals("jnhj", response.etag());
+        Assertions.assertEquals("llbsupubdxc", response.properties().extension());
+        Assertions.assertEquals("lhzwh", response.properties().filePath());
+        Assertions.assertEquals("bosjjfd", response.properties().mediaType());
     }
 }

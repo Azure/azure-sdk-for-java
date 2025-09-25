@@ -21,7 +21,7 @@ public final class ScriptCmdletsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"cnhz\",\"timeout\":\"ot\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"pt\",\"description\":\"lohap\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Int\",\"name\":\"glqdhm\",\"description\":\"zralcxpjbyyps\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"nkyhf\",\"name\":\"zv\",\"type\":\"qxfx\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"nseqacjjvp\",\"timeout\":\"guooqjagmdit\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"String\",\"name\":\"bsahrtd\",\"description\":\"delqacslmoto\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"String\",\"name\":\"cjkgdirazftxej\",\"description\":\"bmdujtmvcopexc\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Credential\",\"name\":\"lkyqltqsrog\",\"description\":\"wkffdjkt\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"Int\",\"name\":\"lglxnfui\",\"description\":\"kbusqo\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"yi\",\"name\":\"nsharujtjiqxfzyj\",\"type\":\"ttvwkpqh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ScriptCmdletsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScriptCmdlet> response
-            = manager.scriptCmdlets().list("ohguabz", "ghktdpy", "z", com.azure.core.util.Context.NONE);
+            = manager.scriptCmdlets().list("fza", "tkw", "eg", com.azure.core.util.Context.NONE);
 
     }
 }

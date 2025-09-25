@@ -9,6 +9,7 @@
       <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
       <Class name="io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler" />
       <Class name="io.clientcore.http.netty4.implementation.Netty4StreamingHttp2Adapter" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPool" />
     </Or>
   </Match>
   <Match>
@@ -60,5 +61,19 @@
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
     <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+    <Or>
+    <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelInputStream" />
+    <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPoolTests" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="DP_DO_INSIDE_DO_PRIVILEGED" />
+    <Or>
+    <Class name="io.clientcore.http.netty4.NettyHttpClientBuilderTests" />
+    <Class name="io.clientcore.http.netty4.implementation.Netty4ConnectionPoolTests" />
+    </Or>
   </Match>
 </FindBugsFilter>

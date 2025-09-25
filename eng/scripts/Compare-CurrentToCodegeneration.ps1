@@ -37,6 +37,7 @@ param(
 )
 
 $sdkFolder = Join-Path -Path $PSScriptRoot ".." ".." "sdk"
+$tspClientFolder = Join-Path -Path $PSScriptRoot ".." ".." "eng" "common" "tsp-client"
 
 class GenerationInformation {
   # The directory where the library is located. Used for logging and validation.
@@ -133,7 +134,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
 }
 
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
+  $output = (& npm --prefix "$tspClientFolder" ci 2>&1)
   if ($LASTEXITCODE -ne 0) {
     Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
@@ -168,7 +169,7 @@ $generateScript = {
     Push-Location $directory
     try {
       try {
-        $generateOutput = (& tsp-client update 2>&1)
+        $generateOutput = (& npx --no-install --prefix "$using:tspClientFolder" tsp-client update 2>&1)
         if ($LastExitCode -ne 0) {
           Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
           throw
@@ -191,7 +192,7 @@ $generateScript = {
 
     # prevent warning related to EOL differences which triggers an exception for some reason
     (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

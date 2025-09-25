@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.EntitiesClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.EntityListResult;
@@ -177,25 +176,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EntityInner>> getWithResponseAsync(String resourceGroupName, String healthModelName,
         String entityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -235,28 +215,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityInner> getWithResponse(String resourceGroupName, String healthModelName, String entityName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, healthModelName, entityName, accept, context);
@@ -294,30 +252,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EntityInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String entityName, EntityInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -362,34 +296,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntityInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String entityName, EntityInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -430,25 +336,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String entityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, context))
@@ -486,28 +373,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (entityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, context);
     }
@@ -543,22 +408,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EntityInner>> listByHealthModelSinglePageAsync(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -619,24 +468,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityInner> listByHealthModelSinglePage(String resourceGroupName, String healthModelName,
         OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EntityListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -661,24 +492,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityInner> listByHealthModelSinglePage(String resourceGroupName, String healthModelName,
         OffsetDateTime timestamp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EntityListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -737,13 +550,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EntityInner>> listByHealthModelNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModelNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -763,15 +569,6 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityInner> listByHealthModelNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EntityListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -791,21 +588,10 @@ public final class EntitiesClientImpl implements EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EntityInner> listByHealthModelNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EntityListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(EntitiesClientImpl.class);
 }

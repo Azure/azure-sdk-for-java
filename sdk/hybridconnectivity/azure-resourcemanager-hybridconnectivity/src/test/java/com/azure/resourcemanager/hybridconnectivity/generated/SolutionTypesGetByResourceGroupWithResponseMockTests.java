@@ -21,7 +21,7 @@ public final class SolutionTypesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionType\":\"opgxedkowepb\",\"description\":\"cr\",\"supportedAzureRegions\":[\"wccsnjvcdwxlpqek\",\"tn\",\"htjsying\",\"fq\"],\"solutionSettings\":[{\"name\":\"tdhtmdvyp\",\"displayName\":\"ikdgszywkbir\",\"type\":\"yuzhlhkjoqrvq\",\"description\":\"aatjinrvgoupmfi\",\"allowedValues\":[\"fggjioolvr\",\"x\",\"v\"],\"defaultValue\":\"kkgll\"}]},\"id\":\"jygvjayvbl\",\"name\":\"hvkzuh\",\"type\":\"xvvy\"}";
+            = "{\"properties\":{\"solutionType\":\"rkvfgbvfvpdbo\",\"description\":\"cizsjqlhkrribdei\",\"supportedAzureRegions\":[\"p\",\"kghv\",\"ndzwmkrefa\",\"pjorwkqnyhg\"],\"solutionSettings\":[{\"name\":\"tjivfxzsjabib\",\"displayName\":\"ystawfsdjpvkvp\",\"type\":\"jxbkzbzkdvn\",\"description\":\"jabudurgkakmo\",\"allowedValues\":[\"hjjklff\",\"mouwqlgzrfzeey\",\"bizikayuhq\",\"bjbsybb\"],\"defaultValue\":\"wrv\"}]},\"id\":\"dgmfpgvmpipasl\",\"name\":\"haq\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,17 @@ public final class SolutionTypesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTypeResource response = manager.solutionTypes()
-            .getByResourceGroupWithResponse("mfe", "kerqwkyh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("y", "unyowxwl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("opgxedkowepb", response.properties().solutionType());
-        Assertions.assertEquals("cr", response.properties().description());
-        Assertions.assertEquals("wccsnjvcdwxlpqek", response.properties().supportedAzureRegions().get(0));
-        Assertions.assertEquals("tdhtmdvyp", response.properties().solutionSettings().get(0).name());
-        Assertions.assertEquals("ikdgszywkbir", response.properties().solutionSettings().get(0).displayName());
-        Assertions.assertEquals("yuzhlhkjoqrvq", response.properties().solutionSettings().get(0).type());
-        Assertions.assertEquals("aatjinrvgoupmfi", response.properties().solutionSettings().get(0).description());
-        Assertions.assertEquals("fggjioolvr", response.properties().solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("kkgll", response.properties().solutionSettings().get(0).defaultValue());
+        Assertions.assertEquals("rkvfgbvfvpdbo", response.properties().solutionType());
+        Assertions.assertEquals("cizsjqlhkrribdei", response.properties().description());
+        Assertions.assertEquals("p", response.properties().supportedAzureRegions().get(0));
+        Assertions.assertEquals("tjivfxzsjabib", response.properties().solutionSettings().get(0).name());
+        Assertions.assertEquals("ystawfsdjpvkvp", response.properties().solutionSettings().get(0).displayName());
+        Assertions.assertEquals("jxbkzbzkdvn", response.properties().solutionSettings().get(0).type());
+        Assertions.assertEquals("jabudurgkakmo", response.properties().solutionSettings().get(0).description());
+        Assertions.assertEquals("hjjklff", response.properties().solutionSettings().get(0).allowedValues().get(0));
+        Assertions.assertEquals("wrv", response.properties().solutionSettings().get(0).defaultValue());
     }
 }

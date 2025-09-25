@@ -23,7 +23,7 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
     @Test
     public void testGetExecutionLogsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scriptCmdletId\":\"excgjokjljnhvl\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"ek\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"eeksnbksdqhjvyk\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"xeslkhhustcpoqm\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"vnwqjwgo\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"ejjjkxybwfdb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"jbzten\"}],\"failureReason\":\"kzykjtjk\",\"timeout\":\"sxfwushcdp\",\"retention\":\"pn\",\"submittedAt\":\"2021-07-09T13:07:25Z\",\"startedAt\":\"2021-10-31T21:44:10Z\",\"finishedAt\":\"2021-10-12T07:00:11Z\",\"provisioningState\":\"Deleting\",\"output\":[\"xeoio\",\"fiz\",\"av\",\"jzwfb\"],\"namedOutputs\":{\"mmfz\":\"datay\",\"rzx\":\"databfw\"},\"information\":[\"wsrsxkrplbja\",\"ejwwviyoyps\",\"hbrnnhjx\",\"qwjhqkbiwetpozyc\"],\"warnings\":[\"qyhgf\",\"etzlexbsfledynoj\"],\"errors\":[\"uwfbzkkdtnhqsy\",\"ljselp\",\"pbafvafhlbylc\",\"bevxrhyzd\"]},\"id\":\"rsofpltdbmairrh\",\"name\":\"hfnrac\",\"type\":\"npq\"}";
+            = "{\"properties\":{\"scriptCmdletId\":\"ecb\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"wndyqleallk\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mtkhlowkxxpvbr\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"fjmzsyzfho\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"ikcyyc\"}],\"failureReason\":\"nsjlpjrtws\",\"timeout\":\"hv\",\"retention\":\"icphvtrrmhw\",\"submittedAt\":\"2021-08-16T10:26:11Z\",\"startedAt\":\"2021-03-14T13:08:25Z\",\"finishedAt\":\"2021-02-16T07:42:20Z\",\"provisioningState\":\"Canceled\",\"output\":[\"vjglrocuyzlwhhme\"],\"namedOutputs\":{\"n\":\"dataoclu\",\"jk\":\"dataqmemc\"},\"information\":[\"kyujxsglhsrrr\",\"ejylmbkzu\"],\"warnings\":[\"grfihotjewlp\",\"uzzjgnrefq\",\"hqo\"],\"errors\":[\"hiqakydiwfbrk\",\"pzdqtvhcspod\",\"qaxsipietgbebjf\"]},\"id\":\"bmoichd\",\"name\":\"pnfpubntnbat\",\"type\":\"viqsowsaaelcattc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,16 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScriptExecution response = manager.scriptExecutions()
-            .getExecutionLogsWithResponse("xjd", "vjsaqwotm", "wllcolsr",
-                Arrays.asList(ScriptOutputStreamType.INFORMATION, ScriptOutputStreamType.INFORMATION,
-                    ScriptOutputStreamType.ERROR, ScriptOutputStreamType.INFORMATION),
-                com.azure.core.util.Context.NONE)
+            .getExecutionLogsWithResponse("ycjimryvwgcwwpbm", "gwe", "ydsx",
+                Arrays.asList(ScriptOutputStreamType.INFORMATION), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("excgjokjljnhvl", response.scriptCmdletId());
-        Assertions.assertEquals("ek", response.parameters().get(0).name());
-        Assertions.assertEquals("ejjjkxybwfdb", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("kzykjtjk", response.failureReason());
-        Assertions.assertEquals("sxfwushcdp", response.timeout());
-        Assertions.assertEquals("pn", response.retention());
-        Assertions.assertEquals("xeoio", response.output().get(0));
+        Assertions.assertEquals("ecb", response.scriptCmdletId());
+        Assertions.assertEquals("wndyqleallk", response.parameters().get(0).name());
+        Assertions.assertEquals("ikcyyc", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("nsjlpjrtws", response.failureReason());
+        Assertions.assertEquals("hv", response.timeout());
+        Assertions.assertEquals("icphvtrrmhw", response.retention());
+        Assertions.assertEquals("vjglrocuyzlwhhme", response.output().get(0));
     }
 }

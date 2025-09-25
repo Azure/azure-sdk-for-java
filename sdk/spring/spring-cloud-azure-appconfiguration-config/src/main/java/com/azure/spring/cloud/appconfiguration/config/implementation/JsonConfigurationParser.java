@@ -13,11 +13,14 @@ import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 final class JsonConfigurationParser {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final ObjectMapper MAPPER = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
     static boolean isJsonContentType(String contentType) {
         String acceptedMainType = "application";

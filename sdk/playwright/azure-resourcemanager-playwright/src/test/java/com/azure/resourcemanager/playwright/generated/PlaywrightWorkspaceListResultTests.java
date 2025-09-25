@@ -13,12 +13,12 @@ public final class PlaywrightWorkspaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"dataplaneUri\":\"chgejspodm\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\"},\"location\":\"eho\",\"tags\":{\"njaqwixjspro\":\"ahuxinpm\",\"wmfdatscmdvpjhul\":\"vcputegj\"},\"id\":\"uuvmkjozkrwfnd\",\"name\":\"odjpslwejd\",\"type\":\"vwryoqpso\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"dataplaneUri\":\"zakljlahbc\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\"},\"location\":\"dosyg\",\"tags\":{\"vdphlxaolthqtr\":\"aojakhmsbzjhcrz\",\"gvfcj\":\"qjbpfzfsin\",\"xjtfelluwfzit\":\"wzo\",\"qfpjk\":\"np\"},\"id\":\"lxofpdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"amiheognarxz\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\"},\"location\":\"usivye\",\"tags\":{\"un\":\"iqihn\",\"fygxgispemvtzfk\":\"bwjzr\",\"fxqeof\":\"fublj\"},\"id\":\"aeqjhqjbasvms\",\"name\":\"jqul\",\"type\":\"gsntnbybkzgcwr\"},{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"wrljdouskc\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\"},\"location\":\"cjdkwtnhxbnjbi\",\"tags\":{\"nzl\":\"rglssainqpj\",\"pee\":\"jfm\",\"yqduujit\":\"vmgxsab\",\"rwpdappdsbdkvwrw\":\"jczdzevndh\"},\"id\":\"feusnhut\",\"name\":\"eltmrldhugjzzdat\",\"type\":\"xhocdgeablgphuti\"}],\"nextLink\":\"dvkaozw\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"gejspodmailzyde\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"huxinpmqnj\"},\"location\":\"wixjsprozvcp\",\"tags\":{\"fdatsc\":\"gjvw\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"nextLink\":\"soacctazakl\"}")
             .toObject(PlaywrightWorkspaceListResult.class);
-        Assertions.assertEquals("eho", model.value().get(0).location());
-        Assertions.assertEquals("ahuxinpm", model.value().get(0).tags().get("njaqwixjspro"));
+        Assertions.assertEquals("wixjsprozvcp", model.value().get(0).location());
+        Assertions.assertEquals("gjvw", model.value().get(0).tags().get("fdatsc"));
         Assertions.assertEquals(EnablementStatus.DISABLED, model.value().get(0).properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().localAuth());
-        Assertions.assertEquals("dvkaozw", model.nextLink());
+        Assertions.assertEquals("soacctazakl", model.nextLink());
     }
 }

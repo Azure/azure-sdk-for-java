@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-appcontainers</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;current} -->
+  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ContainerAppsApi Management</name>
-  <description>This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2025-01-01.</description>
+  <description>This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions extension resource. Package tag package-preview-2025-02-02-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,29 +45,29 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <spotless.skip>false</spotless.skip>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.19.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

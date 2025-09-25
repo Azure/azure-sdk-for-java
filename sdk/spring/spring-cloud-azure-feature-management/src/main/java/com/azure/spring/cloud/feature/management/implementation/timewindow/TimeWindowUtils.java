@@ -3,9 +3,6 @@
 
 package com.azure.spring.cloud.feature.management.implementation.timewindow;
 
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
-import org.springframework.util.StringUtils;
-
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.springframework.util.StringUtils;
+
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 
 public class TimeWindowUtils {
     public static ZonedDateTime convertStringToDate(String timeStr) {

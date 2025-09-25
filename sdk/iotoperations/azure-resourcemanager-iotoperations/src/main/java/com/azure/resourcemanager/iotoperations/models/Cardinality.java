@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -72,28 +71,6 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
         this.frontend = frontend;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (backendChain() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property backendChain in model Cardinality"));
-        } else {
-            backendChain().validate();
-        }
-        if (frontend() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property frontend in model Cardinality"));
-        } else {
-            frontend().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Cardinality.class);
 
     /**
      * {@inheritDoc}

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardOperationDetail;
@@ -24,32 +24,38 @@ public final class DppResourceGuardProxiesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"mcp\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"hqepvufhbzehewh\",\"defaultResourceRequest\":\"hnl\"},{\"vaultCriticalOperation\":\"nbldxeaclgschori\",\"defaultResourceRequest\":\"rsrrmoucsofldp\"},{\"vaultCriticalOperation\":\"iyfc\",\"defaultResourceRequest\":\"beolh\"}],\"lastUpdatedTime\":\"lvbmxuqibsxtkcu\",\"description\":\"b\"},\"id\":\"arfsi\",\"name\":\"wlkjxn\",\"type\":\"pvwgfstmhqykizmd\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"ondcbrw\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"qejo\",\"defaultResourceRequest\":\"vyrrleaesinuq\"},{\"vaultCriticalOperation\":\"jqo\",\"defaultResourceRequest\":\"pihehce\"},{\"vaultCriticalOperation\":\"bmrqbrjbbmp\",\"defaultResourceRequest\":\"lvykfrex\"},{\"vaultCriticalOperation\":\"s\",\"defaultResourceRequest\":\"wjksghudgzhxo\"}],\"lastUpdatedTime\":\"ggsvoujkxibdaf\",\"description\":\"kmdyomkxfbvfbh\"},\"id\":\"i\",\"name\":\"hpwpgddeimawzovg\",\"type\":\"kumuikjcjca\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataProtectionManager manager = DataProtectionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies()
-            .define("d")
-            .withExistingBackupVault("bd", "bwwg")
-            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("idmhmwf")
-                .withResourceGuardOperationDetails(
-                    Arrays.asList(new ResourceGuardOperationDetail().withVaultCriticalOperation("muvapc")
-                        .withDefaultResourceRequest("crrvweyo")))
-                .withLastUpdatedTime("yyukphaimmo")
-                .withDescription("oqboshbragapyyr"))
+            .define("hlaiwd")
+            .withExistingBackupVault("cnzqtpjhmqr", "v")
+            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("mlzzhzdtxetlgyd")
+                .withResourceGuardOperationDetails(Arrays.asList(
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("lnnpx")
+                        .withDefaultResourceRequest("afiqgeaarbgjekg"),
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("lbyulidwcwvmze")
+                        .withDefaultResourceRequest("o"),
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("hj")
+                        .withDefaultResourceRequest("wgdnqzbr"),
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("spzhzmtksjc")
+                        .withDefaultResourceRequest("digsxcdgl")))
+                .withLastUpdatedTime("lkeuac")
+                .withDescription("omflrytswfp"))
             .create();
 
-        Assertions.assertEquals("mcp", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("hqepvufhbzehewh",
+        Assertions.assertEquals("ondcbrw", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("qejo",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("hnl",
+        Assertions.assertEquals("vyrrleaesinuq",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("b", response.properties().description());
+        Assertions.assertEquals("ggsvoujkxibdaf", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("kmdyomkxfbvfbh", response.properties().description());
     }
 }

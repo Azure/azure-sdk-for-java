@@ -13,7 +13,6 @@ import org.apache.spark.sql.types.StructType
 
 import java.nio.file.Paths
 import java.time.Duration
-import java.util.UUID
 
 private class ChangeFeedBatch
 (
@@ -186,14 +185,16 @@ private class ChangeFeedBatch
 
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset
       // For batch mode instead we need to reset it so that the change feed will get fully drained
+      val parsedInitialOffset = SparkBridgeImplementationInternal.parseChangeFeedState(initialOffsetJson)
       val inputPartitions = latestOffset
         .inputPartitions
         .get
         .map(partition => partition
           .withContinuationState(
             SparkBridgeImplementationInternal
-              .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
+              .extractChangeFeedStateForRange(parsedInitialOffset, partition.feedRange),
             clearEndLsn = !hasBatchCheckpointLocation))
+        .map(_.asInstanceOf[InputPartition])
 
       log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
       inputPartitions

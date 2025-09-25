@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -73,26 +72,6 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
         this.correlationid = correlationid;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operationIds() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operationIds in model GetOperationStatusRequest"));
-        }
-        if (correlationid() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property correlationid in model GetOperationStatusRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GetOperationStatusRequest.class);
 
     /**
      * {@inheritDoc}

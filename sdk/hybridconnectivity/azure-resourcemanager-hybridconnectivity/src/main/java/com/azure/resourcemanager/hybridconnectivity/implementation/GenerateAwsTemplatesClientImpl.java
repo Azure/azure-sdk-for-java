@@ -21,9 +21,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PostResponseInner;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
 import reactor.core.publisher.Mono;
 
@@ -62,7 +61,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PostResponseInner>> post(@HostParam("endpoint") String endpoint,
+        Mono<Response<GenerateAwsTemplateResponseInner>> post(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context);
@@ -70,7 +69,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/generateAwsTemplate")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PostResponseInner> postSync(@HostParam("endpoint") String endpoint,
+        Response<GenerateAwsTemplateResponseInner> postSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context);
@@ -84,25 +83,12 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the HybridConnectivity post operation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PostResponseInner>>
+    private Mono<Response<GenerateAwsTemplateResponseInner>>
         postWithResponseAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (generateAwsTemplateRequest == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter generateAwsTemplateRequest is required and cannot be null."));
-        } else {
-            generateAwsTemplateRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -119,10 +105,10 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the HybridConnectivity post operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PostResponseInner> postAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
+    private Mono<GenerateAwsTemplateResponseInner> postAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponseAsync(generateAwsTemplateRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -135,28 +121,11 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the HybridConnectivity post operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PostResponseInner> postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (generateAwsTemplateRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter generateAwsTemplateRequest is required and cannot be null."));
-        } else {
-            generateAwsTemplateRequest.validate();
-        }
+    public Response<GenerateAwsTemplateResponseInner>
+        postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -171,12 +140,10 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the HybridConnectivity post operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PostResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
+    public GenerateAwsTemplateResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponse(generateAwsTemplateRequest, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GenerateAwsTemplatesClientImpl.class);
 }

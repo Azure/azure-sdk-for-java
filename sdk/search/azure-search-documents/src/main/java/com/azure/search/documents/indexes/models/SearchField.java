@@ -559,7 +559,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the normalizer value.
      */
     @Generated
-    public LexicalNormalizerName getNormalizer() {
+    public LexicalNormalizerName getNormalizerName() {
         return this.normalizer;
     }
 
@@ -572,7 +572,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the SearchField object itself.
      */
     @Generated
-    public SearchField setNormalizer(LexicalNormalizerName normalizer) {
+    public SearchField setNormalizerName(LexicalNormalizerName normalizer) {
         this.normalizer = normalizer;
         return this;
     }

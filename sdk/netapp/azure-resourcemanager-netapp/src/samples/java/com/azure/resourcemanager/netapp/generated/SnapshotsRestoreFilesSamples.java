@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class SnapshotsRestoreFilesSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/Snapshots_SingleFileRestore.
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Snapshots_SingleFileRestore.
      * json
      */
     /**

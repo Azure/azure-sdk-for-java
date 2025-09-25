@@ -203,6 +203,42 @@ public final class JobsImpl implements Jobs {
         }
     }
 
+    public Job resume(String resourceGroupName, String jobName) {
+        JobInner inner = this.serviceClient().resume(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job resume(String resourceGroupName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().resume(resourceGroupName, jobName, context);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job suspend(String resourceGroupName, String jobName) {
+        JobInner inner = this.serviceClient().suspend(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Job suspend(String resourceGroupName, String jobName, Context context) {
+        JobInner inner = this.serviceClient().suspend(resourceGroupName, jobName, context);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Job getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

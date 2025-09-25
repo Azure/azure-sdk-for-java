@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -50,6 +51,11 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
     private CosmosSinkConfig sinkConfig;
     private String connectorName;
     private CosmosClientCacheItem cosmosClientItem;
+
+    static {
+        //initialize all accessors from different threads can cause deadlock issues, so here we force loading ahead of time
+        ImplementationBridgeHelpers.initializeAllAccessors();
+    }
 
     @Override
     public void start(Map<String, String> props) {

@@ -12,24 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureBackupFindRestorableTimeRangesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBackupFindRestorableTimeRangesRequest model = BinaryData
-            .fromString(
-                "{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"ylgqgitxmedjvcsl\",\"endTime\":\"qwwncw\"}")
+        AzureBackupFindRestorableTimeRangesRequest model = BinaryData.fromString(
+            "{\"sourceDataStoreType\":\"OperationalStore\",\"startTime\":\"duhavhqlkt\",\"endTime\":\"maqolbgycduie\"}")
             .toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.startTime());
-        Assertions.assertEquals("qwwncw", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("duhavhqlkt", model.startTime());
+        Assertions.assertEquals("maqolbgycduie", model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = new AzureBackupFindRestorableTimeRangesRequest()
-            .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
-            .withStartTime("ylgqgitxmedjvcsl")
-            .withEndTime("qwwncw");
+            .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)
+            .withStartTime("duhavhqlkt")
+            .withEndTime("maqolbgycduie");
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.startTime());
-        Assertions.assertEquals("qwwncw", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("duhavhqlkt", model.startTime());
+        Assertions.assertEquals("maqolbgycduie", model.endTime());
     }
 }

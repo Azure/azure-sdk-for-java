@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Subscription-level location-based Playwright quota resource free-trial properties.
+ * Subscription-level location-based Playwright quota free trial properties.
  */
 @Immutable
 public final class FreeTrialProperties implements JsonSerializable<FreeTrialProperties> {
     /*
-     * Playwright workspace-id that has free-trial in the subscription.
+     * The workspace ID in GUID format that has free trial enabled in the subscription.
      */
     private String workspaceId;
 
     /*
-     * The free-trial state.
+     * The free trial state.
      */
     private FreeTrialState state;
 
@@ -33,7 +33,7 @@ public final class FreeTrialProperties implements JsonSerializable<FreeTrialProp
     }
 
     /**
-     * Get the workspaceId property: Playwright workspace-id that has free-trial in the subscription.
+     * Get the workspaceId property: The workspace ID in GUID format that has free trial enabled in the subscription.
      * 
      * @return the workspaceId value.
      */
@@ -42,20 +42,12 @@ public final class FreeTrialProperties implements JsonSerializable<FreeTrialProp
     }
 
     /**
-     * Get the state property: The free-trial state.
+     * Get the state property: The free trial state.
      * 
      * @return the state value.
      */
     public FreeTrialState state() {
         return this.state;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

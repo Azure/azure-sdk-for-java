@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class DaprComponentsListSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_List.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * DaprComponents_List.json
      */
     /**
      * Sample code: List Dapr Components.

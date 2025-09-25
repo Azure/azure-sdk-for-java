@@ -14,24 +14,24 @@ public final class IpSecurityRestrictionRuleTests {
     public void testDeserialize() throws Exception {
         IpSecurityRestrictionRule model = BinaryData
             .fromString(
-                "{\"name\":\"ltskzbbtd\",\"description\":\"mv\",\"ipAddressRange\":\"ekg\",\"action\":\"Allow\"}")
+                "{\"name\":\"ygqukyhejh\",\"description\":\"sx\",\"ipAddressRange\":\"fpel\",\"action\":\"Deny\"}")
             .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("ltskzbbtd", model.name());
-        Assertions.assertEquals("mv", model.description());
-        Assertions.assertEquals("ekg", model.ipAddressRange());
-        Assertions.assertEquals(Action.ALLOW, model.action());
+        Assertions.assertEquals("ygqukyhejh", model.name());
+        Assertions.assertEquals("sx", model.description());
+        Assertions.assertEquals("fpel", model.ipAddressRange());
+        Assertions.assertEquals(Action.DENY, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("ltskzbbtd")
-            .withDescription("mv")
-            .withIpAddressRange("ekg")
-            .withAction(Action.ALLOW);
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("ygqukyhejh")
+            .withDescription("sx")
+            .withIpAddressRange("fpel")
+            .withAction(Action.DENY);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("ltskzbbtd", model.name());
-        Assertions.assertEquals("mv", model.description());
-        Assertions.assertEquals("ekg", model.ipAddressRange());
-        Assertions.assertEquals(Action.ALLOW, model.action());
+        Assertions.assertEquals("ygqukyhejh", model.name());
+        Assertions.assertEquals("sx", model.description());
+        Assertions.assertEquals("fpel", model.ipAddressRange());
+        Assertions.assertEquals(Action.DENY, model.action());
     }
 }

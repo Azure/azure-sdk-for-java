@@ -27,6 +27,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.FetchCrossRegionRestoreJobsOperationsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupJobResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupJobResourceList;
@@ -65,7 +66,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DataProtectionClient")
+    @ServiceInterface(name = "DataProtectionClientFetchCrossRegionRestoreJobsOperations")
     public interface FetchCrossRegionRestoreJobsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/fetchCrossRegionRestoreJobs")
@@ -79,10 +80,29 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/fetchCrossRegionRestoreJobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureBackupJobResourceList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("$filter") String filter,
+            @BodyParam("application/json") CrossRegionRestoreJobsRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBackupJobResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureBackupJobResourceList> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -139,52 +159,6 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
      * @param location The name of the Azure region.
      * @param parameters Request body for operation.
      * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBackupJobResourceInner>> listSinglePageAsync(String resourceGroupName,
-        String location, CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-                this.client.getSubscriptionId(), location, filter, parameters, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Fetches list of Cross Region Restore job belonging to the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param filter OData filter options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,17 +197,92 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
      * @param location The name of the Azure region.
      * @param parameters Request body for operation.
      * @param filter OData filter options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureBackupJobResourceInner> listSinglePage(String resourceGroupName, String location,
+        CrossRegionRestoreJobsRequest parameters, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        Response<AzureBackupJobResourceList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                this.client.getSubscriptionId(), location, filter, parameters, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Fetches list of Cross Region Restore job belonging to the vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources as paginated response with {@link PagedFlux}.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureBackupJobResourceInner> listAsync(String resourceGroupName, String location,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureBackupJobResourceInner> listSinglePage(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, parameters, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        Response<AzureBackupJobResourceList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                this.client.getSubscriptionId(), location, filter, parameters, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -251,7 +300,8 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, location, parameters, filter));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -270,7 +320,8 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, location, parameters, filter, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -303,26 +354,56 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AzureBackupJobResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBackupJobResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AzureBackupJobResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FetchCrossRegionRestoreJobsOperationsClientImpl.class);
 }

@@ -34,7 +34,7 @@ import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
-import com.microsoft.aad.msal4j.MsalJsonParsingException;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -57,7 +57,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -285,6 +284,12 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
+        // Check for claims challenge - if claims are provided, this credential cannot handle them
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String errorMessage = buildClaimsChallengeErrorMessage(request);
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(errorMessage)));
+        }
         StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
@@ -331,7 +336,7 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
         List<String> scopes = request.getScopes();
 
         // It's really unlikely that the request comes with no scope, but we want to
@@ -358,6 +363,11 @@ public class IdentityClient extends IdentityClientBase {
 
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
+            }
+
+            if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+                String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+                azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
             }
         } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
@@ -434,16 +444,28 @@ public class IdentityClient extends IdentityClientBase {
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
         PowershellManager powershellManager) {
+        // Check for claims challenge - if claims are provided, this credential cannot handle them
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String errorMessage = buildPowerShellClaimsChallengeErrorMessage(request);
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(errorMessage)));
+        }
+
         String scope = ScopeUtil.scopesToResource(request.getScopes());
         try {
             ScopeUtil.validateScope(scope);
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String tenant = resolvedTenant.equals(IdentityUtil.DEFAULT_TENANT) ? "" : resolvedTenant;
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
+            String command = PowerShellUtil.getPwshCommand(tenant, scope, sep);
 
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
@@ -463,7 +485,12 @@ public class IdentityClient extends IdentityClientBase {
                     Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                    OffsetDateTime expiresOn = PowerShellUtil.parseExpiresOn(time);
+                    if (expiresOn == null) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException(
+                                "Encountered error when deserializing ExpiresOn time from PowerShell response.")));
+                    }
                     return Mono.just(new AccessToken(accessToken, expiresOn));
                 } catch (IOException e) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -472,6 +499,25 @@ public class IdentityClient extends IdentityClientBase {
                 }
             });
         });
+    }
+
+    private String buildPowerShellClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder connectAzCommand = new StringBuilder("Connect-AzAccount -ClaimsChallenge '");
+
+        // Use IdentityUtil.ensureBase64Encoded for the claims
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        connectAzCommand.append(encodedClaims.replace("'", "''"))  // Escape single quotes for PowerShell
+            .append("'");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            connectAzCommand.append(" -Tenant ").append(tenant);
+        }
+
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzurePowerShellCredential. Run %s to handle the claims challenge.",
+            connectAzCommand.toString());
     }
 
     /**
@@ -546,8 +592,11 @@ public class IdentityClient extends IdentityClientBase {
                 }
             }))
             .onErrorMap(t -> {
-                if (options.isChained() && t instanceof MsalJsonParsingException) {
-                    return new CredentialUnavailableException("Managed Identity authentication is not available.", t);
+                if (options.isChained() && t instanceof MsalServiceException) {
+                    if (t.getMessage().contains("Authentication unavailable")) {
+                        return new CredentialUnavailableException("Managed Identity authentication is not available.",
+                            t);
+                    }
                 }
                 return new ClientAuthenticationException(
                     "Managed Identity authentication failed, see inner exception" + " for more information.", null, t);
