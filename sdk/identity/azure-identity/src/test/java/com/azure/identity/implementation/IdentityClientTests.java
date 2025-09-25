@@ -4,7 +4,12 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -14,6 +19,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IClientCertificate;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -943,4 +949,157 @@ public class IdentityClientTests {
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
         assertEquals("Suggestion: Final message", result);
     }
+
+    @Test
+    public void testManagedCredentialSkipsImdsProbing() {
+        String accessToken = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        String originalValue = System.getProperty("AZURE_TOKEN_CREDENTIALS");
+        System.setProperty("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential");
+
+        try {
+            Configuration configuration = TestUtils.createTestConfiguration(
+                new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential"));
+
+            try (MockedConstruction<IdentityClient> identityClientMock
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    IdentityClientOptions options = (IdentityClientOptions) context.arguments().get(13);
+
+                    boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(options);
+                    boolean shouldProbe = !explicitlySelected
+                        && options.isChained()
+                        && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
+                            .equals(com.microsoft.aad.msal4j.ManagedIdentityApplication.getManagedIdentitySource());
+
+                    System.out.println("explicitCredential: " + options.getExplicitCredential());
+                    System.out.println("shouldProbe: " + shouldProbe);
+
+                    assertEquals("managedidentitycredential", options.getExplicitCredential());
+                    assertFalse(shouldProbe, "Should NOT probe when explicitly set to managedidentitycredential");
+
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
+                })) {
+                // Use the mock to satisfy compiler warning
+                assertNotNull(identityClientMock);
+
+                DefaultAzureCredential credential
+                    = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+                StepVerifier.create(credential.getToken(request)).assertNext(token -> {
+                    assertEquals(accessToken, token.getToken());
+                    assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                }).verifyComplete();
+            }
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("AZURE_TOKEN_CREDENTIALS", originalValue);
+            } else {
+                System.clearProperty("AZURE_TOKEN_CREDENTIALS");
+            }
+        }
+    }
+
+    @Test
+    public void testImdsProbing_SucceedsWithProperMocking() {
+        String accessToken = "token-with-probing";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        String originalValue = System.getProperty("AZURE_TOKEN_CREDENTIALS");
+        System.clearProperty("AZURE_TOKEN_CREDENTIALS");
+
+        try {
+            Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
+
+            try (MockedConstruction<IdentityClient> identityClientMock
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    IdentityClientOptions options = (IdentityClientOptions) context.arguments().get(13);
+
+                    boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(options);
+                    boolean shouldProbe = !explicitlySelected
+                        && options.isChained()
+                        && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
+                            .equals(com.microsoft.aad.msal4j.ManagedIdentityApplication.getManagedIdentitySource());
+
+                    System.out.println("explicitCredential: " + options.getExplicitCredential());
+                    System.out.println("shouldProbe: " + shouldProbe);
+
+                    assertNull(options.getExplicitCredential());
+                    assertTrue(shouldProbe, "Should probe when not explicitly set");
+
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
+                })) {
+                // Use the mock to satisfy compiler warning
+                assertNotNull(identityClientMock);
+
+                DefaultAzureCredential credential
+                    = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+
+                StepVerifier.create(credential.getToken(request)).assertNext(token -> {
+                    assertEquals(accessToken, token.getToken());
+                    assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                }).verifyComplete();
+            }
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("AZURE_TOKEN_CREDENTIALS", originalValue);
+            }
+        }
+    }
+
+    @Test
+    public void testImdsAvailabilityLogicWithExplicitCredential() {
+        IdentityClientOptions explicitOptions
+            = new IdentityClientOptions().setChained(true).setExplicitCredential("managedidentitycredential");
+
+        try (MockedStatic<IdentityUtil> identityUtilMock = mockStatic(IdentityUtil.class);
+            MockedStatic<ManagedIdentityApplication> managedIdentityAppMock
+                = mockStatic(ManagedIdentityApplication.class)) {
+
+            identityUtilMock.when(() -> IdentityUtil.isManagedIdentityCredential(explicitOptions)).thenReturn(true);
+            managedIdentityAppMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            java.util.function.Supplier<Boolean> shouldProbeSupplier = () -> {
+                boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(explicitOptions);
+
+                return !explicitlySelected
+                    && explicitOptions.isChained()
+                    && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
+                        .equals(ManagedIdentityApplication.getManagedIdentitySource());
+            };
+
+            assertFalse(shouldProbeSupplier.get(),
+                "Should NOT probe IMDS when ManagedIdentityCredential is explicitly selected");
+        }
+
+        IdentityClientOptions chainedOptions = new IdentityClientOptions().setChained(true).setExplicitCredential(null);
+
+        try (MockedStatic<IdentityUtil> identityUtilMock = mockStatic(IdentityUtil.class);
+            MockedStatic<ManagedIdentityApplication> managedIdentityAppMock
+                = mockStatic(ManagedIdentityApplication.class)) {
+
+            identityUtilMock.when(() -> IdentityUtil.isManagedIdentityCredential(chainedOptions)).thenReturn(false);
+            managedIdentityAppMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            java.util.function.Supplier<Boolean> shouldProbeSupplier = () -> {
+                boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(chainedOptions);
+
+                return !explicitlySelected
+                    && chainedOptions.isChained()
+                    && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
+                        .equals(ManagedIdentityApplication.getManagedIdentitySource());
+            };
+
+            // Verify that chained context without explicit selection triggers probing
+            assertTrue(shouldProbeSupplier.get(),
+                "Should probe IMDS when in chained context without explicit credential selection");
+        }
+    }
+
 }

@@ -246,4 +246,10 @@ public final class IdentityUtil {
         }
         return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
     }
+
+    public static boolean isManagedIdentityCredential(IdentityClientOptions options) {
+        String explicitCredential = options.getExplicitCredential();
+        return "managedidentitycredential".equalsIgnoreCase(explicitCredential);
+    }
+
 }

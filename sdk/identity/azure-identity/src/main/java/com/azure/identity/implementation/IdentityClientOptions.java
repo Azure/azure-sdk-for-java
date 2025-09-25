@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AzureIdentityEnvVars;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -69,6 +70,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
+    private String explicitCredential;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -691,6 +693,7 @@ public final class IdentityClientOptions implements Cloneable {
             = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost
             = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        explicitCredential = configuration.get(AzureIdentityEnvVars.AZURE_TOKEN_CREDENTIALS.toString());
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -821,6 +824,23 @@ public final class IdentityClientOptions implements Cloneable {
 
     public String getSubscription() {
         return this.subscription;
+    }
+
+    /**
+     * @return the credential set .
+     */
+    public String getExplicitCredential() {
+        return explicitCredential;
+    }
+
+    /**
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param explicitCredential the Microsoft Entra endpoint
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setExplicitCredential(String explicitCredential) {
+        this.explicitCredential = explicitCredential;
+        return this;
     }
 
     public IdentityClientOptions clone() {
