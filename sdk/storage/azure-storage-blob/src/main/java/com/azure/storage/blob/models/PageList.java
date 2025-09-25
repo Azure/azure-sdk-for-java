@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -39,25 +39,21 @@ public final class PageList implements XmlSerializable<PageList> {
     /*
      * The PageRange property.
      */
-    @Generated
     private List<PageRange> pageRange = new ArrayList<>();
 
     /*
      * The ClearRange property.
      */
-    @Generated
     private List<ClearRange> clearRange = new ArrayList<>();
 
     /*
      * The NextMarker property.
      */
-    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of PageList class.
      */
-    @Generated
     public PageList() {
     }
 
@@ -66,7 +62,6 @@ public final class PageList implements XmlSerializable<PageList> {
      *
      * @return the pageRange value.
      */
-    @Generated
     public List<PageRange> getPageRange() {
         return this.pageRange;
     }
@@ -77,7 +72,6 @@ public final class PageList implements XmlSerializable<PageList> {
      * @param pageRange the pageRange value to set.
      * @return the PageList object itself.
      */
-    @Generated
     public PageList setPageRange(List<PageRange> pageRange) {
         this.pageRange = pageRange;
         return this;
@@ -88,7 +82,6 @@ public final class PageList implements XmlSerializable<PageList> {
      *
      * @return the clearRange value.
      */
-    @Generated
     public List<ClearRange> getClearRange() {
         return this.clearRange;
     }
@@ -99,7 +92,6 @@ public final class PageList implements XmlSerializable<PageList> {
      * @param clearRange the clearRange value to set.
      * @return the PageList object itself.
      */
-    @Generated
     public PageList setClearRange(List<ClearRange> clearRange) {
         this.clearRange = clearRange;
         return this;
@@ -110,7 +102,6 @@ public final class PageList implements XmlSerializable<PageList> {
      *
      * @return the nextMarker value.
      */
-    @Generated
     private String getNextMarker() {
         return this.nextMarker;
     }
@@ -121,22 +112,19 @@ public final class PageList implements XmlSerializable<PageList> {
      * @param nextMarker the nextMarker value to set.
      * @return the PageList object itself.
      */
-    @Generated
     private PageList setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "PageList" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.pageRange != null) {
             for (PageRange element : this.pageRange) {
@@ -160,7 +148,6 @@ public final class PageList implements XmlSerializable<PageList> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the PageList.
      */
-    @Generated
     public static PageList fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -175,10 +162,8 @@ public final class PageList implements XmlSerializable<PageList> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the PageList.
      */
-    @Generated
     public static PageList fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "PageList" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             PageList deserializedPageList = new PageList();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

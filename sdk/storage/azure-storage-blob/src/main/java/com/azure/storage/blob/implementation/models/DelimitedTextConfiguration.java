@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,37 +21,31 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
     /*
      * The string used to separate columns.
      */
-    @Generated
     private String columnSeparator;
 
     /*
      * The string used to quote a specific field.
      */
-    @Generated
     private String fieldQuote;
 
     /*
      * The string used to separate records.
      */
-    @Generated
     private String recordSeparator;
 
     /*
      * The string used as an escape character.
      */
-    @Generated
     private String escapeChar;
 
     /*
      * Represents whether the data has headers.
      */
-    @Generated
     private Boolean headersPresent;
 
     /**
      * Creates an instance of DelimitedTextConfiguration class.
      */
-    @Generated
     public DelimitedTextConfiguration() {
     }
 
@@ -60,7 +54,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * 
      * @return the columnSeparator value.
      */
-    @Generated
     public String getColumnSeparator() {
         return this.columnSeparator;
     }
@@ -71,7 +64,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * @param columnSeparator the columnSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    @Generated
     public DelimitedTextConfiguration setColumnSeparator(String columnSeparator) {
         this.columnSeparator = columnSeparator;
         return this;
@@ -82,7 +74,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * 
      * @return the fieldQuote value.
      */
-    @Generated
     public String getFieldQuote() {
         return this.fieldQuote;
     }
@@ -93,7 +84,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * @param fieldQuote the fieldQuote value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    @Generated
     public DelimitedTextConfiguration setFieldQuote(String fieldQuote) {
         this.fieldQuote = fieldQuote;
         return this;
@@ -104,7 +94,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * 
      * @return the recordSeparator value.
      */
-    @Generated
     public String getRecordSeparator() {
         return this.recordSeparator;
     }
@@ -115,7 +104,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * @param recordSeparator the recordSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    @Generated
     public DelimitedTextConfiguration setRecordSeparator(String recordSeparator) {
         this.recordSeparator = recordSeparator;
         return this;
@@ -126,7 +114,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * 
      * @return the escapeChar value.
      */
-    @Generated
     public String getEscapeChar() {
         return this.escapeChar;
     }
@@ -137,7 +124,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * @param escapeChar the escapeChar value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    @Generated
     public DelimitedTextConfiguration setEscapeChar(String escapeChar) {
         this.escapeChar = escapeChar;
         return this;
@@ -148,7 +134,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * 
      * @return the headersPresent value.
      */
-    @Generated
     public Boolean isHeadersPresent() {
         return this.headersPresent;
     }
@@ -159,23 +144,19 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * @param headersPresent the headersPresent value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    @Generated
     public DelimitedTextConfiguration setHeadersPresent(Boolean headersPresent) {
         this.headersPresent = headersPresent;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "DelimitedTextConfiguration" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "DelimitedTextConfiguration" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("ColumnSeparator", this.columnSeparator);
         xmlWriter.writeStringElement("FieldQuote", this.fieldQuote);
@@ -193,7 +174,6 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the DelimitedTextConfiguration.
      */
-    @Generated
     public static DelimitedTextConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -208,11 +188,10 @@ public final class DelimitedTextConfiguration implements XmlSerializable<Delimit
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the DelimitedTextConfiguration.
      */
-    @Generated
     public static DelimitedTextConfiguration fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "DelimitedTextConfiguration" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "DelimitedTextConfiguration" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             DelimitedTextConfiguration deserializedDelimitedTextConfiguration = new DelimitedTextConfiguration();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

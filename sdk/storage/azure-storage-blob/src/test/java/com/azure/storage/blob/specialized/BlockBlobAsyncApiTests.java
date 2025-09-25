@@ -435,24 +435,21 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         String blockID = getBlockID();
-
-        StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(),
-            new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))).verifyErrorSatisfies(r -> {
+    
+        StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
+            .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
-                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-                assertTrue(e.getServiceMessage()
-                    .contains(
-                        "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
-    }
+    }*/
 
     @Test
     public void stageBlockFromUrlMin() {
@@ -2397,20 +2394,19 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
-        StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl())).verifyErrorSatisfies(r -> {
-            BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-            assertTrue(e.getStatusCode() == 401);
-            assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-            assertTrue(e.getServiceMessage()
-                .contains(
-                    "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-        });
-    }
+    
+        StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
+    }*/
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,20 +21,17 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
     /*
      * Indicates whether a retention policy is enabled for the storage service
      */
-    @Generated
     private boolean enabled;
 
     /*
      * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
      * this value will be deleted
      */
-    @Generated
     private Integer days;
 
     /**
      * Creates an instance of BlobRetentionPolicy class.
      */
-    @Generated
     public BlobRetentionPolicy() {
     }
 
@@ -43,7 +40,6 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * 
      * @return the enabled value.
      */
-    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -54,7 +50,6 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * @param enabled the enabled value to set.
      * @return the BlobRetentionPolicy object itself.
      */
-    @Generated
     public BlobRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -66,7 +61,6 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * 
      * @return the days value.
      */
-    @Generated
     public Integer getDays() {
         return this.days;
     }
@@ -78,23 +72,19 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * @param days the days value to set.
      * @return the BlobRetentionPolicy object itself.
      */
-    @Generated
     public BlobRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "BlobRetentionPolicy" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobRetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.days);
@@ -109,7 +99,6 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobRetentionPolicy.
      */
-    @Generated
     public static BlobRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -124,10 +113,9 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobRetentionPolicy.
      */
-    @Generated
     public static BlobRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "BlobRetentionPolicy" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobRetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobRetentionPolicy deserializedBlobRetentionPolicy = new BlobRetentionPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,50 +23,42 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /*
      * Azure Analytics Logging settings.
      */
-    @Generated
     private BlobAnalyticsLogging logging;
 
     /*
      * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
-    @Generated
     private BlobMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
-    @Generated
     private BlobMetrics minuteMetrics;
 
     /*
      * The set of CORS rules.
      */
-    @Generated
     private List<BlobCorsRule> cors;
 
     /*
      * The default version to use for requests to the Blob service if an incoming request's version is not specified.
      * Possible values include version 2008-10-27 and all more recent versions
      */
-    @Generated
     private String defaultServiceVersion;
 
     /*
      * the retention policy which determines how long the associated data should persist
      */
-    @Generated
     private BlobRetentionPolicy deleteRetentionPolicy;
 
     /*
      * The properties that enable an account to host a static website
      */
-    @Generated
     private StaticWebsite staticWebsite;
 
     /**
      * Creates an instance of BlobServiceProperties class.
      */
-    @Generated
     public BlobServiceProperties() {
     }
 
@@ -75,7 +67,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the logging value.
      */
-    @Generated
     public BlobAnalyticsLogging getLogging() {
         return this.logging;
     }
@@ -86,7 +77,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param logging the logging value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setLogging(BlobAnalyticsLogging logging) {
         this.logging = logging;
         return this;
@@ -98,7 +88,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the hourMetrics value.
      */
-    @Generated
     public BlobMetrics getHourMetrics() {
         return this.hourMetrics;
     }
@@ -110,7 +99,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param hourMetrics the hourMetrics value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setHourMetrics(BlobMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
@@ -122,7 +110,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the minuteMetrics value.
      */
-    @Generated
     public BlobMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
@@ -134,7 +121,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setMinuteMetrics(BlobMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
@@ -145,7 +131,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the cors value.
      */
-    @Generated
     public List<BlobCorsRule> getCors() {
         if (this.cors == null) {
             this.cors = new ArrayList<>();
@@ -159,7 +144,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param cors the cors value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setCors(List<BlobCorsRule> cors) {
         this.cors = cors;
         return this;
@@ -172,7 +156,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the defaultServiceVersion value.
      */
-    @Generated
     public String getDefaultServiceVersion() {
         return this.defaultServiceVersion;
     }
@@ -185,7 +168,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setDefaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
         return this;
@@ -197,7 +179,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the deleteRetentionPolicy value.
      */
-    @Generated
     public BlobRetentionPolicy getDeleteRetentionPolicy() {
         return this.deleteRetentionPolicy;
     }
@@ -209,7 +190,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setDeleteRetentionPolicy(BlobRetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
         return this;
@@ -220,7 +200,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * 
      * @return the staticWebsite value.
      */
-    @Generated
     public StaticWebsite getStaticWebsite() {
         return this.staticWebsite;
     }
@@ -231,23 +210,19 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * @param staticWebsite the staticWebsite value to set.
      * @return the BlobServiceProperties object itself.
      */
-    @Generated
     public BlobServiceProperties setStaticWebsite(StaticWebsite staticWebsite) {
         this.staticWebsite = staticWebsite;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.logging, "Logging");
         xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
@@ -273,7 +248,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobServiceProperties.
      */
-    @Generated
     public static BlobServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -288,10 +262,9 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobServiceProperties.
      */
-    @Generated
     public static BlobServiceProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobServiceProperties deserializedBlobServiceProperties = new BlobServiceProperties();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

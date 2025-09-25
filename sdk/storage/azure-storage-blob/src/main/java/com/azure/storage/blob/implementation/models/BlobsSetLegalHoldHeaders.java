@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,31 +18,26 @@ public final class BlobsSetLegalHoldHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-legal-hold property.
      */
-    @Generated
     private Boolean xMsLegalHold;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -62,15 +56,11 @@ public final class BlobsSetLegalHoldHeaders {
         String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
-        } else {
-            this.xMsLegalHold = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -79,7 +69,6 @@ public final class BlobsSetLegalHoldHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -90,7 +79,6 @@ public final class BlobsSetLegalHoldHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
-    @Generated
     public BlobsSetLegalHoldHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -101,7 +89,6 @@ public final class BlobsSetLegalHoldHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -112,7 +99,6 @@ public final class BlobsSetLegalHoldHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
-    @Generated
     public BlobsSetLegalHoldHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -123,7 +109,6 @@ public final class BlobsSetLegalHoldHeaders {
      * 
      * @return the xMsLegalHold value.
      */
-    @Generated
     public Boolean isXMsLegalHold() {
         return this.xMsLegalHold;
     }
@@ -134,7 +119,6 @@ public final class BlobsSetLegalHoldHeaders {
      * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
-    @Generated
     public BlobsSetLegalHoldHeaders setXMsLegalHold(Boolean xMsLegalHold) {
         this.xMsLegalHold = xMsLegalHold;
         return this;
@@ -145,7 +129,6 @@ public final class BlobsSetLegalHoldHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -156,7 +139,6 @@ public final class BlobsSetLegalHoldHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
-    @Generated
     public BlobsSetLegalHoldHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -167,7 +149,6 @@ public final class BlobsSetLegalHoldHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -181,7 +162,6 @@ public final class BlobsSetLegalHoldHeaders {
      * @param date the date value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
-    @Generated
     public BlobsSetLegalHoldHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

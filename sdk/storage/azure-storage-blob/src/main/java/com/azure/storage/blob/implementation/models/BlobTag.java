@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,19 +21,16 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
     /*
      * The Key property.
      */
-    @Generated
     private String key;
 
     /*
      * The Value property.
      */
-    @Generated
     private String value;
 
     /**
      * Creates an instance of BlobTag class.
      */
-    @Generated
     public BlobTag() {
     }
 
@@ -42,7 +39,6 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * 
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -53,7 +49,6 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * @param key the key value to set.
      * @return the BlobTag object itself.
      */
-    @Generated
     public BlobTag setKey(String key) {
         this.key = key;
         return this;
@@ -64,7 +59,6 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * 
      * @return the value value.
      */
-    @Generated
     public String getValue() {
         return this.value;
     }
@@ -75,22 +69,19 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * @param value the value value to set.
      * @return the BlobTag object itself.
      */
-    @Generated
     public BlobTag setValue(String value) {
         this.value = value;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Tag" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tag" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Key", this.key);
         xmlWriter.writeStringElement("Value", this.value);
@@ -105,7 +96,6 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobTag.
      */
-    @Generated
     public static BlobTag fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,9 +110,8 @@ public final class BlobTag implements XmlSerializable<BlobTag> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobTag.
      */
-    @Generated
     public static BlobTag fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Tag" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tag" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobTag deserializedBlobTag = new BlobTag();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
