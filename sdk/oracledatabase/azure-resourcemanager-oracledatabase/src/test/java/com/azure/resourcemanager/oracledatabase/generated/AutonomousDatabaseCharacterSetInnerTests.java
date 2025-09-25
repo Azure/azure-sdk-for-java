@@ -12,8 +12,8 @@ public final class AutonomousDatabaseCharacterSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetInner model = BinaryData.fromString(
-            "{\"properties\":{\"characterSet\":\"r\"},\"id\":\"lmywwtkgkxnyed\",\"name\":\"b\",\"type\":\"yvudtjuewbci\"}")
+            "{\"properties\":{\"characterSet\":\"ekni\"},\"id\":\"hqvcimpevfgmblr\",\"name\":\"ilbywdxsm\",\"type\":\"ccwr\"}")
             .toObject(AutonomousDatabaseCharacterSetInner.class);
-        Assertions.assertEquals("r", model.properties().characterSet());
+        Assertions.assertEquals("ekni", model.properties().characterSet());
     }
 }

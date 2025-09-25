@@ -13,14 +13,14 @@ public final class AutonomousDbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"vqeevtoep\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"o\",\"name\":\"zvfvaawz\",\"type\":\"adflgzu\"}],\"nextLink\":\"glae\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"ddviacegfnmntfpm\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"b\",\"name\":\"lxlllchpo\",\"type\":\"bzevwrd\"},{\"properties\":{\"version\":\"fukuvsjcswsmystu\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"hp\",\"name\":\"bm\",\"type\":\"pjbabwidfc\"}],\"nextLink\":\"spuunnoxyhkxgq\"}")
             .toObject(AutonomousDbVersionListResult.class);
-        Assertions.assertEquals("vqeevtoep", model.value().get(0).properties().version());
+        Assertions.assertEquals("ddviacegfnmntfpm", model.value().get(0).properties().version());
         Assertions.assertEquals(WorkloadType.APEX, model.value().get(0).properties().dbWorkload());
-        Assertions.assertFalse(model.value().get(0).properties().isDefaultForFree());
-        Assertions.assertFalse(model.value().get(0).properties().isDefaultForPaid());
+        Assertions.assertTrue(model.value().get(0).properties().isDefaultForFree());
+        Assertions.assertTrue(model.value().get(0).properties().isDefaultForPaid());
         Assertions.assertFalse(model.value().get(0).properties().isFreeTierEnabled());
-        Assertions.assertTrue(model.value().get(0).properties().isPaidEnabled());
-        Assertions.assertEquals("glae", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().isPaidEnabled());
+        Assertions.assertEquals("spuunnoxyhkxgq", model.nextLink());
     }
 }

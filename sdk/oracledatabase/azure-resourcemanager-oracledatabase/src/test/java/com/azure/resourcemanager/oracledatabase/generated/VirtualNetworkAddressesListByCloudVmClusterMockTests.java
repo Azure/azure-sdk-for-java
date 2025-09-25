@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
     @Test
     public void testListByCloudVmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ipAddress\":\"jkmfxapjwo\",\"vmOcid\":\"qnobp\",\"ocid\":\"cdabtqwpwya\",\"domain\":\"zasqbucljgkyexao\",\"lifecycleDetails\":\"yaipidsda\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-03-06T23:02:25Z\"},\"id\":\"mfqwa\",\"name\":\"lnqnmcjn\",\"type\":\"zqdqxt\"}]}";
+            = "{\"value\":[{\"properties\":{\"ipAddress\":\"pvpbdbzqgqqiheds\",\"vmOcid\":\"wthmkyib\",\"ocid\":\"sihsgqcwdhohsd\",\"domain\":\"cdzsu\",\"lifecycleDetails\":\"ohdxbzlmcmu\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-11-30T13:30:35Z\"},\"id\":\"v\",\"name\":\"qqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualNetworkAddress> response = manager.virtualNetworkAddresses()
-            .listByCloudVmCluster("lewjwiuubwef", "sfapaqtferrq", com.azure.core.util.Context.NONE);
+            .listByCloudVmCluster("ftpmdtzfjltfv", "zcyjtot", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jkmfxapjwo", response.iterator().next().properties().ipAddress());
-        Assertions.assertEquals("qnobp", response.iterator().next().properties().vmOcid());
+        Assertions.assertEquals("pvpbdbzqgqqiheds", response.iterator().next().properties().ipAddress());
+        Assertions.assertEquals("wthmkyib", response.iterator().next().properties().vmOcid());
     }
 }

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DbNodeDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DbNodeDetails model = BinaryData.fromString("{\"dbNodeId\":\"jhlfzswpchwahf\"}").toObject(DbNodeDetails.class);
-        Assertions.assertEquals("jhlfzswpchwahf", model.dbNodeId());
+        DbNodeDetails model = BinaryData.fromString("{\"dbNodeId\":\"wifzmp\"}").toObject(DbNodeDetails.class);
+        Assertions.assertEquals("wifzmp", model.dbNodeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbNodeDetails model = new DbNodeDetails().withDbNodeId("jhlfzswpchwahf");
+        DbNodeDetails model = new DbNodeDetails().withDbNodeId("wifzmp");
         model = BinaryData.fromObject(model).toObject(DbNodeDetails.class);
-        Assertions.assertEquals("jhlfzswpchwahf", model.dbNodeId());
+        Assertions.assertEquals("wifzmp", model.dbNodeId());
     }
 }

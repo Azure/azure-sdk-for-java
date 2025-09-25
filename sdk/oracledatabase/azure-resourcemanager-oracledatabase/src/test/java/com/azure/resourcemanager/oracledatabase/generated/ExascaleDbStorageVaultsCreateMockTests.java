@@ -26,7 +26,7 @@ public final class ExascaleDbStorageVaultsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"additionalFlashCacheInPercent\":64736512,\"description\":\"edev\",\"displayName\":\"bo\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":222208753},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":112594464,\"totalSizeInGbs\":9633412},\"timeZone\":\"kkhminqcymczngn\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"unin\",\"vmClusterCount\":290904524,\"ocid\":\"chaqdtvqec\",\"ociUrl\":\"ct\"},\"zones\":[\"dtddmflh\",\"ytxzvtznapxbanno\",\"voxczytpr\",\"nwvroevytlyokrr\"],\"location\":\"uuxvnsasbcry\",\"tags\":{\"xnazpmkml\":\"izrxklob\"},\"id\":\"vevfxz\",\"name\":\"pj\",\"type\":\"bzxliohrdddtfgxq\"}";
+            = "{\"properties\":{\"additionalFlashCacheInPercent\":1782066464,\"description\":\"hjpenuygbq\",\"displayName\":\"qqekewvnqvcdlgu\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1458855216},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":233622712,\"totalSizeInGbs\":1412442415},\"timeZone\":\"nlaxpunjqikcz\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"gx\",\"vmClusterCount\":1933401870,\"ocid\":\"serxht\",\"ociUrl\":\"oxhlw\"},\"zones\":[\"j\",\"qrsxyp\",\"uuuybnchrsziz\"],\"location\":\"uelyetndn\",\"tags\":{\"wahzjmucftbyr\":\"yggagflnlgmt\",\"fusuckzmkwklsno\":\"lrohkpig\"},\"id\":\"axmqeqal\",\"name\":\"hjnhgwydyynfsvk\",\"type\":\"gbv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,26 @@ public final class ExascaleDbStorageVaultsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExascaleDbStorageVault response = manager.exascaleDbStorageVaults()
-            .define("uuuybnchrsziz")
-            .withRegion("bvqt")
-            .withExistingResourceGroup("sjgqrsxyp")
-            .withTags(mapOf("ukhpyrneizjcp", "rfdl", "uxddbhfh", "ogkhnmgbr", "lontacnpq", "fpazjzoywjxhpd", "xh",
-                "tehtuevrhrljyoog"))
-            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(327117456)
-                .withDescription("yetnd")
-                .withDisplayName("bf")
-                .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(834158684))
-                .withTimeZone("nlgmtrwahzjmu"))
-            .withZones(Arrays.asList("hjnhgwydyynfsvk"))
+            .define("ueio")
+            .withRegion("ijtk")
+            .withExistingResourceGroup("uooqjagmdit")
+            .withTags(mapOf("haru", "qogsfikayian"))
+            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(1749280590)
+                .withDescription("ahrtdtpdelqacslm")
+                .withDisplayName("toebnf")
+                .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(49810118))
+                .withTimeZone("dirazf"))
+            .withZones(Arrays.asList("ktsysidfvclglxn"))
             .create();
 
-        Assertions.assertEquals("uuxvnsasbcry", response.location());
-        Assertions.assertEquals("izrxklob", response.tags().get("xnazpmkml"));
-        Assertions.assertEquals(64736512, response.properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("edev", response.properties().description());
-        Assertions.assertEquals("bo", response.properties().displayName());
-        Assertions.assertEquals(222208753, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("kkhminqcymczngn", response.properties().timeZone());
-        Assertions.assertEquals("dtddmflh", response.zones().get(0));
+        Assertions.assertEquals("uelyetndn", response.location());
+        Assertions.assertEquals("yggagflnlgmt", response.tags().get("wahzjmucftbyr"));
+        Assertions.assertEquals(1782066464, response.properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("hjpenuygbq", response.properties().description());
+        Assertions.assertEquals("qqekewvnqvcdlgu", response.properties().displayName());
+        Assertions.assertEquals(1458855216, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("nlaxpunjqikcz", response.properties().timeZone());
+        Assertions.assertEquals("j", response.zones().get(0));
     }
 
     // Use "Map.of" if available

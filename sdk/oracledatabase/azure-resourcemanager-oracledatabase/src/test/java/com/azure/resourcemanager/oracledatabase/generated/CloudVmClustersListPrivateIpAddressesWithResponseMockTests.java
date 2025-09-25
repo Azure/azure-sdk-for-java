@@ -23,7 +23,7 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
     @Test
     public void testListPrivateIpAddressesWithResponse() throws Exception {
         String responseStr
-            = "[{\"displayName\":\"cvhd\",\"hostnameLabel\":\"evwqqxeyskonq\",\"ocid\":\"inkfkbgbz\",\"ipAddress\":\"owxeqocljmy\",\"subnetId\":\"vkzqk\"},{\"displayName\":\"jeokbzefezrxccz\",\"hostnameLabel\":\"rtle\",\"ocid\":\"pqxbkwvzgnzvdf\",\"ipAddress\":\"zdix\",\"subnetId\":\"mqpnoda\"},{\"displayName\":\"opqhewjptmc\",\"hostnameLabel\":\"sbostzel\",\"ocid\":\"dlat\",\"ipAddress\":\"tmzlbiojlv\",\"subnetId\":\"hrbbpneqvcwwyy\"},{\"displayName\":\"r\",\"hostnameLabel\":\"ochpprpr\",\"ocid\":\"nmokayzejnhlbk\",\"ipAddress\":\"bzpcpiljhahzvec\",\"subnetId\":\"ndbnwieh\"}]";
+            = "[{\"displayName\":\"iq\",\"hostnameLabel\":\"smexiitdf\",\"ocid\":\"xtyasiibmiyb\",\"ipAddress\":\"nustgnljh\",\"subnetId\":\"mgixhcmavmqfou\"},{\"displayName\":\"or\",\"hostnameLabel\":\"cgyypro\",\"ocid\":\"wy\",\"ipAddress\":\"undmbx\",\"subnetId\":\"ugcmjkavlgorb\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateIpAddressProperties> response = manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("qgqqihedsvqwthmk", "ibcysihsgqc",
-                new PrivateIpAddressesFilter().withSubnetId("dhohsdtmcdzsuf").withVnicId("ohdxbzlmcmu"),
+            .listPrivateIpAddressesWithResponse("aeylinm", "gv",
+                new PrivateIpAddressesFilter().withSubnetId("irpghriypoqeyh").withVnicId("qhykprlpyzn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cvhd", response.get(0).displayName());
-        Assertions.assertEquals("evwqqxeyskonq", response.get(0).hostnameLabel());
-        Assertions.assertEquals("inkfkbgbz", response.get(0).ocid());
-        Assertions.assertEquals("owxeqocljmy", response.get(0).ipAddress());
-        Assertions.assertEquals("vkzqk", response.get(0).subnetId());
+        Assertions.assertEquals("iq", response.get(0).displayName());
+        Assertions.assertEquals("smexiitdf", response.get(0).hostnameLabel());
+        Assertions.assertEquals("xtyasiibmiyb", response.get(0).ocid());
+        Assertions.assertEquals("nustgnljh", response.get(0).ipAddress());
+        Assertions.assertEquals("mgixhcmavmqfou", response.get(0).subnetId());
     }
 }

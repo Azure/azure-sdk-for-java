@@ -12,14 +12,14 @@ public final class ExadbVmClusterStorageDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadbVmClusterStorageDetails model
-            = BinaryData.fromString("{\"totalSizeInGbs\":780958650}").toObject(ExadbVmClusterStorageDetails.class);
-        Assertions.assertEquals(780958650, model.totalSizeInGbs());
+            = BinaryData.fromString("{\"totalSizeInGbs\":2054001925}").toObject(ExadbVmClusterStorageDetails.class);
+        Assertions.assertEquals(2054001925, model.totalSizeInGbs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExadbVmClusterStorageDetails model = new ExadbVmClusterStorageDetails().withTotalSizeInGbs(780958650);
+        ExadbVmClusterStorageDetails model = new ExadbVmClusterStorageDetails().withTotalSizeInGbs(2054001925);
         model = BinaryData.fromObject(model).toObject(ExadbVmClusterStorageDetails.class);
-        Assertions.assertEquals(780958650, model.totalSizeInGbs());
+        Assertions.assertEquals(2054001925, model.totalSizeInGbs());
     }
 }
