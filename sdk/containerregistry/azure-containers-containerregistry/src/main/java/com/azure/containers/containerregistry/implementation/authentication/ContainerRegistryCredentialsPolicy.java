@@ -29,9 +29,10 @@ import reactor.core.publisher.Mono;
  * <p>Step5: GET /api/v1/acr/repositories
  * Request Header: {Bearer acrTokenAccess}</p>
  */
-public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
-    private static final String SCOPES_PARAMETER = "scope";
-    private static final String SERVICE_PARAMETER = "service";
+public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
+    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    public static final String SCOPES_PARAMETER = "scope";
+    public static final String SERVICE_PARAMETER = "service";
     private final ContainerRegistryTokenService acrCredential;
 
     /**
@@ -67,7 +68,7 @@ public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticatio
      */
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return Mono.just(false);
         } else {
@@ -107,7 +108,7 @@ public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticatio
      */
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
