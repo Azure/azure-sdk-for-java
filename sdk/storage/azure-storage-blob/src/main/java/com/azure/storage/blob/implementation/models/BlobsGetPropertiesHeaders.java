@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -29,295 +29,246 @@ public final class BlobsGetPropertiesHeaders {
     /*
      * The x-ms-is-current-version property.
      */
-    @Generated
     private Boolean xMsIsCurrentVersion;
 
     /*
      * The x-ms-lease-status property.
      */
-    @Generated
     private LeaseStatusType xMsLeaseStatus;
 
     /*
      * The x-ms-copy-destination-snapshot property.
      */
-    @Generated
     private String xMsCopyDestinationSnapshot;
 
     /*
      * The x-ms-lease-state property.
      */
-    @Generated
     private LeaseStateType xMsLeaseState;
 
     /*
      * The x-ms-blob-sealed property.
      */
-    @Generated
     private Boolean xMsBlobSealed;
 
     /*
      * The x-ms-version-id property.
      */
-    @Generated
     private String xMsVersionId;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-access-tier-change-time property.
      */
-    @Generated
     private DateTimeRfc1123 xMsAccessTierChangeTime;
 
     /*
      * The x-ms-blob-type property.
      */
-    @Generated
     private BlobType xMsBlobType;
 
     /*
      * The Content-Encoding property.
      */
-    @Generated
     private String contentEncoding;
 
     /*
      * The x-ms-creation-time property.
      */
-    @Generated
     private DateTimeRfc1123 xMsCreationTime;
 
     /*
      * The x-ms-incremental-copy property.
      */
-    @Generated
     private Boolean xMsIncrementalCopy;
 
     /*
      * The x-ms-lease-duration property.
      */
-    @Generated
     private LeaseDurationType xMsLeaseDuration;
 
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-copy-id property.
      */
-    @Generated
     private String xMsCopyId;
 
     /*
      * The x-ms-immutability-policy-until-date property.
      */
-    @Generated
     private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
 
     /*
      * The x-ms-blob-sequence-number property.
      */
-    @Generated
     private Long xMsBlobSequenceNumber;
 
     /*
      * The x-ms-blob-committed-block-count property.
      */
-    @Generated
     private Integer xMsBlobCommittedBlockCount;
 
     /*
      * The x-ms-legal-hold property.
      */
-    @Generated
     private Boolean xMsLegalHold;
 
     /*
      * The Content-MD5 property.
      */
-    @Generated
     private byte[] contentMD5;
 
     /*
      * The x-ms-or-policy-id property.
      */
-    @Generated
     private String xMsOrPolicyId;
 
     /*
      * The Cache-Control property.
      */
-    @Generated
     private String cacheControl;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
-    @Generated
     private String contentDisposition;
 
     /*
      * The Content-Language property.
      */
-    @Generated
     private String contentLanguage;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The x-ms-or- property.
      */
-    @Generated
     private Map<String, String> xMsOr;
 
     /*
      * The x-ms-encryption-scope property.
      */
-    @Generated
     private String xMsEncryptionScope;
 
     /*
      * The x-ms-tag-count property.
      */
-    @Generated
     private Long xMsTagCount;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-access-tier-inferred property.
      */
-    @Generated
     private Boolean xMsAccessTierInferred;
 
     /*
      * The x-ms-immutability-policy-mode property.
      */
-    @Generated
     private BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode;
 
     /*
      * The x-ms-access-tier property.
      */
-    @Generated
     private String xMsAccessTier;
 
     /*
      * The x-ms-copy-status-description property.
      */
-    @Generated
     private String xMsCopyStatusDescription;
 
     /*
      * The Content-Length property.
      */
-    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Content-Type property.
      */
-    @Generated
     private String contentType;
 
     /*
      * The x-ms-last-access-time property.
      */
-    @Generated
     private DateTimeRfc1123 xMsLastAccessTime;
 
     /*
      * The x-ms-copy-source property.
      */
-    @Generated
     private String xMsCopySource;
 
     /*
      * The x-ms-copy-progress property.
      */
-    @Generated
     private String xMsCopyProgress;
 
     /*
      * The x-ms-meta- property.
      */
-    @Generated
     private Map<String, String> xMsMeta;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-expiry-time property.
      */
-    @Generated
     private DateTimeRfc1123 xMsExpiryTime;
 
     /*
      * The x-ms-copy-completion-time property.
      */
-    @Generated
     private DateTimeRfc1123 xMsCopyCompletionTime;
 
     /*
      * The Accept-Ranges property.
      */
-    @Generated
     private String acceptRanges;
 
     /*
      * The x-ms-server-encrypted property.
      */
-    @Generated
     private Boolean xMsServerEncrypted;
 
     /*
      * The x-ms-rehydrate-priority property.
      */
-    @Generated
     private String xMsRehydratePriority;
 
     /*
      * The x-ms-copy-status property.
      */
-    @Generated
     private CopyStatusType xMsCopyStatus;
 
     /*
      * The x-ms-archive-status property.
      */
-    @Generated
     private String xMsArchiveStatus;
 
     private static final HttpHeaderName X_MS_IS_CURRENT_VERSION = HttpHeaderName.fromString("x-ms-is-current-version");
@@ -408,92 +359,64 @@ public final class BlobsGetPropertiesHeaders {
         String xMsIsCurrentVersion = rawHeaders.getValue(X_MS_IS_CURRENT_VERSION);
         if (xMsIsCurrentVersion != null) {
             this.xMsIsCurrentVersion = Boolean.parseBoolean(xMsIsCurrentVersion);
-        } else {
-            this.xMsIsCurrentVersion = null;
         }
         String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
-        } else {
-            this.xMsLeaseStatus = null;
         }
         this.xMsCopyDestinationSnapshot = rawHeaders.getValue(X_MS_COPY_DESTINATION_SNAPSHOT);
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
-        } else {
-            this.xMsLeaseState = null;
         }
         String xMsBlobSealed = rawHeaders.getValue(X_MS_BLOB_SEALED);
         if (xMsBlobSealed != null) {
             this.xMsBlobSealed = Boolean.parseBoolean(xMsBlobSealed);
-        } else {
-            this.xMsBlobSealed = null;
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
         String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
         if (xMsAccessTierChangeTime != null) {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
-        } else {
-            this.xMsAccessTierChangeTime = null;
         }
         String xMsBlobType = rawHeaders.getValue(X_MS_BLOB_TYPE);
         if (xMsBlobType != null) {
             this.xMsBlobType = BlobType.fromString(xMsBlobType);
-        } else {
-            this.xMsBlobType = null;
         }
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
         if (xMsCreationTime != null) {
             this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
-        } else {
-            this.xMsCreationTime = null;
         }
         String xMsIncrementalCopy = rawHeaders.getValue(X_MS_INCREMENTAL_COPY);
         if (xMsIncrementalCopy != null) {
             this.xMsIncrementalCopy = Boolean.parseBoolean(xMsIncrementalCopy);
-        } else {
-            this.xMsIncrementalCopy = null;
         }
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
-        } else {
-            this.xMsLeaseDuration = null;
         }
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
         String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
         if (xMsImmutabilityPolicyUntilDate != null) {
             this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
-        } else {
-            this.xMsImmutabilityPolicyUntilDate = null;
         }
         String xMsBlobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
         if (xMsBlobSequenceNumber != null) {
             this.xMsBlobSequenceNumber = Long.parseLong(xMsBlobSequenceNumber);
-        } else {
-            this.xMsBlobSequenceNumber = null;
         }
         String xMsBlobCommittedBlockCount = rawHeaders.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT);
         if (xMsBlobCommittedBlockCount != null) {
             this.xMsBlobCommittedBlockCount = Integer.parseInt(xMsBlobCommittedBlockCount);
-        } else {
-            this.xMsBlobCommittedBlockCount = null;
         }
         String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
-        } else {
-            this.xMsLegalHold = null;
         }
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
-        } else {
-            this.contentMD5 = null;
         }
         this.xMsOrPolicyId = rawHeaders.getValue(X_MS_OR_POLICY_ID);
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
@@ -505,91 +428,70 @@ public final class BlobsGetPropertiesHeaders {
         String xMsTagCount = rawHeaders.getValue(X_MS_TAG_COUNT);
         if (xMsTagCount != null) {
             this.xMsTagCount = Long.parseLong(xMsTagCount);
-        } else {
-            this.xMsTagCount = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         String xMsAccessTierInferred = rawHeaders.getValue(X_MS_ACCESS_TIER_INFERRED);
         if (xMsAccessTierInferred != null) {
             this.xMsAccessTierInferred = Boolean.parseBoolean(xMsAccessTierInferred);
-        } else {
-            this.xMsAccessTierInferred = null;
         }
         String xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
         if (xMsImmutabilityPolicyMode != null) {
             this.xMsImmutabilityPolicyMode = BlobImmutabilityPolicyMode.fromString(xMsImmutabilityPolicyMode);
-        } else {
-            this.xMsImmutabilityPolicyMode = null;
         }
         this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
-        } else {
-            this.contentLength = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         String xMsLastAccessTime = rawHeaders.getValue(X_MS_LAST_ACCESS_TIME);
         if (xMsLastAccessTime != null) {
             this.xMsLastAccessTime = new DateTimeRfc1123(xMsLastAccessTime);
-        } else {
-            this.xMsLastAccessTime = null;
         }
         this.xMsCopySource = rawHeaders.getValue(X_MS_COPY_SOURCE);
         this.xMsCopyProgress = rawHeaders.getValue(X_MS_COPY_PROGRESS);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         String xMsExpiryTime = rawHeaders.getValue(X_MS_EXPIRY_TIME);
         if (xMsExpiryTime != null) {
             this.xMsExpiryTime = new DateTimeRfc1123(xMsExpiryTime);
-        } else {
-            this.xMsExpiryTime = null;
         }
         String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
         if (xMsCopyCompletionTime != null) {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
-        } else {
-            this.xMsCopyCompletionTime = null;
         }
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
         String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
-        } else {
-            this.xMsServerEncrypted = null;
         }
         this.xMsRehydratePriority = rawHeaders.getValue(X_MS_REHYDRATE_PRIORITY);
         String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
-        } else {
-            this.xMsCopyStatus = null;
         }
         this.xMsArchiveStatus = rawHeaders.getValue(X_MS_ARCHIVE_STATUS);
         Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
-        rawHeaders.stream().forEach(header -> {
+        for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();
             if (headerName.startsWith("x-ms-or-")) {
                 xMsOrHeaderCollection.put(headerName.substring(8), header.getValue());
-                return;
+                continue;
             }
             if (headerName.startsWith("x-ms-meta-")) {
                 xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-        });
+        }
+
         this.xMsOr = xMsOrHeaderCollection;
         this.xMsMeta = xMsMetaHeaderCollection;
     }
@@ -599,7 +501,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsIsCurrentVersion value.
      */
-    @Generated
     public Boolean isXMsIsCurrentVersion() {
         return this.xMsIsCurrentVersion;
     }
@@ -610,7 +511,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsIsCurrentVersion the xMsIsCurrentVersion value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsIsCurrentVersion(Boolean xMsIsCurrentVersion) {
         this.xMsIsCurrentVersion = xMsIsCurrentVersion;
         return this;
@@ -621,7 +521,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsLeaseStatus value.
      */
-    @Generated
     public LeaseStatusType getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
@@ -632,7 +531,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
@@ -643,7 +541,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyDestinationSnapshot value.
      */
-    @Generated
     public String getXMsCopyDestinationSnapshot() {
         return this.xMsCopyDestinationSnapshot;
     }
@@ -654,7 +551,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyDestinationSnapshot the xMsCopyDestinationSnapshot value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyDestinationSnapshot(String xMsCopyDestinationSnapshot) {
         this.xMsCopyDestinationSnapshot = xMsCopyDestinationSnapshot;
         return this;
@@ -665,7 +561,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsLeaseState value.
      */
-    @Generated
     public LeaseStateType getXMsLeaseState() {
         return this.xMsLeaseState;
     }
@@ -676,7 +571,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
@@ -687,7 +581,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsBlobSealed value.
      */
-    @Generated
     public Boolean isXMsBlobSealed() {
         return this.xMsBlobSealed;
     }
@@ -698,7 +591,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsBlobSealed the xMsBlobSealed value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsBlobSealed(Boolean xMsBlobSealed) {
         this.xMsBlobSealed = xMsBlobSealed;
         return this;
@@ -709,7 +601,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsVersionId value.
      */
-    @Generated
     public String getXMsVersionId() {
         return this.xMsVersionId;
     }
@@ -720,7 +611,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsVersionId(String xMsVersionId) {
         this.xMsVersionId = xMsVersionId;
         return this;
@@ -731,7 +621,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
-    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -742,7 +631,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -753,7 +641,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsAccessTierChangeTime value.
      */
-    @Generated
     public OffsetDateTime getXMsAccessTierChangeTime() {
         if (this.xMsAccessTierChangeTime == null) {
             return null;
@@ -767,7 +654,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsAccessTierChangeTime the xMsAccessTierChangeTime value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsAccessTierChangeTime(OffsetDateTime xMsAccessTierChangeTime) {
         if (xMsAccessTierChangeTime == null) {
             this.xMsAccessTierChangeTime = null;
@@ -782,7 +668,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsBlobType value.
      */
-    @Generated
     public BlobType getXMsBlobType() {
         return this.xMsBlobType;
     }
@@ -793,7 +678,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsBlobType the xMsBlobType value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsBlobType(BlobType xMsBlobType) {
         this.xMsBlobType = xMsBlobType;
         return this;
@@ -804,7 +688,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentEncoding value.
      */
-    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -815,7 +698,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -826,7 +708,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCreationTime value.
      */
-    @Generated
     public OffsetDateTime getXMsCreationTime() {
         if (this.xMsCreationTime == null) {
             return null;
@@ -840,7 +721,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCreationTime the xMsCreationTime value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCreationTime(OffsetDateTime xMsCreationTime) {
         if (xMsCreationTime == null) {
             this.xMsCreationTime = null;
@@ -855,7 +735,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsIncrementalCopy value.
      */
-    @Generated
     public Boolean isXMsIncrementalCopy() {
         return this.xMsIncrementalCopy;
     }
@@ -866,7 +745,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsIncrementalCopy the xMsIncrementalCopy value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsIncrementalCopy(Boolean xMsIncrementalCopy) {
         this.xMsIncrementalCopy = xMsIncrementalCopy;
         return this;
@@ -877,7 +755,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsLeaseDuration value.
      */
-    @Generated
     public LeaseDurationType getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
@@ -888,7 +765,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
@@ -899,7 +775,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -910,7 +785,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -921,7 +795,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyId value.
      */
-    @Generated
     public String getXMsCopyId() {
         return this.xMsCopyId;
     }
@@ -932,7 +805,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyId(String xMsCopyId) {
         this.xMsCopyId = xMsCopyId;
         return this;
@@ -943,7 +815,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
-    @Generated
     public OffsetDateTime getXMsImmutabilityPolicyUntilDate() {
         if (this.xMsImmutabilityPolicyUntilDate == null) {
             return null;
@@ -957,7 +828,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsImmutabilityPolicyUntilDate the xMsImmutabilityPolicyUntilDate value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsImmutabilityPolicyUntilDate(OffsetDateTime xMsImmutabilityPolicyUntilDate) {
         if (xMsImmutabilityPolicyUntilDate == null) {
             this.xMsImmutabilityPolicyUntilDate = null;
@@ -972,7 +842,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsBlobSequenceNumber value.
      */
-    @Generated
     public Long getXMsBlobSequenceNumber() {
         return this.xMsBlobSequenceNumber;
     }
@@ -983,7 +852,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsBlobSequenceNumber(Long xMsBlobSequenceNumber) {
         this.xMsBlobSequenceNumber = xMsBlobSequenceNumber;
         return this;
@@ -994,7 +862,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsBlobCommittedBlockCount value.
      */
-    @Generated
     public Integer getXMsBlobCommittedBlockCount() {
         return this.xMsBlobCommittedBlockCount;
     }
@@ -1005,7 +872,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsBlobCommittedBlockCount the xMsBlobCommittedBlockCount value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsBlobCommittedBlockCount(Integer xMsBlobCommittedBlockCount) {
         this.xMsBlobCommittedBlockCount = xMsBlobCommittedBlockCount;
         return this;
@@ -1016,7 +882,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsLegalHold value.
      */
-    @Generated
     public Boolean isXMsLegalHold() {
         return this.xMsLegalHold;
     }
@@ -1027,7 +892,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsLegalHold(Boolean xMsLegalHold) {
         this.xMsLegalHold = xMsLegalHold;
         return this;
@@ -1038,7 +902,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentMD5 value.
      */
-    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -1049,7 +912,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
@@ -1060,7 +922,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsOrPolicyId value.
      */
-    @Generated
     public String getXMsOrPolicyId() {
         return this.xMsOrPolicyId;
     }
@@ -1071,7 +932,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsOrPolicyId the xMsOrPolicyId value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsOrPolicyId(String xMsOrPolicyId) {
         this.xMsOrPolicyId = xMsOrPolicyId;
         return this;
@@ -1082,7 +942,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the cacheControl value.
      */
-    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -1093,7 +952,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -1104,7 +962,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -1115,7 +972,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -1126,7 +982,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentDisposition value.
      */
-    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -1137,7 +992,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -1148,7 +1002,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentLanguage value.
      */
-    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -1159,7 +1012,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -1170,7 +1022,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -1181,7 +1032,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -1192,7 +1042,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsOr value.
      */
-    @Generated
     public Map<String, String> getXMsOr() {
         return this.xMsOr;
     }
@@ -1203,7 +1052,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsOr the xMsOr value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsOr(Map<String, String> xMsOr) {
         this.xMsOr = xMsOr;
         return this;
@@ -1214,7 +1062,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsEncryptionScope value.
      */
-    @Generated
     public String getXMsEncryptionScope() {
         return this.xMsEncryptionScope;
     }
@@ -1225,7 +1072,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
         return this;
@@ -1236,7 +1082,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsTagCount value.
      */
-    @Generated
     public Long getXMsTagCount() {
         return this.xMsTagCount;
     }
@@ -1247,7 +1092,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsTagCount the xMsTagCount value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsTagCount(Long xMsTagCount) {
         this.xMsTagCount = xMsTagCount;
         return this;
@@ -1258,7 +1102,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -1272,7 +1115,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -1287,7 +1129,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsAccessTierInferred value.
      */
-    @Generated
     public Boolean isXMsAccessTierInferred() {
         return this.xMsAccessTierInferred;
     }
@@ -1298,7 +1139,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsAccessTierInferred the xMsAccessTierInferred value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsAccessTierInferred(Boolean xMsAccessTierInferred) {
         this.xMsAccessTierInferred = xMsAccessTierInferred;
         return this;
@@ -1309,7 +1149,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsImmutabilityPolicyMode value.
      */
-    @Generated
     public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
         return this.xMsImmutabilityPolicyMode;
     }
@@ -1320,7 +1159,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders
         setXMsImmutabilityPolicyMode(BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode) {
         this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
@@ -1332,7 +1170,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsAccessTier value.
      */
-    @Generated
     public String getXMsAccessTier() {
         return this.xMsAccessTier;
     }
@@ -1343,7 +1180,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsAccessTier the xMsAccessTier value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsAccessTier(String xMsAccessTier) {
         this.xMsAccessTier = xMsAccessTier;
         return this;
@@ -1354,7 +1190,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyStatusDescription value.
      */
-    @Generated
     public String getXMsCopyStatusDescription() {
         return this.xMsCopyStatusDescription;
     }
@@ -1365,7 +1200,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
         this.xMsCopyStatusDescription = xMsCopyStatusDescription;
         return this;
@@ -1376,7 +1210,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentLength value.
      */
-    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -1387,7 +1220,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentLength the contentLength value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -1398,7 +1230,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -1409,7 +1240,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -1420,7 +1250,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -1431,7 +1260,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentType the contentType value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -1442,7 +1270,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsLastAccessTime value.
      */
-    @Generated
     public OffsetDateTime getXMsLastAccessTime() {
         if (this.xMsLastAccessTime == null) {
             return null;
@@ -1456,7 +1283,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsLastAccessTime the xMsLastAccessTime value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsLastAccessTime(OffsetDateTime xMsLastAccessTime) {
         if (xMsLastAccessTime == null) {
             this.xMsLastAccessTime = null;
@@ -1471,7 +1297,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopySource value.
      */
-    @Generated
     public String getXMsCopySource() {
         return this.xMsCopySource;
     }
@@ -1482,7 +1307,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopySource the xMsCopySource value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopySource(String xMsCopySource) {
         this.xMsCopySource = xMsCopySource;
         return this;
@@ -1493,7 +1317,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyProgress value.
      */
-    @Generated
     public String getXMsCopyProgress() {
         return this.xMsCopyProgress;
     }
@@ -1504,7 +1327,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyProgress the xMsCopyProgress value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyProgress(String xMsCopyProgress) {
         this.xMsCopyProgress = xMsCopyProgress;
         return this;
@@ -1515,7 +1337,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsMeta value.
      */
-    @Generated
     public Map<String, String> getXMsMeta() {
         return this.xMsMeta;
     }
@@ -1526,7 +1347,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsMeta the xMsMeta value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
@@ -1537,7 +1357,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -1551,7 +1370,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param date the date value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -1566,7 +1384,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsExpiryTime value.
      */
-    @Generated
     public OffsetDateTime getXMsExpiryTime() {
         if (this.xMsExpiryTime == null) {
             return null;
@@ -1580,7 +1397,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsExpiryTime the xMsExpiryTime value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsExpiryTime(OffsetDateTime xMsExpiryTime) {
         if (xMsExpiryTime == null) {
             this.xMsExpiryTime = null;
@@ -1595,7 +1411,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyCompletionTime value.
      */
-    @Generated
     public OffsetDateTime getXMsCopyCompletionTime() {
         if (this.xMsCopyCompletionTime == null) {
             return null;
@@ -1609,7 +1424,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyCompletionTime(OffsetDateTime xMsCopyCompletionTime) {
         if (xMsCopyCompletionTime == null) {
             this.xMsCopyCompletionTime = null;
@@ -1624,7 +1438,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the acceptRanges value.
      */
-    @Generated
     public String getAcceptRanges() {
         return this.acceptRanges;
     }
@@ -1635,7 +1448,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
@@ -1646,7 +1458,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsServerEncrypted value.
      */
-    @Generated
     public Boolean isXMsServerEncrypted() {
         return this.xMsServerEncrypted;
     }
@@ -1657,7 +1468,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
         this.xMsServerEncrypted = xMsServerEncrypted;
         return this;
@@ -1668,7 +1478,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsRehydratePriority value.
      */
-    @Generated
     public String getXMsRehydratePriority() {
         return this.xMsRehydratePriority;
     }
@@ -1679,7 +1488,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsRehydratePriority the xMsRehydratePriority value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsRehydratePriority(String xMsRehydratePriority) {
         this.xMsRehydratePriority = xMsRehydratePriority;
         return this;
@@ -1690,7 +1498,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsCopyStatus value.
      */
-    @Generated
     public CopyStatusType getXMsCopyStatus() {
         return this.xMsCopyStatus;
     }
@@ -1701,7 +1508,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsCopyStatus(CopyStatusType xMsCopyStatus) {
         this.xMsCopyStatus = xMsCopyStatus;
         return this;
@@ -1712,7 +1518,6 @@ public final class BlobsGetPropertiesHeaders {
      * 
      * @return the xMsArchiveStatus value.
      */
-    @Generated
     public String getXMsArchiveStatus() {
         return this.xMsArchiveStatus;
     }
@@ -1723,7 +1528,6 @@ public final class BlobsGetPropertiesHeaders {
      * @param xMsArchiveStatus the xMsArchiveStatus value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    @Generated
     public BlobsGetPropertiesHeaders setXMsArchiveStatus(String xMsArchiveStatus) {
         this.xMsArchiveStatus = xMsArchiveStatus;
         return this;

@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,19 +16,16 @@ public final class ContainersSubmitBatchHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Content-Type property.
      */
-    @Generated
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -51,7 +47,6 @@ public final class ContainersSubmitBatchHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -62,7 +57,6 @@ public final class ContainersSubmitBatchHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersSubmitBatchHeaders object itself.
      */
-    @Generated
     public ContainersSubmitBatchHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -73,7 +67,6 @@ public final class ContainersSubmitBatchHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -84,7 +77,6 @@ public final class ContainersSubmitBatchHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ContainersSubmitBatchHeaders object itself.
      */
-    @Generated
     public ContainersSubmitBatchHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -95,7 +87,6 @@ public final class ContainersSubmitBatchHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -106,7 +97,6 @@ public final class ContainersSubmitBatchHeaders {
      * @param contentType the contentType value to set.
      * @return the ContainersSubmitBatchHeaders object itself.
      */
-    @Generated
     public ContainersSubmitBatchHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

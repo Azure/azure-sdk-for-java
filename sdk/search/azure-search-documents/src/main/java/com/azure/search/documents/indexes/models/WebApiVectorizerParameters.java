@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,25 +24,21 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
     /*
      * The URI of the Web API providing the vectorizer.
      */
-    @Generated
     private String url;
 
     /*
      * The headers required to make the HTTP request.
      */
-    @Generated
     private Map<String, String> httpHeaders;
 
     /*
      * The method for the HTTP request.
      */
-    @Generated
     private String httpMethod;
 
     /*
      * The desired timeout for the request. Default is 30 seconds.
      */
-    @Generated
     private Duration timeout;
 
     /*
@@ -53,7 +48,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * managed ID (either system or user-assigned) of the search service and the access token of the function or app,
      * using this value as the resource id for creating the scope of the access token.
      */
-    @Generated
     private String authResourceId;
 
     /*
@@ -61,13 +55,11 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * specified, the system-assigned managed identity is used. On updates to the indexer, if the identity is
      * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
      */
-    @Generated
     private SearchIndexerDataIdentity authIdentity;
 
     /**
      * Creates an instance of WebApiVectorizerParameters class.
      */
-    @Generated
     public WebApiVectorizerParameters() {
     }
 
@@ -76,7 +68,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the url value.
      */
-    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -87,7 +78,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param url the url value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setUrl(String url) {
         this.url = url;
         return this;
@@ -98,7 +88,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the httpHeaders value.
      */
-    @Generated
     public Map<String, String> getHttpHeaders() {
         return this.httpHeaders;
     }
@@ -109,7 +98,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param httpHeaders the httpHeaders value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
@@ -120,7 +108,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the httpMethod value.
      */
-    @Generated
     public String getHttpMethod() {
         return this.httpMethod;
     }
@@ -131,7 +118,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param httpMethod the httpMethod value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
         return this;
@@ -142,7 +128,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the timeout value.
      */
-    @Generated
     public Duration getTimeout() {
         return this.timeout;
     }
@@ -153,7 +138,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param timeout the timeout value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
@@ -169,7 +153,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the authResourceId value.
      */
-    @Generated
     public String getAuthResourceId() {
         return this.authResourceId;
     }
@@ -185,7 +168,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param authResourceId the authResourceId value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setAuthResourceId(String authResourceId) {
         this.authResourceId = authResourceId;
         return this;
@@ -199,7 +181,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * 
      * @return the authIdentity value.
      */
-    @Generated
     public SearchIndexerDataIdentity getAuthIdentity() {
         return this.authIdentity;
     }
@@ -213,7 +194,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * @param authIdentity the authIdentity value to set.
      * @return the WebApiVectorizerParameters object itself.
      */
-    @Generated
     public WebApiVectorizerParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
@@ -222,7 +202,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -243,7 +222,6 @@ public final class WebApiVectorizerParameters implements JsonSerializable<WebApi
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WebApiVectorizerParameters.
      */
-    @Generated
     public static WebApiVectorizerParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebApiVectorizerParameters deserializedWebApiVectorizerParameters = new WebApiVectorizerParameters();

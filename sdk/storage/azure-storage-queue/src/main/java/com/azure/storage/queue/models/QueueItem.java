@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,19 +23,16 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     /*
      * The name of the Queue.
      */
-    @Generated
     private String name;
 
     /*
      * Dictionary of <string>
      */
-    @Generated
     private Map<String, String> metadata;
 
     /**
      * Creates an instance of QueueItem class.
      */
-    @Generated
     public QueueItem() {
     }
 
@@ -44,7 +41,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -55,7 +51,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * @param name the name value to set.
      * @return the QueueItem object itself.
      */
-    @Generated
     public QueueItem setName(String name) {
         this.name = name;
         return this;
@@ -66,7 +61,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * 
      * @return the metadata value.
      */
-    @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
@@ -77,22 +71,19 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * @param metadata the metadata value to set.
      * @return the QueueItem object itself.
      */
-    @Generated
     public QueueItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Queue" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queue" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Name", this.name);
         if (this.metadata != null) {
@@ -113,7 +104,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueItem.
      */
-    @Generated
     public static QueueItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -128,9 +118,8 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueItem.
      */
-    @Generated
     public static QueueItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Queue" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queue" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueItem deserializedQueueItem = new QueueItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

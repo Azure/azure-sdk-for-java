@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +23,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * value may improve recall and reduce retrieval times for datasets with high intrinsic dimensionality at the
      * expense of increased memory consumption and longer indexing time.
      */
-    @Generated
     private Integer m;
 
     /*
@@ -32,7 +30,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * parameter may improve index quality, at the expense of increased indexing time. At a certain point, increasing
      * this parameter leads to diminishing returns.
      */
-    @Generated
     private Integer efConstruction;
 
     /*
@@ -40,19 +37,16 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * parameter may improve search results, at the expense of slower search. At a certain point, increasing this
      * parameter leads to diminishing returns.
      */
-    @Generated
     private Integer efSearch;
 
     /*
      * The similarity metric to use for vector comparisons.
      */
-    @Generated
     private VectorSearchAlgorithmMetric metric;
 
     /**
      * Creates an instance of HnswParameters class.
      */
-    @Generated
     public HnswParameters() {
     }
 
@@ -63,7 +57,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * 
      * @return the m value.
      */
-    @Generated
     public Integer getM() {
         return this.m;
     }
@@ -76,7 +69,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * @param m the m value to set.
      * @return the HnswParameters object itself.
      */
-    @Generated
     public HnswParameters setM(Integer m) {
         this.m = m;
         return this;
@@ -89,7 +81,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * 
      * @return the efConstruction value.
      */
-    @Generated
     public Integer getEfConstruction() {
         return this.efConstruction;
     }
@@ -102,7 +93,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * @param efConstruction the efConstruction value to set.
      * @return the HnswParameters object itself.
      */
-    @Generated
     public HnswParameters setEfConstruction(Integer efConstruction) {
         this.efConstruction = efConstruction;
         return this;
@@ -115,7 +105,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * 
      * @return the efSearch value.
      */
-    @Generated
     public Integer getEfSearch() {
         return this.efSearch;
     }
@@ -128,7 +117,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * @param efSearch the efSearch value to set.
      * @return the HnswParameters object itself.
      */
-    @Generated
     public HnswParameters setEfSearch(Integer efSearch) {
         this.efSearch = efSearch;
         return this;
@@ -139,7 +127,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * 
      * @return the metric value.
      */
-    @Generated
     public VectorSearchAlgorithmMetric getMetric() {
         return this.metric;
     }
@@ -150,7 +137,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * @param metric the metric value to set.
      * @return the HnswParameters object itself.
      */
-    @Generated
     public HnswParameters setMetric(VectorSearchAlgorithmMetric metric) {
         this.metric = metric;
         return this;
@@ -159,7 +145,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,7 +163,6 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HnswParameters.
      */
-    @Generated
     public static HnswParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HnswParameters deserializedHnswParameters = new HnswParameters();

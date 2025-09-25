@@ -26,7 +26,7 @@ public class IndexBatchExceptionTests {
     @Test
     public void clientShouldNotRetrySuccessfulBatch() {
         IndexDocumentsResult result
-            = new IndexDocumentsResult(Arrays.asList(createSucceededResult(), createResult("2")));
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createResult("2")));
 
         assertRetryBatchEmpty(result);
     }
@@ -42,7 +42,7 @@ public class IndexBatchExceptionTests {
     @Test
     public void clientShouldNotRetryBatchWithSuccessesAndNonRetriableFailures() {
         IndexDocumentsResult result
-            = new IndexDocumentsResult(Arrays.asList(createSucceededResult(), createFailedResult("2", 500),
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createFailedResult("2", 500),
                 createFailedResult("3", 404), createResult("4"), createFailedResult("5", 400)));
 
         assertRetryBatchEmpty(result);
@@ -59,7 +59,7 @@ public class IndexBatchExceptionTests {
     @Test
     public void clientShouldRetryBatchWithSomeRetriableFailures() {
         IndexDocumentsResult result
-            = new IndexDocumentsResult(Arrays.asList(createSucceededResult(), createFailedResult("2", 500),
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createFailedResult("2", 500),
                 createFailedResult("3", 422), createFailedResult("4", 404), createFailedResult("5", 409),
                 createFailedResult("6", 400), createResult("7"), createFailedResult("8", 503)));
 
@@ -69,7 +69,7 @@ public class IndexBatchExceptionTests {
     @Test
     public void clientShouldNotRetryResultWithUnexpectedStatusCode() {
         IndexDocumentsResult result = new IndexDocumentsResult(
-            Arrays.asList(createSucceededResult(), createFailedResult("2", 502), createFailedResult("3", 503)));
+            Arrays.asList(createSucceededResult("1"), createFailedResult("2", 502), createFailedResult("3", 503)));
 
         assertRetryBatchContains(result, Collections.singletonList("3"));
     }
@@ -122,8 +122,8 @@ public class IndexBatchExceptionTests {
         return exception.findFailedActionsToRetry(originalBatch, Hotel::getHotelId);
     }
 
-    private static IndexingResult createSucceededResult() {
-        return new IndexingResult("1", true, 200);
+    private static IndexingResult createSucceededResult(String key) {
+        return new IndexingResult(key, true, 200);
     }
 
     private static IndexingResult createResult(String key) {

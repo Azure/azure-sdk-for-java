@@ -27,7 +27,7 @@ public class SuggestOptionsHandlerTests {
         assertEquals(suggestOptions.getSelect(), emptySelect);
 
         SuggestOptions ensuredSuggestOptions = Utility.ensureSuggestOptions(suggestOptions);
-        assertEquals(SELECT_STAR, ensuredSuggestOptions.getSelect());
+        assertEquals(ensuredSuggestOptions.getSelect(), SELECT_STAR);
     }
 
     @Test

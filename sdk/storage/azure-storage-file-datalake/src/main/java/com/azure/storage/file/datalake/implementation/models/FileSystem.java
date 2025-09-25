@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
     /*
      * The name property.
      */
-    @Generated
     private String name;
 
     /*
      * The lastModified property.
      */
-    @Generated
     private String lastModified;
 
     /*
      * The eTag property.
      */
-    @Generated
     private String eTag;
 
     /**
      * Creates an instance of FileSystem class.
      */
-    @Generated
     public FileSystem() {
     }
 
@@ -47,7 +42,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -58,7 +52,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * @param name the name value to set.
      * @return the FileSystem object itself.
      */
-    @Generated
     public FileSystem setName(String name) {
         this.name = name;
         return this;
@@ -69,7 +62,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public String getLastModified() {
         return this.lastModified;
     }
@@ -80,7 +72,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * @param lastModified the lastModified value to set.
      * @return the FileSystem object itself.
      */
-    @Generated
     public FileSystem setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
@@ -91,7 +82,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -102,7 +92,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * @param eTag the eTag value to set.
      * @return the FileSystem object itself.
      */
-    @Generated
     public FileSystem setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -111,7 +100,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +117,6 @@ public final class FileSystem implements JsonSerializable<FileSystem> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the FileSystem.
      */
-    @Generated
     public static FileSystem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FileSystem deserializedFileSystem = new FileSystem();

@@ -6,13 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter.
@@ -23,20 +22,17 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     /*
      * A URI fragment specifying the type of analyzer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
      * length that can be used is 300 characters.
      */
-    @Generated
     private Integer maxTokenLength;
 
     /*
      * A list of stopwords.
      */
-    @Generated
     private List<String> stopwords;
 
     /**
@@ -44,7 +40,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      *
      * @param name the name value to set.
      */
-    @Generated
     public LuceneStandardAnalyzer(String name) {
         super(name);
     }
@@ -54,7 +49,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -66,7 +60,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      *
      * @return the maxTokenLength value.
      */
-    @Generated
     public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
@@ -78,7 +71,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the LuceneStandardAnalyzer object itself.
      */
-    @Generated
     public LuceneStandardAnalyzer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
@@ -89,7 +81,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      *
      * @return the stopwords value.
      */
-    @Generated
     public List<String> getStopwords() {
         return this.stopwords;
     }
@@ -100,7 +91,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the LuceneStandardAnalyzer object itself.
      */
-    @Generated
     public LuceneStandardAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
@@ -109,7 +99,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +118,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LuceneStandardAnalyzer.
      */
-    @Generated
     public static LuceneStandardAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

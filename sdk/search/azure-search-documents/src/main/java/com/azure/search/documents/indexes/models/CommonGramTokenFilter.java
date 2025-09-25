@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,26 +23,22 @@ public final class CommonGramTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.CommonGramTokenFilter";
 
     /*
      * The set of common words.
      */
-    @Generated
     private final List<String> commonWords;
 
     /*
      * A value indicating whether common words matching will be case insensitive. Default is false.
      */
-    @Generated
     private Boolean caseIgnored;
 
     /*
      * A value that indicates whether the token filter is in query mode. When in query mode, the token filter generates
      * bigrams and then removes common words and single terms followed by a common word. Default is false.
      */
-    @Generated
     private Boolean queryModeUsed;
 
     /**
@@ -52,7 +47,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param commonWords the commonWords value to set.
      */
-    @Generated
     public CommonGramTokenFilter(String name, List<String> commonWords) {
         super(name);
         this.commonWords = commonWords;
@@ -63,7 +57,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -74,7 +67,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * 
      * @return the commonWords value.
      */
-    @Generated
     public List<String> getCommonWords() {
         return this.commonWords;
     }
@@ -85,7 +77,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * 
      * @return the caseIgnored value.
      */
-    @Generated
     public Boolean isCaseIgnored() {
         return this.caseIgnored;
     }
@@ -97,7 +88,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param caseIgnored the caseIgnored value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    @Generated
     public CommonGramTokenFilter setCaseIgnored(Boolean caseIgnored) {
         this.caseIgnored = caseIgnored;
         return this;
@@ -110,7 +100,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * 
      * @return the queryModeUsed value.
      */
-    @Generated
     public Boolean isQueryModeUsed() {
         return this.queryModeUsed;
     }
@@ -123,7 +112,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param queryModeUsed the queryModeUsed value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    @Generated
     public CommonGramTokenFilter setQueryModeUsed(Boolean queryModeUsed) {
         this.queryModeUsed = queryModeUsed;
         return this;
@@ -132,7 +120,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -153,7 +140,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommonGramTokenFilter.
      */
-    @Generated
     public static CommonGramTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

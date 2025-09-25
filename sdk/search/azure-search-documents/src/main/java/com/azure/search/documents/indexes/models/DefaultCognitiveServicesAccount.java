@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,13 +20,11 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /*
      * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
     /**
      * Creates an instance of DefaultCognitiveServicesAccount class.
      */
-    @Generated
     public DefaultCognitiveServicesAccount() {
     }
 
@@ -37,7 +34,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -46,7 +42,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public DefaultCognitiveServicesAccount setDescription(String description) {
         super.setDescription(description);
@@ -56,7 +51,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +67,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DefaultCognitiveServicesAccount.
      */
-    @Generated
     public static DefaultCognitiveServicesAccount fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DefaultCognitiveServicesAccount deserializedDefaultCognitiveServicesAccount

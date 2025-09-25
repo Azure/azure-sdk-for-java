@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -42,13 +41,6 @@ public @interface SearchableField {
      * @return A flag indicating if the field or method should generate as a facetable {@link SearchField field}.
      */
     boolean isFacetable() default false;
-
-    /**
-     * Indicates if the field or method should be used as a permission filter {@link SearchField field}.
-     *
-     * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
-     */
-    String permissionFilter() default "";
 
     /**
      * Indicates if the field or method should generate as a sortable {@link SearchField field}.
@@ -94,14 +86,6 @@ public @interface SearchableField {
      * {@link SearchField field}.
      */
     String indexAnalyzerName() default "";
-
-    /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
 
     /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.

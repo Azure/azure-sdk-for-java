@@ -4,7 +4,6 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
     /**
      * Static value live for GeoReplicationStatus.
      */
-    @Generated
     public static final GeoReplicationStatus LIVE = fromString("live");
 
     /**
      * Static value bootstrap for GeoReplicationStatus.
      */
-    @Generated
     public static final GeoReplicationStatus BOOTSTRAP = fromString("bootstrap");
 
     /**
      * Static value unavailable for GeoReplicationStatus.
      */
-    @Generated
     public static final GeoReplicationStatus UNAVAILABLE = fromString("unavailable");
 
     /**
@@ -35,7 +31,6 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public GeoReplicationStatus() {
     }
@@ -46,7 +41,6 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
      * @param name a name to look for.
      * @return the corresponding GeoReplicationStatus.
      */
-    @Generated
     public static GeoReplicationStatus fromString(String name) {
         return fromString(name, GeoReplicationStatus.class);
     }
@@ -56,7 +50,6 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
      * 
      * @return known GeoReplicationStatus values.
      */
-    @Generated
     public static Collection<GeoReplicationStatus> values() {
         return values(GeoReplicationStatus.class);
     }

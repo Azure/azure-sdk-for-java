@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,53 +23,45 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.PIIDetectionSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
-    @Generated
     private String defaultLanguageCode;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose confidence score is greater than the value
      * specified. If not set (default), or if explicitly set to null, all entities will be included.
      */
-    @Generated
     private Double minimumPrecision;
 
     /*
      * A parameter that provides various ways to mask the personal information detected in the input text. Default is
      * 'none'.
      */
-    @Generated
     private PiiDetectionSkillMaskingMode maskingMode;
 
     /*
      * The character used to mask the text if the maskingMode parameter is set to replace. Default is '*'.
      */
-    @Generated
     private String mask;
 
     /*
      * The version of the model to use when calling the Text Analytics service. It will default to the latest available
      * when not specified. We recommend you do not specify this value unless absolutely necessary.
      */
-    @Generated
     private String modelVersion;
 
     /*
      * A list of PII entity categories that should be extracted and masked.
      */
-    @Generated
     private List<String> piiCategories;
 
     /*
      * If specified, will set the PII domain to include only a subset of the entity categories. Possible values include:
      * 'phi', 'none'. Default is 'none'.
      */
-    @Generated
     private String domain;
 
     /**
@@ -79,7 +70,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public PiiDetectionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -89,7 +79,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -100,7 +89,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
-    @Generated
     public String getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -111,7 +99,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setDefaultLanguageCode(String defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -124,7 +111,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the minimumPrecision value.
      */
-    @Generated
     public Double getMinimumPrecision() {
         return this.minimumPrecision;
     }
@@ -137,7 +123,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
@@ -149,7 +134,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the maskingMode value.
      */
-    @Generated
     public PiiDetectionSkillMaskingMode getMaskingMode() {
         return this.maskingMode;
     }
@@ -161,7 +145,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param maskingMode the maskingMode value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setMaskingMode(PiiDetectionSkillMaskingMode maskingMode) {
         this.maskingMode = maskingMode;
         return this;
@@ -173,7 +156,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the mask value.
      */
-    @Generated
     public String getMask() {
         return this.mask;
     }
@@ -185,7 +167,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param mask the mask value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setMask(String mask) {
         this.mask = mask;
         return this;
@@ -198,7 +179,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the modelVersion value.
      */
-    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -211,7 +191,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param modelVersion the modelVersion value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -222,7 +201,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the piiCategories value.
      */
-    @Generated
     public List<String> getPiiCategories() {
         return this.piiCategories;
     }
@@ -233,7 +211,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param piiCategories the piiCategories value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setPiiCategories(List<String> piiCategories) {
         this.piiCategories = piiCategories;
         return this;
@@ -245,7 +222,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the domain value.
      */
-    @Generated
     public String getDomain() {
         return this.domain;
     }
@@ -257,7 +233,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param domain the domain value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    @Generated
     public PiiDetectionSkill setDomain(String domain) {
         this.domain = domain;
         return this;
@@ -266,7 +241,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiDetectionSkill setName(String name) {
         super.setName(name);
@@ -276,7 +250,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiDetectionSkill setDescription(String description) {
         super.setDescription(description);
@@ -286,7 +259,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public PiiDetectionSkill setContext(String context) {
         super.setContext(context);
@@ -296,7 +268,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -326,7 +297,6 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiDetectionSkill.
      */
-    @Generated
     public static PiiDetectionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

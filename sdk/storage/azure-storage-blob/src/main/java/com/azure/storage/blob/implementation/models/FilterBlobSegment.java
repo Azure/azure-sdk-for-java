@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,31 +23,26 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
     /*
      * The ServiceEndpoint property.
      */
-    @Generated
     private String serviceEndpoint;
 
     /*
      * The Where property.
      */
-    @Generated
     private String where;
 
     /*
      * The Blobs property.
      */
-    @Generated
     private List<FilterBlobItem> blobs;
 
     /*
      * The NextMarker property.
      */
-    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of FilterBlobSegment class.
      */
-    @Generated
     public FilterBlobSegment() {
     }
 
@@ -56,7 +51,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * 
      * @return the serviceEndpoint value.
      */
-    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -67,7 +61,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the FilterBlobSegment object itself.
      */
-    @Generated
     public FilterBlobSegment setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -78,7 +71,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * 
      * @return the where value.
      */
-    @Generated
     public String getWhere() {
         return this.where;
     }
@@ -89,7 +81,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * @param where the where value to set.
      * @return the FilterBlobSegment object itself.
      */
-    @Generated
     public FilterBlobSegment setWhere(String where) {
         this.where = where;
         return this;
@@ -100,7 +91,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * 
      * @return the blobs value.
      */
-    @Generated
     public List<FilterBlobItem> getBlobs() {
         if (this.blobs == null) {
             this.blobs = new ArrayList<>();
@@ -114,7 +104,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * @param blobs the blobs value to set.
      * @return the FilterBlobSegment object itself.
      */
-    @Generated
     public FilterBlobSegment setBlobs(List<FilterBlobItem> blobs) {
         this.blobs = blobs;
         return this;
@@ -125,7 +114,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * 
      * @return the nextMarker value.
      */
-    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -136,22 +124,19 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * @param nextMarker the nextMarker value to set.
      * @return the FilterBlobSegment object itself.
      */
-    @Generated
     public FilterBlobSegment setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringElement("Where", this.where);
@@ -174,7 +159,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilterBlobSegment.
      */
-    @Generated
     public static FilterBlobSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -189,10 +173,8 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilterBlobSegment.
      */
-    @Generated
     public static FilterBlobSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             FilterBlobSegment deserializedFilterBlobSegment = new FilterBlobSegment();
             deserializedFilterBlobSegment.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");

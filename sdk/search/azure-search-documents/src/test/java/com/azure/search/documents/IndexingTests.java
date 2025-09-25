@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
@@ -72,7 +72,7 @@ public class IndexingTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestBase.setupClass();
+        TestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -461,7 +461,7 @@ public class IndexingTests extends SearchTestBase {
         Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(false), Context.NONE);
         List<IndexingResult> results = resultResponse.getValue().getResults();
-        assertEquals(207, resultResponse.getStatusCode());
+        assertEquals(resultResponse.getStatusCode(), 207);
         assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
         assertSuccessfulIndexResult(results.get(1), "randomId", 200);
         assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
@@ -504,7 +504,7 @@ public class IndexingTests extends SearchTestBase {
                 asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false)))
             .assertNext(resultResponse -> {
                 List<IndexingResult> results = resultResponse.getValue().getResults();
-                assertEquals(207, resultResponse.getStatusCode());
+                assertEquals(resultResponse.getStatusCode(), 207);
                 assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
                 assertSuccessfulIndexResult(results.get(1), "randomId", 200);
                 assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
@@ -1148,7 +1148,7 @@ public class IndexingTests extends SearchTestBase {
     static void assertFailedIndexResult(IndexingResult result, String key, int statusCode) {
         assertEquals(result.getKey(), key);
         assertEquals(result.getStatusCode(), statusCode);
-        assertEquals("Document not found.", result.getErrorMessage());
+        assertEquals(result.getErrorMessage(), "Document not found.");
         assertFalse(result.isSucceeded());
     }
 

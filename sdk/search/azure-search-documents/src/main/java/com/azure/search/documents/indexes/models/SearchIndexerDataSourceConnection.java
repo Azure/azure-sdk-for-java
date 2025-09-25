@@ -6,14 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.DataSourceCredentials;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Represents a datasource definition, which can be used to configure an indexer.
@@ -24,70 +22,41 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     /*
      * The name of the datasource.
      */
-    @Generated
     private final String name;
 
     /*
      * The description of the datasource.
      */
-    @Generated
     private String description;
 
     /*
      * The type of the datasource.
      */
-    @Generated
     private SearchIndexerDataSourceType type;
-
-    /*
-     * A specific type of the data source, in case the resource is capable of different modalities. For example,
-     * 'MongoDb' for certain 'cosmosDb' accounts.
-     */
-    @Generated
-    private String subType;
 
     /*
      * Credentials for the datasource.
      */
-    @Generated
     private DataSourceCredentials credentials;
 
     /*
      * The data container for the datasource.
      */
-    @Generated
     private SearchIndexerDataContainer container;
-
-    /*
-     * An explicit managed identity to use for this datasource. If not specified and the connection string is a managed
-     * identity, the system-assigned managed identity is used. If not specified, the value remains unchanged. If "none"
-     * is specified, the value of this property is cleared.
-     */
-    @Generated
-    private SearchIndexerDataIdentity identity;
-
-    /*
-     * Ingestion options with various types of permission data.
-     */
-    @Generated
-    private List<IndexerPermissionOption> indexerPermissionOptions;
 
     /*
      * The data change detection policy for the datasource.
      */
-    @Generated
     private DataChangeDetectionPolicy dataChangeDetectionPolicy;
 
     /*
      * The data deletion detection policy for the datasource.
      */
-    @Generated
     private DataDeletionDetectionPolicy dataDeletionDetectionPolicy;
 
     /*
      * The ETag of the data source.
      */
-    @Generated
     private String eTag;
 
     /*
@@ -99,7 +68,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * Encryption with customer-managed keys is not available for free search services, and is only available for paid
      * services created on or after January 1, 2019.
      */
-    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /**
@@ -107,7 +75,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @param name the name value to set.
      */
-    @Generated
     public SearchIndexerDataSourceConnection(String name) {
         this.name = name;
     }
@@ -117,7 +84,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -127,7 +93,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -138,7 +103,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param description the description value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection setDescription(String description) {
         this.description = description;
         return this;
@@ -149,7 +113,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the type value.
      */
-    @Generated
     public SearchIndexerDataSourceType getType() {
         return this.type;
     }
@@ -160,21 +123,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param type the type value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection setType(SearchIndexerDataSourceType type) {
         this.type = type;
         return this;
-    }
-
-    /**
-     * Get the subType property: A specific type of the data source, in case the resource is capable of different
-     * modalities. For example, 'MongoDb' for certain 'cosmosDb' accounts.
-     *
-     * @return the subType value.
-     */
-    @Generated
-    public String getSubType() {
-        return this.subType;
     }
 
     /**
@@ -182,7 +133,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the container value.
      */
-    @Generated
     public SearchIndexerDataContainer getContainer() {
         return this.container;
     }
@@ -193,58 +143,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param container the container value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection setContainer(SearchIndexerDataContainer container) {
         this.container = container;
-        return this;
-    }
-
-    /**
-     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @return the identity value.
-     */
-    @Generated
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    @Generated
-    public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the indexerPermissionOptions property: Ingestion options with various types of permission data.
-     *
-     * @return the indexerPermissionOptions value.
-     */
-    @Generated
-    public List<IndexerPermissionOption> getIndexerPermissionOptions() {
-        return this.indexerPermissionOptions;
-    }
-
-    /**
-     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
-     *
-     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    @Generated
-    public SearchIndexerDataSourceConnection
-        setIndexerPermissionOptions(List<IndexerPermissionOption> indexerPermissionOptions) {
-        this.indexerPermissionOptions = indexerPermissionOptions;
         return this;
     }
 
@@ -253,7 +153,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the dataChangeDetectionPolicy value.
      */
-    @Generated
     public DataChangeDetectionPolicy getDataChangeDetectionPolicy() {
         return this.dataChangeDetectionPolicy;
     }
@@ -264,7 +163,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection
         setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
@@ -276,7 +174,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the dataDeletionDetectionPolicy value.
      */
-    @Generated
     public DataDeletionDetectionPolicy getDataDeletionDetectionPolicy() {
         return this.dataDeletionDetectionPolicy;
     }
@@ -287,7 +184,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection
         setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
@@ -299,7 +195,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -310,7 +205,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param eTag the eTag value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -327,7 +221,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @return the encryptionKey value.
      */
-    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -344,7 +237,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    @Generated
     public SearchIndexerDataSourceConnection setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -353,7 +245,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -362,9 +253,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("credentials", this.credentials);
         jsonWriter.writeJsonField("container", this.container);
-        jsonWriter.writeJsonField("identity", this.identity);
-        jsonWriter.writeArrayField("indexerPermissionOptions", this.indexerPermissionOptions,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("dataChangeDetectionPolicy", this.dataChangeDetectionPolicy);
         jsonWriter.writeJsonField("dataDeletionDetectionPolicy", this.dataDeletionDetectionPolicy);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
@@ -381,18 +269,14 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataSourceConnection.
      */
-    @Generated
     public static SearchIndexerDataSourceConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
             String description = null;
             SearchIndexerDataSourceType type = null;
-            String subType = null;
             DataSourceCredentials credentials = null;
             SearchIndexerDataContainer container = null;
-            SearchIndexerDataIdentity identity = null;
-            List<IndexerPermissionOption> indexerPermissionOptions = null;
             DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
             DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
             String eTag = null;
@@ -407,17 +291,10 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     description = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = SearchIndexerDataSourceType.fromString(reader.getString());
-                } else if ("subType".equals(fieldName)) {
-                    subType = reader.getString();
                 } else if ("credentials".equals(fieldName)) {
                     credentials = DataSourceCredentials.fromJson(reader);
                 } else if ("container".equals(fieldName)) {
                     container = SearchIndexerDataContainer.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
-                } else if ("indexerPermissionOptions".equals(fieldName)) {
-                    indexerPermissionOptions
-                        = reader.readArray(reader1 -> IndexerPermissionOption.fromString(reader1.getString()));
                 } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
                     dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
                 } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
@@ -435,11 +312,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     = new SearchIndexerDataSourceConnection(name);
                 deserializedSearchIndexerDataSourceConnection.description = description;
                 deserializedSearchIndexerDataSourceConnection.type = type;
-                deserializedSearchIndexerDataSourceConnection.subType = subType;
                 deserializedSearchIndexerDataSourceConnection.credentials = credentials;
                 deserializedSearchIndexerDataSourceConnection.container = container;
-                deserializedSearchIndexerDataSourceConnection.identity = identity;
-                deserializedSearchIndexerDataSourceConnection.indexerPermissionOptions = indexerPermissionOptions;
                 deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.eTag = eTag;

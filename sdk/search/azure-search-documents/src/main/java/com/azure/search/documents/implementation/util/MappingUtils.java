@@ -34,50 +34,84 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static java.util.stream.Collectors.toList;
+
 public class MappingUtils {
 
     public static PagedResponse<SearchIndexerDataSourceConnection>
-        mapPagedDataSources(Response<ListDataSourcesResult> response) {
-        return pagedResponse(response, response.getValue().getDataSources());
+        mappingPagingDataSource(Response<ListDataSourcesResult> dataSourceResponse) {
+        List<SearchIndexerDataSourceConnection> dataSourceMaps = dataSourceResponse.getValue().getDataSources();
+        return new PagedResponseBase<HttpHeaders, SearchIndexerDataSourceConnection>(dataSourceResponse.getRequest(),
+            dataSourceResponse.getStatusCode(), dataSourceResponse.getHeaders(), dataSourceMaps, null, null);
     }
 
-    public static PagedResponse<String> mapPagedDataSourceNames(Response<ListDataSourcesResult> response) {
-        return pagedResponse(response,
-            mapToNames(response.getValue().getDataSources(), SearchIndexerDataSourceConnection::getName));
+    public static PagedResponse<String>
+        mappingPagingDataSourceNames(Response<ListDataSourcesResult> dataSourceResponse) {
+        List<String> dataSourceNames = dataSourceResponse.getValue()
+            .getDataSources()
+            .stream()
+            .map(SearchIndexerDataSourceConnection::getName)
+            .collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(dataSourceResponse.getRequest(),
+            dataSourceResponse.getStatusCode(), dataSourceResponse.getHeaders(), dataSourceNames, null, null);
     }
 
-    public static PagedResponse<String> mapPagedSearchIndexNames(PagedResponse<SearchIndex> response) {
-        return new PagedResponseBase<HttpHeaders, String>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), mapToNames(response.getValue(), SearchIndex::getName),
-            response.getContinuationToken(), null);
+    public static PagedResponse<String> mappingPagingSearchIndexNames(PagedResponse<SearchIndex> searchIndexResponse) {
+        List<String> pageItems = new ArrayList<>();
+        searchIndexResponse.getValue().forEach(item -> pageItems.add(item.getName()));
+        return new PagedResponseBase<HttpHeaders, String>(searchIndexResponse.getRequest(),
+            searchIndexResponse.getStatusCode(), searchIndexResponse.getHeaders(), pageItems,
+            searchIndexResponse.getContinuationToken(), null);
     }
 
-    public static PagedResponse<SearchIndexer> mapPagedSearchIndexers(Response<ListIndexersResult> response) {
-        return pagedResponse(response, response.getValue().getIndexers());
+    public static PagedResponse<SearchIndexer>
+        mappingPagingSearchIndexer(Response<ListIndexersResult> searchIndexerResponse) {
+        List<SearchIndexer> searchIndexers = searchIndexerResponse.getValue().getIndexers();
+        return new PagedResponseBase<HttpHeaders, SearchIndexer>(searchIndexerResponse.getRequest(),
+            searchIndexerResponse.getStatusCode(), searchIndexerResponse.getHeaders(), searchIndexers, null, null);
     }
 
-    public static PagedResponse<String> mapPagedSearchIndexerNames(Response<ListIndexersResult> response) {
-        return pagedResponse(response, mapToNames(response.getValue().getIndexers(), SearchIndexer::getName));
+    public static PagedResponse<String>
+        mappingPagingSearchIndexerNames(Response<ListIndexersResult> searchIndexerResponse) {
+        List<String> searchIndexerNames
+            = searchIndexerResponse.getValue().getIndexers().stream().map(SearchIndexer::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(searchIndexerResponse.getRequest(),
+            searchIndexerResponse.getStatusCode(), searchIndexerResponse.getHeaders(), searchIndexerNames, null, null);
     }
 
-    public static PagedResponse<SearchIndexerSkillset> mapPagedSkillsets(Response<ListSkillsetsResult> response) {
-        return pagedResponse(response, response.getValue().getSkillsets());
+    public static PagedResponse<SearchIndexerSkillset>
+        mappingPagingSkillset(Response<ListSkillsetsResult> skillsetResponse) {
+        return new PagedResponseBase<HttpHeaders, SearchIndexerSkillset>(skillsetResponse.getRequest(),
+            skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(), skillsetResponse.getValue().getSkillsets(),
+            null, null);
     }
 
-    public static PagedResponse<String> mapPagedSkillsetNames(Response<ListSkillsetsResult> response) {
-        return pagedResponse(response, mapToNames(response.getValue().getSkillsets(), SearchIndexerSkillset::getName));
+    public static PagedResponse<String> mappingPagingSkillsetNames(Response<ListSkillsetsResult> skillsetResponse) {
+        List<String> skillsetNames
+            = skillsetResponse.getValue().getSkillsets().stream().map(SearchIndexerSkillset::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(skillsetResponse.getRequest(),
+            skillsetResponse.getStatusCode(), skillsetResponse.getHeaders(), skillsetNames, null, null);
     }
 
-    public static PagedResponse<SynonymMap> mapPagedSynonymMaps(Response<ListSynonymMapsResult> response) {
-        return pagedResponse(response, response.getValue().getSynonymMaps());
+    public static PagedResponse<SynonymMap>
+        mappingPagingSynonymMap(Response<ListSynonymMapsResult> synonymMapResponse) {
+        return new PagedResponseBase<HttpHeaders, SynonymMap>(synonymMapResponse.getRequest(),
+            synonymMapResponse.getStatusCode(), synonymMapResponse.getHeaders(),
+            synonymMapResponse.getValue().getSynonymMaps(), null, null);
     }
 
-    public static PagedResponse<String> mapPagedSynonymMapNames(Response<ListSynonymMapsResult> response) {
-        return pagedResponse(response, mapToNames(response.getValue().getSynonymMaps(), SynonymMap::getName));
+    public static PagedResponse<String>
+        mappingPagingSynonymMapNames(Response<ListSynonymMapsResult> synonymMapsResponse) {
+        List<String> synonymMapNames
+            = synonymMapsResponse.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(toList());
+        return new PagedResponseBase<HttpHeaders, String>(synonymMapsResponse.getRequest(),
+            synonymMapsResponse.getStatusCode(), synonymMapsResponse.getHeaders(), synonymMapNames, null, null);
     }
 
-    public static PagedResponse<AnalyzedTokenInfo> mapPagedTokenInfos(Response<AnalyzeResult> response) {
-        return pagedResponse(response, response.getValue().getTokens());
+    public static PagedResponse<AnalyzedTokenInfo> mappingTokenInfo(Response<AnalyzeResult> resultResponse) {
+        List<AnalyzedTokenInfo> tokenInfos = resultResponse.getValue().getTokens();
+        return new PagedResponseBase<HttpHeaders, AnalyzedTokenInfo>(resultResponse.getRequest(),
+            resultResponse.getStatusCode(), resultResponse.getHeaders(), tokenInfos, null, null);
     }
 
     public static Throwable exceptionMapper(Throwable throwable) {
@@ -240,14 +274,5 @@ public class MappingUtils {
         }
 
         configuration.put(key, String.valueOf(value));
-    }
-
-    private static <T> PagedResponse<T> pagedResponse(Response<?> response, List<T> values) {
-        return new PagedResponseBase<HttpHeaders, T>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), values, null, null);
-    }
-
-    private static <T> List<String> mapToNames(List<T> values, Function<T, String> mapper) {
-        return values.stream().map(mapper).collect(() -> new ArrayList<>(values.size()), List::add, List::addAll);
     }
 }

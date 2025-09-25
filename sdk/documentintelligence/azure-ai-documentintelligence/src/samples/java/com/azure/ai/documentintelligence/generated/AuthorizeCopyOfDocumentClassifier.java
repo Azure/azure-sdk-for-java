@@ -17,9 +17,9 @@ public class AuthorizeCopyOfDocumentClassifier {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.authorize-classifier-copy.authorize-copy-of-document-classifier
+        // BEGIN:com.azure.ai.documentintelligence.generated.authorizeclassifiercopy.authorizecopyofdocumentclassifier
         ClassifierCopyAuthorization response = documentIntelligenceAdministrationClient.authorizeClassifierCopy(
             new AuthorizeClassifierCopyOptions("targetClassifier").setDescription("Target classifier description"));
-        // END:com.azure.ai.documentintelligence.generated.authorize-classifier-copy.authorize-copy-of-document-classifier
+        // END:com.azure.ai.documentintelligence.generated.authorizeclassifiercopy.authorizecopyofdocumentclassifier
     }
 }

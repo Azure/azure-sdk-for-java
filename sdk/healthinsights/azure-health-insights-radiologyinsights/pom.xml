@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-health-insights-radiologyinsights</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-health-insights-radiologyinsights;current} -->
+  <version>1.1.4</version> <!-- {x-version-update;com.azure:azure-health-insights-radiologyinsights;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Health Insights - Radiology Insights</name>
@@ -45,7 +45,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.3</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
   <dependencies>
     <dependency>

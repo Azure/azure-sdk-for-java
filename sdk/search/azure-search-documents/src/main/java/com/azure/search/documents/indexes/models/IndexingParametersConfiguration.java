@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,34 +24,29 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /*
      * Represents the parsing mode for indexing from an Azure blob data source.
      */
-    @Generated
     private BlobIndexerParsingMode parsingMode;
 
     /*
      * Comma-delimited list of filename extensions to ignore when processing from Azure blob storage. For example, you
      * could exclude ".png, .mp4" to skip over those files during indexing.
      */
-    @Generated
     private String excludedFileNameExtensions;
 
     /*
      * Comma-delimited list of filename extensions to select when processing from Azure blob storage. For example, you
      * could focus indexing on specific application files ".docx, .pptx, .msg" to specifically include those file types.
      */
-    @Generated
     private String indexedFileNameExtensions;
 
     /*
      * For Azure blobs, set to false if you want to continue indexing when an unsupported content type is encountered,
      * and you don't know all the content types (file extensions) in advance.
      */
-    @Generated
     private Boolean failOnUnsupportedContentType;
 
     /*
      * For Azure blobs, set to false if you want to continue indexing if a document fails indexing.
      */
-    @Generated
     private Boolean failOnUnprocessableDocument;
 
     /*
@@ -60,47 +54,29 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * process. Oversized blobs are treated as errors by default. For limits on blob size, see
      * https://learn.microsoft.com/azure/search/search-limits-quotas-capacity.
      */
-    @Generated
     private Boolean indexStorageMetadataOnlyForOversizedDocuments;
 
     /*
      * For CSV blobs, specifies a comma-delimited list of column headers, useful for mapping source fields to
      * destination fields in an index.
      */
-    @Generated
     private String delimitedTextHeaders;
 
     /*
      * For CSV blobs, specifies the end-of-line single-character delimiter for CSV files where each line starts a new
      * document (for example, "|").
      */
-    @Generated
     private String delimitedTextDelimiter;
 
     /*
      * For CSV blobs, indicates that the first (non-blank) line of each blob contains headers.
      */
-    @Generated
     private Boolean firstLineContainsHeaders;
-
-    /*
-     * Specifies the submode that will determine whether a markdown file will be parsed into exactly one search document
-     * or multiple search documents. Default is `oneToMany`.
-     */
-    @Generated
-    private MarkdownParsingSubmode markdownParsingSubmode;
-
-    /*
-     * Specifies the max header depth that will be considered while grouping markdown content. Default is `h6`.
-     */
-    @Generated
-    private MarkdownHeaderDepth markdownHeaderDepth;
 
     /*
      * For JSON arrays, given a structured or semi-structured document, you can specify a path to the array using this
      * property.
      */
-    @Generated
     private String documentRoot;
 
     /*
@@ -108,14 +84,12 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * content when "imageAction" is set to a value other than "none". This applies to embedded image content in a .PDF
      * or other application, or image files such as .jpg and .png, in Azure blobs.
      */
-    @Generated
     private BlobIndexerDataToExtract dataToExtract;
 
     /*
      * Determines how to process embedded images and image files in Azure blob storage. Setting the "imageAction"
      * configuration to any value other than "none" requires that a skillset also be attached to that indexer.
      */
-    @Generated
     private BlobIndexerImageAction imageAction;
 
     /*
@@ -123,39 +97,33 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * downloaded from your blob data source. This allows you to pass the original file data to a custom skill for
      * processing within the enrichment pipeline, or to the Document Extraction skill.
      */
-    @Generated
     private Boolean allowSkillsetToReadFileData;
 
     /*
      * Determines algorithm for text extraction from PDF files in Azure blob storage.
      */
-    @Generated
     private BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm;
 
     /*
      * Specifies the environment in which the indexer should execute.
      */
-    @Generated
     private IndexerExecutionEnvironment executionEnvironment;
 
     /*
      * Increases the timeout beyond the 5-minute default for Azure SQL database data sources, specified in the format
      * "hh:mm:ss".
      */
-    @Generated
     private String queryTimeout;
 
     /*
      * A dictionary of indexer-specific configuration properties. Each name is the name of a specific property. Each
      * value must be of a primitive type.
      */
-    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IndexingParametersConfiguration class.
      */
-    @Generated
     public IndexingParametersConfiguration() {
     }
 
@@ -164,7 +132,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the parsingMode value.
      */
-    @Generated
     public BlobIndexerParsingMode getParsingMode() {
         return this.parsingMode;
     }
@@ -175,7 +142,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param parsingMode the parsingMode value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setParsingMode(BlobIndexerParsingMode parsingMode) {
         this.parsingMode = parsingMode;
         return this;
@@ -188,7 +154,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the excludedFileNameExtensions value.
      */
-    @Generated
     public String getExcludedFileNameExtensions() {
         return this.excludedFileNameExtensions;
     }
@@ -201,7 +166,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param excludedFileNameExtensions the excludedFileNameExtensions value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setExcludedFileNameExtensions(String excludedFileNameExtensions) {
         this.excludedFileNameExtensions = excludedFileNameExtensions;
         return this;
@@ -214,7 +178,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the indexedFileNameExtensions value.
      */
-    @Generated
     public String getIndexedFileNameExtensions() {
         return this.indexedFileNameExtensions;
     }
@@ -227,7 +190,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param indexedFileNameExtensions the indexedFileNameExtensions value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setIndexedFileNameExtensions(String indexedFileNameExtensions) {
         this.indexedFileNameExtensions = indexedFileNameExtensions;
         return this;
@@ -240,7 +202,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the failOnUnsupportedContentType value.
      */
-    @Generated
     public Boolean isFailOnUnsupportedContentType() {
         return this.failOnUnsupportedContentType;
     }
@@ -253,7 +214,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param failOnUnsupportedContentType the failOnUnsupportedContentType value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setFailOnUnsupportedContentType(Boolean failOnUnsupportedContentType) {
         this.failOnUnsupportedContentType = failOnUnsupportedContentType;
         return this;
@@ -265,7 +225,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the failOnUnprocessableDocument value.
      */
-    @Generated
     public Boolean isFailOnUnprocessableDocument() {
         return this.failOnUnprocessableDocument;
     }
@@ -277,7 +236,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param failOnUnprocessableDocument the failOnUnprocessableDocument value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setFailOnUnprocessableDocument(Boolean failOnUnprocessableDocument) {
         this.failOnUnprocessableDocument = failOnUnprocessableDocument;
         return this;
@@ -290,7 +248,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the indexStorageMetadataOnlyForOversizedDocuments value.
      */
-    @Generated
     public Boolean isIndexStorageMetadataOnlyForOversizedDocuments() {
         return this.indexStorageMetadataOnlyForOversizedDocuments;
     }
@@ -304,7 +261,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration
         setIndexStorageMetadataOnlyForOversizedDocuments(Boolean indexStorageMetadataOnlyForOversizedDocuments) {
         this.indexStorageMetadataOnlyForOversizedDocuments = indexStorageMetadataOnlyForOversizedDocuments;
@@ -317,7 +273,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the delimitedTextHeaders value.
      */
-    @Generated
     public String getDelimitedTextHeaders() {
         return this.delimitedTextHeaders;
     }
@@ -329,7 +284,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param delimitedTextHeaders the delimitedTextHeaders value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setDelimitedTextHeaders(String delimitedTextHeaders) {
         this.delimitedTextHeaders = delimitedTextHeaders;
         return this;
@@ -341,7 +295,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the delimitedTextDelimiter value.
      */
-    @Generated
     public String getDelimitedTextDelimiter() {
         return this.delimitedTextDelimiter;
     }
@@ -353,7 +306,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param delimitedTextDelimiter the delimitedTextDelimiter value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setDelimitedTextDelimiter(String delimitedTextDelimiter) {
         this.delimitedTextDelimiter = delimitedTextDelimiter;
         return this;
@@ -365,7 +317,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the firstLineContainsHeaders value.
      */
-    @Generated
     public Boolean isFirstLineContainsHeaders() {
         return this.firstLineContainsHeaders;
     }
@@ -377,57 +328,8 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param firstLineContainsHeaders the firstLineContainsHeaders value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setFirstLineContainsHeaders(Boolean firstLineContainsHeaders) {
         this.firstLineContainsHeaders = firstLineContainsHeaders;
-        return this;
-    }
-
-    /**
-     * Get the markdownParsingSubmode property: Specifies the submode that will determine whether a markdown file will
-     * be parsed into exactly one search document or multiple search documents. Default is `oneToMany`.
-     * 
-     * @return the markdownParsingSubmode value.
-     */
-    @Generated
-    public MarkdownParsingSubmode getMarkdownParsingSubmode() {
-        return this.markdownParsingSubmode;
-    }
-
-    /**
-     * Set the markdownParsingSubmode property: Specifies the submode that will determine whether a markdown file will
-     * be parsed into exactly one search document or multiple search documents. Default is `oneToMany`.
-     * 
-     * @param markdownParsingSubmode the markdownParsingSubmode value to set.
-     * @return the IndexingParametersConfiguration object itself.
-     */
-    @Generated
-    public IndexingParametersConfiguration setMarkdownParsingSubmode(MarkdownParsingSubmode markdownParsingSubmode) {
-        this.markdownParsingSubmode = markdownParsingSubmode;
-        return this;
-    }
-
-    /**
-     * Get the markdownHeaderDepth property: Specifies the max header depth that will be considered while grouping
-     * markdown content. Default is `h6`.
-     * 
-     * @return the markdownHeaderDepth value.
-     */
-    @Generated
-    public MarkdownHeaderDepth getMarkdownHeaderDepth() {
-        return this.markdownHeaderDepth;
-    }
-
-    /**
-     * Set the markdownHeaderDepth property: Specifies the max header depth that will be considered while grouping
-     * markdown content. Default is `h6`.
-     * 
-     * @param markdownHeaderDepth the markdownHeaderDepth value to set.
-     * @return the IndexingParametersConfiguration object itself.
-     */
-    @Generated
-    public IndexingParametersConfiguration setMarkdownHeaderDepth(MarkdownHeaderDepth markdownHeaderDepth) {
-        this.markdownHeaderDepth = markdownHeaderDepth;
         return this;
     }
 
@@ -437,7 +339,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the documentRoot value.
      */
-    @Generated
     public String getDocumentRoot() {
         return this.documentRoot;
     }
@@ -449,7 +350,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param documentRoot the documentRoot value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setDocumentRoot(String documentRoot) {
         this.documentRoot = documentRoot;
         return this;
@@ -462,7 +362,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the dataToExtract value.
      */
-    @Generated
     public BlobIndexerDataToExtract getDataToExtract() {
         return this.dataToExtract;
     }
@@ -475,7 +374,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param dataToExtract the dataToExtract value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setDataToExtract(BlobIndexerDataToExtract dataToExtract) {
         this.dataToExtract = dataToExtract;
         return this;
@@ -488,7 +386,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the imageAction value.
      */
-    @Generated
     public BlobIndexerImageAction getImageAction() {
         return this.imageAction;
     }
@@ -501,7 +398,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param imageAction the imageAction value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setImageAction(BlobIndexerImageAction imageAction) {
         this.imageAction = imageAction;
         return this;
@@ -514,7 +410,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the allowSkillsetToReadFileData value.
      */
-    @Generated
     public Boolean isAllowSkillsetToReadFileData() {
         return this.allowSkillsetToReadFileData;
     }
@@ -527,7 +422,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param allowSkillsetToReadFileData the allowSkillsetToReadFileData value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setAllowSkillsetToReadFileData(Boolean allowSkillsetToReadFileData) {
         this.allowSkillsetToReadFileData = allowSkillsetToReadFileData;
         return this;
@@ -539,7 +433,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the pdfTextRotationAlgorithm value.
      */
-    @Generated
     public BlobIndexerPdfTextRotationAlgorithm getPdfTextRotationAlgorithm() {
         return this.pdfTextRotationAlgorithm;
     }
@@ -551,7 +444,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param pdfTextRotationAlgorithm the pdfTextRotationAlgorithm value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration
         setPdfTextRotationAlgorithm(BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm) {
         this.pdfTextRotationAlgorithm = pdfTextRotationAlgorithm;
@@ -563,7 +455,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the executionEnvironment value.
      */
-    @Generated
     public IndexerExecutionEnvironment getExecutionEnvironment() {
         return this.executionEnvironment;
     }
@@ -574,7 +465,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param executionEnvironment the executionEnvironment value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setExecutionEnvironment(IndexerExecutionEnvironment executionEnvironment) {
         this.executionEnvironment = executionEnvironment;
         return this;
@@ -586,7 +476,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the queryTimeout value.
      */
-    @Generated
     public String getQueryTimeout() {
         return this.queryTimeout;
     }
@@ -598,7 +487,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param queryTimeout the queryTimeout value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setQueryTimeout(String queryTimeout) {
         this.queryTimeout = queryTimeout;
         return this;
@@ -610,7 +498,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * 
      * @return the additionalProperties value.
      */
-    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -622,7 +509,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * @param additionalProperties the additionalProperties value to set.
      * @return the IndexingParametersConfiguration object itself.
      */
-    @Generated
     public IndexingParametersConfiguration setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -631,7 +517,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -645,10 +530,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
         jsonWriter.writeStringField("delimitedTextHeaders", this.delimitedTextHeaders);
         jsonWriter.writeStringField("delimitedTextDelimiter", this.delimitedTextDelimiter);
         jsonWriter.writeBooleanField("firstLineContainsHeaders", this.firstLineContainsHeaders);
-        jsonWriter.writeStringField("markdownParsingSubmode",
-            this.markdownParsingSubmode == null ? null : this.markdownParsingSubmode.toString());
-        jsonWriter.writeStringField("markdownHeaderDepth",
-            this.markdownHeaderDepth == null ? null : this.markdownHeaderDepth.toString());
         jsonWriter.writeStringField("documentRoot", this.documentRoot);
         jsonWriter.writeStringField("dataToExtract", this.dataToExtract == null ? null : this.dataToExtract.toString());
         jsonWriter.writeStringField("imageAction", this.imageAction == null ? null : this.imageAction.toString());
@@ -674,7 +555,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexingParametersConfiguration.
      */
-    @Generated
     public static IndexingParametersConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IndexingParametersConfiguration deserializedIndexingParametersConfiguration
@@ -707,12 +587,6 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                 } else if ("firstLineContainsHeaders".equals(fieldName)) {
                     deserializedIndexingParametersConfiguration.firstLineContainsHeaders
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("markdownParsingSubmode".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.markdownParsingSubmode
-                        = MarkdownParsingSubmode.fromString(reader.getString());
-                } else if ("markdownHeaderDepth".equals(fieldName)) {
-                    deserializedIndexingParametersConfiguration.markdownHeaderDepth
-                        = MarkdownHeaderDepth.fromString(reader.getString());
                 } else if ("documentRoot".equals(fieldName)) {
                     deserializedIndexingParametersConfiguration.documentRoot = reader.getString();
                 } else if ("dataToExtract".equals(fieldName)) {

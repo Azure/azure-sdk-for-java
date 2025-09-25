@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,37 +18,31 @@ public final class FileSystemsCreateHeaders {
     /*
      * The x-ms-namespace-enabled property.
      */
-    @Generated
     private String xMsNamespaceEnabled;
 
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_NAMESPACE_ENABLED = HttpHeaderName.fromString("x-ms-namespace-enabled");
@@ -69,15 +62,11 @@ public final class FileSystemsCreateHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -86,7 +75,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the xMsNamespaceEnabled value.
      */
-    @Generated
     public String getXMsNamespaceEnabled() {
         return this.xMsNamespaceEnabled;
     }
@@ -97,7 +85,6 @@ public final class FileSystemsCreateHeaders {
      * @param xMsNamespaceEnabled the xMsNamespaceEnabled value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setXMsNamespaceEnabled(String xMsNamespaceEnabled) {
         this.xMsNamespaceEnabled = xMsNamespaceEnabled;
         return this;
@@ -108,7 +95,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -119,7 +105,6 @@ public final class FileSystemsCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -130,7 +115,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -141,7 +125,6 @@ public final class FileSystemsCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -152,7 +135,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -166,7 +148,6 @@ public final class FileSystemsCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -181,7 +162,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -192,7 +172,6 @@ public final class FileSystemsCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -203,7 +182,6 @@ public final class FileSystemsCreateHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -217,7 +195,6 @@ public final class FileSystemsCreateHeaders {
      * @param date the date value to set.
      * @return the FileSystemsCreateHeaders object itself.
      */
-    @Generated
     public FileSystemsCreateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

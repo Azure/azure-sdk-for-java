@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache
@@ -25,32 +24,27 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * A URI fragment specifying the type of analyzer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
 
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
-    @Generated
     private Boolean lowerCaseTerms;
 
     /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more
      * non-word characters.
      */
-    @Generated
     private String pattern;
 
     /*
      * Regular expression flags.
      */
-    @Generated
     private RegexFlags flags;
 
     /*
      * A list of stopwords.
      */
-    @Generated
     private List<String> stopwords;
 
     /**
@@ -58,7 +52,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @param name the name value to set.
      */
-    @Generated
     public PatternAnalyzer(String name) {
         super(name);
     }
@@ -68,7 +61,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -79,7 +71,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the lowerCaseTerms value.
      */
-    @Generated
     public Boolean areLowerCaseTerms() {
         return this.lowerCaseTerms;
     }
@@ -90,7 +81,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param lowerCaseTerms the lowerCaseTerms value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @Generated
     public PatternAnalyzer setLowerCaseTerms(Boolean lowerCaseTerms) {
         this.lowerCaseTerms = lowerCaseTerms;
         return this;
@@ -102,7 +92,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the pattern value.
      */
-    @Generated
     public String getPattern() {
         return this.pattern;
     }
@@ -114,7 +103,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param pattern the pattern value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @Generated
     public PatternAnalyzer setPattern(String pattern) {
         this.pattern = pattern;
         return this;
@@ -125,7 +113,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the flags value.
      */
-    @Generated
     public List<RegexFlags> getFlags() {
         if (this.flags == null) {
             return null;
@@ -141,7 +128,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @Generated
     public PatternAnalyzer setFlags(List<RegexFlags> flags) {
         if (flags == null) {
             this.flags = null;
@@ -157,7 +143,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @return the stopwords value.
      */
-    @Generated
     public List<String> getStopwords() {
         return this.stopwords;
     }
@@ -168,7 +153,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @Generated
     public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
@@ -177,7 +161,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -199,7 +182,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PatternAnalyzer.
      */
-    @Generated
     public static PatternAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

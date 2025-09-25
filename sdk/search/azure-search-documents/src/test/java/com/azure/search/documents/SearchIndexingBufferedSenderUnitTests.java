@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -12,7 +13,6 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -38,8 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -48,16 +47,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.API_KEY;
+import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.TestHelpers.getTestTokenCredential;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class SearchIndexingBufferedSenderUnitTests {
@@ -71,9 +69,9 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     private static SearchClientBuilder getSearchClientBuilder() {
-        return new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+        return new SearchClientBuilder().endpoint(ENDPOINT)
             .indexName("index")
-            .credential(getTestTokenCredential());
+            .credential(new AzureKeyCredential(API_KEY));
     }
 
     private static HttpClient wrapWithAsserting(HttpClient wrappedHttpClient, boolean isSync) {
@@ -912,8 +910,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void
         operationsThrowAfterClientIsClosed(Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildSender();
@@ -955,8 +952,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosedAsync(
         Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>> operation) {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildAsyncSender();
@@ -983,8 +979,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildSender();
@@ -997,8 +992,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrowAsync() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildAsyncSender();
@@ -1009,125 +1003,6 @@ public class SearchIndexingBufferedSenderUnitTests {
 
     @Test
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
-        AtomicInteger callCount = new AtomicInteger();
-
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
-                int count = callCount.getAndIncrement();
-                if (count == 0) {
-                    sleep(3000);
-                    return createMockBatchSplittingResponse(request, 0, 5);
-                } else if (count == 1) {
-                    return createMockBatchSplittingResponse(request, 5, 5);
-                } else {
-                    return Mono.error(new IllegalStateException("Unexpected request."));
-                }
-            }, true))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .autoFlush(false)
-                .initialBatchActionCount(5)
-                .buildSender();
-
-        CountDownLatch countDownLatch = new CountDownLatch(2);
-        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
-
-        AtomicLong firstFlushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().execute(() -> {
-            try {
-                batchingClient.flush();
-            } finally {
-                firstFlushCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }
-        });
-
-        // Delay the second flush by 100ms to ensure that it starts after the first flush.
-        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
-        // be a true indication of incorrect behavior.
-        AtomicLong secondFlushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().schedule(() -> {
-            try {
-                batchingClient.flush();
-            } finally {
-                secondFlushCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }
-        }, 500, TimeUnit.MILLISECONDS);
-
-        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
-            fail("Timed out waiting for flushes to complete.");
-        }
-
-        long firstFlushTime = firstFlushCompletionTime.get();
-        long secondFlushTime = secondFlushCompletionTime.get();
-        long differenceMillis = Math.abs(firstFlushTime - secondFlushTime);
-        assertTrue(firstFlushTime >= secondFlushTime,
-            () -> "Expected second flush to completed before long-running first flush as multiple flushes can't happen "
-                + "concurrently, and when a flush is in-flight all others no-op until the in-flight flush completes. "
-                + "First flush finished at " + firstFlushTime + ", second flush finished at " + secondFlushTime
-                + ", difference was " + differenceMillis + "ms");
-    }
-
-    @Test
-    public void concurrentFlushesOnlyAllowsOneProcessorAsync() throws InterruptedException {
-        AtomicInteger callCount = new AtomicInteger();
-
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
-                int count = callCount.getAndIncrement();
-                if (count == 0) {
-                    sleep(3000);
-                    return createMockBatchSplittingResponse(request, 0, 5);
-                } else if (count == 1) {
-                    return createMockBatchSplittingResponse(request, 5, 5);
-                } else {
-                    return Mono.error(new IllegalStateException("Unexpected request."));
-                }
-            }, false))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .autoFlush(false)
-                .initialBatchActionCount(5)
-                .buildAsyncSender();
-
-        CountDownLatch countDownLatch = new CountDownLatch(2);
-        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
-
-        AtomicLong firstFlushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance()
-            .execute(() -> Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
-                firstFlushCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }).block());
-
-        // Delay the second flush by 100ms to ensure that it starts after the first flush.
-        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
-        // be a true indication of incorrect behavior.
-        AtomicLong secondFlushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().schedule(() -> {
-            Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
-                secondFlushCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }).block();
-        }, 500, TimeUnit.MILLISECONDS);
-
-        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
-            fail("Timed out waiting for flushes to complete.");
-        }
-
-        long firstFlushTime = firstFlushCompletionTime.get();
-        long secondFlushTime = secondFlushCompletionTime.get();
-        long differenceMillis = Math.abs(firstFlushTime - secondFlushTime);
-        assertTrue(firstFlushTime >= secondFlushTime,
-            () -> "Expected second flush to completed before long-running first flush as multiple flushes can't happen "
-                + "concurrently, and when a flush is in-flight all others no-op until the in-flight flush completes. "
-                + "First flush finished at " + firstFlushTime + ", second flush finished at " + secondFlushTime
-                + ", difference was " + differenceMillis + "ms");
-    }
-
-    @Test
-    public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
@@ -1151,46 +1026,127 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        AtomicLong flushCompletionTime = new AtomicLong();
-        Future<?> future1 = SharedExecutorService.getInstance().submit(() -> {
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
             try {
                 batchingClient.flush();
             } finally {
-                flushCompletionTime.set(System.currentTimeMillis());
+                firstFlushCompletionTime.set(System.nanoTime());
                 countDownLatch.countDown();
             }
         });
 
-        // Delay the close by 100ms to ensure that it starts after the flush.
-        // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
-        // true indication of incorrect behavior.
-        AtomicLong closeCompletionTime = new AtomicLong();
-        Future<?> future2 = SharedExecutorService.getInstance().schedule(() -> {
+        Thread.sleep(10); // Give the first operation a chance to start
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                secondFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
+            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
+                + " and " + secondFlushCompletionTime.get() + ".");
+    }
+
+    @Test
+    public void concurrentFlushesOnlyAllowsOneProcessorAsync() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
+            = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }, false))
+                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+                .autoFlush(false)
+                .initialBatchActionCount(5)
+                .buildAsyncSender();
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        batchingClient.flush().doFinally(ignored -> {
+            firstFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
+
+        Thread.sleep(10); // Give the first operation a chance to start
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        batchingClient.flush().doFinally(ignored -> {
+            secondFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
+            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
+                + " and " + secondFlushCompletionTime.get() + ".");
+    }
+
+    //@RepeatedTest(1000)
+    @Test
+    public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient
+            = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }, true))
+                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
+                .autoFlush(false)
+                .initialBatchActionCount(5)
+                .buildSender();
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                batchingClient.flush();
+            } finally {
+                firstFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        Thread.sleep(10); // Give the first operation a chance to start.
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        ForkJoinPool.commonPool().execute(() -> {
             try {
                 batchingClient.close();
             } finally {
-                closeCompletionTime.set(System.currentTimeMillis());
+                secondFlushCompletionTime.set(System.nanoTime());
                 countDownLatch.countDown();
             }
-        }, 100, TimeUnit.MILLISECONDS);
+        });
 
-        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
-            fail("Timed out waiting for closes to complete.");
-        }
-
-        assertDoesNotThrow(() -> future1.get());
-        assertDoesNotThrow(() -> future2.get());
-
-        long flushTime = flushCompletionTime.get();
-        long closeTime = closeCompletionTime.get();
-        long differenceMillis = Math.abs(flushTime - closeTime);
-
-        // Add a little wiggle room for close completion time.
-        // If close did run before flush, then an exception would have been thrown in one of the futures.
-        assertTrue(flushCompletionTime.get() <= (closeCompletionTime.get() + 10),
-            () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
-                + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
-                + closeTime + ", difference was " + differenceMillis + "ms");
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
     }
 
     @Test
@@ -1218,42 +1174,20 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
-        AtomicLong flushCompletionTime = new AtomicLong();
-        Future<?> future1 = SharedExecutorService.getInstance().submit(() -> {
-            Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
-                flushCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }).block();
-        });
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        batchingClient.flush().doFinally(ignored -> {
+            firstFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
-        // Delay the close by 100ms to ensure that it starts after the flush.
-        // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
-        // true indication of incorrect behavior.
-        AtomicLong closeCompletionTime = new AtomicLong();
-        Future<?> future2 = SharedExecutorService.getInstance().schedule(() -> {
-            Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
-                closeCompletionTime.set(System.currentTimeMillis());
-                countDownLatch.countDown();
-            }).block();
-        }, 100, TimeUnit.MILLISECONDS);
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        batchingClient.close().doFinally(ignored -> {
+            secondFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
-        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
-            fail("Timed out waiting for closes to complete.");
-        }
-
-        assertDoesNotThrow(() -> future1.get());
-        assertDoesNotThrow(() -> future2.get());
-
-        long flushTime = flushCompletionTime.get();
-        long closeTime = closeCompletionTime.get();
-        long differenceMillis = Math.abs(flushTime - closeTime);
-
-        // Add a little wiggle room for close completion time.
-        // If close did run before flush, then an exception would have been thrown in one of the futures.
-        assertTrue(flushCompletionTime.get() <= (closeCompletionTime.get() + 10),
-            () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
-                + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
-                + closeTime + ", difference was " + differenceMillis + "ms");
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
     }
 
     @Test
@@ -1499,14 +1433,10 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
-                    requestCount.incrementAndGet();
-                    return next.process();
-                })
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .buildSender();
+            = getSearchClientBuilder().addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE).documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER).buildSender();
 
         batchingClient.flush();
 
@@ -1522,14 +1452,10 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSentAsync() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
-                    requestCount.incrementAndGet();
-                    return next.process();
-                })
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .buildAsyncSender();
+            = getSearchClientBuilder().addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE).documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER).buildAsyncSender();
 
         StepVerifier.create(batchingClient.flush()).verifyComplete();
 

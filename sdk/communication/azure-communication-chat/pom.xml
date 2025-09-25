@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-chat</artifactId>
-  <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+  <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
 
   <name>Microsoft Azure client library for chat application</name>
   <description>
@@ -45,7 +45,9 @@
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

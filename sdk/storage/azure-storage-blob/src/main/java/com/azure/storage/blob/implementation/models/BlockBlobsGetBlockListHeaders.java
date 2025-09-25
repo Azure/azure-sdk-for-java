@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,49 +18,41 @@ public final class BlockBlobsGetBlockListHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-blob-content-length property.
      */
-    @Generated
     private Long xMsBlobContentLength;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-Type property.
      */
-    @Generated
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -80,23 +71,17 @@ public final class BlockBlobsGetBlockListHeaders {
         String xMsBlobContentLength = rawHeaders.getValue(X_MS_BLOB_CONTENT_LENGTH);
         if (xMsBlobContentLength != null) {
             this.xMsBlobContentLength = Long.parseLong(xMsBlobContentLength);
-        } else {
-            this.xMsBlobContentLength = null;
         }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
@@ -106,7 +91,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -117,7 +101,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -128,7 +111,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the xMsBlobContentLength value.
      */
-    @Generated
     public Long getXMsBlobContentLength() {
         return this.xMsBlobContentLength;
     }
@@ -139,7 +121,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param xMsBlobContentLength the xMsBlobContentLength value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setXMsBlobContentLength(Long xMsBlobContentLength) {
         this.xMsBlobContentLength = xMsBlobContentLength;
         return this;
@@ -150,7 +131,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -161,7 +141,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param eTag the eTag value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -172,7 +151,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -186,7 +164,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -201,7 +178,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -212,7 +188,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -223,7 +198,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -234,7 +208,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -245,7 +218,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -259,7 +231,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param date the date value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -274,7 +245,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -285,7 +255,6 @@ public final class BlockBlobsGetBlockListHeaders {
      * @param contentType the contentType value to set.
      * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    @Generated
     public BlockBlobsGetBlockListHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

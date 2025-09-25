@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,31 +23,26 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     /*
      * Azure Analytics Logging settings
      */
-    @Generated
     private QueueAnalyticsLogging analyticsLogging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for queues
      */
-    @Generated
     private QueueMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in minute aggregates for queues
      */
-    @Generated
     private QueueMetrics minuteMetrics;
 
     /*
      * The set of CORS rules.
      */
-    @Generated
     private List<QueueCorsRule> cors;
 
     /**
      * Creates an instance of QueueServiceProperties class.
      */
-    @Generated
     public QueueServiceProperties() {
     }
 
@@ -56,7 +51,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * 
      * @return the analyticsLogging value.
      */
-    @Generated
     public QueueAnalyticsLogging getAnalyticsLogging() {
         return this.analyticsLogging;
     }
@@ -67,7 +61,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * @param analyticsLogging the analyticsLogging value to set.
      * @return the QueueServiceProperties object itself.
      */
-    @Generated
     public QueueServiceProperties setAnalyticsLogging(QueueAnalyticsLogging analyticsLogging) {
         this.analyticsLogging = analyticsLogging;
         return this;
@@ -78,7 +71,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * 
      * @return the hourMetrics value.
      */
-    @Generated
     public QueueMetrics getHourMetrics() {
         return this.hourMetrics;
     }
@@ -89,7 +81,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * @param hourMetrics the hourMetrics value to set.
      * @return the QueueServiceProperties object itself.
      */
-    @Generated
     public QueueServiceProperties setHourMetrics(QueueMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
@@ -100,7 +91,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * 
      * @return the minuteMetrics value.
      */
-    @Generated
     public QueueMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
@@ -111,7 +101,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the QueueServiceProperties object itself.
      */
-    @Generated
     public QueueServiceProperties setMinuteMetrics(QueueMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
@@ -122,7 +111,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * 
      * @return the cors value.
      */
-    @Generated
     public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
             this.cors = new ArrayList<>();
@@ -136,23 +124,19 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * @param cors the cors value to set.
      * @return the QueueServiceProperties object itself.
      */
-    @Generated
     public QueueServiceProperties setCors(List<QueueCorsRule> cors) {
         this.cors = cors;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.analyticsLogging, "Logging");
         xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
@@ -175,7 +159,6 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueServiceProperties.
      */
-    @Generated
     public static QueueServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -190,11 +173,10 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueServiceProperties.
      */
-    @Generated
     public static QueueServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueServiceProperties deserializedQueueServiceProperties = new QueueServiceProperties();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

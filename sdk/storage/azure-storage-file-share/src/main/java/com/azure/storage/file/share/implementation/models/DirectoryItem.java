@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,37 +21,31 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     /*
      * The Name property.
      */
-    @Generated
     private StringEncoded name;
 
     /*
      * The FileId property.
      */
-    @Generated
     private String fileId;
 
     /*
      * File properties.
      */
-    @Generated
     private FileProperty properties;
 
     /*
      * The Attributes property.
      */
-    @Generated
     private String attributes;
 
     /*
      * The PermissionKey property.
      */
-    @Generated
     private String permissionKey;
 
     /**
      * Creates an instance of DirectoryItem class.
      */
-    @Generated
     public DirectoryItem() {
     }
 
@@ -60,7 +54,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * 
      * @return the name value.
      */
-    @Generated
     public StringEncoded getName() {
         return this.name;
     }
@@ -71,7 +64,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param name the name value to set.
      * @return the DirectoryItem object itself.
      */
-    @Generated
     public DirectoryItem setName(StringEncoded name) {
         this.name = name;
         return this;
@@ -82,7 +74,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * 
      * @return the fileId value.
      */
-    @Generated
     public String getFileId() {
         return this.fileId;
     }
@@ -93,7 +84,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param fileId the fileId value to set.
      * @return the DirectoryItem object itself.
      */
-    @Generated
     public DirectoryItem setFileId(String fileId) {
         this.fileId = fileId;
         return this;
@@ -104,7 +94,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * 
      * @return the properties value.
      */
-    @Generated
     public FileProperty getProperties() {
         return this.properties;
     }
@@ -115,7 +104,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param properties the properties value to set.
      * @return the DirectoryItem object itself.
      */
-    @Generated
     public DirectoryItem setProperties(FileProperty properties) {
         this.properties = properties;
         return this;
@@ -126,7 +114,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * 
      * @return the attributes value.
      */
-    @Generated
     public String getAttributes() {
         return this.attributes;
     }
@@ -137,7 +124,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param attributes the attributes value to set.
      * @return the DirectoryItem object itself.
      */
-    @Generated
     public DirectoryItem setAttributes(String attributes) {
         this.attributes = attributes;
         return this;
@@ -148,7 +134,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * 
      * @return the permissionKey value.
      */
-    @Generated
     public String getPermissionKey() {
         return this.permissionKey;
     }
@@ -159,22 +144,19 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param permissionKey the permissionKey value to set.
      * @return the DirectoryItem object itself.
      */
-    @Generated
     public DirectoryItem setPermissionKey(String permissionKey) {
         this.permissionKey = permissionKey;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Directory" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Directory" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.name, "Name");
         xmlWriter.writeStringElement("FileId", this.fileId);
@@ -192,7 +174,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
      */
-    @Generated
     public static DirectoryItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -207,10 +188,8 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
      */
-    @Generated
     public static DirectoryItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "Directory" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Directory" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             DirectoryItem deserializedDirectoryItem = new DirectoryItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

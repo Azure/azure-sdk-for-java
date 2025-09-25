@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,43 +18,36 @@ public final class PathsLeaseHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-lease-time property.
      */
-    @Generated
     private String xMsLeaseTime;
 
     /*
      * The x-ms-lease-id property.
      */
-    @Generated
     private String xMsLeaseId;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -78,15 +70,11 @@ public final class PathsLeaseHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -95,7 +83,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -106,7 +93,6 @@ public final class PathsLeaseHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -117,7 +103,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -128,7 +113,6 @@ public final class PathsLeaseHeaders {
      * @param eTag the eTag value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -139,7 +123,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the xMsLeaseTime value.
      */
-    @Generated
     public String getXMsLeaseTime() {
         return this.xMsLeaseTime;
     }
@@ -150,7 +133,6 @@ public final class PathsLeaseHeaders {
      * @param xMsLeaseTime the xMsLeaseTime value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setXMsLeaseTime(String xMsLeaseTime) {
         this.xMsLeaseTime = xMsLeaseTime;
         return this;
@@ -161,7 +143,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the xMsLeaseId value.
      */
-    @Generated
     public String getXMsLeaseId() {
         return this.xMsLeaseId;
     }
@@ -172,7 +153,6 @@ public final class PathsLeaseHeaders {
      * @param xMsLeaseId the xMsLeaseId value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
         this.xMsLeaseId = xMsLeaseId;
         return this;
@@ -183,7 +163,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -197,7 +176,6 @@ public final class PathsLeaseHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -212,7 +190,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -223,7 +200,6 @@ public final class PathsLeaseHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -234,7 +210,6 @@ public final class PathsLeaseHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -248,7 +223,6 @@ public final class PathsLeaseHeaders {
      * @param date the date value to set.
      * @return the PathsLeaseHeaders object itself.
      */
-    @Generated
     public PathsLeaseHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

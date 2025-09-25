@@ -1,14 +1,15 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.6.8 (2025-09-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+
 
 ## 1.6.7 (2025-08-21)
 

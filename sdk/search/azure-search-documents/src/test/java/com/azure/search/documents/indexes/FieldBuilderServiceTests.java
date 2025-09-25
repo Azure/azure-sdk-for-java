@@ -37,6 +37,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
+        assert client != null;
 
         for (String index : indexesToDelete) {
             client.deleteIndex(index);

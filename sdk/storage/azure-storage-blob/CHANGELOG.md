@@ -1,14 +1,16 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.31.3 (2025-09-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.16.2` to version `12.17.0-beta.2`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-storage-common` from `12.30.2` to version `12.31.0-beta.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 
 ## 12.31.2 (2025-08-21)
 
@@ -48,24 +50,6 @@
 - Upgraded `azure-storage-internal-avro` from `12.15.0` to version `12.15.0`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
-
-## 12.32.0-beta.1 (2025-07-09)
-
-### Features Added
-- AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
-- Added support for service version 2025-11-05.
-
-## 12.30.1 (2025-06-19)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
-- Upgraded `azure-storage-common` from `12.29.0` to version `12.30.0-beta.2`.
-- Upgraded `azure-storage-internal-avro` from `12.15.0` to version `12.15.1`.
-- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
 ## 12.31.0-beta.1 (2025-05-06)
 

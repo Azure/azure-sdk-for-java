@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,13 +21,11 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
     /*
      * The similarity metric to use for vector comparisons.
      */
-    @Generated
     private VectorSearchAlgorithmMetric metric;
 
     /**
      * Creates an instance of ExhaustiveKnnParameters class.
      */
-    @Generated
     public ExhaustiveKnnParameters() {
     }
 
@@ -37,7 +34,6 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
      * 
      * @return the metric value.
      */
-    @Generated
     public VectorSearchAlgorithmMetric getMetric() {
         return this.metric;
     }
@@ -48,7 +44,6 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
      * @param metric the metric value to set.
      * @return the ExhaustiveKnnParameters object itself.
      */
-    @Generated
     public ExhaustiveKnnParameters setMetric(VectorSearchAlgorithmMetric metric) {
         this.metric = metric;
         return this;
@@ -57,7 +52,6 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +67,6 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExhaustiveKnnParameters.
      */
-    @Generated
     public static ExhaustiveKnnParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExhaustiveKnnParameters deserializedExhaustiveKnnParameters = new ExhaustiveKnnParameters();

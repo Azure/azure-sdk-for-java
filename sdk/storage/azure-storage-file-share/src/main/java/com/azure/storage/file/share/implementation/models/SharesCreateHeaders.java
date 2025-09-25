@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,61 +18,51 @@ public final class SharesCreateHeaders {
     /*
      * The x-ms-share-provisioned-bandwidth-mibps property.
      */
-    @Generated
     private Long xMsShareProvisionedBandwidthMibps;
 
     /*
      * The x-ms-share-provisioned-iops property.
      */
-    @Generated
     private Long xMsShareProvisionedIops;
 
     /*
      * The x-ms-share-included-burst-iops property.
      */
-    @Generated
     private Long xMsShareIncludedBurstIops;
 
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-share-quota property.
      */
-    @Generated
     private Long xMsShareQuota;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-share-max-burst-credits-for-iops property.
      */
-    @Generated
     private Long xMsShareMaxBurstCreditsForIops;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
@@ -102,47 +91,33 @@ public final class SharesCreateHeaders {
         String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
         if (xMsShareProvisionedBandwidthMibps != null) {
             this.xMsShareProvisionedBandwidthMibps = Long.parseLong(xMsShareProvisionedBandwidthMibps);
-        } else {
-            this.xMsShareProvisionedBandwidthMibps = null;
         }
         String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
         if (xMsShareProvisionedIops != null) {
             this.xMsShareProvisionedIops = Long.parseLong(xMsShareProvisionedIops);
-        } else {
-            this.xMsShareProvisionedIops = null;
         }
         String xMsShareIncludedBurstIops = rawHeaders.getValue(X_MS_SHARE_INCLUDED_BURST_IOPS);
         if (xMsShareIncludedBurstIops != null) {
             this.xMsShareIncludedBurstIops = Long.parseLong(xMsShareIncludedBurstIops);
-        } else {
-            this.xMsShareIncludedBurstIops = null;
         }
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
         if (xMsShareQuota != null) {
             this.xMsShareQuota = Long.parseLong(xMsShareQuota);
-        } else {
-            this.xMsShareQuota = null;
         }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         String xMsShareMaxBurstCreditsForIops = rawHeaders.getValue(X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS);
         if (xMsShareMaxBurstCreditsForIops != null) {
             this.xMsShareMaxBurstCreditsForIops = Long.parseLong(xMsShareMaxBurstCreditsForIops);
-        } else {
-            this.xMsShareMaxBurstCreditsForIops = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -151,7 +126,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareProvisionedBandwidthMibps value.
      */
-    @Generated
     public Long getXMsShareProvisionedBandwidthMibps() {
         return this.xMsShareProvisionedBandwidthMibps;
     }
@@ -162,7 +136,6 @@ public final class SharesCreateHeaders {
      * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsShareProvisionedBandwidthMibps(Long xMsShareProvisionedBandwidthMibps) {
         this.xMsShareProvisionedBandwidthMibps = xMsShareProvisionedBandwidthMibps;
         return this;
@@ -173,7 +146,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareProvisionedIops value.
      */
-    @Generated
     public Long getXMsShareProvisionedIops() {
         return this.xMsShareProvisionedIops;
     }
@@ -184,7 +156,6 @@ public final class SharesCreateHeaders {
      * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsShareProvisionedIops(Long xMsShareProvisionedIops) {
         this.xMsShareProvisionedIops = xMsShareProvisionedIops;
         return this;
@@ -195,7 +166,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareIncludedBurstIops value.
      */
-    @Generated
     public Long getXMsShareIncludedBurstIops() {
         return this.xMsShareIncludedBurstIops;
     }
@@ -206,7 +176,6 @@ public final class SharesCreateHeaders {
      * @param xMsShareIncludedBurstIops the xMsShareIncludedBurstIops value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsShareIncludedBurstIops(Long xMsShareIncludedBurstIops) {
         this.xMsShareIncludedBurstIops = xMsShareIncludedBurstIops;
         return this;
@@ -217,7 +186,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -228,7 +196,6 @@ public final class SharesCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -239,7 +206,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareQuota value.
      */
-    @Generated
     public Long getXMsShareQuota() {
         return this.xMsShareQuota;
     }
@@ -250,7 +216,6 @@ public final class SharesCreateHeaders {
      * @param xMsShareQuota the xMsShareQuota value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsShareQuota(Long xMsShareQuota) {
         this.xMsShareQuota = xMsShareQuota;
         return this;
@@ -261,7 +226,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -272,7 +236,6 @@ public final class SharesCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -283,7 +246,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -297,7 +259,6 @@ public final class SharesCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -312,7 +273,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareMaxBurstCreditsForIops value.
      */
-    @Generated
     public Long getXMsShareMaxBurstCreditsForIops() {
         return this.xMsShareMaxBurstCreditsForIops;
     }
@@ -323,7 +283,6 @@ public final class SharesCreateHeaders {
      * @param xMsShareMaxBurstCreditsForIops the xMsShareMaxBurstCreditsForIops value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsShareMaxBurstCreditsForIops(Long xMsShareMaxBurstCreditsForIops) {
         this.xMsShareMaxBurstCreditsForIops = xMsShareMaxBurstCreditsForIops;
         return this;
@@ -334,7 +293,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -345,7 +303,6 @@ public final class SharesCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -356,7 +313,6 @@ public final class SharesCreateHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -370,7 +326,6 @@ public final class SharesCreateHeaders {
      * @param date the date value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    @Generated
     public SharesCreateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

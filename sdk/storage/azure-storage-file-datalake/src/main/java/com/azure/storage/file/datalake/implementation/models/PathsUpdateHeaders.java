@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,103 +18,86 @@ public final class PathsUpdateHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The Content-Range property.
      */
-    @Generated
     private String contentRange;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-properties property.
      */
-    @Generated
     private String xMsProperties;
 
     /*
      * The x-ms-structured-body property.
      */
-    @Generated
     private String xMsStructuredBody;
 
     /*
      * The x-ms-continuation property.
      */
-    @Generated
     private String xMsContinuation;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
-    @Generated
     private String contentMD5;
 
     /*
      * The Accept-Ranges property.
      */
-    @Generated
     private String acceptRanges;
 
     /*
      * The Cache-Control property.
      */
-    @Generated
     private String cacheControl;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
-    @Generated
     private String contentDisposition;
 
     /*
      * The Content-Encoding property.
      */
-    @Generated
     private String contentEncoding;
 
     /*
      * The Content-Length property.
      */
-    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Content-Language property.
      */
-    @Generated
     private String contentLanguage;
 
     /*
      * The Content-Type property.
      */
-    @Generated
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -138,8 +120,6 @@ public final class PathsUpdateHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
         this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
@@ -147,8 +127,6 @@ public final class PathsUpdateHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
@@ -159,8 +137,6 @@ public final class PathsUpdateHeaders {
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
-        } else {
-            this.contentLength = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
@@ -172,7 +148,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -183,7 +158,6 @@ public final class PathsUpdateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -194,7 +168,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentRange value.
      */
-    @Generated
     public String getContentRange() {
         return this.contentRange;
     }
@@ -205,7 +178,6 @@ public final class PathsUpdateHeaders {
      * @param contentRange the contentRange value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
@@ -216,7 +188,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -230,7 +201,6 @@ public final class PathsUpdateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -245,7 +215,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the xMsProperties value.
      */
-    @Generated
     public String getXMsProperties() {
         return this.xMsProperties;
     }
@@ -256,7 +225,6 @@ public final class PathsUpdateHeaders {
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
         return this;
@@ -267,7 +235,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the xMsStructuredBody value.
      */
-    @Generated
     public String getXMsStructuredBody() {
         return this.xMsStructuredBody;
     }
@@ -278,7 +245,6 @@ public final class PathsUpdateHeaders {
      * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setXMsStructuredBody(String xMsStructuredBody) {
         this.xMsStructuredBody = xMsStructuredBody;
         return this;
@@ -289,7 +255,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the xMsContinuation value.
      */
-    @Generated
     public String getXMsContinuation() {
         return this.xMsContinuation;
     }
@@ -300,7 +265,6 @@ public final class PathsUpdateHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
@@ -311,7 +275,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -325,7 +288,6 @@ public final class PathsUpdateHeaders {
      * @param date the date value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -340,7 +302,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentMD5 value.
      */
-    @Generated
     public String getContentMD5() {
         return this.contentMD5;
     }
@@ -351,7 +312,6 @@ public final class PathsUpdateHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
@@ -362,7 +322,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the acceptRanges value.
      */
-    @Generated
     public String getAcceptRanges() {
         return this.acceptRanges;
     }
@@ -373,7 +332,6 @@ public final class PathsUpdateHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
@@ -384,7 +342,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the cacheControl value.
      */
-    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -395,7 +352,6 @@ public final class PathsUpdateHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -406,7 +362,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -417,7 +372,6 @@ public final class PathsUpdateHeaders {
      * @param eTag the eTag value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -428,7 +382,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentDisposition value.
      */
-    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -439,7 +392,6 @@ public final class PathsUpdateHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -450,7 +402,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentEncoding value.
      */
-    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -461,7 +412,6 @@ public final class PathsUpdateHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -472,7 +422,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentLength value.
      */
-    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -483,7 +432,6 @@ public final class PathsUpdateHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -494,7 +442,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -505,7 +452,6 @@ public final class PathsUpdateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -516,7 +462,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentLanguage value.
      */
-    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -527,7 +472,6 @@ public final class PathsUpdateHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -538,7 +482,6 @@ public final class PathsUpdateHeaders {
      * 
      * @return the contentType value.
      */
-    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -549,7 +492,6 @@ public final class PathsUpdateHeaders {
      * @param contentType the contentType value to set.
      * @return the PathsUpdateHeaders object itself.
      */
-    @Generated
     public PathsUpdateHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

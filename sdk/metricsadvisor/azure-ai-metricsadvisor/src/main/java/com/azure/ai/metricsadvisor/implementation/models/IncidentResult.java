@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +24,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * only return for alerting anomaly result
      */
-    @Generated
     private UUID dataFeedId;
 
     /*
@@ -34,7 +31,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * only return for alerting incident result
      */
-    @Generated
     private UUID metricId;
 
     /*
@@ -42,43 +38,36 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * only return for alerting incident result
      */
-    @Generated
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * incident id
      */
-    @Generated
     private String incidentId;
 
     /*
      * incident start time
      */
-    @Generated
     private OffsetDateTime startTime;
 
     /*
      * incident last time
      */
-    @Generated
     private OffsetDateTime lastTime;
 
     /*
      * The rootNode property.
      */
-    @Generated
     private SeriesIdentity rootNode;
 
     /*
      * The property property.
      */
-    @Generated
     private IncidentProperty property;
 
     /**
      * Creates an instance of IncidentResult class.
      */
-    @Generated
     public IncidentResult() {
     }
 
@@ -89,7 +78,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the dataFeedId value.
      */
-    @Generated
     public UUID getDataFeedId() {
         return this.dataFeedId;
     }
@@ -101,7 +89,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the metricId value.
      */
-    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -113,7 +100,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the anomalyDetectionConfigurationId value.
      */
-    @Generated
     public UUID getAnomalyDetectionConfigurationId() {
         return this.anomalyDetectionConfigurationId;
     }
@@ -123,7 +109,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the incidentId value.
      */
-    @Generated
     public String getIncidentId() {
         return this.incidentId;
     }
@@ -134,7 +119,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @param incidentId the incidentId value to set.
      * @return the IncidentResult object itself.
      */
-    @Generated
     public IncidentResult setIncidentId(String incidentId) {
         this.incidentId = incidentId;
         return this;
@@ -145,7 +129,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the startTime value.
      */
-    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -156,7 +139,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @param startTime the startTime value to set.
      * @return the IncidentResult object itself.
      */
-    @Generated
     public IncidentResult setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -167,7 +149,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the lastTime value.
      */
-    @Generated
     public OffsetDateTime getLastTime() {
         return this.lastTime;
     }
@@ -178,7 +159,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @param lastTime the lastTime value to set.
      * @return the IncidentResult object itself.
      */
-    @Generated
     public IncidentResult setLastTime(OffsetDateTime lastTime) {
         this.lastTime = lastTime;
         return this;
@@ -189,7 +169,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the rootNode value.
      */
-    @Generated
     public SeriesIdentity getRootNode() {
         return this.rootNode;
     }
@@ -200,7 +179,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @param rootNode the rootNode value to set.
      * @return the IncidentResult object itself.
      */
-    @Generated
     public IncidentResult setRootNode(SeriesIdentity rootNode) {
         this.rootNode = rootNode;
         return this;
@@ -211,7 +189,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * 
      * @return the property value.
      */
-    @Generated
     public IncidentProperty getProperty() {
         return this.property;
     }
@@ -222,16 +199,11 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @param property the property value to set.
      * @return the IncidentResult object itself.
      */
-    @Generated
     public IncidentResult setProperty(IncidentProperty property) {
         this.property = property;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -254,7 +226,6 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IncidentResult.
      */
-    @Generated
     public static IncidentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IncidentResult deserializedIncidentResult = new IncidentResult();
@@ -265,11 +236,11 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
                 if ("incidentId".equals(fieldName)) {
                     deserializedIncidentResult.incidentId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedIncidentResult.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIncidentResult.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("lastTime".equals(fieldName)) {
-                    deserializedIncidentResult.lastTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIncidentResult.lastTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("rootNode".equals(fieldName)) {
                     deserializedIncidentResult.rootNode = SeriesIdentity.fromJson(reader);
                 } else if ("property".equals(fieldName)) {

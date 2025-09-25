@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,31 +18,26 @@ public final class DirectoriesSetMetadataHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -64,14 +58,10 @@ public final class DirectoriesSetMetadataHeaders {
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -80,7 +70,6 @@ public final class DirectoriesSetMetadataHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -91,7 +80,6 @@ public final class DirectoriesSetMetadataHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
-    @Generated
     public DirectoriesSetMetadataHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -102,7 +90,6 @@ public final class DirectoriesSetMetadataHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -113,7 +100,6 @@ public final class DirectoriesSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
-    @Generated
     public DirectoriesSetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -124,7 +110,6 @@ public final class DirectoriesSetMetadataHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -135,7 +120,6 @@ public final class DirectoriesSetMetadataHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
-    @Generated
     public DirectoriesSetMetadataHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -146,7 +130,6 @@ public final class DirectoriesSetMetadataHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
-    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -157,7 +140,6 @@ public final class DirectoriesSetMetadataHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
-    @Generated
     public DirectoriesSetMetadataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -168,7 +150,6 @@ public final class DirectoriesSetMetadataHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -182,7 +163,6 @@ public final class DirectoriesSetMetadataHeaders {
      * @param date the date value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
-    @Generated
     public DirectoriesSetMetadataHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

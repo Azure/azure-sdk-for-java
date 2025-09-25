@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,7 +23,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * The list of tokens returned by the analyzer specified in the request.
      */
-    @Generated
     private final List<AnalyzedTokenInfo> tokens;
 
     /**
@@ -32,7 +30,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @param tokens the tokens value to set.
      */
-    @Generated
     public AnalyzeResult(List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;
     }
@@ -42,7 +39,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the tokens value.
      */
-    @Generated
     public List<AnalyzedTokenInfo> getTokens() {
         return this.tokens;
     }
@@ -50,7 +46,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,7 +62,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeResult.
      */
-    @Generated
     public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean tokensFound = false;

@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -17,7 +20,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import org.slf4j.Logger;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,87 +32,118 @@ public class DataLakeStorageCustomization extends Customization {
         PackageCustomization models  = customization.getPackage("com.azure.storage.file.datalake.implementation.models");
 
         //customizing Path
-        models.getClass("Path").customizeAst(ast -> ast.getClassByName("Path").ifPresent(clazz -> {
-            clazz.getMethodsByName("toJson").forEach(method -> method.setBody(StaticJavaParser.parseBlock("{"
-                + "jsonWriter.writeStartObject();"
-                + "jsonWriter.writeStringField(\"name\", this.name);"
-                + "if (isDirectory != null) {"
-                + "    jsonWriter.writeStringField(\"isDirectory\", String.valueOf(this.isDirectory));"
-                + "}"
-                + "jsonWriter.writeStringField(\"lastModified\", this.lastModified);"
-                + "if (contentLength != null) {"
-                + "    jsonWriter.writeStringField(\"contentLength\", String.valueOf(this.contentLength));"
-                + "}"
-                + "jsonWriter.writeStringField(\"owner\", this.owner);"
-                + "jsonWriter.writeStringField(\"group\", this.group);"
-                + "jsonWriter.writeStringField(\"permissions\", this.permissions);"
-                + "jsonWriter.writeStringField(\"EncryptionScope\", this.encryptionScope);"
-                + "jsonWriter.writeStringField(\"creationTime\", this.creationTime);"
-                + "jsonWriter.writeStringField(\"expiryTime\", this.expiryTime);"
-                + "jsonWriter.writeStringField(\"EncryptionContext\", this.encryptionContext);"
-                + "jsonWriter.writeStringField(\"etag\", this.eTag);"
-                + "return jsonWriter.writeEndObject(); }")));
+        ClassCustomization path = models.getClass("Path");
+        path.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(path.getClassName()).get();
 
-            clazz.getMethodsByName("fromJson").forEach(method -> method.setBody(StaticJavaParser.parseBlock("{"
-                + "return jsonReader.readObject(reader -> {"
-                + "    Path deserializedPath = new Path();"
-                + "    while (reader.nextToken() != JsonToken.END_OBJECT) {"
-                + "        String fieldName = reader.getFieldName();"
-                + "        reader.nextToken();"
-                + "        if (\"name\".equals(fieldName)) {"
-                + "            deserializedPath.name = reader.getString();"
-                + "        } else if (\"isDirectory\".equals(fieldName)) {"
-                + "            JsonToken token = reader.currentToken();"
-                + "            if (token == JsonToken.STRING) {"
-                + "                deserializedPath.isDirectory = Boolean.parseBoolean(reader.getString());"
-                + "            } else if (token == JsonToken.BOOLEAN) {"
-                + "                deserializedPath.isDirectory = reader.getBoolean();"
-                + "            } else if (token == JsonToken.NULL) {"
-                + "                deserializedPath.isDirectory = null;"
-                + "            } else {"
-                + "                throw new IllegalStateException(\"Invalid token, expected one of STRING, BOOLEAN, or NULL. Was \" + token);"
-                + "            }"
-                + "        } else if (\"lastModified\".equals(fieldName)) {"
-                + "            deserializedPath.lastModified = reader.getString();"
-                + "        } else if (\"contentLength\".equals(fieldName)) {"
-                + "            JsonToken token = reader.currentToken();"
-                + "            if (token == JsonToken.STRING) {"
-                + "                deserializedPath.contentLength = Long.parseLong(reader.getString());"
-                + "            } else if (token == JsonToken.NUMBER) {"
-                + "                deserializedPath.contentLength = reader.getLong();"
-                + "            } else if (token == JsonToken.NULL) {"
-                + "                deserializedPath.contentLength = null;"
-                + "            } else {"
-                + "                throw new IllegalStateException(\"Invalid token, expected one of STRING, NUMBER, or NULL. Was \" + token);"
-                + "            }"
-                + "        } else if (\"owner\".equals(fieldName)) {"
-                + "            deserializedPath.owner = reader.getString();"
-                + "        } else if (\"group\".equals(fieldName)) {"
-                + "            deserializedPath.group = reader.getString();"
-                + "        } else if (\"permissions\".equals(fieldName)) {"
-                + "            deserializedPath.permissions = reader.getString();"
-                + "        } else if (\"EncryptionScope\".equals(fieldName)) {"
-                + "            deserializedPath.encryptionScope = reader.getString();"
-                + "        } else if (\"creationTime\".equals(fieldName)) {"
-                + "            deserializedPath.creationTime = reader.getString();"
-                + "        } else if (\"expiryTime\".equals(fieldName)) {"
-                + "            deserializedPath.expiryTime = reader.getString();"
-                + "        } else if (\"EncryptionContext\".equals(fieldName)) {"
-                + "            deserializedPath.encryptionContext = reader.getString();"
-                + "        } else if (\"etag\".equals(fieldName)) {"
-                + "            deserializedPath.eTag = reader.getString();"
-                + "        } else {"
-                + "            reader.skipChildren();"
-                + "        }"
-                + "    }"
-                + "    return deserializedPath;"
-                + "}); }"))
-                .getJavadoc().ifPresent(javadoc -> method.setJavadocComment(javadoc
-                    .addBlockTag("throws", "IllegalStateException", "If a token is not an allowed type."))));
-        }));
+            replaceMethodToJson(clazz,
+                "{\n" +
+                    "        jsonWriter.writeStartObject();\n" +
+                    "        jsonWriter.writeStringField(\"name\", this.name);\n" +
+                    "        if (isDirectory != null) {\n" +
+                    "            jsonWriter.writeStringField(\"isDirectory\", String.valueOf(this.isDirectory));\n" +
+                    "        }\n" +
+                    "        jsonWriter.writeStringField(\"lastModified\", this.lastModified);\n" +
+                    "        if (contentLength != null) {\n" +
+                    "            jsonWriter.writeStringField(\"contentLength\", String.valueOf(this.contentLength));\n" +
+                    "        }\n" +
+                    "        jsonWriter.writeStringField(\"owner\", this.owner);\n" +
+                    "        jsonWriter.writeStringField(\"group\", this.group);\n" +
+                    "        jsonWriter.writeStringField(\"permissions\", this.permissions);\n" +
+                    "        jsonWriter.writeStringField(\"EncryptionScope\", this.encryptionScope);\n" +
+                    "        jsonWriter.writeStringField(\"creationTime\", this.creationTime);\n" +
+                    "        jsonWriter.writeStringField(\"expiryTime\", this.expiryTime);\n" +
+                    "        jsonWriter.writeStringField(\"EncryptionContext\", this.encryptionContext);\n" +
+                    "        jsonWriter.writeStringField(\"etag\", this.eTag);\n" +
+                    "        return jsonWriter.writeEndObject();\n" +
+                    "    }"
+            );
 
-        PackageCustomization implementation = customization.getPackage("com.azure.storage.file.datalake.implementation");
-        updateImplToMapInternalException(implementation);
+            replaceMethodFromJson(clazz,
+                "{\n" +
+                "        return jsonReader.readObject(reader -> {\n" +
+                "            Path deserializedPath = new Path();\n" +
+                "            while (reader.nextToken() != JsonToken.END_OBJECT) {\n" +
+                "                String fieldName = reader.getFieldName();\n" +
+                "                reader.nextToken();\n" +
+                "\n" +
+                "                if (\"name\".equals(fieldName)) {\n" +
+                "                    deserializedPath.name = reader.getString();\n" +
+                "                } else if (\"isDirectory\".equals(fieldName)) {\n" +
+                "                    JsonToken token = reader.currentToken();\n" +
+                "                    if (token == JsonToken.STRING) {\n" +
+                "                        deserializedPath.isDirectory = Boolean.parseBoolean(reader.getString());\n" +
+                "                    } else if (token == JsonToken.BOOLEAN) {\n" +
+                "                        deserializedPath.isDirectory = reader.getBoolean();\n" +
+                "                    } else if (token == JsonToken.NULL) {\n" +
+                "                        deserializedPath.isDirectory = null;\n" +
+                "                    } else {\n" +
+                "                        throw new IllegalStateException(\"Invalid token, expected one of STRING, BOOLEAN, or NULL. Was \" + token);\n" +
+                "                    }\n" +
+                "                } else if (\"lastModified\".equals(fieldName)) {\n" +
+                "                    deserializedPath.lastModified = reader.getString();\n" +
+                "                } else if (\"contentLength\".equals(fieldName)) {\n" +
+                "                    JsonToken token = reader.currentToken();\n" +
+                "                    if (token == JsonToken.STRING) {\n" +
+                "                        deserializedPath.contentLength = Long.parseLong(reader.getString());\n" +
+                "                    } else if (token == JsonToken.NUMBER) {\n" +
+                "                        deserializedPath.contentLength = reader.getLong();\n" +
+                "                    } else if (token == JsonToken.NULL) {\n" +
+                "                        deserializedPath.contentLength = null;\n" +
+                "                    } else {\n" +
+                "                        throw new IllegalStateException(\"Invalid token, expected one of STRING, NUMBER, or NULL. Was \" + token);\n" +
+                "                    }\n" +
+                "                } else if (\"owner\".equals(fieldName)) {\n" +
+                "                    deserializedPath.owner = reader.getString();\n" +
+                "                } else if (\"group\".equals(fieldName)) {\n" +
+                "                    deserializedPath.group = reader.getString();\n" +
+                "                } else if (\"permissions\".equals(fieldName)) {\n" +
+                "                    deserializedPath.permissions = reader.getString();\n" +
+                "                } else if (\"EncryptionScope\".equals(fieldName)) {\n" +
+                "                    deserializedPath.encryptionScope = reader.getString();\n" +
+                "                } else if (\"creationTime\".equals(fieldName)) {\n" +
+                "                    deserializedPath.creationTime = reader.getString();\n" +
+                "                } else if (\"expiryTime\".equals(fieldName)) {\n" +
+                "                    deserializedPath.expiryTime = reader.getString();\n" +
+                "                } else if (\"EncryptionContext\".equals(fieldName)) {\n" +
+                "                    deserializedPath.encryptionContext = reader.getString();\n" +
+                "                } else if (\"etag\".equals(fieldName)) {\n" +
+                "                    deserializedPath.eTag = reader.getString();\n" +
+                "                } else {\n" +
+                "                    reader.skipChildren();\n" +
+                "                }\n" +
+                "            }\n" +
+                "\n" +
+                "            return deserializedPath;\n" +
+                "        });\n" +
+                "    }"
+            );
+        });
+
+        JavadocCustomization setActiveJavadoc = path.getMethod("fromJson").getJavadoc();
+        setActiveJavadoc.addThrows("IllegalStateException", "If a token is not an allowed type.");
+
+        updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.datalake.implementation"));
+    }
+
+    private static void replaceMethodToJson(ClassOrInterfaceDeclaration clazz, String newBody) {
+        MethodDeclaration method = clazz.getMethodsBySignature("toJson", "JsonWriter").get(0);
+        method.setBody(StaticJavaParser.parseBlock(newBody));
+    }
+
+    private static void replaceMethodFromJson(ClassOrInterfaceDeclaration clazz, String newBody) {
+        MethodDeclaration method = clazz.getMethodsBySignature("fromJson", "JsonReader").get(0);
+        method.setBody(StaticJavaParser.parseBlock(newBody));
+    }
+
+    private static void replaceMethodToXml(ClassOrInterfaceDeclaration clazz, String newBody) {
+        MethodDeclaration method = clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0);
+        method.setBody(StaticJavaParser.parseBlock(newBody));
+    }
+
+    private static void replaceMethodFromXml(ClassOrInterfaceDeclaration clazz, String newBody) {
+        MethodDeclaration method = clazz.getMethodsBySignature("fromXml", "XmlReader", "String").get(0);
+        method.setBody(StaticJavaParser.parseBlock(newBody));
     }
 
     /**

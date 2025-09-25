@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,7 +22,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.BM25Similarity";
 
     /*
@@ -31,7 +29,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0 means the score does
      * not scale with an increase in term frequency.
      */
-    @Generated
     private Double k1;
 
     /*
@@ -39,13 +36,11 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * used. A value of 0.0 means no length normalization is applied, while a value of 1.0 means the score is fully
      * normalized by the length of the document.
      */
-    @Generated
     private Double b;
 
     /**
      * Creates an instance of BM25SimilarityAlgorithm class.
      */
-    @Generated
     public BM25SimilarityAlgorithm() {
     }
 
@@ -54,7 +49,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -67,7 +61,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * 
      * @return the k1 value.
      */
-    @Generated
     public Double getK1() {
         return this.k1;
     }
@@ -80,7 +73,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * @param k1 the k1 value to set.
      * @return the BM25SimilarityAlgorithm object itself.
      */
-    @Generated
     public BM25SimilarityAlgorithm setK1(Double k1) {
         this.k1 = k1;
         return this;
@@ -93,7 +85,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * 
      * @return the b value.
      */
-    @Generated
     public Double getB() {
         return this.b;
     }
@@ -106,7 +97,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * @param b the b value to set.
      * @return the BM25SimilarityAlgorithm object itself.
      */
-    @Generated
     public BM25SimilarityAlgorithm setB(Double b) {
         this.b = b;
         return this;
@@ -115,7 +105,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,7 +122,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the BM25SimilarityAlgorithm.
      */
-    @Generated
     public static BM25SimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BM25SimilarityAlgorithm deserializedBM25SimilarityAlgorithm = new BM25SimilarityAlgorithm();

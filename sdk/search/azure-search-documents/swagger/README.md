@@ -22,8 +22,8 @@ npm install -g autorest
 
 ### Generation
 
-There are three swaggers for Azure Search, `searchindex`, `searchservice`, and `knowledgeagent`. They always under same
-package version, e.g. `--tag=searchindex`, `--tag=searchservice`, and `--tag=knowledgeagent`.
+There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
+`--tag=searchindex` and `--tag=searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -35,7 +35,6 @@ e.g.
 cd <swagger-folder>
 autorest --tag=searchindex
 autorest --tag=searchservice
-autorest --tag=knowledgeagent
 ```
 
 ## Manual Changes
@@ -88,10 +87,10 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -106,10 +105,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bfb929ca5fd9e73258071724b440ae244e084c56/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeAgentsResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -156,19 +155,6 @@ directive:
         to: SearchIndexerDataSourceConnection
 ```
 
-### Tag: knowledgeagent
-
-These settings apply only when `--tag=knowledgeagent` is specified on the commandSearchServiceCounters line.
-
-``` yaml $(tag) == 'knowledgeagent'
-namespace: com.azure.search.documents.agents
-input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/knowledgeagent.json
-models-subpackage: models
-custom-types-subpackage: implementation.models
-custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
-```
-
 ---
 # Code Generation
 
@@ -181,12 +167,18 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.32'
 enable-sync-stack: true
+generate-client-interfaces: false
+context-client-method-parameter: true
 generate-client-as-impl: true
+service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
+require-x-ms-flattened-to-flatten: true
+pass-discriminator-to-child-deserialization: true
+stream-style-serialization: true
 include-read-only-in-constructor-args: true
 ```
 
@@ -280,7 +272,6 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
-      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -294,7 +285,7 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Change Answers, Captions, and QueryRewrites to a string in SearchOptions and SearchRequest
+### Change Answers and Captions to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -309,13 +300,6 @@ directive:
       param.type = "string";
       delete param.enum;
       delete param["x-ms-enum"];
-      
-      param = $.find(p => p.name == "queryRewrites");
-      param.type = "string";
-      delete param.enum;
-      delete param["x-ms-enum"];
-      
-      
 ```
 
 ``` yaml $(tag) == 'searchindex'
@@ -331,11 +315,6 @@ directive:
       param = $.SearchRequest.properties.captions;
       param.type = "string";
       param.description = $.Captions.description;
-      delete param["$ref"];
-      
-      param = $.SearchRequest.properties.queryRewrites;
-      param.type = "string";
-      param.description = $.QueryRewrites.description;
       delete param["$ref"];
 ```
 
@@ -471,30 +450,18 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
+### Fix for 206 response
+
+```yaml $(tag) == 'searchindex'
 directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
+  - from: "searchindex.json"
+    where: $.paths
     transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Make `SearchIndexerStatus.name` optional
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchIndexerStatus
-  transform: >
-    $.required = $.required.filter((required) => required !== "name");
-```
-
-### Remove `KnowledgeAgentOutputOptimization`
-```yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      delete $.KnowledgeAgentOutputOptimization;
+      let response206 = {
+        "description": "Response containing partial documents that match the search criteria.",
+        "schema": {
+          "$ref": "#/definitions/SearchDocumentsResult"
+        }
+      };
+      $["/docs/search.post.search"].post.responses["206"] = response206;
 ```

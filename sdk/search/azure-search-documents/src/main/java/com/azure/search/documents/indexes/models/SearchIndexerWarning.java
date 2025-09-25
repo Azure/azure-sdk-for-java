@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,33 +21,28 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     /*
      * The key of the item which generated a warning.
      */
-    @Generated
     private String key;
 
     /*
      * The message describing the warning that occurred while processing the item.
      */
-    @Generated
     private final String message;
 
     /*
      * The name of the source at which the warning originated. For example, this could refer to a particular skill in
      * the attached skillset. This may not be always available.
      */
-    @Generated
     private String name;
 
     /*
      * Additional, verbose details about the warning to assist in debugging the indexer. This may not be always
      * available.
      */
-    @Generated
     private String details;
 
     /*
      * A link to a troubleshooting guide for these classes of warnings. This may not be always available.
      */
-    @Generated
     private String documentationLink;
 
     /**
@@ -56,7 +50,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @param message the message value to set.
      */
-    @Generated
     public SearchIndexerWarning(String message) {
         this.message = message;
     }
@@ -66,7 +59,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -76,7 +68,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -87,7 +78,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -98,7 +88,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @return the details value.
      */
-    @Generated
     public String getDetails() {
         return this.details;
     }
@@ -109,7 +98,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * 
      * @return the documentationLink value.
      */
-    @Generated
     public String getDocumentationLink() {
         return this.documentationLink;
     }
@@ -117,7 +105,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,7 +120,6 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerWarning.
      */
-    @Generated
     public static SearchIndexerWarning fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean messageFound = false;

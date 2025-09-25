@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,19 +23,16 @@ public final class MergeSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.MergeSkill";
 
     /*
      * The tag indicates the start of the merged text. By default, the tag is an empty space.
      */
-    @Generated
     private String insertPreTag;
 
     /*
      * The tag indicates the end of the merged text. By default, the tag is an empty space.
      */
-    @Generated
     private String insertPostTag;
 
     /**
@@ -45,7 +41,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public MergeSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -55,7 +50,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -67,7 +61,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * 
      * @return the insertPreTag value.
      */
-    @Generated
     public String getInsertPreTag() {
         return this.insertPreTag;
     }
@@ -79,7 +72,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * @param insertPreTag the insertPreTag value to set.
      * @return the MergeSkill object itself.
      */
-    @Generated
     public MergeSkill setInsertPreTag(String insertPreTag) {
         this.insertPreTag = insertPreTag;
         return this;
@@ -91,7 +83,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * 
      * @return the insertPostTag value.
      */
-    @Generated
     public String getInsertPostTag() {
         return this.insertPostTag;
     }
@@ -103,7 +94,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * @param insertPostTag the insertPostTag value to set.
      * @return the MergeSkill object itself.
      */
-    @Generated
     public MergeSkill setInsertPostTag(String insertPostTag) {
         this.insertPostTag = insertPostTag;
         return this;
@@ -112,7 +102,6 @@ public final class MergeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MergeSkill setName(String name) {
         super.setName(name);
@@ -122,7 +111,6 @@ public final class MergeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MergeSkill setDescription(String description) {
         super.setDescription(description);
@@ -132,7 +120,6 @@ public final class MergeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MergeSkill setContext(String context) {
         super.setContext(context);
@@ -142,7 +129,6 @@ public final class MergeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -166,7 +152,6 @@ public final class MergeSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MergeSkill.
      */
-    @Generated
     public static MergeSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

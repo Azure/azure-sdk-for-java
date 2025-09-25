@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,19 +23,16 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
     /*
      * The token returned by the analyzer.
      */
-    @Generated
     private final String token;
 
     /*
      * The index of the first character of the token in the input text.
      */
-    @Generated
     private final int startOffset;
 
     /*
      * The index of the last character of the token in the input text.
      */
-    @Generated
     private final int endOffset;
 
     /*
@@ -44,7 +40,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * position 0, the next has position 1, and so on. Depending on the analyzer used, some tokens might have the same
      * position, for example if they are synonyms of each other.
      */
-    @Generated
     private final int position;
 
     /**
@@ -55,7 +50,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * @param endOffset the endOffset value to set.
      * @param position the position value to set.
      */
-    @Generated
     public AnalyzedTokenInfo(String token, int startOffset, int endOffset, int position) {
         this.token = token;
         this.startOffset = startOffset;
@@ -68,7 +62,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * 
      * @return the token value.
      */
-    @Generated
     public String getToken() {
         return this.token;
     }
@@ -78,7 +71,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * 
      * @return the startOffset value.
      */
-    @Generated
     public int getStartOffset() {
         return this.startOffset;
     }
@@ -88,7 +80,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * 
      * @return the endOffset value.
      */
-    @Generated
     public int getEndOffset() {
         return this.endOffset;
     }
@@ -100,7 +91,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * 
      * @return the position value.
      */
-    @Generated
     public int getPosition() {
         return this.position;
     }
@@ -108,7 +98,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,7 +113,6 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzedTokenInfo.
      */
-    @Generated
     public static AnalyzedTokenInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean tokenFound = false;

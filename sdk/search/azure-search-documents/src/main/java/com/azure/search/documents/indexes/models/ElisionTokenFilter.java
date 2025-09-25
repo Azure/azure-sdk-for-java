@@ -6,13 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). This token filter is
@@ -24,13 +23,11 @@ public final class ElisionTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
 
     /*
      * The set of articles to remove.
      */
-    @Generated
     private List<String> articles;
 
     /**
@@ -38,7 +35,6 @@ public final class ElisionTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @Generated
     public ElisionTokenFilter(String name) {
         super(name);
     }
@@ -48,7 +44,6 @@ public final class ElisionTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -59,7 +54,6 @@ public final class ElisionTokenFilter extends TokenFilter {
      *
      * @return the articles value.
      */
-    @Generated
     public List<String> getArticles() {
         return this.articles;
     }
@@ -70,7 +64,6 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @param articles the articles value to set.
      * @return the ElisionTokenFilter object itself.
      */
-    @Generated
     public ElisionTokenFilter setArticles(List<String> articles) {
         this.articles = articles;
         return this;
@@ -79,7 +72,6 @@ public final class ElisionTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,7 +90,6 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ElisionTokenFilter.
      */
-    @Generated
     public static ElisionTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

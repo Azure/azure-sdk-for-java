@@ -6,7 +6,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,20 +20,17 @@ public final class PhoneticTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.PhoneticTokenFilter";
 
     /*
      * The phonetic encoder to use. Default is "metaphone".
      */
-    @Generated
     private PhoneticEncoder encoder;
 
     /*
      * A value indicating whether encoded tokens should replace original tokens. If false, encoded tokens are added as
      * synonyms. Default is true.
      */
-    @Generated
     private Boolean originalTokensReplaced;
 
     /**
@@ -42,7 +38,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @Generated
     public PhoneticTokenFilter(String name) {
         super(name);
     }
@@ -52,7 +47,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -63,7 +57,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the encoder value.
      */
-    @Generated
     public PhoneticEncoder getEncoder() {
         return this.encoder;
     }
@@ -74,7 +67,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * @param encoder the encoder value to set.
      * @return the PhoneticTokenFilter object itself.
      */
-    @Generated
     public PhoneticTokenFilter setEncoder(PhoneticEncoder encoder) {
         this.encoder = encoder;
         return this;
@@ -86,7 +78,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the originalTokensReplaced value.
      */
-    @Generated
     public Boolean areOriginalTokensReplaced() {
         return this.originalTokensReplaced;
     }
@@ -98,7 +89,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * @param originalTokensReplaced the originalTokensReplaced value to set.
      * @return the PhoneticTokenFilter object itself.
      */
-    @Generated
     public PhoneticTokenFilter setOriginalTokensReplaced(Boolean originalTokensReplaced) {
         this.originalTokensReplaced = originalTokensReplaced;
         return this;
@@ -107,7 +97,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,7 +116,6 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneticTokenFilter.
      */
-    @Generated
     public static PhoneticTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

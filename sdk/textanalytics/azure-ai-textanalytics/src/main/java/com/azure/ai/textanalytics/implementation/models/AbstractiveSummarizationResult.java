@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,25 +19,21 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     /*
      * Errors by document id.
      */
-    @Generated
     private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
-    @Generated
     private RequestStatistics statistics;
 
     /*
      * This field indicates which model is used for scoring.
      */
-    @Generated
     private String modelVersion;
 
     /**
      * Creates an instance of AbstractiveSummarizationResult class.
      */
-    @Generated
     public AbstractiveSummarizationResult() {
     }
 
@@ -47,7 +42,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * 
      * @return the errors value.
      */
-    @Generated
     public List<DocumentError> getErrors() {
         return this.errors;
     }
@@ -58,7 +52,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * @param errors the errors value to set.
      * @return the AbstractiveSummarizationResult object itself.
      */
-    @Generated
     public AbstractiveSummarizationResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
@@ -70,7 +63,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * 
      * @return the statistics value.
      */
-    @Generated
     public RequestStatistics getStatistics() {
         return this.statistics;
     }
@@ -82,7 +74,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * @param statistics the statistics value to set.
      * @return the AbstractiveSummarizationResult object itself.
      */
-    @Generated
     public AbstractiveSummarizationResult setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -93,7 +84,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * 
      * @return the modelVersion value.
      */
-    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -104,7 +94,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * @param modelVersion the modelVersion value to set.
      * @return the AbstractiveSummarizationResult object itself.
      */
-    @Generated
     public AbstractiveSummarizationResult setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -113,7 +102,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AbstractiveSummarizationResult setDocuments(List<AbstractiveSummaryDocumentResult> documents) {
         super.setDocuments(documents);
@@ -123,7 +111,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,7 +130,6 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationResult.
      */
-    @Generated
     public static AbstractiveSummarizationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationResult deserializedAbstractiveSummarizationResult

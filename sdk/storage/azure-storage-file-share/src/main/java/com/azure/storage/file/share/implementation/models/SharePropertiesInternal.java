@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -30,169 +30,141 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Quota property.
      */
-    @Generated
     private int quota;
 
     /*
      * The ProvisionedIops property.
      */
-    @Generated
     private Integer provisionedIops;
 
     /*
      * The ProvisionedIngressMBps property.
      */
-    @Generated
     private Integer provisionedIngressMBps;
 
     /*
      * The ProvisionedEgressMBps property.
      */
-    @Generated
     private Integer provisionedEgressMBps;
 
     /*
      * The ProvisionedBandwidthMiBps property.
      */
-    @Generated
     private Integer provisionedBandwidthMiBps;
 
     /*
      * The NextAllowedQuotaDowngradeTime property.
      */
-    @Generated
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
      * The DeletedTime property.
      */
-    @Generated
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The RemainingRetentionDays property.
      */
-    @Generated
     private Integer remainingRetentionDays;
 
     /*
      * The AccessTier property.
      */
-    @Generated
     private String accessTier;
 
     /*
      * The AccessTierChangeTime property.
      */
-    @Generated
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
      * The AccessTierTransitionState property.
      */
-    @Generated
     private String accessTierTransitionState;
 
     /*
      * The current lease status of the share.
      */
-    @Generated
     private LeaseStatusType leaseStatus;
 
     /*
      * Lease state of the share.
      */
-    @Generated
     private LeaseStateType leaseState;
 
     /*
      * When a share is leased, specifies whether the lease is of infinite or fixed duration.
      */
-    @Generated
     private LeaseDurationType leaseDuration;
 
     /*
      * The EnabledProtocols property.
      */
-    @Generated
     private String enabledProtocols;
 
     /*
      * The RootSquash property.
      */
-    @Generated
     private ShareRootSquash rootSquash;
 
     /*
      * The EnableSnapshotVirtualDirectoryAccess property.
      */
-    @Generated
     private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /*
      * The PaidBurstingEnabled property.
      */
-    @Generated
     private Boolean paidBurstingEnabled;
 
     /*
      * The PaidBurstingMaxIops property.
      */
-    @Generated
     private Long paidBurstingMaxIops;
 
     /*
      * The PaidBurstingMaxBandwidthMibps property.
      */
-    @Generated
     private Long paidBurstingMaxBandwidthMibps;
 
     /*
      * The IncludedBurstIops property.
      */
-    @Generated
     private Long includedBurstIops;
 
     /*
      * The MaxBurstCreditsForIops property.
      */
-    @Generated
     private Long maxBurstCreditsForIops;
 
     /*
      * The NextAllowedProvisionedIopsDowngradeTime property.
      */
-    @Generated
     private DateTimeRfc1123 nextAllowedProvisionedIopsDowngradeTime;
 
     /*
      * The NextAllowedProvisionedBandwidthDowngradeTime property.
      */
-    @Generated
     private DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime;
 
     /*
      * Dictionary of <string>
      */
-    @Generated
     private Map<String, String> metadata;
 
     /**
      * Creates an instance of SharePropertiesInternal class.
      */
-    @Generated
     public SharePropertiesInternal() {
     }
 
@@ -201,7 +173,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -215,7 +186,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param lastModified the lastModified value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -230,7 +200,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -241,7 +210,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param eTag the eTag value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -252,7 +220,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the quota value.
      */
-    @Generated
     public int getQuota() {
         return this.quota;
     }
@@ -263,7 +230,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param quota the quota value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setQuota(int quota) {
         this.quota = quota;
         return this;
@@ -274,7 +240,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the provisionedIops value.
      */
-    @Generated
     public Integer getProvisionedIops() {
         return this.provisionedIops;
     }
@@ -285,7 +250,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param provisionedIops the provisionedIops value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setProvisionedIops(Integer provisionedIops) {
         this.provisionedIops = provisionedIops;
         return this;
@@ -296,7 +260,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the provisionedIngressMBps value.
      */
-    @Generated
     public Integer getProvisionedIngressMBps() {
         return this.provisionedIngressMBps;
     }
@@ -307,7 +270,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param provisionedIngressMBps the provisionedIngressMBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setProvisionedIngressMBps(Integer provisionedIngressMBps) {
         this.provisionedIngressMBps = provisionedIngressMBps;
         return this;
@@ -318,7 +280,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the provisionedEgressMBps value.
      */
-    @Generated
     public Integer getProvisionedEgressMBps() {
         return this.provisionedEgressMBps;
     }
@@ -329,7 +290,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param provisionedEgressMBps the provisionedEgressMBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setProvisionedEgressMBps(Integer provisionedEgressMBps) {
         this.provisionedEgressMBps = provisionedEgressMBps;
         return this;
@@ -340,7 +300,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the provisionedBandwidthMiBps value.
      */
-    @Generated
     public Integer getProvisionedBandwidthMiBps() {
         return this.provisionedBandwidthMiBps;
     }
@@ -351,7 +310,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param provisionedBandwidthMiBps the provisionedBandwidthMiBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setProvisionedBandwidthMiBps(Integer provisionedBandwidthMiBps) {
         this.provisionedBandwidthMiBps = provisionedBandwidthMiBps;
         return this;
@@ -362,7 +320,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the nextAllowedQuotaDowngradeTime value.
      */
-    @Generated
     public OffsetDateTime getNextAllowedQuotaDowngradeTime() {
         if (this.nextAllowedQuotaDowngradeTime == null) {
             return null;
@@ -376,7 +333,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setNextAllowedQuotaDowngradeTime(OffsetDateTime nextAllowedQuotaDowngradeTime) {
         if (nextAllowedQuotaDowngradeTime == null) {
             this.nextAllowedQuotaDowngradeTime = null;
@@ -391,7 +347,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the deletedTime value.
      */
-    @Generated
     public OffsetDateTime getDeletedTime() {
         if (this.deletedTime == null) {
             return null;
@@ -405,7 +360,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param deletedTime the deletedTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setDeletedTime(OffsetDateTime deletedTime) {
         if (deletedTime == null) {
             this.deletedTime = null;
@@ -420,7 +374,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the remainingRetentionDays value.
      */
-    @Generated
     public Integer getRemainingRetentionDays() {
         return this.remainingRetentionDays;
     }
@@ -431,7 +384,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
         return this;
@@ -442,7 +394,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the accessTier value.
      */
-    @Generated
     public String getAccessTier() {
         return this.accessTier;
     }
@@ -453,7 +404,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param accessTier the accessTier value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setAccessTier(String accessTier) {
         this.accessTier = accessTier;
         return this;
@@ -464,7 +414,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the accessTierChangeTime value.
      */
-    @Generated
     public OffsetDateTime getAccessTierChangeTime() {
         if (this.accessTierChangeTime == null) {
             return null;
@@ -478,7 +427,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
         if (accessTierChangeTime == null) {
             this.accessTierChangeTime = null;
@@ -493,7 +441,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the accessTierTransitionState value.
      */
-    @Generated
     public String getAccessTierTransitionState() {
         return this.accessTierTransitionState;
     }
@@ -504,7 +451,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param accessTierTransitionState the accessTierTransitionState value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setAccessTierTransitionState(String accessTierTransitionState) {
         this.accessTierTransitionState = accessTierTransitionState;
         return this;
@@ -515,7 +461,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the leaseStatus value.
      */
-    @Generated
     public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
@@ -526,7 +471,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param leaseStatus the leaseStatus value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
@@ -537,7 +481,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the leaseState value.
      */
-    @Generated
     public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
@@ -548,7 +491,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param leaseState the leaseState value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
@@ -560,7 +502,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the leaseDuration value.
      */
-    @Generated
     public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
@@ -572,7 +513,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param leaseDuration the leaseDuration value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
@@ -583,7 +523,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the enabledProtocols value.
      */
-    @Generated
     public String getEnabledProtocols() {
         return this.enabledProtocols;
     }
@@ -594,7 +533,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setEnabledProtocols(String enabledProtocols) {
         this.enabledProtocols = enabledProtocols;
         return this;
@@ -605,7 +543,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the rootSquash value.
      */
-    @Generated
     public ShareRootSquash getRootSquash() {
         return this.rootSquash;
     }
@@ -616,7 +553,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param rootSquash the rootSquash value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setRootSquash(ShareRootSquash rootSquash) {
         this.rootSquash = rootSquash;
         return this;
@@ -627,7 +563,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the enableSnapshotVirtualDirectoryAccess value.
      */
-    @Generated
     public Boolean isEnableSnapshotVirtualDirectoryAccess() {
         return this.enableSnapshotVirtualDirectoryAccess;
     }
@@ -638,7 +573,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal
         setEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
         this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
@@ -650,7 +584,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the paidBurstingEnabled value.
      */
-    @Generated
     public Boolean isPaidBurstingEnabled() {
         return this.paidBurstingEnabled;
     }
@@ -661,7 +594,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param paidBurstingEnabled the paidBurstingEnabled value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setPaidBurstingEnabled(Boolean paidBurstingEnabled) {
         this.paidBurstingEnabled = paidBurstingEnabled;
         return this;
@@ -672,7 +604,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the paidBurstingMaxIops value.
      */
-    @Generated
     public Long getPaidBurstingMaxIops() {
         return this.paidBurstingMaxIops;
     }
@@ -683,7 +614,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
         this.paidBurstingMaxIops = paidBurstingMaxIops;
         return this;
@@ -694,7 +624,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the paidBurstingMaxBandwidthMibps value.
      */
-    @Generated
     public Long getPaidBurstingMaxBandwidthMibps() {
         return this.paidBurstingMaxBandwidthMibps;
     }
@@ -705,7 +634,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
         this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
         return this;
@@ -716,7 +644,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the includedBurstIops value.
      */
-    @Generated
     public Long getIncludedBurstIops() {
         return this.includedBurstIops;
     }
@@ -727,7 +654,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param includedBurstIops the includedBurstIops value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setIncludedBurstIops(Long includedBurstIops) {
         this.includedBurstIops = includedBurstIops;
         return this;
@@ -738,7 +664,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the maxBurstCreditsForIops value.
      */
-    @Generated
     public Long getMaxBurstCreditsForIops() {
         return this.maxBurstCreditsForIops;
     }
@@ -749,7 +674,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param maxBurstCreditsForIops the maxBurstCreditsForIops value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setMaxBurstCreditsForIops(Long maxBurstCreditsForIops) {
         this.maxBurstCreditsForIops = maxBurstCreditsForIops;
         return this;
@@ -760,7 +684,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the nextAllowedProvisionedIopsDowngradeTime value.
      */
-    @Generated
     public OffsetDateTime getNextAllowedProvisionedIopsDowngradeTime() {
         if (this.nextAllowedProvisionedIopsDowngradeTime == null) {
             return null;
@@ -774,7 +697,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param nextAllowedProvisionedIopsDowngradeTime the nextAllowedProvisionedIopsDowngradeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal
         setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
         if (nextAllowedProvisionedIopsDowngradeTime == null) {
@@ -791,7 +713,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the nextAllowedProvisionedBandwidthDowngradeTime value.
      */
-    @Generated
     public OffsetDateTime getNextAllowedProvisionedBandwidthDowngradeTime() {
         if (this.nextAllowedProvisionedBandwidthDowngradeTime == null) {
             return null;
@@ -807,7 +728,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal
         setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
         if (nextAllowedProvisionedBandwidthDowngradeTime == null) {
@@ -824,7 +744,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * 
      * @return the metadata value.
      */
-    @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
@@ -835,23 +754,19 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * @param metadata the metadata value to set.
      * @return the SharePropertiesInternal object itself.
      */
-    @Generated
     public SharePropertiesInternal setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "SharePropertiesInternal" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SharePropertiesInternal" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
         xmlWriter.writeStringElement("Etag", this.eTag);
@@ -902,7 +817,6 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SharePropertiesInternal.
      */
-    @Generated
     public static SharePropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -917,11 +831,10 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SharePropertiesInternal.
      */
-    @Generated
     public static SharePropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "SharePropertiesInternal" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "SharePropertiesInternal" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             SharePropertiesInternal deserializedSharePropertiesInternal = new SharePropertiesInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

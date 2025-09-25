@@ -1,14 +1,15 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.5.1 (2025-09-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-communication-common` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 
 ## 1.5.0 (2025-08-25)
 
@@ -19,17 +20,6 @@
 - Recording with the call connection ID is now supported. OPS calls can be recorded using the call connection ID.
 - Added StartRecordingFailed event to indicate when the start recording API is unable to initiate the recording.
 - Adds support for SIP headers prefixed with 'X-' and 'X-MS-Custom-' within the CustomCallingContext.
-
-## 1.4.3 (2025-08-21)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
-- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
-
 
 ## 1.4.2 (2025-07-29)
 

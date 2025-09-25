@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,7 +23,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
     /*
      * The skillsets defined in the Search service.
      */
-    @Generated
     private final List<SearchIndexerSkillset> skillsets;
 
     /**
@@ -32,7 +30,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
      * 
      * @param skillsets the skillsets value to set.
      */
-    @Generated
     public ListSkillsetsResult(List<SearchIndexerSkillset> skillsets) {
         this.skillsets = skillsets;
     }
@@ -42,7 +39,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
      * 
      * @return the skillsets value.
      */
-    @Generated
     public List<SearchIndexerSkillset> getSkillsets() {
         return this.skillsets;
     }
@@ -50,7 +46,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,7 +61,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListSkillsetsResult.
      */
-    @Generated
     public static ListSkillsetsResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean skillsetsFound = false;

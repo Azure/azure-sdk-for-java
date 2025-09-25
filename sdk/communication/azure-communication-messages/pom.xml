@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-messages</artifactId>
-  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
+  <version>1.1.7</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
@@ -46,8 +46,6 @@
     <jacoco.min.linecoverage>0.6</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.6</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
-
-    <spotbugs.skip>false</spotbugs.skip>
   </properties>
   <dependencies>
     <dependency>

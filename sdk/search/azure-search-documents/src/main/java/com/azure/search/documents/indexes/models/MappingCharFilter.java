@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,14 +24,12 @@ public final class MappingCharFilter extends CharFilter {
     /*
      * A URI fragment specifying the type of char filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.MappingCharFilter";
 
     /*
      * A list of mappings of the following format: "a=>b" (all occurrences of the character "a" will be replaced with
      * character "b").
      */
-    @Generated
     private final List<String> mappings;
 
     /**
@@ -41,7 +38,6 @@ public final class MappingCharFilter extends CharFilter {
      * @param name the name value to set.
      * @param mappings the mappings value to set.
      */
-    @Generated
     public MappingCharFilter(String name, List<String> mappings) {
         super(name);
         this.mappings = mappings;
@@ -52,7 +48,6 @@ public final class MappingCharFilter extends CharFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -64,7 +59,6 @@ public final class MappingCharFilter extends CharFilter {
      * 
      * @return the mappings value.
      */
-    @Generated
     public List<String> getMappings() {
         return this.mappings;
     }
@@ -72,7 +66,6 @@ public final class MappingCharFilter extends CharFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,7 +84,6 @@ public final class MappingCharFilter extends CharFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MappingCharFilter.
      */
-    @Generated
     public static MappingCharFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -6,13 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
@@ -24,73 +23,62 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.WordDelimiterTokenFilter";
 
     /*
      * A value indicating whether to generate part words. If set, causes parts of words to be generated; for example
      * "AzureSearch" becomes "Azure" "Search". Default is true.
      */
-    @Generated
     private Boolean generateWordParts;
 
     /*
      * A value indicating whether to generate number subwords. Default is true.
      */
-    @Generated
     private Boolean generateNumberParts;
 
     /*
      * A value indicating whether maximum runs of word parts will be catenated. For example, if this is set to true,
      * "Azure-Search" becomes "AzureSearch". Default is false.
      */
-    @Generated
     private Boolean wordsCatenated;
 
     /*
      * A value indicating whether maximum runs of number parts will be catenated. For example, if this is set to true,
      * "1-2" becomes "12". Default is false.
      */
-    @Generated
     private Boolean numbersCatenated;
 
     /*
      * A value indicating whether all subword parts will be catenated. For example, if this is set to true,
      * "Azure-Search-1" becomes "AzureSearch1". Default is false.
      */
-    @Generated
     private Boolean catenateAll;
 
     /*
      * A value indicating whether to split words on caseChange. For example, if this is set to true, "AzureSearch"
      * becomes "Azure" "Search". Default is true.
      */
-    @Generated
     private Boolean splitOnCaseChange;
 
     /*
      * A value indicating whether original words will be preserved and added to the subword list. Default is false.
      */
-    @Generated
     private Boolean preserveOriginal;
 
     /*
      * A value indicating whether to split on numbers. For example, if this is set to true, "Azure1Search" becomes
      * "Azure" "1" "Search". Default is true.
      */
-    @Generated
     private Boolean splitOnNumerics;
 
     /*
      * A value indicating whether to remove trailing "'s" for each subword. Default is true.
      */
-    @Generated
     private Boolean stemEnglishPossessive;
 
     /*
      * A list of tokens to protect from being delimited.
      */
-    @Generated
     private List<String> protectedWords;
 
     /**
@@ -98,7 +86,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @Generated
     public WordDelimiterTokenFilter(String name) {
         super(name);
     }
@@ -108,7 +95,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -120,7 +106,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateWordParts value.
      */
-    @Generated
     public Boolean generateWordParts() {
         return this.generateWordParts;
     }
@@ -132,7 +117,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param generateWordParts the generateWordParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setGenerateWordParts(Boolean generateWordParts) {
         this.generateWordParts = generateWordParts;
         return this;
@@ -143,7 +127,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateNumberParts value.
      */
-    @Generated
     public Boolean generateNumberParts() {
         return this.generateNumberParts;
     }
@@ -154,7 +137,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param generateNumberParts the generateNumberParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setGenerateNumberParts(Boolean generateNumberParts) {
         this.generateNumberParts = generateNumberParts;
         return this;
@@ -166,7 +148,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the wordsCatenated value.
      */
-    @Generated
     public Boolean areWordsCatenated() {
         return this.wordsCatenated;
     }
@@ -178,7 +159,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param wordsCatenated the wordsCatenated value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setWordsCatenated(Boolean wordsCatenated) {
         this.wordsCatenated = wordsCatenated;
         return this;
@@ -190,7 +170,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the numbersCatenated value.
      */
-    @Generated
     public Boolean areNumbersCatenated() {
         return this.numbersCatenated;
     }
@@ -202,7 +181,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param numbersCatenated the numbersCatenated value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setNumbersCatenated(Boolean numbersCatenated) {
         this.numbersCatenated = numbersCatenated;
         return this;
@@ -214,7 +192,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateAll value.
      */
-    @Generated
     public Boolean catenateAll() {
         return this.catenateAll;
     }
@@ -226,7 +203,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param catenateAll the catenateAll value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setCatenateAll(Boolean catenateAll) {
         this.catenateAll = catenateAll;
         return this;
@@ -238,7 +214,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnCaseChange value.
      */
-    @Generated
     public Boolean splitOnCaseChange() {
         return this.splitOnCaseChange;
     }
@@ -250,7 +225,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param splitOnCaseChange the splitOnCaseChange value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setSplitOnCaseChange(Boolean splitOnCaseChange) {
         this.splitOnCaseChange = splitOnCaseChange;
         return this;
@@ -262,7 +236,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the preserveOriginal value.
      */
-    @Generated
     public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
@@ -274,7 +247,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
@@ -286,7 +258,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnNumerics value.
      */
-    @Generated
     public Boolean splitOnNumerics() {
         return this.splitOnNumerics;
     }
@@ -298,7 +269,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param splitOnNumerics the splitOnNumerics value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setSplitOnNumerics(Boolean splitOnNumerics) {
         this.splitOnNumerics = splitOnNumerics;
         return this;
@@ -310,7 +280,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the stemEnglishPossessive value.
      */
-    @Generated
     public Boolean isStemEnglishPossessive() {
         return this.stemEnglishPossessive;
     }
@@ -322,7 +291,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param stemEnglishPossessive the stemEnglishPossessive value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setStemEnglishPossessive(Boolean stemEnglishPossessive) {
         this.stemEnglishPossessive = stemEnglishPossessive;
         return this;
@@ -333,7 +301,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the protectedWords value.
      */
-    @Generated
     public List<String> getProtectedWords() {
         return this.protectedWords;
     }
@@ -344,7 +311,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @Generated
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;
@@ -353,7 +319,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -382,7 +347,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WordDelimiterTokenFilter.
      */
-    @Generated
     public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

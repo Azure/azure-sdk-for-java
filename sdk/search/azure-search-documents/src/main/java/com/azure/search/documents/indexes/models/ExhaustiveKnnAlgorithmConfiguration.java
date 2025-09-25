@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,13 +21,11 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
     /*
      * The name of the kind of algorithm being configured for use with vector search.
      */
-    @Generated
     private VectorSearchAlgorithmKind kind = VectorSearchAlgorithmKind.EXHAUSTIVE_KNN;
 
     /*
      * Contains the parameters specific to exhaustive KNN algorithm.
      */
-    @Generated
     private ExhaustiveKnnParameters parameters;
 
     /**
@@ -36,7 +33,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
      * 
      * @param name the name value to set.
      */
-    @Generated
     public ExhaustiveKnnAlgorithmConfiguration(String name) {
         super(name);
     }
@@ -46,7 +42,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public VectorSearchAlgorithmKind getKind() {
         return this.kind;
@@ -57,7 +52,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
      * 
      * @return the parameters value.
      */
-    @Generated
     public ExhaustiveKnnParameters getParameters() {
         return this.parameters;
     }
@@ -68,7 +62,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
      * @param parameters the parameters value to set.
      * @return the ExhaustiveKnnAlgorithmConfiguration object itself.
      */
-    @Generated
     public ExhaustiveKnnAlgorithmConfiguration setParameters(ExhaustiveKnnParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -77,7 +70,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,7 +88,6 @@ public final class ExhaustiveKnnAlgorithmConfiguration extends VectorSearchAlgor
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExhaustiveKnnAlgorithmConfiguration.
      */
-    @Generated
     public static ExhaustiveKnnAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,37 +22,31 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter";
 
     /*
      * The list of words to match against.
      */
-    @Generated
     private final List<String> wordList;
 
     /*
      * The minimum word size. Only words longer than this get processed. Default is 5. Maximum is 300.
      */
-    @Generated
     private Integer minWordSize;
 
     /*
      * The minimum subword size. Only subwords longer than this are outputted. Default is 2. Maximum is 300.
      */
-    @Generated
     private Integer minSubwordSize;
 
     /*
      * The maximum subword size. Only subwords shorter than this are outputted. Default is 15. Maximum is 300.
      */
-    @Generated
     private Integer maxSubwordSize;
 
     /*
      * A value indicating whether to add only the longest matching subword to the output. Default is false.
      */
-    @Generated
     private Boolean onlyLongestMatched;
 
     /**
@@ -62,7 +55,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param wordList the wordList value to set.
      */
-    @Generated
     public DictionaryDecompounderTokenFilter(String name, List<String> wordList) {
         super(name);
         this.wordList = wordList;
@@ -73,7 +65,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -84,7 +75,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the wordList value.
      */
-    @Generated
     public List<String> getWordList() {
         return this.wordList;
     }
@@ -95,7 +85,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the minWordSize value.
      */
-    @Generated
     public Integer getMinWordSize() {
         return this.minWordSize;
     }
@@ -107,7 +96,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param minWordSize the minWordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    @Generated
     public DictionaryDecompounderTokenFilter setMinWordSize(Integer minWordSize) {
         this.minWordSize = minWordSize;
         return this;
@@ -119,7 +107,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the minSubwordSize value.
      */
-    @Generated
     public Integer getMinSubwordSize() {
         return this.minSubwordSize;
     }
@@ -131,7 +118,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param minSubwordSize the minSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    @Generated
     public DictionaryDecompounderTokenFilter setMinSubwordSize(Integer minSubwordSize) {
         this.minSubwordSize = minSubwordSize;
         return this;
@@ -143,7 +129,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the maxSubwordSize value.
      */
-    @Generated
     public Integer getMaxSubwordSize() {
         return this.maxSubwordSize;
     }
@@ -155,7 +140,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param maxSubwordSize the maxSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    @Generated
     public DictionaryDecompounderTokenFilter setMaxSubwordSize(Integer maxSubwordSize) {
         this.maxSubwordSize = maxSubwordSize;
         return this;
@@ -167,7 +151,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * 
      * @return the onlyLongestMatched value.
      */
-    @Generated
     public Boolean isOnlyLongestMatched() {
         return this.onlyLongestMatched;
     }
@@ -179,7 +162,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param onlyLongestMatched the onlyLongestMatched value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    @Generated
     public DictionaryDecompounderTokenFilter setOnlyLongestMatched(Boolean onlyLongestMatched) {
         this.onlyLongestMatched = onlyLongestMatched;
         return this;
@@ -188,7 +170,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -211,7 +192,6 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DictionaryDecompounderTokenFilter.
      */
-    @Generated
     public static DictionaryDecompounderTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

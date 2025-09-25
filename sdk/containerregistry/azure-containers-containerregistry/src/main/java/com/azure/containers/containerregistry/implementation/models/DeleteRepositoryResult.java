@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -13,69 +12,58 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Deleted repository.
- */
+/** Deleted repository. */
 @Immutable
 public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepositoryResult> {
     /*
      * SHA of the deleted image
      */
-    @Generated
     private List<String> deletedManifests;
 
     /*
      * Tag of the deleted image
      */
-    @Generated
     private List<String> deletedTags;
 
-    /**
-     * Creates an instance of DeleteRepositoryResult class.
-     */
-    @Generated
+    /** Creates an instance of DeleteRepositoryResult class. */
     public DeleteRepositoryResult() {
     }
 
     /**
      * Get the deletedManifests property: SHA of the deleted image.
-     * 
+     *
      * @return the deletedManifests value.
      */
-    @Generated
     public List<String> getDeletedManifests() {
         return this.deletedManifests;
     }
 
     /**
      * Get the deletedTags property: Tag of the deleted image.
-     * 
+     *
      * @return the deletedTags value.
      */
-    @Generated
     public List<String> getDeletedTags() {
         return this.deletedTags;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("manifestsDeleted", this.deletedManifests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("tagsDeleted", this.deletedTags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of DeleteRepositoryResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeleteRepositoryResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeleteRepositoryResult.
      */
-    @Generated
     public static DeleteRepositoryResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeleteRepositoryResult deserializedDeleteRepositoryResult = new DeleteRepositoryResult();

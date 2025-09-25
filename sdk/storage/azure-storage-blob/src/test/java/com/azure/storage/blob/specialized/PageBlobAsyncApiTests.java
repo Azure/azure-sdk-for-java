@@ -560,24 +560,21 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-
+    
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-
-        StepVerifier.create(destBlob.createIfNotExists(Constants.KB)
-            .then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null))).verifyErrorSatisfies(r -> {
+    
+        StepVerifier.create(destBlob.createIfNotExists(Constants.KB).then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null)))
+            .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
-                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-                assertTrue(e.getServiceMessage()
-                    .contains(
-                        "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
-    }
+    }*/
 
     @Test
     public void uploadPageFromURLRange() {

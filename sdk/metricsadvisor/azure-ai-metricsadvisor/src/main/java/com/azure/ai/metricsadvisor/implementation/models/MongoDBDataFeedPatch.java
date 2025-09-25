@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +19,14 @@ import java.util.List;
 @Fluent
 public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.MONGO_DB;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private MongoDBParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of MongoDBDataFeedPatch class.
      */
-    @Generated
     public MongoDBDataFeedPatch() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -55,7 +34,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public MongoDBParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -66,7 +44,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the MongoDBDataFeedPatch object itself.
      */
-    @Generated
     public MongoDBDataFeedPatch setDataSourceParameter(MongoDBParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -75,7 +52,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -85,7 +61,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -95,7 +70,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -105,7 +79,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -115,7 +88,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -125,7 +97,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -135,7 +106,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -145,7 +115,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -155,7 +124,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -165,7 +133,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -175,7 +142,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -185,7 +151,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -195,7 +160,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -205,7 +169,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -215,7 +178,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -225,7 +187,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -235,7 +196,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -245,7 +205,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -255,7 +214,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -265,7 +223,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -275,20 +232,17 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public MongoDBDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.MONGO_DB == null ? null : DataSourceType.MONGO_DB.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -314,8 +268,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -326,9 +278,9 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MongoDBDataFeedPatch if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MongoDBDataFeedPatch.
      */
-    @Generated
     public static MongoDBDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDBDataFeedPatch deserializedMongoDBDataFeedPatch = new MongoDBDataFeedPatch();
@@ -336,15 +288,22 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"MongoDB".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'MongoDB'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedMongoDBDataFeedPatch.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedMongoDBDataFeedPatch.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
                 } else if ("maxConcurrency".equals(fieldName)) {
@@ -387,8 +346,6 @@ public final class MongoDBDataFeedPatch extends DataFeedDetailPatch {
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.setCredentialId(reader.getString());
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedMongoDBDataFeedPatch.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedMongoDBDataFeedPatch.dataSourceParameter = MongoDBParameterPatch.fromJson(reader);
                 } else {
