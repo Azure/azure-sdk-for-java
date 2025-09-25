@@ -12,6 +12,8 @@ import com.azure.resourcemanager.dependencymap.models.ExportDependenciesOperatio
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsWithConnectedMachineForFocusedMachineRequest;
+import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForAllMachinesOperationResult;
+import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForAllMachinesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.MapsResource;
 import com.azure.resourcemanager.dependencymap.models.MapsResourceProperties;
@@ -184,6 +186,16 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
 
     public ExportDependenciesOperationResult exportDependencies(ExportDependenciesRequest body, Context context) {
         return serviceManager.maps().exportDependencies(resourceGroupName, mapName, body, context);
+    }
+
+    public GetDependencyViewForAllMachinesOperationResult
+        getDependencyViewForAllMachines(GetDependencyViewForAllMachinesRequest body) {
+        return serviceManager.maps().getDependencyViewForAllMachines(resourceGroupName, mapName, body);
+    }
+
+    public GetDependencyViewForAllMachinesOperationResult
+        getDependencyViewForAllMachines(GetDependencyViewForAllMachinesRequest body, Context context) {
+        return serviceManager.maps().getDependencyViewForAllMachines(resourceGroupName, mapName, body, context);
     }
 
     public MapsResourceImpl withRegion(Region location) {

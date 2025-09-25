@@ -22,7 +22,7 @@ public final class MapsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"oejctbzaqsqsy\",\"tags\":{\"ppofmxaxcfjpgdd\":\"bfkgukdkex\",\"zxibqeoj\":\"ocjjxhvpmouexh\"},\"id\":\"xqbzvddntwnd\",\"name\":\"icbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"zloc\",\"tags\":{\"bcsglumma\":\"paierh\"},\"id\":\"tjaodxobnb\",\"name\":\"xkqpxo\",\"type\":\"ajionpimexgstxg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class MapsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MapsResource> response
-            = manager.maps().listByResourceGroup("mcl", com.azure.core.util.Context.NONE);
+            = manager.maps().listByResourceGroup("jkrlkhbzhfepg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oejctbzaqsqsy", response.iterator().next().location());
-        Assertions.assertEquals("bfkgukdkex", response.iterator().next().tags().get("ppofmxaxcfjpgdd"));
+        Assertions.assertEquals("zloc", response.iterator().next().location());
+        Assertions.assertEquals("paierh", response.iterator().next().tags().get("bcsglumma"));
     }
 }

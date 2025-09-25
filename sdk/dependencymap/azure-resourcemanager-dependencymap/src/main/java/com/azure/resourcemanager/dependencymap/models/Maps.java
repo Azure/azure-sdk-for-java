@@ -214,6 +214,35 @@ public interface Maps {
         ExportDependenciesRequest body, Context context);
 
     /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    GetDependencyViewForAllMachinesOperationResult getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body);
+
+    /**
+     * Get dependencies for all machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dependencies for all machines.
+     */
+    GetDependencyViewForAllMachinesOperationResult getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body, Context context);
+
+    /**
      * Get a MapsResource.
      * 
      * @param id the resource ID.

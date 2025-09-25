@@ -21,7 +21,7 @@ public final class MapsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"yulpkudjkr\",\"tags\":{\"ocxscpaierhhbcs\":\"bzhfepgzgqexz\",\"mmajtjaodx\":\"l\"},\"id\":\"bnbdxkqpxokajion\",\"name\":\"imexgstxgcpodgma\",\"type\":\"jrmvdjwzrlo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\"},\"location\":\"gr\",\"tags\":{\"mocpc\":\"norcjxvsnbyxqab\",\"c\":\"shurzafbljjgpbto\"},\"id\":\"mkljavb\",\"name\":\"idtqajzyu\",\"type\":\"pku\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class MapsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MapsResource response = manager.maps()
-            .getByResourceGroupWithResponse("qcjm", "ljavbqid", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ohjtckw", "dsoifiyipj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yulpkudjkr", response.location());
-        Assertions.assertEquals("bzhfepgzgqexz", response.tags().get("ocxscpaierhhbcs"));
+        Assertions.assertEquals("gr", response.location());
+        Assertions.assertEquals("norcjxvsnbyxqab", response.tags().get("mocpc"));
     }
 }

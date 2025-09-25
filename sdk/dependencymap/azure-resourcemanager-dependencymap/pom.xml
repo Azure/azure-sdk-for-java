@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Dependency Map Management</name>
-  <description>This package contains Microsoft Azure SDK for Dependency Map Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft.DependencyMap management service.</description>
+  <description>This package contains Microsoft Azure SDK for Dependency Map Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft.DependencyMap management service. Package api-version 2025-07-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

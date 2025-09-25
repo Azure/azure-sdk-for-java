@@ -11,11 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dependencymap.fluent.MapsClient;
 import com.azure.resourcemanager.dependencymap.fluent.models.ExportDependenciesOperationResultInner;
+import com.azure.resourcemanager.dependencymap.fluent.models.GetDependencyViewForAllMachinesOperationResultInner;
 import com.azure.resourcemanager.dependencymap.fluent.models.MapsResourceInner;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesOperationResult;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsWithConnectedMachineForFocusedMachineRequest;
+import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForAllMachinesOperationResult;
+import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForAllMachinesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetDependencyViewForFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.Maps;
 import com.azure.resourcemanager.dependencymap.models.MapsResource;
@@ -130,6 +133,28 @@ public final class MapsImpl implements Maps {
             = this.serviceClient().exportDependencies(resourceGroupName, mapName, body, context);
         if (inner != null) {
             return new ExportDependenciesOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public GetDependencyViewForAllMachinesOperationResult getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body) {
+        GetDependencyViewForAllMachinesOperationResultInner inner
+            = this.serviceClient().getDependencyViewForAllMachines(resourceGroupName, mapName, body);
+        if (inner != null) {
+            return new GetDependencyViewForAllMachinesOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public GetDependencyViewForAllMachinesOperationResult getDependencyViewForAllMachines(String resourceGroupName,
+        String mapName, GetDependencyViewForAllMachinesRequest body, Context context) {
+        GetDependencyViewForAllMachinesOperationResultInner inner
+            = this.serviceClient().getDependencyViewForAllMachines(resourceGroupName, mapName, body, context);
+        if (inner != null) {
+            return new GetDependencyViewForAllMachinesOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }

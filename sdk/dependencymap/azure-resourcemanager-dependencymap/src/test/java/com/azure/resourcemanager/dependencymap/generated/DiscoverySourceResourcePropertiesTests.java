@@ -12,15 +12,15 @@ public final class DiscoverySourceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoverySourceResourceProperties model = BinaryData.fromString(
-            "{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Deleting\",\"sourceId\":\"usnhutje\"}")
+            "{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Canceled\",\"sourceId\":\"nddhsgcbacph\"}")
             .toObject(DiscoverySourceResourceProperties.class);
-        Assertions.assertEquals("usnhutje", model.sourceId());
+        Assertions.assertEquals("nddhsgcbacph", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoverySourceResourceProperties model = new DiscoverySourceResourceProperties().withSourceId("usnhutje");
+        DiscoverySourceResourceProperties model = new DiscoverySourceResourceProperties().withSourceId("nddhsgcbacph");
         model = BinaryData.fromObject(model).toObject(DiscoverySourceResourceProperties.class);
-        Assertions.assertEquals("usnhutje", model.sourceId());
+        Assertions.assertEquals("nddhsgcbacph", model.sourceId());
     }
 }
