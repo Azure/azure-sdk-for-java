@@ -1,5 +1,17 @@
 # Release History
 
+## 2.53.4 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+- Upgraded `azure-resourcemanager-storage` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.2` to version `2.53.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.2` to version `2.53.3`.
+
+
 ## 2.53.3 (2025-09-24)
 
 ### Other Changes
