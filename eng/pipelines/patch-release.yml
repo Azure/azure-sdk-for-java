@@ -4,19 +4,88 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
-      groupId: com.azure
-      safeName: azuresdktemplate
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
-      groupId: com.azure
-      safeName: azuresdktemplatetwo
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
-      groupId: com.azure
-      safeName: azuresdktemplatethree
-      skipPublishDocMs: true
-      ServiceDirectory: template
+      - name: azure-resourcemanager-appservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservice
+        ServiceDirectory: appservice
+      - name: azure-resourcemanager-authorization
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerauthorization
+        ServiceDirectory: authorization
+      - name: azure-resourcemanager-compute
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercompute
+        ServiceDirectory: compute
+      - name: azure-resourcemanager-containerinstance
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerinstance
+        ServiceDirectory: containerinstance
+      - name: azure-resourcemanager-containerregistry
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerregistry
+        ServiceDirectory: containerregistry
+      - name: azure-resourcemanager-containerservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservice
+        ServiceDirectory: containerservice
+      - name: azure-resourcemanager-cosmos
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercosmos
+        ServiceDirectory: cosmos/azure-resourcemanager-cosmos
+      - name: azure-resourcemanager-eventhubs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubs
+        ServiceDirectory: eventhubs
+      - name: azure-resourcemanager-monitor
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitor
+        ServiceDirectory: monitor
+      - name: azure-resourcemanager-msi
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermsi
+        ServiceDirectory: msi
+      - name: azure-resourcemanager-network
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetwork
+        ServiceDirectory: network
+      - name: azure-resourcemanager-privatedns
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprivatedns
+        ServiceDirectory: privatedns
+      - name: azure-resourcemanager-redis
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerredis
+        ServiceDirectory: redis
+      - name: azure-resourcemanager-resources
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresources
+        ServiceDirectory: resources
+      - name: azure-resourcemanager-servicebus
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicebus
+        ServiceDirectory: servicebus/azure-resourcemanager-servicebus
+      - name: azure-resourcemanager-sql
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersql
+        ServiceDirectory: sql
+      - name: azure-resourcemanager-trafficmanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagertrafficmanager
+        ServiceDirectory: trafficmanager
+      - name: azure-resourcemanager-storage
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstorage
+        ServiceDirectory: storage/azure-resourcemanager-storage
+      - name: azure-resourcemanager-cdn
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercdn
+        ServiceDirectory: cdn
+      - name: azure-resourcemanager-dns
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdns
+        ServiceDirectory: dns
+      - name: azure-resourcemanager-search
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersearch
+        ServiceDirectory: search
 
