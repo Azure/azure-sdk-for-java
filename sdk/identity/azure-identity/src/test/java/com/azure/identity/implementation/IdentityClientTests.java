@@ -973,16 +973,12 @@ public class IdentityClientTests {
                         && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
                             .equals(com.microsoft.aad.msal4j.ManagedIdentityApplication.getManagedIdentitySource());
 
-                    System.out.println("explicitCredential: " + options.getExplicitCredential());
-                    System.out.println("shouldProbe: " + shouldProbe);
-
                     assertEquals("managedidentitycredential", options.getExplicitCredential());
                     assertFalse(shouldProbe, "Should NOT probe when explicitly set to managedidentitycredential");
 
                     when(identityClient.authenticateWithManagedIdentityMsalClient(request))
                         .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
                 })) {
-                // Use the mock to satisfy compiler warning
                 assertNotNull(identityClientMock);
 
                 DefaultAzureCredential credential
@@ -1024,16 +1020,12 @@ public class IdentityClientTests {
                         && com.microsoft.aad.msal4j.ManagedIdentitySourceType.DEFAULT_TO_IMDS
                             .equals(com.microsoft.aad.msal4j.ManagedIdentityApplication.getManagedIdentitySource());
 
-                    System.out.println("explicitCredential: " + options.getExplicitCredential());
-                    System.out.println("shouldProbe: " + shouldProbe);
-
                     assertNull(options.getExplicitCredential());
                     assertTrue(shouldProbe, "Should probe when not explicitly set");
 
                     when(identityClient.authenticateWithManagedIdentityMsalClient(request))
                         .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
                 })) {
-                // Use the mock to satisfy compiler warning
                 assertNotNull(identityClientMock);
 
                 DefaultAzureCredential credential

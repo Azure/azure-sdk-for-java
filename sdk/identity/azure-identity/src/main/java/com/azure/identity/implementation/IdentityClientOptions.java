@@ -827,15 +827,15 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the credential set .
+     * @return the explict credential type that was configured
      */
     public String getExplicitCredential() {
         return explicitCredential;
     }
 
     /**
-     * Specifies the Microsoft Entra endpoint to acquire tokens.
-     * @param explicitCredential the Microsoft Entra endpoint
+     * Specifies the explicit credential type.
+     * @param explicitCredential the explicit credential type  
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setExplicitCredential(String explicitCredential) {
