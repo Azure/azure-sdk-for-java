@@ -999,7 +999,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testImdsProbing_SucceedsWithProperMocking() {
+    public void testImdsProbingSucceedsWithProperMocking() {
         String accessToken = "token-with-probing";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
