@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -22,13 +22,11 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may
      * not include all recently created or recently resized files.
      */
-    @Generated
     private long shareUsageBytes;
 
     /**
      * Creates an instance of ShareStats class.
      */
-    @Generated
     public ShareStats() {
     }
 
@@ -38,7 +36,6 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * 
      * @return the shareUsageBytes value.
      */
-    @Generated
     public long getShareUsageBytes() {
         return this.shareUsageBytes;
     }
@@ -50,22 +47,19 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * @param shareUsageBytes the shareUsageBytes value to set.
      * @return the ShareStats object itself.
      */
-    @Generated
     public ShareStats setShareUsageBytes(long shareUsageBytes) {
         this.shareUsageBytes = shareUsageBytes;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ShareStats" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareStats" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeLongElement("ShareUsageBytes", this.shareUsageBytes);
         return xmlWriter.writeEndElement();
@@ -79,7 +73,6 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareStats.
      */
-    @Generated
     public static ShareStats fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -94,10 +87,8 @@ public final class ShareStats implements XmlSerializable<ShareStats> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareStats.
      */
-    @Generated
     public static ShareStats fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ShareStats" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareStats" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareStats deserializedShareStats = new ShareStats();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

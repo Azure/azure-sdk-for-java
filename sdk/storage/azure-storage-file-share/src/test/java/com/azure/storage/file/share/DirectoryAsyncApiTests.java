@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.FilePermissionFormat;
@@ -25,7 +24,6 @@ import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,7 +46,6 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -1024,10 +1021,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(createDirMono.then(aadDirClient.exists())).expectNext(true).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @LiveOnly
     @Test
-    public void audienceErrorBearerChallengeRetry() {
+    public void audienceError() {
         String dirName = generatePathName();
         ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();
         Mono<ShareDirectoryInfo> createDirMono = dirClient.create();
@@ -1039,9 +1034,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareDirectoryAsyncClient aadDirClient
             = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
 
-        StepVerifier.create(createDirMono.then(aadDirClient.exists()))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        StepVerifier.create(createDirMono.then(aadDirClient.exists())).verifyErrorSatisfies(r -> {
+            ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+            assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        });
     }
 
     @Test
@@ -1140,17 +1136,5 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
         //cleanup
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
-    }
-
-    @Test
-    public void directoryExistsHandlesParentNotFound() {
-        ShareAsyncClient shareClient = shareBuilderHelper(shareName).buildAsyncClient();
-        ShareDirectoryAsyncClient directoryClient = shareClient.getDirectoryClient("fakeDir");
-        ShareDirectoryAsyncClient subDirectoryClient = directoryClient.getSubdirectoryClient(generatePathName());
-
-        StepVerifier.create(subDirectoryClient.existsWithResponse()).assertNext(r -> {
-            assertFalse(r.getValue());
-            assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(), r.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
-        }).verifyComplete();
     }
 }

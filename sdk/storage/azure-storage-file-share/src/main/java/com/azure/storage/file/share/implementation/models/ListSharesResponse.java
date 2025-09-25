@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,43 +23,36 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
     /*
      * The ServiceEndpoint property.
      */
-    @Generated
     private String serviceEndpoint;
 
     /*
      * The Prefix property.
      */
-    @Generated
     private String prefix;
 
     /*
      * The Marker property.
      */
-    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
-    @Generated
     private Integer maxResults;
 
     /*
      * The ShareItems property.
      */
-    @Generated
     private List<ShareItemInternal> shareItems;
 
     /*
      * The NextMarker property.
      */
-    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of ListSharesResponse class.
      */
-    @Generated
     public ListSharesResponse() {
     }
 
@@ -68,7 +61,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the serviceEndpoint value.
      */
-    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -79,7 +71,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -90,7 +81,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the prefix value.
      */
-    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -101,7 +91,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param prefix the prefix value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -112,7 +101,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the marker value.
      */
-    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -123,7 +111,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param marker the marker value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -134,7 +121,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the maxResults value.
      */
-    @Generated
     public Integer getMaxResults() {
         return this.maxResults;
     }
@@ -145,7 +131,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param maxResults the maxResults value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -156,7 +141,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the shareItems value.
      */
-    @Generated
     public List<ShareItemInternal> getShareItems() {
         if (this.shareItems == null) {
             this.shareItems = new ArrayList<>();
@@ -170,7 +154,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param shareItems the shareItems value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setShareItems(List<ShareItemInternal> shareItems) {
         this.shareItems = shareItems;
         return this;
@@ -181,7 +164,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * 
      * @return the nextMarker value.
      */
-    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -192,22 +174,19 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * @param nextMarker the nextMarker value to set.
      * @return the ListSharesResponse object itself.
      */
-    @Generated
     public ListSharesResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringElement("Prefix", this.prefix);
@@ -232,7 +211,6 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListSharesResponse.
      */
-    @Generated
     public static ListSharesResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -247,10 +225,8 @@ public final class ListSharesResponse implements XmlSerializable<ListSharesRespo
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListSharesResponse.
      */
-    @Generated
     public static ListSharesResponse fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListSharesResponse deserializedListSharesResponse = new ListSharesResponse();
             deserializedListSharesResponse.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");

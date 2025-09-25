@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,13 +16,11 @@ public final class ServicesListSharesSegmentHeaders {
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -44,7 +41,6 @@ public final class ServicesListSharesSegmentHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -55,7 +51,6 @@ public final class ServicesListSharesSegmentHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesListSharesSegmentHeaders object itself.
      */
-    @Generated
     public ServicesListSharesSegmentHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -66,7 +61,6 @@ public final class ServicesListSharesSegmentHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -77,7 +71,6 @@ public final class ServicesListSharesSegmentHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ServicesListSharesSegmentHeaders object itself.
      */
-    @Generated
     public ServicesListSharesSegmentHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;

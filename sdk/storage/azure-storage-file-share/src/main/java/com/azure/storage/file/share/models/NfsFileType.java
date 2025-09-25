@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.share.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
     /**
      * Static value Regular for NfsFileType.
      */
-    @Generated
     public static final NfsFileType REGULAR = fromString("Regular");
 
     /**
      * Static value Directory for NfsFileType.
      */
-    @Generated
     public static final NfsFileType DIRECTORY = fromString("Directory");
 
     /**
      * Static value SymLink for NfsFileType.
      */
-    @Generated
     public static final NfsFileType SYM_LINK = fromString("SymLink");
 
     /**
@@ -35,7 +31,6 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public NfsFileType() {
     }
@@ -46,7 +41,6 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
      * @param name a name to look for.
      * @return the corresponding NfsFileType.
      */
-    @Generated
     public static NfsFileType fromString(String name) {
         return fromString(name, NfsFileType.class);
     }
@@ -56,7 +50,6 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
      * 
      * @return known NfsFileType values.
      */
-    @Generated
     public static Collection<NfsFileType> values() {
         return values(NfsFileType.class);
     }

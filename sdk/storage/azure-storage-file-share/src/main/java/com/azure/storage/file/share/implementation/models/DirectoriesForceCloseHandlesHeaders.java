@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -19,37 +18,31 @@ public final class DirectoriesForceCloseHandlesHeaders {
     /*
      * The x-ms-marker property.
      */
-    @Generated
     private String xMsMarker;
 
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-number-of-handles-closed property.
      */
-    @Generated
     private Integer xMsNumberOfHandlesClosed;
 
     /*
      * The x-ms-number-of-handles-failed property.
      */
-    @Generated
     private Integer xMsNumberOfHandlesFailed;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_MARKER = HttpHeaderName.fromString("x-ms-marker");
@@ -74,21 +67,15 @@ public final class DirectoriesForceCloseHandlesHeaders {
         String xMsNumberOfHandlesClosed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_CLOSED);
         if (xMsNumberOfHandlesClosed != null) {
             this.xMsNumberOfHandlesClosed = Integer.parseInt(xMsNumberOfHandlesClosed);
-        } else {
-            this.xMsNumberOfHandlesClosed = null;
         }
         String xMsNumberOfHandlesFailed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_FAILED);
         if (xMsNumberOfHandlesFailed != null) {
             this.xMsNumberOfHandlesFailed = Integer.parseInt(xMsNumberOfHandlesFailed);
-        } else {
-            this.xMsNumberOfHandlesFailed = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
     }
 
@@ -97,7 +84,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the xMsMarker value.
      */
-    @Generated
     public String getXMsMarker() {
         return this.xMsMarker;
     }
@@ -108,7 +94,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param xMsMarker the xMsMarker value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setXMsMarker(String xMsMarker) {
         this.xMsMarker = xMsMarker;
         return this;
@@ -119,7 +104,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -130,7 +114,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -141,7 +124,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the xMsNumberOfHandlesClosed value.
      */
-    @Generated
     public Integer getXMsNumberOfHandlesClosed() {
         return this.xMsNumberOfHandlesClosed;
     }
@@ -152,7 +134,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param xMsNumberOfHandlesClosed the xMsNumberOfHandlesClosed value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setXMsNumberOfHandlesClosed(Integer xMsNumberOfHandlesClosed) {
         this.xMsNumberOfHandlesClosed = xMsNumberOfHandlesClosed;
         return this;
@@ -163,7 +144,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the xMsNumberOfHandlesFailed value.
      */
-    @Generated
     public Integer getXMsNumberOfHandlesFailed() {
         return this.xMsNumberOfHandlesFailed;
     }
@@ -174,7 +154,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param xMsNumberOfHandlesFailed the xMsNumberOfHandlesFailed value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setXMsNumberOfHandlesFailed(Integer xMsNumberOfHandlesFailed) {
         this.xMsNumberOfHandlesFailed = xMsNumberOfHandlesFailed;
         return this;
@@ -185,7 +164,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -196,7 +174,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -207,7 +184,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -221,7 +197,6 @@ public final class DirectoriesForceCloseHandlesHeaders {
      * @param date the date value to set.
      * @return the DirectoriesForceCloseHandlesHeaders object itself.
      */
-    @Generated
     public DirectoriesForceCloseHandlesHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

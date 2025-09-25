@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.share.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,25 +14,21 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
     /**
      * Static value TransactionOptimized for ShareAccessTier.
      */
-    @Generated
     public static final ShareAccessTier TRANSACTION_OPTIMIZED = fromString("TransactionOptimized");
 
     /**
      * Static value Hot for ShareAccessTier.
      */
-    @Generated
     public static final ShareAccessTier HOT = fromString("Hot");
 
     /**
      * Static value Cool for ShareAccessTier.
      */
-    @Generated
     public static final ShareAccessTier COOL = fromString("Cool");
 
     /**
      * Static value Premium for ShareAccessTier.
      */
-    @Generated
     public static final ShareAccessTier PREMIUM = fromString("Premium");
 
     /**
@@ -41,7 +36,6 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ShareAccessTier() {
     }
@@ -52,7 +46,6 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
      * @param name a name to look for.
      * @return the corresponding ShareAccessTier.
      */
-    @Generated
     public static ShareAccessTier fromString(String name) {
         return fromString(name, ShareAccessTier.class);
     }
@@ -62,7 +55,6 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
      * 
      * @return known ShareAccessTier values.
      */
-    @Generated
     public static Collection<ShareAccessTier> values() {
         return values(ShareAccessTier.class);
     }

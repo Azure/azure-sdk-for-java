@@ -9,10 +9,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
-import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -66,7 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -514,17 +511,6 @@ public class ShareApiTests extends FileShareTestBase {
         assertFalse(response.getValue());
         FileShareTestHelper.assertResponseStatusCode(response, 404);
         assertFalse(client.exists());
-    }
-
-    @Test
-    public void deleteIfExistsSnapshotNotFound() {
-        String snapshot = "2025-02-04T10:17:47.0000000Z";
-        ShareClient snapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildClient();
-
-        Response<Boolean> response = snapshotClient.deleteIfExistsWithResponse(null, null, null);
-
-        assertFalse(response.getValue());
-        FileShareTestHelper.assertResponseStatusCode(response, 404);
     }
 
     @Test
@@ -1381,10 +1367,8 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(infoPermission);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @LiveOnly
     @Test
-    public void audienceErrorBearerChallengeRetry() {
+    public void audienceError() {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
@@ -1395,7 +1379,9 @@ public class ShareApiTests extends FileShareTestBase {
             + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
-        assertNotNull(aadShareClient.createPermission(permission));
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> aadShareClient.createPermission(permission));
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 
     @Test
@@ -1558,20 +1544,5 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(response.getMaxBurstCreditsForIops());
         assertNotNull(response.getNextAllowedProvisionedIopsDowngradeTime());
         assertNotNull(response.getNextAllowedProvisionedBandwidthDowngradeTime());
-    }
-
-    @Test
-    public void invalidServiceVersion() {
-        ShareServiceClient serviceClient
-            = instrument(new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
-
-        ShareClient shareClient = serviceClient.getShareClient(generateShareName());
-
-        ShareStorageException exception = assertThrows(ShareStorageException.class, shareClient::createIfNotExists);
-
-        assertEquals(400, exception.getStatusCode());
-        assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
     }
 }

@@ -4,6 +4,7 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * A {@code ShareStorageExceptionInternal} is thrown whenever Azure Storage successfully returns an error code that
@@ -23,7 +24,7 @@ public final class ShareStorageExceptionInternal extends HttpResponseException {
      * @param value the deserialized error response.
      */
     public ShareStorageExceptionInternal(String message, HttpResponse response, ShareStorageError value) {
-        super(message, response, value);
+        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
     }
 
     @Override

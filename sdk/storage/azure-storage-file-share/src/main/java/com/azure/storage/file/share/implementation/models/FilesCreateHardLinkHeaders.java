@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -20,97 +19,81 @@ public final class FilesCreateHardLinkHeaders {
     /*
      * The x-ms-group property.
      */
-    @Generated
     private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
-    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-file-id property.
      */
-    @Generated
     private String xMsFileId;
 
     /*
      * The x-ms-file-creation-time property.
      */
-    @Generated
     private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The x-ms-file-file-type property.
      */
-    @Generated
     private NfsFileType xMsFileFileType;
 
     /*
      * The Last-Modified property.
      */
-    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Date property.
      */
-    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-mode property.
      */
-    @Generated
     private String xMsMode;
 
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The x-ms-link-count property.
      */
-    @Generated
     private Long xMsLinkCount;
 
     /*
      * The x-ms-file-change-time property.
      */
-    @Generated
     private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-parent-id property.
      */
-    @Generated
     private String xMsFileParentId;
 
     /*
      * The x-ms-request-id property.
      */
-    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-file-last-write-time property.
      */
-    @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @Generated
     private String xMsClientRequestId;
 
     /*
      * The x-ms-owner property.
      */
-    @Generated
     private String xMsOwner;
 
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
@@ -149,48 +132,34 @@ public final class FilesCreateHardLinkHeaders {
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
-        } else {
-            this.xMsFileCreationTime = null;
         }
         String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
         if (xMsFileFileType != null) {
             this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);
-        } else {
-            this.xMsFileFileType = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
         if (xMsLinkCount != null) {
             this.xMsLinkCount = Long.parseLong(xMsLinkCount);
-        } else {
-            this.xMsLinkCount = null;
         }
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
-        } else {
-            this.xMsFileChangeTime = null;
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
-        } else {
-            this.xMsFileLastWriteTime = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
@@ -201,7 +170,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsGroup value.
      */
-    @Generated
     public String getXMsGroup() {
         return this.xMsGroup;
     }
@@ -212,7 +180,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
@@ -223,7 +190,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsVersion value.
      */
-    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -234,7 +200,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -245,7 +210,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileId value.
      */
-    @Generated
     public String getXMsFileId() {
         return this.xMsFileId;
     }
@@ -256,7 +220,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileId the xMsFileId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
         return this;
@@ -267,7 +230,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileCreationTime value.
      */
-    @Generated
     public OffsetDateTime getXMsFileCreationTime() {
         return this.xMsFileCreationTime;
     }
@@ -278,7 +240,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
         this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
@@ -289,7 +250,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileFileType value.
      */
-    @Generated
     public NfsFileType getXMsFileFileType() {
         return this.xMsFileFileType;
     }
@@ -300,7 +260,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileFileType the xMsFileFileType value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
         this.xMsFileFileType = xMsFileFileType;
         return this;
@@ -311,7 +270,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the lastModified value.
      */
-    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -325,7 +283,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -340,7 +297,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the date value.
      */
-    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -354,7 +310,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param date the date value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -369,7 +324,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsMode value.
      */
-    @Generated
     public String getXMsMode() {
         return this.xMsMode;
     }
@@ -380,7 +334,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsMode the xMsMode value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsMode(String xMsMode) {
         this.xMsMode = xMsMode;
         return this;
@@ -391,7 +344,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -402,7 +354,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -413,7 +364,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsLinkCount value.
      */
-    @Generated
     public Long getXMsLinkCount() {
         return this.xMsLinkCount;
     }
@@ -424,7 +374,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsLinkCount the xMsLinkCount value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsLinkCount(Long xMsLinkCount) {
         this.xMsLinkCount = xMsLinkCount;
         return this;
@@ -435,7 +384,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileChangeTime value.
      */
-    @Generated
     public OffsetDateTime getXMsFileChangeTime() {
         return this.xMsFileChangeTime;
     }
@@ -446,7 +394,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
         this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
@@ -457,7 +404,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileParentId value.
      */
-    @Generated
     public String getXMsFileParentId() {
         return this.xMsFileParentId;
     }
@@ -468,7 +414,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
         return this;
@@ -479,7 +424,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsRequestId value.
      */
-    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -490,7 +434,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -501,7 +444,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsFileLastWriteTime value.
      */
-    @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
         return this.xMsFileLastWriteTime;
     }
@@ -512,7 +454,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
@@ -523,7 +464,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
-    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -534,7 +474,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -545,7 +484,6 @@ public final class FilesCreateHardLinkHeaders {
      * 
      * @return the xMsOwner value.
      */
-    @Generated
     public String getXMsOwner() {
         return this.xMsOwner;
     }
@@ -556,7 +494,6 @@ public final class FilesCreateHardLinkHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
-    @Generated
     public FilesCreateHardLinkHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;
