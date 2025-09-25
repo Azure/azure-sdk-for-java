@@ -157,26 +157,6 @@ public final class DatastoreProperties implements JsonSerializable<DatastoreProp
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (netAppVolume() != null) {
-            netAppVolume().validate();
-        }
-        if (diskPoolVolume() != null) {
-            diskPoolVolume().validate();
-        }
-        if (elasticSanVolume() != null) {
-            elasticSanVolume().validate();
-        }
-        if (pureStorageVolume() != null) {
-            pureStorageVolume().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

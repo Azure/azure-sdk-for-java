@@ -352,17 +352,6 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (protectedSettingsFromKeyVault() != null) {
-            protectedSettingsFromKeyVault().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

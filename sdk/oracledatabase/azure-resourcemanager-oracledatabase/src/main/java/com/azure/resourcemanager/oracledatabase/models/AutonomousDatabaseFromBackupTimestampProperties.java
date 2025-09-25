@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -476,51 +475,6 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
         super.withWhitelistedIps(whitelistedIps);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (sourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceId in model AutonomousDatabaseFromBackupTimestampProperties"));
-        }
-        if (cloneType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property cloneType in model AutonomousDatabaseFromBackupTimestampProperties"));
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabaseFromBackupTimestampProperties.class);
 
     /**
      * {@inheritDoc}

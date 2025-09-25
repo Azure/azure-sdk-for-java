@@ -34,7 +34,7 @@
     <module>../../monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml</module>
     <module>../../parents/azure-client-sdk-parent/pom.xml</module>
     <module>../../parents/azure-sdk-parent/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-appplatform/pom.xml</module>
+    <module>../../appplatform/azure-resourcemanager-appplatform/pom.xml</module>
     <module>../../appservice/azure-resourcemanager-appservice/pom.xml</module>
     <module>../../authorization/azure-resourcemanager-authorization/pom.xml</module>
     <module>../../cdn/azure-resourcemanager-cdn/pom.xml</module>

@@ -26,7 +26,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.GroupQuotaLocationSettingsClient;
@@ -150,24 +149,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupQuotasEnforcementStatusInner>> getWithResponseAsync(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -215,27 +196,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupQuotasEnforcementStatusInner> getWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, context);
@@ -290,27 +250,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String managementGroupId,
         String groupQuotaName, String resourceProviderName, String location,
         GroupQuotasEnforcementStatusInner locationSettings) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -344,30 +283,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, locationSettings, Context.NONE);
@@ -401,30 +316,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     private Response<BinaryData> createOrUpdateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, locationSettings, context);
@@ -747,27 +638,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -801,30 +671,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, locationSettings, Context.NONE);
@@ -858,30 +704,6 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
     private Response<BinaryData> updateWithResponse(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, GroupQuotasEnforcementStatusInner locationSettings,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (managementGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
-        }
-        if (groupQuotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupQuotaName is required and cannot be null."));
-        }
-        if (resourceProviderName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceProviderName is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (locationSettings != null) {
-            locationSettings.validate();
-        }
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             groupQuotaName, resourceProviderName, location, accept, locationSettings, context);
@@ -1177,6 +999,4 @@ public final class GroupQuotaLocationSettingsClientImpl implements GroupQuotaLoc
         return beginUpdate(managementGroupId, groupQuotaName, resourceProviderName, location, locationSettings, context)
             .getFinalResult();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GroupQuotaLocationSettingsClientImpl.class);
 }

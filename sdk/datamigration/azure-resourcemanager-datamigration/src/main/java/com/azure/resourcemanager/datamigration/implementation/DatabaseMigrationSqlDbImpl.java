@@ -142,6 +142,16 @@ public final class DatabaseMigrationSqlDbImpl
             .cancel(resourceGroupName, sqlDbInstanceName, targetDbName, parameters, context);
     }
 
+    public DatabaseMigrationSqlDb retry(MigrationOperationInput migrationOperationInput) {
+        return serviceManager.databaseMigrationsSqlDbs()
+            .retry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput);
+    }
+
+    public DatabaseMigrationSqlDb retry(MigrationOperationInput migrationOperationInput, Context context) {
+        return serviceManager.databaseMigrationsSqlDbs()
+            .retry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, context);
+    }
+
     public DatabaseMigrationSqlDbImpl withProperties(DatabaseMigrationPropertiesSqlDb properties) {
         this.innerModel().withProperties(properties);
         return this;

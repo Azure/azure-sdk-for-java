@@ -89,17 +89,6 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (diagnostics() != null) {
-            diagnostics().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

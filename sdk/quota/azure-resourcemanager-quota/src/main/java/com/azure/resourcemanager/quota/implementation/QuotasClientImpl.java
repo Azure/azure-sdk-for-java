@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.QuotasClient;
@@ -171,12 +170,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotasGetResponse> getWithResponseAsync(String resourceName, String scope) {
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), scope,
@@ -220,13 +213,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotasGetResponse getWithResponse(String resourceName, String scope, Context context) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName, accept,
             context);
@@ -274,18 +260,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -317,19 +291,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
@@ -360,19 +321,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
@@ -568,18 +516,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -610,19 +546,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
@@ -652,19 +575,6 @@ public final class QuotasClientImpl implements QuotasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceName, String scope,
         CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (createQuotaRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter createQuotaRequest is required and cannot be null."));
-        } else {
-            createQuotaRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, resourceName,
@@ -844,13 +754,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(String scope) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -888,14 +791,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listSinglePage(String scope) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaLimits> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, Context.NONE);
@@ -916,14 +811,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listSinglePage(String scope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaLimits> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, accept, context);
@@ -977,13 +864,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CurrentQuotaLimitBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1002,15 +882,6 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1029,20 +900,9 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CurrentQuotaLimitBaseInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<QuotaLimits> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(QuotasClientImpl.class);
 }

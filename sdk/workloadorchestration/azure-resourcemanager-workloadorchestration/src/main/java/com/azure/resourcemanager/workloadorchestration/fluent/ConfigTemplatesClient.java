@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersionResponseInner;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -125,7 +126,7 @@ public interface ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigTemplateInner> updateWithResponse(String resourceGroupName, String configTemplateName,
-        ConfigTemplateInner properties, Context context);
+        ConfigTemplateUpdate properties, Context context);
 
     /**
      * update a Config Template Resource.
@@ -139,7 +140,7 @@ public interface ConfigTemplatesClient {
      * @return config Template Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigTemplateInner update(String resourceGroupName, String configTemplateName, ConfigTemplateInner properties);
+    ConfigTemplateInner update(String resourceGroupName, String configTemplateName, ConfigTemplateUpdate properties);
 
     /**
      * Create or update a Config Template Version Resource with the specified UpdateType.

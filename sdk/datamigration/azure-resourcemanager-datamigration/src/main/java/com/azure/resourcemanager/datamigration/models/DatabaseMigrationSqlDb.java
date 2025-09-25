@@ -207,4 +207,27 @@ public interface DatabaseMigrationSqlDb {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(MigrationOperationInput parameters, Context context);
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    DatabaseMigrationSqlDb retry(MigrationOperationInput migrationOperationInput);
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    DatabaseMigrationSqlDb retry(MigrationOperationInput migrationOperationInput, Context context);
 }

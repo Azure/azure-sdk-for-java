@@ -14,15 +14,15 @@ public final class GatewayTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayTagsUpdate model
-            = BinaryData.fromString("{\"tags\":{\"odmailzyd\":\"ipjoxzjnchgejs\"}}").toObject(GatewayTagsUpdate.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.tags().get("odmailzyd"));
+            = BinaryData.fromString("{\"tags\":{\"xqabnmocpcysh\":\"vsnb\"}}").toObject(GatewayTagsUpdate.class);
+        Assertions.assertEquals("vsnb", model.tags().get("xqabnmocpcysh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayTagsUpdate model = new GatewayTagsUpdate().withTags(mapOf("odmailzyd", "ipjoxzjnchgejs"));
+        GatewayTagsUpdate model = new GatewayTagsUpdate().withTags(mapOf("xqabnmocpcysh", "vsnb"));
         model = BinaryData.fromObject(model).toObject(GatewayTagsUpdate.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.tags().get("odmailzyd"));
+        Assertions.assertEquals("vsnb", model.tags().get("xqabnmocpcysh"));
     }
 
     // Use "Map.of" if available

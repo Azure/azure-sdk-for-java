@@ -30,8 +30,8 @@ public final class DatabaseMigrationsSqlMisCancelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databaseMigrationsSqlMis()
-            .cancel("ghnysvlpyeuu", "p", "dixqbo", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("8f4f5f2b-c119-45f7-824b-ef9188c2a40e")), com.azure.core.util.Context.NONE);
+            .cancel("vkrbzkuastaxklpr", "ulhgltoiz", "xvsc", new MigrationOperationInput().withMigrationOperationId(
+                UUID.fromString("84df4b2f-dbe6-40de-ba4b-6a1ce646e6b5")), com.azure.core.util.Context.NONE);
 
     }
 }

@@ -20,7 +20,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedApplyMaintenanceWindowsClient;
 import reactor.core.publisher.Mono;
 
@@ -88,21 +87,6 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> postWithResponseAsync(String resourceGroupName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
@@ -139,24 +123,6 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> postWithResponse(String resourceGroupName, String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, context);
     }
@@ -175,6 +141,4 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
     public void post(String resourceGroupName, String clusterName) {
         postWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedApplyMaintenanceWindowsClientImpl.class);
 }

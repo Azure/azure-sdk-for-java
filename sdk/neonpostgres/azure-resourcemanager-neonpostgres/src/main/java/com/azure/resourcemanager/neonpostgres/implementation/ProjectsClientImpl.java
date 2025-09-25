@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.ProjectsClient;
@@ -202,25 +201,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProjectInner>> getWithResponseAsync(String resourceGroupName, String organizationName,
         String projectName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -260,28 +240,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> getWithResponse(String resourceGroupName, String organizationName, String projectName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, organizationName, projectName, accept, context);
@@ -318,30 +276,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String organizationName, String projectName, ProjectInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -366,34 +300,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, ProjectInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -417,34 +323,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, ProjectInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -587,25 +465,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
         String projectName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, context))
@@ -644,28 +503,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, context);
     }
@@ -698,22 +535,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listSinglePageAsync(String resourceGroupName, String organizationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -751,24 +572,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listSinglePage(String resourceGroupName, String organizationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ProjectListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, Context.NONE);
@@ -790,24 +593,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listSinglePage(String resourceGroupName, String organizationName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ProjectListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, context);
@@ -864,31 +649,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionUriPropertiesInner>> getConnectionUriWithResponseAsync(String resourceGroupName,
         String organizationName, String projectName, ConnectionUriPropertiesInner connectionUriParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (connectionUriParameters == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter connectionUriParameters is required and cannot be null."));
-        } else {
-            connectionUriParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -934,34 +694,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
     public Response<ConnectionUriPropertiesInner> getConnectionUriWithResponse(String resourceGroupName,
         String organizationName, String projectName, ConnectionUriPropertiesInner connectionUriParameters,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (connectionUriParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionUriParameters is required and cannot be null."));
-        } else {
-            connectionUriParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.getConnectionUriSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1000,13 +732,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -1025,15 +750,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ProjectListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1053,20 +769,9 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ProjectListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ProjectsClientImpl.class);
 }

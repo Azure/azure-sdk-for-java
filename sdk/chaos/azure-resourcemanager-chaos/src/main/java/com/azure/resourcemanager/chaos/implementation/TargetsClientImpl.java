@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.chaos.fluent.TargetsClient;
 import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 import com.azure.resourcemanager.chaos.implementation.models.TargetListResult;
@@ -195,33 +194,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TargetInner>> getWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -267,36 +239,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, accept,
@@ -342,38 +284,6 @@ public final class TargetsClientImpl implements TargetsClient {
     private Mono<Response<TargetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String parentProviderNamespace, String parentResourceType, String parentResourceName, String targetName,
         TargetInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -423,42 +333,6 @@ public final class TargetsClientImpl implements TargetsClient {
     public Response<TargetInner> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, TargetInner resource,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -503,33 +377,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
@@ -574,36 +421,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
-        if (targetName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter targetName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
             parentResourceName, targetName, context);
@@ -646,30 +463,6 @@ public final class TargetsClientImpl implements TargetsClient {
     private Mono<PagedResponse<TargetInner>> listSinglePageAsync(String resourceGroupName,
         String parentProviderNamespace, String parentResourceType, String parentResourceName,
         String continuationToken) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -738,32 +531,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listSinglePage(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String continuationToken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<TargetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
@@ -789,32 +556,6 @@ public final class TargetsClientImpl implements TargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listSinglePage(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String continuationToken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parentProviderNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
-        }
-        if (parentResourceType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceType is required and cannot be null."));
-        }
-        if (parentResourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parentResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<TargetListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
@@ -878,13 +619,6 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<TargetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -903,15 +637,6 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<TargetListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -931,20 +656,9 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<TargetListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TargetsClientImpl.class);
 }

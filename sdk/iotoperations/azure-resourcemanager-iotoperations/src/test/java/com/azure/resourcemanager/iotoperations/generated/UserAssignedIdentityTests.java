@@ -10,7 +10,7 @@ import com.azure.resourcemanager.iotoperations.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"clientId\":\"phut\",\"principalId\":\"ndv\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"soacctazakl\",\"clientId\":\"ahbc\"}")
             .toObject(UserAssignedIdentity.class);
     }
 
