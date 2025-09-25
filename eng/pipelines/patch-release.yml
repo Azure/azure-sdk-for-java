@@ -4,19 +4,242 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-ai-contentsafety
       groupId: com.azure
-      safeName: azuresdktemplate
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azureaicontentsafety
+      ServiceDirectory: contentsafety
+    - name: azure-ai-documentintelligence
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azureaidocumentintelligence
+      ServiceDirectory: documentintelligence
+    - name: azure-ai-metricsadvisor
       groupId: com.azure
-      safeName: azuresdktemplatethree
+      safeName: azureaimetricsadvisor
+      ServiceDirectory: metricsadvisor
+    - name: azure-ai-textanalytics
+      groupId: com.azure
+      safeName: azureaitextanalytics
+      ServiceDirectory: textanalytics
+    - name: azure-ai-translation-document
+      groupId: com.azure
+      safeName: azureaitranslationdocument
+      ServiceDirectory: translation
+    - name: azure-ai-translation-text
+      groupId: com.azure
+      safeName: azureaitranslationtext
+      ServiceDirectory: translation
+    - name: azure-ai-vision-imageanalysis
+      groupId: com.azure
+      safeName: azureaivisionimageanalysis
+      ServiceDirectory: vision
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication/azure-communication-callautomation
+    - name: azure-communication-chat
+      groupId: com.azure
+      safeName: azurecommunicationchatclient
+      ServiceDirectory: communication/azure-communication-chat
+    - name: azure-communication-common
+      groupId: com.azure
+      safeName: azurecommunicationcommon
+      ServiceDirectory: communication/azure-communication-common
+    - name: azure-communication-email
+      groupId: com.azure
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication/azure-communication-email
+    - name: azure-communication-identity
+      groupId: com.azure
+      safeName: azurecommunicationidentity
+      ServiceDirectory: communication/azure-communication-identity
+    - name: azure-communication-jobrouter
+      groupId: com.azure
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication/azure-communication-jobrouter
+    - name: azure-communication-messages
+      groupId: com.azure
+      safeName: azurecommunicationmessages
+      ServiceDirectory: communication/azure-communication-messages
+    - name: azure-communication-phonenumbers
+      groupId: com.azure
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication/azure-communication-phonenumbers
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication/azure-communication-sms
+    - name: azure-communication-rooms
+      groupId: com.azure
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication/azure-communication-rooms
+    - name: azure-containers-containerregistry
+      groupId: com.azure
+      safeName: azurecontainerscontainerregistry
+      ServiceDirectory: containerregistry
+    - name: azure-data-appconfiguration
+      groupId: com.azure
+      safeName: azuredataappconfiguration
+      ServiceDirectory: appconfiguration
+    - name: azure-data-schemaregistry
+      groupId: com.azure
+      safeName: azuredataschemaregistry
+      ServiceDirectory: schemaregistry
+    - name: azure-data-schemaregistry-apacheavro
+      groupId: com.azure
+      safeName: azuredataschemaregistryapacheavro
+      ServiceDirectory: schemaregistry
+    - name: azure-data-schemaregistry-jsonschema
+      groupId: com.azure
+      safeName: azuredataschemaregistryjsonschema
+      ServiceDirectory: schemaregistry
+    - name: azure-data-tables
+      groupId: com.azure
+      safeName: azuredatatables
+      ServiceDirectory: tables
+    - name: azure-developer-devcenter
+      groupId: com.azure
+      safeName: azuredeveloperdevcenter
+      ServiceDirectory: devcenter
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
+    - name: azure-digitaltwins-core
+      groupId: com.azure
+      safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+    - name: azure-health-insights-radiologyinsights
+      groupId: com.azure
+      safeName: azurehealthinsightsradiologyinsights
+      ServiceDirectory: healthinsights
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity/azure-identity-extensions
+    - name: azure-iot-deviceupdate
+      groupId: com.azure
+      safeName: azureiotdeviceupdate
+      ServiceDirectory: deviceupdate
+    - name: azure-messaging-eventgrid
+      groupId: com.azure
+      safeName: azuremessagingeventgrid
+      ServiceDirectory: eventgrid
+    - name: azure-messaging-eventgrid-namespaces
+      groupId: com.azure
+      safeName: azuremessagingeventgridnamespaces
+      ServiceDirectory: eventgrid
+    - name: azure-messaging-eventhubs
+      groupId: com.azure
+      safeName: azuremessagingeventhubs
+      ServiceDirectory: eventhubs
+    - name: azure-messaging-eventhubs-checkpointstore-blob
+      groupId: com.azure
+      safeName: azuremessagingeventhubscheckpointstoreblob
+      ServiceDirectory: eventhubs
+    - name: azure-messaging-servicebus
+      groupId: com.azure
+      safeName: azuremessagingservicebus
+      ServiceDirectory: servicebus
+    - name: azure-messaging-webpubsub
+      groupId: com.azure
+      safeName: azuremessagingwebpubsub
+      ServiceDirectory: webpubsub
+    - name: azure-messaging-webpubsub-client
+      groupId: com.azure
+      safeName: azuremessagingwebpubsubclient
+      ServiceDirectory: webpubsub
+    - name: azure-mixedreality-authentication
+      groupId: com.azure
+      safeName: azuremixedrealityauthentication
+      ServiceDirectory: mixedreality
+    - name: azure-mixedreality-remoterendering
+      groupId: com.azure
+      safeName: azuremixedrealityremoterendering
+      ServiceDirectory: remoterendering
+    - name: azure-monitor-query-metrics
+      groupId: com.azure
+      safeName: azuremonitorquerymetrics
+      ServiceDirectory: monitor
+    - name: azure-monitor-query-logs
+      groupId: com.azure
+      safeName: azuremonitorquerylogs
+      ServiceDirectory: monitor
+    - name: azure-monitor-ingestion
+      groupId: com.azure
+      safeName: azuremonitoringestion
+      ServiceDirectory: monitor
+    - name: azure-security-attestation
+      groupId: com.azure
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-security-confidentialledger
+      groupId: com.azure
+      safeName: azuresecurityconfidentialledger
+      ServiceDirectory: confidentialledger
+    - name: azure-security-keyvault-administration
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultadministration
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-certificates
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultcertificates
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-keys
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultkeys
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-secrets
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultsecrets
+      ServiceDirectory: keyvault
+    - name: azure-search-documents
+      groupId: com.azure
+      safeName: azuresearch
+      ServiceDirectory: search
+    - name: azure-storage-blob
+      groupId: com.azure
+      safeName: azurestorageblob
+      ServiceDirectory: storage
+    - name: azure-storage-blob-batch
+      groupId: com.azure
+      safeName: azurestorageblobbatch
+      ServiceDirectory: storage
+    - name: azure-storage-blob-cryptography
+      groupId: com.azure
+      safeName: azurestorageblobcryptography
+      ServiceDirectory: storage
+    - name: azure-storage-common
+      groupId: com.azure
+      safeName: azurestoragecommon
+      ServiceDirectory: storage
+    - name: azure-storage-file-datalake
+      groupId: com.azure
+      safeName: azurestoragefiledatalake
+      ServiceDirectory: storage
+    - name: azure-storage-file-share
+      groupId: com.azure
+      safeName: azurestoragefileshare
+      ServiceDirectory: storage
+    - name: azure-storage-internal-avro
+      groupId: com.azure
+      safeName: azurestorageinternalavro
       skipPublishDocMs: true
-      ServiceDirectory: template
+      skipPublishDocGithubIo: true
+      ServiceDirectory: storage
+    - name: azure-storage-queue
+      groupId: com.azure
+      safeName: azurestoragequeue
+      ServiceDirectory: storage
+    - name: azure-resourcemanager-keyvault
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerkeyvault
+      ServiceDirectory: keyvault/azure-resourcemanager-keyvault
+    - name: azure-resourcemanager-appservice
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerappservice
+      ServiceDirectory: appservice
+    - name: azure-resourcemanager-containerinstance
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerinstance
+      ServiceDirectory: containerinstance
 
