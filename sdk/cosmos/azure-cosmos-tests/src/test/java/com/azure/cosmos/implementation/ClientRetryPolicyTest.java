@@ -49,7 +49,7 @@ public class ClientRetryPolicyTest {
     }
     
         @Test(groups = "unit")
-        public void requestRateTooLargeOnMetadataRequest() throws Exception {
+        public void requestRateTooLarge() throws Exception {
             ThrottlingRetryOptions throttlingRetryOptions =
                 new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(1);
             GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
@@ -58,7 +58,9 @@ public class ClientRetryPolicyTest {
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
     
-            Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+            Mockito
+                .doReturn(new RegionalRoutingContext(new URI("http://localhost")))
+                .when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
             Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
             ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
                 mockDiagnosticsClientContext(),
