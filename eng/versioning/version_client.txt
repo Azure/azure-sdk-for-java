@@ -144,7 +144,7 @@ com.azure:azure-maps-geolocation;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-maps-render;2.0.0-beta.2;2.0.0-beta.3
 com.azure:azure-maps-route;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-maps-search;2.0.0-beta.2;2.0.0-beta.3
-com.azure:azure-messaging-eventgrid;4.31.2;4.32.0-beta.1
+com.azure:azure-messaging-eventgrid;4.31.2;4.31.3
 com.azure:azure-messaging-eventgrid-systemevents;1.0.0;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.1.6;1.2.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
