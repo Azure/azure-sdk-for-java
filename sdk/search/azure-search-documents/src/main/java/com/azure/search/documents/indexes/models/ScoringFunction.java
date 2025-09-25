@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,25 +24,21 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
      * type must be lower case.
      */
-    @Generated
     private String type = "ScoringFunction";
 
     /*
      * The name of the field used as input to the scoring function.
      */
-    @Generated
     private final String fieldName;
 
     /*
      * A multiplier for the raw score. Must be a positive number not equal to 1.0.
      */
-    @Generated
     private final double boost;
 
     /*
      * A value indicating how boosting will be interpolated across document scores; defaults to "Linear".
      */
-    @Generated
     private ScoringFunctionInterpolation interpolation;
 
     /**
@@ -52,7 +47,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * @param fieldName the fieldName value to set.
      * @param boost the boost value to set.
      */
-    @Generated
     public ScoringFunction(String fieldName, double boost) {
         this.fieldName = fieldName;
         this.boost = boost;
@@ -64,7 +58,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * 
      * @return the type value.
      */
-    @Generated
     public String getType() {
         return this.type;
     }
@@ -74,7 +67,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * 
      * @return the fieldName value.
      */
-    @Generated
     public String getFieldName() {
         return this.fieldName;
     }
@@ -84,7 +76,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * 
      * @return the boost value.
      */
-    @Generated
     public double getBoost() {
         return this.boost;
     }
@@ -95,7 +86,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * 
      * @return the interpolation value.
      */
-    @Generated
     public ScoringFunctionInterpolation getInterpolation() {
         return this.interpolation;
     }
@@ -107,7 +97,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * @param interpolation the interpolation value to set.
      * @return the ScoringFunction object itself.
      */
-    @Generated
     public ScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         this.interpolation = interpolation;
         return this;
@@ -116,7 +105,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -136,7 +124,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScoringFunction.
      */
-    @Generated
     public static ScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -168,7 +155,6 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
         });
     }
 
-    @Generated
     static ScoringFunction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean fieldNameFound = false;

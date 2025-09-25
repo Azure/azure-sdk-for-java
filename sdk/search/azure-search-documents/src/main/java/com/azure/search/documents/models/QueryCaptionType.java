@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +13,17 @@ import java.util.Collection;
  * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from key
  * passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by default,
  * and can be configured by appending the pipe character `|` followed by the `highlight-&lt;true/false&gt;` option, such
- * as `extractive|highlight-true`. Defaults to `None`. The maximum character length of captions can be configured by
- * appending the pipe character '|' followed by the 'count-&lt;number of maximum character length&gt;', such as
- * 'extractive|maxcharlength-600'.
+ * as `extractive|highlight-true`. Defaults to `None`.
  */
 public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionType> {
     /**
      * Do not return captions for the query.
      */
-    @Generated
     public static final QueryCaptionType NONE = fromString("none");
 
     /**
      * Extracts captions from the matching documents that contain passages relevant to the search query.
      */
-    @Generated
     public static final QueryCaptionType EXTRACTIVE = fromString("extractive");
 
     /**
@@ -36,7 +31,6 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public QueryCaptionType() {
     }
@@ -47,7 +41,6 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * @param name a name to look for.
      * @return the corresponding QueryCaptionType.
      */
-    @Generated
     public static QueryCaptionType fromString(String name) {
         return fromString(name, QueryCaptionType.class);
     }
@@ -57,7 +50,6 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * 
      * @return known QueryCaptionType values.
      */
-    @Generated
     public static Collection<QueryCaptionType> values() {
         return values(QueryCaptionType.class);
     }

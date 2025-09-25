@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,13 +20,11 @@ public final class TruncateTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.TruncateTokenFilter";
 
     /*
      * The length at which terms will be truncated. Default and maximum is 300.
      */
-    @Generated
     private Integer length;
 
     /**
@@ -35,7 +32,6 @@ public final class TruncateTokenFilter extends TokenFilter {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public TruncateTokenFilter(String name) {
         super(name);
     }
@@ -45,7 +41,6 @@ public final class TruncateTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -56,7 +51,6 @@ public final class TruncateTokenFilter extends TokenFilter {
      * 
      * @return the length value.
      */
-    @Generated
     public Integer getLength() {
         return this.length;
     }
@@ -67,7 +61,6 @@ public final class TruncateTokenFilter extends TokenFilter {
      * @param length the length value to set.
      * @return the TruncateTokenFilter object itself.
      */
-    @Generated
     public TruncateTokenFilter setLength(Integer length) {
         this.length = length;
         return this;
@@ -76,7 +69,6 @@ public final class TruncateTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,7 +87,6 @@ public final class TruncateTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TruncateTokenFilter.
      */
-    @Generated
     public static TruncateTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -15,23 +15,13 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
-import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
-import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.implementation.models.SkillNames;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
-import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
@@ -473,44 +463,6 @@ public class SearchIndexerClient {
         return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null, context);
     }
 
-    /**
-     * Creates a new Azure AI Search data source or updates a data source if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer data source connection named "dataSource". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context -->
-     * <pre>
-     * SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
-     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
-     * CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions&#40;dataSource&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;
-     *     .setCacheResetRequirementsIgnored&#40;true&#41;;
-     *
-     * Response&lt;SearchIndexerDataSourceConnection&gt; updateDataSource = SEARCH_INDEXER_CLIENT
-     *     .createOrUpdateDataSourceConnectionWithResponse&#40;options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
-     *         + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
-     *     updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
-     * connection}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a data source response.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        CreateOrUpdateDataSourceConnectionOptions options, Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        return createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context);
-    }
-
     Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
         Context context) {
@@ -521,10 +473,11 @@ public class SearchIndexerClient {
         if (dataSource.getConnectionString() == null) {
             dataSource.setConnectionString("<unchanged>");
         }
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements, null,
-                context),
-            LOGGER);
+        return Utility
+            .executeRestCallWithExceptionHandling(
+                () -> restClient.getDataSources()
+                    .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, null, context),
+                LOGGER);
     }
 
     /**
@@ -691,7 +644,7 @@ public class SearchIndexerClient {
     public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mapPagedDataSources(listDataSourceConnectionsWithResponse(null, context)));
+                () -> MappingUtils.mappingPagingDataSource(listDataSourceConnectionsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -750,7 +703,7 @@ public class SearchIndexerClient {
     public PagedIterable<String> listDataSourceConnectionNames(Context context) {
         try {
             return new PagedIterable<>(() -> MappingUtils
-                .mapPagedDataSourceNames(this.listDataSourceConnectionsWithResponse("name", context)));
+                .mappingPagingDataSourceNames(this.listDataSourceConnectionsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -921,44 +874,6 @@ public class SearchIndexerClient {
         return createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context);
     }
 
-    /**
-     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer named "searchIndexer". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context -->
-     * <pre>
-     * SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
-     * searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
-     *     new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
-     * CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions&#40;searchIndexerFromService&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;
-     *     .setCacheReprocessingChangeDetectionDisabled&#40;false&#41;
-     *     .setCacheResetRequirementsIgnored&#40;true&#41;;
-     * Response&lt;SearchIndexer&gt; indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse&#40;
-     *     options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
-     *         + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
-     *     indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
-     *     indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexer indexer}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return A response object containing the Indexer.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options,
-        Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context);
-    }
-
     Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
         if (indexer == null) {
@@ -966,9 +881,7 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, ignoreResetRequirements,
-                disableCacheReprocessingChangeDetection, null, context),
-            LOGGER);
+            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, null, context), LOGGER);
 
     }
 
@@ -1022,7 +935,7 @@ public class SearchIndexerClient {
     public PagedIterable<SearchIndexer> listIndexers(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mapPagedSearchIndexers(listIndexersWithResponse(null, context)));
+                () -> MappingUtils.mappingPagingSearchIndexer(listIndexersWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1081,7 +994,7 @@ public class SearchIndexerClient {
     public PagedIterable<String> listIndexerNames(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mapPagedSearchIndexerNames(this.listIndexersWithResponse("name", context)));
+                () -> MappingUtils.mappingPagingSearchIndexerNames(this.listIndexersWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1514,7 +1427,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerSkillset> listSkillsets(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mapPagedSkillsets(listSkillsetsWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSkillset(listSkillsetsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1573,7 +1487,7 @@ public class SearchIndexerClient {
     public PagedIterable<String> listSkillsetNames(Context context) {
         try {
             return new PagedIterable<>(
-                () -> MappingUtils.mapPagedSkillsetNames(listSkillsetsWithResponse("name", context)));
+                () -> MappingUtils.mappingPagingSkillsetNames(listSkillsetsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1636,43 +1550,6 @@ public class SearchIndexerClient {
         return createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null, context);
     }
 
-    /**
-     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context -->
-     * <pre>
-     * SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
-     * indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
-     * CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions&#40;indexerSkillset&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;
-     *     .setCacheReprocessingChangeDetectionDisabled&#40;false&#41;
-     *     .setCacheResetRequirementsIgnored&#40;true&#41;;
-     * Response&lt;SearchIndexerSkillset&gt; updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse&#40;
-     *     options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
-     *         + &quot;The description of indexer skillset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
-     *     updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
-     *     updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing the skillset that was created or updated.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions options,
-        Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context);
-    }
-
     Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
         Context context) {
@@ -1681,9 +1558,7 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, ignoreResetRequirements,
-                disableCacheReprocessingChangeDetection, null, context),
-            LOGGER);
+            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, null, context), LOGGER);
     }
 
     /**
@@ -1734,149 +1609,5 @@ public class SearchIndexerClient {
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getSkillsets().deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.
-     *
-     * @param indexerName The name of the indexer to resync for.
-     * @param indexerResync The indexerResync parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resync(String indexerName, IndexerResyncBody indexerResync) {
-        resyncWithResponse(indexerName, indexerResync, Context.NONE).getValue();
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.
-     *
-     * @param indexerName The name of the indexer to resync for.
-     * @param indexerResync The indexerResync parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resyncWithResponse(String indexerName, IndexerResyncBody indexerResync, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getIndexers().resyncWithResponse(indexerName, indexerResync, null, context), LOGGER);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List -->
-     * <pre>
-     * &#47;&#47; Reset the documents with keys 1234 and 4321.
-     * SEARCH_INDEXER_CLIENT.resetDocuments&#40;&quot;searchIndexer&quot;, false, Arrays.asList&#40;&quot;1234&quot;, &quot;4321&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-     * SEARCH_INDEXER_CLIENT.resetDocuments&#40;&quot;searchIndexer&quot;, true, Arrays.asList&#40;&quot;1235&quot;, &quot;5321&quot;&#41;, null&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List -->
-     *
-     * @param indexerName The name of the indexer to reset documents for.
-     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
-     * payload will be queued to be re-ingested.
-     * @param documentKeys Document keys to be reset.
-     * @param datasourceDocumentIds Datasource document identifiers to be reset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String indexerName, Boolean overwrite, List<String> documentKeys,
-        List<String> datasourceDocumentIds) {
-        resetDocumentsWithResponse(new SearchIndexer(indexerName), overwrite, documentKeys, datasourceDocumentIds,
-            Context.NONE);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context -->
-     * <pre>
-     * SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
-     *
-     * &#47;&#47; Reset the documents with keys 1234 and 4321.
-     * Response&lt;Void&gt; resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse&#40;searchIndexer, false,
-     *     Arrays.asList&#40;&quot;1234&quot;, &quot;4321&quot;&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Requesting documents to be reset completed with status code %d.%n&quot;,
-     *     resetDocsResult.getStatusCode&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-     * resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse&#40;searchIndexer, true,
-     *     Arrays.asList&#40;&quot;1235&quot;, &quot;5321&quot;&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Overwriting the documents to be reset completed with status code %d.%n&quot;,
-     *     resetDocsResult.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context -->
-     *
-     * @param indexer The indexer to reset documents for.
-     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
-     * payload will be queued to be re-ingested.
-     * @param documentKeys Document keys to be reset.
-     * @param datasourceDocumentIds Datasource document identifiers to be reset.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return A response signalling completion.
-     * @throws NullPointerException If {@code indexer} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetDocumentsWithResponse(SearchIndexer indexer, Boolean overwrite,
-        List<String> documentKeys, List<String> datasourceDocumentIds, Context context) {
-        DocumentKeysOrIds documentKeysOrIds
-            = new DocumentKeysOrIds().setDocumentKeys(documentKeys).setDatasourceDocumentIds(datasourceDocumentIds);
-
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .resetDocsWithResponse(indexer.getName(), overwrite, documentKeysOrIds, null, context), LOGGER);
-    }
-
-    /**
-     * Resets skills in an existing skillset in an Azure AI Search service.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List -->
-     * <pre>
-     * &#47;&#47; Reset the &quot;myOcr&quot; and &quot;myText&quot; skills.
-     * SEARCH_INDEXER_CLIENT.resetSkills&#40;&quot;searchIndexerSkillset&quot;, Arrays.asList&#40;&quot;myOcr&quot;, &quot;myText&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List -->
-     *
-     * @param skillsetName The name of the skillset to reset.
-     * @param skillNames The skills to reset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSkills(String skillsetName, List<String> skillNames) {
-        resetSkillsWithResponse(new SearchIndexerSkillset(skillsetName), skillNames, Context.NONE);
-    }
-
-    /**
-     * Resets skills in an existing skillset in an Azure AI Search service.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context -->
-     * <pre>
-     * SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
-     *
-     * &#47;&#47; Reset the &quot;myOcr&quot; and &quot;myText&quot; skills.
-     * Response&lt;Void&gt; resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse&#40;searchIndexerSkillset,
-     *     Arrays.asList&#40;&quot;myOcr&quot;, &quot;myText&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Resetting skills completed with status code %d.%n&quot;, resetSkillsResponse.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context -->
-     *
-     * @param skillset The skillset to reset.
-     * @param skillNames The skills to reset.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A response signalling completion.
-     * @throws NullPointerException If {@code skillset} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
-        Context context) {
-        return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getSkillsets()
-                .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null, context),
-            LOGGER);
     }
 }

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,7 +23,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Util.ShaperSkill";
 
     /**
@@ -33,7 +31,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public ShaperSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -43,7 +40,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -52,7 +48,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ShaperSkill setName(String name) {
         super.setName(name);
@@ -62,7 +57,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ShaperSkill setDescription(String description) {
         super.setDescription(description);
@@ -72,7 +66,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ShaperSkill setContext(String context) {
         super.setContext(context);
@@ -82,7 +75,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,7 +96,6 @@ public final class ShaperSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ShaperSkill.
      */
-    @Generated
     public static ShaperSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

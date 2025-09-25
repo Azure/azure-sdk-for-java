@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,7 +22,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /*
      * Name of the Azure table to store projected data in.
      */
-    @Generated
     private final String tableName;
 
     /**
@@ -31,7 +29,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
      * 
      * @param tableName the tableName value to set.
      */
-    @Generated
     public SearchIndexerKnowledgeStoreTableProjectionSelector(String tableName) {
         this.tableName = tableName;
     }
@@ -41,7 +38,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
      * 
      * @return the tableName value.
      */
-    @Generated
     public String getTableName() {
         return this.tableName;
     }
@@ -49,7 +45,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -59,7 +54,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
@@ -69,7 +63,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setSource(String source) {
         super.setSource(source);
@@ -79,7 +72,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
@@ -89,7 +81,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -99,7 +90,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,7 +111,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreTableProjectionSelector.
      */
-    @Generated
     public static SearchIndexerKnowledgeStoreTableProjectionSelector fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {

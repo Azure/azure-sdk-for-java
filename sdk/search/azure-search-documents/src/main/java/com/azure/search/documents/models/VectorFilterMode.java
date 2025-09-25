@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,28 +17,18 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
      * The filter will be applied after the candidate set of vector results is returned. Depending on the filter
      * selectivity, this can result in fewer results than requested by the parameter 'k'.
      */
-    @Generated
     public static final VectorFilterMode POST_FILTER = fromString("postFilter");
 
     /**
      * The filter will be applied before the search query.
      */
-    @Generated
     public static final VectorFilterMode PRE_FILTER = fromString("preFilter");
-
-    /**
-     * The filter will be applied after the global top-k candidate set of vector results is returned. This will result
-     * in fewer results than requested by the parameter 'k'.
-     */
-    @Generated
-    public static final VectorFilterMode STRICT_POST_FILTER = fromString("strictPostFilter");
 
     /**
      * Creates a new instance of VectorFilterMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public VectorFilterMode() {
     }
@@ -50,7 +39,6 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
      * @param name a name to look for.
      * @return the corresponding VectorFilterMode.
      */
-    @Generated
     public static VectorFilterMode fromString(String name) {
         return fromString(name, VectorFilterMode.class);
     }
@@ -60,7 +48,6 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
      * 
      * @return known VectorFilterMode values.
      */
-    @Generated
     public static Collection<VectorFilterMode> values() {
         return values(VectorFilterMode.class);
     }

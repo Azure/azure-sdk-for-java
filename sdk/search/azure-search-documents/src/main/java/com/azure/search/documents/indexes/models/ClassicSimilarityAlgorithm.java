@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,13 +22,11 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
 
     /**
      * Creates an instance of ClassicSimilarityAlgorithm class.
      */
-    @Generated
     public ClassicSimilarityAlgorithm() {
     }
 
@@ -38,7 +35,6 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -47,7 +43,6 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -63,7 +58,6 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ClassicSimilarityAlgorithm.
      */
-    @Generated
     public static ClassicSimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassicSimilarityAlgorithm deserializedClassicSimilarityAlgorithm = new ClassicSimilarityAlgorithm();

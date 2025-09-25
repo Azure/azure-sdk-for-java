@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,7 +24,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
      * 
      * @param storageContainer the storageContainer value to set.
      */
-    @Generated
     public SearchIndexerKnowledgeStoreObjectProjectionSelector(String storageContainer) {
         super(storageContainer);
     }
@@ -33,7 +31,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -43,7 +40,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
@@ -53,7 +49,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSource(String source) {
         super.setSource(source);
@@ -63,7 +58,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
@@ -73,7 +67,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -83,7 +76,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +97,6 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreObjectProjectionSelector.
      */
-    @Generated
     public static SearchIndexerKnowledgeStoreObjectProjectionSelector fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {

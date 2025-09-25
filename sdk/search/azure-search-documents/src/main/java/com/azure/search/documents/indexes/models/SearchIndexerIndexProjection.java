@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,14 +22,12 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
     /*
      * A list of projections to be performed to secondary search indexes.
      */
-    @Generated
     private final List<SearchIndexerIndexProjectionSelector> selectors;
 
     /*
      * A dictionary of index projection-specific configuration properties. Each name is the name of a specific property.
      * Each value must be of a primitive type.
      */
-    @Generated
     private SearchIndexerIndexProjectionsParameters parameters;
 
     /**
@@ -38,7 +35,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      * 
      * @param selectors the selectors value to set.
      */
-    @Generated
     public SearchIndexerIndexProjection(List<SearchIndexerIndexProjectionSelector> selectors) {
         this.selectors = selectors;
     }
@@ -48,7 +44,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      * 
      * @return the selectors value.
      */
-    @Generated
     public List<SearchIndexerIndexProjectionSelector> getSelectors() {
         return this.selectors;
     }
@@ -59,7 +54,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      * 
      * @return the parameters value.
      */
-    @Generated
     public SearchIndexerIndexProjectionsParameters getParameters() {
         return this.parameters;
     }
@@ -71,7 +65,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      * @param parameters the parameters value to set.
      * @return the SearchIndexerIndexProjection object itself.
      */
-    @Generated
     public SearchIndexerIndexProjection setParameters(SearchIndexerIndexProjectionsParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -80,7 +73,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,7 +90,6 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerIndexProjection.
      */
-    @Generated
     public static SearchIndexerIndexProjection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean selectorsFound = false;

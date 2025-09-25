@@ -6,13 +6,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Tokenizes the input into n-grams of the given size(s). This tokenizer is implemented using Apache Lucene.
@@ -23,25 +22,21 @@ public final class NGramTokenizer extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.NGramTokenizer";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
      */
-    @Generated
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2. Maximum is 300.
      */
-    @Generated
     private Integer maxGram;
 
     /*
      * Character classes to keep in the tokens.
      */
-    @Generated
     private List<TokenCharacterKind> tokenChars;
 
     /**
@@ -49,7 +44,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      *
      * @param name the name value to set.
      */
-    @Generated
     public NGramTokenizer(String name) {
         super(name);
     }
@@ -59,7 +53,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -71,7 +64,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      *
      * @return the minGram value.
      */
-    @Generated
     public Integer getMinGram() {
         return this.minGram;
     }
@@ -83,7 +75,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param minGram the minGram value to set.
      * @return the NGramTokenizer object itself.
      */
-    @Generated
     public NGramTokenizer setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
@@ -94,7 +85,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      *
      * @return the maxGram value.
      */
-    @Generated
     public Integer getMaxGram() {
         return this.maxGram;
     }
@@ -105,7 +95,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenizer object itself.
      */
-    @Generated
     public NGramTokenizer setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
@@ -116,7 +105,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      *
      * @return the tokenChars value.
      */
-    @Generated
     public List<TokenCharacterKind> getTokenChars() {
         return this.tokenChars;
     }
@@ -127,7 +115,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the NGramTokenizer object itself.
      */
-    @Generated
     public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;
@@ -136,7 +123,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,7 +144,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NGramTokenizer.
      */
-    @Generated
     public static NGramTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

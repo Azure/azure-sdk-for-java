@@ -832,48 +832,10 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
-        return getDocumentWithResponse(key, modelClass, selectedFields, null, context);
-    }
-
-    /**
-     * Retrieves a document from the Azure AI Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Get dynamic SearchDocument. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context -->
-     * <pre>
-     * Response&lt;SearchDocument&gt; resultResponse = SEARCH_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;,
-     *     SearchDocument.class, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
-     * for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context -->
-     *
-     * @param <T> Convert document to the generic type.
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts to.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
-     * default as its corresponding property value in the returned object.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * This token is used to enforce security restrictions on documents.
-     * @param context additional context that is passed through the Http pipeline during the service call
-     * @return response containing a document object
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
-        String querySourceAuthorization, Context context) {
 
         try {
-            Response<Map<String, Object>> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, querySourceAuthorization, null, context);
+            Response<Map<String, Object>> response
+                = restClient.getDocuments().getWithResponse(key, selectedFields, null, context);
 
             return new SimpleResponse<>(response, serializer
                 .deserializeFromBytes(serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
@@ -1039,78 +1001,17 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
-        return search(searchText, searchOptions, null, context);
-    }
-
-    /**
-     * Searches for documents in the Azure AI Search index.
-     * <p>
-     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
-     * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure AI Search</a> for more information about search query syntax.
-     * <p>
-     * The {@link SearchPagedIterable} will iterate through search result pages until all search results are returned.
-     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
-     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
-     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
-     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
-     * {@link SearchPagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
-     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Search text from documents in service with option. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
-     * <pre>
-     * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;,
-     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
-     *
-     * long numberOfDocumentsReturned = 0;
-     * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
-     *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
-     *     numberOfDocumentsReturned += resultResponse.getValue&#40;&#41;.size&#40;&#41;;
-     *     resultResponse.getValue&#40;&#41;.forEach&#40;searchResult -&gt; &#123;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchResult
-     *             .getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
-     *
-     *     if &#40;numberOfDocumentsReturned &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *         break;
-     *     &#125;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
-     *
-     * @param searchText A full-text search query expression.
-     * @param searchOptions Parameters to further refine the search query
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * This token is used to enforce security restrictions on documents.
-     * @param context additional context that is passed through the Http pipeline during the service call
-     * @return A {@link SearchPagedIterable} that iterates over {@link SearchResult} objects and provides access to the
-     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
-     * information.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SearchPagedIterable search(String searchText, SearchOptions searchOptions, String querySourceAuthorization,
-        Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, SearchPagedResponse> func = continuationToken -> search(request, continuationToken,
-            firstPageResponseWrapper, querySourceAuthorization, context);
+        Function<String, SearchPagedResponse> func
+            = continuationToken -> search(request, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedIterable(() -> func.apply(null), func);
     }
 
     private SearchPagedResponse search(SearchRequest request, String continuationToken,
-        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return firstPageResponseWrapper.getFirstPageResponse();
         }
@@ -1119,15 +1020,14 @@ public final class SearchClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments()
-                .searchPostWithResponse(requestToUse, querySourceAuthorization, null, context);
+            Response<SearchDocumentsResult> response
+                = restClient.getDocuments().searchPostWithResponse(requestToUse, null, context);
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page
                 = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
                     createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
                     result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                    result.getSemanticPartialResponseType(), result.getDebugInfo(),
-                    result.getSemanticQueryRewritesResultType());
+                    result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }
@@ -1277,5 +1177,4 @@ public final class SearchClient {
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
         }, LOGGER);
     }
-
 }

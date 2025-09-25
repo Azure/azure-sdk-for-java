@@ -5,7 +5,9 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,7 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 
@@ -91,8 +95,11 @@ public class IndexActionTests {
     }
 
     private static String convertToJson(JsonSerializable<?> jsonSerializable) {
-        try {
-            return jsonSerializable.toJsonString();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            writer.writeJson(jsonSerializable).flush();
+            return outputStream.toString(StandardCharsets.UTF_8.name());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

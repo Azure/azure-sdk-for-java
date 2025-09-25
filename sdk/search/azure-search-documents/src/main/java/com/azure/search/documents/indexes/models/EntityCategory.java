@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,43 +16,36 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     /**
      * Entities describing a physical location.
      */
-    @Generated
     public static final EntityCategory LOCATION = fromString("location");
 
     /**
      * Entities describing an organization.
      */
-    @Generated
     public static final EntityCategory ORGANIZATION = fromString("organization");
 
     /**
      * Entities describing a person.
      */
-    @Generated
     public static final EntityCategory PERSON = fromString("person");
 
     /**
      * Entities describing a quantity.
      */
-    @Generated
     public static final EntityCategory QUANTITY = fromString("quantity");
 
     /**
      * Entities describing a date and time.
      */
-    @Generated
     public static final EntityCategory DATETIME = fromString("datetime");
 
     /**
      * Entities describing a URL.
      */
-    @Generated
     public static final EntityCategory URL = fromString("url");
 
     /**
      * Entities describing an email address.
      */
-    @Generated
     public static final EntityCategory EMAIL = fromString("email");
 
     /**
@@ -61,7 +53,6 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public EntityCategory() {
     }
@@ -72,7 +63,6 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * @param name a name to look for.
      * @return the corresponding EntityCategory.
      */
-    @Generated
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
     }
@@ -82,7 +72,6 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * 
      * @return known EntityCategory values.
      */
-    @Generated
     public static Collection<EntityCategory> values() {
         return values(EntityCategory.class);
     }

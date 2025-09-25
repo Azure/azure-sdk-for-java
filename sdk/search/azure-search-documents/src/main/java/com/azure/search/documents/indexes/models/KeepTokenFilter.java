@@ -6,7 +6,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,19 +23,16 @@ public final class KeepTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.KeepTokenFilter";
 
     /*
      * The list of words to keep.
      */
-    @Generated
     private final List<String> keepWords;
 
     /*
      * A value indicating whether to lower case all words first. Default is false.
      */
-    @Generated
     private Boolean lowerCaseKeepWords;
 
     /**
@@ -45,7 +41,6 @@ public final class KeepTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param keepWords the keepWords value to set.
      */
-    @Generated
     public KeepTokenFilter(String name, List<String> keepWords) {
         super(name);
         this.keepWords = keepWords;
@@ -56,7 +51,6 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -67,7 +61,6 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the keepWords value.
      */
-    @Generated
     public List<String> getKeepWords() {
         return this.keepWords;
     }
@@ -77,7 +70,6 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the lowerCaseKeepWords value.
      */
-    @Generated
     public Boolean areLowerCaseKeepWords() {
         return this.lowerCaseKeepWords;
     }
@@ -88,7 +80,6 @@ public final class KeepTokenFilter extends TokenFilter {
      * @param lowerCaseKeepWords the lowerCaseKeepWords value to set.
      * @return the KeepTokenFilter object itself.
      */
-    @Generated
     public KeepTokenFilter setLowerCaseKeepWords(Boolean lowerCaseKeepWords) {
         this.lowerCaseKeepWords = lowerCaseKeepWords;
         return this;
@@ -97,7 +88,6 @@ public final class KeepTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,7 +107,6 @@ public final class KeepTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeepTokenFilter.
      */
-    @Generated
     public static KeepTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

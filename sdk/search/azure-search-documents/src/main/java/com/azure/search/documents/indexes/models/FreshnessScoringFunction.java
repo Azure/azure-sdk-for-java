@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,13 +23,11 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
      * type must be lower case.
      */
-    @Generated
     private String type = "freshness";
 
     /*
      * Parameter values for the freshness scoring function.
      */
-    @Generated
     private final FreshnessScoringParameters parameters;
 
     /**
@@ -40,7 +37,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
      */
-    @Generated
     public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
@@ -52,7 +48,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * 
      * @return the type value.
      */
-    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -63,7 +58,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * 
      * @return the parameters value.
      */
-    @Generated
     public FreshnessScoringParameters getParameters() {
         return this.parameters;
     }
@@ -71,7 +65,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public FreshnessScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         super.setInterpolation(interpolation);
@@ -81,7 +74,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +94,6 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FreshnessScoringFunction.
      */
-    @Generated
     public static FreshnessScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean fieldNameFound = false;

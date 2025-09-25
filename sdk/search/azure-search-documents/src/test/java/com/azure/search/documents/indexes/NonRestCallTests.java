@@ -4,13 +4,11 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.stream.Stream;
@@ -27,22 +25,18 @@ public class NonRestCallTests {
     }
 
     static Stream<Publisher<?>> apiCallReturnsErrorSupplier() {
-        SearchIndexerAsyncClient client
-            = new SearchIndexerClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .endpoint("https://fake.com")
-                .credential(new AzureKeyCredential("fake"))
-                .buildAsyncClient();
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint("https://fake.com")
+            .credential(new AzureKeyCredential("fake"))
+            .buildAsyncClient();
 
         return Stream.of(client.createOrUpdateDataSourceConnection(null),
             client.createOrUpdateDataSourceConnectionWithResponse(null, true),
-            client.createOrUpdateDataSourceConnectionWithResponse(null),
             client.deleteDataSourceConnectionWithResponse(null, true),
 
             client.createOrUpdateIndexer(null), client.createOrUpdateIndexerWithResponse(null, true),
-            client.createOrUpdateIndexerWithResponse(null), client.deleteIndexerWithResponse(null, true),
+            client.deleteIndexerWithResponse(null, true),
 
             client.createSkillset(null), client.createSkillsetWithResponse(null), client.createOrUpdateSkillset(null),
-            client.createOrUpdateSkillsetWithResponse(null, true), client.createOrUpdateSkillsetWithResponse(null),
-            client.deleteSkillsetWithResponse(null, true));
+            client.createOrUpdateSkillsetWithResponse(null, true), client.deleteSkillsetWithResponse(null, true));
     }
 }

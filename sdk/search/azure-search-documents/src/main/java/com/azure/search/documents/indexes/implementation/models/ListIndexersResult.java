@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,7 +23,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
     /*
      * The indexers in the Search service.
      */
-    @Generated
     private final List<SearchIndexer> indexers;
 
     /**
@@ -32,7 +30,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
      * 
      * @param indexers the indexers value to set.
      */
-    @Generated
     public ListIndexersResult(List<SearchIndexer> indexers) {
         this.indexers = indexers;
     }
@@ -42,7 +39,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
      * 
      * @return the indexers value.
      */
-    @Generated
     public List<SearchIndexer> getIndexers() {
         return this.indexers;
     }
@@ -50,7 +46,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,7 +61,6 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListIndexersResult.
      */
-    @Generated
     public static ListIndexersResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean indexersFound = false;

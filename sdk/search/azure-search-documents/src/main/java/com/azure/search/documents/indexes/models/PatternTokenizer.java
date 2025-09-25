@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
@@ -25,20 +24,17 @@ public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
 
     /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more
      * non-word characters.
      */
-    @Generated
     private String pattern;
 
     /*
      * Regular expression flags.
      */
-    @Generated
     private RegexFlags flags;
 
     /*
@@ -46,7 +42,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * you want to use the entire pattern to split the input into tokens, irrespective of matching groups. Default is
      * -1.
      */
-    @Generated
     private Integer group;
 
     /**
@@ -54,7 +49,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @param name the name value to set.
      */
-    @Generated
     public PatternTokenizer(String name) {
         super(name);
     }
@@ -64,7 +58,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -76,7 +69,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @return the pattern value.
      */
-    @Generated
     public String getPattern() {
         return this.pattern;
     }
@@ -88,7 +80,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param pattern the pattern value to set.
      * @return the PatternTokenizer object itself.
      */
-    @Generated
     public PatternTokenizer setPattern(String pattern) {
         this.pattern = pattern;
         return this;
@@ -99,7 +90,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @return the flags value.
      */
-    @Generated
     public List<RegexFlags> getFlags() {
         if (this.flags == null) {
             return null;
@@ -115,7 +105,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
-    @Generated
     public PatternTokenizer setFlags(List<RegexFlags> flags) {
         if (flags == null) {
             this.flags = null;
@@ -133,7 +122,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @return the group value.
      */
-    @Generated
     public Integer getGroup() {
         return this.group;
     }
@@ -146,7 +134,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param group the group value to set.
      * @return the PatternTokenizer object itself.
      */
-    @Generated
     public PatternTokenizer setGroup(Integer group) {
         this.group = group;
         return this;
@@ -155,7 +142,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -176,7 +162,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PatternTokenizer.
      */
-    @Generated
     public static PatternTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

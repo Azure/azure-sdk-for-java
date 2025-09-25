@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,13 +22,11 @@ public final class SnowballTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.SnowballTokenFilter";
 
     /*
      * The language to use.
      */
-    @Generated
     private final SnowballTokenFilterLanguage language;
 
     /**
@@ -38,7 +35,6 @@ public final class SnowballTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param language the language value to set.
      */
-    @Generated
     public SnowballTokenFilter(String name, SnowballTokenFilterLanguage language) {
         super(name);
         this.language = language;
@@ -49,7 +45,6 @@ public final class SnowballTokenFilter extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -60,7 +55,6 @@ public final class SnowballTokenFilter extends TokenFilter {
      * 
      * @return the language value.
      */
-    @Generated
     public SnowballTokenFilterLanguage getLanguage() {
         return this.language;
     }
@@ -68,7 +62,6 @@ public final class SnowballTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,7 +80,6 @@ public final class SnowballTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SnowballTokenFilter.
      */
-    @Generated
     public static SnowballTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

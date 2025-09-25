@@ -4,12 +4,10 @@
 package com.azure.search.documents;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
@@ -19,7 +17,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.agents.SearchKnowledgeAgentClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -41,6 +38,7 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
@@ -60,6 +58,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.function.BiConsumer;
 
+import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
@@ -75,38 +74,15 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     private boolean sanitizersRemoved = false;
 
-    protected static final String SEARCH_ENDPOINT
+    protected static final String ENDPOINT
         = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
-    protected static final String OPENAI_ENDPOINT;
-    static {
-        String openAiEndpoint = Configuration.getGlobalConfiguration()
-            .get("SEARCH_OPENAI_ENDPOINT", "https://your-endpoint.openai.azure.com");
-        // Service trims trailing '/', need to do that here so tests don't fail.
-        if (openAiEndpoint.endsWith("/")) {
-            openAiEndpoint = openAiEndpoint.substring(0, openAiEndpoint.length() - 1);
-        }
+    protected static final String API_KEY
+        = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_API_KEY", "apiKey");
 
-        OPENAI_ENDPOINT = openAiEndpoint;
-    }
-
-    protected static final String OPENAI_DEPLOYMENT_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_DEPLOYMENT_NAME", "search-knowledge-agent-model");
-    protected static final String OPENAI_MODEL_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_OPENAI_MODEL_NAME", "gpt-4.1-nano");
-
-    protected static final String STORAGE_ACCOUNT_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
-    protected static final String BLOB_CONTAINER_NAME
-        = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONTAINER_NAME", "searchcontainer");
-
-    protected static final String USER_ASSIGNED_IDENTITY = Configuration.getGlobalConfiguration()
-        .get("SEARCH_USER_ASSIGNED_IDENTITY", "/subscriptions/subscription-id/resourceGroups/resource-group-name/"
-            + "providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-managed-identity-name");
-    protected static final String SUBSCRIPTION_ID
-        = Configuration.getGlobalConfiguration().get("SEARCH_SUBSCRIPTION_ID", "subscription-id");
-    protected static final String RESOURCE_GROUP
-        = Configuration.getGlobalConfiguration().get("SEARCH_RESOURCE_GROUP", "resource-group");
+    protected static final String STORAGE_CONNECTION_STRING
+        = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+    protected static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
@@ -117,17 +93,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     // This has to be used in all test modes as this is more retry counts than the standard policy.
     // Change the delay based on the mode.
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(
-        new FixedDelay(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
-    static final RetryOptions SERVICE_THROTTLE_SAFE_RETRY_OPTIONS = new RetryOptions(
-        new FixedDelayOptions(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(60)));
+        new FixedDelay(4, TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
-        return setupIndexFromJsonFile();
+        return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
     }
 
-    protected String setupIndexFromJsonFile() {
-        try (JsonReader jsonReader
-            = JsonProviders.createReader(TestHelpers.loadResource(SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON))) {
+    protected String setupIndexFromJsonFile(String jsonFile) {
+        try (JsonReader jsonReader = JsonProviders.createReader(TestHelpers.loadResource(jsonFile))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
             String testIndexName = testResourceNamer.randomName(baseIndex.getName(), 64);
 
@@ -144,9 +117,9 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     }
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(boolean isSync) {
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(getTestTokenCredential())
-            .httpClient(getHttpClient(interceptorManager, isSync))
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         // Disable `("$..token")` and `name` sanitizer
@@ -165,12 +138,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         }
 
         return builder;
+
     }
 
     protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(boolean isSync, HttpPipelinePolicy... policies) {
-        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(getTestTokenCredential())
-            .httpClient(getHttpClient(interceptorManager, isSync))
+        SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder().endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         addPolicies(builder, policies);
@@ -189,30 +163,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         }
 
         return builder;
-    }
 
-    protected SearchKnowledgeAgentClientBuilder getSearchKnowledgeAgentClientBuilder(boolean isSync) {
-        SearchKnowledgeAgentClientBuilder builder = new SearchKnowledgeAgentClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(getTestTokenCredential())
-            .httpClient(getHttpClient(interceptorManager, isSync))
-            .retryOptions(SERVICE_THROTTLE_SAFE_RETRY_OPTIONS);
-
-        // Disable `("$..token")` and `name` sanitizer
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
-            sanitizersRemoved = true;
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            addPolicies(builder);
-            return builder;
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        return builder;
     }
 
     private static void addPolicies(HttpTrait<?> builder, HttpPipelinePolicy... policies) {
@@ -226,24 +177,20 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     }
 
     protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
-        return getSearchClientBuilderHelper(indexName, isSync);
+        return getSearchClientBuilderHelper(indexName, true, isSync);
 
     }
 
-    /**
-     * Retrieve the appropriate TokenCredential based on the test mode.
-     *
-     * @return The appropriate token credential
-     */
-    public static TokenCredential getTestTokenCredential() {
-        return TestHelpers.getTestTokenCredential();
+    protected SearchClientBuilder getSearchClientBuilderWithoutAssertingClient(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, false, isSync);
     }
 
-    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean isSync) {
-        SearchClientBuilder builder = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient,
+        boolean isSync) {
+        SearchClientBuilder builder = new SearchClientBuilder().endpoint(ENDPOINT)
             .indexName(indexName)
-            .credential(getTestTokenCredential())
-            .httpClient(getHttpClient(interceptorManager, isSync))
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         // Disable `("$..token")` and `name` sanitizer
@@ -263,19 +210,23 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    private static HttpClient getHttpClient(InterceptorManager interceptorManager, boolean isSync) {
+    private static HttpClient getHttpClient(boolean wrapWithAssertingClient, InterceptorManager interceptorManager,
+        boolean isSync) {
         HttpClient httpClient
             = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
 
-        if (!isSync) {
-            return new AssertingHttpClientBuilder(httpClient).assertAsync()
-                .skipRequest((ignored1, ignored2) -> false)
-                .build();
-        } else {
-            return new AssertingHttpClientBuilder(httpClient).assertSync()
-                .skipRequest((ignored1, ignored2) -> false)
-                .build();
+        if (wrapWithAssertingClient) {
+            if (!isSync) {
+                httpClient = new AssertingHttpClientBuilder(httpClient).assertAsync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            } else {
+                httpClient = new AssertingHttpClientBuilder(httpClient).assertSync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            }
         }
+        return httpClient;
     }
 
     protected SearchIndex createTestIndex(String indexName) {
@@ -436,6 +387,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
         return SearchIndexerDataSources.createFromAzureSql(name, FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI",
             FAKE_DESCRIPTION, dataChangeDetectionPolicy, dataDeletionDetectionPolicy);
+    }
+
+    protected SearchIndexerDataSourceConnection createBlobDataSource() {
+        // create the new data source object for this storage account and container
+        return SearchIndexerDataSources.createFromAzureBlobStorage(
+            testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32), STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/",
+            "real live blob", new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("fieldName")
+                .setSoftDeleteMarkerValue("someValue"));
     }
 
     protected String randomIndexName(String indexNameBase) {

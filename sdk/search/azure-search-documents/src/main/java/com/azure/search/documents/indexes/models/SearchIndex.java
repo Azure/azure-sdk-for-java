@@ -6,14 +6,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents a search index definition, which describes the fields and search behavior of an index.
@@ -24,75 +23,53 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     /*
      * The name of the index.
      */
-    @Generated
     private final String name;
-
-    /*
-     * The description of the index.
-     */
-    @Generated
-    private String description;
 
     /*
      * The fields of the index.
      */
-    @Generated
     private List<SearchField> fields;
 
     /*
      * The scoring profiles for the index.
      */
-    @Generated
     private List<ScoringProfile> scoringProfiles;
 
     /*
      * The name of the scoring profile to use if none is specified in the query. If this property is not set and no
      * scoring profile is specified in the query, then default scoring (tf-idf) will be used.
      */
-    @Generated
     private String defaultScoringProfile;
 
     /*
      * Options to control Cross-Origin Resource Sharing (CORS) for the index.
      */
-    @Generated
     private CorsOptions corsOptions;
 
     /*
      * The suggesters for the index.
      */
-    @Generated
     private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
      */
-    @Generated
     private List<LexicalAnalyzer> analyzers;
 
     /*
      * The tokenizers for the index.
      */
-    @Generated
     private List<LexicalTokenizer> tokenizers;
 
     /*
      * The token filters for the index.
      */
-    @Generated
     private List<TokenFilter> tokenFilters;
 
     /*
      * The character filters for the index.
      */
-    @Generated
     private List<CharFilter> charFilters;
-
-    /*
-     * The normalizers for the index.
-     */
-    @Generated
-    private List<LexicalNormalizer> normalizers;
 
     /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
@@ -102,7 +79,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * encryption key; Your data will be unaffected. Encryption with customer-managed keys is not available for free
      * search services, and is only available for paid services created on or after January 1, 2019.
      */
-    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
@@ -110,31 +86,21 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * similarity algorithm can only be defined at index creation time and cannot be modified on existing indexes. If
      * null, the ClassicSimilarity algorithm is used.
      */
-    @Generated
     private SimilarityAlgorithm similarity;
 
     /*
      * Defines parameters for a search index that influence semantic capabilities.
      */
-    @Generated
     private SemanticSearch semanticSearch;
 
     /*
      * Contains configuration options related to vector search.
      */
-    @Generated
     private VectorSearch vectorSearch;
-
-    /*
-     * A value indicating whether permission filtering is enabled for the index.
-     */
-    @Generated
-    private SearchIndexPermissionFilterOption permissionFilterOption;
 
     /*
      * The ETag of the index.
      */
-    @Generated
     private String eTag;
 
     /**
@@ -142,7 +108,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @param name the name value to set.
      */
-    @Generated
     public SearchIndex(String name) {
         this.name = name;
     }
@@ -152,31 +117,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Get the description property: The description of the index.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: The description of the index.
-     *
-     * @param description the description value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setDescription(String description) {
-        this.description = description;
-        return this;
     }
 
     /**
@@ -184,7 +126,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the fields value.
      */
-    @Generated
     public List<SearchField> getFields() {
         return this.fields;
     }
@@ -195,7 +136,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param fields the fields value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
@@ -206,7 +146,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the scoringProfiles value.
      */
-    @Generated
     public List<ScoringProfile> getScoringProfiles() {
         return this.scoringProfiles;
     }
@@ -217,7 +156,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param scoringProfiles the scoringProfiles value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
@@ -230,7 +168,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the defaultScoringProfile value.
      */
-    @Generated
     public String getDefaultScoringProfile() {
         return this.defaultScoringProfile;
     }
@@ -243,7 +180,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param defaultScoringProfile the defaultScoringProfile value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setDefaultScoringProfile(String defaultScoringProfile) {
         this.defaultScoringProfile = defaultScoringProfile;
         return this;
@@ -254,7 +190,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the corsOptions value.
      */
-    @Generated
     public CorsOptions getCorsOptions() {
         return this.corsOptions;
     }
@@ -265,7 +200,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param corsOptions the corsOptions value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setCorsOptions(CorsOptions corsOptions) {
         this.corsOptions = corsOptions;
         return this;
@@ -276,7 +210,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the suggesters value.
      */
-    @Generated
     public List<SearchSuggester> getSuggesters() {
         return this.suggesters;
     }
@@ -287,7 +220,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
@@ -298,7 +230,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the analyzers value.
      */
-    @Generated
     public List<LexicalAnalyzer> getAnalyzers() {
         return this.analyzers;
     }
@@ -309,7 +240,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param analyzers the analyzers value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setAnalyzers(List<LexicalAnalyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
@@ -320,7 +250,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the tokenizers value.
      */
-    @Generated
     public List<LexicalTokenizer> getTokenizers() {
         return this.tokenizers;
     }
@@ -331,7 +260,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param tokenizers the tokenizers value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
@@ -342,7 +270,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the tokenFilters value.
      */
-    @Generated
     public List<TokenFilter> getTokenFilters() {
         return this.tokenFilters;
     }
@@ -353,7 +280,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param tokenFilters the tokenFilters value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -364,7 +290,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the charFilters value.
      */
-    @Generated
     public List<CharFilter> getCharFilters() {
         return this.charFilters;
     }
@@ -375,31 +300,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param charFilters the charFilters value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
-        return this;
-    }
-
-    /**
-     * Get the normalizers property: The normalizers for the index.
-     *
-     * @return the normalizers value.
-     */
-    @Generated
-    public List<LexicalNormalizer> getNormalizers() {
-        return this.normalizers;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
-        this.normalizers = normalizers;
         return this;
     }
 
@@ -414,7 +316,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the encryptionKey value.
      */
-    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -431,7 +332,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -444,7 +344,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the similarity value.
      */
-    @Generated
     public SimilarityAlgorithm getSimilarity() {
         return this.similarity;
     }
@@ -457,7 +356,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param similarity the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
         return this;
@@ -468,7 +366,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the semanticSearch value.
      */
-    @Generated
     public SemanticSearch getSemanticSearch() {
         return this.semanticSearch;
     }
@@ -479,7 +376,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setSemanticSearch(SemanticSearch semanticSearch) {
         this.semanticSearch = semanticSearch;
         return this;
@@ -490,7 +386,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the vectorSearch value.
      */
-    @Generated
     public VectorSearch getVectorSearch() {
         return this.vectorSearch;
     }
@@ -501,33 +396,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param vectorSearch the vectorSearch value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setVectorSearch(VectorSearch vectorSearch) {
         this.vectorSearch = vectorSearch;
-        return this;
-    }
-
-    /**
-     * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
-     * index.
-     *
-     * @return the permissionFilterOption value.
-     */
-    @Generated
-    public SearchIndexPermissionFilterOption getPermissionFilterOption() {
-        return this.permissionFilterOption;
-    }
-
-    /**
-     * Set the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
-     * index.
-     *
-     * @param permissionFilterOption the permissionFilterOption value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setPermissionFilterOption(SearchIndexPermissionFilterOption permissionFilterOption) {
-        this.permissionFilterOption = permissionFilterOption;
         return this;
     }
 
@@ -536,7 +406,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -547,7 +416,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param eTag the eTag value to set.
      * @return the SearchIndex object itself.
      */
-    @Generated
     public SearchIndex setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -556,12 +424,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
             (writer, element) -> writer.writeJson(element));
@@ -572,13 +438,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSearch);
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
-        jsonWriter.writeStringField("permissionFilterOption",
-            this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -592,12 +455,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndex.
      */
-    @Generated
     public static SearchIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
-            String description = null;
             List<SearchField> fields = null;
             List<ScoringProfile> scoringProfiles = null;
             String defaultScoringProfile = null;
@@ -607,12 +468,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             List<LexicalTokenizer> tokenizers = null;
             List<TokenFilter> tokenFilters = null;
             List<CharFilter> charFilters = null;
-            List<LexicalNormalizer> normalizers = null;
             SearchResourceEncryptionKey encryptionKey = null;
             SimilarityAlgorithm similarity = null;
             SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
-            SearchIndexPermissionFilterOption permissionFilterOption = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -620,8 +479,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
                 } else if ("scoringProfiles".equals(fieldName)) {
@@ -640,8 +497,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     tokenFilters = reader.readArray(reader1 -> TokenFilter.fromJson(reader1));
                 } else if ("charFilters".equals(fieldName)) {
                     charFilters = reader.readArray(reader1 -> CharFilter.fromJson(reader1));
-                } else if ("normalizers".equals(fieldName)) {
-                    normalizers = reader.readArray(reader1 -> LexicalNormalizer.fromJson(reader1));
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                 } else if ("similarity".equals(fieldName)) {
@@ -650,8 +505,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     semanticSearch = SemanticSearch.fromJson(reader);
                 } else if ("vectorSearch".equals(fieldName)) {
                     vectorSearch = VectorSearch.fromJson(reader);
-                } else if ("permissionFilterOption".equals(fieldName)) {
-                    permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -660,7 +513,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             }
             if (nameFound) {
                 SearchIndex deserializedSearchIndex = new SearchIndex(name);
-                deserializedSearchIndex.description = description;
                 deserializedSearchIndex.fields = fields;
                 deserializedSearchIndex.scoringProfiles = scoringProfiles;
                 deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
@@ -670,12 +522,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 deserializedSearchIndex.tokenizers = tokenizers;
                 deserializedSearchIndex.tokenFilters = tokenFilters;
                 deserializedSearchIndex.charFilters = charFilters;
-                deserializedSearchIndex.normalizers = normalizers;
                 deserializedSearchIndex.encryptionKey = encryptionKey;
                 deserializedSearchIndex.similarity = similarity;
                 deserializedSearchIndex.semanticSearch = semanticSearch;
                 deserializedSearchIndex.vectorSearch = vectorSearch;
-                deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
                 deserializedSearchIndex.eTag = eTag;
                 return deserializedSearchIndex;
             }

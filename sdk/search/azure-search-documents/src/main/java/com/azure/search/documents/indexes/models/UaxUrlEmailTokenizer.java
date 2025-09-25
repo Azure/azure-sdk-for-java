@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,14 +20,12 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
      * length that can be used is 300 characters.
      */
-    @Generated
     private Integer maxTokenLength;
 
     /**
@@ -36,7 +33,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public UaxUrlEmailTokenizer(String name) {
         super(name);
     }
@@ -46,7 +42,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -58,7 +53,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
      * 
      * @return the maxTokenLength value.
      */
-    @Generated
     public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
@@ -70,7 +64,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the UaxUrlEmailTokenizer object itself.
      */
-    @Generated
     public UaxUrlEmailTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
@@ -79,7 +72,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,7 +90,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UaxUrlEmailTokenizer.
      */
-    @Generated
     public static UaxUrlEmailTokenizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

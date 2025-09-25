@@ -7,15 +7,10 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.HybridSearch;
-import com.azure.search.documents.models.QueryDebugMode;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -34,39 +29,33 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true
      * may have a performance impact. Note that the count returned is an approximation.
      */
-    @Generated
     private Boolean includeTotalResultCount;
 
     /*
      * The list of facet expressions to apply to the search query. Each facet expression contains a field name,
      * optionally followed by a comma-separated list of name:value pairs.
      */
-    @Generated
     private List<String> facets;
 
     /*
      * The OData $filter expression to apply to the search query.
      */
-    @Generated
     private String filter;
 
     /*
      * The comma-separated list of field names to use for hit highlights. Only searchable fields can be used for hit
      * highlighting.
      */
-    @Generated
     private String highlightFields;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. Default is &lt;/em&gt;.
      */
-    @Generated
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. Default is &lt;em&gt;.
      */
-    @Generated
     private String highlightPreTag;
 
     /*
@@ -74,7 +63,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * for the query to be reported as a success. This parameter can be useful for ensuring search availability even for
      * services with only one replica. The default is 100.
      */
-    @Generated
     private Double minimumCoverage;
 
     /*
@@ -84,14 +72,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * will be broken by the match scores of documents. If no $orderby is specified, the default sort order is
      * descending by document match score. There can be at most 32 $orderby clauses.
      */
-    @Generated
     private String orderBy;
 
     /*
      * A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the
      * Lucene query syntax.
      */
-    @Generated
     private QueryType queryType;
 
     /*
@@ -99,7 +85,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * more consistent scoring, or locally, for lower latency. The default is 'local'. Use 'global' to aggregate scoring
      * statistics globally before scoring. Using global scoring statistics can increase latency of search queries.
      */
-    @Generated
     private ScoringStatistics scoringStatistics;
 
     /*
@@ -109,7 +94,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * adversely affect the performance of the search service. The value used as sessionId cannot start with a '_'
      * character.
      */
-    @Generated
     private String sessionId;
 
     /*
@@ -117,25 +101,16 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * format name-values. For example, if the scoring profile defines a function with a parameter called 'mylocation'
      * the parameter string would be "mylocation--122.2,44.8" (without the quotes).
      */
-    @Generated
     private List<String> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching documents in order to sort the results.
      */
-    @Generated
     private String scoringProfile;
-
-    /*
-     * Enables a debugging tool that can be used to further explore your reranked results.
-     */
-    @Generated
-    private QueryDebugMode debug;
 
     /*
      * A full-text search query expression; Use "*" or omit this parameter to match all documents.
      */
-    @Generated
     private String searchText;
 
     /*
@@ -143,33 +118,18 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression take
      * precedence over any field names listed in this parameter.
      */
-    @Generated
     private String searchFields;
 
     /*
      * A value that specifies whether any or all of the search terms must be matched in order to count the document as a
      * match.
      */
-    @Generated
     private SearchMode searchMode;
-
-    /*
-     * A value that specifies the language of the search query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * A value that specified the type of the speller to use to spell-correct individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType speller;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
-    @Generated
     private String select;
 
     /*
@@ -177,7 +137,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * sequence, but cannot use skip due to this limitation, consider using orderby on a totally-ordered key and filter
      * with a range query instead.
      */
-    @Generated
     private Integer skip;
 
     /*
@@ -185,27 +144,23 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * paging of search results. If results are truncated due to server-side paging, the response will include a
      * continuation token that can be used to issue another Search request for the next page of results.
      */
-    @Generated
     private Integer top;
 
     /*
      * The name of a semantic configuration that will be used when processing documents for queries of type semantic.
      */
-    @Generated
     private String semanticConfiguration;
 
     /*
      * Allows the user to choose whether a semantic call should fail completely (default / current behavior), or to
      * return partial results.
      */
-    @Generated
     private SemanticErrorMode semanticErrorHandling;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish processing
      * before the request fails.
      */
-    @Generated
     private Integer semanticMaxWaitInMilliseconds;
 
     /*
@@ -213,7 +168,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
      * retrieval and ranking phase, and the L2 semantic phase.
      */
-    @Generated
     private String semanticQuery;
 
     /*
@@ -222,62 +176,32 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
      * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
      * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
-     * as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
-    @Generated
     private String answers;
 
     /*
      * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
      * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
      * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
-     * option, such as `extractive|highlight-true`. Defaults to `None`. The maximum character length of captions can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
-    @Generated
     private String captions;
-
-    /*
-     * This parameter is only valid if the query type is `semantic`. When QueryRewrites is set to `generative`, the
-     * query terms are sent to a generate model which will produce 10 (default) rewrites to help increase the recall of
-     * the request. The requested count can be configured by appending the pipe character `|` followed by the
-     * `count-<number of rewrites>` option, such as `generative|count-3`. Defaults to `None`.
-     */
-    @Generated
-    private String queryRewrites;
-
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    @Generated
-    private String semanticFields;
 
     /*
      * The query parameters for vector and hybrid search queries.
      */
-    @Generated
     private List<VectorQuery> vectorQueries;
 
     /*
      * Determines whether or not filters are applied before or after the vector search is performed. Default is
      * 'preFilter' for new indexes.
      */
-    @Generated
     private VectorFilterMode vectorFilterMode;
-
-    /*
-     * The query parameters to configure hybrid search behaviors.
-     */
-    @Generated
-    private HybridSearch hybridSearch;
 
     /**
      * Creates an instance of SearchRequest class.
      */
-    @Generated
     public SearchRequest() {
     }
 
@@ -288,7 +212,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the includeTotalResultCount value.
      */
-    @Generated
     public Boolean isIncludeTotalResultCount() {
         return this.includeTotalResultCount;
     }
@@ -301,7 +224,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param includeTotalResultCount the includeTotalResultCount value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setIncludeTotalResultCount(Boolean includeTotalResultCount) {
         this.includeTotalResultCount = includeTotalResultCount;
         return this;
@@ -313,7 +235,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the facets value.
      */
-    @Generated
     public List<String> getFacets() {
         return this.facets;
     }
@@ -325,7 +246,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param facets the facets value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setFacets(List<String> facets) {
         this.facets = facets;
         return this;
@@ -336,7 +256,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the filter value.
      */
-    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -347,7 +266,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param filter the filter value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -359,7 +277,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the highlightFields value.
      */
-    @Generated
     public String getHighlightFields() {
         return this.highlightFields;
     }
@@ -371,7 +288,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param highlightFields the highlightFields value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setHighlightFields(String highlightFields) {
         this.highlightFields = highlightFields;
         return this;
@@ -383,7 +299,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the highlightPostTag value.
      */
-    @Generated
     public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
@@ -395,7 +310,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
@@ -407,7 +321,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the highlightPreTag value.
      */
-    @Generated
     public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
@@ -419,7 +332,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
@@ -432,7 +344,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the minimumCoverage value.
      */
-    @Generated
     public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
@@ -445,7 +356,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
@@ -460,7 +370,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the orderBy value.
      */
-    @Generated
     public String getOrderBy() {
         return this.orderBy;
     }
@@ -475,7 +384,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param orderBy the orderBy value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -487,7 +395,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the queryType value.
      */
-    @Generated
     public QueryType getQueryType() {
         return this.queryType;
     }
@@ -499,7 +406,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param queryType the queryType value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setQueryType(QueryType queryType) {
         this.queryType = queryType;
         return this;
@@ -513,7 +419,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the scoringStatistics value.
      */
-    @Generated
     public ScoringStatistics getScoringStatistics() {
         return this.scoringStatistics;
     }
@@ -527,7 +432,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param scoringStatistics the scoringStatistics value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setScoringStatistics(ScoringStatistics scoringStatistics) {
         this.scoringStatistics = scoringStatistics;
         return this;
@@ -542,7 +446,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the sessionId value.
      */
-    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -557,7 +460,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param sessionId the sessionId value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -570,7 +472,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the scoringParameters value.
      */
-    @Generated
     public List<String> getScoringParameters() {
         return this.scoringParameters;
     }
@@ -583,7 +484,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setScoringParameters(List<String> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
@@ -595,7 +495,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the scoringProfile value.
      */
-    @Generated
     public String getScoringProfile() {
         return this.scoringProfile;
     }
@@ -607,31 +506,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param scoringProfile the scoringProfile value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
-        return this;
-    }
-
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     * 
-     * @return the debug value.
-     */
-    @Generated
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     * 
-     * @param debug the debug value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setDebug(QueryDebugMode debug) {
-        this.debug = debug;
         return this;
     }
 
@@ -641,7 +517,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the searchText value.
      */
-    @Generated
     public String getSearchText() {
         return this.searchText;
     }
@@ -653,7 +528,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param searchText the searchText value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSearchText(String searchText) {
         this.searchText = searchText;
         return this;
@@ -666,7 +540,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the searchFields value.
      */
-    @Generated
     public String getSearchFields() {
         return this.searchFields;
     }
@@ -679,7 +552,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param searchFields the searchFields value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSearchFields(String searchFields) {
         this.searchFields = searchFields;
         return this;
@@ -691,7 +563,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the searchMode value.
      */
-    @Generated
     public SearchMode getSearchMode() {
         return this.searchMode;
     }
@@ -703,55 +574,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param searchMode the searchMode value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: A value that specifies the language of the search query.
-     * 
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: A value that specifies the language of the search query.
-     * 
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: A value that specified the type of the speller to use to spell-correct individual
-     * search query terms.
-     * 
-     * @return the speller value.
-     */
-    @Generated
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: A value that specified the type of the speller to use to spell-correct individual
-     * search query terms.
-     * 
-     * @param speller the speller value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
         return this;
     }
 
@@ -761,7 +585,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the select value.
      */
-    @Generated
     public String getSelect() {
         return this.select;
     }
@@ -773,7 +596,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param select the select value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSelect(String select) {
         this.select = select;
         return this;
@@ -786,7 +608,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the skip value.
      */
-    @Generated
     public Integer getSkip() {
         return this.skip;
     }
@@ -799,7 +620,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param skip the skip value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSkip(Integer skip) {
         this.skip = skip;
         return this;
@@ -812,7 +632,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the top value.
      */
-    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -825,7 +644,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param top the top value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setTop(Integer top) {
         this.top = top;
         return this;
@@ -837,7 +655,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the semanticConfiguration value.
      */
-    @Generated
     public String getSemanticConfiguration() {
         return this.semanticConfiguration;
     }
@@ -849,7 +666,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticConfiguration the semanticConfiguration value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSemanticConfiguration(String semanticConfiguration) {
         this.semanticConfiguration = semanticConfiguration;
         return this;
@@ -861,7 +677,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the semanticErrorHandling value.
      */
-    @Generated
     public SemanticErrorMode getSemanticErrorHandling() {
         return this.semanticErrorHandling;
     }
@@ -873,7 +688,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSemanticErrorHandling(SemanticErrorMode semanticErrorHandling) {
         this.semanticErrorHandling = semanticErrorHandling;
         return this;
@@ -885,7 +699,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the semanticMaxWaitInMilliseconds value.
      */
-    @Generated
     public Integer getSemanticMaxWaitInMilliseconds() {
         return this.semanticMaxWaitInMilliseconds;
     }
@@ -897,7 +710,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticMaxWaitInMilliseconds the semanticMaxWaitInMilliseconds value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSemanticMaxWaitInMilliseconds(Integer semanticMaxWaitInMilliseconds) {
         this.semanticMaxWaitInMilliseconds = semanticMaxWaitInMilliseconds;
         return this;
@@ -910,7 +722,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the semanticQuery value.
      */
-    @Generated
     public String getSemanticQuery() {
         return this.semanticQuery;
     }
@@ -923,7 +734,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticQuery the semanticQuery value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setSemanticQuery(String semanticQuery) {
         this.semanticQuery = semanticQuery;
         return this;
@@ -935,13 +745,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      * 
      * @return the answers value.
      */
-    @Generated
     public String getAnswers() {
         return this.answers;
     }
@@ -952,14 +759,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      * 
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setAnswers(String answers) {
         this.answers = answers;
         return this;
@@ -970,12 +774,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @return the captions value.
      */
-    @Generated
     public String getCaptions() {
         return this.captions;
     }
@@ -985,65 +786,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setCaptions(String captions) {
         this.captions = captions;
-        return this;
-    }
-
-    /**
-     * Get the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
-     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
-     * help increase the recall of the request. The requested count can be configured by appending the pipe character
-     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
-     * 
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public String getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
-     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
-     * help increase the recall of the request. The requested count can be configured by appending the pipe character
-     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
-     * 
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setQueryRewrites(String queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     * 
-     * @return the semanticFields value.
-     */
-    @Generated
-    public String getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     * 
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setSemanticFields(String semanticFields) {
-        this.semanticFields = semanticFields;
         return this;
     }
 
@@ -1052,7 +800,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the vectorQueries value.
      */
-    @Generated
     public List<VectorQuery> getVectorQueries() {
         return this.vectorQueries;
     }
@@ -1063,7 +810,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param vectorQueries the vectorQueries value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setVectorQueries(List<VectorQuery> vectorQueries) {
         this.vectorQueries = vectorQueries;
         return this;
@@ -1075,7 +821,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 
      * @return the vectorFilterMode value.
      */
-    @Generated
     public VectorFilterMode getVectorFilterMode() {
         return this.vectorFilterMode;
     }
@@ -1087,38 +832,14 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param vectorFilterMode the vectorFilterMode value to set.
      * @return the SearchRequest object itself.
      */
-    @Generated
     public SearchRequest setVectorFilterMode(VectorFilterMode vectorFilterMode) {
         this.vectorFilterMode = vectorFilterMode;
         return this;
     }
 
     /**
-     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     * 
-     * @return the hybridSearch value.
-     */
-    @Generated
-    public HybridSearch getHybridSearch() {
-        return this.hybridSearch;
-    }
-
-    /**
-     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     * 
-     * @param hybridSearch the hybridSearch value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setHybridSearch(HybridSearch hybridSearch) {
-        this.hybridSearch = hybridSearch;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -1137,12 +858,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField("scoringParameters", this.scoringParameters,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
-        jsonWriter.writeStringField("debug", this.debug == null ? null : this.debug.toString());
         jsonWriter.writeStringField("search", this.searchText);
         jsonWriter.writeStringField("searchFields", this.searchFields);
         jsonWriter.writeStringField("searchMode", this.searchMode == null ? null : this.searchMode.toString());
-        jsonWriter.writeStringField("queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString());
-        jsonWriter.writeStringField("speller", this.speller == null ? null : this.speller.toString());
         jsonWriter.writeStringField("select", this.select);
         jsonWriter.writeNumberField("skip", this.skip);
         jsonWriter.writeNumberField("top", this.top);
@@ -1153,12 +871,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("answers", this.answers);
         jsonWriter.writeStringField("captions", this.captions);
-        jsonWriter.writeStringField("queryRewrites", this.queryRewrites);
-        jsonWriter.writeStringField("semanticFields", this.semanticFields);
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
             this.vectorFilterMode == null ? null : this.vectorFilterMode.toString());
-        jsonWriter.writeJsonField("hybridSearch", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -1170,7 +885,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchRequest.
      */
-    @Generated
     public static SearchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchRequest deserializedSearchRequest = new SearchRequest();
@@ -1206,18 +920,12 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.scoringParameters = scoringParameters;
                 } else if ("scoringProfile".equals(fieldName)) {
                     deserializedSearchRequest.scoringProfile = reader.getString();
-                } else if ("debug".equals(fieldName)) {
-                    deserializedSearchRequest.debug = QueryDebugMode.fromString(reader.getString());
                 } else if ("search".equals(fieldName)) {
                     deserializedSearchRequest.searchText = reader.getString();
                 } else if ("searchFields".equals(fieldName)) {
                     deserializedSearchRequest.searchFields = reader.getString();
                 } else if ("searchMode".equals(fieldName)) {
                     deserializedSearchRequest.searchMode = SearchMode.fromString(reader.getString());
-                } else if ("queryLanguage".equals(fieldName)) {
-                    deserializedSearchRequest.queryLanguage = QueryLanguage.fromString(reader.getString());
-                } else if ("speller".equals(fieldName)) {
-                    deserializedSearchRequest.speller = QuerySpellerType.fromString(reader.getString());
                 } else if ("select".equals(fieldName)) {
                     deserializedSearchRequest.select = reader.getString();
                 } else if ("skip".equals(fieldName)) {
@@ -1236,17 +944,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.answers = reader.getString();
                 } else if ("captions".equals(fieldName)) {
                     deserializedSearchRequest.captions = reader.getString();
-                } else if ("queryRewrites".equals(fieldName)) {
-                    deserializedSearchRequest.queryRewrites = reader.getString();
-                } else if ("semanticFields".equals(fieldName)) {
-                    deserializedSearchRequest.semanticFields = reader.getString();
                 } else if ("vectorQueries".equals(fieldName)) {
                     List<VectorQuery> vectorQueries = reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
                     deserializedSearchRequest.vectorQueries = vectorQueries;
                 } else if ("vectorFilterMode".equals(fieldName)) {
                     deserializedSearchRequest.vectorFilterMode = VectorFilterMode.fromString(reader.getString());
-                } else if ("hybridSearch".equals(fieldName)) {
-                    deserializedSearchRequest.hybridSearch = HybridSearch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

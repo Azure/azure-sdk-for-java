@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,19 +23,16 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * Allows you to set the name of a default semantic configuration in your index, making it optional to pass it on as
      * a query parameter every time.
      */
-    @Generated
     private String defaultConfigurationName;
 
     /*
      * The semantic configurations for the index.
      */
-    @Generated
     private List<SemanticConfiguration> configurations;
 
     /**
      * Creates an instance of SemanticSearch class.
      */
-    @Generated
     public SemanticSearch() {
     }
 
@@ -46,7 +42,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * 
      * @return the defaultConfigurationName value.
      */
-    @Generated
     public String getDefaultConfigurationName() {
         return this.defaultConfigurationName;
     }
@@ -58,7 +53,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * @param defaultConfigurationName the defaultConfigurationName value to set.
      * @return the SemanticSearch object itself.
      */
-    @Generated
     public SemanticSearch setDefaultConfigurationName(String defaultConfigurationName) {
         this.defaultConfigurationName = defaultConfigurationName;
         return this;
@@ -69,7 +63,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * 
      * @return the configurations value.
      */
-    @Generated
     public List<SemanticConfiguration> getConfigurations() {
         return this.configurations;
     }
@@ -80,7 +73,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * @param configurations the configurations value to set.
      * @return the SemanticSearch object itself.
      */
-    @Generated
     public SemanticSearch setConfigurations(List<SemanticConfiguration> configurations) {
         this.configurations = configurations;
         return this;
@@ -89,7 +81,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,7 +98,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SemanticSearch.
      */
-    @Generated
     public static SemanticSearch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SemanticSearch deserializedSemanticSearch = new SemanticSearch();

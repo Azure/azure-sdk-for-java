@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,25 +22,21 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     /*
      * The maximum duration that the indexer is permitted to run for one execution.
      */
-    @Generated
     private Duration maxRunTime;
 
     /*
      * The maximum size of a document, in bytes, which will be considered valid for indexing.
      */
-    @Generated
     private Long maxDocumentExtractionSize;
 
     /*
      * The maximum number of characters that will be extracted from a document picked up for indexing.
      */
-    @Generated
     private Long maxDocumentContentCharactersToExtract;
 
     /**
      * Creates an instance of SearchIndexerLimits class.
      */
-    @Generated
     public SearchIndexerLimits() {
     }
 
@@ -50,7 +45,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      * 
      * @return the maxRunTime value.
      */
-    @Generated
     public Duration getMaxRunTime() {
         return this.maxRunTime;
     }
@@ -61,7 +55,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      * 
      * @return the maxDocumentExtractionSize value.
      */
-    @Generated
     public Long getMaxDocumentExtractionSize() {
         return this.maxDocumentExtractionSize;
     }
@@ -72,7 +65,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      * 
      * @return the maxDocumentContentCharactersToExtract value.
      */
-    @Generated
     public Long getMaxDocumentContentCharactersToExtract() {
         return this.maxDocumentContentCharactersToExtract;
     }
@@ -80,7 +72,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,7 +86,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerLimits.
      */
-    @Generated
     public static SearchIndexerLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerLimits deserializedSearchIndexerLimits = new SearchIndexerLimits();

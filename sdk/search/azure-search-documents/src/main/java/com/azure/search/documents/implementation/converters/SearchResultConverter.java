@@ -24,9 +24,7 @@ public final class SearchResultConverter {
         SearchResult searchResult = new SearchResult(obj.getScore());
 
         SearchResultHelper.setHighlights(searchResult, obj.getHighlights());
-        SearchResultHelper.setSemanticSearchResults(searchResult, obj.getRerankerScore(), obj.getCaptions(),
-            obj.getRerankerBoostedScore());
-        SearchResultHelper.setDocumentDebugInfo(searchResult, obj.getDocumentDebugInfo());
+        SearchResultHelper.setSemanticSearchResults(searchResult, obj.getRerankerScore(), obj.getCaptions());
         SearchResultHelper.setAdditionalProperties(searchResult, new SearchDocument(obj.getAdditionalProperties()));
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
         return searchResult;

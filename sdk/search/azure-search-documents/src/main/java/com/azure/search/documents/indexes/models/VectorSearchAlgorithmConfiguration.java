@@ -6,7 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,13 +21,11 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
     /*
      * The name of the kind of algorithm being configured for use with vector search.
      */
-    @Generated
     private VectorSearchAlgorithmKind kind = VectorSearchAlgorithmKind.fromString("VectorSearchAlgorithmConfiguration");
 
     /*
      * The name to associate with this particular configuration.
      */
-    @Generated
     private final String name;
 
     /**
@@ -36,7 +33,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
      * 
      * @param name the name value to set.
      */
-    @Generated
     public VectorSearchAlgorithmConfiguration(String name) {
         this.name = name;
     }
@@ -46,7 +42,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
      * 
      * @return the kind value.
      */
-    @Generated
     public VectorSearchAlgorithmKind getKind() {
         return this.kind;
     }
@@ -56,7 +51,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -64,7 +58,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,7 +75,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchAlgorithmConfiguration.
      */
-    @Generated
     public static VectorSearchAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -110,7 +102,6 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
         });
     }
 
-    @Generated
     static VectorSearchAlgorithmConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

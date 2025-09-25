@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,19 +21,16 @@ public final class NGramTokenFilterV1 extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
-    @Generated
     private String odataType = "#Microsoft.Azure.Search.NGramTokenFilter";
 
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      */
-    @Generated
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2.
      */
-    @Generated
     private Integer maxGram;
 
     /**
@@ -42,7 +38,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * 
      * @param name the name value to set.
      */
-    @Generated
     public NGramTokenFilterV1(String name) {
         super(name);
     }
@@ -52,7 +47,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -63,7 +57,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the minGram value.
      */
-    @Generated
     public Integer getMinGram() {
         return this.minGram;
     }
@@ -74,7 +67,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilterV1 object itself.
      */
-    @Generated
     public NGramTokenFilterV1 setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
@@ -85,7 +77,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * 
      * @return the maxGram value.
      */
-    @Generated
     public Integer getMaxGram() {
         return this.maxGram;
     }
@@ -96,7 +87,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenFilterV1 object itself.
      */
-    @Generated
     public NGramTokenFilterV1 setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
@@ -105,7 +95,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,7 +114,6 @@ public final class NGramTokenFilterV1 extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NGramTokenFilterV1.
      */
-    @Generated
     public static NGramTokenFilterV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,26 +22,22 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
-    @Generated
     private String odataType = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
-    @Generated
     private KeyPhraseExtractionSkillLanguage defaultLanguageCode;
 
     /*
      * A number indicating how many key phrases to return. If absent, all identified key phrases will be returned.
      */
-    @Generated
     private Integer maxKeyPhraseCount;
 
     /*
      * The version of the model to use when calling the Text Analytics service. It will default to the latest available
      * when not specified. We recommend you do not specify this value unless absolutely necessary.
      */
-    @Generated
     private String modelVersion;
 
     /**
@@ -51,7 +46,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @Generated
     public KeyPhraseExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -61,7 +55,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
-    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -72,7 +65,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
-    @Generated
     public KeyPhraseExtractionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -83,7 +75,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the KeyPhraseExtractionSkill object itself.
      */
-    @Generated
     public KeyPhraseExtractionSkill setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -95,7 +86,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the maxKeyPhraseCount value.
      */
-    @Generated
     public Integer getMaxKeyPhraseCount() {
         return this.maxKeyPhraseCount;
     }
@@ -107,7 +97,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * @param maxKeyPhraseCount the maxKeyPhraseCount value to set.
      * @return the KeyPhraseExtractionSkill object itself.
      */
-    @Generated
     public KeyPhraseExtractionSkill setMaxKeyPhraseCount(Integer maxKeyPhraseCount) {
         this.maxKeyPhraseCount = maxKeyPhraseCount;
         return this;
@@ -120,7 +109,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the modelVersion value.
      */
-    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -133,7 +121,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * @param modelVersion the modelVersion value to set.
      * @return the KeyPhraseExtractionSkill object itself.
      */
-    @Generated
     public KeyPhraseExtractionSkill setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -142,7 +129,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhraseExtractionSkill setName(String name) {
         super.setName(name);
@@ -152,7 +138,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhraseExtractionSkill setDescription(String description) {
         super.setDescription(description);
@@ -162,7 +147,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public KeyPhraseExtractionSkill setContext(String context) {
         super.setContext(context);
@@ -172,7 +156,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,7 +181,6 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhraseExtractionSkill.
      */
-    @Generated
     public static KeyPhraseExtractionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;
