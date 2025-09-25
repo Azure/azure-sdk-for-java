@@ -55,7 +55,7 @@ extends:
       - name: azure-resourcemanager-servicebus
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerservicebus
-        ServiceDirectory: servicebus
+        ServiceDirectory: servicebus/azure-resourcemanager-servicebus
       - name: azure-resourcemanager-sql
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql
