@@ -55,7 +55,7 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-extensions</artifactId>
-    <version>1.2.4</version> 
+    <version>1.2.5</version> 
 </dependency>
 ```
 

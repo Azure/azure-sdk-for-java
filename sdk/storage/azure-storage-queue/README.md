@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.26.2</version>
+  <version>12.26.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

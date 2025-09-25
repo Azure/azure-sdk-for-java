@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.7.9</version>
+    <version>11.7.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
