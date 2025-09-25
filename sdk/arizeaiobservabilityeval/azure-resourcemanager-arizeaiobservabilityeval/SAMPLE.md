@@ -80,22 +80,22 @@ public final class OrganizationsCreateOrUpdateSamples {
     public static void organizationsCreateOrUpdateGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
         manager.organizations()
-            .define("test-organization-1")
-            .withRegion("gigxuxdonjfmqnljxcgctfwqapllu")
-            .withExistingResourceGroup("rgopenapi")
+            .define("test-org-1")
+            .withRegion("East US")
+            .withExistingResourceGroup("yashika-rg-arize")
             .withTags(mapOf())
             .withProperties(new OrganizationProperties()
-                .withMarketplace(new MarketplaceDetails().withSubscriptionId("meaowktoejxwfqomc")
-                    .withOfferDetails(new OfferDetails().withPublisherId("flrya")
-                        .withOfferId("hwhtxmtmmlwsu")
-                        .withPlanId("jozklohkdpng")
-                        .withPlanName("clnynwt")
-                        .withTermUnit("cbfktammjyqewljjjaokakilog")
-                        .withTermId("iugvvvoggusxuz")))
-                .withUser(new UserDetails().withFirstName("aorfffgdmglvzdvfvdyjohtnblzsfw")
-                    .withLastName("tojbqzk")
-                    .withEmailAddress("btables@arize.com")
-                    .withUpn("xzvwwbjpqakqqyfudyp")
+                .withMarketplace(new MarketplaceDetails().withSubscriptionId("61641157-140c-4b97-b365-30ff76d9f82e")
+                    .withOfferDetails(new OfferDetails().withPublisherId("arizeai1657829589668")
+                        .withOfferId("arize-liftr-0")
+                        .withPlanId("liftr-test-0")
+                        .withPlanName("Liftr Test 0")
+                        .withTermUnit("P1M")
+                        .withTermId("gmz7xq9ge3py")))
+                .withUser(new UserDetails().withFirstName("")
+                    .withLastName("")
+                    .withEmailAddress("yashikajain@microsoft.com")
+                    .withUpn("yashikajain@microsoft.com")
                     .withPhoneNumber("akbqdbs"))
                 .withPartnerProperties(new PartnerProperties().withDescription("this is a great description"))
                 .withSingleSignOnProperties(new SingleSignOnPropertiesV2().withType(SingleSignOnType.SAML)
@@ -139,7 +139,7 @@ public final class OrganizationsDeleteSamples {
      */
     public static void organizationsDeleteGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
-        manager.organizations().delete("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE);
+        manager.organizations().delete("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -162,7 +162,7 @@ public final class OrganizationsGetByResourceGroupSamples {
     public static void organizationsGetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
         manager.organizations()
-            .getByResourceGroupWithResponse("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -206,7 +206,7 @@ public final class OrganizationsListByResourceGroupSamples {
      */
     public static void organizationsListByResourceGroupGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
-        manager.organizations().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+        manager.organizations().listByResourceGroup("yashika-rg-arize", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -235,7 +235,7 @@ public final class OrganizationsUpdateSamples {
     public static void organizationsUpdateGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
         OrganizationResource resource = manager.organizations()
-            .getByResourceGroupWithResponse("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf())
