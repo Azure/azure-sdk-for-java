@@ -113,7 +113,7 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.39.0;4.40.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.39.0;4.40.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.0.0;1.1.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-appconfiguration;1.8.3;1.9.0-beta.1
+com.azure:azure-data-appconfiguration;1.8.3;1.8.4
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;2.5.0;2.6.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.7;1.6.0-beta.1
