@@ -19,7 +19,6 @@ private[cosmos] object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
-  val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
   val readOperationEndToEndTimeoutInSeconds = 65
