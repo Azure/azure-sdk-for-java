@@ -8,14 +8,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the listConversionsNext operation.
- */
+/** Contains all response data for the listConversionsNext operation. */
 public final class RemoteRenderingsListConversionsNextResponse
     extends ResponseBase<RemoteRenderingsListConversionsNextHeaders, ConversionList> {
     /**
      * Creates an instance of RemoteRenderingsListConversionsNextResponse.
-     * 
+     *
      * @param request the request which resulted in this RemoteRenderingsListConversionsNextResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -27,11 +25,7 @@ public final class RemoteRenderingsListConversionsNextResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     * 
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public ConversionList getValue() {
         return super.getValue();

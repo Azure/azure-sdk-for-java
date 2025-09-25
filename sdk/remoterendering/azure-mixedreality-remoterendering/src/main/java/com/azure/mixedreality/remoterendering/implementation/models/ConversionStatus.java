@@ -4,71 +4,39 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The status of the conversion. Terminal states are 'Cancelled', 'Failed', and 'Succeeded'.
- */
+/** Defines values for ConversionStatus. */
 public final class ConversionStatus extends ExpandableStringEnum<ConversionStatus> {
-    /**
-     * The conversion was created but hasn't started.
-     */
-    @Generated
+    /** Static value NotStarted for ConversionStatus. */
     public static final ConversionStatus NOT_STARTED = fromString("NotStarted");
 
-    /**
-     * The conversion is running.
-     */
-    @Generated
+    /** Static value Running for ConversionStatus. */
     public static final ConversionStatus RUNNING = fromString("Running");
 
-    /**
-     * The conversion was cancelled. This is a terminal state.
-     */
-    @Generated
+    /** Static value Cancelled for ConversionStatus. */
     public static final ConversionStatus CANCELLED = fromString("Cancelled");
 
-    /**
-     * The conversion has failed. Check the 'error' field for more details. This is a terminal state.
-     */
-    @Generated
+    /** Static value Failed for ConversionStatus. */
     public static final ConversionStatus FAILED = fromString("Failed");
 
-    /**
-     * The conversion has succeeded. Check the 'output' field for output asset location. This is a terminal state.
-     */
-    @Generated
+    /** Static value Succeeded for ConversionStatus. */
     public static final ConversionStatus SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Creates a new instance of ConversionStatus value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public ConversionStatus() {
-    }
-
-    /**
      * Creates or finds a ConversionStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ConversionStatus.
      */
-    @Generated
+    @JsonCreator
     public static ConversionStatus fromString(String name) {
         return fromString(name, ConversionStatus.class);
     }
 
-    /**
-     * Gets known ConversionStatus values.
-     * 
-     * @return known ConversionStatus values.
-     */
-    @Generated
+    /** @return known ConversionStatus values. */
     public static Collection<ConversionStatus> values() {
         return values(ConversionStatus.class);
     }

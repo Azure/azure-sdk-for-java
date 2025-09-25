@@ -4,49 +4,43 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of conversions.
- */
-@Immutable
-public final class ConversionList implements JsonSerializable<ConversionList> {
+/** List of conversions. */
+@Fluent
+public final class ConversionList {
     /*
      * The list of conversions.
      */
-    @Generated
-    private final List<Conversion> conversions;
+    @JsonProperty(value = "conversions", required = true)
+    private List<Conversion> conversions;
 
     /*
-     * If more conversions are available this field will contain a URL where the next batch of conversions can be
-     * requested. This URL will need the same authentication as all calls to the Azure Remote Rendering API.
+     * If more conversions are available this field will contain a URL where
+     * the next batch of conversions can be requested. This URL will need the
+     * same authentication as all calls to the Azure Remote Rendering API.
      */
-    @Generated
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
      * Creates an instance of ConversionList class.
-     * 
+     *
      * @param conversions the conversions value to set.
      */
-    @Generated
-    public ConversionList(List<Conversion> conversions) {
+    @JsonCreator
+    public ConversionList(@JsonProperty(value = "conversions", required = true) List<Conversion> conversions) {
         this.conversions = conversions;
     }
 
     /**
      * Get the conversions property: The list of conversions.
-     * 
+     *
      * @return the conversions value.
      */
-    @Generated
     public List<Conversion> getConversions() {
         return this.conversions;
     }
@@ -55,60 +49,10 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
      * Get the nextLink property: If more conversions are available this field will contain a URL where the next batch
      * of conversions can be requested. This URL will need the same authentication as all calls to the Azure Remote
      * Rendering API.
-     * 
+     *
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("conversions", this.conversions, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ConversionList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ConversionList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ConversionList.
-     */
-    @Generated
-    public static ConversionList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean conversionsFound = false;
-            List<Conversion> conversions = null;
-            String nextLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("conversions".equals(fieldName)) {
-                    conversions = reader.readArray(reader1 -> Conversion.fromJson(reader1));
-                    conversionsFound = true;
-                } else if ("@nextLink".equals(fieldName)) {
-                    nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (conversionsFound) {
-                ConversionList deserializedConversionList = new ConversionList(conversions);
-                deserializedConversionList.nextLink = nextLink;
-
-                return deserializedConversionList;
-            }
-            throw new IllegalStateException("Missing required property: conversions");
-        });
     }
 }
