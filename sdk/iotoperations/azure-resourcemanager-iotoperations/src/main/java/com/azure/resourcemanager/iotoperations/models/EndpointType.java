@@ -42,6 +42,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType MQTT = fromString("Mqtt");
 
     /**
+     * OpenTelemetry Type.
+     */
+    public static final EndpointType OPEN_TELEMETRY = fromString("OpenTelemetry");
+
+    /**
      * Creates a new instance of EndpointType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

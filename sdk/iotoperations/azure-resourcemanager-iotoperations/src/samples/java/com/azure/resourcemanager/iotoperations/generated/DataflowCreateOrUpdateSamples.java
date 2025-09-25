@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class DataflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_FilterToTopic.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_FilterToTopic.
@@ -39,8 +39,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("mqtt-filter-to-topic")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -67,11 +65,14 @@ public final class DataflowCreateOrUpdateSamples {
                                 .withDestinationSettings(new DataflowDestinationOperationSettings()
                                     .withEndpointRef("aio-builtin-broker-endpoint")
                                     .withDataDestination("data/filtered/thermostat")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate.
@@ -82,10 +83,9 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("resource-name123")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
+                    .withRequestDiskPersistence(OperationalMode.DISABLED)
                     .withOperations(Arrays.asList(new DataflowOperation().withOperationType(OperationType.SOURCE)
                         .withName("knnafvkwoeakm")
                         .withSourceSettings(new DataflowSourceOperationSettings()
@@ -117,11 +117,14 @@ public final class DataflowCreateOrUpdateSamples {
                         .withDestinationSettings(
                             new DataflowDestinationOperationSettings().withEndpointRef("kybkchnzimerguekuvqlqiqdvvrt")
                                 .withDataDestination("cbrh")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_ComplexContextualization.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexContextualization.
@@ -133,8 +136,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-adx-contexualized")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(Arrays.asList(
@@ -161,11 +162,14 @@ public final class DataflowCreateOrUpdateSamples {
                             .withDestinationSettings(
                                 new DataflowDestinationOperationSettings().withEndpointRef("adx-endpoint")
                                     .withDataDestination("mytable")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_ComplexEventHub.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexEventHub.
@@ -177,8 +181,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-event-hub-transformed")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -225,11 +227,14 @@ public final class DataflowCreateOrUpdateSamples {
                                     .withDestinationSettings(
                                         new DataflowDestinationOperationSettings().withEndpointRef("event-hub-endpoint")
                                             .withDataDestination("myuniqueeventhub")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_SimpleFabric.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleFabric.
@@ -241,8 +246,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-fabric")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -262,11 +265,14 @@ public final class DataflowCreateOrUpdateSamples {
                                     .withDestinationSettings(
                                         new DataflowDestinationOperationSettings().withEndpointRef("fabric-endpoint")
                                             .withDataDestination("telemetryTable")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+     * x-ms-original-file: 2025-07-01-preview/Dataflow_CreateOrUpdate_SimpleEventGrid.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleEventGrid.
@@ -278,8 +284,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-event-grid")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowProperties().withMode(OperationalMode.ENABLED)
                 .withOperations(Arrays.asList(
                     new DataflowOperation().withOperationType(OperationType.SOURCE)
@@ -292,6 +296,9 @@ public final class DataflowCreateOrUpdateSamples {
                         .withDestinationSettings(
                             new DataflowDestinationOperationSettings().withEndpointRef("event-grid-endpoint")
                                 .withDataDestination("factory/telemetry")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }

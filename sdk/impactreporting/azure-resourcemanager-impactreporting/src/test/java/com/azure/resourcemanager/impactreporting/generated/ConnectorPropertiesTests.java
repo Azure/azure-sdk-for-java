@@ -13,7 +13,7 @@ public final class ConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"connectorId\":\"xbezyiuokktwh\",\"tenantId\":\"dxwzywqsmbsurexi\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-01-06T03:50:02Z\"}")
+            "{\"provisioningState\":\"Succeeded\",\"connectorId\":\"hcbonqvpkvlr\",\"tenantId\":\"njeaseipheofloke\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-10-25T00:34:36Z\"}")
             .toObject(ConnectorProperties.class);
         Assertions.assertEquals(Platform.AZURE_MONITOR, model.connectorType());
     }

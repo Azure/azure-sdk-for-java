@@ -157,7 +157,7 @@ public final class ContainerServiceSafeguardsManagementClientImpl
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-05-02-preview";
+        this.apiVersion = "2025-07-01";
         this.operations = new OperationsClientImpl(this);
         this.deploymentSafeguards = new DeploymentSafeguardsClientImpl(this);
     }

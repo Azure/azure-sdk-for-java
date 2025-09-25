@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.neonpostgres.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,11 +26,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.EndpointsClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.EndpointInner;
 import com.azure.resourcemanager.neonpostgres.implementation.models.EndpointListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -81,6 +90,50 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
             @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("endpointName") String endpointName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("endpointName") String endpointName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointInner resource, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("endpointName") String endpointName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/endpoints/{endpointName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("endpointName") String endpointName,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -227,6 +280,300 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return new PagedIterable<>(
             () -> listSinglePage(resourceGroupName, organizationName, projectName, branchName, context),
             nextLink -> listNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
+                endpointName, contentType, accept, resource, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String endpointName, EndpointInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, endpointName,
+            contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String endpointName, EndpointInner resource, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, endpointName,
+            contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Neon compute endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<EndpointInner>, EndpointInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, organizationName,
+            projectName, branchName, endpointName, resource);
+        return this.client.<EndpointInner, EndpointInner>getLroResult(mono, this.client.getHttpPipeline(),
+            EndpointInner.class, EndpointInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon compute endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
+            branchName, endpointName, resource);
+        return this.client.<EndpointInner, EndpointInner>getLroResult(response, EndpointInner.class,
+            EndpointInner.class, Context.NONE);
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon compute endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String endpointName, EndpointInner resource,
+        Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
+            branchName, endpointName, resource, context);
+        return this.client.<EndpointInner, EndpointInner>getLroResult(response, EndpointInner.class,
+            EndpointInner.class, context);
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EndpointInner> createOrUpdateAsync(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String endpointName, EndpointInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, endpointName,
+            resource).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EndpointInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName, EndpointInner resource) {
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource)
+            .getFinalResult();
+    }
+
+    /**
+     * Create a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon compute endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EndpointInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName, EndpointInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName, resource,
+            context).getFinalResult();
+    }
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String endpointName) {
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
+                endpointName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName) {
+        return deleteWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, endpointName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String endpointName, Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, endpointName,
+            context);
+    }
+
+    /**
+     * Delete a Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param endpointName The name of the Endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
+        String endpointName) {
+        deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName, Context.NONE);
     }
 
     /**
