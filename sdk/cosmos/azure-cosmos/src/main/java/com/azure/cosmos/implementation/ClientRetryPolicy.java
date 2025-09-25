@@ -191,7 +191,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return this.shouldRetryOnInternalServerError();
         }
 
-        if (this.request != null && this.request.isMetadataRequest()) {
+        if (this.request != null
+            && this.request.getOperationType() == OperationType.ReadFeed
+            && this.request.getResourceType() == ResourceType.PartitionKeyRange) {
+            // currently only limit the metadata throttling policy to get partition key ranges
             return this.metadataThrottlingRetry.shouldRetry(e);
         } else {
             return this.throttlingRetry.shouldRetry(e);
