@@ -25,16 +25,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedcache.fluent.ConnectedCacheManagementClient;
-import com.azure.resourcemanager.connectedcache.implementation.CacheNodesOperationsImpl;
 import com.azure.resourcemanager.connectedcache.implementation.ConnectedCacheManagementClientBuilder;
-import com.azure.resourcemanager.connectedcache.implementation.EnterpriseCustomerOperationsImpl;
 import com.azure.resourcemanager.connectedcache.implementation.EnterpriseMccCacheNodesOperationsImpl;
 import com.azure.resourcemanager.connectedcache.implementation.EnterpriseMccCustomersImpl;
 import com.azure.resourcemanager.connectedcache.implementation.IspCacheNodesOperationsImpl;
 import com.azure.resourcemanager.connectedcache.implementation.IspCustomersImpl;
 import com.azure.resourcemanager.connectedcache.implementation.OperationsImpl;
-import com.azure.resourcemanager.connectedcache.models.CacheNodesOperations;
-import com.azure.resourcemanager.connectedcache.models.EnterpriseCustomerOperations;
 import com.azure.resourcemanager.connectedcache.models.EnterpriseMccCacheNodesOperations;
 import com.azure.resourcemanager.connectedcache.models.EnterpriseMccCustomers;
 import com.azure.resourcemanager.connectedcache.models.IspCacheNodesOperations;
@@ -54,10 +50,6 @@ import java.util.stream.Collectors;
  */
 public final class ConnectedCacheManager {
     private Operations operations;
-
-    private EnterpriseCustomerOperations enterpriseCustomerOperations;
-
-    private CacheNodesOperations cacheNodesOperations;
 
     private IspCustomers ispCustomers;
 
@@ -292,31 +284,6 @@ public final class ConnectedCacheManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
-    }
-
-    /**
-     * Gets the resource collection API of EnterpriseCustomerOperations. It manages EnterprisePreviewResource.
-     * 
-     * @return Resource collection API of EnterpriseCustomerOperations.
-     */
-    public EnterpriseCustomerOperations enterpriseCustomerOperations() {
-        if (this.enterpriseCustomerOperations == null) {
-            this.enterpriseCustomerOperations
-                = new EnterpriseCustomerOperationsImpl(clientObject.getEnterpriseCustomerOperations(), this);
-        }
-        return enterpriseCustomerOperations;
-    }
-
-    /**
-     * Gets the resource collection API of CacheNodesOperations. It manages CacheNodePreviewResource.
-     * 
-     * @return Resource collection API of CacheNodesOperations.
-     */
-    public CacheNodesOperations cacheNodesOperations() {
-        if (this.cacheNodesOperations == null) {
-            this.cacheNodesOperations = new CacheNodesOperationsImpl(clientObject.getCacheNodesOperations(), this);
-        }
-        return cacheNodesOperations;
     }
 
     /**

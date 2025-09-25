@@ -1556,7 +1556,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,7 +1580,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1597,7 +1599,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1618,7 +1621,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1640,7 +1644,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1658,7 +1663,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

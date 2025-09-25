@@ -4,11 +4,14 @@
 
 package com.azure.resourcemanager.neonpostgres.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.BranchInner;
 import com.azure.resourcemanager.neonpostgres.models.Branch;
 import com.azure.resourcemanager.neonpostgres.models.BranchProperties;
+import com.azure.resourcemanager.neonpostgres.models.PreflightCheckParameters;
+import com.azure.resourcemanager.neonpostgres.models.PreflightCheckResult;
 
 public final class BranchImpl implements Branch, Branch.Definition, Branch.Update {
     private BranchInner innerObject;
@@ -125,6 +128,16 @@ public final class BranchImpl implements Branch, Branch.Definition, Branch.Updat
             .getWithResponse(resourceGroupName, organizationName, projectName, branchName, context)
             .getValue();
         return this;
+    }
+
+    public Response<PreflightCheckResult> preflightWithResponse(PreflightCheckParameters parameters, Context context) {
+        return serviceManager.branches()
+            .preflightWithResponse(resourceGroupName, organizationName, projectName, branchName, parameters, context);
+    }
+
+    public PreflightCheckResult preflight(PreflightCheckParameters parameters) {
+        return serviceManager.branches()
+            .preflight(resourceGroupName, organizationName, projectName, branchName, parameters);
     }
 
     public BranchImpl withProperties(BranchProperties properties) {

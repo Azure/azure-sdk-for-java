@@ -36,6 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.DiagnosticInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.DiagnosticListResult;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -117,7 +118,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diagnosticName") String diagnosticName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}")
@@ -127,7 +128,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diagnosticName") String diagnosticName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -475,7 +476,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
+        DiagnosticUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -498,7 +499,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
+        DiagnosticUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -520,7 +521,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties, Context context) {
+        DiagnosticUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -541,7 +542,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdateAsync(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties) {
+        String diagnosticName, DiagnosticUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diagnosticName, properties);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(mono, this.client.getHttpPipeline(),
             DiagnosticInner.class, DiagnosticInner.class, this.client.getContext());
@@ -560,7 +561,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties) {
+        String diagnosticName, DiagnosticUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, diagnosticName, properties);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
             DiagnosticInner.class, Context.NONE);
@@ -580,7 +581,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties, Context context) {
+        String diagnosticName, DiagnosticUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, diagnosticName, properties, context);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
             DiagnosticInner.class, context);
@@ -599,7 +600,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticInner> updateAsync(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
+        DiagnosticUpdate properties) {
         return beginUpdateAsync(resourceGroupName, diagnosticName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -616,7 +617,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties) {
+    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties) {
         return beginUpdate(resourceGroupName, diagnosticName, properties).getFinalResult();
     }
 
@@ -633,7 +634,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties,
+    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties,
         Context context) {
         return beginUpdate(resourceGroupName, diagnosticName, properties, context).getFinalResult();
     }

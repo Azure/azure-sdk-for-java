@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.Diagnostic;
-import com.azure.resourcemanager.workloadorchestration.models.DiagnosticProperties;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class DiagnosticsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1922", "fakeTokenPlaceholder"))
-            .withProperties(new DiagnosticProperties())
+            .withProperties(new DiagnosticUpdateProperties())
             .apply();
     }
 
