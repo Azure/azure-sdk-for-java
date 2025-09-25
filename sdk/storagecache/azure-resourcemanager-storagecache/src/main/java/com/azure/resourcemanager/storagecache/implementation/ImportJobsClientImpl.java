@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagecache.fluent.ImportJobsClient;
@@ -70,13 +72,23 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageCacheManageme")
+    @ServiceInterface(name = "StorageCacheManagementClientImportJobs")
     public interface ImportJobsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("importJobName") String importJobName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("importJobName") String importJobName,
@@ -93,10 +105,31 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ImportJobInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("importJobName") String importJobName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @PathParam("importJobName") String importJobName,
+            @BodyParam("application/json") ImportJobInner importJob, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("amlFilesystemName") String amlFilesystemName, @PathParam("importJobName") String importJobName,
@@ -115,6 +148,17 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs/{importJobName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @PathParam("importJobName") String importJobName,
+            @BodyParam("application/json") ImportJobUpdate importJob, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -125,10 +169,28 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/importJobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ImportJobsListResult> listByAmlFilesystemSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImportJobsListResult>> listByAmlFilesystemNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ImportJobsListResult> listByAmlFilesystemNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -183,37 +245,82 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * end with alphanumeric.
      * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
      * alphanumeric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
+        String importJobName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (importJobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), importJobName, accept, Context.NONE);
+    }
+
+    /**
+     * Schedules an import job for deletion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
+     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
+     * alphanumeric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String amlFilesystemName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
         String importJobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (importJobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), importJobName, accept, context);
     }
 
@@ -247,30 +354,6 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * end with alphanumeric.
      * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
      * alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String amlFilesystemName,
-        String importJobName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, amlFilesystemName, importJobName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Schedules an import job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -279,7 +362,8 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String importJobName) {
-        return this.beginDeleteAsync(resourceGroupName, amlFilesystemName, importJobName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName, importJobName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -299,7 +383,9 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String importJobName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, amlFilesystemName, importJobName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, amlFilesystemName, importJobName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -329,34 +415,13 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * end with alphanumeric.
      * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
      * alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String amlFilesystemName, String importJobName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, amlFilesystemName, importJobName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules an import job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String importJobName) {
-        deleteAsync(resourceGroupName, amlFilesystemName, importJobName).block();
+        beginDelete(resourceGroupName, amlFilesystemName, importJobName).getFinalResult();
     }
 
     /**
@@ -374,7 +439,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String importJobName, Context context) {
-        deleteAsync(resourceGroupName, amlFilesystemName, importJobName, context).block();
+        beginDelete(resourceGroupName, amlFilesystemName, importJobName, context).getFinalResult();
     }
 
     /**
@@ -427,48 +492,6 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * end with alphanumeric.
      * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
      * alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an import job instance along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ImportJobInner>> getWithResponseAsync(String resourceGroupName, String amlFilesystemName,
-        String importJobName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (importJobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, amlFilesystemName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), importJobName, accept, context);
-    }
-
-    /**
-     * Returns an import job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,7 +520,31 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImportJobInner> getWithResponse(String resourceGroupName, String amlFilesystemName,
         String importJobName, Context context) {
-        return getWithResponseAsync(resourceGroupName, amlFilesystemName, importJobName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (importJobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), importJobName, accept, context);
     }
 
     /**
@@ -519,7 +566,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -569,7 +616,58 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
+     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
+     * alphanumeric.
+     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
+     * included, they must match the existing values of those properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an import job instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
+        String importJobName, ImportJobInner importJob) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (importJobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+        }
+        if (importJob == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
+        } else {
+            importJob.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, importJobName, importJob, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -582,43 +680,46 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an import job instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return an import job instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String amlFilesystemName, String importJobName, ImportJobInner importJob, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
+        String importJobName, ImportJobInner importJob, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (importJobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
         }
         if (importJob == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
         } else {
             importJob.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), amlFilesystemName, importJobName, importJob, accept, context);
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -642,33 +743,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
-     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
-     * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an import job instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImportJobInner>, ImportJobInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String amlFilesystemName, String importJobName, ImportJobInner importJob, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context);
-        return this.client.<ImportJobInner, ImportJobInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ImportJobInner.class, ImportJobInner.class, context);
-    }
-
-    /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -685,12 +760,14 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportJobInner>, ImportJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String importJobName, ImportJobInner importJob) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, importJobName, importJob);
+        return this.client.<ImportJobInner, ImportJobInner>getLroResult(response, ImportJobInner.class,
+            ImportJobInner.class, Context.NONE);
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -708,12 +785,14 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportJobInner>, ImportJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String importJobName, ImportJobInner importJob, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, importJobName, importJob, context);
+        return this.client.<ImportJobInner, ImportJobInner>getLroResult(response, ImportJobInner.class,
+            ImportJobInner.class, context);
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -735,30 +814,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
-     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
-     * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an import job instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImportJobInner> createOrUpdateAsync(String resourceGroupName, String amlFilesystemName,
-        String importJobName, ImportJobInner importJob, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -775,11 +831,11 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName, String importJobName,
         ImportJobInner importJob) {
-        return createOrUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob).block();
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, importJobName, importJob).getFinalResult();
     }
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -797,7 +853,8 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName, String importJobName,
         ImportJobInner importJob, Context context) {
-        return createOrUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context).block();
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, importJobName, importJob, context)
+            .getFinalResult();
     }
 
     /**
@@ -860,42 +917,96 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * alphanumeric.
      * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an import job instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return an import job instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String amlFilesystemName,
-        String importJobName, ImportJobUpdate importJob, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
+        String importJobName, ImportJobUpdate importJob) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (importJobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
         }
         if (importJob == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
         } else {
             importJob.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, importJobName, importJob, accept, Context.NONE);
+    }
+
+    /**
+     * Update an import job instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
+     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
+     * alphanumeric.
+     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
+     * included, they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an import job instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
+        String importJobName, ImportJobUpdate importJob, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (importJobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJobName is required and cannot be null."));
+        }
+        if (importJob == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter importJob is required and cannot be null."));
+        } else {
+            importJob.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), amlFilesystemName, importJobName, importJob, accept, context);
     }
 
@@ -933,32 +1044,6 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * alphanumeric.
      * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an import job instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImportJobInner>, ImportJobInner> beginUpdateAsync(String resourceGroupName,
-        String amlFilesystemName, String importJobName, ImportJobUpdate importJob, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context);
-        return this.client.<ImportJobInner, ImportJobInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ImportJobInner.class, ImportJobInner.class, context);
-    }
-
-    /**
-     * Update an import job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
-     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
-     * included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -967,7 +1052,10 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportJobInner>, ImportJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String importJobName, ImportJobUpdate importJob) {
-        return this.beginUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, amlFilesystemName, importJobName, importJob);
+        return this.client.<ImportJobInner, ImportJobInner>getLroResult(response, ImportJobInner.class,
+            ImportJobInner.class, Context.NONE);
     }
 
     /**
@@ -989,8 +1077,10 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportJobInner>, ImportJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String importJobName, ImportJobUpdate importJob, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, amlFilesystemName, importJobName, importJob, context);
+        return this.client.<ImportJobInner, ImportJobInner>getLroResult(response, ImportJobInner.class,
+            ImportJobInner.class, context);
     }
 
     /**
@@ -1025,29 +1115,6 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * alphanumeric.
      * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
      * included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an import job instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImportJobInner> updateAsync(String resourceGroupName, String amlFilesystemName, String importJobName,
-        ImportJobUpdate importJob, Context context) {
-        return beginUpdateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update an import job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param importJobName Name for the import job. Allows alphanumerics, underscores, and hyphens. Start and end with
-     * alphanumeric.
-     * @param importJob Object containing the user-selectable properties of the import job. If read-only properties are
-     * included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1056,7 +1123,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportJobInner update(String resourceGroupName, String amlFilesystemName, String importJobName,
         ImportJobUpdate importJob) {
-        return updateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob).block();
+        return beginUpdate(resourceGroupName, amlFilesystemName, importJobName, importJob).getFinalResult();
     }
 
     /**
@@ -1078,7 +1145,7 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportJobInner update(String resourceGroupName, String amlFilesystemName, String importJobName,
         ImportJobUpdate importJob, Context context) {
-        return updateAsync(resourceGroupName, amlFilesystemName, importJobName, importJob, context).block();
+        return beginUpdate(resourceGroupName, amlFilesystemName, importJobName, importJob, context).getFinalResult();
     }
 
     /**
@@ -1127,47 +1194,6 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list import jobs along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImportJobInner>> listByAmlFilesystemSinglePageAsync(String resourceGroupName,
-        String amlFilesystemName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByAmlFilesystem(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), amlFilesystemName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all import jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1185,17 +1211,79 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list import jobs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ImportJobInner> listByAmlFilesystemSinglePage(String resourceGroupName,
+        String amlFilesystemName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ImportJobsListResult> res
+            = service.listByAmlFilesystemSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), amlFilesystemName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all import jobs the user has access to under an AML File System.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list import jobs as paginated response with {@link PagedFlux}.
+     * @return result of the request to list import jobs along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ImportJobInner> listByAmlFilesystemAsync(String resourceGroupName, String amlFilesystemName,
-        Context context) {
-        return new PagedFlux<>(() -> listByAmlFilesystemSinglePageAsync(resourceGroupName, amlFilesystemName, context),
-            nextLink -> listByAmlFilesystemNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ImportJobInner> listByAmlFilesystemSinglePage(String resourceGroupName,
+        String amlFilesystemName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ImportJobsListResult> res
+            = service.listByAmlFilesystemSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), amlFilesystemName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1211,7 +1299,8 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImportJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        return new PagedIterable<>(listByAmlFilesystemAsync(resourceGroupName, amlFilesystemName));
+        return new PagedIterable<>(() -> listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName),
+            nextLink -> listByAmlFilesystemNextSinglePage(nextLink));
     }
 
     /**
@@ -1229,7 +1318,8 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImportJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
         Context context) {
-        return new PagedIterable<>(listByAmlFilesystemAsync(resourceGroupName, amlFilesystemName, context));
+        return new PagedIterable<>(() -> listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName, context),
+            nextLink -> listByAmlFilesystemNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1264,27 +1354,56 @@ public final class ImportJobsClientImpl implements ImportJobsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list import jobs along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ImportJobInner> listByAmlFilesystemNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ImportJobsListResult> res
+            = service.listByAmlFilesystemNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list import jobs along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return result of the request to list import jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImportJobInner>> listByAmlFilesystemNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<ImportJobInner> listByAmlFilesystemNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByAmlFilesystemNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ImportJobsListResult> res
+            = service.listByAmlFilesystemNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportJobsClientImpl.class);
 }

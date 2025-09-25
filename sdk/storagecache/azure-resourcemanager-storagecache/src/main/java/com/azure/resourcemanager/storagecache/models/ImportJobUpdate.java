@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storagecache.fluent.models.ImportJobUpdateProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,6 +22,11 @@ public final class ImportJobUpdate implements JsonSerializable<ImportJobUpdate> 
      * Resource tags.
      */
     private Map<String, String> tags;
+
+    /*
+     * The properties property.
+     */
+    private ImportJobUpdateProperties innerProperties;
 
     /**
      * Creates an instance of ImportJobUpdate class.
@@ -49,11 +55,48 @@ public final class ImportJobUpdate implements JsonSerializable<ImportJobUpdate> 
     }
 
     /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
+     */
+    private ImportJobUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job.
+     * 
+     * @return the adminStatus value.
+     */
+    public ImportJobAdminStatus adminStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminStatus();
+    }
+
+    /**
+     * Set the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job.
+     * 
+     * @param adminStatus the adminStatus value to set.
+     * @return the ImportJobUpdate object itself.
+     */
+    public ImportJobUpdate withAdminStatus(ImportJobAdminStatus adminStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportJobUpdateProperties();
+        }
+        this.innerProperties().withAdminStatus(adminStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 
     /**
@@ -63,6 +106,7 @@ public final class ImportJobUpdate implements JsonSerializable<ImportJobUpdate> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +128,8 @@ public final class ImportJobUpdate implements JsonSerializable<ImportJobUpdate> 
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedImportJobUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImportJobUpdate.innerProperties = ImportJobUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

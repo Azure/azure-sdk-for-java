@@ -77,3 +77,25 @@ com.azure:azure-storage-file-datalake # Tests owner: ibrandes, kyleknap, gunjans
 com.azure:azure-storage-file-share # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
 com.azure:azure-storage-internal-avro # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
 com.azure:azure-storage-queue # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure.resourcemanager:azure-resourcemanager-resources # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-storage # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-authorization # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-keyvault # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-msi # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-network # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-compute # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-sql # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-dns # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-appservice # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-cosmos # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerservice # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-eventhubs # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-monitor # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerregistry # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerinstance # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-privatedns # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-redis # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-trafficmanager # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-servicebus # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-cdn # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-search # Tests owner: XiaofeiCao, weidongxu-microsoft

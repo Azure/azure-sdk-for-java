@@ -140,8 +140,8 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,10 +168,10 @@ public final class DataflowEndpointResourceInner extends ProxyResource {
                     deserializedDataflowEndpointResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.type = reader.getString();
-                } else if ("extendedLocation".equals(fieldName)) {
-                    deserializedDataflowEndpointResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.properties = DataflowEndpointProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedDataflowEndpointResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDataflowEndpointResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
