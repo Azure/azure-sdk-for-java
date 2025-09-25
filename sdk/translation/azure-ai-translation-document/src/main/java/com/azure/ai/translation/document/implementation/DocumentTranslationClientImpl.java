@@ -169,7 +169,7 @@ public final class DocumentTranslationClientImpl {
      * REST calls.
      */
     @Host("{endpoint}/translator")
-    @ServiceInterface(name = "DocumentTranslationClient")
+    @ServiceInterface(name = "DocumentTranslationC")
     public interface DocumentTranslationClientService {
         @Post("/document/batches")
         @ExpectedResponses({ 202 })
@@ -580,6 +580,168 @@ public final class DocumentTranslationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTranslationAsync(BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1), () -> this.translationWithResponseAsync(body, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Submit a document translation request to the Document Translation service
+     * 
+     * Use this API to submit a bulk (batch) translation request to the Document
+     * Translation service.
+     * Each request can contain multiple documents and must
+     * contain a source and destination container for each document.
+     * 
+     * The
+     * prefix and suffix filter (if supplied) are used to filter folders. The prefix
+     * is applied to the subpath after the container name.
+     * 
+     * Glossaries /
+     * Translation memory can be included in the request and are applied by the
+     * service when the document is translated.
+     * 
+     * If the glossary is
+     * invalid or unreachable during translation, an error is indicated in the
+     * document status.
+     * If a file with the same name already exists at the
+     * destination, it will be overwritten. The targetUrl for each target language
+     * must be unique.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inputs (Required): [
+     *          (Required){
+     *             source (Required): {
+     *                 sourceUrl: String (Required)
+     *                 filter (Optional): {
+     *                     prefix: String (Optional)
+     *                     suffix: String (Optional)
+     *                 }
+     *                 language: String (Optional)
+     *                 storageSource: String(AzureBlob) (Optional)
+     *             }
+     *             targets (Required): [
+     *                  (Required){
+     *                     targetUrl: String (Required)
+     *                     category: String (Optional)
+     *                     language: String (Required)
+     *                     glossaries (Optional): [
+     *                          (Optional){
+     *                             glossaryUrl: String (Required)
+     *                             format: String (Required)
+     *                             version: String (Optional)
+     *                             storageSource: String(AzureBlob) (Optional)
+     *                         }
+     *                     ]
+     *                     storageSource: String(AzureBlob) (Optional)
+     *                 }
+     *             ]
+     *             storageType: String(Folder/File) (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param body Translation job submission batch request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginTranslation(BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.translationWithResponse(body, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Submit a document translation request to the Document Translation service
+     * 
+     * Use this API to submit a bulk (batch) translation request to the Document
+     * Translation service.
+     * Each request can contain multiple documents and must
+     * contain a source and destination container for each document.
+     * 
+     * The
+     * prefix and suffix filter (if supplied) are used to filter folders. The prefix
+     * is applied to the subpath after the container name.
+     * 
+     * Glossaries /
+     * Translation memory can be included in the request and are applied by the
+     * service when the document is translated.
+     * 
+     * If the glossary is
+     * invalid or unreachable during translation, an error is indicated in the
+     * document status.
+     * If a file with the same name already exists at the
+     * destination, it will be overwritten. The targetUrl for each target language
+     * must be unique.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inputs (Required): [
+     *          (Required){
+     *             source (Required): {
+     *                 sourceUrl: String (Required)
+     *                 filter (Optional): {
+     *                     prefix: String (Optional)
+     *                     suffix: String (Optional)
+     *                 }
+     *                 language: String (Optional)
+     *                 storageSource: String(AzureBlob) (Optional)
+     *             }
+     *             targets (Required): [
+     *                  (Required){
+     *                     targetUrl: String (Required)
+     *                     category: String (Optional)
+     *                     language: String (Required)
+     *                     glossaries (Optional): [
+     *                          (Optional){
+     *                             glossaryUrl: String (Required)
+     *                             format: String (Required)
+     *                             version: String (Optional)
+     *                             storageSource: String(AzureBlob) (Optional)
+     *                         }
+     *                     ]
+     *                     storageSource: String(AzureBlob) (Optional)
+     *                 }
+     *             ]
+     *             storageType: String(Folder/File) (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param body Translation job submission batch request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<TranslationStatusResult, TranslationStatusResult> beginTranslationWithModelAsync(BinaryData body,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1), () -> this.translationWithResponseAsync(body, requestOptions),
@@ -674,168 +836,6 @@ public final class DocumentTranslationClientImpl {
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(TranslationStatusResult.class),
             TypeReference.createInstance(TranslationStatusResult.class));
-    }
-
-    /**
-     * Submit a document translation request to the Document Translation service
-     * 
-     * Use this API to submit a bulk (batch) translation request to the Document
-     * Translation service.
-     * Each request can contain multiple documents and must
-     * contain a source and destination container for each document.
-     * 
-     * The
-     * prefix and suffix filter (if supplied) are used to filter folders. The prefix
-     * is applied to the subpath after the container name.
-     * 
-     * Glossaries /
-     * Translation memory can be included in the request and are applied by the
-     * service when the document is translated.
-     * 
-     * If the glossary is
-     * invalid or unreachable during translation, an error is indicated in the
-     * document status.
-     * If a file with the same name already exists at the
-     * destination, it will be overwritten. The targetUrl for each target language
-     * must be unique.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     inputs (Required): [
-     *          (Required){
-     *             source (Required): {
-     *                 sourceUrl: String (Required)
-     *                 filter (Optional): {
-     *                     prefix: String (Optional)
-     *                     suffix: String (Optional)
-     *                 }
-     *                 language: String (Optional)
-     *                 storageSource: String(AzureBlob) (Optional)
-     *             }
-     *             targets (Required): [
-     *                  (Required){
-     *                     targetUrl: String (Required)
-     *                     category: String (Optional)
-     *                     language: String (Required)
-     *                     glossaries (Optional): [
-     *                          (Optional){
-     *                             glossaryUrl: String (Required)
-     *                             format: String (Required)
-     *                             version: String (Optional)
-     *                             storageSource: String(AzureBlob) (Optional)
-     *                         }
-     *                     ]
-     *                     storageSource: String(AzureBlob) (Optional)
-     *                 }
-     *             ]
-     *             storageType: String(Folder/File) (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param body Translation job submission batch request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginTranslationAsync(BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.translationWithResponseAsync(body, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Submit a document translation request to the Document Translation service
-     * 
-     * Use this API to submit a bulk (batch) translation request to the Document
-     * Translation service.
-     * Each request can contain multiple documents and must
-     * contain a source and destination container for each document.
-     * 
-     * The
-     * prefix and suffix filter (if supplied) are used to filter folders. The prefix
-     * is applied to the subpath after the container name.
-     * 
-     * Glossaries /
-     * Translation memory can be included in the request and are applied by the
-     * service when the document is translated.
-     * 
-     * If the glossary is
-     * invalid or unreachable during translation, an error is indicated in the
-     * document status.
-     * If a file with the same name already exists at the
-     * destination, it will be overwritten. The targetUrl for each target language
-     * must be unique.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     inputs (Required): [
-     *          (Required){
-     *             source (Required): {
-     *                 sourceUrl: String (Required)
-     *                 filter (Optional): {
-     *                     prefix: String (Optional)
-     *                     suffix: String (Optional)
-     *                 }
-     *                 language: String (Optional)
-     *                 storageSource: String(AzureBlob) (Optional)
-     *             }
-     *             targets (Required): [
-     *                  (Required){
-     *                     targetUrl: String (Required)
-     *                     category: String (Optional)
-     *                     language: String (Required)
-     *                     glossaries (Optional): [
-     *                          (Optional){
-     *                             glossaryUrl: String (Required)
-     *                             format: String (Required)
-     *                             version: String (Optional)
-     *                             storageSource: String(AzureBlob) (Optional)
-     *                         }
-     *                     ]
-     *                     storageSource: String(AzureBlob) (Optional)
-     *                 }
-     *             ]
-     *             storageType: String(Folder/File) (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param body Translation job submission batch request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTranslation(BinaryData body, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.translationWithResponse(body, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/translator".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
