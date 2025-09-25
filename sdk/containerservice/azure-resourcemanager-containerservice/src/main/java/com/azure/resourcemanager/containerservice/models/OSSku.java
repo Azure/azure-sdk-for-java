@@ -23,6 +23,11 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku AZURE_LINUX = fromString("AzureLinux");
 
     /**
+     * Static value AzureLinux3 for OSSku.
+     */
+    public static final OSSku AZURE_LINUX3 = fromString("AzureLinux3");
+
+    /**
      * Static value CBLMariner for OSSku.
      */
     public static final OSSku CBLMARINER = fromString("CBLMariner");

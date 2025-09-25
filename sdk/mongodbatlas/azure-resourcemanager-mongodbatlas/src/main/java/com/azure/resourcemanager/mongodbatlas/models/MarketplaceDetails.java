@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mongodbatlas.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -86,28 +85,6 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
         this.offerDetails = offerDetails;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subscriptionId in model MarketplaceDetails"));
-        }
-        if (offerDetails() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property offerDetails in model MarketplaceDetails"));
-        } else {
-            offerDetails().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MarketplaceDetails.class);
 
     /**
      * {@inheritDoc}

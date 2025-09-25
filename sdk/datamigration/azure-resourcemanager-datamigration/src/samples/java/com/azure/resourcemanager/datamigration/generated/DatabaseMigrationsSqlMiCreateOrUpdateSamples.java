@@ -25,7 +25,7 @@ import java.util.Map;
 public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -64,7 +64,7 @@ public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationBlobManagedIdentity.json
      */
     /**
@@ -98,7 +98,7 @@ public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**

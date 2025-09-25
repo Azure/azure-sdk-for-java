@@ -21,7 +21,7 @@ public final class MigrationServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"integrationRuntimeState\":\"jxx\"},\"location\":\"e\",\"tags\":{\"cdq\":\"uqloiwyayyzivrmi\",\"bfi\":\"hchwhrktjleif\",\"wlyeyz\":\"lhxfnsmycj\",\"zbuw\":\"udsqcmhnx\"},\"id\":\"dmac\",\"name\":\"bkvnrpbjrmvg\",\"type\":\"qplehmumkzdllczd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"integrationRuntimeState\":\"pxtokljmtznp\"},\"location\":\"wfqtyyqipr\",\"tags\":{\"miigzb\":\"ungbsoljc\",\"kdskswtiiqqc\":\"uck\",\"lnssw\":\"ikclsm\",\"ru\":\"ykdnonaaxwmg\"},\"id\":\"lqcwnynll\",\"name\":\"iqbcbgv\",\"type\":\"btsertoxa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class MigrationServicesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationService response = manager.migrationServices()
-            .getByResourceGroupWithResponse("urxf", "zqjim", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("lmdbgic", "hfgsmd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("e", response.location());
-        Assertions.assertEquals("uqloiwyayyzivrmi", response.tags().get("cdq"));
+        Assertions.assertEquals("wfqtyyqipr", response.location());
+        Assertions.assertEquals("ungbsoljc", response.tags().get("miigzb"));
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -76,26 +75,6 @@ public final class DataflowDestinationOperationSettings
         this.dataDestination = dataDestination;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (endpointRef() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property endpointRef in model DataflowDestinationOperationSettings"));
-        }
-        if (dataDestination() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dataDestination in model DataflowDestinationOperationSettings"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowDestinationOperationSettings.class);
 
     /**
      * {@inheritDoc}

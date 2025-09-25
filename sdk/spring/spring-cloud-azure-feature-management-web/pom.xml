@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-  <version>6.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
   <name>Spring Cloud Azure Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
   <scm>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-feature-management</artifactId>
-      <version>6.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
     </dependency>
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -127,7 +127,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.spring:spring-cloud-azure-feature-management:[6.0.0-beta.2]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+                <include>com.azure.spring:spring-cloud-azure-feature-management:[6.1.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>org.springframework:spring-web:[6.2.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webmvc:[6.2.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-webmvc;external_dependency} -->

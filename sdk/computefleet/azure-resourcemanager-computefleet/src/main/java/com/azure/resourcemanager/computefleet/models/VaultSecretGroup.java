@@ -78,17 +78,6 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (vaultCertificates() != null) {
-            vaultCertificates().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

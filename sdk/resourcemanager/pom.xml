@@ -10,7 +10,6 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-resourcemanager</module>
-    <module>azure-resourcemanager-appplatform</module>
     <module>azure-resourcemanager-perf</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-test</module>

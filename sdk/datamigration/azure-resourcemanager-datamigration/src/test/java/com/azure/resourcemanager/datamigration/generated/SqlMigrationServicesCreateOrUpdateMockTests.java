@@ -23,7 +23,7 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"ieztkutnjillu\"},\"systemData\":{\"createdBy\":\"ehyh\",\"createdByType\":\"Key\",\"createdAt\":\"2021-01-16T22:34:06Z\",\"lastModifiedBy\":\"ifvulxf\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-07-11T09:28:07Z\"},\"location\":\"jlgdez\",\"tags\":{\"i\":\"wahoyiyaxqvjw\",\"ddnvovbooqbmdq\":\"tcz\"},\"id\":\"xyglaetscflw\",\"name\":\"jdtlriefooyycux\",\"type\":\"tzcqipsd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"ylqlocvvujexaygl\"},\"systemData\":{\"createdBy\":\"gjnm\",\"createdByType\":\"Application\",\"createdAt\":\"2021-01-04T16:50:12Z\",\"lastModifiedBy\":\"vxjfiuofpieidzlv\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-11-24T07:45:58Z\"},\"location\":\"jopackyhydv\",\"tags\":{\"illxg\":\"fngp\",\"dye\":\"scizwgsoriobijei\",\"ybriop\":\"ynhbokayrg\",\"igsioctqkm\":\"weoftnorw\"},\"id\":\"ja\",\"name\":\"xvzfffhtjnwos\",\"type\":\"tfjxtvlx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SqlMigrationService response = manager.sqlMigrationServices()
-            .define("umov")
-            .withRegion("ikcedpk")
-            .withExistingResourceGroup("qoq")
-            .withTags(mapOf("vyczyayubt", "wmmtmqrxrzq"))
+            .define("khjqjpvbaihxjtg")
+            .withRegion("yckhefrbhseue")
+            .withExistingResourceGroup("znllaslk")
+            .withTags(
+                mapOf("aytujraxdtpryjm", "pxebjlud", "ly", "tnsewou", "vyljurkeposehqq", "s", "dsdlzmk", "lmpctwj"))
             .create();
 
-        Assertions.assertEquals("jlgdez", response.location());
-        Assertions.assertEquals("wahoyiyaxqvjw", response.tags().get("i"));
+        Assertions.assertEquals("jopackyhydv", response.location());
+        Assertions.assertEquals("fngp", response.tags().get("illxg"));
     }
 
     // Use "Map.of" if available
