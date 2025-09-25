@@ -166,13 +166,14 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   def createInitialOffset
   (
     container: CosmosAsyncContainer,
+    containerConfig: CosmosContainerConfig,
     changeFeedConfig: CosmosChangeFeedConfig,
     partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
   ): String = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
-      createInitialOffsetImpl(container, changeFeedConfig, partitioningConfig, streamId)
+      createInitialOffsetImpl(container, containerConfig, changeFeedConfig, partitioningConfig, streamId)
     )
   }
 
@@ -180,6 +181,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   private[this] def createInitialOffsetImpl
   (
     container: CosmosAsyncContainer,
+    containerConfig: CosmosContainerConfig,
     changeFeedConfig: CosmosChangeFeedConfig,
     partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
@@ -189,7 +191,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
 
     ContainerFeedRangesCache
-      .getFeedRanges(container)
+      .getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt)
       .map(feedRangeList =>
         partitioningConfig.feedRangeFiler match {
           case Some(epkRangesInScope) => feedRangeList
@@ -671,7 +673,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             clientCacheItems(1))
 
         ContainerFeedRangesCache
-          .getFeedRanges(container)
+          .getFeedRanges(container, cosmosContainerConfig.feedRangeRefreshIntervalInSecondsOpt)
           .map(feedRanges => feedRanges
             .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
             .toArray)

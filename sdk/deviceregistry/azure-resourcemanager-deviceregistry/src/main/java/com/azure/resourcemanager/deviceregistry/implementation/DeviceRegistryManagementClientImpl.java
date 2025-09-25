@@ -30,8 +30,16 @@ import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClie
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredAssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredDevicesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.SchemaRegistriesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.SchemaVersionsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.SchemasClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -201,6 +209,118 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
+     * The NamespacesClient object to access its operations.
+     */
+    private final NamespacesClient namespaces;
+
+    /**
+     * Gets the NamespacesClient object to access its operations.
+     * 
+     * @return the NamespacesClient object.
+     */
+    public NamespacesClient getNamespaces() {
+        return this.namespaces;
+    }
+
+    /**
+     * The NamespaceAssetsClient object to access its operations.
+     */
+    private final NamespaceAssetsClient namespaceAssets;
+
+    /**
+     * Gets the NamespaceAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceAssetsClient object.
+     */
+    public NamespaceAssetsClient getNamespaceAssets() {
+        return this.namespaceAssets;
+    }
+
+    /**
+     * The NamespaceDevicesClient object to access its operations.
+     */
+    private final NamespaceDevicesClient namespaceDevices;
+
+    /**
+     * Gets the NamespaceDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDevicesClient object.
+     */
+    public NamespaceDevicesClient getNamespaceDevices() {
+        return this.namespaceDevices;
+    }
+
+    /**
+     * The NamespaceDiscoveredAssetsClient object to access its operations.
+     */
+    private final NamespaceDiscoveredAssetsClient namespaceDiscoveredAssets;
+
+    /**
+     * Gets the NamespaceDiscoveredAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredAssetsClient object.
+     */
+    public NamespaceDiscoveredAssetsClient getNamespaceDiscoveredAssets() {
+        return this.namespaceDiscoveredAssets;
+    }
+
+    /**
+     * The NamespaceDiscoveredDevicesClient object to access its operations.
+     */
+    private final NamespaceDiscoveredDevicesClient namespaceDiscoveredDevices;
+
+    /**
+     * Gets the NamespaceDiscoveredDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredDevicesClient object.
+     */
+    public NamespaceDiscoveredDevicesClient getNamespaceDiscoveredDevices() {
+        return this.namespaceDiscoveredDevices;
+    }
+
+    /**
+     * The SchemaRegistriesClient object to access its operations.
+     */
+    private final SchemaRegistriesClient schemaRegistries;
+
+    /**
+     * Gets the SchemaRegistriesClient object to access its operations.
+     * 
+     * @return the SchemaRegistriesClient object.
+     */
+    public SchemaRegistriesClient getSchemaRegistries() {
+        return this.schemaRegistries;
+    }
+
+    /**
+     * The SchemasClient object to access its operations.
+     */
+    private final SchemasClient schemas;
+
+    /**
+     * Gets the SchemasClient object to access its operations.
+     * 
+     * @return the SchemasClient object.
+     */
+    public SchemasClient getSchemas() {
+        return this.schemas;
+    }
+
+    /**
+     * The SchemaVersionsClient object to access its operations.
+     */
+    private final SchemaVersionsClient schemaVersions;
+
+    /**
+     * Gets the SchemaVersionsClient object to access its operations.
+     * 
+     * @return the SchemaVersionsClient object.
+     */
+    public SchemaVersionsClient getSchemaVersions() {
+        return this.schemaVersions;
+    }
+
+    /**
      * Initializes an instance of DeviceRegistryManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -217,12 +337,20 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-11-01";
+        this.apiVersion = "2025-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
         this.billingContainers = new BillingContainersClientImpl(this);
+        this.namespaces = new NamespacesClientImpl(this);
+        this.namespaceAssets = new NamespaceAssetsClientImpl(this);
+        this.namespaceDevices = new NamespaceDevicesClientImpl(this);
+        this.namespaceDiscoveredAssets = new NamespaceDiscoveredAssetsClientImpl(this);
+        this.namespaceDiscoveredDevices = new NamespaceDiscoveredDevicesClientImpl(this);
+        this.schemaRegistries = new SchemaRegistriesClientImpl(this);
+        this.schemas = new SchemasClientImpl(this);
+        this.schemaVersions = new SchemaVersionsClientImpl(this);
     }
 
     /**

@@ -39,6 +39,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTem
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.SolutionTemplateListResult;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -124,7 +125,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("solutionTemplateName") String solutionTemplateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SolutionTemplateInner properties, Context context);
+            @BodyParam("application/json") SolutionTemplateUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}")
         @ExpectedResponses({ 200 })
@@ -134,7 +135,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("solutionTemplateName") String solutionTemplateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SolutionTemplateInner properties, Context context);
+            @BodyParam("application/json") SolutionTemplateUpdate properties, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/createVersion")
         @ExpectedResponses({ 200, 202 })
@@ -526,7 +527,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionTemplateInner>> updateWithResponseAsync(String resourceGroupName,
-        String solutionTemplateName, SolutionTemplateInner properties) {
+        String solutionTemplateName, SolutionTemplateUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -549,7 +550,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionTemplateInner> updateAsync(String resourceGroupName, String solutionTemplateName,
-        SolutionTemplateInner properties) {
+        SolutionTemplateUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, solutionTemplateName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -568,7 +569,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionTemplateInner> updateWithResponse(String resourceGroupName, String solutionTemplateName,
-        SolutionTemplateInner properties, Context context) {
+        SolutionTemplateUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -589,7 +590,7 @@ public final class SolutionTemplatesClientImpl implements SolutionTemplatesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionTemplateInner update(String resourceGroupName, String solutionTemplateName,
-        SolutionTemplateInner properties) {
+        SolutionTemplateUpdate properties) {
         return updateWithResponse(resourceGroupName, solutionTemplateName, properties, Context.NONE).getValue();
     }
 

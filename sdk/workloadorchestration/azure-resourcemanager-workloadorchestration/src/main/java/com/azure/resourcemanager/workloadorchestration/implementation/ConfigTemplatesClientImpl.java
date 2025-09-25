@@ -40,6 +40,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersionResponseInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.ConfigTemplateListResult;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -124,7 +125,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConfigTemplateInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConfigTemplateUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}")
@@ -134,7 +135,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configTemplateName") String configTemplateName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConfigTemplateInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConfigTemplateUpdate properties,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/createVersion")
@@ -524,7 +525,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigTemplateInner>> updateWithResponseAsync(String resourceGroupName,
-        String configTemplateName, ConfigTemplateInner properties) {
+        String configTemplateName, ConfigTemplateUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -547,7 +548,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigTemplateInner> updateAsync(String resourceGroupName, String configTemplateName,
-        ConfigTemplateInner properties) {
+        ConfigTemplateUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, configTemplateName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -566,7 +567,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigTemplateInner> updateWithResponse(String resourceGroupName, String configTemplateName,
-        ConfigTemplateInner properties, Context context) {
+        ConfigTemplateUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -587,7 +588,7 @@ public final class ConfigTemplatesClientImpl implements ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigTemplateInner update(String resourceGroupName, String configTemplateName,
-        ConfigTemplateInner properties) {
+        ConfigTemplateUpdate properties) {
         return updateWithResponse(resourceGroupName, configTemplateName, properties, Context.NONE).getValue();
     }
 

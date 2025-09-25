@@ -99,7 +99,7 @@ private class ChangeFeedBatch
               SparkBridgeImplementationInternal.extractCollectionRid(changeFeedStateBase64))
 
             val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-              container, changeFeedConfig, partitioningConfig, None)
+              container, containerConfig, changeFeedConfig, partitioningConfig, None)
             log.logWarning(s"Invalid Start offset '$offsetJson' retrieved from file location " +
               s"'$startOffsetLocation' for batchId: $batchId -> New offset retrieved from " +
               s"service: '$newOffsetJson'.")
@@ -113,14 +113,14 @@ private class ChangeFeedBatch
             newOffsetJson
           }
         } else {
-          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, containerConfig, changeFeedConfig, partitioningConfig, None)
           log.logDebug(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
             s"-> offset retrieved from service: '$newOffsetJson'.")
 
           newOffsetJson
         }
       } else {
-        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, containerConfig, changeFeedConfig, partitioningConfig, None)
         log.logDebug(s"No offset file location provided for batchId: $batchId " +
           s"-> offset retrieved from service: '$newOffsetJson'.")
 

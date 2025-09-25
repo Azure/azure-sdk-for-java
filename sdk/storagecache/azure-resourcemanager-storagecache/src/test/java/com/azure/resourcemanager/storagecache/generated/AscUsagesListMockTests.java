@@ -7,8 +7,8 @@ package com.azure.resourcemanager.storagecache.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.ResourceUsage;
@@ -21,17 +21,16 @@ public final class AscUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"limit\":350819792,\"unit\":\"gogtqxepnylbf\",\"currentValue\":347721012,\"name\":{\"value\":\"jtlvofqzhvfciby\",\"localizedValue\":\"owuxrkjpvdwx\"}}]}";
+            = "{\"value\":[{\"limit\":2012963266,\"unit\":\"yqxtjjfzql\",\"currentValue\":1488785887,\"name\":{\"value\":\"vodggxdbee\",\"localizedValue\":\"ieknl\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ResourceUsage> response
-            = manager.ascUsages().list("xonbzoggculapz", com.azure.core.util.Context.NONE);
+        PagedIterable<ResourceUsage> response = manager.ascUsages().list("btgn", com.azure.core.util.Context.NONE);
 
     }
 }

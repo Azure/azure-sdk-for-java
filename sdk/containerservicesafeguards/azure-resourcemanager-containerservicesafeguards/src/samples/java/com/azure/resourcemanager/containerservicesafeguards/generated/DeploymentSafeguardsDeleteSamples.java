@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicesafeguards.generated;
  */
 public final class DeploymentSafeguardsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-02-preview/DeploymentSafeguards_Delete.json
+     * x-ms-original-file: 2025-07-01/DeploymentSafeguards_Delete.json
      */
     /**
      * Sample code: Deletes a DeploymentSafeguard resource asynchronously with a long running operation.
