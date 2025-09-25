@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
@@ -160,13 +161,9 @@ public final class TestUtils {
      */
     public static TokenCredential getTestTokenCredential(TestMode testMode) {
         if (testMode == TestMode.LIVE) {
-            TokenCredential pipelineCredential = tryGetPipelineCredential();
-            if (pipelineCredential != null) {
-                return pipelineCredential;
-            }
-            return new AzureCliCredentialBuilder().build();
+            return tryGetPipelineCredentialOrElse(() -> new AzureCliCredentialBuilder().build());
         } else if (testMode == TestMode.RECORD) {
-            return new DefaultAzureCredentialBuilder().build();
+            return tryGetPipelineCredentialOrElse(() -> new DefaultAzureCredentialBuilder().build());
         } else {
             return new MockTokenCredential();
         }
@@ -174,12 +171,13 @@ public final class TestUtils {
 
     /**
      * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
-     * Azure DevOps. If not, returns null.
+     * Azure DevOps. If not, returns the {@link TokenCredential} supplied by {@code orElse}.
      *
-     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
+     * @param orElse Supplies the {@link TokenCredential} to return if not running in Azure DevOps.
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or the {@code orElse} credential.
      */
     @SuppressWarnings("deprecation")
-    private static TokenCredential tryGetPipelineCredential() {
+    private static TokenCredential tryGetPipelineCredentialOrElse(Supplier<TokenCredential> orElse) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -190,7 +188,7 @@ public final class TestUtils {
             || CoreUtils.isNullOrEmpty(clientId)
             || CoreUtils.isNullOrEmpty(tenantId)
             || CoreUtils.isNullOrEmpty(systemAccessToken)) {
-            return null;
+            return orElse.get();
         }
 
         return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
