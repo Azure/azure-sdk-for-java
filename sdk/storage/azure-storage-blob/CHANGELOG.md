@@ -1,5 +1,17 @@
 # Release History
 
+## 12.31.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.16.2` to version `12.17.0-beta.2`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-storage-common` from `12.30.2` to version `12.31.0-beta.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+
 ## 12.31.2 (2025-08-21)
 
 ### Other Changes
