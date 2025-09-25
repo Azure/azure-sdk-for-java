@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,37 +21,31 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     /*
      * The version of Storage Analytics to configure.
      */
-    @Generated
     private String version;
 
     /*
      * Indicates whether all delete requests should be logged.
      */
-    @Generated
     private boolean delete;
 
     /*
      * Indicates whether all read requests should be logged.
      */
-    @Generated
     private boolean read;
 
     /*
      * Indicates whether all write requests should be logged.
      */
-    @Generated
     private boolean write;
 
     /*
      * the retention policy
      */
-    @Generated
     private QueueRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of QueueAnalyticsLogging class.
      */
-    @Generated
     public QueueAnalyticsLogging() {
     }
 
@@ -60,7 +54,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * 
      * @return the version value.
      */
-    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -71,7 +64,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * @param version the version value to set.
      * @return the QueueAnalyticsLogging object itself.
      */
-    @Generated
     public QueueAnalyticsLogging setVersion(String version) {
         this.version = version;
         return this;
@@ -82,7 +74,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * 
      * @return the delete value.
      */
-    @Generated
     public boolean isDelete() {
         return this.delete;
     }
@@ -93,7 +84,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * @param delete the delete value to set.
      * @return the QueueAnalyticsLogging object itself.
      */
-    @Generated
     public QueueAnalyticsLogging setDelete(boolean delete) {
         this.delete = delete;
         return this;
@@ -104,7 +94,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * 
      * @return the read value.
      */
-    @Generated
     public boolean isRead() {
         return this.read;
     }
@@ -115,7 +104,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * @param read the read value to set.
      * @return the QueueAnalyticsLogging object itself.
      */
-    @Generated
     public QueueAnalyticsLogging setRead(boolean read) {
         this.read = read;
         return this;
@@ -126,7 +114,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * 
      * @return the write value.
      */
-    @Generated
     public boolean isWrite() {
         return this.write;
     }
@@ -137,7 +124,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * @param write the write value to set.
      * @return the QueueAnalyticsLogging object itself.
      */
-    @Generated
     public QueueAnalyticsLogging setWrite(boolean write) {
         this.write = write;
         return this;
@@ -148,7 +134,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * 
      * @return the retentionPolicy value.
      */
-    @Generated
     public QueueRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -159,23 +144,19 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueAnalyticsLogging object itself.
      */
-    @Generated
     public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueAnalyticsLogging" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueAnalyticsLogging" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Delete", this.delete);
@@ -193,7 +174,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueAnalyticsLogging.
      */
-    @Generated
     public static QueueAnalyticsLogging fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -208,10 +188,9 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueAnalyticsLogging.
      */
-    @Generated
     public static QueueAnalyticsLogging fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueAnalyticsLogging" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueAnalyticsLogging" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
