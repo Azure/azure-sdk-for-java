@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
+  <version>1.0.31</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
 
   <name>Microsoft Azure client library for Confidential Ledger</name>
   <description>This package contains Microsoft Azure Confidential Ledger client library.</description>
@@ -32,50 +32,52 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-
       --add-exports com.azure.http.netty/com.azure.core.http.netty=com.azure.security.confidentialledger
 
       --add-reads com.azure.security.confidentialledger=com.azure.http.netty
     </javaModulesSurefireArgLine>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-
-    <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
