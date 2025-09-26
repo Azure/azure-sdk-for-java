@@ -9,9 +9,6 @@ spring:
           group: $Default
         supply-out-0:
           destination: connnection-string-auth
-      default-binder: kafka
       kafka:
         binder:
           brokers: ${AZURE_EVENTHUBS_NAMESPACE}.servicebus.windows.net:9093
-          configuration:
-            security.protocol: SASL_SSL
