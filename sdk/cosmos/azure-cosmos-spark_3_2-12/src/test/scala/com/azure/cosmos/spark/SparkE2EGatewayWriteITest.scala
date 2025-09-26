@@ -163,11 +163,12 @@ class SparkE2EGatewayWriteITest
         }
       }
 
-      // TODO (kuthapar) to investigate this
-      // assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
-      // assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
-      // assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
-      // assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
+      // sleeping to check if metrics are populated
+      Thread.sleep(7000)
+      assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+      assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
+      assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+      assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
     }
   }
   //scalastyle:on magic.number
