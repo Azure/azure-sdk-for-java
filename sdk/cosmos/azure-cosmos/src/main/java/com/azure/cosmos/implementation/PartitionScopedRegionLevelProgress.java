@@ -239,21 +239,21 @@ public class PartitionScopedRegionLevelProgress {
         Optional<ISessionToken> globalSessionToken = globalLevelProgress.get().getSessionToken();
 
         if (!globalSessionToken.isPresent()) {
-            throw constructInternalServerErrorException(request, "globalLevelProgress cannot be null!");
+            throw constructInternalServerErrorException(request, "globalSessionToken cannot be null!");
         }
-
-        checkNotNull(globalSessionToken, "The session token corresponding to global progress cannot be null!");
 
         // if region level scoping is not allowed, then resolve to the global session token
         // region level scoping is allowed in the following cases:
         //      1. when the request is targeted to a specific logical partition
         //      2. when multiple write locations are configured
         if (!canUseRegionScopedSessionTokens) {
+            globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
             return globalSessionToken.get();
         }
 
         if (globalLevelProgress.get().hasPartitionSeenNonPointDocumentOperations.get()) {
             request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since partition has seen non-point requests.");
+            globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
             return globalSessionToken.get();
         }
 
@@ -261,6 +261,7 @@ public class PartitionScopedRegionLevelProgress {
 
         if (!baseLevelProgress.isPresent() || !baseLevelProgress.get().getSessionToken().isPresent()) {
             request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token corresponding to first preferred readable region doesn't exist.");
+            globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
             return globalSessionToken.get();
         }
 
@@ -362,6 +363,7 @@ public class PartitionScopedRegionLevelProgress {
         }
 
         request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token from the first preferred region couldn't be merged with region-resolved session token : " + resolvedSessionToken.v.convertToString() + ".");
+        globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
         return globalSessionToken.get();
     }
 
