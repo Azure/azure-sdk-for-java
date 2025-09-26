@@ -19,6 +19,7 @@ private[cosmos] object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
+  val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
   val readOperationEndToEndTimeoutInSeconds = 65
@@ -87,15 +88,5 @@ private[cosmos] object CosmosConstants {
       Option(System.getProperty(MetricsHistoryDecayFactorPropertyName))
        .orElse(sys.env.get(MetricsHistoryDecayFactorEnvName))
        .getOrElse(DefaultMetricsHistoryDecayFactor).toDouble
-  }
-
-  object ContainerFeedRangesCacheConfigs {
-    private val FeedRangeRefreshIntervalPropertyName = "spark.cosmos.container.feedRange.refresh.interval"
-    private val FeedRangeRefreshIntervalEnvName = "SPARK.COSMOS.CONTAINER.FEEDRANGE.REFRESH.INTERVAL"
-    private val DefaultFeedRangeRefreshIntervalInMins = "5"
-    val feedRangeRefreshInterval: Long =
-      Option(System.getProperty(FeedRangeRefreshIntervalPropertyName))
-       .orElse(sys.env.get(FeedRangeRefreshIntervalEnvName))
-       .getOrElse(DefaultFeedRangeRefreshIntervalInMins).toLong
   }
 }
