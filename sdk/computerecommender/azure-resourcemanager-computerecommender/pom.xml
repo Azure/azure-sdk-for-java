@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-computerecommender</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-computerecommender;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-computerecommender;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Compute Recommender Management</name>
-  <description>This package contains Microsoft Azure SDK for Compute Recommender Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Compute Recommender Resource Provider Client. Package api-version 2025-06-05.</description>
+  <description>This package has been deprecated and will no longer be maintained. We encourage you to upgrade to the replacement package, `azure-resourcemanager-compute-recommender`, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

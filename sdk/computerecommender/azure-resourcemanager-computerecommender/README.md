@@ -1,5 +1,9 @@
 # Azure Resource Manager Compute Recommender client library for Java
 
+## Deprecation Notice
+
+> This package has been deprecated and will no longer be maintained. We encourage you to upgrade to the replacement package, `azure-resourcemanager-compute-recommender`, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager Compute Recommender client library for Java.
 
 This package contains Microsoft Azure SDK for Compute Recommender Management SDK. The Compute Recommender Resource Provider Client. Package api-version 2025-06-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
