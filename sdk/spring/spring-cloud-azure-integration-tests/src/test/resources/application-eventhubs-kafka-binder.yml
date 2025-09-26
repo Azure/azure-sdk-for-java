@@ -1,8 +1,5 @@
 spring:
   cloud:
-    azure:
-      eventhubs:
-        connection-string: ${AZURE_EVENT_HUBS_CONNECTION_STRING}
     function:
       definition: consume;supply
     stream:
@@ -12,9 +9,6 @@ spring:
           group: $Default
         supply-out-0:
           destination: connnection-string-auth
-      binders:
-        kafka:
-          environment:
-            spring:
-              main:
-                sources: com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration
+      kafka:
+        binder:
+          brokers: ${AZURE_EVENTHUBS_NAMESPACE}

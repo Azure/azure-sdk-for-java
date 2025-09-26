@@ -490,10 +490,6 @@
     "AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC": {
       "type": "string",
       "value": "test-eventhub-sync"
-    },
-    "AZURE_EVENT_HUBS_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     }
   }
 }
