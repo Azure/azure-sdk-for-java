@@ -73,7 +73,8 @@ foreach ($ymlFile in $ymlFiles) {
     }
 }
 
-$ArtifactInfos = @{}
+# Use OrderedDictionary here for later "FindAllArtifactsThatNeedPatching"
+$ArtifactInfos = New-Object System.Collections.Specialized.OrderedDictionary
 
 Write-Host "Loading libraries from text file."
 

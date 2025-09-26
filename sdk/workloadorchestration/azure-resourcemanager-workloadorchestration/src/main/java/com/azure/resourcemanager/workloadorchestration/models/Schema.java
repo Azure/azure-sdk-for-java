@@ -256,7 +256,7 @@ public interface Schema {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(SchemaProperties properties);
+            Update withProperties(SchemaUpdateProperties properties);
         }
     }
 

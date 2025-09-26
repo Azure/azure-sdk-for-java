@@ -23,6 +23,11 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     private OperationalMode mode;
 
     /*
+     * Disk persistence mode.
+     */
+    private OperationalMode requestDiskPersistence;
+
+    /*
      * List of operations including source and destination references as well as transformation.
      */
     private List<DataflowOperation> operations;
@@ -55,6 +60,26 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      */
     public DataflowProperties withMode(OperationalMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the requestDiskPersistence property: Disk persistence mode.
+     * 
+     * @return the requestDiskPersistence value.
+     */
+    public OperationalMode requestDiskPersistence() {
+        return this.requestDiskPersistence;
+    }
+
+    /**
+     * Set the requestDiskPersistence property: Disk persistence mode.
+     * 
+     * @param requestDiskPersistence the requestDiskPersistence value to set.
+     * @return the DataflowProperties object itself.
+     */
+    public DataflowProperties withRequestDiskPersistence(OperationalMode requestDiskPersistence) {
+        this.requestDiskPersistence = requestDiskPersistence;
         return this;
     }
 
@@ -97,6 +122,8 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("requestDiskPersistence",
+            this.requestDiskPersistence == null ? null : this.requestDiskPersistence.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -122,6 +149,9 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
                     deserializedDataflowProperties.operations = operations;
                 } else if ("mode".equals(fieldName)) {
                     deserializedDataflowProperties.mode = OperationalMode.fromString(reader.getString());
+                } else if ("requestDiskPersistence".equals(fieldName)) {
+                    deserializedDataflowProperties.requestDiskPersistence
+                        = OperationalMode.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {

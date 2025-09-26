@@ -16,48 +16,48 @@ public final class InsightPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InsightProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"category\":\"pmouexhdz\",\"status\":\"bqe\",\"eventId\":\"nxqbzvddn\",\"groupId\":\"ndei\",\"content\":{\"title\":\"btwnpzaoqvuhrhcf\",\"description\":\"cyddglmjthjqk\"},\"eventTime\":\"2021-10-06T02:03:45Z\",\"insightUniqueId\":\"eicxmqciwqvhkhi\",\"impact\":{\"impactedResourceId\":\"uigdtopbobjog\",\"startTime\":\"2021-02-17T14:37:23Z\",\"endTime\":\"2021-04-17T11:58:30Z\",\"impactId\":\"u\"},\"additionalDetails\":{}}")
+            "{\"provisioningState\":\"Succeeded\",\"category\":\"c\",\"status\":\"klj\",\"eventId\":\"bqidtqaj\",\"groupId\":\"ulpkudjkrl\",\"content\":{\"title\":\"hbzhfepg\",\"description\":\"gqexzlocxs\"},\"eventTime\":\"2021-11-18T07:05:01Z\",\"insightUniqueId\":\"ierhhbcsglummaj\",\"impact\":{\"impactedResourceId\":\"j\",\"startTime\":\"2021-07-24T00:15:50Z\",\"endTime\":\"2021-11-04T19:07:39Z\",\"impactId\":\"obnbdxkqpxokaj\"},\"additionalDetails\":{}}")
             .toObject(InsightProperties.class);
-        Assertions.assertEquals("pmouexhdz", model.category());
-        Assertions.assertEquals("bqe", model.status());
-        Assertions.assertEquals("nxqbzvddn", model.eventId());
-        Assertions.assertEquals("ndei", model.groupId());
-        Assertions.assertEquals("btwnpzaoqvuhrhcf", model.content().title());
-        Assertions.assertEquals("cyddglmjthjqk", model.content().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T02:03:45Z"), model.eventTime());
-        Assertions.assertEquals("eicxmqciwqvhkhi", model.insightUniqueId());
-        Assertions.assertEquals("uigdtopbobjog", model.impact().impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T14:37:23Z"), model.impact().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T11:58:30Z"), model.impact().endTime());
-        Assertions.assertEquals("u", model.impact().impactId());
+        Assertions.assertEquals("c", model.category());
+        Assertions.assertEquals("klj", model.status());
+        Assertions.assertEquals("bqidtqaj", model.eventId());
+        Assertions.assertEquals("ulpkudjkrl", model.groupId());
+        Assertions.assertEquals("hbzhfepg", model.content().title());
+        Assertions.assertEquals("gqexzlocxs", model.content().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T07:05:01Z"), model.eventTime());
+        Assertions.assertEquals("ierhhbcsglummaj", model.insightUniqueId());
+        Assertions.assertEquals("j", model.impact().impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T00:15:50Z"), model.impact().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T19:07:39Z"), model.impact().endTime());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.impact().impactId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InsightProperties model = new InsightProperties().withCategory("pmouexhdz")
-            .withStatus("bqe")
-            .withEventId("nxqbzvddn")
-            .withGroupId("ndei")
-            .withContent(new Content().withTitle("btwnpzaoqvuhrhcf").withDescription("cyddglmjthjqk"))
-            .withEventTime(OffsetDateTime.parse("2021-10-06T02:03:45Z"))
-            .withInsightUniqueId("eicxmqciwqvhkhi")
-            .withImpact(new ImpactDetails().withImpactedResourceId("uigdtopbobjog")
-                .withStartTime(OffsetDateTime.parse("2021-02-17T14:37:23Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-17T11:58:30Z"))
-                .withImpactId("u"))
+        InsightProperties model = new InsightProperties().withCategory("c")
+            .withStatus("klj")
+            .withEventId("bqidtqaj")
+            .withGroupId("ulpkudjkrl")
+            .withContent(new Content().withTitle("hbzhfepg").withDescription("gqexzlocxs"))
+            .withEventTime(OffsetDateTime.parse("2021-11-18T07:05:01Z"))
+            .withInsightUniqueId("ierhhbcsglummaj")
+            .withImpact(new ImpactDetails().withImpactedResourceId("j")
+                .withStartTime(OffsetDateTime.parse("2021-07-24T00:15:50Z"))
+                .withEndTime(OffsetDateTime.parse("2021-11-04T19:07:39Z"))
+                .withImpactId("obnbdxkqpxokaj"))
             .withAdditionalDetails(new InsightPropertiesAdditionalDetails());
         model = BinaryData.fromObject(model).toObject(InsightProperties.class);
-        Assertions.assertEquals("pmouexhdz", model.category());
-        Assertions.assertEquals("bqe", model.status());
-        Assertions.assertEquals("nxqbzvddn", model.eventId());
-        Assertions.assertEquals("ndei", model.groupId());
-        Assertions.assertEquals("btwnpzaoqvuhrhcf", model.content().title());
-        Assertions.assertEquals("cyddglmjthjqk", model.content().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T02:03:45Z"), model.eventTime());
-        Assertions.assertEquals("eicxmqciwqvhkhi", model.insightUniqueId());
-        Assertions.assertEquals("uigdtopbobjog", model.impact().impactedResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T14:37:23Z"), model.impact().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T11:58:30Z"), model.impact().endTime());
-        Assertions.assertEquals("u", model.impact().impactId());
+        Assertions.assertEquals("c", model.category());
+        Assertions.assertEquals("klj", model.status());
+        Assertions.assertEquals("bqidtqaj", model.eventId());
+        Assertions.assertEquals("ulpkudjkrl", model.groupId());
+        Assertions.assertEquals("hbzhfepg", model.content().title());
+        Assertions.assertEquals("gqexzlocxs", model.content().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T07:05:01Z"), model.eventTime());
+        Assertions.assertEquals("ierhhbcsglummaj", model.insightUniqueId());
+        Assertions.assertEquals("j", model.impact().impactedResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T00:15:50Z"), model.impact().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T19:07:39Z"), model.impact().endTime());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.impact().impactId());
     }
 }
