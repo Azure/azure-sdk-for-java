@@ -95,12 +95,6 @@ public class GreenplumLinkedService extends LinkedService {
     @Generated
     private Object commandTimeout;
 
-    /*
-     * The Azure key vault secret reference of password in connection string. Type: string. Only used for V2.
-     */
-    @Generated
-    private SecretBase password;
-
     /**
      * Creates an instance of GreenplumLinkedService class.
      */
@@ -372,30 +366,6 @@ public class GreenplumLinkedService extends LinkedService {
     }
 
     /**
-     * Get the password property: The Azure key vault secret reference of password in connection string. Type: string.
-     * Only used for V2.
-     * 
-     * @return the password value.
-     */
-    @Generated
-    public SecretBase getPassword() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The Azure key vault secret reference of password in connection string. Type: string.
-     * Only used for V2.
-     * 
-     * @param password the password value to set.
-     * @return the GreenplumLinkedService object itself.
-     */
-    @Generated
-    public GreenplumLinkedService setPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -468,8 +438,7 @@ public class GreenplumLinkedService extends LinkedService {
             || database != null
             || sslMode != null
             || connectionTimeout != null
-            || commandTimeout != null
-            || password != null) {
+            || commandTimeout != null) {
             jsonWriter.writeStartObject("typeProperties");
             if (this.connectionString != null) {
                 jsonWriter.writeUntypedField("connectionString", this.connectionString);
@@ -501,7 +470,6 @@ public class GreenplumLinkedService extends LinkedService {
             if (this.commandTimeout != null) {
                 jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
             }
-            jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -572,8 +540,6 @@ public class GreenplumLinkedService extends LinkedService {
                             deserializedGreenplumLinkedService.connectionTimeout = reader.readUntyped();
                         } else if ("commandTimeout".equals(fieldName)) {
                             deserializedGreenplumLinkedService.commandTimeout = reader.readUntyped();
-                        } else if ("password".equals(fieldName)) {
-                            deserializedGreenplumLinkedService.password = SecretBase.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

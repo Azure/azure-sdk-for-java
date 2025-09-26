@@ -25,10 +25,10 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     private ExpressionV2Type type;
 
     /*
-     * Value for Constant/Field Type: string.
+     * Value for Constant/Field Type: object.
      */
     @Generated
-    private String value;
+    private Object value;
 
     /*
      * Expression operator value Type: list of strings.
@@ -72,23 +72,23 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     }
 
     /**
-     * Get the value property: Value for Constant/Field Type: string.
+     * Get the value property: Value for Constant/Field Type: object.
      * 
      * @return the value value.
      */
     @Generated
-    public String getValue() {
+    public Object getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: Value for Constant/Field Type: string.
+     * Set the value property: Value for Constant/Field Type: object.
      * 
      * @param value the value value to set.
      * @return the ExpressionV2 object itself.
      */
     @Generated
-    public ExpressionV2 setValue(String value) {
+    public ExpressionV2 setValue(Object value) {
         this.value = value;
         return this;
     }
@@ -145,7 +145,9 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeArrayField("operators", this.operators, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("operands", this.operands, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -170,7 +172,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
                 if ("type".equals(fieldName)) {
                     deserializedExpressionV2.type = ExpressionV2Type.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedExpressionV2.value = reader.getString();
+                    deserializedExpressionV2.value = reader.readUntyped();
                 } else if ("operators".equals(fieldName)) {
                     List<String> operators = reader.readArray(reader1 -> reader1.getString());
                     deserializedExpressionV2.operators = operators;

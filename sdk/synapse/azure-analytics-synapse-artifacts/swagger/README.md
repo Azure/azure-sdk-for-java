@@ -34,6 +34,6 @@ models-subpackage: models
 required-parameter-client-methods: true
 security: AADToken
 security-scopes: https://dev.azuresynapse.net/.default
-require: https://github.com/Azure/azure-rest-api-specs/blob/0da14ec4f475435b9d7d0ba06e49f05a5daac226/specification/synapse/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/222af3670e36c5083cb0dc8a9c2677a8f77f8958/specification/synapse/data-plane/readme.md
 tag: package-artifacts-composite-v7
 ```
