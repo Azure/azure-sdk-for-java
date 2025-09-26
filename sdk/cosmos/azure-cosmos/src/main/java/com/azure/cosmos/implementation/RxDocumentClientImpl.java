@@ -4889,8 +4889,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options == null) {
             options = new CosmosQueryRequestOptions();
-            qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
         }
+
+        qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
 
         return nonDocumentReadFeedInternal(
             options,
