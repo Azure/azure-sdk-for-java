@@ -3,6 +3,7 @@
 ### 4.40.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for feed range cache refresh interval config. - See [46759](https://github.com/Azure/azure-sdk-for-java/pull/46759)
 
 #### Breaking Changes
 

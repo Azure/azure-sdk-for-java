@@ -8,6 +8,7 @@
     "com.azure.resourcemanager.terraform.fluent.TerraformsClient.beginExportTerraform": "Microsoft.AzureTerraform.Terraform.exportTerraform",
     "com.azure.resourcemanager.terraform.fluent.TerraformsClient.exportTerraform": "Microsoft.AzureTerraform.Terraform.exportTerraform",
     "com.azure.resourcemanager.terraform.fluent.models.OperationInner": "Azure.ResourceManager.CommonTypes.Operation",
+    "com.azure.resourcemanager.terraform.fluent.models.TerraformOperationStatusInner": "Microsoft.AzureTerraform.TerraformOperationStatus",
     "com.azure.resourcemanager.terraform.implementation.AzureTerraformManagementClientBuilder": "Microsoft.AzureTerraform",
     "com.azure.resourcemanager.terraform.implementation.models.OperationListResult": "Azure.ResourceManager.CommonTypes.OperationListResult",
     "com.azure.resourcemanager.terraform.models.ActionType": "Azure.ResourceManager.CommonTypes.ActionType",
@@ -16,8 +17,10 @@
     "com.azure.resourcemanager.terraform.models.ExportQuery": "Microsoft.AzureTerraform.ExportQuery",
     "com.azure.resourcemanager.terraform.models.ExportResource": "Microsoft.AzureTerraform.ExportResource",
     "com.azure.resourcemanager.terraform.models.ExportResourceGroup": "Microsoft.AzureTerraform.ExportResourceGroup",
+    "com.azure.resourcemanager.terraform.models.ExportResult": "Microsoft.AzureTerraform.ExportResult",
     "com.azure.resourcemanager.terraform.models.OperationDisplay": "Azure.ResourceManager.CommonTypes.OperationDisplay",
     "com.azure.resourcemanager.terraform.models.Origin": "Azure.ResourceManager.CommonTypes.Origin",
+    "com.azure.resourcemanager.terraform.models.ResourceProvisioningState": "Azure.ResourceManager.ResourceProvisioningState",
     "com.azure.resourcemanager.terraform.models.TargetProvider": "Microsoft.AzureTerraform.targetProvider",
     "com.azure.resourcemanager.terraform.models.Type": "Microsoft.AzureTerraform.Type"
   }

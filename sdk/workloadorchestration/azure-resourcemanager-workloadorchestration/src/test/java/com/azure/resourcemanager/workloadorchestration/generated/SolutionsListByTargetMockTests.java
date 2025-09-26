@@ -23,7 +23,7 @@ public final class SolutionsListByTargetMockTests {
     @Test
     public void testListByTarget() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutionTemplateId\":\"inbmh\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"ijkgqxnhm\",\"latestConfigRevision\":\"keznjaujvaa\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"ggiycwkdtaawxwf\",\"latestConfigRevision\":\"ka\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"rrqmbzmqk\",\"latestConfigRevision\":\"atbnxwbj\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"dbirkfpksokdgo\",\"latestConfigRevision\":\"ewijymrhbguz\",\"isConfigured\":false}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"wnf\",\"type\":\"EdgeZone\"},\"eTag\":\"hhqosmffjku\",\"id\":\"cyar\",\"name\":\"roohguabzogh\",\"type\":\"t\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutionTemplateId\":\"disczskos\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"iqazugamxzkr\",\"latestConfigRevision\":\"coiisbamnppcce\",\"isConfigured\":false},{\"solutionTemplateVersion\":\"ztdsbeza\",\"latestConfigRevision\":\"yfukzxuizhyhnepk\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"tiarxqiubxduk\",\"latestConfigRevision\":\"cpxdazvd\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"tmmkosz\",\"latestConfigRevision\":\"dblnsntrp\",\"isConfigured\":false}],\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"ofkbtf\",\"type\":\"CustomLocation\"},\"eTag\":\"lbnld\",\"id\":\"cbhhez\",\"name\":\"quwusq\",\"type\":\"utrpbr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,10 @@ public final class SolutionsListByTargetMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Solution> response
-            = manager.solutions().listByTarget("jpnnbmjksibjgsj", "xxahmrnadzyqegxy", com.azure.core.util.Context.NONE);
+            = manager.solutions().listByTarget("kqevadrmmw", "uawvcmjzk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wnf", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("ofkbtf", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
+            response.iterator().next().extendedLocation().type());
     }
 }

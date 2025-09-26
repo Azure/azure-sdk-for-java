@@ -11,6 +11,6 @@ public final class BgpCidrsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BgpCidrsConfiguration model
-            = BinaryData.fromString("{\"bgpCidrs\":[\"aos\"]}").toObject(BgpCidrsConfiguration.class);
+            = BinaryData.fromString("{\"bgpCidrs\":[\"baiuebbaumny\"]}").toObject(BgpCidrsConfiguration.class);
     }
 }

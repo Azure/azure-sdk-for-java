@@ -36,8 +36,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedcache.fluent.IspCacheNodesOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.models.IspCacheNodeResourceInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeAutoUpdateHistoryInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeBgpCidrDetailsInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeInstallDetailsInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeIssueHistoryInner;
 import com.azure.resourcemanager.connectedcache.implementation.models.IspCacheNodeResourceListResult;
 import com.azure.resourcemanager.connectedcache.models.ConnectedCachePatchResource;
 import java.nio.ByteBuffer;
@@ -222,6 +224,54 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<MccCacheNodeInstallDetailsInner> getCacheNodeInstallDetailsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MccCacheNodeAutoUpdateHistoryInner>> getCacheNodeAutoUpdateHistory(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistorySync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MccCacheNodeIssueHistoryInner>> getCacheNodeMccIssueDetailsHistory(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistorySync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
             @PathParam("cacheNodeResourceName") String cacheNodeResourceName, @HeaderParam("Accept") String accept,
@@ -1056,6 +1106,166 @@ public final class IspCacheNodesOperationsClientImpl implements IspCacheNodesOpe
         String customerResourceName, String cacheNodeResourceName) {
         return getCacheNodeInstallDetailsWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
             Context.NONE).getValue();
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MccCacheNodeAutoUpdateHistoryInner>> getCacheNodeAutoUpdateHistoryWithResponseAsync(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCacheNodeAutoUpdateHistory(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, customerResourceName,
+                cacheNodeResourceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryAsync(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeAutoUpdateHistoryWithResponseAsync(resourceGroupName, customerResourceName,
+            cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryWithResponse(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
+        final String accept = "application/json";
+        return service.getCacheNodeAutoUpdateHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
+    }
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MccCacheNodeAutoUpdateHistoryInner getCacheNodeAutoUpdateHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MccCacheNodeIssueHistoryInner>> getCacheNodeMccIssueDetailsHistoryWithResponseAsync(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCacheNodeMccIssueDetailsHistory(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, customerResourceName,
+                cacheNodeResourceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryAsync(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeMccIssueDetailsHistoryWithResponseAsync(resourceGroupName, customerResourceName,
+            cacheNodeResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryWithResponse(
+        String resourceGroupName, String customerResourceName, String cacheNodeResourceName, Context context) {
+        final String accept = "application/json";
+        return service.getCacheNodeMccIssueDetailsHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, cacheNodeResourceName, accept,
+            context);
+    }
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MccCacheNodeIssueHistoryInner getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName) {
+        return getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
+            cacheNodeResourceName, Context.NONE).getValue();
     }
 
     /**

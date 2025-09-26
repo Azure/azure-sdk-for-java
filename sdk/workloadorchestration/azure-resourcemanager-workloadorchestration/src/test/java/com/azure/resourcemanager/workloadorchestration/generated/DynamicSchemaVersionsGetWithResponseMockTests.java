@@ -21,7 +21,7 @@ public final class DynamicSchemaVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"k\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"wgzwxjlmecvog\",\"id\":\"zyvneezaifghtmo\",\"name\":\"qtlffhzbk\",\"type\":\"kjj\"}";
+            = "{\"properties\":{\"value\":\"ymvqdbpbhfckdvez\",\"provisioningState\":\"Initialized\"},\"eTag\":\"sbzhd\",\"id\":\"b\",\"name\":\"nqfblhkalehpava\",\"type\":\"ugiqjtiogqg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class DynamicSchemaVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchemaVersion response = manager.dynamicSchemaVersions()
-            .getWithResponse("fgbrtt", "iac", "kiexhajlfnthiq", "yuttdiygbpvnwswm", com.azure.core.util.Context.NONE)
+            .getWithResponse("iryky", "ndzfqivjreuyk", "bmnwa", "ltbxoeeonqlnfw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("k", response.properties().value());
+        Assertions.assertEquals("ymvqdbpbhfckdvez", response.properties().value());
     }
 }

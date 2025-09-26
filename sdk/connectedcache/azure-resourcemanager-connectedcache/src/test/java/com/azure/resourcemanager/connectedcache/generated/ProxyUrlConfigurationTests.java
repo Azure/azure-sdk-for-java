@@ -12,14 +12,14 @@ public final class ProxyUrlConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProxyUrlConfiguration model
-            = BinaryData.fromString("{\"proxyUrl\":\"hb\"}").toObject(ProxyUrlConfiguration.class);
-        Assertions.assertEquals("hb", model.proxyUrl());
+            = BinaryData.fromString("{\"proxyUrl\":\"jttgzf\"}").toObject(ProxyUrlConfiguration.class);
+        Assertions.assertEquals("jttgzf", model.proxyUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProxyUrlConfiguration model = new ProxyUrlConfiguration().withProxyUrl("hb");
+        ProxyUrlConfiguration model = new ProxyUrlConfiguration().withProxyUrl("jttgzf");
         model = BinaryData.fromObject(model).toObject(ProxyUrlConfiguration.class);
-        Assertions.assertEquals("hb", model.proxyUrl());
+        Assertions.assertEquals("jttgzf", model.proxyUrl());
     }
 }

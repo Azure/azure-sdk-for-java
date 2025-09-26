@@ -22,6 +22,11 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
     private EndpointType endpointType;
 
     /*
+     * The type of the Kafka host. E.g FabricRT, EventGrid.
+     */
+    private DataflowEndpointHostType hostType;
+
+    /*
      * Azure Data Explorer endpoint.
      */
     private DataflowEndpointDataExplorer dataExplorerSettings;
@@ -52,6 +57,11 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
     private DataflowEndpointMqtt mqttSettings;
 
     /*
+     * OpenTelemetry endpoint.
+     */
+    private DataflowEndpointOpenTelemetry openTelemetrySettings;
+
+    /*
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
@@ -79,6 +89,26 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      */
     public DataflowEndpointProperties withEndpointType(EndpointType endpointType) {
         this.endpointType = endpointType;
+        return this;
+    }
+
+    /**
+     * Get the hostType property: The type of the Kafka host. E.g FabricRT, EventGrid.
+     * 
+     * @return the hostType value.
+     */
+    public DataflowEndpointHostType hostType() {
+        return this.hostType;
+    }
+
+    /**
+     * Set the hostType property: The type of the Kafka host. E.g FabricRT, EventGrid.
+     * 
+     * @param hostType the hostType value to set.
+     * @return the DataflowEndpointProperties object itself.
+     */
+    public DataflowEndpointProperties withHostType(DataflowEndpointHostType hostType) {
+        this.hostType = hostType;
         return this;
     }
 
@@ -204,6 +234,26 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
     }
 
     /**
+     * Get the openTelemetrySettings property: OpenTelemetry endpoint.
+     * 
+     * @return the openTelemetrySettings value.
+     */
+    public DataflowEndpointOpenTelemetry openTelemetrySettings() {
+        return this.openTelemetrySettings;
+    }
+
+    /**
+     * Set the openTelemetrySettings property: OpenTelemetry endpoint.
+     * 
+     * @param openTelemetrySettings the openTelemetrySettings value to set.
+     * @return the DataflowEndpointProperties object itself.
+     */
+    public DataflowEndpointProperties withOpenTelemetrySettings(DataflowEndpointOpenTelemetry openTelemetrySettings) {
+        this.openTelemetrySettings = openTelemetrySettings;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -219,12 +269,14 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("hostType", this.hostType == null ? null : this.hostType.toString());
         jsonWriter.writeJsonField("dataExplorerSettings", this.dataExplorerSettings);
         jsonWriter.writeJsonField("dataLakeStorageSettings", this.dataLakeStorageSettings);
         jsonWriter.writeJsonField("fabricOneLakeSettings", this.fabricOneLakeSettings);
         jsonWriter.writeJsonField("kafkaSettings", this.kafkaSettings);
         jsonWriter.writeJsonField("localStorageSettings", this.localStorageSettings);
         jsonWriter.writeJsonField("mqttSettings", this.mqttSettings);
+        jsonWriter.writeJsonField("openTelemetrySettings", this.openTelemetrySettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -246,6 +298,9 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
 
                 if ("endpointType".equals(fieldName)) {
                     deserializedDataflowEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("hostType".equals(fieldName)) {
+                    deserializedDataflowEndpointProperties.hostType
+                        = DataflowEndpointHostType.fromString(reader.getString());
                 } else if ("dataExplorerSettings".equals(fieldName)) {
                     deserializedDataflowEndpointProperties.dataExplorerSettings
                         = DataflowEndpointDataExplorer.fromJson(reader);
@@ -262,6 +317,9 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
                         = DataflowEndpointLocalStorage.fromJson(reader);
                 } else if ("mqttSettings".equals(fieldName)) {
                     deserializedDataflowEndpointProperties.mqttSettings = DataflowEndpointMqtt.fromJson(reader);
+                } else if ("openTelemetrySettings".equals(fieldName)) {
+                    deserializedDataflowEndpointProperties.openTelemetrySettings
+                        = DataflowEndpointOpenTelemetry.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowEndpointProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

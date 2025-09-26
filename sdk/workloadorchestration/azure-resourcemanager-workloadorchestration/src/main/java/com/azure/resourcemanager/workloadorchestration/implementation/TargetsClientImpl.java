@@ -43,6 +43,7 @@ import com.azure.resourcemanager.workloadorchestration.models.InstallSolutionPar
 import com.azure.resourcemanager.workloadorchestration.models.RemoveRevisionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionVersionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.TargetUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.UninstallSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateExternalValidationStatusParameter;
 import java.nio.ByteBuffer;
@@ -123,7 +124,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") TargetInner properties, Context context);
+            @BodyParam("application/json") TargetUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}")
         @ExpectedResponses({ 200, 202 })
@@ -132,7 +133,7 @@ public final class TargetsClientImpl implements TargetsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") TargetInner properties, Context context);
+            @BodyParam("application/json") TargetUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}")
@@ -608,7 +609,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String targetName,
-        TargetInner properties) {
+        TargetUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -629,7 +630,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName,
-        TargetInner properties) {
+        TargetUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -650,8 +651,8 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return target Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName, TargetInner properties,
-        Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName,
+        TargetUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -671,7 +672,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TargetInner>, TargetInner> beginUpdateAsync(String resourceGroupName,
-        String targetName, TargetInner properties) {
+        String targetName, TargetUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, targetName, properties);
         return this.client.<TargetInner, TargetInner>getLroResult(mono, this.client.getHttpPipeline(),
             TargetInner.class, TargetInner.class, this.client.getContext());
@@ -690,7 +691,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
-        TargetInner properties) {
+        TargetUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, targetName, properties);
         return this.client.<TargetInner, TargetInner>getLroResult(response, TargetInner.class, TargetInner.class,
             Context.NONE);
@@ -710,7 +711,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
-        TargetInner properties, Context context) {
+        TargetUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, targetName, properties, context);
         return this.client.<TargetInner, TargetInner>getLroResult(response, TargetInner.class, TargetInner.class,
             context);
@@ -728,7 +729,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return target Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TargetInner> updateAsync(String resourceGroupName, String targetName, TargetInner properties) {
+    private Mono<TargetInner> updateAsync(String resourceGroupName, String targetName, TargetUpdate properties) {
         return beginUpdateAsync(resourceGroupName, targetName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -745,7 +746,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return target Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TargetInner update(String resourceGroupName, String targetName, TargetInner properties) {
+    public TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties) {
         return beginUpdate(resourceGroupName, targetName, properties).getFinalResult();
     }
 
@@ -762,7 +763,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return target Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TargetInner update(String resourceGroupName, String targetName, TargetInner properties, Context context) {
+    public TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties, Context context) {
         return beginUpdate(resourceGroupName, targetName, properties, context).getFinalResult();
     }
 
