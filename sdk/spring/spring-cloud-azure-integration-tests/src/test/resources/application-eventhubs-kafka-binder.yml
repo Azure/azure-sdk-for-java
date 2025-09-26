@@ -12,4 +12,4 @@ spring:
       default-binder: kafka
       kafka:
         binder:
-          brokers: ${AZURE_EVENTHUBS_NAMESPACE}
+          brokers: ${AZURE_EVENTHUBS_NAMESPACE}.servicebus.windows.net:9093
