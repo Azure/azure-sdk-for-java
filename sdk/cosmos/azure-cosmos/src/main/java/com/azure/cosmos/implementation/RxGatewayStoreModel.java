@@ -680,8 +680,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                 return Mono.error(dce);
             }
-        ).flatMap(response ->
-            this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
+        ).flatMap(response -> {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("RxGatewayStoreModel.processMessage:").append(",");
+            return this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders(), sb).then(Mono.just(response));
+            }
         );
     }
 
@@ -735,13 +739,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     private Mono<Void> captureSessionTokenAndHandlePartitionSplit(RxDocumentServiceRequest request,
-                                                                  Map<String, String> responseHeaders) {
+                                                                  Map<String, String> responseHeaders,
+                                                                  StringBuilder sb) {
+
+        if (sb != null) {
+            sb.append("RxGatewayStoreModel.captureSessionTokenAndHandlePartitionSplit:").append(",");
+        }
+
         this.captureSessionToken(request, responseHeaders);
         if (request.requestContext.resolvedPartitionKeyRange != null &&
             StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
             StringUtils.isNotEmpty(responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) &&
             !responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID).equals(request.requestContext.resolvedPartitionKeyRange.getId())) {
-            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid)
+            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid, sb)
                 .flatMap(collectionRoutingMapValueHolder -> Mono.empty());
         }
         return Mono.empty();
@@ -787,8 +797,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         MetadataDiagnosticsContext metadataCtx = BridgeInternal
             .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("RxGatewayStoreModel.resolvePartitionKeyRangeByPkRangeId:").append(",");
+
         if (pkRangeId.getCollectionRid() != null) {
-            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx);
+            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx, sb);
         }
 
         return this.collectionCache.resolveCollectionAsync(
@@ -797,13 +810,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             .flatMap(collectionHolder -> resolvePartitionKeyRangeByPkRangeIdCore(
                 pkRangeId,
                 collectionHolder.v.getResourceId(),
-                metadataCtx));
+                metadataCtx,
+                sb));
     }
 
     private Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeIdCore(
         PartitionKeyRangeIdentity pkRangeId,
         String effectiveCollectionRid,
-        MetadataDiagnosticsContext metadataCtx) {
+        MetadataDiagnosticsContext metadataCtx,
+        StringBuilder sb) {
 
         Objects.requireNonNull(pkRangeId, "Parameter 'pkRangeId' is required and cannot be null");
         Objects.requireNonNull(
@@ -815,7 +830,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 metadataCtx,
                 effectiveCollectionRid,
                null,
-               null
+               null,
+                sb
             )
             .flatMap(collectionRoutingMapValueHolder -> {
 
@@ -870,10 +886,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
                         return Mono.empty();
                     }
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("RxGatewayStoreModel.applySessionToken:").append(",");
+
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
-                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        null,
+                        sb).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

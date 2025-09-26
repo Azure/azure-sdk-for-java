@@ -124,12 +124,16 @@ public class GlobalAddressResolver implements IAddressResolver {
                             return Flux.empty();
                         }
 
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("GlobalAddressResolver:submitOpenConnectionTasksAndInitCaches").append(",");
+
                         return this.routingMapProvider.tryGetOverlappingRangesAsync(
                                 null,
                                 collection.getResourceId(),
                                 PartitionKeyInternalHelper.FullRange,
                                 true,
-                                null)
+                                null,
+                                sb)
                             .flatMap(valueHolder -> {
 
                                 String containerLink = ImplementationBridgeHelpers

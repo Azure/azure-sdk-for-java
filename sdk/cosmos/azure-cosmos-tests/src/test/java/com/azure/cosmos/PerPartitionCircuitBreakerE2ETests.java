@@ -3491,7 +3491,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
                     .flatMap(collection -> {
                         faultyDocumentCollection.v = collection;
-                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangeEpkImpl.v.getRange(), true, null);
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangeEpkImpl.v.getRange(), true, null, new StringBuilder());
                     })
                     .flatMap(listValueHolder -> {
                         faultyPartitionKeyRanges.v = listValueHolder.v;
@@ -3504,7 +3504,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
                     .flatMap(collection -> {
                         faultyDocumentCollection.v = collection;
-                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangePartitionKeyImpl.v.getEffectiveRange(collection.getPartitionKey()), true, null);
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangePartitionKeyImpl.v.getEffectiveRange(collection.getPartitionKey()), true, null, new StringBuilder());
                     })
                     .flatMap(listValueHolder -> {
                         faultyPartitionKeyRanges.v = listValueHolder.v;

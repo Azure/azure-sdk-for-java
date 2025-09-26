@@ -116,8 +116,11 @@ final class BulkExecutorUtil {
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
                     itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("BulkExecutorUtil.resolvePartitionKeyRangeId:").append(",");
+
                     return docClientWrapper.getPartitionKeyRangeCache()
-                        .tryLookupAsync(null, collection.getResourceId(), null, null)
+                        .tryLookupAsync(null, collection.getResourceId(), null, null, sb)
                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
                             if (routingMap.v == null) {

@@ -19,6 +19,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -47,6 +49,8 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
  * service, an IllegalStateException is thrown instead of CosmosException.
  */
 public class CosmosException extends AzureException {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosException.class);
     private static final long MAX_RETRY_AFTER_IN_MS = BatchExecUtils.MAX_RETRY_AFTER_IN_MS;
     private static final long serialVersionUID = 1L;
 
@@ -365,8 +369,10 @@ public class CosmosException extends AzureException {
             if (StringUtils.isNotEmpty(header)) {
                 try {
                     retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
+                    logger.warn("Resolved retryAfterInMilliseconds : [{}] from RetryAfterInMilliseconds header : [{}] and MAX_RETRY_AFTER_IN_MS : [{}].", retryIntervalInMilliseconds, header, MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
+                    logger.warn("RetryAfterInMilliseconds header [{}] cannot be parsed as Integer.", header);
                 }
             }
         }

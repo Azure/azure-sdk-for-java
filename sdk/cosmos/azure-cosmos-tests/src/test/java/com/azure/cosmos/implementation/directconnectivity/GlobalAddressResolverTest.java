@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GlobalAddressResolverTest {
@@ -178,11 +179,12 @@ public class GlobalAddressResolverTest {
 
         Mockito
                 .when(routingMapProvider.tryGetOverlappingRangesAsync(
-                        null,
-                        documentCollection.getResourceId(),
-                        PartitionKeyInternalHelper.FullRange,
-                        true,
-                        null))
+                        Mockito.any(),
+                        Mockito.any(),
+                        Mockito.any(),
+                        Mockito.anyBoolean(),
+                        Mockito.any(),
+                        Mockito.any()))
                 .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
 
         // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
@@ -224,11 +226,12 @@ public class GlobalAddressResolverTest {
         Mockito
                 .verify(routingMapProvider, Mockito.times(1))
                 .tryGetOverlappingRangesAsync(
-                        null,
-                        documentCollection.getResourceId(),
-                        PartitionKeyInternalHelper.FullRange,
-                        true,
-                        null);
+                    Mockito.any(),
+                    Mockito.any(),
+                    Mockito.any(),
+                    Mockito.anyBoolean(),
+                    Mockito.any(),
+                    Mockito.any());
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
                 .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any());

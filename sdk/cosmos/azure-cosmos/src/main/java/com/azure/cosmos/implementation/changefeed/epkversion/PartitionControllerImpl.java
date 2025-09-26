@@ -71,7 +71,7 @@ class PartitionControllerImpl implements PartitionController {
             .map(updatedLease -> {
                 WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
                 if (checkTask == null) {
-                    logger.info("Lease with token {}: acquired.", updatedLease.getLeaseToken());
+                    logger.info("Lease with token {}: acquired. Owner: {}", updatedLease.getLeaseToken(), updatedLease.getOwner());
                     PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
                     this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
                 }
@@ -109,7 +109,7 @@ class PartitionControllerImpl implements PartitionController {
                 if (workerTask != null && workerTask.isRunning()) {
                     workerTask.cancelJob();
                 }
-                logger.info("Lease with token {}: released.", lease.getLeaseToken());
+                logger.info("Lease with token {}: released for owner {}.", lease.getLeaseToken(), lease.getOwner());
 
                 return this.leaseManager.release(lease);
             })

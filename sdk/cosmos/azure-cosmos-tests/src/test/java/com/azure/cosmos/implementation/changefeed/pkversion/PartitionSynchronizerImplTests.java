@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -45,7 +46,9 @@ public class PartitionSynchronizerImplTests {
             leaseManagerMock,
             1,
             1,
-            COLLECTION_RESOURCE_ID);
+            COLLECTION_RESOURCE_ID,
+            new ChangeFeedProcessorOptions(),
+            "test-createAllLeases");
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
@@ -91,7 +94,9 @@ public class PartitionSynchronizerImplTests {
             leaseManagerMock,
             1,
             1,
-            COLLECTION_RESOURCE_ID);
+            COLLECTION_RESOURCE_ID,
+            new ChangeFeedProcessorOptions(),
+            "test-createMissingLeases");
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));

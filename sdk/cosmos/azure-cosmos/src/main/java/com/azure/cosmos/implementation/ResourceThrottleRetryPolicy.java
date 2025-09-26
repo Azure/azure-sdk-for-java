@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -86,6 +89,15 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         if (this.currentAttemptCount < this.maxAttemptCount &&
                 (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
+
+            logger.warn(
+                "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {} for statusCode {} and subStatusCode {}",
+                retryDelay.toMillis(),
+                this.currentAttemptCount,
+                this.cumulativeRetryDelay,
+                dce.getStatusCode(),
+                dce.getSubStatusCode());
+
             logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
                     retryDelay.toMillis(),
@@ -141,6 +153,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     // There is no server returned retryAfter
                     if (Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE)) {
                         // for 429/3200, server should have returned retry after. If not, then retry immediately
+                        logger.warn("No retryAfter returned by server in 429/3200, retrying immediately");
                         retryDelay = DEFAULT_RETRY_IN_SECONDS_FOR_3200;
                     } else {
                         // retryAfter will not always be returned, for example 429/3089

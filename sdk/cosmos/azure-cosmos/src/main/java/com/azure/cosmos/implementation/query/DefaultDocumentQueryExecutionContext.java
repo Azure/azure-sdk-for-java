@@ -148,12 +148,16 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
                                                                                       String partitionKeyRangeIdInternal) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DefaultDocumentQueryExecutionContext.getTargetPartitionKeyRangesById").append(",");
+
         return client.getPartitionKeyRangeCache()
                    .tryGetPartitionKeyRangeByIdAsync(null,
                                                      resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
-                                                     null)
+                                                     null,
+                       sb)
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 
