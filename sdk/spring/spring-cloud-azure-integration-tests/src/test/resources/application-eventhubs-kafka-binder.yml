@@ -9,6 +9,7 @@ spring:
           group: $Default
         supply-out-0:
           destination: connnection-string-auth
+      default-binder: kafka
       kafka:
         binder:
           brokers: ${AZURE_EVENTHUBS_NAMESPACE}
