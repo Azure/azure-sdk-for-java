@@ -51,7 +51,9 @@ class ServerSideOnlyContinuationNonDocumentFetcherImpl<T> extends Fetcher<T> {
             globalEndpointManager,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
+        checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
+        
         this.createRequestFunc = createRequestFunc;
         this.continuationToken = continuationToken;
         this.retryPolicySupplier = () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
