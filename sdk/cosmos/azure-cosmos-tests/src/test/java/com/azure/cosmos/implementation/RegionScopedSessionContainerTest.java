@@ -478,8 +478,8 @@ public class RegionScopedSessionContainerTest {
 
         assertThat(globalProgress).isNotNull();
         assertThat(globalProgress.getSessionToken()).isNotNull();
-        assertThat(globalProgress.getSessionToken().convertToString()).isNotNull();
-        assertThat(globalProgress.getSessionToken().convertToString()).isEqualTo(sessionToken);
+        assertThat(globalProgress.getSessionToken().get().convertToString()).isNotNull();
+        assertThat(globalProgress.getSessionToken().get().convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
