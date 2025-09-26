@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-datamigration</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datamigration;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datamigration;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for DataMigration Management</name>
-  <description>This package contains Microsoft Azure SDK for DataMigration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Data Migration Client. Package tag package-preview-2025-03.</description>
+  <description>This package contains Microsoft Azure SDK for DataMigration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Data Migration Client. Package tag package-2025-06.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

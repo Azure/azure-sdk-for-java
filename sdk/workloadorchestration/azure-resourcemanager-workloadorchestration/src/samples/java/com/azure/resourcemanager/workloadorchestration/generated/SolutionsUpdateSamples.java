@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.Solution;
-import com.azure.resourcemanager.workloadorchestration.models.SolutionProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdateProperties;
 
 /**
  * Samples for Solutions Update.
@@ -24,6 +24,6 @@ public final class SolutionsUpdateSamples {
         Solution resource = manager.solutions()
             .getWithResponse("rgconfigurationmanager", "testname", "testname", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new SolutionProperties()).apply();
+        resource.update().withProperties(new SolutionUpdateProperties()).apply();
     }
 }

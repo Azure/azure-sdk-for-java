@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -50,7 +50,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**

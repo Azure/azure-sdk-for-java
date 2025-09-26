@@ -789,6 +789,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
       try {
+        val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
         val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
@@ -798,6 +799,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
         val bulkWriter = new BulkWriter(
           container,
+          containerConfig,
           partitionKeyDefinition,
           writeConfig,
           DiagnosticsConfig(),
@@ -832,7 +834,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
             field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
         })
 
-        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, containerConfig, partitionKeyDefinition)
 
         patchPartialUpdateItem.fields().asScala.foreach(field => {
           columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
@@ -1307,6 +1309,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
           try {
+              val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
               val writeConfig = CosmosWriteConfig(
                   ItemWriteStrategy.ItemOverwrite,
                   5,
@@ -1316,6 +1319,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
               val bulkWriter = new BulkWriter(
                 container,
+                containerConfig,
                 partitionKeyDefinition,
                 writeConfig,
                 DiagnosticsConfig(),

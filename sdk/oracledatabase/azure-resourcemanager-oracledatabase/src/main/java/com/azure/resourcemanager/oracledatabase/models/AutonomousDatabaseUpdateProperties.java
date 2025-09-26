@@ -632,23 +632,6 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -132,20 +132,6 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerRelay() != null) {
-            innerRelay().validate();
-        }
-        if (innerIngress() != null) {
-            innerIngress().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

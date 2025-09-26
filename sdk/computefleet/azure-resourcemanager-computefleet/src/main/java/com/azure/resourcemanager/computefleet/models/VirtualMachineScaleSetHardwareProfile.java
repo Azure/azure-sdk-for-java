@@ -55,17 +55,6 @@ public final class VirtualMachineScaleSetHardwareProfile
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (vmSizeProperties() != null) {
-            vmSizeProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
 import com.azure.resourcemanager.avs.implementation.models.HcxEnterpriseSiteList;
@@ -179,22 +178,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -232,24 +215,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HcxEnterpriseSiteList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
@@ -271,24 +236,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listSinglePage(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HcxEnterpriseSiteList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
@@ -344,26 +291,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> getWithResponseAsync(String resourceGroupName,
         String privateCloudName, String hcxEnterpriseSiteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -405,28 +332,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcxEnterpriseSiteInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, hcxEnterpriseSiteName, accept, context);
@@ -463,32 +368,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateCloudName, String hcxEnterpriseSiteName, HcxEnterpriseSiteInner hcxEnterpriseSite) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSite == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter hcxEnterpriseSite is required and cannot be null."));
-        } else {
-            hcxEnterpriseSite.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -534,34 +413,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     public Response<HcxEnterpriseSiteInner> createOrUpdateWithResponse(String resourceGroupName,
         String privateCloudName, String hcxEnterpriseSiteName, HcxEnterpriseSiteInner hcxEnterpriseSite,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSite == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter hcxEnterpriseSite is required and cannot be null."));
-        } else {
-            hcxEnterpriseSite.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -602,26 +453,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context))
@@ -660,28 +491,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (hcxEnterpriseSiteName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter hcxEnterpriseSiteName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
@@ -713,13 +522,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<HcxEnterpriseSiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -738,15 +540,6 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HcxEnterpriseSiteList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -766,21 +559,10 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HcxEnterpriseSiteList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(HcxEnterpriseSitesClientImpl.class);
 }

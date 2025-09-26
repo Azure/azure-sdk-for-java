@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-integration-azure-eventhubs</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
 
   <name>Spring Integration Azure Event Hubs</name>
   <description>Spring Integration Azure Event Hubs</description>
@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-core</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-eventhubs</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
@@ -180,7 +180,7 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-integration-azure-core</artifactId>
-          <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+          <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>

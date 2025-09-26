@@ -22,7 +22,7 @@ public final class FilesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"fmzsizzhravr\",\"properties\":{\"extension\":\"jymgqbgcxhn\",\"filePath\":\"gzxlermkmerghski\",\"lastModified\":\"2021-05-14T02:10:11Z\",\"mediaType\":\"upkcbkfukdljqnvt\",\"size\":3789331818813351172},\"systemData\":{\"createdBy\":\"kpafyaloowwziz\",\"createdByType\":\"User\",\"createdAt\":\"2021-05-20T21:05:46Z\",\"lastModifiedBy\":\"qz\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-09-19T02:47:01Z\"},\"id\":\"uf\",\"name\":\"jfdkqi\",\"type\":\"vndjokgwesym\"}]}";
+            = "{\"value\":[{\"etag\":\"u\",\"properties\":{\"extension\":\"otauratnicppfzsc\",\"filePath\":\"fyrletndqlmfdggn\",\"lastModified\":\"2021-03-10T05:13:11Z\",\"mediaType\":\"pwovvvsfleevn\",\"size\":5807039809223720057},\"systemData\":{\"createdBy\":\"hjuqwvapxrlzhpz\",\"createdByType\":\"User\",\"createdAt\":\"2021-08-29T09:43Z\",\"lastModifiedBy\":\"qqzlxnqzubfo\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-20T12:48:09Z\"},\"id\":\"mkfw\",\"name\":\"jcw\",\"type\":\"ewfhxwyrkbre\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class FilesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProjectFile> response
-            = manager.files().list("rugejcvjkjy", "zcmtagelajdyolj", "qy", com.azure.core.util.Context.NONE);
+            = manager.files().list("akmhz", "hwahfbw", "hbnnxemv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fmzsizzhravr", response.iterator().next().etag());
-        Assertions.assertEquals("jymgqbgcxhn", response.iterator().next().properties().extension());
-        Assertions.assertEquals("gzxlermkmerghski", response.iterator().next().properties().filePath());
-        Assertions.assertEquals("upkcbkfukdljqnvt", response.iterator().next().properties().mediaType());
+        Assertions.assertEquals("u", response.iterator().next().etag());
+        Assertions.assertEquals("otauratnicppfzsc", response.iterator().next().properties().extension());
+        Assertions.assertEquals("fyrletndqlmfdggn", response.iterator().next().properties().filePath());
+        Assertions.assertEquals("pwovvvsfleevn", response.iterator().next().properties().mediaType());
     }
 }

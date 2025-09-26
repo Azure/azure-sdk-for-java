@@ -359,23 +359,6 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (windowsConfiguration() != null) {
-            windowsConfiguration().validate();
-        }
-        if (linuxConfiguration() != null) {
-            linuxConfiguration().validate();
-        }
-        if (secrets() != null) {
-            secrets().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

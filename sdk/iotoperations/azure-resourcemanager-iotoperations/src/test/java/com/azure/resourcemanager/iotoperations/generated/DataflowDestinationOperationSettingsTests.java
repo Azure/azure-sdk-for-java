@@ -12,18 +12,18 @@ public final class DataflowDestinationOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowDestinationOperationSettings model
-            = BinaryData.fromString("{\"endpointRef\":\"pkhjwni\",\"dataDestination\":\"qsluicp\"}")
+            = BinaryData.fromString("{\"endpointRef\":\"ervnaenqpehi\",\"dataDestination\":\"doy\"}")
                 .toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("pkhjwni", model.endpointRef());
-        Assertions.assertEquals("qsluicp", model.dataDestination());
+        Assertions.assertEquals("ervnaenqpehi", model.endpointRef());
+        Assertions.assertEquals("doy", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowDestinationOperationSettings model
-            = new DataflowDestinationOperationSettings().withEndpointRef("pkhjwni").withDataDestination("qsluicp");
+            = new DataflowDestinationOperationSettings().withEndpointRef("ervnaenqpehi").withDataDestination("doy");
         model = BinaryData.fromObject(model).toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("pkhjwni", model.endpointRef());
-        Assertions.assertEquals("qsluicp", model.dataDestination());
+        Assertions.assertEquals("ervnaenqpehi", model.endpointRef());
+        Assertions.assertEquals("doy", model.dataDestination());
     }
 }

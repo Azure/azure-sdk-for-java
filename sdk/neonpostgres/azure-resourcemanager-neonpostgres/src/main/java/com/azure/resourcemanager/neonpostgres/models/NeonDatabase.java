@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonDatabaseInner;
 
 /**
@@ -47,9 +48,130 @@ public interface NeonDatabase {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.neonpostgres.fluent.models.NeonDatabaseInner object.
      * 
      * @return the inner object.
      */
     NeonDatabaseInner innerModel();
+
+    /**
+     * The entirety of the NeonDatabase definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The NeonDatabase definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the NeonDatabase definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the NeonDatabase definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, organizationName, projectName, branchName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param organizationName Name of the Neon Organizations resource.
+             * @param projectName The name of the Project.
+             * @param branchName The name of the Branch.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingBranche(String resourceGroupName, String organizationName, String projectName,
+                String branchName);
+        }
+
+        /**
+         * The stage of the NeonDatabase definition which contains all the minimum required properties for the resource
+         * to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            NeonDatabase create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            NeonDatabase create(Context context);
+        }
+
+        /**
+         * The stage of the NeonDatabase definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(NeonDatabaseProperties properties);
+        }
+    }
+
+    /**
+     * Begins update for the NeonDatabase resource.
+     * 
+     * @return the stage of resource update.
+     */
+    NeonDatabase.Update update();
+
+    /**
+     * The template for NeonDatabase update.
+     */
+    interface Update extends UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        NeonDatabase apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        NeonDatabase apply(Context context);
+    }
+
+    /**
+     * The NeonDatabase update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the NeonDatabase update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(NeonDatabaseProperties properties);
+        }
+    }
 }

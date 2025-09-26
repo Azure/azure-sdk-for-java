@@ -300,7 +300,7 @@
 /sdk/communication/azure-communication-identity/                   @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft @Azure/azure-java-sdk
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/               @Arazan @whisper6284 @danielortega-msft @sofiar-msft @Azure/azure-java-sdk
+/sdk/communication/azure-communication-phonenumbers/               @Azure/azure-java-sdk @gfeitosa-msft @phermanov-msft @ilyapaliakou-msft @besh2014 @ihuseynov-msft @kirill-linnik
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/            @Azure/azure-java-sdk
