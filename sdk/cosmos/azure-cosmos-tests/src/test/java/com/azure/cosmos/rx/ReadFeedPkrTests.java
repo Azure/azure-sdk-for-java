@@ -42,7 +42,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
 
         FeedResponseListValidator<PartitionKeyRange> validator = new FeedResponseListValidator.Builder<PartitionKeyRange>()
                 .totalSize(1)
-                .numberOfPages(1)
+                .numberOfPages(2) // when using changeFeed to get the pkRanges, first page is empty with continuationToken
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }

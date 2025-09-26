@@ -31,5 +31,7 @@ public interface CollectionRoutingMap {
 
     String getCollectionUniqueId();
 
-    CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges);
+    CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges, String changeFeedNextIfNoneMatch);
+
+    String getChangeFeedNextIfNoneMatch();
 }
