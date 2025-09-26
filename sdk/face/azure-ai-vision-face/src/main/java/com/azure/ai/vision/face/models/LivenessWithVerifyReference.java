@@ -15,7 +15,13 @@ import java.io.IOException;
  * The detail of face for verification.
  */
 @Immutable
-public final class LivenessWithVerifyImage implements JsonSerializable<LivenessWithVerifyImage> {
+public final class LivenessWithVerifyReference implements JsonSerializable<LivenessWithVerifyReference> {
+
+    /*
+     * The image type which contains the face rectangle where the liveness classification was made on.
+     */
+    @Generated
+    private final FaceImageType referenceType;
 
     /*
      * The face region where the comparison image's classification was made.
@@ -30,15 +36,29 @@ public final class LivenessWithVerifyImage implements JsonSerializable<LivenessW
     private final QualityForRecognition qualityForRecognition;
 
     /**
-     * Creates an instance of LivenessWithVerifyImage class.
+     * Creates an instance of LivenessWithVerifyReference class.
      *
+     * @param referenceType the referenceType value to set.
      * @param faceRectangle the faceRectangle value to set.
      * @param qualityForRecognition the qualityForRecognition value to set.
      */
     @Generated
-    private LivenessWithVerifyImage(FaceRectangle faceRectangle, QualityForRecognition qualityForRecognition) {
+    private LivenessWithVerifyReference(FaceImageType referenceType, FaceRectangle faceRectangle,
+        QualityForRecognition qualityForRecognition) {
+        this.referenceType = referenceType;
         this.faceRectangle = faceRectangle;
         this.qualityForRecognition = qualityForRecognition;
+    }
+
+    /**
+     * Get the referenceType property: The image type which contains the face rectangle where the liveness
+     * classification was made on.
+     *
+     * @return the referenceType value.
+     */
+    @Generated
+    public FaceImageType getReferenceType() {
+        return this.referenceType;
     }
 
     /**
@@ -68,6 +88,7 @@ public final class LivenessWithVerifyImage implements JsonSerializable<LivenessW
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referenceType", this.referenceType == null ? null : this.referenceType.toString());
         jsonWriter.writeJsonField("faceRectangle", this.faceRectangle);
         jsonWriter.writeStringField("qualityForRecognition",
             this.qualityForRecognition == null ? null : this.qualityForRecognition.toString());
@@ -75,23 +96,26 @@ public final class LivenessWithVerifyImage implements JsonSerializable<LivenessW
     }
 
     /**
-     * Reads an instance of LivenessWithVerifyImage from the JsonReader.
+     * Reads an instance of LivenessWithVerifyReference from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LivenessWithVerifyImage if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of LivenessWithVerifyReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the LivenessWithVerifyImage.
+     * @throws IOException If an error occurs while reading the LivenessWithVerifyReference.
      */
     @Generated
-    public static LivenessWithVerifyImage fromJson(JsonReader jsonReader) throws IOException {
+    public static LivenessWithVerifyReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            FaceImageType referenceType = null;
             FaceRectangle faceRectangle = null;
             QualityForRecognition qualityForRecognition = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("faceRectangle".equals(fieldName)) {
+                if ("referenceType".equals(fieldName)) {
+                    referenceType = FaceImageType.fromString(reader.getString());
+                } else if ("faceRectangle".equals(fieldName)) {
                     faceRectangle = FaceRectangle.fromJson(reader);
                 } else if ("qualityForRecognition".equals(fieldName)) {
                     qualityForRecognition = QualityForRecognition.fromString(reader.getString());
@@ -99,7 +123,7 @@ public final class LivenessWithVerifyImage implements JsonSerializable<LivenessW
                     reader.skipChildren();
                 }
             }
-            return new LivenessWithVerifyImage(faceRectangle, qualityForRecognition);
+            return new LivenessWithVerifyReference(referenceType, faceRectangle, qualityForRecognition);
         });
     }
 }

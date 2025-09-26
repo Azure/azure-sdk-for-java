@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The AddFaceFromUrlRequest model.
+ * The AddFaceFromUrlRequest2 model.
  */
 @Immutable
-public final class AddFaceFromUrlRequest implements JsonSerializable<AddFaceFromUrlRequest> {
+public final class AddFaceFromUrlRequest2 implements JsonSerializable<AddFaceFromUrlRequest2> {
 
     /*
      * URL of input image.
@@ -24,12 +24,12 @@ public final class AddFaceFromUrlRequest implements JsonSerializable<AddFaceFrom
     private final String url;
 
     /**
-     * Creates an instance of AddFaceFromUrlRequest class.
+     * Creates an instance of AddFaceFromUrlRequest2 class.
      *
      * @param url the url value to set.
      */
     @Generated
-    public AddFaceFromUrlRequest(String url) {
+    public AddFaceFromUrlRequest2(String url) {
         this.url = url;
     }
 
@@ -55,16 +55,16 @@ public final class AddFaceFromUrlRequest implements JsonSerializable<AddFaceFrom
     }
 
     /**
-     * Reads an instance of AddFaceFromUrlRequest from the JsonReader.
+     * Reads an instance of AddFaceFromUrlRequest2 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AddFaceFromUrlRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AddFaceFromUrlRequest2 if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AddFaceFromUrlRequest.
+     * @throws IOException If an error occurs while reading the AddFaceFromUrlRequest2.
      */
     @Generated
-    public static AddFaceFromUrlRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AddFaceFromUrlRequest2 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String url = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -76,7 +76,7 @@ public final class AddFaceFromUrlRequest implements JsonSerializable<AddFaceFrom
                     reader.skipChildren();
                 }
             }
-            return new AddFaceFromUrlRequest(url);
+            return new AddFaceFromUrlRequest2(url);
         });
     }
 }

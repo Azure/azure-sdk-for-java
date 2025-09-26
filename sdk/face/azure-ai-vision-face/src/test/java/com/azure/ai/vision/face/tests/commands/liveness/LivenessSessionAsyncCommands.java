@@ -4,8 +4,7 @@
 package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
-import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
+import com.azure.ai.vision.face.models.CreateLivenessSessionOptions;
 import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.tests.function.FunctionUtils;
 import reactor.core.publisher.Mono;
@@ -21,7 +20,7 @@ class LivenessSessionAsyncCommands implements ILivenessSessionSyncCommands {
         return mAsyncClient.getLivenessSessionResult(sessionId);
     }
 
-    public Mono<CreateLivenessSessionResult> createLivenessSession(CreateLivenessSessionContent content) {
+    public Mono<LivenessSession> createLivenessSession(CreateLivenessSessionOptions content) {
         return mAsyncClient.createLivenessSession(content);
     }
 
@@ -30,8 +29,7 @@ class LivenessSessionAsyncCommands implements ILivenessSessionSyncCommands {
     }
 
     @Override
-    public CreateLivenessSessionResult
-        createLivenessSessionSync(CreateLivenessSessionContent createLivenessSessionContent) {
+    public LivenessSession createLivenessSessionSync(CreateLivenessSessionOptions createLivenessSessionContent) {
         return FunctionUtils.callAndAwait(() -> createLivenessSession(createLivenessSessionContent));
     }
 
