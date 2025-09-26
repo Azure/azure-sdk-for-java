@@ -234,12 +234,4 @@ extends:
       groupId: com.azure.resourcemanager
       safeName: azureresourcemanagerkeyvault
       ServiceDirectory: keyvault/azure-resourcemanager-keyvault
-    - name: azure-resourcemanager-appservice
-      groupId: com.azure.resourcemanager
-      safeName: azureresourcemanagerappservice
-      ServiceDirectory: appservice
-    - name: azure-resourcemanager-containerinstance
-      groupId: com.azure.resourcemanager
-      safeName: azureresourcemanagercontainerinstance
-      ServiceDirectory: containerinstance
 
