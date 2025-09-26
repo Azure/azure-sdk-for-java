@@ -315,8 +315,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         // if PPAF is enabled, mark pk-range as unavailable and force a retry
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
-            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, true)) {
+            return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);
@@ -444,8 +444,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             }
         }
 
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
-            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, true)) {
+            return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);
