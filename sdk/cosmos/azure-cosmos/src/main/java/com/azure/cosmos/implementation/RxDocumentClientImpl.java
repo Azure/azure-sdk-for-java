@@ -4887,12 +4887,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+            qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
+        }
+
         return nonDocumentReadFeedInternal(
             options,
             ResourceType.PartitionKeyRange,
             PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
-    }
+
+ }
 
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
                                                                RequestOptions options, OperationType operationType) {
@@ -6204,7 +6210,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (ResourceType.PartitionKeyRange.equals(resourceType)) {
                 logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, pageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
             }
-
 
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
