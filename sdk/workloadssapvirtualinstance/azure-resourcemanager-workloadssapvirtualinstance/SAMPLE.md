@@ -52,47 +52,6 @@
 ### Operations_List
 
 ```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstance;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapDatabaseInstances Update.
- */
-public final class SapDatabaseInstancesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Update.json
-     */
-    /**
-     * Sample code: SAPDatabaseInstances_Update.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPDatabaseInstancesUpdate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        SapDatabaseInstance resource = manager.sapDatabaseInstances()
-            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapApplicationServerInstances_Create
-
-```java
 /**
  * Samples for Operations List.
  */
@@ -112,46 +71,7 @@ public final class OperationsListSamples {
 }
 ```
 
-### SapApplicationServerInstances_Delete
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
-
-/**
- * Samples for SapApplicationServerInstances Start.
- */
-public final class SapApplicationServerInstancesStartSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_StartInstanceVM.json
-     */
-    /**
-     * Sample code: Start Virtual Machine and the SAP Application Server Instance on it.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void startVirtualMachineAndTheSAPApplicationServerInstanceOnIt(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances()
-            .start("test-rg", "X00", "app01", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_StartInstance.json
-     */
-    /**
-     * Sample code: Start the SAP Application Server Instance.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void startTheSAPApplicationServerInstance(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances()
-            .start("test-rg", "X00", "app01", new StartRequest(), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapApplicationServerInstances_Get
+### SapApplicationServerInstances_Create
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerProperties;
@@ -214,48 +134,29 @@ public final class SapApplicationServerInstancesCreateSamples {
 }
 ```
 
-### SapApplicationServerInstances_List
+### SapApplicationServerInstances_Delete
 
 ```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
-
 /**
- * Samples for SapCentralServerInstances Stop.
+ * Samples for SapApplicationServerInstances Delete.
  */
-public final class SapCentralServerInstancesStopSamples {
+public final class SapApplicationServerInstancesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_StopInstance.json
+     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_Delete.json
      */
     /**
-     * Sample code: Stop the SAP Central Services Instance.
+     * Sample code: SAPApplicationServerInstances_Delete.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void stopTheSAPCentralServicesInstance(
+    public static void sAPApplicationServerInstancesDelete(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .stop("test-rg", "X00", "centralServer", new StopRequest().withSoftStopTimeoutSeconds(1200L),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_StopInstanceVM.json
-     */
-    /**
-     * Sample code: Stop the SAP Central Services Instance and its underlying Virtual Machine(s).
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void stopTheSAPCentralServicesInstanceAndItsUnderlyingVirtualMachineS(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .stop("test-rg", "X00", "centralServer", new StopRequest().withDeallocateVm(true),
-                com.azure.core.util.Context.NONE);
+        manager.sapApplicationServerInstances().delete("test-rg", "X00", "app01", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SapApplicationServerInstances_Start
+### SapApplicationServerInstances_Get
 
 ```java
 /**
@@ -278,662 +179,7 @@ public final class SapApplicationServerInstancesGetSamples {
 }
 ```
 
-### SapApplicationServerInstances_Stop
-
-```java
-/**
- * Samples for SapCentralServerInstances Get.
- */
-public final class SapCentralServerInstancesGetSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_Get.json
-     */
-    /**
-     * Sample code: SapCentralServerInstances_Get.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sapCentralServerInstancesGet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .getWithResponse("test-rg", "X00", "centralServer", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapApplicationServerInstances_Update
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerInstance;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapCentralServerInstances Update.
- */
-public final class SapCentralServerInstancesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_Update.json
-     */
-    /**
-     * Sample code: SapCentralServerInstances_Update.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sapCentralServerInstancesUpdate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        SapCentralServerInstance resource = manager.sapCentralServerInstances()
-            .getWithResponse("test-rg", "X00", "centralServer", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("tag1", "value1")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapCentralServerInstances_Create
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDeploymentType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapEnvironmentType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapHighAvailabilityType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSupportedSkusRequest;
-
-/**
- * Samples for SapVirtualInstances GetSapSupportedSku.
- */
-public final class SapVirtualInstancesGetSapSupportedSkuSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvSet.json
-     */
-    /**
-     * Sample code: SAP supported SKUs for distributed HA environment with Availability set.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPSupportedSKUsForDistributedHAEnvironmentWithAvailabilitySet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("centralus",
-                new SapSupportedSkusRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvZone.json
-     */
-    /**
-     * Sample code: SAP supported Skus for HA with availability zone.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPSupportedSkusForHAWithAvailabilityZone(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("centralus",
-                new SapSupportedSkusRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_Distributed.json
-     */
-    /**
-     * Sample code: SAP supported SKUs for distributed Non HA environment.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPSupportedSKUsForDistributedNonHAEnvironment(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("centralus",
-                new SapSupportedSkusRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withDatabaseType(SapDatabaseType.HANA),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_SingleServer.json
-     */
-    /**
-     * Sample code: SAP supported SKUs for single server.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPSupportedSKUsForSingleServer(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("centralus",
-                new SapSupportedSkusRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.NON_PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                    .withDatabaseType(SapDatabaseType.HANA),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapCentralServerInstances_Delete
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
-
-/**
- * Samples for SapDatabaseInstances Stop.
- */
-public final class SapDatabaseInstancesStopSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstance.json
-     */
-    /**
-     * Sample code: Stop the database instance of the SAP system.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void stopTheDatabaseInstanceOfTheSAPSystem(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(0L),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceSoft.json
-     */
-    /**
-     * Sample code: Soft Stop the database instance of the SAP system.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void softStopTheDatabaseInstanceOfTheSAPSystem(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(300L),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceSoftVM.json
-     */
-    /**
-     * Sample code: Soft Stop the database instance of the SAP system and the underlying Virtual Machine(s).
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void softStopTheDatabaseInstanceOfTheSAPSystemAndTheUnderlyingVirtualMachineS(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(300L).withDeallocateVm(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceVM.json
-     */
-    /**
-     * Sample code: Stop the database instance of the SAP system and the underlying Virtual Machine(s).
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void stopTheDatabaseInstanceOfTheSAPSystemAndTheUnderlyingVirtualMachineS(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapCentralServerInstances_Get
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
-
-/**
- * Samples for SapVirtualInstances Stop.
- */
-public final class SapVirtualInstancesStopSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_StopVMAndSystem.json
-     */
-    /**
-     * Sample code: Stop the virtual machine(s) and the SAP system on it.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void stopTheVirtualMachineSAndTheSAPSystemOnIt(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_SoftStop.json
-     */
-    /**
-     * Sample code: Soft Stop of SapVirtualInstances_Stop.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void softStopOfSapVirtualInstancesStop(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Stop.json
-     */
-    /**
-     * Sample code: SAPVirtualInstances_Stop.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPVirtualInstancesStop(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_SoftStopVMAndSystem.json
-     */
-    /**
-     * Sample code: Soft Stop the virtual machine(s) and the SAP system on it.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void softStopTheVirtualMachineSAndTheSAPSystemOnIt(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L).withDeallocateVm(true),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapCentralServerInstances_List
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapCentralServerInstances Create.
- */
-public final class SapCentralServerInstancesCreateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_CreateForHaWithAvailabilitySet.json
-     */
-    /**
-     * Sample code: Create SAP Central Instances for HA System with Availability Set.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void createSAPCentralInstancesForHASystemWithAvailabilitySet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .define("centralServer")
-            .withRegion("westcentralus")
-            .withExistingSapVirtualInstance("test-rg", "X00")
-            .withTags(mapOf())
-            .withProperties(new SapCentralServerProperties())
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_Create.json
-     */
-    /**
-     * Sample code: SapCentralServerInstances_Create.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sapCentralServerInstancesCreate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .define("centralServer")
-            .withRegion("westcentralus")
-            .withExistingSapVirtualInstance("test-rg", "X00")
-            .withTags(mapOf())
-            .withProperties(new SapCentralServerProperties())
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapCentralServerInstances_Start
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapAvailabilityZoneDetailsRequest;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
-
-/**
- * Samples for SapVirtualInstances GetAvailabilityZoneDetails.
- */
-public final class SapVirtualInstancesGetAvailabilityZoneDetailsSampl {
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_northeurope.json
-     */
-    /**
-     * Sample code: SAP Availability zone details in north europe.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPAvailabilityZoneDetailsInNorthEurope(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getAvailabilityZoneDetailsWithResponse("northeurope",
-                new SapAvailabilityZoneDetailsRequest().withAppLocation("northeurope")
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDatabaseType(SapDatabaseType.HANA),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_eastus.json
-     */
-    /**
-     * Sample code: SAP Availability zone details in east us.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPAvailabilityZoneDetailsInEastUs(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getAvailabilityZoneDetailsWithResponse("eastus",
-                new SapAvailabilityZoneDetailsRequest().withAppLocation("eastus")
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDatabaseType(SapDatabaseType.HANA),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapCentralServerInstances_Stop
-
-```java
-/**
- * Samples for SapApplicationServerInstances Delete.
- */
-public final class SapApplicationServerInstancesDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_Delete.json
-     */
-    /**
-     * Sample code: SAPApplicationServerInstances_Delete.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPApplicationServerInstancesDelete(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances().delete("test-rg", "X00", "app01", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapCentralServerInstances_Update
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapDatabaseInstances Create.
- */
-public final class SapDatabaseInstancesCreateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_CreateForHaWithAvailabilitySet.json
-     */
-    /**
-     * Sample code: Create SAP Database Instances for HA System with Availability Set.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void createSAPDatabaseInstancesForHASystemWithAvailabilitySet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .define("databaseServer")
-            .withRegion("westcentralus")
-            .withExistingSapVirtualInstance("test-rg", "X00")
-            .withTags(mapOf())
-            .withProperties(new SapDatabaseProperties())
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Create.json
-     */
-    /**
-     * Sample code: SAPDatabaseInstances_Create.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPDatabaseInstancesCreate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .define("databaseServer")
-            .withRegion("westcentralus")
-            .withExistingSapVirtualInstance("test-rg", "X00")
-            .withTags(mapOf())
-            .withProperties(new SapDatabaseProperties())
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapDatabaseInstances_Create
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedResourcesNetworkAccessType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentityType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstance;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapVirtualInstances Update.
- */
-public final class SapVirtualInstancesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Update.json
-     */
-    /**
-     * Sample code: SAPVirtualInstances_Update.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPVirtualInstancesUpdate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        SapVirtualInstance resource = manager.sapVirtualInstances()
-            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
-            .withProperties(new UpdateSapVirtualInstanceProperties())
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_UpdateTrustedAccess.json
-     */
-    /**
-     * Sample code: SAPVirtualInstances_TrustedAccessEnable_Update.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPVirtualInstancesTrustedAccessEnableUpdate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        SapVirtualInstance resource = manager.sapVirtualInstances()
-            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
-            .withProperties(new UpdateSapVirtualInstanceProperties()
-                .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE))
-            .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapDatabaseInstances_Delete
-
-```java
-/**
- * Samples for SapDatabaseInstances List.
- */
-public final class SapDatabaseInstancesListSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_List.json
-     */
-    /**
-     * Sample code: SAPDatabaseInstances list by SAP virtual instance.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPDatabaseInstancesListBySAPVirtualInstance(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances().list("test-rg", "X00", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapDatabaseInstances_Get
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
-
-/**
- * Samples for SapCentralServerInstances Start.
- */
-public final class SapCentralServerInstancesStartSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_StartInstanceVM.json
-     */
-    /**
-     * Sample code: Start the virtual machine(s) and the SAP central services instance on it.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void startTheVirtualMachineSAndTheSAPCentralServicesInstanceOnIt(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .start("test-rg", "X00", "centralServer", new StartRequest().withStartVm(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapCentralInstances_StartInstance.json
-     */
-    /**
-     * Sample code: Start the SAP Central Services Instance.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void startTheSAPCentralServicesInstance(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances()
-            .start("test-rg", "X00", "centralServer", new StartRequest(), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapDatabaseInstances_List
-
-```java
-/**
- * Samples for SapDatabaseInstances Get.
- */
-public final class SapDatabaseInstancesGetSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Get.json
-     */
-    /**
-     * Sample code: SAPDatabaseInstances_Get.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPDatabaseInstancesGet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances()
-            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapDatabaseInstances_Start
+### SapApplicationServerInstances_List
 
 ```java
 /**
@@ -955,146 +201,46 @@ public final class SapApplicationServerInstancesListSamples {
 }
 ```
 
-### SapDatabaseInstances_Stop
-
-```java
-/**
- * Samples for SapDatabaseInstances Delete.
- */
-public final class SapDatabaseInstancesDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Delete.json
-     */
-    /**
-     * Sample code: SAPDatabaseInstances_Delete.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPDatabaseInstancesDelete(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances().delete("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapDatabaseInstances_Update
-
-```java
-/**
- * Samples for SapVirtualInstances GetByResourceGroup.
- */
-public final class SapVirtualInstancesGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Get.json
-     */
-    /**
-     * Sample code: SAPVirtualInstances_Get.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPVirtualInstancesGet(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_GetAcssInstallationBlocked.json
-     */
-    /**
-     * Sample code: SAPVirtualInstances Get With ACSS Installation Blocked.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPVirtualInstancesGetWithACSSInstallationBlocked(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SapVirtualInstances_Create
-
-```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerInstance;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for SapApplicationServerInstances Update.
- */
-public final class SapApplicationServerInstancesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_Update.json
-     */
-    /**
-     * Sample code: SAPApplicationServerInstances_Update.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPApplicationServerInstancesUpdate(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        SapApplicationServerInstance resource = manager.sapApplicationServerInstances()
-            .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("tag1", "value1")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### SapVirtualInstances_Delete
+### SapApplicationServerInstances_Start
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
 
 /**
- * Samples for SapVirtualInstances Start.
+ * Samples for SapApplicationServerInstances Start.
  */
-public final class SapVirtualInstancesStartSamples {
+public final class SapApplicationServerInstancesStartSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Start.json
+     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_StartInstanceVM.json
      */
     /**
-     * Sample code: SAPVirtualInstances_Start.
+     * Sample code: Start Virtual Machine and the SAP Application Server Instance on it.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPVirtualInstancesStart(
+    public static void startVirtualMachineAndTheSAPApplicationServerInstanceOnIt(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
+        manager.sapApplicationServerInstances()
+            .start("test-rg", "X00", "app01", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_StartWithInfraOperations.json
+     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_StartInstance.json
      */
     /**
-     * Sample code: SAPVirtualInstances_Start_WithInfraOperations.
+     * Sample code: Start the SAP Application Server Instance.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPVirtualInstancesStartWithInfraOperations(
+    public static void startTheSAPApplicationServerInstance(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
+        manager.sapApplicationServerInstances()
+            .start("test-rg", "X00", "app01", new StartRequest(), com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SapVirtualInstances_GetAvailabilityZoneDetails
+### SapApplicationServerInstances_Stop
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
@@ -1165,7 +311,111 @@ public final class SapApplicationServerInstancesStopSamples {
 }
 ```
 
-### SapVirtualInstances_GetByResourceGroup
+### SapApplicationServerInstances_Update
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerInstance;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SapApplicationServerInstances Update.
+ */
+public final class SapApplicationServerInstancesUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapApplicationServerInstances_Update.json
+     */
+    /**
+     * Sample code: SAPApplicationServerInstances_Update.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPApplicationServerInstancesUpdate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        SapApplicationServerInstance resource = manager.sapApplicationServerInstances()
+            .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("tag1", "value1")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### SapCentralServerInstances_Create
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SapCentralServerInstances Create.
+ */
+public final class SapCentralServerInstancesCreateSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_CreateForHaWithAvailabilitySet.json
+     */
+    /**
+     * Sample code: Create SAP Central Instances for HA System with Availability Set.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void createSAPCentralInstancesForHASystemWithAvailabilitySet(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapCentralServerInstances()
+            .define("centralServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapCentralServerProperties())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_Create.json
+     */
+    /**
+     * Sample code: SapCentralServerInstances_Create.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sapCentralServerInstancesCreate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapCentralServerInstances()
+            .define("centralServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapCentralServerProperties())
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### SapCentralServerInstances_Delete
 
 ```java
 /**
@@ -1187,162 +437,304 @@ public final class SapCentralServerInstancesDeleteSamples {
 }
 ```
 
-### SapVirtualInstances_GetDiskConfigurations
+### SapCentralServerInstances_Get
 
 ```java
 /**
- * Samples for SapVirtualInstances List.
+ * Samples for SapCentralServerInstances Get.
  */
-public final class SapVirtualInstancesListSamples {
+public final class SapCentralServerInstancesGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_ListBySubscription.json
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_Get.json
      */
     /**
-     * Sample code: SAPVirtualInstances_ListBySubscription.
+     * Sample code: SapCentralServerInstances_Get.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPVirtualInstancesListBySubscription(
+    public static void sapCentralServerInstancesGet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().list(com.azure.core.util.Context.NONE);
+        manager.sapCentralServerInstances()
+            .getWithResponse("test-rg", "X00", "centralServer", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SapVirtualInstances_GetSapSupportedSku
+### SapCentralServerInstances_List
 
 ```java
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseScaleMethod;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDeploymentType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapEnvironmentType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapHighAvailabilityType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSizingRecommendationRequest;
+/**
+ * Samples for SapCentralServerInstances List.
+ */
+public final class SapCentralServerInstancesListSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapCentralServerInstances_ListBySapVirtualInstance.json
+     */
+    /**
+     * Sample code: SAPCentralInstances List by SAP virtual instance.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPCentralInstancesListBySAPVirtualInstance(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapCentralServerInstances().list("test-rg", "X00", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapCentralServerInstances_Start
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
 
 /**
- * Samples for SapVirtualInstances GetSizingRecommendations.
+ * Samples for SapCentralServerInstances Start.
  */
-public final class SapVirtualInstancesGetSizingRecommendationsSamples {
+public final class SapCentralServerInstancesStartSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvZone.json
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_StartInstanceVM.json
      */
     /**
-     * Sample code: SAP sizing recommendations for HA with availability zone.
+     * Sample code: Start the virtual machine(s) and the SAP central services instance on it.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPSizingRecommendationsForHAWithAvailabilityZone(
+    public static void startTheVirtualMachineSAndTheSAPCentralServicesInstanceOnIt(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("centralus",
-                new SapSizingRecommendationRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withSaps(75000L)
-                    .withDbMemory(1024L)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+        manager.sapCentralServerInstances()
+            .start("test-rg", "X00", "centralServer", new StartRequest().withStartVm(true),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_Distributed.json
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_StartInstance.json
      */
     /**
-     * Sample code: SAP sizing recommendations for non HA distributed system.
+     * Sample code: Start the SAP Central Services Instance.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPSizingRecommendationsForNonHADistributedSystem(
+    public static void startTheSAPCentralServicesInstance(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("centralus",
-                new SapSizingRecommendationRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withSaps(20000L)
-                    .withDbMemory(1024L)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP),
+        manager.sapCentralServerInstances()
+            .start("test-rg", "X00", "centralServer", new StartRequest(), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapCentralServerInstances_Stop
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
+
+/**
+ * Samples for SapCentralServerInstances Stop.
+ */
+public final class SapCentralServerInstancesStopSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_StopInstance.json
+     */
+    /**
+     * Sample code: Stop the SAP Central Services Instance.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void stopTheSAPCentralServicesInstance(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapCentralServerInstances()
+            .stop("test-rg", "X00", "centralServer", new StopRequest().withSoftStopTimeoutSeconds(1200L),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvSet.json
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_StopInstanceVM.json
      */
     /**
-     * Sample code: SAP sizing recommendations for HA with availability set.
+     * Sample code: Stop the SAP Central Services Instance and its underlying Virtual Machine(s).
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPSizingRecommendationsForHAWithAvailabilitySet(
+    public static void stopTheSAPCentralServicesInstanceAndItsUnderlyingVirtualMachineS(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("centralus",
-                new SapSizingRecommendationRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.THREE_TIER)
-                    .withSaps(75000L)
-                    .withDbMemory(1024L)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_SingleServer.json
-     */
-    /**
-     * Sample code: SAP sizing recommendations for single server.
-     * 
-     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
-     */
-    public static void sAPSizingRecommendationsForSingleServer(
-        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("centralus",
-                new SapSizingRecommendationRequest().withAppLocation("eastus")
-                    .withEnvironment(SapEnvironmentType.NON_PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                    .withSaps(60000L)
-                    .withDbMemory(2000L)
-                    .withDatabaseType(SapDatabaseType.HANA)
-                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP),
+        manager.sapCentralServerInstances()
+            .stop("test-rg", "X00", "centralServer", new StopRequest().withDeallocateVm(true),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SapVirtualInstances_GetSizingRecommendations
+### SapCentralServerInstances_Update
 
 ```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerInstance;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Samples for SapVirtualInstances Delete.
+ * Samples for SapCentralServerInstances Update.
  */
-public final class SapVirtualInstancesDeleteSamples {
+public final class SapCentralServerInstancesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Delete.json
+     * x-ms-original-file: 2024-09-01/SapCentralInstances_Update.json
      */
     /**
-     * Sample code: SAPVirtualInstances_Delete.
+     * Sample code: SapCentralServerInstances_Update.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPVirtualInstancesDelete(
+    public static void sapCentralServerInstancesUpdate(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().delete("test-rg", "X00", com.azure.core.util.Context.NONE);
+        SapCentralServerInstance resource = manager.sapCentralServerInstances()
+            .getWithResponse("test-rg", "X00", "centralServer", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("tag1", "value1")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
 
-### SapVirtualInstances_List
+### SapDatabaseInstances_Create
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SapDatabaseInstances Create.
+ */
+public final class SapDatabaseInstancesCreateSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_CreateForHaWithAvailabilitySet.json
+     */
+    /**
+     * Sample code: Create SAP Database Instances for HA System with Availability Set.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void createSAPDatabaseInstancesForHASystemWithAvailabilitySet(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .define("databaseServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapDatabaseProperties())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Create.json
+     */
+    /**
+     * Sample code: SAPDatabaseInstances_Create.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPDatabaseInstancesCreate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .define("databaseServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapDatabaseProperties())
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### SapDatabaseInstances_Delete
+
+```java
+/**
+ * Samples for SapDatabaseInstances Delete.
+ */
+public final class SapDatabaseInstancesDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Delete.json
+     */
+    /**
+     * Sample code: SAPDatabaseInstances_Delete.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPDatabaseInstancesDelete(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances().delete("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapDatabaseInstances_Get
+
+```java
+/**
+ * Samples for SapDatabaseInstances Get.
+ */
+public final class SapDatabaseInstancesGetSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Get.json
+     */
+    /**
+     * Sample code: SAPDatabaseInstances_Get.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPDatabaseInstancesGet(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapDatabaseInstances_List
+
+```java
+/**
+ * Samples for SapDatabaseInstances List.
+ */
+public final class SapDatabaseInstancesListSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_List.json
+     */
+    /**
+     * Sample code: SAPDatabaseInstances list by SAP virtual instance.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPDatabaseInstancesListBySAPVirtualInstance(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances().list("test-rg", "X00", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapDatabaseInstances_Start
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
@@ -1381,7 +773,119 @@ public final class SapDatabaseInstancesStartSamples {
 }
 ```
 
-### SapVirtualInstances_ListByResourceGroup
+### SapDatabaseInstances_Stop
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
+
+/**
+ * Samples for SapDatabaseInstances Stop.
+ */
+public final class SapDatabaseInstancesStopSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstance.json
+     */
+    /**
+     * Sample code: Stop the database instance of the SAP system.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void stopTheDatabaseInstanceOfTheSAPSystem(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(0L),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceSoft.json
+     */
+    /**
+     * Sample code: Soft Stop the database instance of the SAP system.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopTheDatabaseInstanceOfTheSAPSystem(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(300L),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceSoftVM.json
+     */
+    /**
+     * Sample code: Soft Stop the database instance of the SAP system and the underlying Virtual Machine(s).
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopTheDatabaseInstanceOfTheSAPSystemAndTheUnderlyingVirtualMachineS(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(300L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_StopInstanceVM.json
+     */
+    /**
+     * Sample code: Stop the database instance of the SAP system and the underlying Virtual Machine(s).
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void stopTheDatabaseInstanceOfTheSAPSystemAndTheUnderlyingVirtualMachineS(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapDatabaseInstances()
+            .stop("test-rg", "X00", "db0", new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapDatabaseInstances_Update
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstance;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SapDatabaseInstances Update.
+ */
+public final class SapDatabaseInstancesUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapDatabaseInstances_Update.json
+     */
+    /**
+     * Sample code: SAPDatabaseInstances_Update.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPDatabaseInstancesUpdate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        SapDatabaseInstance resource = manager.sapDatabaseInstances()
+            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### SapVirtualInstances_Create
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.ApplicationServerConfiguration;
@@ -3488,29 +2992,115 @@ public final class SapVirtualInstancesCreateSamples {
 }
 ```
 
-### SapVirtualInstances_Start
+### SapVirtualInstances_Delete
 
 ```java
 /**
- * Samples for SapVirtualInstances ListByResourceGroup.
+ * Samples for SapVirtualInstances Delete.
  */
-public final class SapVirtualInstancesListByResourceGroupSamples {
+public final class SapVirtualInstancesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapVirtualInstances_ListByResourceGroup.json
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Delete.json
      */
     /**
-     * Sample code: SAPVirtualInstances_ListByResourceGroup.
+     * Sample code: SAPVirtualInstances_Delete.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPVirtualInstancesListByResourceGroup(
+    public static void sAPVirtualInstancesDelete(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().listByResourceGroup("test-rg", com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances().delete("test-rg", "X00", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### SapVirtualInstances_Stop
+### SapVirtualInstances_GetAvailabilityZoneDetails
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapAvailabilityZoneDetailsRequest;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
+
+/**
+ * Samples for SapVirtualInstances GetAvailabilityZoneDetails.
+ */
+public final class SapVirtualInstancesGetAvailabilityZoneDetailsSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_northeurope.json
+     */
+    /**
+     * Sample code: SAP Availability zone details in north europe.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPAvailabilityZoneDetailsInNorthEurope(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getAvailabilityZoneDetailsWithResponse("northeurope",
+                new SapAvailabilityZoneDetailsRequest().withAppLocation("northeurope")
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDatabaseType(SapDatabaseType.HANA),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_eastus.json
+     */
+    /**
+     * Sample code: SAP Availability zone details in east us.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPAvailabilityZoneDetailsInEastUs(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getAvailabilityZoneDetailsWithResponse("eastus",
+                new SapAvailabilityZoneDetailsRequest().withAppLocation("eastus")
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDatabaseType(SapDatabaseType.HANA),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_GetByResourceGroup
+
+```java
+/**
+ * Samples for SapVirtualInstances GetByResourceGroup.
+ */
+public final class SapVirtualInstancesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Get.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_Get.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesGet(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_GetAcssInstallationBlocked.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances Get With ACSS Installation Blocked.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesGetWithACSSInstallationBlocked(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_GetDiskConfigurations
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
@@ -3567,24 +3157,434 @@ public final class SapVirtualInstancesGetDiskConfigurationsSamples {
 }
 ```
 
-### SapVirtualInstances_Update
+### SapVirtualInstances_GetSapSupportedSku
 
 ```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDeploymentType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapEnvironmentType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapHighAvailabilityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSupportedSkusRequest;
+
 /**
- * Samples for SapCentralServerInstances List.
+ * Samples for SapVirtualInstances GetSapSupportedSku.
  */
-public final class SapCentralServerInstancesListSamples {
+public final class SapVirtualInstancesGetSapSupportedSkuSamples {
     /*
-     * x-ms-original-file: 2024-09-01/SapCentralServerInstances_ListBySapVirtualInstance.json
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvSet.json
      */
     /**
-     * Sample code: SAPCentralInstances List by SAP virtual instance.
+     * Sample code: SAP supported SKUs for distributed HA environment with Availability set.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPCentralInstancesListBySAPVirtualInstance(
+    public static void sAPSupportedSKUsForDistributedHAEnvironmentWithAvailabilitySet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapCentralServerInstances().list("test-rg", "X00", com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .getSapSupportedSkuWithResponse("centralus",
+                new SapSupportedSkusRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvZone.json
+     */
+    /**
+     * Sample code: SAP supported Skus for HA with availability zone.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSupportedSkusForHAWithAvailabilityZone(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSapSupportedSkuWithResponse("centralus",
+                new SapSupportedSkusRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_Distributed.json
+     */
+    /**
+     * Sample code: SAP supported SKUs for distributed Non HA environment.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSupportedSKUsForDistributedNonHAEnvironment(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSapSupportedSkuWithResponse("centralus",
+                new SapSupportedSkusRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withDatabaseType(SapDatabaseType.HANA),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_SingleServer.json
+     */
+    /**
+     * Sample code: SAP supported SKUs for single server.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSupportedSKUsForSingleServer(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSapSupportedSkuWithResponse("centralus",
+                new SapSupportedSkusRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.NON_PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+                    .withDatabaseType(SapDatabaseType.HANA),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_GetSizingRecommendations
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseScaleMethod;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDeploymentType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapEnvironmentType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapHighAvailabilityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapProductType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSizingRecommendationRequest;
+
+/**
+ * Samples for SapVirtualInstances GetSizingRecommendations.
+ */
+public final class SapVirtualInstancesGetSizingRecommendationsSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvZone.json
+     */
+    /**
+     * Sample code: SAP sizing recommendations for HA with availability zone.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSizingRecommendationsForHAWithAvailabilityZone(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSizingRecommendationsWithResponse("centralus",
+                new SapSizingRecommendationRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withSaps(75000L)
+                    .withDbMemory(1024L)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_Distributed.json
+     */
+    /**
+     * Sample code: SAP sizing recommendations for non HA distributed system.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSizingRecommendationsForNonHADistributedSystem(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSizingRecommendationsWithResponse("centralus",
+                new SapSizingRecommendationRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withSaps(20000L)
+                    .withDbMemory(1024L)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvSet.json
+     */
+    /**
+     * Sample code: SAP sizing recommendations for HA with availability set.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSizingRecommendationsForHAWithAvailabilitySet(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSizingRecommendationsWithResponse("centralus",
+                new SapSizingRecommendationRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withSaps(75000L)
+                    .withDbMemory(1024L)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_SingleServer.json
+     */
+    /**
+     * Sample code: SAP sizing recommendations for single server.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPSizingRecommendationsForSingleServer(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .getSizingRecommendationsWithResponse("centralus",
+                new SapSizingRecommendationRequest().withAppLocation("eastus")
+                    .withEnvironment(SapEnvironmentType.NON_PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+                    .withSaps(60000L)
+                    .withDbMemory(2000L)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_List
+
+```java
+/**
+ * Samples for SapVirtualInstances List.
+ */
+public final class SapVirtualInstancesListSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_ListBySubscription.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_ListBySubscription.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesListBySubscription(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_ListByResourceGroup
+
+```java
+/**
+ * Samples for SapVirtualInstances ListByResourceGroup.
+ */
+public final class SapVirtualInstancesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_ListByResourceGroup.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesListByResourceGroup(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances().listByResourceGroup("test-rg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_Start
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
+
+/**
+ * Samples for SapVirtualInstances Start.
+ */
+public final class SapVirtualInstancesStartSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Start.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_Start.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesStart(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_StartWithInfraOperations.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_Start_WithInfraOperations.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesStartWithInfraOperations(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_Stop
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
+
+/**
+ * Samples for SapVirtualInstances Stop.
+ */
+public final class SapVirtualInstancesStopSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_StopVMAndSystem.json
+     */
+    /**
+     * Sample code: Stop the virtual machine(s) and the SAP system on it.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void stopTheVirtualMachineSAndTheSAPSystemOnIt(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_SoftStop.json
+     */
+    /**
+     * Sample code: Soft Stop of SapVirtualInstances_Stop.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopOfSapVirtualInstancesStop(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Stop.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_Stop.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesStop(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_SoftStopVMAndSystem.json
+     */
+    /**
+     * Sample code: Soft Stop the virtual machine(s) and the SAP system on it.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopTheVirtualMachineSAndTheSAPSystemOnIt(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapVirtualInstances_Update
+
+```java
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedResourcesNetworkAccessType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstance;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SapVirtualInstances Update.
+ */
+public final class SapVirtualInstancesUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_Update.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_Update.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesUpdate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        SapVirtualInstance resource = manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
+            .withProperties(new UpdateSapVirtualInstanceProperties())
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2024-09-01/SapVirtualInstances_UpdateTrustedAccess.json
+     */
+    /**
+     * Sample code: SAPVirtualInstances_TrustedAccessEnable_Update.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void sAPVirtualInstancesTrustedAccessEnableUpdate(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        SapVirtualInstance resource = manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
+            .withProperties(new UpdateSapVirtualInstanceProperties()
+                .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```

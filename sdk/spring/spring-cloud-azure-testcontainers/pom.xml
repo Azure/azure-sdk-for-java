@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-testcontainers</artifactId>
-  <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
 
   <name>Spring Cloud Azure Testcontainers</name>
   <description>Spring Cloud Azure Testcontainers</description>
@@ -56,38 +56,38 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.23.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>6.1.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.30.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.31.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.25.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.26.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
-      <version>3.4.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>azure</artifactId>
-      <version>1.20.6</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
+      <version>1.21.3</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -103,25 +103,25 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.5</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.11.4</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.12.2</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.26.3</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.4</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.20.6</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
+      <version>1.21.3</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -131,7 +131,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -167,8 +167,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-testcontainers:[3.4.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
-                <include>org.testcontainers:azure:[1.20.6]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-testcontainers:[3.5.5]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+                <include>org.testcontainers:azure:[1.21.3]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

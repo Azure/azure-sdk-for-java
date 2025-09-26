@@ -20,6 +20,7 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 public class InstrumentationOptions {
     private boolean isTracingEnabled = true;
     private boolean isMetricsEnabled = true;
+    private boolean isExperimentalFeaturesEnabled = false;
     private Object telemetryProvider = null;
 
     /**
@@ -130,6 +131,28 @@ public class InstrumentationOptions {
      */
     public Object getTelemetryProvider() {
         return telemetryProvider;
+    }
+
+    /**
+     * Returns true if experimental features are enabled, false otherwise.
+     *
+     * @return true if experimental features are enabled, false otherwise.
+     */
+    public boolean isExperimentalFeaturesEnabled() {
+        return isExperimentalFeaturesEnabled;
+    }
+
+    /**
+     * Sets whether experimental features are enabled.
+     * When experimental features are enabled, the client library may report additional telemetry
+     * or add attributes that are not stable and may change in future releases.
+     *
+     * @param experimentalFeaturesEnabled true to enable experimental features, false to disable.
+     * @return The updated {@link InstrumentationOptions} object.
+     */
+    public InstrumentationOptions setExperimentalFeaturesEnabled(boolean experimentalFeaturesEnabled) {
+        isExperimentalFeaturesEnabled = experimentalFeaturesEnabled;
+        return this;
     }
 
     /**

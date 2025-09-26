@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datamigration.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
 import com.azure.resourcemanager.datamigration.models.AvailableServiceSku;
@@ -23,26 +23,26 @@ public final class ServicesListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"bmzgwes\",\"sku\":{\"name\":\"xwefohecbvopwndy\",\"family\":\"eallklmtkhlo\",\"size\":\"x\",\"tier\":\"vbrdfjmzsyzfho\"},\"capacity\":{\"minimum\":1472660607,\"maximum\":704144060,\"default\":2107805309,\"scaleType\":\"automatic\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"fyaloowwzizzny\",\"sku\":{\"name\":\"qz\",\"family\":\"ifgufyjfdkqiyv\",\"size\":\"jokgwesymzqh\",\"tier\":\"p\"},\"capacity\":{\"minimum\":1190353630,\"maximum\":24105077,\"default\":403924911,\"scaleType\":\"none\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataMigrationManager manager = DataMigrationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvailableServiceSku> response
-            = manager.services().listSkus("v", "xmycjimryvwgcw", com.azure.core.util.Context.NONE);
+            = manager.services().listSkus("upkcbkfukdljqnvt", "dydshk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bmzgwes", response.iterator().next().resourceType());
-        Assertions.assertEquals("xwefohecbvopwndy", response.iterator().next().sku().name());
-        Assertions.assertEquals("eallklmtkhlo", response.iterator().next().sku().family());
-        Assertions.assertEquals("x", response.iterator().next().sku().size());
-        Assertions.assertEquals("vbrdfjmzsyzfho", response.iterator().next().sku().tier());
-        Assertions.assertEquals(1472660607, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(704144060, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(2107805309, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.AUTOMATIC, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals("fyaloowwzizzny", response.iterator().next().resourceType());
+        Assertions.assertEquals("qz", response.iterator().next().sku().name());
+        Assertions.assertEquals("ifgufyjfdkqiyv", response.iterator().next().sku().family());
+        Assertions.assertEquals("jokgwesymzqh", response.iterator().next().sku().size());
+        Assertions.assertEquals("p", response.iterator().next().sku().tier());
+        Assertions.assertEquals(1190353630, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(24105077, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(403924911, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.NONE, response.iterator().next().capacity().scaleType());
     }
 }

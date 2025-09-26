@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The CustomRolloutSpecificationCanary model.
+ * The canary region configuration.
  */
 @Fluent
 public final class CustomRolloutSpecificationCanary extends TrafficRegions {

@@ -265,7 +265,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -288,7 +288,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -316,7 +316,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -339,7 +339,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -363,7 +363,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -387,7 +387,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -415,7 +415,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -445,7 +445,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -464,7 +464,7 @@ public final class ServicesImpl {
      *
      * @param queueServiceProperties The StorageService properties.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -493,7 +493,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -515,7 +515,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -543,7 +543,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -565,7 +565,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -588,7 +588,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -611,7 +611,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -639,7 +639,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -669,7 +669,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -693,7 +693,7 @@ public final class ServicesImpl {
      * (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -723,7 +723,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -744,7 +744,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -771,7 +771,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -792,7 +792,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -814,7 +814,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -836,7 +836,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -863,7 +863,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -892,7 +892,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -915,7 +915,7 @@ public final class ServicesImpl {
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -956,7 +956,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1001,7 +1001,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1047,7 +1047,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1082,7 +1082,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1118,7 +1118,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1163,7 +1163,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1209,7 +1209,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1243,7 +1243,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1279,7 +1279,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1326,7 +1326,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1374,7 +1374,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1409,7 +1409,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1445,7 +1445,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1492,7 +1492,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1540,7 +1540,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1575,7 +1575,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      * body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
      * Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.

@@ -8,21 +8,4 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-      </modules>
-    </profile>
-
-    <profile>
-      <id>dev</id>
-      <modules>
-        <module>../../eng/code-quality-reports</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>

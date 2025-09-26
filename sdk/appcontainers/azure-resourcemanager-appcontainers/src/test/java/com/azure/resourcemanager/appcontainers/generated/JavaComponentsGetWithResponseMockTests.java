@@ -21,7 +21,7 @@ public final class JavaComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"oulndhzyoeojhto\",\"value\":\"h\"},{\"propertyName\":\"idmytzln\",\"value\":\"xpno\"},{\"propertyName\":\"oanfbcswqagyw\",\"value\":\"xigvjrktpgaeuk\"},{\"propertyName\":\"wohpmwhqnucs\",\"value\":\"hsidsjtdlpbnin\"}],\"scale\":{\"minReplicas\":1398156477,\"maxReplicas\":360940550},\"serviceBinds\":[{\"name\":\"fcpu\",\"serviceId\":\"e\"},{\"name\":\"jcciklhsyek\",\"serviceId\":\"renxolriyehqbe\"},{\"name\":\"dlh\",\"serviceId\":\"wbdbfg\"}]},\"id\":\"punytjl\",\"name\":\"esmmpathubtahd\",\"type\":\"an\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"llbsupubdxc\",\"value\":\"lhzwh\"},{\"propertyName\":\"kvbos\",\"value\":\"fdizhrjq\"},{\"propertyName\":\"aytvsl\",\"value\":\"kcgn\"},{\"propertyName\":\"arlcjiwgsxfaiocw\",\"value\":\"ujjgnfgrzxbarc\"}],\"scale\":{\"minReplicas\":871647713,\"maxReplicas\":1219246298},\"serviceBinds\":[{\"name\":\"mjw\",\"serviceId\":\"jcytesmfucrtfo\"}]},\"id\":\"hua\",\"name\":\"zmzivrtrfzhhez\",\"type\":\"hjud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class JavaComponentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JavaComponent response = manager.javaComponents()
-            .getWithResponse("xrqrkijpeuqlsd", "eqztvxwmwwm", "swenawwa", com.azure.core.util.Context.NONE)
+            .getWithResponse("tfnressfepgck", "cjmgvsnvbtqdxfm", "ym", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("oulndhzyoeojhto", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("h", response.properties().configurations().get(0).value());
-        Assertions.assertEquals(1398156477, response.properties().scale().minReplicas());
-        Assertions.assertEquals(360940550, response.properties().scale().maxReplicas());
-        Assertions.assertEquals("fcpu", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("e", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("llbsupubdxc", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("lhzwh", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(871647713, response.properties().scale().minReplicas());
+        Assertions.assertEquals(1219246298, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("mjw", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("jcytesmfucrtfo", response.properties().serviceBinds().get(0).serviceId());
     }
 }

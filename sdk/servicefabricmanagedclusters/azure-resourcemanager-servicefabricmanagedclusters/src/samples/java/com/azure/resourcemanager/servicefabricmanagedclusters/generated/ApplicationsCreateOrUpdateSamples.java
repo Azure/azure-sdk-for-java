@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class ApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationPutOperation_example_max.json
+     * x-ms-original-file: 2025-06-01-preview/ApplicationPutOperation_example_max.json
      */
     /**
      * Sample code: Put an application with maximum parameters.
@@ -61,7 +61,7 @@ public final class ApplicationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApplicationPutOperation_example_min.json
+     * x-ms-original-file: 2025-06-01-preview/ApplicationPutOperation_example_min.json
      */
     /**
      * Sample code: Put an application with minimum parameters.

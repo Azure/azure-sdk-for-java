@@ -4,7 +4,4 @@
 
 <suppressions>
   <suppress files="com.azure.analytics.purview.sharing.models.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.analytics.purview.sharing.implementation.ReceivedSharesImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.analytics.purview.sharing.implementation.SentSharesImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.analytics.purview.sharing.implementation.ShareResourcesImpl.java" checks="MissingJavadocMethodCheck" />
 </suppressions>

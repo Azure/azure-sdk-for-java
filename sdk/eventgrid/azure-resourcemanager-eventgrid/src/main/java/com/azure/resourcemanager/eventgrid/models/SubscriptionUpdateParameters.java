@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionUpdateParametersProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Properties of the Event Subscription update.
@@ -127,6 +128,29 @@ public final class SubscriptionUpdateParameters implements JsonSerializable<Subs
             this.innerProperties = new SubscriptionUpdateParametersProperties();
         }
         this.innerProperties().withExpirationTimeUtc(expirationTimeUtc);
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @param tags the tags value to set.
+     * @return the SubscriptionUpdateParameters object itself.
+     */
+    public SubscriptionUpdateParameters withTags(Map<String, String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParametersProperties();
+        }
+        this.innerProperties().withTags(tags);
         return this;
     }
 

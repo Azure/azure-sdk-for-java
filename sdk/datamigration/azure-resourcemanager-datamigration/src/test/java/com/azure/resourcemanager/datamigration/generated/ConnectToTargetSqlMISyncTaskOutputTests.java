@@ -11,7 +11,7 @@ public final class ConnectToTargetSqlMISyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetSqlMISyncTaskOutput model = BinaryData.fromString(
-            "{\"targetServerVersion\":\"ayqigynduhav\",\"targetServerBrandVersion\":\"lkthu\",\"validationErrors\":[{\"message\":\"lbg\",\"actionableMessage\":\"duiertgcc\",\"filePath\":\"vaolpsslqlf\",\"lineNumber\":\"dnbbglzps\",\"hResult\":1295617641,\"stackTrace\":\"mcwyhzdxssadb\"},{\"message\":\"nvdfznuda\",\"actionableMessage\":\"vxzbncb\",\"filePath\":\"lpstdbhhxsrzdz\",\"lineNumber\":\"erscdntne\",\"hResult\":1072156994,\"stackTrace\":\"jmygtdsslswtmwer\"}]}")
+            "{\"targetServerVersion\":\"m\",\"targetServerBrandVersion\":\"hfcf\",\"validationErrors\":[{\"message\":\"gkn\",\"actionableMessage\":\"vyi\",\"filePath\":\"qodfvp\",\"lineNumber\":\"hoxgsgbpf\",\"hResult\":369289727,\"stackTrace\":\"tx\"},{\"message\":\"flbqvgaq\",\"actionableMessage\":\"gafcqu\",\"filePath\":\"dvetnws\",\"lineNumber\":\"utnw\",\"hResult\":1517277198,\"stackTrace\":\"cvuzhyrmewipmve\"}]}")
             .toObject(ConnectToTargetSqlMISyncTaskOutput.class);
     }
 

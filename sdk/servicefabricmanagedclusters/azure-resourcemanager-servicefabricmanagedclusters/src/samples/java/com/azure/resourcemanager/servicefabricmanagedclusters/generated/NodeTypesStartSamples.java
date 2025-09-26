@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesStartSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/StartNodes_example.json
+     * x-ms-original-file: 2025-06-01-preview/StartNodes_example.json
      */
     /**
      * Sample code: Start nodes.

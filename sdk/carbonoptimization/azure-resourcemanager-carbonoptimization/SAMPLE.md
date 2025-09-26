@@ -35,27 +35,6 @@ public final class CarbonServiceQueryCarbonEmissionDataAvailableDateRangeSamples
 ### CarbonService_QueryCarbonEmissionReports
 
 ```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-04-01/listOperations.json
-     */
-    /**
-     * Sample code: Operations_List.
-     * 
-     * @param manager Entry point to CarbonOptimizationManager.
-     */
-    public static void operationsList(com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Operations_List
-
-```java
 import com.azure.resourcemanager.carbonoptimization.models.CategoryTypeEnum;
 import com.azure.resourcemanager.carbonoptimization.models.DateRange;
 import com.azure.resourcemanager.carbonoptimization.models.EmissionScopeEnum;
@@ -562,6 +541,27 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
                 .withCarbonScopeList(Arrays.asList(EmissionScopeEnum.SCOPE1, EmissionScopeEnum.SCOPE3))
                 .withCategoryType(CategoryTypeEnum.RESOURCE_GROUP)
                 .withTopItems(2), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2025-04-01/listOperations.json
+     */
+    /**
+     * Sample code: Operations_List.
+     * 
+     * @param manager Entry point to CarbonOptimizationManager.
+     */
+    public static void operationsList(com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

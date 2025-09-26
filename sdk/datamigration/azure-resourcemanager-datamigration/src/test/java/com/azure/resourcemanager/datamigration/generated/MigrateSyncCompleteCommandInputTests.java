@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrateSyncCompleteCommandInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSyncCompleteCommandInput model = BinaryData
-            .fromString("{\"databaseName\":\"gnxkrxdqmidtth\",\"commitTimeStamp\":\"2021-10-23T16:11:35Z\"}")
-            .toObject(MigrateSyncCompleteCommandInput.class);
-        Assertions.assertEquals("gnxkrxdqmidtth", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T16:11:35Z"), model.commitTimestamp());
+        MigrateSyncCompleteCommandInput model
+            = BinaryData.fromString("{\"databaseName\":\"mrfhirctymox\",\"commitTimeStamp\":\"2021-09-02T06:19:11Z\"}")
+                .toObject(MigrateSyncCompleteCommandInput.class);
+        Assertions.assertEquals("mrfhirctymox", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T06:19:11Z"), model.commitTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSyncCompleteCommandInput model = new MigrateSyncCompleteCommandInput().withDatabaseName("gnxkrxdqmidtth")
-            .withCommitTimestamp(OffsetDateTime.parse("2021-10-23T16:11:35Z"));
+        MigrateSyncCompleteCommandInput model = new MigrateSyncCompleteCommandInput().withDatabaseName("mrfhirctymox")
+            .withCommitTimestamp(OffsetDateTime.parse("2021-09-02T06:19:11Z"));
         model = BinaryData.fromObject(model).toObject(MigrateSyncCompleteCommandInput.class);
-        Assertions.assertEquals("gnxkrxdqmidtth", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T16:11:35Z"), model.commitTimestamp());
+        Assertions.assertEquals("mrfhirctymox", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T06:19:11Z"), model.commitTimestamp());
     }
 }

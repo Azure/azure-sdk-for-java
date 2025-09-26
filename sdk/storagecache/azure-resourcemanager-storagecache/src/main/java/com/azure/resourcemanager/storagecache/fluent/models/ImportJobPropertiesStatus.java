@@ -20,9 +20,9 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJobPropertiesStatus> {
     /*
-     * The state of the import job. InProgress indicates the import is still running. Canceled indicates it has been
-     * canceled by the user. Completed indicates import finished, successfully importing all discovered blobs into the
-     * Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found to be
+     * The operational state of the import job. InProgress indicates the import is still running. Canceled indicates it
+     * has been canceled by the user. Completed indicates import finished, successfully importing all discovered blobs
+     * into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found to be
      * conflicting and could not be imported or other errors were encountered. Failed means the import was unable to
      * complete due to a fatal error.
      */
@@ -49,17 +49,47 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
     private Long totalBlobsImported;
 
     /*
+     * New or modified files that have been imported into the filesystem.
+     */
+    private Long importedFiles;
+
+    /*
+     * New or modified directories that have been imported into the filesystem.
+     */
+    private Long importedDirectories;
+
+    /*
+     * Newly added symbolic links into the filesystem.
+     */
+    private Long importedSymlinks;
+
+    /*
+     * Files that already exist in the filesystem and have not been modified.
+     */
+    private Long preexistingFiles;
+
+    /*
+     * Directories that already exist in the filesystem and have not been modified.
+     */
+    private Long preexistingDirectories;
+
+    /*
+     * Symbolic links that already exist in the filesystem and have not been modified.
+     */
+    private Long preexistingSymlinks;
+
+    /*
      * A recent and frequently updated rate of total files, directories, and symlinks imported per second.
      */
     private Long blobsImportedPerSecond;
 
     /*
-     * The time of the last completed archive operation
+     * The time (in UTC) of the last completed import job.
      */
     private OffsetDateTime lastCompletionTime;
 
     /*
-     * The time the latest archive operation started
+     * The time (in UTC) the latest import job started.
      */
     private OffsetDateTime lastStartedTime;
 
@@ -80,11 +110,11 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
     }
 
     /**
-     * Get the state property: The state of the import job. InProgress indicates the import is still running. Canceled
-     * indicates it has been canceled by the user. Completed indicates import finished, successfully importing all
-     * discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either
-     * were found to be conflicting and could not be imported or other errors were encountered. Failed means the import
-     * was unable to complete due to a fatal error.
+     * Get the state property: The operational state of the import job. InProgress indicates the import is still
+     * running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully
+     * importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some
+     * blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed
+     * means the import was unable to complete due to a fatal error.
      * 
      * @return the state value.
      */
@@ -129,6 +159,62 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
     }
 
     /**
+     * Get the importedFiles property: New or modified files that have been imported into the filesystem.
+     * 
+     * @return the importedFiles value.
+     */
+    public Long importedFiles() {
+        return this.importedFiles;
+    }
+
+    /**
+     * Get the importedDirectories property: New or modified directories that have been imported into the filesystem.
+     * 
+     * @return the importedDirectories value.
+     */
+    public Long importedDirectories() {
+        return this.importedDirectories;
+    }
+
+    /**
+     * Get the importedSymlinks property: Newly added symbolic links into the filesystem.
+     * 
+     * @return the importedSymlinks value.
+     */
+    public Long importedSymlinks() {
+        return this.importedSymlinks;
+    }
+
+    /**
+     * Get the preexistingFiles property: Files that already exist in the filesystem and have not been modified.
+     * 
+     * @return the preexistingFiles value.
+     */
+    public Long preexistingFiles() {
+        return this.preexistingFiles;
+    }
+
+    /**
+     * Get the preexistingDirectories property: Directories that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingDirectories value.
+     */
+    public Long preexistingDirectories() {
+        return this.preexistingDirectories;
+    }
+
+    /**
+     * Get the preexistingSymlinks property: Symbolic links that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingSymlinks value.
+     */
+    public Long preexistingSymlinks() {
+        return this.preexistingSymlinks;
+    }
+
+    /**
      * Get the blobsImportedPerSecond property: A recent and frequently updated rate of total files, directories, and
      * symlinks imported per second.
      * 
@@ -139,7 +225,7 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
     }
 
     /**
-     * Get the lastCompletionTime property: The time of the last completed archive operation.
+     * Get the lastCompletionTime property: The time (in UTC) of the last completed import job.
      * 
      * @return the lastCompletionTime value.
      */
@@ -148,7 +234,7 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
     }
 
     /**
-     * Get the lastStartedTime property: The time the latest archive operation started.
+     * Get the lastStartedTime property: The time (in UTC) the latest import job started.
      * 
      * @return the lastStartedTime value.
      */
@@ -217,6 +303,19 @@ public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJ
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("totalBlobsImported".equals(fieldName)) {
                     deserializedImportJobPropertiesStatus.totalBlobsImported = reader.getNullable(JsonReader::getLong);
+                } else if ("importedFiles".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.importedFiles = reader.getNullable(JsonReader::getLong);
+                } else if ("importedDirectories".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.importedDirectories = reader.getNullable(JsonReader::getLong);
+                } else if ("importedSymlinks".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.importedSymlinks = reader.getNullable(JsonReader::getLong);
+                } else if ("preexistingFiles".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.preexistingFiles = reader.getNullable(JsonReader::getLong);
+                } else if ("preexistingDirectories".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.preexistingDirectories
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("preexistingSymlinks".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.preexistingSymlinks = reader.getNullable(JsonReader::getLong);
                 } else if ("blobsImportedPerSecond".equals(fieldName)) {
                     deserializedImportJobPropertiesStatus.blobsImportedPerSecond
                         = reader.getNullable(JsonReader::getLong);

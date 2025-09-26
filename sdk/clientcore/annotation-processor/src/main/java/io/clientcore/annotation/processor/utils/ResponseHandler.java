@@ -313,7 +313,7 @@ public final class ResponseHandler {
         } else {
             body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
             body.addStatement(
-                "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());");
+                "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());");
             addSerializationFormatResponseBodyStatements(body);
         }
     }

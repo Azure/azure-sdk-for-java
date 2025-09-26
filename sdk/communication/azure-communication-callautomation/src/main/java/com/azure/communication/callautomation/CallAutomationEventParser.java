@@ -23,20 +23,7 @@ import com.azure.communication.callautomation.models.events.ContinuousDtmfRecogn
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
 import com.azure.communication.callautomation.models.events.CreateCallFailed;
-import com.azure.communication.callautomation.models.events.DialogCompleted;
-import com.azure.communication.callautomation.models.events.DialogConsent;
-import com.azure.communication.callautomation.models.events.DialogFailed;
-import com.azure.communication.callautomation.models.events.DialogHangup;
-import com.azure.communication.callautomation.models.events.DialogLanguageChange;
-import com.azure.communication.callautomation.models.events.DialogSensitivityUpdate;
-import com.azure.communication.callautomation.models.events.DialogStarted;
-import com.azure.communication.callautomation.models.events.DialogTransfer;
-import com.azure.communication.callautomation.models.events.HoldAudioCompleted;
-import com.azure.communication.callautomation.models.events.HoldAudioPaused;
-import com.azure.communication.callautomation.models.events.HoldAudioResumed;
-import com.azure.communication.callautomation.models.events.HoldAudioStarted;
 import com.azure.communication.callautomation.models.events.HoldFailed;
-import com.azure.communication.callautomation.models.events.IncomingCall;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
@@ -44,8 +31,6 @@ import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.PlayFailed;
-import com.azure.communication.callautomation.models.events.PlayPaused;
-import com.azure.communication.callautomation.models.events.PlayResumed;
 import com.azure.communication.callautomation.models.events.PlayStarted;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
@@ -55,7 +40,6 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
-import com.azure.communication.callautomation.models.events.StartRecordingFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -123,8 +107,6 @@ public final class CallAutomationEventParser {
                 ret = CallConnected.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
                 ret = CallDisconnected.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
-                ret = IncomingCall.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantFailed")) {
                 ret = AddParticipantFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantSucceeded")) {
@@ -137,8 +119,6 @@ public final class CallAutomationEventParser {
                 ret = ParticipantsUpdated.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
                 ret = RecordingStateChanged.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.StartRecordingFailed")) {
-                ret = StartRecordingFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
                 ret = PlayCompleted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
@@ -147,10 +127,6 @@ public final class CallAutomationEventParser {
                 ret = PlayStarted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCanceled")) {
                 ret = PlayCanceled.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayPaused")) {
-                ret = PlayPaused.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayResumed")) {
-                ret = PlayResumed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
                 ret = RecognizeCompleted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeFailed")) {
@@ -175,22 +151,6 @@ public final class CallAutomationEventParser {
                 ret = CancelAddParticipantSucceeded.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = CancelAddParticipantFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
-                ret = DialogStarted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {
-                ret = DialogCompleted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogFailed")) {
-                ret = DialogFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogConsent")) {
-                ret = DialogConsent.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogHangup")) {
-                ret = DialogHangup.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogLanguageChange")) {
-                ret = DialogLanguageChange.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogTransfer")) {
-                ret = DialogTransfer.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
-                ret = DialogSensitivityUpdate.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = TranscriptionStarted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
@@ -205,14 +165,6 @@ public final class CallAutomationEventParser {
                 ret = AnswerFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
                 ret = CreateCallFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldAudioCompleted")) {
-                ret = HoldAudioCompleted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldAudioStarted")) {
-                ret = HoldAudioStarted.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldAudioPaused")) {
-                ret = HoldAudioPaused.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldAudioResumed")) {
-                ret = HoldAudioResumed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.HoldFailed")) {
                 ret = HoldFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {

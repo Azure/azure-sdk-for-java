@@ -21,6 +21,11 @@ public final class Runtime implements JsonSerializable<Runtime> {
      */
     private RuntimeJava java;
 
+    /*
+     * .NET app configuration
+     */
+    private RuntimeDotnet dotnet;
+
     /**
      * Creates an instance of Runtime class.
      */
@@ -48,6 +53,26 @@ public final class Runtime implements JsonSerializable<Runtime> {
     }
 
     /**
+     * Get the dotnet property: .NET app configuration.
+     * 
+     * @return the dotnet value.
+     */
+    public RuntimeDotnet dotnet() {
+        return this.dotnet;
+    }
+
+    /**
+     * Set the dotnet property: .NET app configuration.
+     * 
+     * @param dotnet the dotnet value to set.
+     * @return the Runtime object itself.
+     */
+    public Runtime withDotnet(RuntimeDotnet dotnet) {
+        this.dotnet = dotnet;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -55,6 +80,9 @@ public final class Runtime implements JsonSerializable<Runtime> {
     public void validate() {
         if (java() != null) {
             java().validate();
+        }
+        if (dotnet() != null) {
+            dotnet().validate();
         }
     }
 
@@ -65,6 +93,7 @@ public final class Runtime implements JsonSerializable<Runtime> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("java", this.java);
+        jsonWriter.writeJsonField("dotnet", this.dotnet);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +114,8 @@ public final class Runtime implements JsonSerializable<Runtime> {
 
                 if ("java".equals(fieldName)) {
                     deserializedRuntime.java = RuntimeJava.fromJson(reader);
+                } else if ("dotnet".equals(fieldName)) {
+                    deserializedRuntime.dotnet = RuntimeDotnet.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsSourceControlsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/SourceControls_Get.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * SourceControls_Get.json
      */
     /**
      * Sample code: Get Container App's SourceControl.

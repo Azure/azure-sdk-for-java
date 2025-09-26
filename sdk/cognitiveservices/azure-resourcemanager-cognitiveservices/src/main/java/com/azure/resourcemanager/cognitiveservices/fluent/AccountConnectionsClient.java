@@ -81,7 +81,7 @@ public interface AccountConnectionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body Parameters for account connection update.
+     * @param connection Parameters for account connection update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,7 +90,7 @@ public interface AccountConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectionPropertiesV2BasicResourceInner> updateWithResponse(String resourceGroupName, String accountName,
-        String connectionName, ConnectionUpdateContent body, Context context);
+        String connectionName, ConnectionUpdateContent connection, Context context);
 
     /**
      * Update Cognitive Services account connection under the specified account.
@@ -113,7 +113,7 @@ public interface AccountConnectionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param connectionName Friendly name of the connection.
-     * @param body The object for creating or updating a new account connection.
+     * @param connection The object for creating or updating a new account connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +122,7 @@ public interface AccountConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectionPropertiesV2BasicResourceInner> createWithResponse(String resourceGroupName, String accountName,
-        String connectionName, ConnectionPropertiesV2BasicResourceInner body, Context context);
+        String connectionName, ConnectionPropertiesV2BasicResourceInner connection, Context context);
 
     /**
      * Create or update Cognitive Services account connection under the specified account.

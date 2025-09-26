@@ -40,9 +40,6 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<BlobTag> getBlobTagSet() {
-        if (this.blobTagSet == null) {
-            this.blobTagSet = new ArrayList<>();
-        }
         return this.blobTagSet;
     }
 

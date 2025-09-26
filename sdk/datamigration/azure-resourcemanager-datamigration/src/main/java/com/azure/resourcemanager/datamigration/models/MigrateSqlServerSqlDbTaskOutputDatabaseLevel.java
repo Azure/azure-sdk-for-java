@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Database level result for Sql Server to Azure Sql DB migration.
+ * The MigrateSqlServerSqlDbTaskOutputDatabaseLevel model.
  */
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateSqlServerSqlDbTaskOutput {

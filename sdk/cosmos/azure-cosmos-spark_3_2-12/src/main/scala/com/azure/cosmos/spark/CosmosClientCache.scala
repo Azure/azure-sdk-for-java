@@ -5,14 +5,29 @@ package com.azure.cosmos.spark
 import com.azure.core.credential.{AccessToken, TokenCredential, TokenRequestContext}
 import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions
+import com.azure.core.util.TracingOptions
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry
+import com.azure.cosmos.implementation.{Configs, CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
+import com.azure.monitor.opentelemetry.autoconfigure.{AzureMonitorAutoConfigure, AzureMonitorAutoConfigureOptions}
 import com.azure.resourcemanager.cosmos.CosmosManager
+import com.microsoft.applicationinsights.TelemetryConfiguration
+import io.micrometer.azuremonitor.AzureMonitorMeterRegistry
+import io.micrometer.core.instrument.{Clock, MeterRegistry}
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry
+import io.netty.util.ResourceLeakDetector
+import io.opentelemetry.api.common.AttributeKey
+import io.opentelemetry.api.logs.Severity
+import io.opentelemetry.sdk.OpenTelemetrySdk
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
+import io.opentelemetry.sdk.metrics.SdkMeterProvider
+import io.opentelemetry.sdk.trace.samplers.Sampler
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -21,9 +36,11 @@ import reactor.core.scheduler.{Scheduler, Schedulers}
 
 import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
+import java.util
 import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
+import java.util.function.BiPredicate
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
@@ -109,7 +126,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
     purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
   }
@@ -136,6 +152,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private def validateAadConfigs(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
+    val shouldLog = !(cosmosClientConfiguration.resourceGroupName.isDefined &&
+      cosmosClientConfiguration.subscriptionId.isDefined &&
+      cosmosClientConfiguration.tenantId.isDefined)
+    if (shouldLog) {
+      logWarning(
+        "To create Databases, Containers and other resources in Cosmos DB using Microsoft Entra ID, " +
+          "you need to provide resourceGroupName, subscriptionId and tenantId in the configuration. " +
+          "Otherwise, the Cosmos Catalog will not be able to create resources."
+      )
+    }
+    shouldLog
+  }
+
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
                                cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
@@ -149,17 +179,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
         // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
         cosmosClientConfiguration.authConfig match {
-            case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
-                sparkCatalogClient =
-                    CosmosCatalogManagementSDKClient(
-                        cosmosClientConfiguration.resourceGroupName.get,
-                        cosmosClientConfiguration.databaseAccountName,
-                        createCosmosManagementClient(
-                            cosmosClientConfiguration.subscriptionId.get,
-                            new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                            aadAuthConfig),
-                        cosmosAsyncClient)
-            case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+          case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    aadAuthConfig),
+                  cosmosAsyncClient)
+            }
+          case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -169,7 +202,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                     managedIdentityAuth),
                   cosmosAsyncClient)
-            case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+            }
+          case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -179,7 +214,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                     accessTokenProviderAuth),
                   cosmosAsyncClient)
-            case _ =>
+            }
+          case _ =>
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
@@ -204,6 +240,350 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private[this] def toTokenCredential(
+                                       cosmosClientConfiguration: CosmosClientConfiguration,
+                                       authConfig: CosmosAuthConfig
+                                     ): TokenCredential = {
+
+    authConfig match {
+      case masterKeyAuthConfig: CosmosMasterKeyAuthConfig =>
+        throw new IllegalStateException("Cannot create TokenCredential from CosmosMasterKeyAuthConfig")
+      case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
+        if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
+          val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
+          new ClientCertificateCredentialBuilder()
+            .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+            .tenantId(servicePrincipalAuthConfig.tenantId)
+            .clientId(servicePrincipalAuthConfig.clientId)
+            .pemCertificate(certInputStream)
+            .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
+            .build()
+        } else {
+          new ClientSecretCredentialBuilder()
+            .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+            .tenantId(servicePrincipalAuthConfig.tenantId)
+            .clientId(servicePrincipalAuthConfig.clientId)
+            .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
+            .build()
+        }
+      case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
+        createTokenCredential(managedIdentityAuthConfig)
+      case accessTokenAuthConfig: CosmosAccessTokenAuthConfig =>
+        createTokenCredential(accessTokenAuthConfig)
+      case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
+    }
+  }
+
+  private[this] def hasAnyMeterRegistry(registry: MeterRegistry): Boolean = {
+    if (!registry.isInstanceOf[CompositeMeterRegistry]) {
+      logInfo(s"Found real MeterRegistry - $registry, ${registry.getClass.getCanonicalName}")
+      true
+    } else {
+      registry
+        .asInstanceOf[CompositeMeterRegistry]
+        .getRegistries
+        .stream()
+        .filter(r => hasAnyMeterRegistry(r))
+        .count() > 0
+    }
+  }
+  private[this] def configureDiagnostics
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    builder: CosmosClientBuilder
+  ): Unit = {
+    val isAzureMonitorOpenTelemetryEnabled = cosmosClientConfiguration.azureMonitorConfig.isDefined &&
+      cosmosClientConfiguration.azureMonitorConfig.get.enabled
+
+    val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.isDefined
+
+    if (isSampledDiagnosticsLoggerEnabled || isAzureMonitorOpenTelemetryEnabled) {
+      configureDiagnosticsCore (
+        cosmosClientConfiguration,
+        builder,
+        isAzureMonitorOpenTelemetryEnabled,
+        isSampledDiagnosticsLoggerEnabled
+      )
+    } else {
+      logInfo("No diagnostics enabled")
+    }
+  }
+
+  private[this] def configureOpenTelemetrySdk
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    azMonConfig: AzureMonitorConfig
+  ) : OpenTelemetrySdk = {
+
+    System.setProperty("otel.java.global-autoconfigure.enabled", "true")
+
+    val sdkBuilder = AutoConfiguredOpenTelemetrySdk
+      .builder
+      .addPropertiesCustomizer(_ => {
+        val additionalSystemPropertyOverrides = new util.HashMap[String, String](2)
+        additionalSystemPropertyOverrides.put(
+          Configs.APPLICATIONINSIGHTS_CONNECTION_STRING,
+          azMonConfig.connectionString)
+        additionalSystemPropertyOverrides.put(
+          "otel.java.global-autoconfigure.enabled",
+          "true")
+        additionalSystemPropertyOverrides.put(
+          "otel.metrics.exporter",
+          "none")
+        additionalSystemPropertyOverrides.put(
+          "otel.traces.exporter", "azure_monitor")
+        additionalSystemPropertyOverrides.put(
+          "applicationinsights.live.metrics.enabled",
+          azMonConfig.liveMetricsEnabled.toString)
+
+        additionalSystemPropertyOverrides
+      })
+
+    val azMonitorOptions: AzureMonitorAutoConfigureOptions =
+      if (azMonConfig.authEnabled) {
+        new AzureMonitorAutoConfigureOptions()
+          .connectionString(azMonConfig.connectionString)
+          //.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+          .credential(
+            toTokenCredential(
+              cosmosClientConfiguration,
+              azMonConfig.authConfig.get))
+      } else {
+        new AzureMonitorAutoConfigureOptions()
+          .connectionString(azMonConfig.connectionString)
+      }
+
+    AzureMonitorAutoConfigure.customize(sdkBuilder, azMonitorOptions)
+
+    val openTelemetryWithMeterProvider: OpenTelemetrySdk = sdkBuilder
+      .addResourceCustomizer((resource, configProperties) => {
+        val resourceBuilder = resource
+          .toBuilder
+
+        val machineId = Option(ClientTelemetry.blockingGetOrLoadMachineId(null))
+        if (resource.getAttributes.get(AttributeKey.stringKey("service.name")).startsWith("unknown_service")) {
+          val svcName = s"${CosmosConstants.currentName}:${CosmosConstants.currentVersion}"
+          val instanceName = cosmosClientConfiguration.getRoleInstanceName(machineId)
+
+          logInfo("Initializing Resource Customizer with Service attributes - "
+            + s"service.name: $svcName, service.instance.id: $instanceName")
+
+          resourceBuilder
+            .put("service.namespace", "azure-cosmos-spark")
+            .put("service.name", svcName)
+            .put("service.version", CosmosConstants.currentVersion)
+            .put("service.instance.id", instanceName)
+
+        } else {
+          logInfo("Initializing Resource Customizer without Service attributes")
+        }
+
+        resourceBuilder
+          .build()
+      })
+      .addSamplerCustomizer((oldSampler, _) => {
+        // OpenTelemetry only allows head-sampling - meaning you have to make a choice
+        // whether to sample-in the span when the Span is started
+        // this allows controlling predictable amount of spans being processed
+        // It has a few drawbacks as well - you can't change the sampling decision based
+        // on the outcome of the span (when the span ends) - so, you can't evert the decision
+        // to sample-in a previously sampled-out span when an error happens
+        // This is why i would strongly encourage any customer to also enable sampled
+        // diagnostics - those will at least make sure diagnostic logs are maintained for
+        // errors - including the Cosmos diagnostics.
+
+        Sampler
+          .parentBased(
+            new CosmosMaxCountPerIntervalSpanHeadSampler(
+              azMonConfig.samplingRateMaxCount,
+              azMonConfig.samplingRateIntervalInSeconds,
+              azMonConfig.samplingRate
+            )
+          )
+      })
+      .build
+      .getOpenTelemetrySdk
+
+    // Only way to disable metrics is the hack to clone OpenTelemetrySdk and override MeterProvider
+    // with effective noop implementation
+    // SdkMeterProvider is effectively a no-op as long as no reader registrations exist
+    val noopSdkMeterProvider = SdkMeterProvider.builder()
+      .build()
+
+    OpenTelemetrySdk
+      .builder()
+      .setPropagators(openTelemetryWithMeterProvider.getPropagators)
+      .setLoggerProvider(openTelemetryWithMeterProvider.getSdkLoggerProvider)
+      .setTracerProvider(openTelemetryWithMeterProvider.getSdkTracerProvider)
+      .setMeterProvider(noopSdkMeterProvider)
+      .build()
+  }
+
+  private[this] def configureAzureMonitorDiagnostics
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    isSampledDiagnosticsLoggerEnabled: Boolean,
+    telemetryConfig: CosmosClientTelemetryConfig
+  ): TracingOptions = {
+    val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
+    val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
+
+    // Pass OpenTelemetry container to TracingOptions.
+    val tracingOptions = new OpenTelemetryTracingOptions()
+      .setOpenTelemetry(openTelemetry)
+      .setEnabled(true)
+    val tracerProviderName = Option(tracingOptions.getTracerProvider)
+      .map(p => p.getCanonicalName)
+      .getOrElse("NO_TRACER_PROVIDER")
+    logInfo(
+      s"TracingOptions - enabled: ${tracingOptions.setEnabled(true)}, "
+        + s"tracerProvider: $tracerProviderName")
+
+    if (azMonConfig.metricCollectionIntervalInSeconds > 0) {
+      val legacyTelemetryConfig = TelemetryConfiguration
+        .createDefault()
+      legacyTelemetryConfig.setConnectionString(azMonConfig.connectionString)
+
+      val azureMonitorLegacyMeterConfig = new CosmosAzureMonitorLegacyConfig(
+        60,
+        azMonConfig.connectionString
+      )
+
+      val azureMonitorRegistry = AzureMonitorMeterRegistry
+        .builder(azureMonitorLegacyMeterConfig)
+        .telemetryConfiguration(legacyTelemetryConfig)
+        .clock(Clock.SYSTEM)
+        .build()
+
+      CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
+      val metricsOptions = new CosmosMicrometerMetricsOptions()
+        .meterRegistry(azureMonitorRegistry)
+        .configureDefaultTagNames(
+          CosmosMetricTagName.CONTAINER,
+          CosmosMetricTagName.CLIENT_CORRELATION_ID,
+          CosmosMetricTagName.OPERATION,
+          CosmosMetricTagName.OPERATION_STATUS_CODE,
+          CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
+          CosmosMetricTagName.SERVICE_ADDRESS,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
+          CosmosMetricTagName.REQUEST_STATUS_CODE,
+          CosmosMetricTagName.REQUEST_OPERATION_TYPE
+        )
+        .setMetricCategories(
+          CosmosMetricCategory.SYSTEM,
+          CosmosMetricCategory.OPERATION_SUMMARY,
+          CosmosMetricCategory.REQUEST_SUMMARY,
+          CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
+          CosmosMetricCategory.DIRECT_REQUESTS,
+          CosmosMetricCategory.DIRECT_CHANNELS
+        )
+        .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
+
+      logInfo("Azure Monitor metrics configured.")
+      telemetryConfig.metricsOptions(metricsOptions)
+    } else {
+      logInfo("Azure Monitor metrics disabled.")
+    }
+
+    logInfo(s"Azure Monitor OpenTelemetry configured")
+
+    tracingOptions
+  }
+
+  private[this] def configureSampledDiagnosticsLogger
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    telemetryConfig: CosmosClientTelemetryConfig
+  ): CosmosClientTelemetryConfig = {
+
+    val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
+    val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
+      sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
+      sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
+    )
+
+    val thresholds = new CosmosDiagnosticsThresholds()
+      .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
+      .setPointOperationLatencyThreshold(
+        Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
+      )
+      .setNonPointOperationLatencyThreshold(
+        Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
+      )
+
+    val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
+      if (statusCode < 400) {
+        false
+      } else if (
+        (statusCode == 404 && subStatusCode == 0)
+          || statusCode == 409
+          || statusCode == 412
+      ) {
+        false
+      } else {
+        statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
+      }
+    }
+
+    thresholds.setFailureHandler(failureHandler)
+    telemetryConfig
+      .diagnosticsThresholds(thresholds)
+      .diagnosticsHandler(diagnosticsLogger)
+  }
+
+  private[this] def configureDiagnosticsCore
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    builder: CosmosClientBuilder,
+    isAzureMonitorOpenTelemetryEnabled: Boolean,
+    isSampledDiagnosticsLoggerEnabled: Boolean
+  ) : Unit =  {
+
+    val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
+      .getOrElse("")
+
+    val clientCorrelationId = SparkSession.getActiveSession match {
+      case Some(session) =>
+        val ctx = session.sparkContext
+
+        if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
+          s"${CosmosClientMetrics.executorId}-${ctx.appName}"
+        } else {
+          s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
+        }
+      case None => customApplicationNameSuffix
+    }
+
+    var telemetryConfig = ImplementationBridgeHelpers
+      .CosmosClientTelemetryConfigHelper
+      .getCosmosClientTelemetryConfigAccessor
+      .setOtelSpanAttributeNamingSchema(
+        new CosmosClientTelemetryConfig().clientCorrelationId(clientCorrelationId),
+        "V1"
+      )
+
+    if (isAzureMonitorOpenTelemetryEnabled) {
+      val tracingOptions = configureAzureMonitorDiagnostics(
+        cosmosClientConfiguration,
+        isSampledDiagnosticsLoggerEnabled,
+        telemetryConfig
+      )
+
+      telemetryConfig = telemetryConfig
+        .tracingOptions(tracingOptions)
+    } else {
+      logInfo("Azure Monitor traces/logs disabled.")
+    }
+
+
+    if (isSampledDiagnosticsLoggerEnabled) {
+      telemetryConfig = configureSampledDiagnosticsLogger(cosmosClientConfiguration, telemetryConfig)
+    }
+
+    builder.clientTelemetryConfig(telemetryConfig)
+  }
+
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
   private[this] def createCosmosAsyncClient(cosmosClientConfiguration: CosmosClientConfiguration,
@@ -217,6 +597,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         )
       }
 
+      logInfo(s"Creating a CosmosClient for endpoint ${cosmosClientConfiguration.endpoint} "
+      + s"(${cosmosClientConfiguration.applicationName}), Netty Leak detection enabled: "
+      + s"${ResourceLeakDetector.isEnabled} at level: ${ResourceLeakDetector.getLevel}.")
       var builder = new CosmosClientBuilder()
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
@@ -225,81 +608,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
                   .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
 
+      val globalMetricsExporter = System.getProperty("otel.metrics.exporter")
+      if (Option.apply(globalMetricsExporter).getOrElse("").isEmpty) {
+        System.setProperty("otel.metrics.exporter", "none")
+      } else {
+        logInfo(s"Global Metrics Exporter $globalMetricsExporter")
+      }
       val authConfig = cosmosClientConfiguration.authConfig
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
-          case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
-              val tokenCredential = if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
-                val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
-                new ClientCertificateCredentialBuilder()
-                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
-                  .tenantId(servicePrincipalAuthConfig.tenantId)
-                  .clientId(servicePrincipalAuthConfig.clientId)
-                  .pemCertificate(certInputStream)
-                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
-                  .build()
-              } else {
-                new ClientSecretCredentialBuilder()
-                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
-                  .tenantId(servicePrincipalAuthConfig.tenantId)
-                  .clientId(servicePrincipalAuthConfig.clientId)
-                  .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
-                  .build()
-              }
-
-              builder.credential(tokenCredential)
-          case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
-            builder.credential(createTokenCredential(managedIdentityAuthConfig))
-          case accessTokenAuthConfig: CosmosAccessTokenAuthConfig =>
-            builder.credential(createTokenCredential(accessTokenAuthConfig))
-          case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
+          case _ => builder.credential(toTokenCredential(cosmosClientConfiguration, authConfig))
       }
 
-      if (CosmosClientMetrics.meterRegistry.isDefined) {
-          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
-              .getOrElse("")
-
-          val clientCorrelationId = SparkSession.getActiveSession match {
-              case Some(session) =>
-                  val ctx = session.sparkContext
-
-                  if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
-                      s"${CosmosClientMetrics.executorId}-${ctx.appName}"
-                  } else {
-                      s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
-                  }
-              case None => customApplicationNameSuffix
-          }
-
-          val metricsOptions = new CosmosMicrometerMetricsOptions()
-            .meterRegistry(CosmosClientMetrics.meterRegistry.get)
-            .configureDefaultTagNames(
-              CosmosMetricTagName.CONTAINER,
-              CosmosMetricTagName.CLIENT_CORRELATION_ID,
-              CosmosMetricTagName.OPERATION,
-              CosmosMetricTagName.OPERATION_STATUS_CODE,
-              CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
-              CosmosMetricTagName.SERVICE_ADDRESS,
-              CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
-              CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
-              CosmosMetricTagName.REQUEST_STATUS_CODE,
-              CosmosMetricTagName.REQUEST_OPERATION_TYPE
-            )
-            .setMetricCategories(
-              CosmosMetricCategory.SYSTEM,
-              CosmosMetricCategory.OPERATION_SUMMARY,
-              CosmosMetricCategory.REQUEST_SUMMARY,
-              CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
-              CosmosMetricCategory.DIRECT_REQUESTS,
-              CosmosMetricCategory.DIRECT_CHANNELS
-            )
-
-          val telemetryConfig = new CosmosClientTelemetryConfig()
-              .metricsOptions(metricsOptions)
-              .clientCorrelationId(clientCorrelationId)
-
-          builder.clientTelemetryConfig(telemetryConfig)
-      }
+      configureDiagnostics(cosmosClientConfiguration, builder)
 
       if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
           builder.endpointDiscoveryEnabled(false)
@@ -357,19 +678,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
       }
 
-      if (cosmosClientConfiguration.enableClientTelemetry) {
-          System.setProperty(
-              "COSMOS.CLIENT_TELEMETRY_ENDPOINT",
-              cosmosClientConfiguration.clientTelemetryEndpoint.getOrElse(
-                  "https://tools.cosmos.azure.com/api/clienttelemetry/trace"
-              ))
-          System.setProperty(
-              "COSMOS.CLIENT_TELEMETRY_ENABLED",
-              "true")
-
-          builder.clientTelemetryEnabled(true)
-      }
-
       // We saw incidents where even when Spark restarted Executors we haven't been able
       // to recover - most likely due to stale cache state being broadcast
       // Ideally the SDK would always be able to recover from stale cache state
@@ -419,10 +727,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
 
-  private[this] def createCosmosManagementClient(
-                                                    subscriptionId: String,
-                                                    azureEnvironment: AzureEnvironment,
-                                                    authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
+  private[this] def createCosmosManagementClient
+  (
+    subscriptionId: String,
+    azureEnvironment: AzureEnvironment,
+    authConfig: CosmosServicePrincipalAuthConfig
+  ): CosmosManager = {
+
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
       val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
         val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
@@ -455,7 +766,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] def createCosmosManagementClient(subscriptionId: String,
                                                  azureEnvironment: AzureEnvironment,
                                                  authConfig: CosmosAccessTokenAuthConfig): CosmosManager = {
-    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+    val tenantId = authConfig.tenantId.getOrElse(
+      throw new IllegalArgumentException("Tenant ID must be provided for CosmosAccessTokenAuthConfig")
+    )
+    val azureProfile = new AzureProfile(tenantId, subscriptionId, azureEnvironment)
 
     CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
   }
@@ -586,20 +900,24 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[spark] case class ClientConfigurationWrapper (
-                                                        endpoint: String,
-                                                        authConfig: CosmosAuthConfig,
-                                                        applicationName: String,
-                                                        useGatewayMode: Boolean,
-                                                        // Intentionally not looking at proactive connection
-                                                        // initialization to distinguish cache key
-                                                        // You would never want separate clients just for this
-                                                        // difference
-                                                        httpConnectionPoolSize: Int,
-                                                        readConsistencyStrategy: ReadConsistencyStrategy,
-                                                        preferredRegionsList: String,
-                                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
+  private[spark] case class ClientConfigurationWrapper
+  (
+    endpoint: String,
+    authConfig: CosmosAuthConfig,
+    applicationName: String,
+    useGatewayMode: Boolean,
+    // Intentionally not looking at proactive connection
+    // initialization to distinguish cache key
+    // You would never want separate clients just for this
+    // difference
+    httpConnectionPoolSize: Int,
+    readConsistencyStrategy: ReadConsistencyStrategy,
+    preferredRegionsList: String,
+    clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+    clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+    sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
+    azureMonitorConfig: Option[AzureMonitorConfig]
+  )
 
   private[this] object ClientConfigurationWrapper {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
@@ -615,7 +933,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None => ""
         },
         clientConfig.clientBuilderInterceptors,
-        clientConfig.clientInterceptors
+        clientConfig.clientInterceptors,
+        clientConfig.sampledDiagnosticsLoggerConfig,
+        clientConfig.azureMonitorConfig
       )
     }
   }
@@ -681,6 +1001,29 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       })
 
       returnValue.publishOn(aadAuthBoundedElastic)
+    }
+  }
+
+  private[this] class CosmosAzureMonitorLegacyConfig
+  (
+    val intervalInSeconds: Int,
+    val effectiveConnectionString: String
+  ) extends io.micrometer.azuremonitor.AzureMonitorConfig {
+
+    override def get(s: String): String = {
+      null
+    }
+
+    override def step(): Duration = {
+      Duration.ofSeconds(intervalInSeconds)
+    }
+
+    override def connectionString(): String = effectiveConnectionString
+
+    override def instrumentationKey(): String = ???
+
+    override def enabled(): Boolean = {
+      true
     }
   }
 }

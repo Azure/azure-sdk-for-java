@@ -16,109 +16,6 @@
 ### FileSystems_CreateOrUpdate
 
 ```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Operations_List_MinimumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void operationsListMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Operations_List_MaximumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void operationsListMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### FileSystems_Delete
-
-```java
-/**
- * Samples for FileSystems List.
- */
-public final class FileSystemsListSamples {
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_ListBySubscription_MinimumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsListBySubscriptionMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_ListBySubscription_MaximumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsListBySubscriptionMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### FileSystems_GetByResourceGroup
-
-```java
-/**
- * Samples for FileSystems ListByResourceGroup.
- */
-public final class FileSystemsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_ListByResourceGroup_MaximumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().listByResourceGroup("rgDell", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_ListByResourceGroup_MinimumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsListByResourceGroupMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().listByResourceGroup("rgDell", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### FileSystems_List
-
-```java
 import com.azure.resourcemanager.dell.storage.models.EncryptionIdentityProperties;
 import com.azure.resourcemanager.dell.storage.models.EncryptionIdentityType;
 import com.azure.resourcemanager.dell.storage.models.EncryptionProperties;
@@ -219,7 +116,145 @@ public final class FileSystemsCreateOrUpdateSamples {
 }
 ```
 
+### FileSystems_Delete
+
+```java
+/**
+ * Samples for FileSystems Delete.
+ */
+public final class FileSystemsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_Delete_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsDeleteMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().delete("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_Delete_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsDeleteMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().delete("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FileSystems_GetByResourceGroup
+
+```java
+/**
+ * Samples for FileSystems GetByResourceGroup.
+ */
+public final class FileSystemsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void fileSystemsGetMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().getByResourceGroupWithResponse("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_Get_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void fileSystemsGetMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().getByResourceGroupWithResponse("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FileSystems_List
+
+```java
+/**
+ * Samples for FileSystems List.
+ */
+public final class FileSystemsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_ListBySubscription_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsListBySubscriptionMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_ListBySubscription_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsListBySubscriptionMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### FileSystems_ListByResourceGroup
+
+```java
+/**
+ * Samples for FileSystems ListByResourceGroup.
+ */
+public final class FileSystemsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_ListByResourceGroup_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().listByResourceGroup("rgDell", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: FileSystems_ListByResourceGroup_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to DellStorageManager.
+     */
+    public static void
+        fileSystemsListByResourceGroupMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.fileSystems().listByResourceGroup("rgDell", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FileSystems_Update
 
 ```java
 import com.azure.resourcemanager.dell.storage.models.Capacity;
@@ -303,70 +338,35 @@ public final class FileSystemsUpdateSamples {
 }
 ```
 
-### FileSystems_Update
-
-```java
-/**
- * Samples for FileSystems Delete.
- */
-public final class FileSystemsDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_Delete_MaximumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsDeleteMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().delete("rgDell", "abcd", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: FileSystems_Delete_MinimumSet_Gen.
-     * 
-     * @param manager Entry point to DellStorageManager.
-     */
-    public static void
-        fileSystemsDeleteMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().delete("rgDell", "abcd", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Operations_List
 
 ```java
 /**
- * Samples for FileSystems GetByResourceGroup.
+ * Samples for Operations List.
  */
-public final class FileSystemsGetByResourceGroupSamples {
+public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_Get_MaximumSet_Gen.
+     * Sample code: Operations_List_MinimumSet_Gen.
      * 
      * @param manager Entry point to DellStorageManager.
      */
-    public static void fileSystemsGetMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().getByResourceGroupWithResponse("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    public static void operationsListMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FileSystems_Get_MinimumSet_Gen.
+     * Sample code: Operations_List_MaximumSet_Gen.
      * 
      * @param manager Entry point to DellStorageManager.
      */
-    public static void fileSystemsGetMinimumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
-        manager.fileSystems().getByResourceGroupWithResponse("rgDell", "abcd", com.azure.core.util.Context.NONE);
+    public static void operationsListMaximumSetGen(com.azure.resourcemanager.dell.storage.DellStorageManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

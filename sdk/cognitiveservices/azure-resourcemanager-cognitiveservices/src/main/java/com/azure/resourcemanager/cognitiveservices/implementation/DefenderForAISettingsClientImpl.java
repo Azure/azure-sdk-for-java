@@ -64,7 +64,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientDefenderForAISettings")
     public interface DefenderForAISettingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings")

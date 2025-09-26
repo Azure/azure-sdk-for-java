@@ -48,7 +48,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .apply();
     }
 }

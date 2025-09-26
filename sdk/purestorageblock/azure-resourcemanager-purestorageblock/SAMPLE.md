@@ -56,6 +56,469 @@
 ### AvsStorageContainerVolumes_Delete
 
 ```java
+/**
+ * Samples for AvsStorageContainerVolumes Delete.
+ */
+public final class AvsStorageContainerVolumesDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainerVolumes_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsStorageContainerVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainerVolumes()
+            .delete("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainerVolumes_Get
+
+```java
+/**
+ * Samples for AvsStorageContainerVolumes Get.
+ */
+public final class AvsStorageContainerVolumesGetSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainerVolumes_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsStorageContainerVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainerVolumes()
+            .getWithResponse("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainerVolumes_ListByAvsStorageContainer
+
+```java
+/**
+ * Samples for AvsStorageContainerVolumes ListByAvsStorageContainer.
+ */
+public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainerVolumes_ListByAvsStorageContainer.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsStorageContainerVolumesListByAvsStorageContainer(
+        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainerVolumes()
+            .listByAvsStorageContainer("rgpurestorage", "storagePoolname", "name", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainerVolumes_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainerVolumeUpdate;
+import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainerVolumeUpdateProperties;
+import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
+
+/**
+ * Samples for AvsStorageContainerVolumes Update.
+ */
+public final class AvsStorageContainerVolumesUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainerVolumes_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsStorageContainerVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainerVolumes()
+            .update("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
+                new AvsStorageContainerVolumeUpdate().withProperties(new AvsStorageContainerVolumeUpdateProperties()
+                    .withSoftDeletion(new SoftDeletion().withDestroyed(true))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainers_Delete
+
+```java
+/**
+ * Samples for AvsStorageContainers Delete.
+ */
+public final class AvsStorageContainersDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainers_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsStorageContainersDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainers()
+            .delete("rgpurestorage", "storagePoolName", "storageContainerName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainers_Get
+
+```java
+/**
+ * Samples for AvsStorageContainers Get.
+ */
+public final class AvsStorageContainersGetSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainers_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsStorageContainersGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainers()
+            .getWithResponse("rgpurestorage", "storagePoolName", "storageContainerName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsStorageContainers_ListByStoragePool
+
+```java
+/**
+ * Samples for AvsStorageContainers ListByStoragePool.
+ */
+public final class AvsStorageContainersListByStoragePoolSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsStorageContainers_ListByStoragePool.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsStorageContainersListByStoragePool(
+        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsStorageContainers().listByStoragePool("rgpurestorage", "spName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVmVolumes_Delete
+
+```java
+/**
+ * Samples for AvsVmVolumes Delete.
+ */
+public final class AvsVmVolumesDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVmVolumes_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVmVolumes()
+            .delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVmVolumes_Get
+
+```java
+/**
+ * Samples for AvsVmVolumes Get.
+ */
+public final class AvsVmVolumesGetSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVmVolumes_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVmVolumes()
+            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVmVolumes_ListByAvsVm
+
+```java
+/**
+ * Samples for AvsVmVolumes ListByAvsVm.
+ */
+public final class AvsVmVolumesListByAvsVmSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVmVolumes_ListByAvsVm.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsVmVolumesListByAvsVm(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVmVolumes()
+            .listByAvsVm("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVmVolumes_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.AvsVmVolumeUpdate;
+import com.azure.resourcemanager.purestorageblock.models.AvsVmVolumeUpdateProperties;
+import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
+
+/**
+ * Samples for AvsVmVolumes Update.
+ */
+public final class AvsVmVolumesUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVmVolumes_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVmVolumes()
+            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
+                new AvsVmVolumeUpdate().withProperties(
+                    new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVms_Delete
+
+```java
+/**
+ * Samples for AvsVms Delete.
+ */
+public final class AvsVmsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVms_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVms_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVms().delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVms_Get
+
+```java
+/**
+ * Samples for AvsVms Get.
+ */
+public final class AvsVmsGetSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVms_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVms_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVms()
+            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVms_ListByStoragePool
+
+```java
+/**
+ * Samples for AvsVms ListByStoragePool.
+ */
+public final class AvsVmsListByStoragePoolSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVms_ListByStoragePool.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        avsVmsListByStoragePool(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVms().listByStoragePool("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvsVms_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.AvsVmUpdate;
+import com.azure.resourcemanager.purestorageblock.models.AvsVmUpdateProperties;
+import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
+
+/**
+ * Samples for AvsVms Update.
+ */
+public final class AvsVmsUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/AvsVms_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvsVms_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void avsVmsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.avsVms()
+            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb",
+                new AvsVmUpdate().withProperties(
+                    new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/Operations_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void operationsList(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Operations_List_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List_MinimumGen_Set.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        operationsListMinimumGenSet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_GetBillingReport
+
+```java
+/**
+ * Samples for Reservations GetBillingReport.
+ */
+public final class ReservationsGetBillingReportSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_GetBillingReport_MaximumSet.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsGetBillingReportMaximumSet(
+        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations()
+            .getBillingReportWithResponse("rgpurestorage", "reservationname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_GetBillingStatus
+
+```java
+/**
+ * Samples for Reservations GetBillingStatus.
+ */
+public final class ReservationsGetBillingStatusSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_GetBillingStatus_MaximumSet.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsGetBillingStatusMaximumSet(
+        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations()
+            .getBillingStatusWithResponse("rgpurestorage", "reservationname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_GetResourceLimits
+
+```java
+/**
+ * Samples for Reservations GetResourceLimits.
+ */
+public final class ReservationsGetResourceLimitsSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_GetResourceLimits.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        reservationsGetResourceLimits(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations()
+            .getResourceLimitsWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_Create
+
+```java
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolProperties;
@@ -106,317 +569,7 @@ public final class StoragePoolsCreateSamples {
 }
 ```
 
-### AvsStorageContainerVolumes_Get
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/Operations_List_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Operations_List.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void operationsList(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-11-01/Operations_List_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Operations_List_MinimumGen_Set.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        operationsListMinimumGenSet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsStorageContainerVolumes_ListByAvsStorageContainer
-
-```java
-/**
- * Samples for StoragePools GetByResourceGroup.
- */
-public final class StoragePoolsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_Get.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void storagePoolsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsStorageContainerVolumes_Update
-
-```java
-/**
- * Samples for AvsVmVolumes Delete.
- */
-public final class AvsVmVolumesDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVmVolumes_Delete.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVmVolumes()
-            .delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsStorageContainers_Delete
-
-```java
-/**
- * Samples for Reservations GetBillingStatus.
- */
-public final class ReservationsGetBillingStatusSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Reservations_GetBillingStatus_MaximumSet.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void reservationsGetBillingStatusMaximumSet(
-        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.reservations()
-            .getBillingStatusWithResponse("rgpurestorage", "reservationname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsStorageContainers_Get
-
-```java
-/**
- * Samples for StoragePools GetAvsStatus.
- */
-public final class StoragePoolsGetAvsStatusSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_GetAvsStatus.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsGetAvsStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .getAvsStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsStorageContainers_ListByStoragePool
-
-```java
-/**
- * Samples for StoragePools ListByResourceGroup.
- */
-public final class StoragePoolsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_ListByResourceGroup.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsListByResourceGroup(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools().listByResourceGroup("rgpurestorage", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVmVolumes_Delete
-
-```java
-/**
- * Samples for Reservations GetBillingReport.
- */
-public final class ReservationsGetBillingReportSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Reservations_GetBillingReport_MaximumSet.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void reservationsGetBillingReportMaximumSet(
-        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.reservations()
-            .getBillingReportWithResponse("rgpurestorage", "reservationname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVmVolumes_Get
-
-```java
-/**
- * Samples for AvsStorageContainers ListByStoragePool.
- */
-public final class AvsStorageContainersListByStoragePoolSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainers_ListByStoragePool.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsStorageContainersListByStoragePool(
-        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainers().listByStoragePool("rgpurestorage", "spName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVmVolumes_ListByAvsVm
-
-```java
-/**
- * Samples for AvsVmVolumes Get.
- */
-public final class AvsVmVolumesGetSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVmVolumes_Get.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVmVolumes()
-            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVmVolumes_Update
-
-```java
-/**
- * Samples for AvsStorageContainerVolumes Delete.
- */
-public final class AvsStorageContainerVolumesDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainerVolumes_Delete.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsStorageContainerVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainerVolumes()
-            .delete("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVms_Delete
-
-```java
-import com.azure.resourcemanager.purestorageblock.models.AvsVmVolumeUpdate;
-import com.azure.resourcemanager.purestorageblock.models.AvsVmVolumeUpdateProperties;
-import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
-
-/**
- * Samples for AvsVmVolumes Update.
- */
-public final class AvsVmVolumesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVmVolumes_Update.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVmVolumes()
-            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
-                new AvsVmVolumeUpdate().withProperties(
-                    new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVms_Get
-
-```java
-/**
- * Samples for AvsVms Delete.
- */
-public final class AvsVmsDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVms_Delete.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVms_ListByStoragePool
-
-```java
-/**
- * Samples for AvsStorageContainerVolumes ListByAvsStorageContainer.
- */
-public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainerVolumes_ListByAvsStorageContainer.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsStorageContainerVolumesListByAvsStorageContainer(
-        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainerVolumes()
-            .listByAvsStorageContainer("rgpurestorage", "storagePoolname", "name", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AvsVms_Update
+### StoragePools_Delete
 
 ```java
 /**
@@ -437,31 +590,7 @@ public final class StoragePoolsDeleteSamples {
 }
 ```
 
-### Operations_List
-
-```java
-/**
- * Samples for AvsStorageContainers Get.
- */
-public final class AvsStorageContainersGetSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainers_Get.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsStorageContainersGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainers()
-            .getWithResponse("rgpurestorage", "storagePoolName", "storageContainerName",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Reservations_GetBillingReport
+### StoragePools_DisableAvsConnection
 
 ```java
 /**
@@ -484,30 +613,66 @@ public final class StoragePoolsDisableAvsConnectionSamples {
 }
 ```
 
-### Reservations_GetBillingStatus
+### StoragePools_EnableAvsConnection
 
 ```java
+import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
+
 /**
- * Samples for Reservations GetResourceLimits.
+ * Samples for StoragePools EnableAvsConnection.
  */
-public final class ReservationsGetResourceLimitsSamples {
+public final class StoragePoolsEnableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Reservations_GetResourceLimits.
+     * Sample code: StoragePools_EnableAvsConnection.
      * 
      * @param manager Entry point to PureStorageBlockManager.
      */
     public static void
-        reservationsGetResourceLimits(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.reservations()
-            .getResourceLimitsWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        storagePoolsEnableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools()
+            .enableAvsConnection("rgpurestorage", "storagePoolname",
+                new StoragePoolEnableAvsConnectionPost().withClusterResourceId("tghkgktlddwlszbeh"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Reservations_GetResourceLimits
+### StoragePools_FinalizeAvsConnection
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.ServiceInitializationInfo;
+import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
+
+/**
+ * Samples for StoragePools FinalizeAvsConnection.
+ */
+public final class StoragePoolsFinalizeAvsConnectionSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_FinalizeAvsConnection.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        storagePoolsFinalizeAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools()
+            .finalizeAvsConnection("rgpurestorage", "storagePoolname",
+                new StoragePoolFinalizeAvsConnectionPost().withServiceInitializationDataEnc("hlgzaxrohv")
+                    .withServiceInitializationData(new ServiceInitializationInfo().withServiceAccountUsername("axchgm")
+                        .withServiceAccountPassword("fakeTokenPlaceholder")
+                        .withVSphereIp("lhbajnykbznxnxpxozyfdjaciennks")
+                        .withVSphereCertificate("s")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_GetAvsConnection
 
 ```java
 /**
@@ -530,7 +695,119 @@ public final class StoragePoolsGetAvsConnectionSamples {
 }
 ```
 
-### StoragePools_Create
+### StoragePools_GetAvsStatus
+
+```java
+/**
+ * Samples for StoragePools GetAvsStatus.
+ */
+public final class StoragePoolsGetAvsStatusSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_GetAvsStatus.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        storagePoolsGetAvsStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools()
+            .getAvsStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_GetByResourceGroup
+
+```java
+/**
+ * Samples for StoragePools GetByResourceGroup.
+ */
+public final class StoragePoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void storagePoolsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools()
+            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_GetHealthStatus
+
+```java
+/**
+ * Samples for StoragePools GetHealthStatus.
+ */
+public final class StoragePoolsGetHealthStatusSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_GetHealthStatus.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        storagePoolsGetHealthStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools()
+            .getHealthStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_List
+
+```java
+/**
+ * Samples for StoragePools List.
+ */
+public final class StoragePoolsListSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_ListBySubscription.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        storagePoolsListBySubscription(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_ListByResourceGroup
+
+```java
+/**
+ * Samples for StoragePools ListByResourceGroup.
+ */
+public final class StoragePoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: StoragePools_ListByResourceGroup.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        storagePoolsListByResourceGroup(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.storagePools().listByResourceGroup("rgpurestorage", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StoragePools_RepairAvsConnection
 
 ```java
 /**
@@ -553,29 +830,7 @@ public final class StoragePoolsRepairAvsConnectionSamples {
 }
 ```
 
-### StoragePools_Delete
-
-```java
-/**
- * Samples for AvsVms Get.
- */
-public final class AvsVmsGetSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVms_Get.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms()
-            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_DisableAvsConnection
+### StoragePools_Update
 
 ```java
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
@@ -620,261 +875,6 @@ public final class StoragePoolsUpdateSamples {
             map.put(key, value);
         }
         return map;
-    }
-}
-```
-
-### StoragePools_EnableAvsConnection
-
-```java
-/**
- * Samples for AvsStorageContainers Delete.
- */
-public final class AvsStorageContainersDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainers_Delete.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsStorageContainersDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainers()
-            .delete("rgpurestorage", "storagePoolName", "storageContainerName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_FinalizeAvsConnection
-
-```java
-/**
- * Samples for AvsStorageContainerVolumes Get.
- */
-public final class AvsStorageContainerVolumesGetSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainerVolumes_Get.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsStorageContainerVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainerVolumes()
-            .getWithResponse("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_GetAvsConnection
-
-```java
-/**
- * Samples for AvsVms ListByStoragePool.
- */
-public final class AvsVmsListByStoragePoolSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVms_ListByStoragePool.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsVmsListByStoragePool(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().listByStoragePool("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_GetAvsStatus
-
-```java
-import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
-
-/**
- * Samples for StoragePools EnableAvsConnection.
- */
-public final class StoragePoolsEnableAvsConnectionSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_EnableAvsConnection.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsEnableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .enableAvsConnection("rgpurestorage", "storagePoolname",
-                new StoragePoolEnableAvsConnectionPost().withClusterResourceId("tghkgktlddwlszbeh"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_GetByResourceGroup
-
-```java
-/**
- * Samples for StoragePools GetHealthStatus.
- */
-public final class StoragePoolsGetHealthStatusSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_GetHealthStatus.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsGetHealthStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .getHealthStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_GetHealthStatus
-
-```java
-/**
- * Samples for AvsVmVolumes ListByAvsVm.
- */
-public final class AvsVmVolumesListByAvsVmSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVmVolumes_ListByAvsVm.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsVmVolumesListByAvsVm(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVmVolumes()
-            .listByAvsVm("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_List
-
-```java
-/**
- * Samples for StoragePools List.
- */
-public final class StoragePoolsListSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_ListBySubscription.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsListBySubscription(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_ListByResourceGroup
-
-```java
-import com.azure.resourcemanager.purestorageblock.models.ServiceInitializationInfo;
-import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
-
-/**
- * Samples for StoragePools FinalizeAvsConnection.
- */
-public final class StoragePoolsFinalizeAvsConnectionSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: StoragePools_FinalizeAvsConnection.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        storagePoolsFinalizeAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .finalizeAvsConnection("rgpurestorage", "storagePoolname",
-                new StoragePoolFinalizeAvsConnectionPost().withServiceInitializationDataEnc("hlgzaxrohv")
-                    .withServiceInitializationData(new ServiceInitializationInfo().withServiceAccountUsername("axchgm")
-                        .withServiceAccountPassword("fakeTokenPlaceholder")
-                        .withVSphereIp("lhbajnykbznxnxpxozyfdjaciennks")
-                        .withVSphereCertificate("s")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_RepairAvsConnection
-
-```java
-import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainerVolumeUpdate;
-import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainerVolumeUpdateProperties;
-import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
-
-/**
- * Samples for AvsStorageContainerVolumes Update.
- */
-public final class AvsStorageContainerVolumesUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsStorageContainerVolumes_Update.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void
-        avsStorageContainerVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsStorageContainerVolumes()
-            .update("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
-                new AvsStorageContainerVolumeUpdate().withProperties(new AvsStorageContainerVolumeUpdateProperties()
-                    .withSoftDeletion(new SoftDeletion().withDestroyed(true))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StoragePools_Update
-
-```java
-import com.azure.resourcemanager.purestorageblock.models.AvsVmUpdate;
-import com.azure.resourcemanager.purestorageblock.models.AvsVmUpdateProperties;
-import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
-
-/**
- * Samples for AvsVms Update.
- */
-public final class AvsVmsUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: AvsVms_Update.
-     * 
-     * @param manager Entry point to PureStorageBlockManager.
-     */
-    public static void avsVmsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms()
-            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb",
-                new AvsVmUpdate().withProperties(
-                    new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
-                com.azure.core.util.Context.NONE);
     }
 }
 ```

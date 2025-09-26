@@ -60,7 +60,7 @@ public final class ModelsClientImpl implements ModelsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientModels")
     public interface ModelsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/models")

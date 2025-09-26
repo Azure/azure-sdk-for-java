@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.
@@ -35,6 +35,11 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * The status of the last operation.
      */
     private FleetMemberProvisioningState provisioningState;
+
+    /*
+     * The labels for the fleet member.
+     */
+    private Map<String, String> labels;
 
     /*
      * Status information of the last operation for fleet member.
@@ -101,6 +106,26 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
     }
 
     /**
+     * Get the labels property: The labels for the fleet member.
+     * 
+     * @return the labels value.
+     */
+    public Map<String, String> labels() {
+        return this.labels;
+    }
+
+    /**
+     * Set the labels property: The labels for the fleet member.
+     * 
+     * @param labels the labels value to set.
+     * @return the FleetMemberProperties object itself.
+     */
+    public FleetMemberProperties withLabels(Map<String, String> labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    /**
      * Get the status property: Status information of the last operation for fleet member.
      * 
      * @return the status value.
@@ -110,24 +135,6 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (clusterResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clusterResourceId in model FleetMemberProperties"));
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FleetMemberProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -135,6 +142,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
         jsonWriter.writeStringField("group", this.group);
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -161,6 +169,9 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFleetMemberProperties.provisioningState
                         = FleetMemberProvisioningState.fromString(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFleetMemberProperties.labels = labels;
                 } else if ("status".equals(fieldName)) {
                     deserializedFleetMemberProperties.status = FleetMemberStatus.fromJson(reader);
                 } else {

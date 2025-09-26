@@ -22,7 +22,7 @@ public final class TopicTypesListEventTypesMockTests {
     @Test
     public void testListEventTypes() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"sfodropalvng\",\"description\":\"yuskwgqrntaumdr\",\"schemaUrl\":\"lv\",\"isInDefaultSet\":false},\"id\":\"egtyc\",\"name\":\"uppiyxlzm\",\"type\":\"yddeeqz\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"onbz\",\"description\":\"nfzyviiwsuanz\",\"schemaUrl\":\"syuifkzqqhbtflo\",\"isInDefaultSet\":true},\"id\":\"kfbeoi\",\"name\":\"pjpngvyvuo\",\"type\":\"kdlpsxntugfwim\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class TopicTypesListEventTypesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EventType> response = manager.topicTypes().listEventTypes("z", com.azure.core.util.Context.NONE);
+        PagedIterable<EventType> response
+            = manager.topicTypes().listEventTypes("wsunjzijaciwmmpd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sfodropalvng", response.iterator().next().displayName());
-        Assertions.assertEquals("yuskwgqrntaumdr", response.iterator().next().description());
-        Assertions.assertEquals("lv", response.iterator().next().schemaUrl());
-        Assertions.assertEquals(false, response.iterator().next().isInDefaultSet());
+        Assertions.assertEquals("onbz", response.iterator().next().displayName());
+        Assertions.assertEquals("nfzyviiwsuanz", response.iterator().next().description());
+        Assertions.assertEquals("syuifkzqqhbtflo", response.iterator().next().schemaUrl());
+        Assertions.assertTrue(response.iterator().next().isInDefaultSet());
     }
 }

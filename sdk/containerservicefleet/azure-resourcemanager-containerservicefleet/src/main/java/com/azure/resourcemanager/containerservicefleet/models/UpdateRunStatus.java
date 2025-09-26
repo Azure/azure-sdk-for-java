@@ -68,23 +68,6 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (stages() != null) {
-            stages().forEach(e -> e.validate());
-        }
-        if (nodeImageSelection() != null) {
-            nodeImageSelection().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

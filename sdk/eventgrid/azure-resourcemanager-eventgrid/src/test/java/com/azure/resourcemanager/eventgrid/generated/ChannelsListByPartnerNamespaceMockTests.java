@@ -26,7 +26,7 @@ public final class ChannelsListByPartnerNamespaceMockTests {
     @Test
     public void testListByPartnerNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"udqll\",\"resourceGroupName\":\"auzpjlx\",\"name\":\"huxiqhzlraymez\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"mxrfdsa\":{}}},\"source\":\"ednwyyshtu\"},\"messageForActivation\":\"mevuafpwzy\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-11-22T11:25Z\"},\"id\":\"xeqipx\",\"name\":\"zdyi\",\"type\":\"sfayorpravkjoges\"}]}";
+            = "{\"value\":[{\"properties\":{\"channelType\":\"PartnerDestination\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"qatiwkkvyanxkvvc\",\"resourceGroupName\":\"msvuvdjkqxetq\",\"name\":\"livrjjxnwx\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"xlehzlxpgfquwzp\":{},\"iibelwcerw\":{}}},\"source\":\"bpjxljtxbusqtb\"},\"partnerDestinationInfo\":{\"endpointType\":\"PartnerDestinationInfo\",\"azureSubscriptionId\":\"iuisdz\",\"resourceGroupName\":\"bdgzpagsecnad\",\"name\":\"wqrgxfllmqi\",\"endpointServiceContext\":\"ezoell\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"iwvmtumxpymdjfu\",\"resourceGroupName\":\"roqvqpilrgu\",\"changedTimeUtc\":\"2021-01-08T08:31:14Z\"},{\"azureSubscriptionId\":\"lduwzorxsb\",\"resourceGroupName\":\"aqklxy\",\"changedTimeUtc\":\"2021-08-03T15:44:41Z\"}]},\"messageForActivation\":\"vfqepd\",\"provisioningState\":\"Deleting\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-25T07:31:22Z\"},\"id\":\"yvpjbowcpjqduqg\",\"name\":\"xe\",\"type\":\"kydfbwljavhuerkj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,36 @@ public final class ChannelsListByPartnerNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Channel> response = manager.channels()
-            .listByPartnerNamespace("meottawj", "osxw", "hnhjtfvpndpmi", 408225634, com.azure.core.util.Context.NONE);
+            .listByPartnerNamespace("alx", "d", "absr", 1350471817, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ChannelType.PARTNER_TOPIC, response.iterator().next().channelType());
-        Assertions.assertEquals("udqll", response.iterator().next().partnerTopicInfo().azureSubscriptionId());
-        Assertions.assertEquals("auzpjlx", response.iterator().next().partnerTopicInfo().resourceGroupName());
-        Assertions.assertEquals("huxiqhzlraymez", response.iterator().next().partnerTopicInfo().name());
+        Assertions.assertEquals(ChannelType.PARTNER_DESTINATION, response.iterator().next().channelType());
+        Assertions.assertEquals("qatiwkkvyanxkvvc",
+            response.iterator().next().partnerTopicInfo().azureSubscriptionId());
+        Assertions.assertEquals("msvuvdjkqxetq", response.iterator().next().partnerTopicInfo().resourceGroupName());
+        Assertions.assertEquals("livrjjxnwx", response.iterator().next().partnerTopicInfo().name());
         Assertions.assertEquals(EventDefinitionKind.INLINE,
             response.iterator().next().partnerTopicInfo().eventTypeInfo().kind());
-        Assertions.assertEquals("ednwyyshtu", response.iterator().next().partnerTopicInfo().source());
-        Assertions.assertEquals("mevuafpwzy", response.iterator().next().messageForActivation());
-        Assertions.assertEquals(ChannelProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
+        Assertions.assertEquals("bpjxljtxbusqtb", response.iterator().next().partnerTopicInfo().source());
+        Assertions.assertEquals("iuisdz", response.iterator().next().partnerDestinationInfo().azureSubscriptionId());
+        Assertions.assertEquals("bdgzpagsecnad",
+            response.iterator().next().partnerDestinationInfo().resourceGroupName());
+        Assertions.assertEquals("wqrgxfllmqi", response.iterator().next().partnerDestinationInfo().name());
+        Assertions.assertEquals("ezoell", response.iterator().next().partnerDestinationInfo().endpointServiceContext());
+        Assertions.assertEquals("iwvmtumxpymdjfu",
+            response.iterator()
+                .next()
+                .partnerDestinationInfo()
+                .resourceMoveChangeHistory()
+                .get(0)
+                .azureSubscriptionId());
+        Assertions.assertEquals("roqvqpilrgu",
+            response.iterator().next().partnerDestinationInfo().resourceMoveChangeHistory().get(0).resourceGroupName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T08:31:14Z"),
+            response.iterator().next().partnerDestinationInfo().resourceMoveChangeHistory().get(0).changedTimeUtc());
+        Assertions.assertEquals("vfqepd", response.iterator().next().messageForActivation());
+        Assertions.assertEquals(ChannelProvisioningState.DELETING, response.iterator().next().provisioningState());
         Assertions.assertEquals(ReadinessState.ACTIVATED, response.iterator().next().readinessState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T11:25Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T07:31:22Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
     }
 }

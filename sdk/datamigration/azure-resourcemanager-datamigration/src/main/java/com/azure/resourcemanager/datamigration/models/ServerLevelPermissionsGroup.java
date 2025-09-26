@@ -27,7 +27,12 @@ public enum ServerLevelPermissionsGroup {
     /**
      * Enum value MigrationFromMySQLToAzureDBForMySQL.
      */
-    MIGRATION_FROM_MY_SQLTO_AZURE_DBFOR_MY_SQL("MigrationFromMySQLToAzureDBForMySQL");
+    MIGRATION_FROM_MY_SQLTO_AZURE_DBFOR_MY_SQL("MigrationFromMySQLToAzureDBForMySQL"),
+
+    /**
+     * Enum value MigrationFromSqlServerToAzureVM.
+     */
+    MIGRATION_FROM_SQL_SERVER_TO_AZURE_VM("MigrationFromSqlServerToAzureVM");
 
     /**
      * The actual serialized value for a ServerLevelPermissionsGroup instance.

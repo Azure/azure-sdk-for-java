@@ -23,19 +23,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     @Generated
     private boolean loop;
 
-    /*
-     * If set play can barge into other existing queued-up/currently-processing requests.
-     */
-    @Generated
-    private Boolean interruptCallMediaOperation;
-
-    /*
-     * If set, hold audio will be interrupted, then this request will be played, and then the hold audio will be
-     * resumed.
-     */
-    @Generated
-    private Boolean interruptHoldAudio;
-
     /**
      * Creates an instance of PlayOptionsInternal class.
      */
@@ -66,54 +53,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     }
 
     /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @return the interruptCallMediaOperation value.
-     */
-    @Generated
-    public Boolean isInterruptCallMediaOperation() {
-        return this.interruptCallMediaOperation;
-    }
-
-    /**
-     * Set the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    @Generated
-    public PlayOptionsInternal setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
-        this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
-
-    /**
-     * Get the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
-     * and then the hold audio will be resumed.
-     * 
-     * @return the interruptHoldAudio value.
-     */
-    @Generated
-    public Boolean isInterruptHoldAudio() {
-        return this.interruptHoldAudio;
-    }
-
-    /**
-     * Set the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
-     * and then the hold audio will be resumed.
-     * 
-     * @param interruptHoldAudio the interruptHoldAudio value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    @Generated
-    public PlayOptionsInternal setInterruptHoldAudio(Boolean interruptHoldAudio) {
-        this.interruptHoldAudio = interruptHoldAudio;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -121,8 +60,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("loop", this.loop);
-        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
-        jsonWriter.writeBooleanField("interruptHoldAudio", this.interruptHoldAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,11 +82,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
 
                 if ("loop".equals(fieldName)) {
                     deserializedPlayOptionsInternal.loop = reader.getBoolean();
-                } else if ("interruptCallMediaOperation".equals(fieldName)) {
-                    deserializedPlayOptionsInternal.interruptCallMediaOperation
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("interruptHoldAudio".equals(fieldName)) {
-                    deserializedPlayOptionsInternal.interruptHoldAudio = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

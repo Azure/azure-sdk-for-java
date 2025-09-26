@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupVaultsClient;
@@ -70,13 +72,22 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetAppManagementClie")
+    @ServiceInterface(name = "NetAppManagementClientBackupVaults")
     public interface BackupVaultsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupVaultsList>> listByNetAppAccount(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BackupVaultsList> listByNetAppAccountSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -92,10 +103,31 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BackupVaultInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupVaultInner body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("backupVaultName") String backupVaultName, @QueryParam("api-version") String apiVersion,
@@ -114,6 +146,17 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupVaultPatch body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -124,10 +167,28 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupVaultsList>> listByNetAppAccountNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BackupVaultsList> listByNetAppAccountNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -179,46 +240,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Vaults along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupVaultInner>> listByNetAppAccountSinglePageAsync(String resourceGroupName,
-        String accountName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByNetAppAccount(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                accountName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Describe all Backup Vaults
-     * 
-     * List and describe all Backup Vaults in the NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,17 +258,80 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backup Vaults along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupVaultInner> listByNetAppAccountSinglePage(String resourceGroupName,
+        String accountName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupVaultsList> res
+            = service.listByNetAppAccountSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Describe all Backup Vaults
+     * 
+     * List and describe all Backup Vaults in the NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Vaults as paginated response with {@link PagedFlux}.
+     * @return list of Backup Vaults along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupVaultInner> listByNetAppAccountAsync(String resourceGroupName, String accountName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupVaultInner> listByNetAppAccountSinglePage(String resourceGroupName, String accountName,
         Context context) {
-        return new PagedFlux<>(() -> listByNetAppAccountSinglePageAsync(resourceGroupName, accountName, context),
-            nextLink -> listByNetAppAccountNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupVaultsList> res
+            = service.listByNetAppAccountSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -264,7 +348,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultInner> listByNetAppAccount(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(listByNetAppAccountAsync(resourceGroupName, accountName));
+        return new PagedIterable<>(() -> listByNetAppAccountSinglePage(resourceGroupName, accountName),
+            nextLink -> listByNetAppAccountNextSinglePage(nextLink));
     }
 
     /**
@@ -283,7 +368,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultInner> listByNetAppAccount(String resourceGroupName, String accountName,
         Context context) {
-        return new PagedIterable<>(listByNetAppAccountAsync(resourceGroupName, accountName, context));
+        return new PagedIterable<>(() -> listByNetAppAccountSinglePage(resourceGroupName, accountName, context),
+            nextLink -> listByNetAppAccountNextSinglePage(nextLink, context));
     }
 
     /**
@@ -336,48 +422,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Backup Vault along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupVaultInner>> getWithResponseAsync(String resourceGroupName, String accountName,
-        String backupVaultName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (backupVaultName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
-            backupVaultName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Describe the Backup Vault
-     * 
-     * Get the Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -406,7 +450,31 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupVaultInner> getWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, backupVaultName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -484,42 +552,93 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body BackupVault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup Vault information along with {@link Response} on successful completion of {@link Mono}.
+     * @return backup Vault information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String backupVaultName, BackupVaultInner body, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, BackupVaultInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (backupVaultName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Create or Update a Backup Vault
+     * 
+     * Create or update the specified Backup Vault in the NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param body BackupVault object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup Vault information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, BackupVaultInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, backupVaultName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -555,31 +674,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body BackupVault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of backup Vault information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupVaultInner>, BackupVaultInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String accountName, String backupVaultName, BackupVaultInner body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, backupVaultName, body, context);
-        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(mono, this.client.getHttpPipeline(),
-            BackupVaultInner.class, BackupVaultInner.class, context);
-    }
-
-    /**
-     * Create or Update a Backup Vault
-     * 
-     * Create or update the specified Backup Vault in the NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param body BackupVault object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -588,7 +682,10 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultInner>, BackupVaultInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String backupVaultName, BackupVaultInner body) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, backupVaultName, body).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, accountName, backupVaultName, body);
+        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(response, BackupVaultInner.class,
+            BackupVaultInner.class, Context.NONE);
     }
 
     /**
@@ -609,8 +706,10 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultInner>, BackupVaultInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String backupVaultName, BackupVaultInner body, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, backupVaultName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, accountName, backupVaultName, body, context);
+        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(response, BackupVaultInner.class,
+            BackupVaultInner.class, context);
     }
 
     /**
@@ -643,28 +742,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body BackupVault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup Vault information on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupVaultInner> createOrUpdateAsync(String resourceGroupName, String accountName,
-        String backupVaultName, BackupVaultInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, backupVaultName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or Update a Backup Vault
-     * 
-     * Create or update the specified Backup Vault in the NetApp account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param body BackupVault object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -673,7 +750,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultInner createOrUpdate(String resourceGroupName, String accountName, String backupVaultName,
         BackupVaultInner body) {
-        return createOrUpdateAsync(resourceGroupName, accountName, backupVaultName, body).block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, backupVaultName, body).getFinalResult();
     }
 
     /**
@@ -694,7 +771,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultInner createOrUpdate(String resourceGroupName, String accountName, String backupVaultName,
         BackupVaultInner body, Context context) {
-        return createOrUpdateAsync(resourceGroupName, accountName, backupVaultName, body, context).block();
+        return beginCreateOrUpdate(resourceGroupName, accountName, backupVaultName, body, context).getFinalResult();
     }
 
     /**
@@ -754,42 +831,93 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body Backup Vault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup Vault information along with {@link Response} on successful completion of {@link Mono}.
+     * @return backup Vault information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String backupVaultName, BackupVaultPatch body, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, BackupVaultPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (backupVaultName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Update NetApp Backup Vault
+     * 
+     * Patch the specified NetApp Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param body Backup Vault object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup Vault information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName, BackupVaultPatch body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, backupVaultName, this.client.getApiVersion(), body, accept, context);
     }
 
@@ -825,31 +953,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body Backup Vault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of backup Vault information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupVaultInner>, BackupVaultInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String backupVaultName, BackupVaultPatch body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, accountName, backupVaultName, body, context);
-        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(mono, this.client.getHttpPipeline(),
-            BackupVaultInner.class, BackupVaultInner.class, context);
-    }
-
-    /**
-     * Update NetApp Backup Vault
-     * 
-     * Patch the specified NetApp Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param body Backup Vault object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -858,7 +961,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultInner>, BackupVaultInner> beginUpdate(String resourceGroupName,
         String accountName, String backupVaultName, BackupVaultPatch body) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, backupVaultName, body).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, backupVaultName, body);
+        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(response, BackupVaultInner.class,
+            BackupVaultInner.class, Context.NONE);
     }
 
     /**
@@ -879,7 +984,10 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultInner>, BackupVaultInner> beginUpdate(String resourceGroupName,
         String accountName, String backupVaultName, BackupVaultPatch body, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, backupVaultName, body, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, accountName, backupVaultName, body, context);
+        return this.client.<BackupVaultInner, BackupVaultInner>getLroResult(response, BackupVaultInner.class,
+            BackupVaultInner.class, context);
     }
 
     /**
@@ -912,28 +1020,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
      * @param body Backup Vault object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup Vault information on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupVaultInner> updateAsync(String resourceGroupName, String accountName, String backupVaultName,
-        BackupVaultPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, backupVaultName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update NetApp Backup Vault
-     * 
-     * Patch the specified NetApp Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
-     * @param body Backup Vault object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -942,7 +1028,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
         BackupVaultPatch body) {
-        return updateAsync(resourceGroupName, accountName, backupVaultName, body).block();
+        return beginUpdate(resourceGroupName, accountName, backupVaultName, body).getFinalResult();
     }
 
     /**
@@ -963,7 +1049,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultInner update(String resourceGroupName, String accountName, String backupVaultName,
         BackupVaultPatch body, Context context) {
-        return updateAsync(resourceGroupName, accountName, backupVaultName, body, context).block();
+        return beginUpdate(resourceGroupName, accountName, backupVaultName, body, context).getFinalResult();
     }
 
     /**
@@ -1016,37 +1102,82 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
+        String backupVaultName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete NetApp Backup Vault
+     * 
+     * Delete the specified Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String backupVaultName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (backupVaultName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             accountName, backupVaultName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1080,30 +1211,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String backupVaultName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, backupVaultName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete NetApp Backup Vault
-     * 
-     * Delete the specified Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1112,7 +1219,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupVaultName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, backupVaultName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, backupVaultName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1132,7 +1240,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String backupVaultName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, backupVaultName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, backupVaultName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1162,34 +1271,13 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupVaultName The name of the Backup Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupVaultName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupVaultName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete NetApp Backup Vault
-     * 
-     * Delete the specified Backup Vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param backupVaultName The name of the Backup Vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupVaultName) {
-        deleteAsync(resourceGroupName, accountName, backupVaultName).block();
+        beginDelete(resourceGroupName, accountName, backupVaultName).getFinalResult();
     }
 
     /**
@@ -1207,10 +1295,12 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String backupVaultName, Context context) {
-        deleteAsync(resourceGroupName, accountName, backupVaultName, context).block();
+        beginDelete(resourceGroupName, accountName, backupVaultName, context).getFinalResult();
     }
 
     /**
+     * Describe all Backup Vaults
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1238,6 +1328,37 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     }
 
     /**
+     * Describe all Backup Vaults
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backup Vaults along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BackupVaultInner> listByNetAppAccountNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BackupVaultsList> res
+            = service.listByNetAppAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Describe all Backup Vaults
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1245,22 +1366,25 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Vaults along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Backup Vaults along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupVaultInner>> listByNetAppAccountNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<BackupVaultInner> listByNetAppAccountNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByNetAppAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<BackupVaultsList> res
+            = service.listByNetAppAccountNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVaultsClientImpl.class);
 }

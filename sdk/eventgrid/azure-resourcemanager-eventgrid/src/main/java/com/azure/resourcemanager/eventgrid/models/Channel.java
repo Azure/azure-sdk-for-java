@@ -58,6 +58,15 @@ public interface Channel {
     PartnerTopicInfo partnerTopicInfo();
 
     /**
+     * Gets the partnerDestinationInfo property: This property should be populated when channelType is
+     * PartnerDestination and represents information about the partner destination resource corresponding to the
+     * channel.
+     * 
+     * @return the partnerDestinationInfo value.
+     */
+    PartnerDestinationInfo partnerDestinationInfo();
+
+    /**
      * Gets the messageForActivation property: Context or helpful message that can be used during the approval process
      * by the subscriber.
      * 
@@ -138,8 +147,9 @@ public interface Channel {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithChannelType, DefinitionStages.WithPartnerTopicInfo,
-            DefinitionStages.WithMessageForActivation, DefinitionStages.WithProvisioningState,
-            DefinitionStages.WithReadinessState, DefinitionStages.WithExpirationTimeIfNotActivatedUtc {
+            DefinitionStages.WithPartnerDestinationInfo, DefinitionStages.WithMessageForActivation,
+            DefinitionStages.WithProvisioningState, DefinitionStages.WithReadinessState,
+            DefinitionStages.WithExpirationTimeIfNotActivatedUtc {
             /**
              * Executes the create request.
              * 
@@ -183,6 +193,22 @@ public interface Channel {
              * @return the next definition stage.
              */
             WithCreate withPartnerTopicInfo(PartnerTopicInfo partnerTopicInfo);
+        }
+
+        /**
+         * The stage of the Channel definition allowing to specify partnerDestinationInfo.
+         */
+        interface WithPartnerDestinationInfo {
+            /**
+             * Specifies the partnerDestinationInfo property: This property should be populated when channelType is
+             * PartnerDestination and represents information about the partner destination resource corresponding to the
+             * channel..
+             * 
+             * @param partnerDestinationInfo This property should be populated when channelType is PartnerDestination
+             * and represents information about the partner destination resource corresponding to the channel.
+             * @return the next definition stage.
+             */
+            WithCreate withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo);
         }
 
         /**
@@ -255,7 +281,8 @@ public interface Channel {
      * The template for Channel update.
      */
     interface Update extends UpdateStages.WithChannelType, UpdateStages.WithPartnerTopicInfo,
-        UpdateStages.WithMessageForActivation, UpdateStages.WithProvisioningState, UpdateStages.WithReadinessState,
+        UpdateStages.WithPartnerDestinationInfo, UpdateStages.WithMessageForActivation,
+        UpdateStages.WithProvisioningState, UpdateStages.WithReadinessState,
         UpdateStages.WithExpirationTimeIfNotActivatedUtc {
         /**
          * Executes the update request.
@@ -304,6 +331,22 @@ public interface Channel {
              * @return the next definition stage.
              */
             Update withPartnerTopicInfo(PartnerTopicInfo partnerTopicInfo);
+        }
+
+        /**
+         * The stage of the Channel update allowing to specify partnerDestinationInfo.
+         */
+        interface WithPartnerDestinationInfo {
+            /**
+             * Specifies the partnerDestinationInfo property: This property should be populated when channelType is
+             * PartnerDestination and represents information about the partner destination resource corresponding to the
+             * channel..
+             * 
+             * @param partnerDestinationInfo This property should be populated when channelType is PartnerDestination
+             * and represents information about the partner destination resource corresponding to the channel.
+             * @return the next definition stage.
+             */
+            Update withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo);
         }
 
         /**

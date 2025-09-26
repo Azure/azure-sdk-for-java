@@ -2,21 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.quantum.jobs.models.JobDetails" />
-      <Class name="com.azure.quantum.jobs.models.JobDetailsList" />
-      <Class name="com.azure.quantum.jobs.models.ProviderStatus" />
-      <Class name="com.azure.quantum.jobs.models.ProviderStatusList" />
-      <Class name="com.azure.quantum.jobs.models.QuotaList" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.quantum.jobs.QuantumClientBuilder" />
-      <Class name="com.azure.quantum.jobs.models.JobDetails" />
-    </Or>
-  </Match>
 </FindBugsFilter>

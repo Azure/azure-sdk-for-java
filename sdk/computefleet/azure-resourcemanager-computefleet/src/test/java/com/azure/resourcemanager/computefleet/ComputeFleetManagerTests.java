@@ -13,7 +13,8 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.computefleet.models.FleetUpdate;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
 import com.azure.resourcemanager.computefleet.models.CachingTypes;
@@ -69,7 +70,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -206,6 +207,16 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             Assertions.assertEquals(fleetName, computeFleetManager.fleets().getById(fleet.id()).name());
             Assertions.assertTrue(
                 computeFleetManager.fleets().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+
+            // test update, use serviceClient API to do a minimal PATCH
+            computeFleetManager.serviceClient()
+                .getFleets()
+                .update(resourceGroupName, fleetName,
+                    new FleetUpdate()
+                        .withProperties(new FleetProperties().withRegularPriorityProfile(new RegularPriorityProfile()
+                            .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE)
+                            .withMinCapacity(1)
+                            .withCapacity(3))));
         } finally {
             if (fleet != null) {
                 computeFleetManager.fleets().deleteById(fleet.id());

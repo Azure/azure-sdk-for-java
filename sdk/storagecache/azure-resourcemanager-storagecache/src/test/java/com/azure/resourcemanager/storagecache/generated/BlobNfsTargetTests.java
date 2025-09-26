@@ -12,24 +12,24 @@ public final class BlobNfsTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobNfsTarget model = BinaryData.fromString(
-            "{\"target\":\"mctlpdngitv\",\"usageModel\":\"mhrixkwmyijejve\",\"verificationTimer\":1196101983,\"writeBackTimer\":662218702}")
+            "{\"target\":\"xkmcwaekrrjre\",\"usageModel\":\"xt\",\"verificationTimer\":747215260,\"writeBackTimer\":1781492308}")
             .toObject(BlobNfsTarget.class);
-        Assertions.assertEquals("mctlpdngitv", model.target());
-        Assertions.assertEquals("mhrixkwmyijejve", model.usageModel());
-        Assertions.assertEquals(1196101983, model.verificationTimer());
-        Assertions.assertEquals(662218702, model.writeBackTimer());
+        Assertions.assertEquals("xkmcwaekrrjre", model.target());
+        Assertions.assertEquals("xt", model.usageModel());
+        Assertions.assertEquals(747215260, model.verificationTimer());
+        Assertions.assertEquals(1781492308, model.writeBackTimer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobNfsTarget model = new BlobNfsTarget().withTarget("mctlpdngitv")
-            .withUsageModel("mhrixkwmyijejve")
-            .withVerificationTimer(1196101983)
-            .withWriteBackTimer(662218702);
+        BlobNfsTarget model = new BlobNfsTarget().withTarget("xkmcwaekrrjre")
+            .withUsageModel("xt")
+            .withVerificationTimer(747215260)
+            .withWriteBackTimer(1781492308);
         model = BinaryData.fromObject(model).toObject(BlobNfsTarget.class);
-        Assertions.assertEquals("mctlpdngitv", model.target());
-        Assertions.assertEquals("mhrixkwmyijejve", model.usageModel());
-        Assertions.assertEquals(1196101983, model.verificationTimer());
-        Assertions.assertEquals(662218702, model.writeBackTimer());
+        Assertions.assertEquals("xkmcwaekrrjre", model.target());
+        Assertions.assertEquals("xt", model.usageModel());
+        Assertions.assertEquals(747215260, model.verificationTimer());
+        Assertions.assertEquals(1781492308, model.writeBackTimer());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class ServicesListSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_ListSkus
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Services_ListSkus
      * .json
      */
     /**

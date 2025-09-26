@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 /**
- * Defines values for OperationOrigins.
+ * The origin.
  */
 public enum OperationOrigins {
     /**

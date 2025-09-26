@@ -22,17 +22,7 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
      * Array of receive responses, one per cloud event.
      */
     @Generated
-    private final List<ReceiveDetails> details;
-
-    /**
-     * Creates an instance of ReceiveResult class.
-     *
-     * @param details the details value to set.
-     */
-    @Generated
-    private ReceiveResult(List<ReceiveDetails> details) {
-        this.details = details;
-    }
+    private List<ReceiveDetails> details;
 
     /**
      * Get the details property: Array of receive responses, one per cloud event.
@@ -51,7 +41,6 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +56,25 @@ public final class ReceiveResult implements JsonSerializable<ReceiveResult> {
     @Generated
     public static ReceiveResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<ReceiveDetails> details = null;
+            ReceiveResult deserializedReceiveResult = new ReceiveResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    details = reader.readArray(reader1 -> ReceiveDetails.fromJson(reader1));
+                    List<ReceiveDetails> details = reader.readArray(reader1 -> ReceiveDetails.fromJson(reader1));
+                    deserializedReceiveResult.details = details;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ReceiveResult(details);
+            return deserializedReceiveResult;
         });
+    }
+
+    /**
+     * Creates an instance of ReceiveResult class.
+     */
+    @Generated
+    private ReceiveResult() {
     }
 }

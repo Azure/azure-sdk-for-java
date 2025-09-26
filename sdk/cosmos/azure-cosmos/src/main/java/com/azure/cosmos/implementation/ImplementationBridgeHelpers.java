@@ -33,6 +33,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -101,7 +102,7 @@ import java.util.function.Function;
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
-    private static void  initializeAllAccessors() {
+    public static void initializeAllAccessors() {
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
         BridgeInternal.initializeAllAccessors();
@@ -310,6 +311,8 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
+            Map<String, Object> getProperties(CosmosQueryRequestOptions options);
+            Map<String, String> getHeaders(CosmosQueryRequestOptions options);
         }
     }
 
@@ -378,7 +381,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosChangeFeedRequestOptionsAccessor {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
-            Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            Map<String, String> getHeaders(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn);
             Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
@@ -396,6 +399,7 @@ public class ImplementationBridgeHelpers {
             PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
 
             void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
+            Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
         }
     }
 
@@ -1639,6 +1643,11 @@ public class ImplementationBridgeHelpers {
             Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
             void setAccountName(CosmosClientTelemetryConfig config, String accountName);
             String getAccountName(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig setOtelSpanAttributeNamingSchema(
+                CosmosClientTelemetryConfig config,
+                String attributeNamingScheme
+            );
+            EnumSet<AttributeNamingScheme> getOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config);
             void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag);
             Tag getClientCorrelationTag(CosmosClientTelemetryConfig config);
             void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry);

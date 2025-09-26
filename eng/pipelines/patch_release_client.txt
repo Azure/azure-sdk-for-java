@@ -58,8 +58,9 @@ com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
-com.azure:azure-monitor-query # Tests owner: srnagar
-com.azure:azure-monitor-ingestion # Tests owner: srnagar
+com.azure:azure-monitor-query-metrics # Tests owner: jairmyree, srnagar
+com.azure:azure-monitor-query-logs # Tests owner: jairmyree, srnagar
+com.azure:azure-monitor-ingestion # Tests owner: jairmyree, srnagar
 com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
@@ -68,11 +69,33 @@ com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
-com.azure:azure-storage-blob # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-blob-batch # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-blob-cryptography # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-common # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-file-datalake # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-file-share # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-internal-avro # Tests owner: ibrandes, kyleknap, gunjansingh-msft
-com.azure:azure-storage-queue # Tests owner: ibrandes, kyleknap, gunjansingh-msft
+com.azure:azure-storage-blob # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-blob-batch # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-common # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-file-datalake # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-file-share # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-internal-avro # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure:azure-storage-queue # Tests owner: ibrandes, kyleknap, gunjansingh-msft, browndav-msft
+com.azure.resourcemanager:azure-resourcemanager-resources # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-storage # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-authorization # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-keyvault # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-msi # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-network # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-compute # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-sql # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-dns # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-appservice # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-cosmos # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerservice # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-eventhubs # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-monitor # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerregistry # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-containerinstance # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-privatedns # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-redis # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-trafficmanager # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-servicebus # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-cdn # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager-search # Tests owner: XiaofeiCao, weidongxu-microsoft

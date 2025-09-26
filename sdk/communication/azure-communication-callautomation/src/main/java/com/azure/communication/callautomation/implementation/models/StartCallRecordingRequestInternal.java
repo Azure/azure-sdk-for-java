@@ -25,7 +25,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private CallLocatorInternal callLocator;
 
     /*
-     * The call connectionId. (Only one of callLocator or callConnectionId to be used)
+     * The call connection Id. (Only one of callLocator or callConnectionId to be used)
      */
     @Generated
     private String callConnectionId;
@@ -85,12 +85,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     @Generated
     private RecordingStorageInternal externalStorage;
 
-    /*
-     * The post processing options for the recording.
-     */
-    @Generated
-    private PostProcessingOptions postProcessingOptions;
-
     /**
      * Creates an instance of StartCallRecordingRequestInternal class.
      */
@@ -121,7 +115,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * Get the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
      * used).
      * 
      * @return the callConnectionId value.
@@ -132,7 +126,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * Set the callConnectionId property: The call connection Id. (Only one of callLocator or callConnectionId to be
      * used).
      * 
      * @param callConnectionId the callConnectionId value to set.
@@ -338,28 +332,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the postProcessingOptions property: The post processing options for the recording.
-     * 
-     * @return the postProcessingOptions value.
-     */
-    @Generated
-    public PostProcessingOptions getPostProcessingOptions() {
-        return this.postProcessingOptions;
-    }
-
-    /**
-     * Set the postProcessingOptions property: The post processing options for the recording.
-     * 
-     * @param postProcessingOptions the postProcessingOptions value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    @Generated
-    public StartCallRecordingRequestInternal setPostProcessingOptions(PostProcessingOptions postProcessingOptions) {
-        this.postProcessingOptions = postProcessingOptions;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -381,7 +353,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("pauseOnStart", this.pauseOnStart);
         jsonWriter.writeJsonField("externalStorage", this.externalStorage);
-        jsonWriter.writeJsonField("postProcessingOptions", this.postProcessingOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -432,9 +403,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
                 } else if ("externalStorage".equals(fieldName)) {
                     deserializedStartCallRecordingRequestInternal.externalStorage
                         = RecordingStorageInternal.fromJson(reader);
-                } else if ("postProcessingOptions".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.postProcessingOptions
-                        = PostProcessingOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

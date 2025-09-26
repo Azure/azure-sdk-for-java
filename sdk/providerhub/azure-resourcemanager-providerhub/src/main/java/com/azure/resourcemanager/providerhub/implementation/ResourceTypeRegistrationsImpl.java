@@ -48,13 +48,12 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(String providerNamespace, String resourceType,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(providerNamespace, resourceType, context);
-    }
-
     public void deleteByResourceGroup(String providerNamespace, String resourceType) {
         this.serviceClient().delete(providerNamespace, resourceType);
+    }
+
+    public void delete(String providerNamespace, String resourceType, Context context) {
+        this.serviceClient().delete(providerNamespace, resourceType, context);
     }
 
     public PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace) {
@@ -109,10 +108,10 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
         }
-        this.deleteByResourceGroupWithResponse(providerNamespace, resourceType, Context.NONE);
+        this.delete(providerNamespace, resourceType, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -123,7 +122,7 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
         }
-        return this.deleteByResourceGroupWithResponse(providerNamespace, resourceType, context);
+        this.delete(providerNamespace, resourceType, context);
     }
 
     private ResourceTypeRegistrationsClient serviceClient() {

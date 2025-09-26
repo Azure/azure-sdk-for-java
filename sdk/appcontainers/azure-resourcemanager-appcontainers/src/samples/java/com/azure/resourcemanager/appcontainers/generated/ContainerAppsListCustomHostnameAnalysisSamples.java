@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ContainerAppsListCustomHostnameAnalysisSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ContainerApps_ListCustomHostNameAnalysis.json
      */
     /**
@@ -19,7 +20,7 @@ public final class ContainerAppsListCustomHostnameAnalysisSamples {
      */
     public static void analyzeCustomHostname(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.containerApps()
-            .listCustomHostnameAnalysisWithResponse("rg", "testcontainerapp0", "my.name.corp",
+            .listCustomHostnameAnalysisWithResponse("rg", "testcontainerApp0", "my.name.corp",
                 com.azure.core.util.Context.NONE);
     }
 }

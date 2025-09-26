@@ -64,7 +64,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.73.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.75.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -85,28 +95,32 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.10</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.52.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.13</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -118,6 +132,21 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.60</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test -->
@@ -136,7 +165,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.41</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -172,7 +201,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -197,7 +226,23 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.9.17</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.15.1</version> <!-- {x-version-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>1.15.1</version> <!-- {x-version-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -205,9 +250,18 @@
       <artifactId>applicationinsights-core</artifactId>
       <version>2.6.4</version> <!-- {x-version-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
       <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
-
   <build>
     <resources>
       <resource>
@@ -224,12 +278,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
@@ -246,9 +300,11 @@
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.17]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -270,7 +326,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -287,7 +343,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -405,6 +461,10 @@
                     <relocation>
                       <pattern>scala.compat.java8</pattern>
                       <shadedPattern>${shadingPrefix}.scala.compat.java8</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>io.opentelemetry</pattern>
+                      <shadedPattern>${shadingPrefix}.io.opentelemetry</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>scala.concurrent.java8</pattern>
@@ -685,7 +745,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <includes>
                 <include>**/*.*</include>
@@ -735,7 +795,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -744,7 +804,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -773,7 +833,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>

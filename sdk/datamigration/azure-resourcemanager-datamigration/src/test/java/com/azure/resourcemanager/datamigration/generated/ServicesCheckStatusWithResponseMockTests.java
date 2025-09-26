@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
 import com.azure.resourcemanager.datamigration.models.DataMigrationServiceStatusResponse;
@@ -21,21 +21,22 @@ public final class ServicesCheckStatusWithResponseMockTests {
     @Test
     public void testCheckStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"agentVersion\":\"lgsc\",\"status\":\"ri\",\"vmSize\":\"rsrrmoucsofldp\",\"supportedTaskTypes\":[\"yfcaabeolhbhlvbm\"]}";
+            = "{\"agentVersion\":\"huao\",\"agentConfiguration\":\"datajkehwvumosqi\",\"status\":\"amqprlo\",\"vmSize\":\"ugejcvjkjyczcmt\",\"supportedTaskTypes\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataMigrationManager manager = DataMigrationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DataMigrationServiceStatusResponse response
-            = manager.services().checkStatusWithResponse("hnl", "qnbldxe", com.azure.core.util.Context.NONE).getValue();
+        DataMigrationServiceStatusResponse response = manager.services()
+            .checkStatusWithResponse("iibntojo", "fnybydhuihaouw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("lgsc", response.agentVersion());
-        Assertions.assertEquals("ri", response.status());
-        Assertions.assertEquals("rsrrmoucsofldp", response.vmSize());
-        Assertions.assertEquals("yfcaabeolhbhlvbm", response.supportedTaskTypes().get(0));
+        Assertions.assertEquals("huao", response.agentVersion());
+        Assertions.assertEquals("amqprlo", response.status());
+        Assertions.assertEquals("ugejcvjkjyczcmt", response.vmSize());
+        Assertions.assertEquals("lajdyoljeqyxq", response.supportedTaskTypes().get(0));
     }
 }

@@ -80,4 +80,60 @@ public interface DeviceRegistryManagementClient {
      * @return the BillingContainersClient object.
      */
     BillingContainersClient getBillingContainers();
+
+    /**
+     * Gets the NamespacesClient object to access its operations.
+     * 
+     * @return the NamespacesClient object.
+     */
+    NamespacesClient getNamespaces();
+
+    /**
+     * Gets the NamespaceAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceAssetsClient object.
+     */
+    NamespaceAssetsClient getNamespaceAssets();
+
+    /**
+     * Gets the NamespaceDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDevicesClient object.
+     */
+    NamespaceDevicesClient getNamespaceDevices();
+
+    /**
+     * Gets the NamespaceDiscoveredAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredAssetsClient object.
+     */
+    NamespaceDiscoveredAssetsClient getNamespaceDiscoveredAssets();
+
+    /**
+     * Gets the NamespaceDiscoveredDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredDevicesClient object.
+     */
+    NamespaceDiscoveredDevicesClient getNamespaceDiscoveredDevices();
+
+    /**
+     * Gets the SchemaRegistriesClient object to access its operations.
+     * 
+     * @return the SchemaRegistriesClient object.
+     */
+    SchemaRegistriesClient getSchemaRegistries();
+
+    /**
+     * Gets the SchemasClient object to access its operations.
+     * 
+     * @return the SchemasClient object.
+     */
+    SchemasClient getSchemas();
+
+    /**
+     * Gets the SchemaVersionsClient object to access its operations.
+     * 
+     * @return the SchemaVersionsClient object.
+     */
+    SchemaVersionsClient getSchemaVersions();
 }

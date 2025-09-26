@@ -9,9 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsContentInner;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import java.util.List;
 
 /**
@@ -78,8 +77,8 @@ public interface OperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationsContentInner> createOrUpdateWithResponse(String providerNamespace,
-        OperationsPutContent operationsPutContent, Context context);
+    Response<OperationsPutContentInner> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContentInner operationsPutContent, Context context);
 
     /**
      * Creates or updates the operation supported by the given provider.
@@ -92,7 +91,7 @@ public interface OperationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationsContentInner createOrUpdate(String providerNamespace, OperationsPutContent operationsPutContent);
+    OperationsPutContentInner createOrUpdate(String providerNamespace, OperationsPutContentInner operationsPutContent);
 
     /**
      * Deletes an operation.

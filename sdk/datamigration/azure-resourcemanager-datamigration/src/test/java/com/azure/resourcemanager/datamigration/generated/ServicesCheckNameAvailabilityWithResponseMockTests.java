@@ -6,33 +6,39 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityResponse;
+import com.azure.resourcemanager.datamigration.models.NameCheckFailureReason;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class ServicesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"ipietgbe\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"nstlpwqpjn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataMigrationManager manager = DataMigrationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailabilityResponse response = manager.services()
-            .checkNameAvailabilityWithResponse("hiqakydiwfbrk",
-                new NameAvailabilityRequest().withName("zdq").withType("hcspo"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("xvlzjxplhpevasyn",
+                new NameAvailabilityRequest().withName("zjyielbqrvv").withType("vknmpecqxgiqas"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertTrue(response.nameAvailable());
+        Assertions.assertEquals(NameCheckFailureReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("nstlpwqpjn", response.message());
     }
 }

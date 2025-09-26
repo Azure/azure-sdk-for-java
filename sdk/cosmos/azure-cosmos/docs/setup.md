@@ -10,13 +10,6 @@ To build and develop locally, it is strongly recommended to fork and clone the r
 ### JDK 8 vs JDK 11
 The build system is configured to support JDK, as well as the current long-term support version of the JDK (currently JDK 11). The commands presented below will work on both JDKs.
 
-### Installing the build tools
-Building azure-cosmos SDK locally depends on the availability of the build tooling. This can be installed by running the following:
-
-```shell
-mvn install -f eng/code-quality-reports/pom.xml 
-```
-
 ### Building and Testing
 
 To build azure-cosmos library using maven command line, run the following command
@@ -79,7 +72,7 @@ Set target bytecode version for the project azure-cosmos in IntelliJ Preferences
 
 Setup Azure Cosmos DB Emulator by following [this instruction](https://docs.microsoft.com/azure/cosmos-db/local-emulator). Then please export the emulator's SSL certificates and install them in the JVM trust stores on your development machine following [this instruction](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates).
 
-For running the SDK unit tests use follogwing start options for the emulator:
+For running the SDK unit tests use following start options for the emulator:
 PS C:\Program Files\Azure Cosmos DB Emulator> .\CosmosDB.Emulator.exe /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong
 
 For installing the keys on windows following power shell script (running as administrator) can be used:

@@ -7,11 +7,11 @@ package com.azure.resourcemanager.datamigration.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
-import com.azure.resourcemanager.datamigration.models.ServiceOperation;
+import com.azure.resourcemanager.datamigration.models.OperationsDefinition;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,21 +22,17 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"rkmdyom\",\"display\":{\"provider\":\"bv\",\"resource\":\"hd\",\"operation\":\"rhpw\",\"description\":\"ddei\"}}]}";
+            = "{\"value\":[{\"name\":\"dtkwppth\",\"isDataAction\":true,\"display\":{\"provider\":\"mimrljdpoqfxyemh\",\"resource\":\"tbaewhte\",\"operation\":\"oamfmxtllfltymqc\",\"description\":\"rfijhggabq\"},\"origin\":\"system\",\"properties\":{\"uhktq\":\"datalilirwdvffhsdpz\",\"fddtullygtavczcx\":\"dataxqwqnjxr\",\"ljphraspifleimi\":\"datafweapyfmlx\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataMigrationManager manager = DataMigrationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ServiceOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        PagedIterable<OperationsDefinition> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rkmdyom", response.iterator().next().name());
-        Assertions.assertEquals("bv", response.iterator().next().display().provider());
-        Assertions.assertEquals("hd", response.iterator().next().display().resource());
-        Assertions.assertEquals("rhpw", response.iterator().next().display().operation());
-        Assertions.assertEquals("ddei", response.iterator().next().display().description());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
     }
 }

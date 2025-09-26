@@ -10,7 +10,7 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class ServicesStopSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Stop.
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Services_Stop.
      * json
      */
     /**

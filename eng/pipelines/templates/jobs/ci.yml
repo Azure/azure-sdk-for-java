@@ -79,6 +79,17 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+    
+    # Only run CG and codeql on internal build job
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      templateContext:
+        sdl:
+          componentgovernance:
+            enabled: true
+          codeql:
+            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            compiled:
+              enabled: true
 
     pool:
       name: $(LINUXPOOL)
@@ -389,32 +400,19 @@ jobs:
                   ServiceName: ${{parameters.ServiceDirectory}}
                   ForRelease: false
 
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
-
       - task: UseNode@1
         inputs:
           version: 22.x
         displayName: Use Node.js 22.x
 
       - task: PowerShell@2
-        displayName: Verify Code Generation for Pull Request
+        displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
-
-      - task: PowerShell@2
-        displayName: Verify TypeSpec Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
+            -RegenerationType 'All'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -459,7 +457,10 @@ jobs:
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
         PRMatrixSparseIndirect: true
-        PRJobBatchSize: 20
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:

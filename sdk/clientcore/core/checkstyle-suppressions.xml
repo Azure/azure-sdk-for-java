@@ -5,14 +5,12 @@
 <suppressions>
   <suppress files="io.clientcore.core.http.pipeline.KeyCredentialPolicyTests.java" checks="EmptyBlockCheck" />
   <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodNameCheck" />
-  <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="io.clientcore.core.http.pipeline.KeyCredentialPolicy.java" checks="com.azure.tools.checkstyle.checks.ExceptionCreatedButNotThrownCheck" />
-  <suppress files="io.clientcore.core.implementation.http.client.JdkHttpClient.java" checks="com.azure.tools.checkstyle.checks.ExceptionCreatedButNotThrownCheck" />
-  <suppress files="io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.implementation.http.rest.SwaggerMethodParser.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="io.clientcore.core.http.client.JdkHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="io.clientcore.core.serialization.json.implementation.JsonUtils.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="io.clientcore.core.http.pipeline.KeyCredentialPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionCreatedButNotThrownCheck" />
+  <suppress files="io.clientcore.core.implementation.http.client.JdkHttpClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionCreatedButNotThrownCheck" />
+  <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="io.clientcore.core.http.client.JdkHttpClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="io.clientcore.core.serialization.json.implementation.JsonUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
 </suppressions>

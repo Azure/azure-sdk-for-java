@@ -21,9 +21,7 @@
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.implementation.ReflectionSerializable" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
-      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream" />
-      <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
-      <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
@@ -64,7 +62,6 @@
       <Class name="io.clientcore.core.http.client.JdkHttpClientBuilder" />
       <Class name="io.clientcore.core.http.pipeline.KeyCredentialPolicy" />
       <Class name="io.clientcore.core.http.pipeline.UserAgentPolicy" />
-      <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.instrumentation.logging.ClientLogger" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
@@ -82,7 +79,6 @@
       <Class name="io.clientcore.core.http.pipeline.AddHeadersPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.SetRequestIdPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.UserAgentPolicyJavadocCodeSnippets" />
-      <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.CloudEventJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
@@ -109,7 +105,6 @@
     <Or>
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
       <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer" />
-      <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests$ListProperty" />
@@ -249,7 +244,6 @@
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />
     <Or>
-      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.models.geo.GeoCollectionTests" />
@@ -306,7 +300,6 @@
   <Match>
     <Bug pattern="RR_NOT_CHECKED" />
     <Or>
-      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.models.CloudEventTests" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
     </Or>
@@ -376,10 +369,6 @@
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="SR_NOT_CHECKED" />
-    <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
   </Match>
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />

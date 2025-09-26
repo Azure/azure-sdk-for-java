@@ -9,9 +9,11 @@ trigger:
   paths:
     include:
       - sdk/resources/ci.yml
+      - sdk/resources/azure-resourcemanager-resources/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
     exclude:
       - sdk/resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
 
 pr:
@@ -24,14 +26,24 @@ pr:
   paths:
     include:
       - sdk/resources/ci.yml
+      - sdk/resources/azure-resourcemanager-resources/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
     exclude:
       - sdk/resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
 
 parameters:
+  - name: release_azureresourcemanagerresources
+    displayName: azure-resourcemanager-resources
+    type: boolean
+    default: false
   - name: release_azureresourcemanagerresourcesdeploymentstacks
     displayName: azure-resourcemanager-resources-deploymentstacks
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcesbicep
+    displayName: azure-resourcemanager-resources-bicep
     type: boolean
     default: false
 
@@ -40,7 +52,15 @@ extends:
   parameters:
     ServiceDirectory: resources
     Artifacts:
+      - name: azure-resourcemanager-resources
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresources
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
       - name: azure-resourcemanager-resources-deploymentstacks
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcesdeploymentstacks
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesdeploymentstacks }}
+      - name: azure-resourcemanager-resources-bicep
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesbicep
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesbicep }}

@@ -14,21 +14,21 @@ public final class BrokerResourceRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerResourceRule model = BinaryData.fromString(
-            "{\"method\":\"Publish\",\"clientIds\":[\"apkteoellwptfdyg\",\"fqbuaceopzf\",\"rhhuaopppcqeqx\"],\"topics\":[\"dahzxctobg\"]}")
+            "{\"method\":\"Publish\",\"clientIds\":[\"rxv\",\"fudwpznt\",\"hdzhlrqj\",\"hckfrlhrx\"],\"topics\":[\"yvpycanuzbpzk\"]}")
             .toObject(BrokerResourceRule.class);
         Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
-        Assertions.assertEquals("apkteoellwptfdyg", model.clientIds().get(0));
-        Assertions.assertEquals("dahzxctobg", model.topics().get(0));
+        Assertions.assertEquals("rxv", model.clientIds().get(0));
+        Assertions.assertEquals("yvpycanuzbpzk", model.topics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerResourceRule model = new BrokerResourceRule().withMethod(BrokerResourceDefinitionMethods.PUBLISH)
-            .withClientIds(Arrays.asList("apkteoellwptfdyg", "fqbuaceopzf", "rhhuaopppcqeqx"))
-            .withTopics(Arrays.asList("dahzxctobg"));
+            .withClientIds(Arrays.asList("rxv", "fudwpznt", "hdzhlrqj", "hckfrlhrx"))
+            .withTopics(Arrays.asList("yvpycanuzbpzk"));
         model = BinaryData.fromObject(model).toObject(BrokerResourceRule.class);
         Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
-        Assertions.assertEquals("apkteoellwptfdyg", model.clientIds().get(0));
-        Assertions.assertEquals("dahzxctobg", model.topics().get(0));
+        Assertions.assertEquals("rxv", model.clientIds().get(0));
+        Assertions.assertEquals("yvpycanuzbpzk", model.topics().get(0));
     }
 }

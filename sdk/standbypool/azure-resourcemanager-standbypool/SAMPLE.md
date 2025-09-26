@@ -40,59 +40,20 @@
 ### Operations_List
 
 ```java
-import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
-import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
-import com.azure.resourcemanager.standbypool.models.RefillPolicy;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResource;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdateProperties;
-import com.azure.resourcemanager.standbypool.models.Subnet;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Samples for StandbyContainerGroupPools Update.
+ * Samples for Operations List.
  */
-public final class StandbyContainerGroupPoolsUpdateSamples {
+public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Update.json
+     * x-ms-original-file: 2025-03-01/Operations_List.json
      */
     /**
-     * Sample code: StandbyContainerGroupPools_Update.
+     * Sample code: Operations_List.
      * 
      * @param manager Entry point to StandbyPoolManager.
      */
-    public static void
-        standbyContainerGroupPoolsUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        StandbyContainerGroupPoolResource resource = manager.standbyContainerGroupPools()
-            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf())
-            .withProperties(new StandbyContainerGroupPoolResourceUpdateProperties()
-                .withElasticityProfile(new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(1743L)
-                    .withRefillPolicy(RefillPolicy.ALWAYS))
-                .withContainerGroupProperties(new ContainerGroupProperties()
-                    .withContainerGroupProfile(new ContainerGroupProfile().withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
-                        .withRevision(2L))
-                    .withSubnetIds(Arrays.asList(new Subnet().withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet"))))
-                .withZones(Arrays.asList("1", "2", "3")))
-            .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+    public static void operationsList(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -124,350 +85,26 @@ public final class StandbyContainerGroupPoolRuntimeViewsGetSamples {
 
 ```java
 /**
- * Samples for StandbyContainerGroupPools Delete.
+ * Samples for StandbyContainerGroupPoolRuntimeViews ListByStandbyPool.
  */
-public final class StandbyContainerGroupPoolsDeleteSamples {
+public final class StandbyContainerGroupPoolRuntimeViewsListByStandbyPoolSamples {
     /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Delete.json
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.json
      */
     /**
-     * Sample code: StandbyContainerGroupPools_Delete.
+     * Sample code: StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.
      * 
      * @param manager Entry point to StandbyPoolManager.
      */
-    public static void
-        standbyContainerGroupPoolsDelete(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyContainerGroupPools().delete("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyContainerGroupPools_CreateOrUpdate
-
-```java
-/**
- * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
- */
-public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyVirtualMachinesListByStandbyVirtualMachinePoolResource(
+    public static void standbyContainerGroupPoolRuntimeViewsListByStandbyPool(
         com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachines()
-            .listByStandbyVirtualMachinePoolResource("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyContainerGroupPools_Delete
-
-```java
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdateProperties;
-import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for StandbyVirtualMachinePools Update.
- */
-public final class StandbyVirtualMachinePoolsUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_Update.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePools_Update.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void
-        standbyVirtualMachinePoolsUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        StandbyVirtualMachinePoolResource resource = manager.standbyVirtualMachinePools()
-            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf())
-            .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
-                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
-                    .withMinReadyCapacity(300L))
-                .withVirtualMachineState(VirtualMachineState.RUNNING)
-                .withAttachedVirtualMachineScaleSetId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
-            .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### StandbyContainerGroupPools_GetByResourceGroup
-
-```java
-/**
- * Samples for StandbyContainerGroupPools GetByResourceGroup.
- */
-public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Get.json
-     */
-    /**
-     * Sample code: StandbyContainerGroupPools_Get.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyContainerGroupPoolsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyContainerGroupPools()
-            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyContainerGroupPools_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/Operations_List.json
-     */
-    /**
-     * Sample code: Operations_List.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void operationsList(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyContainerGroupPools_ListByResourceGroup
-
-```java
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
-import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for StandbyVirtualMachinePools CreateOrUpdate.
- */
-public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void
-        standbyVirtualMachinePoolsCreateOrUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachinePools()
-            .define("pool")
-            .withRegion("West US")
-            .withExistingResourceGroup("rgstandbypool")
-            .withTags(mapOf())
-            .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
-                    .withMinReadyCapacity(300L))
-                .withVirtualMachineState(VirtualMachineState.RUNNING)
-                .withAttachedVirtualMachineScaleSetId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### StandbyContainerGroupPools_Update
-
-```java
-/**
- * Samples for StandbyContainerGroupPools List.
- */
-public final class StandbyContainerGroupPoolsListSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_ListBySubscription.json
-     */
-    /**
-     * Sample code: StandbyContainerGroupPools_ListBySubscription.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void
-        standbyContainerGroupPoolsListBySubscription(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyContainerGroupPools().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePoolRuntimeViews_Get
-
-```java
-/**
- * Samples for StandbyContainerGroupPools ListByResourceGroup.
- */
-public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: StandbyContainerGroupPools_ListByResourceGroup.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyContainerGroupPoolsListByResourceGroup(
-        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyContainerGroupPools().listByResourceGroup("rgstandbypool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool
-
-```java
-/**
- * Samples for StandbyVirtualMachinePools ListByResourceGroup.
- */
-public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePools_ListByResourceGroup.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyVirtualMachinePoolsListByResourceGroup(
-        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachinePools().listByResourceGroup("rgstandbypool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePools_CreateOrUpdate
-
-```java
-/**
- * Samples for StandbyVirtualMachines Get.
- */
-public final class StandbyVirtualMachinesGetSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachines_Get.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachines_Get.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyVirtualMachinesGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachines()
-            .getWithResponse("rgstandbypool", "pool", "virtualMachine", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePools_Delete
-
-```java
-/**
- * Samples for StandbyVirtualMachinePoolRuntimeViews ListByStandbyPool.
- */
-public final class StandbyVirtualMachinePoolRuntimeViewsListByStandbyPoolSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyVirtualMachinePoolRuntimeViewsListByStandbyPool(
-        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachinePoolRuntimeViews()
+        manager.standbyContainerGroupPoolRuntimeViews()
             .listByStandbyPool("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### StandbyVirtualMachinePools_GetByResourceGroup
-
-```java
-/**
- * Samples for StandbyVirtualMachinePools List.
- */
-public final class StandbyVirtualMachinePoolsListSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_ListBySubscription.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePools_ListBySubscription.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void
-        standbyVirtualMachinePoolsListBySubscription(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachinePools().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePools_List
-
-```java
-/**
- * Samples for StandbyVirtualMachinePoolRuntimeViews Get.
- */
-public final class StandbyVirtualMachinePoolRuntimeViewsGetSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePoolRuntimeViews_Get.json
-     */
-    /**
-     * Sample code: StandbyVirtualMachinePoolRuntimeViews_Get.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void
-        standbyVirtualMachinePoolRuntimeViewsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyVirtualMachinePoolRuntimeViews()
-            .getWithResponse("rgstandbypool", "pool", "latest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachinePools_ListByResourceGroup
+### StandbyContainerGroupPools_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
@@ -526,7 +163,252 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
 }
 ```
 
-### StandbyVirtualMachinePools_Update
+### StandbyContainerGroupPools_Delete
+
+```java
+/**
+ * Samples for StandbyContainerGroupPools Delete.
+ */
+public final class StandbyContainerGroupPoolsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Delete.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPools_Delete.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyContainerGroupPoolsDelete(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPools().delete("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPools_GetByResourceGroup
+
+```java
+/**
+ * Samples for StandbyContainerGroupPools GetByResourceGroup.
+ */
+public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Get.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPools_Get.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyContainerGroupPoolsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPools()
+            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPools_List
+
+```java
+/**
+ * Samples for StandbyContainerGroupPools List.
+ */
+public final class StandbyContainerGroupPoolsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_ListBySubscription.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPools_ListBySubscription.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyContainerGroupPoolsListBySubscription(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPools().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPools_ListByResourceGroup
+
+```java
+/**
+ * Samples for StandbyContainerGroupPools ListByResourceGroup.
+ */
+public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPools_ListByResourceGroup.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyContainerGroupPoolsListByResourceGroup(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPools().listByResourceGroup("rgstandbypool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPools_Update
+
+```java
+import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
+import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
+import com.azure.resourcemanager.standbypool.models.RefillPolicy;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResource;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdateProperties;
+import com.azure.resourcemanager.standbypool.models.Subnet;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for StandbyContainerGroupPools Update.
+ */
+public final class StandbyContainerGroupPoolsUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_Update.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPools_Update.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyContainerGroupPoolsUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        StandbyContainerGroupPoolResource resource = manager.standbyContainerGroupPools()
+            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf())
+            .withProperties(new StandbyContainerGroupPoolResourceUpdateProperties()
+                .withElasticityProfile(new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(1743L)
+                    .withRefillPolicy(RefillPolicy.ALWAYS))
+                .withContainerGroupProperties(new ContainerGroupProperties()
+                    .withContainerGroupProfile(new ContainerGroupProfile().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
+                        .withRevision(2L))
+                    .withSubnetIds(Arrays.asList(new Subnet().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet"))))
+                .withZones(Arrays.asList("1", "2", "3")))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### StandbyVirtualMachinePoolRuntimeViews_Get
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePoolRuntimeViews Get.
+ */
+public final class StandbyVirtualMachinePoolRuntimeViewsGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePoolRuntimeViews_Get.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePoolRuntimeViews_Get.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyVirtualMachinePoolRuntimeViewsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePoolRuntimeViews()
+            .getWithResponse("rgstandbypool", "pool", "latest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePoolRuntimeViews ListByStandbyPool.
+ */
+public final class StandbyVirtualMachinePoolRuntimeViewsListByStandbyPoolSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyVirtualMachinePoolRuntimeViewsListByStandbyPool(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePoolRuntimeViews()
+            .listByStandbyPool("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePools_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
+import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for StandbyVirtualMachinePools CreateOrUpdate.
+ */
+public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyVirtualMachinePoolsCreateOrUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePools()
+            .define("pool")
+            .withRegion("West US")
+            .withExistingResourceGroup("rgstandbypool")
+            .withTags(mapOf())
+            .withProperties(new StandbyVirtualMachinePoolResourceProperties()
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
+                    .withMinReadyCapacity(300L))
+                .withVirtualMachineState(VirtualMachineState.RUNNING)
+                .withAttachedVirtualMachineScaleSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### StandbyVirtualMachinePools_Delete
 
 ```java
 /**
@@ -548,30 +430,7 @@ public final class StandbyVirtualMachinePoolsDeleteSamples {
 }
 ```
 
-### StandbyVirtualMachines_Get
-
-```java
-/**
- * Samples for StandbyContainerGroupPoolRuntimeViews ListByStandbyPool.
- */
-public final class StandbyContainerGroupPoolRuntimeViewsListByStandbyPoolSamples {
-    /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.json
-     */
-    /**
-     * Sample code: StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.
-     * 
-     * @param manager Entry point to StandbyPoolManager.
-     */
-    public static void standbyContainerGroupPoolRuntimeViewsListByStandbyPool(
-        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
-        manager.standbyContainerGroupPoolRuntimeViews()
-            .listByStandbyPool("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource
+### StandbyVirtualMachinePools_GetByResourceGroup
 
 ```java
 /**
@@ -589,6 +448,147 @@ public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
     public static void standbyVirtualMachinePoolsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
         manager.standbyVirtualMachinePools()
             .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePools_List
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePools List.
+ */
+public final class StandbyVirtualMachinePoolsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_ListBySubscription.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePools_ListBySubscription.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyVirtualMachinePoolsListBySubscription(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePools().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePools_ListByResourceGroup
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePools ListByResourceGroup.
+ */
+public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePools_ListByResourceGroup.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyVirtualMachinePoolsListByResourceGroup(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePools().listByResourceGroup("rgstandbypool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePools_Update
+
+```java
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdateProperties;
+import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for StandbyVirtualMachinePools Update.
+ */
+public final class StandbyVirtualMachinePoolsUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_Update.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePools_Update.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyVirtualMachinePoolsUpdate(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        StandbyVirtualMachinePoolResource resource = manager.standbyVirtualMachinePools()
+            .getByResourceGroupWithResponse("rgstandbypool", "pool", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf())
+            .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
+                    .withMinReadyCapacity(300L))
+                .withVirtualMachineState(VirtualMachineState.RUNNING)
+                .withAttachedVirtualMachineScaleSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### StandbyVirtualMachines_Get
+
+```java
+/**
+ * Samples for StandbyVirtualMachines Get.
+ */
+public final class StandbyVirtualMachinesGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachines_Get.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachines_Get.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyVirtualMachinesGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachines()
+            .getWithResponse("rgstandbypool", "pool", "virtualMachine", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource
+
+```java
+/**
+ * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
+ */
+public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyVirtualMachinesListByStandbyVirtualMachinePoolResource(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachines()
+            .listByStandbyVirtualMachinePoolResource("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
     }
 }
 ```

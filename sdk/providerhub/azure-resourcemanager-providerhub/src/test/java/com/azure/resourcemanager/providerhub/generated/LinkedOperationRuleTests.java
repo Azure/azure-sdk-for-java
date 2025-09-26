@@ -8,25 +8,28 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.LinkedAction;
 import com.azure.resourcemanager.providerhub.models.LinkedOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedOperationRule;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class LinkedOperationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedOperationRule model = BinaryData
-            .fromString("{\"linkedOperation\":\"CrossResourceGroupResourceMove\",\"linkedAction\":\"NotSpecified\"}")
+        LinkedOperationRule model = BinaryData.fromString(
+            "{\"linkedOperation\":\"None\",\"linkedAction\":\"Validate\",\"dependsOnTypes\":[\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"]}")
             .toObject(LinkedOperationRule.class);
-        Assertions.assertEquals(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE, model.linkedOperation());
-        Assertions.assertEquals(LinkedAction.NOT_SPECIFIED, model.linkedAction());
+        Assertions.assertEquals(LinkedOperation.NONE, model.linkedOperation());
+        Assertions.assertEquals(LinkedAction.VALIDATE, model.linkedAction());
+        Assertions.assertEquals("zbhvgyuguosv", model.dependsOnTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedOperationRule model
-            = new LinkedOperationRule().withLinkedOperation(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE)
-                .withLinkedAction(LinkedAction.NOT_SPECIFIED);
+        LinkedOperationRule model = new LinkedOperationRule().withLinkedOperation(LinkedOperation.NONE)
+            .withLinkedAction(LinkedAction.VALIDATE)
+            .withDependsOnTypes(Arrays.asList("zbhvgyuguosv", "kfssxqukkf", "l"));
         model = BinaryData.fromObject(model).toObject(LinkedOperationRule.class);
-        Assertions.assertEquals(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE, model.linkedOperation());
-        Assertions.assertEquals(LinkedAction.NOT_SPECIFIED, model.linkedAction());
+        Assertions.assertEquals(LinkedOperation.NONE, model.linkedOperation());
+        Assertions.assertEquals(LinkedAction.VALIDATE, model.linkedAction());
+        Assertions.assertEquals("zbhvgyuguosv", model.dependsOnTypes().get(0));
     }
 }

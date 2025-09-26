@@ -23,7 +23,7 @@ public final class ClientsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"youambewr\",\"authenticationName\":\"wmowegmmute\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"qigijiitnspxlzde\"]},\"state\":\"Disabled\",\"attributes\":{\"n\":\"datajwaiuf\",\"qfrojsydgrhyd\":\"dataaybfu\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wezskie\",\"name\":\"afygzmxieqvds\",\"type\":\"a\"}";
+            = "{\"properties\":{\"description\":\"wempdcifrhju\",\"authenticationName\":\"sulwzpflusn\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"zotfriyrgkoek\",\"zwx\",\"yxhighc\",\"xb\"]},\"state\":\"Disabled\",\"attributes\":{\"vskiczd\":\"datacqydey\",\"qaboohxbms\":\"datarjeizik\",\"d\":\"dataycqsxr\"},\"provisioningState\":\"Deleting\"},\"id\":\"yqaeohpjhgejk\",\"name\":\"vhhdaurgho\",\"type\":\"xaex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class ClientsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Client response = manager.clients()
-            .getWithResponse("wbqerzwxiytxtd", "ukvlb", "ktg", com.azure.core.util.Context.NONE)
+            .getWithResponse("kd", "qnhttwdowrczfj", "nnuxxrkkmhm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("youambewr", response.description());
-        Assertions.assertEquals("wmowegmmute", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("wempdcifrhju", response.description());
+        Assertions.assertEquals("sulwzpflusn", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("qigijiitnspxlzde",
+        Assertions.assertEquals("zotfriyrgkoek",
             response.clientCertificateAuthentication().allowedThumbprints().get(0));
         Assertions.assertEquals(ClientState.DISABLED, response.state());
     }

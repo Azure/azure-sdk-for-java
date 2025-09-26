@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datamigration.models.DataMigrationService;
 public final class ServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Update.
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Services_Update.
      * json
      */
     /**

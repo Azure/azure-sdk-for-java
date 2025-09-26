@@ -13,45 +13,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Configuration of live transcription.
+ * Options for live transcription.
  */
 @Fluent
-public final class TranscriptionOptionsInternal implements JsonSerializable<TranscriptionOptionsInternal> {
+public class TranscriptionOptionsInternal implements JsonSerializable<TranscriptionOptionsInternal> {
     /*
-     * Transport URL for live transcription
+     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently
+     * documented.
      */
     @Generated
-    private String transportUrl;
+    private StreamingTransportTypeInternal transportType
+        = StreamingTransportTypeInternal.fromString("TranscriptionOptionsInternal");
 
     /*
-     * The type of transport to be used for live transcription, eg. Websocket
-     */
-    @Generated
-    private TranscriptionTransportTypeInternal transportType;
-
-    /*
-     * Defines the locale for the data e.g en-CA, en-AU
+     * Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      */
     @Generated
     private String locale;
-
-    /*
-     * Endpoint where the custom model was deployed.
-     */
-    @Generated
-    private String speechModelEndpointId;
-
-    /*
-     * Determines if the transcription should be started immediately after call is answered or not.
-     */
-    @Generated
-    private boolean startTranscription;
-
-    /*
-     * Enables intermediate results for the transcribed speech.
-     */
-    @Generated
-    private Boolean enableIntermediateResults;
 
     /**
      * Creates an instance of TranscriptionOptionsInternal class.
@@ -61,51 +39,18 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     }
 
     /**
-     * Get the transportUrl property: Transport URL for live transcription.
-     * 
-     * @return the transportUrl value.
-     */
-    @Generated
-    public String getTransportUrl() {
-        return this.transportUrl;
-    }
-
-    /**
-     * Set the transportUrl property: Transport URL for live transcription.
-     * 
-     * @param transportUrl the transportUrl value to set.
-     * @return the TranscriptionOptionsInternal object itself.
-     */
-    @Generated
-    public TranscriptionOptionsInternal setTransportUrl(String transportUrl) {
-        this.transportUrl = transportUrl;
-        return this;
-    }
-
-    /**
-     * Get the transportType property: The type of transport to be used for live transcription, eg. Websocket.
+     * Get the transportType property: Defines the transport type used for streaming. Note that future values may be
+     * introduced that are not currently documented.
      * 
      * @return the transportType value.
      */
     @Generated
-    public TranscriptionTransportTypeInternal getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
     /**
-     * Set the transportType property: The type of transport to be used for live transcription, eg. Websocket.
-     * 
-     * @param transportType the transportType value to set.
-     * @return the TranscriptionOptionsInternal object itself.
-     */
-    @Generated
-    public TranscriptionOptionsInternal setTransportType(TranscriptionTransportTypeInternal transportType) {
-        this.transportType = transportType;
-        return this;
-    }
-
-    /**
-     * Get the locale property: Defines the locale for the data e.g en-CA, en-AU.
+     * Get the locale property: Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      * 
      * @return the locale value.
      */
@@ -115,7 +60,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     }
 
     /**
-     * Set the locale property: Defines the locale for the data e.g en-CA, en-AU.
+     * Set the locale property: Specifies the Locale used for transcription, e.g., en-CA or en-AU.
      * 
      * @param locale the locale value to set.
      * @return the TranscriptionOptionsInternal object itself.
@@ -127,86 +72,14 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     }
 
     /**
-     * Get the speechModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
-     * @return the speechModelEndpointId value.
-     */
-    @Generated
-    public String getSpeechModelEndpointId() {
-        return this.speechModelEndpointId;
-    }
-
-    /**
-     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
-     * @param speechModelEndpointId the speechModelEndpointId value to set.
-     * @return the TranscriptionOptionsInternal object itself.
-     */
-    @Generated
-    public TranscriptionOptionsInternal setSpeechModelEndpointId(String speechModelEndpointId) {
-        this.speechModelEndpointId = speechModelEndpointId;
-        return this;
-    }
-
-    /**
-     * Get the startTranscription property: Determines if the transcription should be started immediately after call is
-     * answered or not.
-     * 
-     * @return the startTranscription value.
-     */
-    @Generated
-    public boolean isStartTranscription() {
-        return this.startTranscription;
-    }
-
-    /**
-     * Set the startTranscription property: Determines if the transcription should be started immediately after call is
-     * answered or not.
-     * 
-     * @param startTranscription the startTranscription value to set.
-     * @return the TranscriptionOptionsInternal object itself.
-     */
-    @Generated
-    public TranscriptionOptionsInternal setStartTranscription(boolean startTranscription) {
-        this.startTranscription = startTranscription;
-        return this;
-    }
-
-    /**
-     * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
-     * @return the enableIntermediateResults value.
-     */
-    @Generated
-    public Boolean isEnableIntermediateResults() {
-        return this.enableIntermediateResults;
-    }
-
-    /**
-     * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
-     * @param enableIntermediateResults the enableIntermediateResults value to set.
-     * @return the TranscriptionOptionsInternal object itself.
-     */
-    @Generated
-    public TranscriptionOptionsInternal setEnableIntermediateResults(Boolean enableIntermediateResults) {
-        this.enableIntermediateResults = enableIntermediateResults;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", this.transportUrl);
-        jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
         jsonWriter.writeStringField("locale", this.locale);
-        jsonWriter.writeBooleanField("startTranscription", this.startTranscription);
-        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
-        jsonWriter.writeBooleanField("enableIntermediateResults", this.enableIntermediateResults);
+        jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -222,25 +95,42 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     @Generated
     public static TranscriptionOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("transportType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("websocket".equals(discriminatorValue)) {
+                    return WebSocketTranscriptionOptionsInternal.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static TranscriptionOptionsInternal fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             TranscriptionOptionsInternal deserializedTranscriptionOptionsInternal = new TranscriptionOptionsInternal();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("transportUrl".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.transportUrl = reader.getString();
+                if ("locale".equals(fieldName)) {
+                    deserializedTranscriptionOptionsInternal.locale = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
                     deserializedTranscriptionOptionsInternal.transportType
-                        = TranscriptionTransportTypeInternal.fromString(reader.getString());
-                } else if ("locale".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.locale = reader.getString();
-                } else if ("startTranscription".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.startTranscription = reader.getBoolean();
-                } else if ("speechModelEndpointId".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.speechModelEndpointId = reader.getString();
-                } else if ("enableIntermediateResults".equals(fieldName)) {
-                    deserializedTranscriptionOptionsInternal.enableIntermediateResults
-                        = reader.getNullable(JsonReader::getBoolean);
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

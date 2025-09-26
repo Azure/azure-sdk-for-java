@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
  */
 public final class BlobContainersCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobContainersPutDefaultEncryptionScope.json
      */
     /**
@@ -32,7 +32,7 @@ public final class BlobContainersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobContainersPutObjectLevelWorm.json
      */
     /**
@@ -52,7 +52,7 @@ public final class BlobContainersCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/BlobContainersPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/BlobContainersPut.json
      */
     /**
      * Sample code: PutContainers.

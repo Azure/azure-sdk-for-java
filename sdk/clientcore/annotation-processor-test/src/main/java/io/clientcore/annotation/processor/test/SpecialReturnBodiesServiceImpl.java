@@ -175,7 +175,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         }
         List<BinaryData> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {

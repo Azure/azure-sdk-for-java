@@ -21,7 +21,7 @@ public final class DomainTopicsListByDomainMockTests {
     @Test
     public void testListByDomain() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"arxifvqnrxt\",\"name\":\"bpjptnvwjhrsi\",\"type\":\"qpxlb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"irhhmo\",\"name\":\"usuzgfjzcvaaxo\",\"type\":\"alahf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DomainTopicsListByDomainMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DomainTopic> response = manager.domainTopics()
-            .listByDomain("gm", "mjpjscdfpdqwty", "ev", 1189635916, com.azure.core.util.Context.NONE);
+            .listByDomain("azmxjqi", "h", "jjsbcmlzaahzbhur", 605503525, com.azure.core.util.Context.NONE);
 
     }
 }

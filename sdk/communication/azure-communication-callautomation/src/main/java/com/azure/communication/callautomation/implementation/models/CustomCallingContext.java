@@ -30,12 +30,6 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     @Generated
     private Map<String, String> sipHeaders;
 
-    /*
-     * Custom calling context TeamsPhoneCallDetails
-     */
-    @Generated
-    private TeamsPhoneCallDetails teamsPhoneCallDetails;
-
     /**
      * Creates an instance of CustomCallingContext class.
      */
@@ -88,28 +82,6 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the teamsPhoneCallDetails property: Custom calling context TeamsPhoneCallDetails.
-     * 
-     * @return the teamsPhoneCallDetails value.
-     */
-    @Generated
-    public TeamsPhoneCallDetails getTeamsPhoneCallDetails() {
-        return this.teamsPhoneCallDetails;
-    }
-
-    /**
-     * Set the teamsPhoneCallDetails property: Custom calling context TeamsPhoneCallDetails.
-     * 
-     * @param teamsPhoneCallDetails the teamsPhoneCallDetails value to set.
-     * @return the CustomCallingContext object itself.
-     */
-    @Generated
-    public CustomCallingContext setTeamsPhoneCallDetails(TeamsPhoneCallDetails teamsPhoneCallDetails) {
-        this.teamsPhoneCallDetails = teamsPhoneCallDetails;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -118,7 +90,6 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("voipHeaders", this.voipHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("sipHeaders", this.sipHeaders, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("teamsPhoneCallDetails", this.teamsPhoneCallDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,8 +115,6 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
                 } else if ("sipHeaders".equals(fieldName)) {
                     Map<String, String> sipHeaders = reader.readMap(reader1 -> reader1.getString());
                     deserializedCustomCallingContext.sipHeaders = sipHeaders;
-                } else if ("teamsPhoneCallDetails".equals(fieldName)) {
-                    deserializedCustomCallingContext.teamsPhoneCallDetails = TeamsPhoneCallDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

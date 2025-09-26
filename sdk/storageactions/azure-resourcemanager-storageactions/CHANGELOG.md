@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,63 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2025-06-30)
+
+- Azure Resource Manager StorageActions client library for Java. This package contains Microsoft Azure SDK for StorageActions Management SDK. The Azure Storage Actions Management API. Package api-version 2023-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.StorageTaskReportSummary` was removed
+
+#### `models.StorageTasksListResult` was removed
+
+#### `models.StorageTaskAssignmentsListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.StorageTask$Update` was modified
+
+* `withProperties(models.StorageTaskProperties)` was removed
+
+#### `models.StorageTaskUpdateParameters` was modified
+
+* `models.StorageTaskProperties properties()` -> `models.StorageTaskUpdateProperties properties()`
+* `withProperties(models.StorageTaskProperties)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `StorageActionsManager` was modified
+
+* `fluent.StorageActionsMgmtClient serviceClient()` -> `fluent.StorageActionsManagementClient serviceClient()`
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `implementation.models.OperationListResult` was added
+
+* `implementation.models.StorageTaskReportSummary` was added
+
+* `models.StorageTaskUpdateProperties` was added
+
+* `implementation.models.StorageTasksListResult` was added
+
+* `implementation.models.StorageTaskAssignmentsListResult` was added
+
+#### `models.StorageTask$Update` was modified
+
+* `withProperties(models.StorageTaskUpdateProperties)` was added
+
+#### `models.StorageTaskUpdateParameters` was modified
+
+* `withProperties(models.StorageTaskUpdateProperties)` was added
 
 ## 1.0.0-beta.3 (2025-04-18)
 

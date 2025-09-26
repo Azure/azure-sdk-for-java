@@ -130,6 +130,9 @@ function CreateForwardLookingVersions($ArtifactInfos) {
 }
 
 # Find all the artifacts that will need to be patched based on the dependency analysis.
+# Artifacts will be processed in the same order as defined in patch_release_client.txt (libraries that depend on other
+# libraries will appear later in the file).
+# This guarantees that if dependency libraries are going to be patched, dependent ones will be included as well.
 function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
     foreach($arId in $ArtifactInfos.Keys) {
         $arInfo = $ArtifactInfos[$arId]

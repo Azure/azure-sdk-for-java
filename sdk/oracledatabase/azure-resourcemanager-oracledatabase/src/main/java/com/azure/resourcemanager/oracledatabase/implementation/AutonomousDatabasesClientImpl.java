@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabasesClient;
@@ -136,25 +135,23 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autonomousdatabasename") String autonomousdatabasename, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("autonomousdatabasename") String autonomousdatabasename, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}")
         @ExpectedResponses({ 200, 202 })
@@ -357,14 +354,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutonomousDatabaseInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -396,16 +385,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -424,16 +403,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -482,27 +451,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, AutonomousDatabaseInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -526,30 +474,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -572,30 +496,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -730,22 +630,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutonomousDatabaseInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -784,24 +668,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseInner> getByResourceGroupWithResponse(String resourceGroupName,
         String autonomousdatabasename, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context);
@@ -835,26 +701,9 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -870,27 +719,8 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String autonomousdatabasename) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     /**
@@ -907,27 +737,8 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String autonomousdatabasename,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, context);
     }
 
     /**
@@ -1041,27 +852,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, AutonomousDatabaseUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1085,30 +875,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1131,30 +897,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1288,18 +1030,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutonomousDatabaseInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1335,20 +1065,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1369,20 +1085,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1435,27 +1137,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> switchoverWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, PeerDbDetails body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1479,29 +1160,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.switchoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1524,29 +1182,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.switchoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1682,27 +1317,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, PeerDbDetails body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1726,29 +1340,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.failoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1771,29 +1362,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String autonomousdatabasename,
         PeerDbDetails body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.failoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1929,27 +1497,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutonomousDatabaseWalletFileInner>> generateWalletWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, GenerateAutonomousDatabaseWalletDetails body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1992,29 +1539,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseWalletFileInner> generateWalletWithResponse(String resourceGroupName,
         String autonomousdatabasename, GenerateAutonomousDatabaseWalletDetails body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.generateWalletSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2053,27 +1577,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename, RestoreAutonomousDatabaseDetails body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2097,29 +1600,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2142,29 +1622,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2299,22 +1756,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shrinkWithResponseAsync(String resourceGroupName,
         String autonomousdatabasename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.shrink(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2334,24 +1775,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> shrinkWithResponse(String resourceGroupName, String autonomousdatabasename) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.shrinkSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, Context.NONE);
@@ -2371,24 +1794,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> shrinkWithResponse(String resourceGroupName, String autonomousdatabasename,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.shrinkSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context);
@@ -2511,27 +1916,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> changeDisasterRecoveryConfigurationWithResponseAsync(
         String resourceGroupName, String autonomousdatabasename, DisasterRecoveryConfigurationDetails body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2555,29 +1939,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeDisasterRecoveryConfigurationWithResponse(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.changeDisasterRecoveryConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2600,29 +1961,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeDisasterRecoveryConfigurationWithResponse(String resourceGroupName,
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (autonomousdatabasename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.changeDisasterRecoveryConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2762,13 +2100,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutonomousDatabaseInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2789,15 +2120,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2817,15 +2139,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2845,13 +2158,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutonomousDatabaseInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2872,15 +2178,6 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2900,21 +2197,10 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AutonomousDatabaseListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabasesClientImpl.class);
 }

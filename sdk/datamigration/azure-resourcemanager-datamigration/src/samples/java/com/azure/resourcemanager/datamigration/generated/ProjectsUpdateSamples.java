@@ -14,7 +14,7 @@ import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
 public final class ProjectsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Projects_Update.
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Projects_Update.
      * json
      */
     /**

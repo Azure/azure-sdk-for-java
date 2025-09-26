@@ -656,7 +656,7 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                public Map<String, String> getHeaders(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
                 }
 
@@ -731,6 +731,15 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition) {
                     changeFeedRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    if (changeFeedRequestOptions == null) {
+                        return null;
+                    }
+
+                    return changeFeedRequestOptions.getImpl().getProperties();
                 }
             });
     }

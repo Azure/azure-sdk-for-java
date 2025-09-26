@@ -171,11 +171,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private RaiMonitorConfig raiMonitorConfig;
 
     /*
-     * Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely within
-     * the user's private network, eliminating public internet exposure while maintaining control over network
-     * configurations and resources.
+     * The networkInjections property.
      */
-    private NetworkInjections networkInjections;
+    private List<NetworkInjection> networkInjections;
 
     /*
      * Specifies whether this resource support project management as child resources, used as containers for access
@@ -184,12 +182,13 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private Boolean allowProjectManagement;
 
     /*
-     * Specifies the project that is targeted when data plane endpoints are called without a project parameter.
+     * Specifies the project, by project name, that is targeted when data plane endpoints are called without a project
+     * parameter.
      */
     private String defaultProject;
 
     /*
-     * Specifies the projects that are associated with this resource.
+     * Specifies the projects, by project name, that are associated with this resource.
      */
     private List<String> associatedProjects;
 
@@ -638,25 +637,21 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the networkInjections property: Specifies in AI Foundry where virtual network injection occurs to secure
-     * scenarios like Agents entirely within the user's private network, eliminating public internet exposure while
-     * maintaining control over network configurations and resources.
+     * Get the networkInjections property: The networkInjections property.
      * 
      * @return the networkInjections value.
      */
-    public NetworkInjections networkInjections() {
+    public List<NetworkInjection> networkInjections() {
         return this.networkInjections;
     }
 
     /**
-     * Set the networkInjections property: Specifies in AI Foundry where virtual network injection occurs to secure
-     * scenarios like Agents entirely within the user's private network, eliminating public internet exposure while
-     * maintaining control over network configurations and resources.
+     * Set the networkInjections property: The networkInjections property.
      * 
      * @param networkInjections the networkInjections value to set.
      * @return the AccountProperties object itself.
      */
-    public AccountProperties withNetworkInjections(NetworkInjections networkInjections) {
+    public AccountProperties withNetworkInjections(List<NetworkInjection> networkInjections) {
         this.networkInjections = networkInjections;
         return this;
     }
@@ -684,8 +679,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the defaultProject property: Specifies the project that is targeted when data plane endpoints are called
-     * without a project parameter.
+     * Get the defaultProject property: Specifies the project, by project name, that is targeted when data plane
+     * endpoints are called without a project parameter.
      * 
      * @return the defaultProject value.
      */
@@ -694,8 +689,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the defaultProject property: Specifies the project that is targeted when data plane endpoints are called
-     * without a project parameter.
+     * Set the defaultProject property: Specifies the project, by project name, that is targeted when data plane
+     * endpoints are called without a project parameter.
      * 
      * @param defaultProject the defaultProject value to set.
      * @return the AccountProperties object itself.
@@ -706,7 +701,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the associatedProjects property: Specifies the projects that are associated with this resource.
+     * Get the associatedProjects property: Specifies the projects, by project name, that are associated with this
+     * resource.
      * 
      * @return the associatedProjects value.
      */
@@ -715,7 +711,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the associatedProjects property: Specifies the projects that are associated with this resource.
+     * Set the associatedProjects property: Specifies the projects, by project name, that are associated with this
+     * resource.
      * 
      * @param associatedProjects the associatedProjects value to set.
      * @return the AccountProperties object itself.
@@ -774,7 +771,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
             raiMonitorConfig().validate();
         }
         if (networkInjections() != null) {
-            networkInjections().validate();
+            networkInjections().forEach(e -> e.validate());
         }
     }
 
@@ -802,7 +799,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeBooleanField("restore", this.restore);
         jsonWriter.writeJsonField("locations", this.locations);
         jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
-        jsonWriter.writeJsonField("networkInjections", this.networkInjections);
+        jsonWriter.writeArrayField("networkInjections", this.networkInjections,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("allowProjectManagement", this.allowProjectManagement);
         jsonWriter.writeStringField("defaultProject", this.defaultProject);
         jsonWriter.writeArrayField("associatedProjects", this.associatedProjects,
@@ -897,7 +895,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                 } else if ("raiMonitorConfig".equals(fieldName)) {
                     deserializedAccountProperties.raiMonitorConfig = RaiMonitorConfig.fromJson(reader);
                 } else if ("networkInjections".equals(fieldName)) {
-                    deserializedAccountProperties.networkInjections = NetworkInjections.fromJson(reader);
+                    List<NetworkInjection> networkInjections
+                        = reader.readArray(reader1 -> NetworkInjection.fromJson(reader1));
+                    deserializedAccountProperties.networkInjections = networkInjections;
                 } else if ("allowProjectManagement".equals(fieldName)) {
                     deserializedAccountProperties.allowProjectManagement = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultProject".equals(fieldName)) {

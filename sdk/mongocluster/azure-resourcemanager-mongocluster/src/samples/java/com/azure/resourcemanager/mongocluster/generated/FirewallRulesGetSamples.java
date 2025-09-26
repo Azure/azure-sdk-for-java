@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_FirewallRuleGet.json
+     * x-ms-original-file: 2025-07-01-preview/MongoClusters_FirewallRuleGet.json
      */
     /**
      * Sample code: Gets a firewall rule on a Mongo Cluster resource.

@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,166 +14,140 @@ public final class CallSessionEndReason extends ExpandableStringEnum<CallSession
     /**
      * Static value sessionStillOngoing for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason SESSION_STILL_ONGOING = fromString("sessionStillOngoing");
 
     /**
      * Static value callEnded for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason CALL_ENDED = fromString("callEnded");
 
     /**
      * Static value initiatorLeft for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason INITIATOR_LEFT = fromString("initiatorLeft");
 
     /**
      * Static value handedOverOrTransfered for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason HANDED_OVER_OR_TRANSFERED = fromString("handedOverOrTransfered");
 
     /**
      * Static value maximumSessionTimeReached for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason MAXIMUM_SESSION_TIME_REACHED = fromString("maximumSessionTimeReached");
 
     /**
      * Static value callStartTimeout for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason CALL_START_TIMEOUT = fromString("callStartTimeout");
 
     /**
      * Static value mediaTimeout for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason MEDIA_TIMEOUT = fromString("mediaTimeout");
 
     /**
      * Static value audioStreamFailure for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason AUDIO_STREAM_FAILURE = fromString("audioStreamFailure");
 
     /**
      * Static value allInstancesBusy for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason ALL_INSTANCES_BUSY = fromString("allInstancesBusy");
 
     /**
      * Static value teamsTokenConversionFailed for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason TEAMS_TOKEN_CONVERSION_FAILED = fromString("teamsTokenConversionFailed");
 
     /**
      * Static value reportCallStateFailed for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason REPORT_CALL_STATE_FAILED = fromString("reportCallStateFailed");
 
     /**
      * Static value reportCallStateFailedAndSessionMustBeDiscarded for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason REPORT_CALL_STATE_FAILED_AND_SESSION_MUST_BE_DISCARDED
         = fromString("reportCallStateFailedAndSessionMustBeDiscarded");
 
     /**
      * Static value couldNotRejoinCall for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason COULD_NOT_REJOIN_CALL = fromString("couldNotRejoinCall");
 
     /**
      * Static value invalidBotData for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason INVALID_BOT_DATA = fromString("invalidBotData");
 
     /**
      * Static value couldNotStart for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason COULD_NOT_START = fromString("couldNotStart");
 
     /**
      * Static value appHostedMediaFailureOutcomeWithError for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason APP_HOSTED_MEDIA_FAILURE_OUTCOME_WITH_ERROR
         = fromString("appHostedMediaFailureOutcomeWithError");
 
     /**
      * Static value appHostedMediaFailureOutcomeGracefully for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason APP_HOSTED_MEDIA_FAILURE_OUTCOME_GRACEFULLY
         = fromString("appHostedMediaFailureOutcomeGracefully");
 
     /**
      * Static value handedOverDueToMediaTimeout for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason HANDED_OVER_DUE_TO_MEDIA_TIMEOUT
         = fromString("handedOverDueToMediaTimeout");
 
     /**
      * Static value handedOverDueToAudioStreamFailure for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason HANDED_OVER_DUE_TO_AUDIO_STREAM_FAILURE
         = fromString("handedOverDueToAudioStreamFailure");
 
     /**
      * Static value speechRecognitionSessionNonRetriableError for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason SPEECH_RECOGNITION_SESSION_NON_RETRIABLE_ERROR
         = fromString("speechRecognitionSessionNonRetriableError");
 
     /**
      * Static value speechRecognitionSessionRetriableErrorMaxRetryCountReached for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason SPEECH_RECOGNITION_SESSION_RETRIABLE_ERROR_MAX_RETRY_COUNT_REACHED
         = fromString("speechRecognitionSessionRetriableErrorMaxRetryCountReached");
 
     /**
      * Static value handedOverDueToChunkCreationFailure for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason HANDED_OVER_DUE_TO_CHUNK_CREATION_FAILURE
         = fromString("handedOverDueToChunkCreationFailure");
 
     /**
      * Static value chunkCreationFailed for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason CHUNK_CREATION_FAILED = fromString("chunkCreationFailed");
 
     /**
      * Static value handedOverDueToProcessingTimeout for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason HANDED_OVER_DUE_TO_PROCESSING_TIMEOUT
         = fromString("handedOverDueToProcessingTimeout");
 
     /**
      * Static value processingTimeout for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason PROCESSING_TIMEOUT = fromString("processingTimeout");
 
     /**
      * Static value transcriptObjectCreationFailed for CallSessionEndReason.
      */
-    @Generated
     public static final CallSessionEndReason TRANSCRIPT_OBJECT_CREATION_FAILED
         = fromString("transcriptObjectCreationFailed");
 
@@ -183,7 +156,6 @@ public final class CallSessionEndReason extends ExpandableStringEnum<CallSession
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public CallSessionEndReason() {
     }
@@ -194,7 +166,6 @@ public final class CallSessionEndReason extends ExpandableStringEnum<CallSession
      * @param name a name to look for.
      * @return the corresponding CallSessionEndReason.
      */
-    @Generated
     public static CallSessionEndReason fromString(String name) {
         return fromString(name, CallSessionEndReason.class);
     }
@@ -204,7 +175,6 @@ public final class CallSessionEndReason extends ExpandableStringEnum<CallSession
      * 
      * @return known CallSessionEndReason values.
      */
-    @Generated
     public static Collection<CallSessionEndReason> values() {
         return values(CallSessionEndReason.class);
     }

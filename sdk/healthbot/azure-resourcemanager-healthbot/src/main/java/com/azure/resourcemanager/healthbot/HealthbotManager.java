@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.fluent.HealthbotClient;
 import com.azure.resourcemanager.healthbot.implementation.BotsImpl;
@@ -33,14 +34,14 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * Entry point to HealthbotManager.
- * Microsoft Healthcare Bot is a cloud platform that empowers developers in Healthcare organizations to build and deploy
- * their compliant, AI-powered virtual health assistants and health bots, that help them improve processes and reduce
- * costs.
+ * Azure Health Bot is a cloud platform that empowers developers in Healthcare organizations to build and deploy their
+ * compliant, AI-powered virtual health assistants and health bots, that help them improve processes and reduce costs.
  */
 public final class HealthbotManager {
     private Bots bots;
@@ -99,6 +100,9 @@ public final class HealthbotManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-healthbot.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -206,12 +210,14 @@ public final class HealthbotManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.healthbot")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
