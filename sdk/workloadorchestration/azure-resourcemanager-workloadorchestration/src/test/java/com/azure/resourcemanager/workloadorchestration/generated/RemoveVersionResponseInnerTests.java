@@ -12,7 +12,7 @@ public final class RemoveVersionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoveVersionResponseInner model
-            = BinaryData.fromString("{\"status\":\"bifpikxwczb\"}").toObject(RemoveVersionResponseInner.class);
-        Assertions.assertEquals("bifpikxwczb", model.status());
+            = BinaryData.fromString("{\"status\":\"cnyejhkryhtnapcz\"}").toObject(RemoveVersionResponseInner.class);
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.status());
     }
 }

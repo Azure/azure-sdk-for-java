@@ -140,8 +140,8 @@ public final class BrokerListenerResourceInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,10 +167,10 @@ public final class BrokerListenerResourceInner extends ProxyResource {
                     deserializedBrokerListenerResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBrokerListenerResourceInner.type = reader.getString();
-                } else if ("extendedLocation".equals(fieldName)) {
-                    deserializedBrokerListenerResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedBrokerListenerResourceInner.properties = BrokerListenerProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedBrokerListenerResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedBrokerListenerResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

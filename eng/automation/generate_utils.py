@@ -423,7 +423,7 @@ def generate_typespec_project(
             # generate from remote url
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
-                "--no-install",
+                "--no",
                 "--prefix",
                 os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
@@ -441,7 +441,7 @@ def generate_typespec_project(
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
-                "--no-install",
+                "--no",
                 "--prefix",
                 os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",

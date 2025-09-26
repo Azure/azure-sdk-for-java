@@ -169,7 +169,7 @@ $generateScript = {
     Push-Location $directory
     try {
       try {
-        $generateOutput = (& npx --no-install --prefix "$using:tspClientFolder" tsp-client update 2>&1)
+        $generateOutput = (& npx --no --prefix "$using:tspClientFolder" tsp-client update 2>&1)
         if ($LastExitCode -ne 0) {
           Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
           throw
