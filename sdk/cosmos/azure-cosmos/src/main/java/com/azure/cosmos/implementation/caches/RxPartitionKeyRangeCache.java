@@ -66,7 +66,14 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
      * @see IPartitionKeyRangeCache#tryLookupAsync(java.lang.STRING, com.azure.cosmos.internal.routing.CollectionRoutingMap)
      */
     @Override
-    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
+    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties, StringBuilder sb) {
+
+        if (sb != null) {
+            sb.append("RxPartitionKeyRangeCache.TryLookupAsync:").append(",");
+        }
+
+        String callIdentifier = UUID.randomUUID().toString();
+
         return routingMapCache.getAsync(
                 collectionRid,
                 routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue,
@@ -301,6 +308,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
             qryOptAccessor.setOperationId(cosmosQueryRequestOptions, callIdentifier);
             Instant addressCallStartTime = Instant.now();
+
+            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier);
 
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
