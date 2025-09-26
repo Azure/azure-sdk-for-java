@@ -14,6 +14,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Pipeline policy that uses an {@link KeyCredential} to set the authorization key for a request.
@@ -86,6 +87,18 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
         }
         setCredential(httpRequest.getHeaders());
         return next.process();
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        if (!"https".equals(httpRequest.getUri().getScheme())) {
+            CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
+            failedFuture.completeExceptionally(LOGGER.throwableAtError()
+                .log("Key credentials require HTTPS to prevent leaking the key.", IllegalStateException::new));
+            return failedFuture;
+        }
+        setCredential(httpRequest.getHeaders());
+        return next.processAsync();
     }
 
     void setCredential(HttpHeaders headers) {

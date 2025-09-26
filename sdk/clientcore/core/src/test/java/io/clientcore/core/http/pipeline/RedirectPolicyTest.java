@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -19,26 +20,34 @@ import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class RedirectPolicyTest {
     private static final HttpRedirectOptions DEFAULT_REDIRECT_STRATEGY
         = new HttpRedirectOptions(3, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET, HttpMethod.HEAD));
+
+    private final boolean isAsync;
+
+    public RedirectPolicyTest(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
 
     @Test
     public void noRedirectPolicyTest() {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
-                HttpHeaders httpHeader
-                    = new HttpHeaders().set(HttpHeaderName.fromString("Location"), "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return new Response<>(request, 308, httpHeader, BinaryData.empty());
             } else {
                 return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
             }
         }).build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(308, response.getStatusCode());
         }
     }
@@ -61,7 +70,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
@@ -84,7 +93,7 @@ public class RedirectPolicyTest {
                 new HttpRedirectPolicy(new HttpRedirectOptions(5, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET))))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<?> response = sendRequest(pipeline, isAsync)) {
             assertEquals(5, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -107,7 +116,8 @@ public class RedirectPolicyTest {
                 new HttpRedirectOptions(5, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.POST)) {
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://localhost/"));
+        try (Response<BinaryData> response = sendRequest(pipeline, request, isAsync)) {
             // not redirected to 200
             assertEquals(1, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
@@ -130,7 +140,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(200, response.getStatusCode());
         }
@@ -156,7 +166,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -178,7 +188,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(new HttpRedirectOptions(5, HttpHeaderName.fromString("Location1"), null)))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(5, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -216,7 +226,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(new HttpRedirectOptions(5, null, allowedMethods)))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(200, response.getStatusCode());
         }
@@ -236,7 +246,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(1, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -258,19 +268,18 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response1 = sendRequest(pipeline, HttpMethod.GET)) {
-            try (Response<?> response2 = sendRequest(pipeline, HttpMethod.GET)) {
-                assertEquals(4, httpClient.getCount());
-                // Both requests successfully redirected for same request redirect location
-                assertEquals(200, response1.getStatusCode());
-                // Both requests successfully redirected for same request redirect location
-                assertEquals(200, response2.getStatusCode());
-            }
+        try (Response<BinaryData> response1 = sendRequest(pipeline, isAsync);
+            Response<BinaryData> response2 = sendRequest(pipeline, isAsync)) {
+            assertEquals(4, httpClient.getCount());
+            // Both requests successfully redirected for same request redirect location
+            assertEquals(200, response1.getStatusCode());
+            // Both requests successfully redirected for same request redirect location
+            assertEquals(200, response2.getStatusCode());
         }
     }
 
     @Test
-    public void nonRedirectRequest() throws Exception {
+    public void nonRedirectRequest() {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 return new Response<>(request, 401, new HttpHeaders(), BinaryData.empty());
@@ -279,7 +288,7 @@ public class RedirectPolicyTest {
             }
         }).addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY)).build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(401, response.getStatusCode());
         }
     }
@@ -301,7 +310,7 @@ public class RedirectPolicyTest {
             .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
@@ -327,15 +336,10 @@ public class RedirectPolicyTest {
                 }
             }).build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
+        try (Response<?> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
-    }
-
-    private Response<?> sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) {
-        return pipeline.send(new HttpRequest().setMethod(httpMethod).setUri(URI.create("http://localhost/")));
     }
 
     static class RecordingHttpClient implements HttpClient {
