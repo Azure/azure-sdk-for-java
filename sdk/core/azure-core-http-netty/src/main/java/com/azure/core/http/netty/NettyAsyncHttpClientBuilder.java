@@ -194,6 +194,7 @@ public class NettyAsyncHttpClientBuilder {
 
         // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
         // no-op address resolver to be set.
+        boolean setDefaultAddressResolverGroup = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
@@ -202,8 +203,10 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
-        if (proxyOptions == null) {
+        // If a resolver hasn't been set, set the default one.
+        if (nettyHttpClient.configuration().resolver() == null) {
             nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
+            setDefaultAddressResolverGroup = true;
         }
 
         long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
@@ -280,7 +283,7 @@ public class NettyAsyncHttpClientBuilder {
             }
 
             AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null) {
+            if (resolver == null || setDefaultAddressResolverGroup) {
                 if (nonProxyHostsPattern != null) {
                     // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
                     // alternate between the no-op resolver for proxying situations and the default resolve for
