@@ -230,4 +230,16 @@ extends:
       groupId: com.azure
       safeName: azurestoragequeue
       ServiceDirectory: storage
+    - name: azure-resourcemanager-appservice
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerappservice
+      ServiceDirectory: appservice
+    - name: azure-resourcemanager-containerinstance
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerinstance
+      ServiceDirectory: containerinstance
+    - name: azure-resourcemanager-keyvault
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerkeyvault
+      ServiceDirectory: keyvault/azure-resourcemanager-keyvault
 
