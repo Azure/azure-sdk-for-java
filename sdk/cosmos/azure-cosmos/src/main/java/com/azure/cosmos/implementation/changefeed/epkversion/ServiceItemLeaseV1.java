@@ -54,7 +54,7 @@ public class ServiceItemLeaseV1 implements Lease {
 
     public ServiceItemLeaseV1() {
         ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of("UTC"));
-        this.timestamp = currentTime.toString();
+        this.timestamp = currentTime.toInstant().toString();
         this._ts = String.valueOf(currentTime.getSecond());
         this.properties = new HashMap<>();
         //  By default, this is EPK_RANGE_BASED_LEASE version
