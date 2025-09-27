@@ -38,6 +38,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabasesClient
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseInner;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseWalletFileInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.AutonomousDatabaseListResult;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecycleAction;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
 import com.azure.resourcemanager.oracledatabase.models.DisasterRecoveryConfigurationDetails;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
@@ -310,6 +311,26 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             @PathParam("autonomousdatabasename") String autonomousdatabasename,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DisasterRecoveryConfigurationDetails body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/action")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> action(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("autonomousdatabasename") String autonomousdatabasename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AutonomousDatabaseLifecycleAction body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/action")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> actionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("autonomousdatabasename") String autonomousdatabasename,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AutonomousDatabaseLifecycleAction body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -2086,6 +2107,186 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body, Context context) {
         return beginChangeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context)
             .getFinalResult();
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> actionWithResponseAsync(String resourceGroupName,
+        String autonomousdatabasename, AutonomousDatabaseLifecycleAction body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.action(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> actionWithResponse(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
+            Context.NONE);
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> actionWithResponse(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginActionAsync(
+        String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseLifecycleAction body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = actionWithResponseAsync(resourceGroupName, autonomousdatabasename, body);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AutonomousDatabaseInner.class, AutonomousDatabaseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginAction(String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseLifecycleAction body) {
+        Response<BinaryData> response = actionWithResponse(resourceGroupName, autonomousdatabasename, body);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
+            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, Context.NONE);
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginAction(
+        String resourceGroupName, String autonomousdatabasename, AutonomousDatabaseLifecycleAction body,
+        Context context) {
+        Response<BinaryData> response = actionWithResponse(resourceGroupName, autonomousdatabasename, body, context);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(response,
+            AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, context);
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AutonomousDatabaseInner> actionAsync(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body) {
+        return beginActionAsync(resourceGroupName, autonomousdatabasename, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body) {
+        return beginAction(resourceGroupName, autonomousdatabasename, body).getFinalResult();
+    }
+
+    /**
+     * Perform Lifecycle Management Action on Autonomous Database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body, Context context) {
+        return beginAction(resourceGroupName, autonomousdatabasename, body, context).getFinalResult();
     }
 
     /**

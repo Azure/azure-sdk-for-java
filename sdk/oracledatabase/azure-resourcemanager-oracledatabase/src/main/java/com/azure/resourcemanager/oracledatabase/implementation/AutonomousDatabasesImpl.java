@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabasesClient
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseInner;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseWalletFileInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecycleAction;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabases;
 import com.azure.resourcemanager.oracledatabase.models.DisasterRecoveryConfigurationDetails;
@@ -202,6 +203,27 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
         String autonomousdatabasename, DisasterRecoveryConfigurationDetails body, Context context) {
         AutonomousDatabaseInner inner = this.serviceClient()
             .changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body) {
+        AutonomousDatabaseInner inner = this.serviceClient().action(resourceGroupName, autonomousdatabasename, body);
+        if (inner != null) {
+            return new AutonomousDatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
+        AutonomousDatabaseLifecycleAction body, Context context) {
+        AutonomousDatabaseInner inner
+            = this.serviceClient().action(resourceGroupName, autonomousdatabasename, body, context);
         if (inner != null) {
             return new AutonomousDatabaseImpl(inner, this.manager());
         } else {

@@ -15,31 +15,31 @@ public final class DbNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbNodeInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"ikhnvpamqgxqq\",\"additionalDetails\":\"zikywgg\",\"backupIpId\":\"allatmelwuipic\",\"backupVnic2Id\":\"zkzivgvvcnay\",\"backupVnicId\":\"yrnxxmueedn\",\"cpuCoreCount\":1429248323,\"dbNodeStorageSizeInGbs\":233559890,\"dbServerId\":\"kwqqtchealmf\",\"dbSystemId\":\"tdaaygdvwvg\",\"faultDomain\":\"ohgwxrtfudxepxg\",\"hostIpId\":\"agvrvmnpkuk\",\"hostname\":\"i\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"lxgwimfnjhf\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":205109580,\"softwareStorageSizeInGb\":1343784830,\"timeCreated\":\"2021-01-23T00:44:34Z\",\"timeMaintenanceWindowEnd\":\"2021-08-02T13:39:17Z\",\"timeMaintenanceWindowStart\":\"2020-12-27T03:23:26Z\",\"vnic2Id\":\"yfkzik\",\"vnicId\":\"jawneaiv\",\"provisioningState\":\"Canceled\"},\"id\":\"elpcirelsfeaenwa\",\"name\":\"fatkld\",\"type\":\"xbjhwuaanozjosph\"}")
+            "{\"properties\":{\"ocid\":\"zk\",\"additionalDetails\":\"oqreyfkzikfjawn\",\"backupIpId\":\"ivx\",\"backupVnic2Id\":\"zel\",\"backupVnicId\":\"irels\",\"cpuCoreCount\":1789990861,\"dbNodeStorageSizeInGbs\":730394428,\"dbServerId\":\"abfatkl\",\"dbSystemId\":\"dxbjhwuaanozj\",\"faultDomain\":\"ph\",\"hostIpId\":\"ulpjr\",\"hostname\":\"ag\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"imjwosyt\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":835762361,\"softwareStorageSizeInGb\":992939840,\"timeCreated\":\"2021-01-25T11:09:17Z\",\"timeMaintenanceWindowEnd\":\"2021-07-26T14:22:18Z\",\"timeMaintenanceWindowStart\":\"2021-05-30T00:33:28Z\",\"vnic2Id\":\"iekkezz\",\"vnicId\":\"khly\",\"provisioningState\":\"Canceled\"},\"id\":\"gqggebdunygae\",\"name\":\"idb\",\"type\":\"fatpxllrxcyjmoa\"}")
             .toObject(DbNodeInner.class);
-        Assertions.assertEquals("ikhnvpamqgxqq", model.properties().ocid());
-        Assertions.assertEquals("zikywgg", model.properties().additionalDetails());
-        Assertions.assertEquals("allatmelwuipic", model.properties().backupIpId());
-        Assertions.assertEquals("zkzivgvvcnay", model.properties().backupVnic2Id());
-        Assertions.assertEquals("yrnxxmueedn", model.properties().backupVnicId());
-        Assertions.assertEquals(1429248323, model.properties().cpuCoreCount());
-        Assertions.assertEquals(233559890, model.properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("kwqqtchealmf", model.properties().dbServerId());
-        Assertions.assertEquals("tdaaygdvwvg", model.properties().dbSystemId());
-        Assertions.assertEquals("ohgwxrtfudxepxg", model.properties().faultDomain());
-        Assertions.assertEquals("agvrvmnpkuk", model.properties().hostIpId());
-        Assertions.assertEquals("i", model.properties().hostname());
+        Assertions.assertEquals("zk", model.properties().ocid());
+        Assertions.assertEquals("oqreyfkzikfjawn", model.properties().additionalDetails());
+        Assertions.assertEquals("ivx", model.properties().backupIpId());
+        Assertions.assertEquals("zel", model.properties().backupVnic2Id());
+        Assertions.assertEquals("irels", model.properties().backupVnicId());
+        Assertions.assertEquals(1789990861, model.properties().cpuCoreCount());
+        Assertions.assertEquals(730394428, model.properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("abfatkl", model.properties().dbServerId());
+        Assertions.assertEquals("dxbjhwuaanozj", model.properties().dbSystemId());
+        Assertions.assertEquals("ph", model.properties().faultDomain());
+        Assertions.assertEquals("ulpjr", model.properties().hostIpId());
+        Assertions.assertEquals("ag", model.properties().hostname());
         Assertions.assertEquals(DbNodeProvisioningState.UPDATING, model.properties().lifecycleState());
-        Assertions.assertEquals("lxgwimfnjhf", model.properties().lifecycleDetails());
+        Assertions.assertEquals("imjwosyt", model.properties().lifecycleDetails());
         Assertions.assertEquals(DbNodeMaintenanceType.VMDB_REBOOT_MIGRATION, model.properties().maintenanceType());
-        Assertions.assertEquals(205109580, model.properties().memorySizeInGbs());
-        Assertions.assertEquals(1343784830, model.properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-23T00:44:34Z"), model.properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T13:39:17Z"),
+        Assertions.assertEquals(835762361, model.properties().memorySizeInGbs());
+        Assertions.assertEquals(992939840, model.properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T11:09:17Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T14:22:18Z"),
             model.properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T03:23:26Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T00:33:28Z"),
             model.properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals("yfkzik", model.properties().vnic2Id());
-        Assertions.assertEquals("jawneaiv", model.properties().vnicId());
+        Assertions.assertEquals("iekkezz", model.properties().vnic2Id());
+        Assertions.assertEquals("khly", model.properties().vnicId());
     }
 }

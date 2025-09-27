@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbNodesListByCloudVmClusterSamples {
     /*
-     * x-ms-original-file: 2025-03-01/dbNodes_listByParent.json
+     * x-ms-original-file: 2025-09-01/dbNodes_listByParent.json
      */
     /**
      * Sample code: DbNodes_listByCloudVmCluster.

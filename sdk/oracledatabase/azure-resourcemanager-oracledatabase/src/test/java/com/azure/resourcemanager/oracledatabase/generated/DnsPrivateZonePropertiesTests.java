@@ -15,16 +15,16 @@ public final class DnsPrivateZonePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneProperties model = BinaryData.fromString(
-            "{\"ocid\":\"vjayvblmhvkzu\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"vvyhg\",\"serial\":954108232,\"version\":\"pbyrqufegxu\",\"viewId\":\"zfbn\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-08-15T03:14:49Z\",\"provisioningState\":\"Canceled\"}")
+            "{\"ocid\":\"jjoqkagf\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"ttaugzxnfaazp\",\"serial\":2103578354,\"version\":\"tnkdmkqj\",\"viewId\":\"wuenvr\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-03-08T18:35:57Z\",\"provisioningState\":\"Canceled\"}")
             .toObject(DnsPrivateZoneProperties.class);
-        Assertions.assertEquals("vjayvblmhvkzu", model.ocid());
+        Assertions.assertEquals("jjoqkagf", model.ocid());
         Assertions.assertFalse(model.isProtected());
         Assertions.assertEquals(DnsPrivateZonesLifecycleState.ACTIVE, model.lifecycleState());
-        Assertions.assertEquals("vvyhg", model.self());
-        Assertions.assertEquals(954108232, model.serial());
-        Assertions.assertEquals("pbyrqufegxu", model.version());
-        Assertions.assertEquals("zfbn", model.viewId());
-        Assertions.assertEquals(ZoneType.PRIMARY, model.zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T03:14:49Z"), model.timeCreated());
+        Assertions.assertEquals("ttaugzxnfaazp", model.self());
+        Assertions.assertEquals(2103578354, model.serial());
+        Assertions.assertEquals("tnkdmkqj", model.version());
+        Assertions.assertEquals("wuenvr", model.viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T18:35:57Z"), model.timeCreated());
     }
 }

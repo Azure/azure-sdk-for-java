@@ -21,7 +21,7 @@ public final class GiMinorVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"twfans\",\"gridImageOcid\":\"pdibmikostbzbki\"},\"id\":\"uqn\",\"name\":\"ophzfylsgcrp\",\"type\":\"bcunezzceze\"}";
+            = "{\"properties\":{\"version\":\"ejyfdvlvhbwrnfx\",\"gridImageOcid\":\"ddpqt\"},\"id\":\"hn\",\"name\":\"naoyank\",\"type\":\"oe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class GiMinorVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GiMinorVersion response = manager.giMinorVersions()
-            .getWithResponse("rylniofrzg", "zjedmstkvnlv", "bcuiiz", com.azure.core.util.Context.NONE)
+            .getWithResponse("sqowxwc", "mlikytw", "czcswka", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("twfans", response.properties().version());
-        Assertions.assertEquals("pdibmikostbzbki", response.properties().gridImageOcid());
+        Assertions.assertEquals("ejyfdvlvhbwrnfx", response.properties().version());
+        Assertions.assertEquals("ddpqt", response.properties().gridImageOcid());
     }
 }

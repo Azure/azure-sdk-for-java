@@ -12,9 +12,9 @@ public final class SystemVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"systemVersion\":\"mond\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"},{\"properties\":{\"systemVersion\":\"smocmbq\"},\"id\":\"vmkcx\",\"name\":\"zapvhelx\",\"type\":\"rgly\"}],\"nextLink\":\"dd\"}")
+            "{\"value\":[{\"properties\":{\"systemVersion\":\"rjxgciqib\"},\"id\":\"osx\",\"name\":\"dqrhzoymib\",\"type\":\"rq\"},{\"properties\":{\"systemVersion\":\"bahwfl\"},\"id\":\"zdtmhrkwofy\",\"name\":\"voqacpiexpbt\",\"type\":\"iwbwoenwashrtdtk\"},{\"properties\":{\"systemVersion\":\"qxwbpokulpiu\"},\"id\":\"aasipqi\",\"name\":\"obyu\",\"type\":\"erpqlpqwcciuqg\"},{\"properties\":{\"systemVersion\":\"butauvfb\"},\"id\":\"uwhhmhykojoxafn\",\"name\":\"dlpichkoymkcdyhb\",\"type\":\"kkpwdreqnovvq\"}],\"nextLink\":\"vljxywsu\"}")
             .toObject(SystemVersionListResult.class);
-        Assertions.assertEquals("mond", model.value().get(0).properties().systemVersion());
-        Assertions.assertEquals("dd", model.nextLink());
+        Assertions.assertEquals("rjxgciqib", model.value().get(0).properties().systemVersion());
+        Assertions.assertEquals("vljxywsu", model.nextLink());
     }
 }

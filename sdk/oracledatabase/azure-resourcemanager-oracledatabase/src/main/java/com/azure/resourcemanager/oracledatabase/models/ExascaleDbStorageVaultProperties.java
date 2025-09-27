@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * ExascaleDbStorageVault resource model.
@@ -75,6 +76,16 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
      */
     private String ociUrl;
+
+    /*
+     * Cloud Exadata infrastructure ID
+     */
+    private String exadataInfrastructureId;
+
+    /*
+     * The shapeAttribute of the Exadata VM cluster(s) associated with the Exadata Database Storage Vault.
+     */
+    private List<ShapeAttribute> attachedShapeAttributes;
 
     /**
      * Creates an instance of ExascaleDbStorageVaultProperties class.
@@ -251,6 +262,36 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
     }
 
     /**
+     * Get the exadataInfrastructureId property: Cloud Exadata infrastructure ID.
+     * 
+     * @return the exadataInfrastructureId value.
+     */
+    public String exadataInfrastructureId() {
+        return this.exadataInfrastructureId;
+    }
+
+    /**
+     * Set the exadataInfrastructureId property: Cloud Exadata infrastructure ID.
+     * 
+     * @param exadataInfrastructureId the exadataInfrastructureId value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withExadataInfrastructureId(String exadataInfrastructureId) {
+        this.exadataInfrastructureId = exadataInfrastructureId;
+        return this;
+    }
+
+    /**
+     * Get the attachedShapeAttributes property: The shapeAttribute of the Exadata VM cluster(s) associated with the
+     * Exadata Database Storage Vault.
+     * 
+     * @return the attachedShapeAttributes value.
+     */
+    public List<ShapeAttribute> attachedShapeAttributes() {
+        return this.attachedShapeAttributes;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -261,6 +302,7 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
         jsonWriter.writeNumberField("additionalFlashCacheInPercent", this.additionalFlashCacheInPercent);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("exadataInfrastructureId", this.exadataInfrastructureId);
         return jsonWriter.writeEndObject();
     }
 
@@ -311,6 +353,12 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
                     deserializedExascaleDbStorageVaultProperties.ocid = reader.getString();
                 } else if ("ociUrl".equals(fieldName)) {
                     deserializedExascaleDbStorageVaultProperties.ociUrl = reader.getString();
+                } else if ("exadataInfrastructureId".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.exadataInfrastructureId = reader.getString();
+                } else if ("attachedShapeAttributes".equals(fieldName)) {
+                    List<ShapeAttribute> attachedShapeAttributes
+                        = reader.readArray(reader1 -> ShapeAttribute.fromString(reader1.getString()));
+                    deserializedExascaleDbStorageVaultProperties.attachedShapeAttributes = attachedShapeAttributes;
                 } else {
                     reader.skipChildren();
                 }
