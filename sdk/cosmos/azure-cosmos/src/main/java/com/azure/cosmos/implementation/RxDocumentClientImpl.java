@@ -4898,7 +4898,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ResourceType.PartitionKeyRange,
             PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
-
  }
 
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
@@ -6219,18 +6218,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
-            request -> {
-                DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-                retryPolicy.onBeforeSendRequest(request);
-
-                return ObservableHelper.inlineIfPossibleAsObs(
-                    () -> readFeed(request)
-                        .map(response -> feedResponseAccessor.createFeedResponse(
-                            response,
-                            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                            klass)),
-                    retryPolicy);
-            };
+            request -> readFeed(request)
+                .map(response -> feedResponseAccessor.createFeedResponse(
+                                    response,
+                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                    klass));
 
         return Paginator
             .getPaginatedNonDocumentReadFeedResultAsObservable(

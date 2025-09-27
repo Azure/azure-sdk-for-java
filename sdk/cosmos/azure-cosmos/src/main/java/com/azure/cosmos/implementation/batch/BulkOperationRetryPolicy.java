@@ -123,7 +123,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                                                                                     .getRange(),
                                                                                 true,
                                                                                 null /*properties*/,
-                                                      sb)
+                                                                                sb)
                                                   .then(Mono.just(true)));
             }
 
