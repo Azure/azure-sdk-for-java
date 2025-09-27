@@ -5,6 +5,9 @@
 #### Bugs Fixed
 * Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
 
+#### Other Changes
+* Added `MetadataThrottlingRetryPolicy` for `PartitionKeyRange` `RequestRateTooLargeException` handling. - [PR 46823](https://github.com/Azure/azure-sdk-for-java/pull/46823)
+
 ### 4.71.1-hotfix (2025-08-04)
 
 #### Bugs Fixed
