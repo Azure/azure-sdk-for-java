@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.changefeed.pkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.ConsistencyLevel;
@@ -10,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.SplitTestsRetryAnalyzer;
 import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -38,6 +40,15 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -182,6 +193,89 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(500);
         }
      }
+
+    @Test(groups = { "long-emulator" }, enabled = false, timeOut = 12 * TIMEOUT)
+    public void readFeedDocumentsStartFromBeginningWithPkRangeThrottles() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection
+            = client.getDatabase("TestDb").getContainer("TestFeedContainer");
+        CosmosAsyncContainer createdLeaseCollection
+            = client.getDatabase("TestDb").getContainer("TestLeaseContainer");
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(10)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            FeedRange fullRange = FeedRange.forFullRange();
+
+            FaultInjectionServerErrorResult pkRangeThrottledError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                .suppressServiceRequests(false)
+                .build();
+
+            FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
+                .build();
+
+            String pkRangeThrottledId = String.format("pkrange-throttled-error-%s", UUID.randomUUID());
+
+            FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder(pkRangeThrottledId)
+                .condition(condition)
+                .result(pkRangeThrottledError);
+
+            FaultInjectionRule pkRangeThrottledFIErrorRule = ruleBuilder.build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(createdFeedCollection, Arrays.asList(pkRangeThrottledFIErrorRule)).block();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(20000 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // restart the change feed processor and verify it can start successfully
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to start
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+//            safeDeleteCollection(createdFeedCollection);
+//            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.            Thread.sleep(500);
+        }
+    }
 
     @Test(groups = { "long-emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() throws InterruptedException {
@@ -1377,6 +1471,61 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = 20 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void readPartitionKeyRangesWithSuppressedPageSize() {
+
+        AsyncDocumentClient contextClient = BridgeInternal.getContextClient(this.client);
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
+        String containerLink = BridgeInternal.getLink(asyncContainer);
+
+        try {
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "1");
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() <= 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
+        } finally {
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
+        }
+
+        try {
+            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "-1");
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() > 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
+        } finally {
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
+        }
+
+        try {
+            contextClient
+                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
+                .doOnNext(feedResponse -> {
+                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
+                    assertThat(feedResponse.getResults().size() > 1).isTrue();
+                })
+                .blockLast();
+
+        } catch (RuntimeException e) {
+            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
+        } finally {
+            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
         }
     }
 

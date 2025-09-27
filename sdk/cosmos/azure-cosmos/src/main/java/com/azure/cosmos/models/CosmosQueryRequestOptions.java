@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
@@ -674,6 +675,13 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public void setMaxItemCount(CosmosQueryRequestOptions options, Integer maxItemCount) {
+                    options
+                        .actualRequestOptions
+                        .setMaxItemCount(maxItemCount);
+                }
+
+                @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
                 }
@@ -724,6 +732,24 @@ public class CosmosQueryRequestOptions {
                     }
 
                     return options.getImpl().getHeaders();
+                }
+
+                @Override
+                public void setOperationId(CosmosQueryRequestOptions options, String operationId) {
+                    if (options == null || options.actualRequestOptions == null) {
+                        return;
+                    }
+
+                    options.actualRequestOptions.setOperationId(operationId);
+                }
+
+                @Override
+                public String getOperationId(CosmosQueryRequestOptions options) {
+                    if (options == null || options.actualRequestOptions == null || options.actualRequestOptions.getOperationId() == null) {
+                        return StringUtils.EMPTY;
+                    }
+
+                    return options.actualRequestOptions.getOperationId();
                 }
             });
     }

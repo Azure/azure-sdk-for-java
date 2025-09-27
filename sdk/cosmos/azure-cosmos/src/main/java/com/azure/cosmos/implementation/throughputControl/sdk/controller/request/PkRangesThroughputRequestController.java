@@ -121,8 +121,10 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     private Mono<List<PartitionKeyRange>> getPartitionKeyRanges(Range<String> range) {
         checkNotNull(range, "Range can not be null");
         // TODO: add diagnostics context
+        StringBuilder sb = new StringBuilder();
+        sb.append("PkRangesThroughputRequestController.getPartitionKeyRanges").append(",");
         return this.partitionKeyRangeCache
-            .tryGetOverlappingRangesAsync(null, this.targetContainerRid, range, true, null)
+            .tryGetOverlappingRangesAsync(null, this.targetContainerRid, range, true, null, sb)
             .map(partitionKeyRangesValueHolder -> partitionKeyRangesValueHolder.v);
     }
 }

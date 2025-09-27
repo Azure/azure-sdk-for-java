@@ -23,8 +23,8 @@ public interface IRoutingMapProvider {
         /// <param name="forceRefresh">Whether forcefully refreshing the routing map is necessary</param>
         /// <returns>List of effective partition key ranges for a collection or null if collection doesn't exist.</returns>
         Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range,
-                                                                                      boolean forceRefresh /* = false */, Map<String, Object> properties);
+                                                                                      boolean forceRefresh /* = false */, Map<String, Object> properties, StringBuilder sb);
 
         Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, String partitionKeyRangeId,
-                                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
+                                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties, StringBuilder sb);
 }

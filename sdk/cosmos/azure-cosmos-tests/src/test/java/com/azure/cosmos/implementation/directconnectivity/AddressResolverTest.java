@@ -354,8 +354,9 @@ public class AddressResolverTest {
             String collectionRid = invocationOnMock.getArgument(1, String.class);
             CollectionRoutingMap previousValue = invocationOnMock.getArgument(2, CollectionRoutingMap.class);
 
-            return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
+            return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null, new StringBuilder());
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
+            Mockito.any(),
             Mockito.any(),
             Mockito.any(),
             Mockito.any(),
@@ -400,6 +401,7 @@ public class AddressResolverTest {
             Mockito.any(),
             Mockito.any(),
             Mockito.anyBoolean(),
+            Mockito.any(),
             Mockito.any());
 
 

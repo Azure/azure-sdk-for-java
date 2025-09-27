@@ -70,6 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -259,6 +260,8 @@ public class GatewayAddressCache implements IAddressCache {
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
+        String callIdentifier = UUID.randomUUID().toString();
+
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs =
                 this.serverPartitionAddressCache
                     .getAsync(
@@ -273,7 +276,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 failedEndpoints.setUnhealthy();
                             }
                             return forceRefreshPartitionAddressesModified;
-                        })
+                        }, callIdentifier)
                     .map(Utils.ValueHolder::new);
 
         return addressesObs
@@ -1155,8 +1158,9 @@ public class GatewayAddressCache implements IAddressCache {
         checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange.getId());
+        String callIdentifier = UUID.randomUUID().toString();
 
-        return this.serverPartitionAddressCache.getAsync(partitionKeyRangeIdentity, cachedAddresses -> Mono.just(cachedAddresses), cachedAddresses -> true)
+        return this.serverPartitionAddressCache.getAsync(partitionKeyRangeIdentity, cachedAddresses -> Mono.just(cachedAddresses), cachedAddresses -> true, callIdentifier)
             .flatMapMany(cachedAddresses -> Flux.fromArray(cachedAddresses))
             .flatMap(addressInformation -> Mono.fromFuture(
                 this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(

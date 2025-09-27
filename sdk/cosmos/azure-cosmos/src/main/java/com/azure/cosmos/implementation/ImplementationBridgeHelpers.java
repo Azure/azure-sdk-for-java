@@ -298,6 +298,8 @@ public class ImplementationBridgeHelpers {
 
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
+            void setMaxItemCount(CosmosQueryRequestOptions options, Integer maxItemCount);
+
             String getRequestContinuation(CosmosQueryRequestOptions options);
 
             Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options);
@@ -313,6 +315,9 @@ public class ImplementationBridgeHelpers {
             String getCollectionRid(CosmosQueryRequestOptions options);
             Map<String, Object> getProperties(CosmosQueryRequestOptions options);
             Map<String, String> getHeaders(CosmosQueryRequestOptions options);
+
+            void setOperationId(CosmosQueryRequestOptions options, String operationId);
+            String getOperationId(CosmosQueryRequestOptions options);
         }
     }
 

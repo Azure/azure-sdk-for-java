@@ -74,13 +74,17 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                 BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                 request);
 
+            StringBuilder sb = new StringBuilder();
+            sb.append("PartitionKeyRangeGoneRetryPolicy.shouldRetry:").append(",");
+
             return collectionObs.flatMap(collectionValueHolder -> {
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
-                    request.properties);
+                    request.properties,
+                    sb);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
@@ -89,7 +93,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                             null,
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
-                            request.properties);
+                            request.properties,
+                            sb);
                     } else {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }
