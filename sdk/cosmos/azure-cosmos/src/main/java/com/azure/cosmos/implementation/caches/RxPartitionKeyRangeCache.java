@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;

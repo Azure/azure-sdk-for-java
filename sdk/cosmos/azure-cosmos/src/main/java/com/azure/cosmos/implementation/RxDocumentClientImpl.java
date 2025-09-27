@@ -6233,7 +6233,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             };
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
