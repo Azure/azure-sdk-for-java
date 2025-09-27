@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class TaskHubsListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_ListByScheduler.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_ListByScheduler.json
      */
     /**
      * Sample code: TaskHubs_ListByScheduler.

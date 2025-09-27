@@ -6,6 +6,7 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public final class SchedulersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Schedulers_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedulers_CreateOrUpdate.
@@ -29,7 +30,7 @@ public final class SchedulersCreateOrUpdateSamples {
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("department", "research", "development", "true"))
             .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
-                .withSku(new SchedulerSku().withName("Dedicated")))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED)))
             .create();
     }
 
