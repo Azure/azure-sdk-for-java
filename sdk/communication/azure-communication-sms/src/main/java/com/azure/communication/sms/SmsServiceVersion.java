@@ -6,13 +6,23 @@ package com.azure.communication.sms;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Communication Identity Service supported by this client library.
+ * The versions of Communication SMS Service supported by this client library.
  */
 public enum SmsServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2021-03-07}.
      */
-    V2021_03_07("2021-03-07");
+    V2021_03_07("2021-03-07"),
+
+    /**
+     * Service version {@code 2025-08-01-preview}.
+     */
+    V2025_08_01_PREVIEW("2025-08-01-preview"),
+
+    /**
+     * Service version {@code 2026-01-23}.
+     */
+    V2026_01_23("2026-01-23");
 
     private final String version;
 
@@ -34,6 +44,6 @@ public enum SmsServiceVersion implements ServiceVersion {
      * @return the latest {@link SmsServiceVersion}
      */
     public static SmsServiceVersion getLatest() {
-        return V2021_03_07;
+        return V2025_08_01_PREVIEW;
     }
 }

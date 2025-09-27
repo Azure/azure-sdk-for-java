@@ -43,7 +43,12 @@ import java.util.Objects;
 
 /**
  * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
+ *
+ * @deprecated This class is deprecated. Please use {@link TelcoMessagingClientBuilder} instead.
+ * The TelcoMessagingClientBuilder provides organized access to SMS functionality through specialized sub-clients.
+ * For example: {@code new TelcoMessagingClientBuilder().connectionString(connectionString).buildClient().getSmsClient()}
  */
+@Deprecated
 @ServiceClientBuilder(serviceClients = { SmsClient.class, SmsAsyncClient.class })
 public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClientBuilder>,
     ConfigurationTrait<SmsClientBuilder>, ConnectionStringTrait<SmsClientBuilder>, EndpointTrait<SmsClientBuilder>,
@@ -65,6 +70,7 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private SmsServiceVersion serviceVersion;
 
     /**
      * Creates a new instance of {@link SmsClientBuilder}.
@@ -230,6 +236,7 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
      * @return the updated SmsClientBuilder object
      */
     public SmsClientBuilder serviceVersion(SmsServiceVersion version) {
+        this.serviceVersion = version;
         return this;
     }
 
@@ -307,8 +314,11 @@ public final class SmsClientBuilder implements AzureKeyCredentialTrait<SmsClient
             builderPipeline = createHttpPipeline(httpClient);
         }
 
+        SmsServiceVersion buildServiceVersion
+            = (serviceVersion != null) ? serviceVersion : SmsServiceVersion.getLatest();
+
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
-        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline).apiVersion(buildServiceVersion.getVersion());
 
         return clientBuilder.buildClient();
     }

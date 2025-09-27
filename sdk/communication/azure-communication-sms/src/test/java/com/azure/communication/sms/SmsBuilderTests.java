@@ -50,6 +50,24 @@ public class SmsBuilderTests {
     }
 
     @Test
+    public void serviceVersionTest() {
+        SmsClient client = builder.connectionString(MOCK_CONNECTION_STRING)
+            .serviceVersion(SmsServiceVersion.V2021_03_07)
+            .httpClient(new NoOpHttpClient())
+            .buildClient();
+        assertNotNull(client);
+    }
+
+    @Test
+    public void serviceVersionLatestTest() {
+        SmsClient client = builder.connectionString(MOCK_CONNECTION_STRING)
+            .serviceVersion(SmsServiceVersion.getLatest())
+            .httpClient(new NoOpHttpClient())
+            .buildClient();
+        assertNotNull(client);
+    }
+
+    @Test
     public void nullPipelineTest() {
         assertThrows(NullPointerException.class,
             () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).pipeline(null));
