@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `reactor.netty.http.client.HttpClient.resolver` would always be set to `DefaultAddressResolverGroup.INSTANCE`
+  when no `ProxyOptions` were provided, even when a custom `HttpClient` was used to initialize `NettyAsyncHttpClientBuilder`.
+  Now the resolver is only set to `DefaultAddressResolverGroup.INSTANCE` when a resolver wasn't set.
+- Changed how HTTP responses are closed to limit the chances of leaking `ByteBuf`s when the `Connection`'s `Channel` was
+  deregistered from an `EventLoop`, resulting in the network connection from being cleaned up properly.
+
 ### Other Changes
 
 ## 1.16.1 (2025-09-05)
