@@ -574,8 +574,15 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
-        return Mono.fromSupplier(() -> options.isChained()
-            && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource()))
+        return Mono.fromSupplier(() -> {
+            boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(options);
+
+            // Only probe if: chained AND using IMDS AND not explicitly selected
+            return !explicitlySelected
+                && options.isChained()
+                && ManagedIdentitySourceType.DEFAULT_TO_IMDS
+                    .equals(ManagedIdentityApplication.getManagedIdentitySource());
+        })
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
             .flatMap(ignored -> getTokenFromMsalMIClient(resource));
     }
