@@ -92,7 +92,7 @@ public final class EmailAsyncClient {
                 com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
 
                 attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
-                    attachment.getName(), attachment.getContentType(), attachment.getContentInBase64().toBytes());
+                    attachment.getName(), attachment.getContentType(), attachment.getContent().toBytes());
 
                 String contentId = attachment.getContentId();
 

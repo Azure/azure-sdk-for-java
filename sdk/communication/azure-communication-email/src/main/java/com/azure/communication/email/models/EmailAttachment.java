@@ -20,7 +20,7 @@ public final class EmailAttachment {
     /*
      * Base64 encoded contents of the attachment
      */
-    private final BinaryData contentInBase64;
+    private final BinaryData content;
 
     /*
      * Unique identifier (CID) to reference an inline attachment.
@@ -37,7 +37,7 @@ public final class EmailAttachment {
     public EmailAttachment(String name, String contentType, BinaryData content) {
         this.name = name;
         this.contentType = contentType;
-        this.contentInBase64 = content;
+        this.content = content;
     }
 
     /**
@@ -59,23 +59,12 @@ public final class EmailAttachment {
     }
 
     /**
-     * @deprecated Use {@link #getContentInBase64()} instead.
      * Returns the content of the attachment.
      *
      * @return The content of the attachment as BinaryData.
      */
-    @Deprecated
     public BinaryData getContent() {
-        return this.contentInBase64;
-    }
-
-    /**
-     * Get the contentInBase64 property: Base64 encoded contents of the attachment.
-     *
-     * @return the contentInBase64 value.
-     */
-    public BinaryData getContentInBase64() {
-        return this.contentInBase64;
+        return this.content;
     }
 
     /**
