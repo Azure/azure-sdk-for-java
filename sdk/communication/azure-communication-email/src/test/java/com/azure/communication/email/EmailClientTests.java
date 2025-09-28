@@ -39,7 +39,7 @@ public class EmailClientTests extends EmailTestBase {
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailToSingleRecipient")
             .setBodyHtml("<h1>test message</h1>");
 
         SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
@@ -54,7 +54,7 @@ public class EmailClientTests extends EmailTestBase {
         emailClient = getEmailClient(httpClient);
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailToMultipleRecipients")
             .setBodyPlainText("test message")
             .setToRecipients(RECIPIENT_ADDRESS, SECOND_RECIPIENT_ADDRESS)
             .setCcRecipients(RECIPIENT_ADDRESS)
@@ -75,7 +75,7 @@ public class EmailClientTests extends EmailTestBase {
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailWithAttachment")
             .setBodyHtml("<h1>test message</h1>")
             .setAttachments(attachment);
 
@@ -90,12 +90,12 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailWithInlineAttachment(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAttachment attachment = new EmailAttachment("inlineimage.jpg", "image/jpeg", BinaryData.fromString("test"))
-            .setContentId("inline_image");
+        EmailAttachment attachment
+            = new EmailAttachment("inlineimage.jpg", "image/png", getRedPngImageData()).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailWithInlineAttachment")
             .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
             .setAttachments(attachment);
 
@@ -112,7 +112,7 @@ public class EmailClientTests extends EmailTestBase {
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - beginSendFromExistingOperationId")
             .setBodyHtml("<h1>test message</h1>");
 
         SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
