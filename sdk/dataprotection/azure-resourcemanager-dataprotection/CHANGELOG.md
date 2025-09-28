@@ -1,14 +1,686 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2025-09-24)
 
-### Features Added
+- Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ClientDiscoveryValueForSingleApi` was removed
 
-### Other Changes
+#### `models.AksVolumeTypes` was removed
+
+#### `models.DppWorkerRequest` was removed
+
+#### `models.DppTrackedResource` was removed
+
+#### `models.ClientDiscoveryDisplay` was removed
+
+#### `models.BackupInstanceResourceList` was removed
+
+#### `models.AzureBackupFindRestorableTimeRangesRequestResource` was removed
+
+#### `models.AzureBackupJobResourceList` was removed
+
+#### `models.DeletedBackupInstanceResourceList` was removed
+
+#### `models.ClientDiscoveryForProperties` was removed
+
+#### `models.ClientDiscoveryResponse` was removed
+
+#### `models.ClientDiscoveryForLogSpecification` was removed
+
+#### `models.DppBaseResourceList` was removed
+
+#### `models.BaseBackupPolicyResourceList` was removed
+
+#### `models.ResourceGuardProxyBaseResourceList` was removed
+
+#### `models.ResourceGuardResourceList` was removed
+
+#### `models.ClientDiscoveryForServiceSpecification` was removed
+
+#### `models.BackupVaultResourceList` was removed
+
+#### `models.AzureBackupRecoveryPointResourceList` was removed
+
+#### `models.DppProxyResource` was removed
+
+#### `models.DppBaseTrackedResource` was removed
+
+#### `models.AdhocBasedTriggerContext` was modified
+
+* `validate()` was removed
+
+#### `models.AdhocBasedTaggingCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRecoveryTimeBasedRestoreRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceMoveDetails` was modified
+
+* `withTargetResourcePath(java.lang.String)` was removed
+* `withOperationId(java.lang.String)` was removed
+* `withSourceResourcePath(java.lang.String)` was removed
+* `withStartTimeUtc(java.lang.String)` was removed
+* `validate()` was removed
+* `withCompletionTimeUtc(java.lang.String)` was removed
+
+#### `models.CrossRegionRestoreJobRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SourceLifeCycle` was modified
+
+* `validate()` was removed
+
+#### `models.AdlsBlobBackupDatasourceParameters` was modified
+
+* `validate()` was removed
+
+#### `models.TaggingCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.JobExtendedInfo` was modified
+
+* `withAdditionalDetails(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.SoftDeleteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.BackupVaultOperationResultsGetHeaders` was modified
+
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+* `withRetryAfter(java.lang.Integer)` was removed
+* `withAzureAsyncOperation(java.lang.String)` was removed
+
+#### `models.BackupInstanceResource` was modified
+
+* `models.OperationJobExtendedInfo validateForModifyBackup(models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` -> `void validateForModifyBackup(models.ValidateForModifyBackupRequest,com.azure.core.util.Context)`
+* `models.OperationJobExtendedInfo validateForModifyBackup(models.ValidateForModifyBackupRequest)` -> `void validateForModifyBackup(models.ValidateForModifyBackupRequest)`
+
+#### `models.AdhocBackupTriggerOption` was modified
+
+* `validate()` was removed
+
+#### `models.SupportedFeature` was modified
+
+* `withExposureControlledFeatures(java.util.List)` was removed
+* `withFeatureName(java.lang.String)` was removed
+* `withSupportStatus(models.FeatureSupportStatus)` was removed
+* `validate()` was removed
+
+#### `models.PolicyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DataStoreParameters` was modified
+
+* `validate()` was removed
+
+#### `models.RestorableTimeRange` was modified
+
+* `validate()` was removed
+* `withObjectType(java.lang.String)` was removed
+* `withStartTime(java.lang.String)` was removed
+* `withEndTime(java.lang.String)` was removed
+
+#### `models.AzureBackupParams` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateForModifyBackupRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DppResource` was modified
+
+* `validate()` was removed
+
+#### `models.StorageSetting` was modified
+
+* `validate()` was removed
+
+#### `models.DppResourceList` was modified
+
+* `validate()` was removed
+* `models.DppResourceList withNextLink(java.lang.String)` -> `models.DppResourceList withNextLink(java.lang.String)`
+
+#### `models.ProtectionStatusDetails` was modified
+
+* `withErrorDetails(models.UserFacingError)` was removed
+* `validate()` was removed
+* `withStatus(models.Status)` was removed
+
+#### `models.RangeBasedItemLevelRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.SecretStoreResource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRestoreRequest` was modified
+
+* `validate()` was removed
+
+#### `models.BackupSchedule` was modified
+
+* `validate()` was removed
+
+#### `DataProtectionManager` was modified
+
+* `fluent.DataProtectionClient serviceClient()` -> `fluent.DataProtectionManagementClient serviceClient()`
+
+#### `models.PatchBackupVaultInput` was modified
+
+* `validate()` was removed
+
+#### `models.DeletedBackupInstance` was modified
+
+* `withPolicyInfo(models.PolicyInfo)` was removed
+* `withDatasourceAuthCredentials(models.AuthCredentials)` was removed
+* `withObjectType(java.lang.String)` was removed
+* `withDataSourceInfo(models.Datasource)` was removed
+* `withResourceGuardOperationRequests(java.util.List)` was removed
+* `validate()` was removed
+* `withIdentityDetails(models.IdentityDetails)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withDataSourceSetInfo(models.DatasourceSet)` was removed
+* `withValidationType(models.ValidationType)` was removed
+
+#### `models.CrossSubscriptionRestoreSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AbsoluteDeleteOption` was modified
+
+* `validate()` was removed
+
+#### `models.SecuritySettings` was modified
+
+* `validate()` was removed
+
+#### `models.DefaultResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRestoreWithRehydrationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreJobRecoveryPointDetails` was modified
+
+* `withRecoveryPointTime(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withRecoveryPointId(java.lang.String)` was removed
+
+#### `models.BaseResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NamespacedNameResource` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerContext` was modified
+
+* `validate()` was removed
+
+#### `models.BasePolicyRule` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.KubernetesClusterBackupDatasourceParameters` was modified
+
+* `validate()` was removed
+
+#### `models.UnlockDeleteRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `models.ResourceGuardOperationDetail` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UserFacingError` was modified
+
+* `validate()` was removed
+* `withProperties(java.util.Map)` was removed
+* `withCode(java.lang.String)` was removed
+* `withIsUserError(java.lang.Boolean)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withInnerError(models.InnerError)` was removed
+* `withDetails(java.util.List)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withRecommendedAction(java.util.List)` was removed
+* `withIsRetryable(java.lang.Boolean)` was removed
+
+#### `models.DatasourceSet` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreFilesTargetInfo` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreTargetInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DeleteOption` was modified
+
+* `validate()` was removed
+
+#### `models.BackupCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.UserFacingWarningDetail` was modified
+
+* `withResourceName(java.lang.String)` was removed
+* `withWarning(models.UserFacingError)` was removed
+* `validate()` was removed
+
+#### `models.DeletionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.BackupInstance` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateCrossRegionRestoreRequestObject` was modified
+
+* `validate()` was removed
+
+#### `models.CustomCopyOption` was modified
+
+* `validate()` was removed
+
+#### `models.TargetDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ItemLevelRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.ItemPathBasedRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreTargetInfoBase` was modified
+
+* `validate()` was removed
+
+#### `models.AzureOperationalStoreParameters` was modified
+
+* `validate()` was removed
+
+#### `models.BaseBackupPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.InnerError` was modified
+
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withAdditionalInfo(java.util.Map)` was removed
+* `withEmbeddedInnerError(models.InnerError)` was removed
+
+#### `models.AzureRetentionRule` was modified
+
+* `validate()` was removed
+
+#### `models.MonitoringSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureValidationRequestBase` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AuthCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.BackupVault` was modified
+
+* `validate()` was removed
+
+#### `models.Day` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceGuardOperation` was modified
+
+* `validate()` was removed
+
+#### `models.SyncBackupInstanceRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRule` was modified
+
+* `validate()` was removed
+
+#### `models.StopProtectionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CopyOption` was modified
+
+* `validate()` was removed
+
+#### `models.BackupDatasourceParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduleBasedBackupCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.CrossRegionRestoreSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CrossRegionRestoreJobsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupFindRestorableTimeRangesResponse` was modified
+
+* `withRestorableTimeRanges(java.util.List)` was removed
+* `withObjectType(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.CmkKeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CmkKekIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMonitorAlertSettings` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityDetails` was modified
+
+* `validate()` was removed
+
+#### `models.FeatureValidationResponse` was modified
+
+* `withFeatureType(models.FeatureType)` was removed
+* `validate()` was removed
+* `withFeatures(java.util.List)` was removed
+
+#### `models.DppTrackedResourceList` was modified
+
+* `validate()` was removed
+* `models.DppTrackedResourceList withNextLink(java.lang.String)` -> `models.DppTrackedResourceList withNextLink(java.lang.String)`
+
+#### `models.FeatureValidationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.KubernetesStorageClassRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateRestoreRequestObject` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerBackupRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Datasource` was modified
+
+* `validate()` was removed
+
+#### `models.BlobBackupDatasourceParameters` was modified
+
+* `validate()` was removed
+
+#### `models.RetentionTag` was modified
+
+* `validate()` was removed
+
+#### `models.CrossRegionRestoreDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateForBackupRequest` was modified
+
+* `validate()` was removed
+
+#### `models.OperationResultsGetHeaders` was modified
+
+* `validate()` was removed
+* `withAzureAsyncOperation(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withRetryAfter(java.lang.Integer)` was removed
+
+#### `models.TargetCopySetting` was modified
+
+* `validate()` was removed
+
+#### `models.OperationExtendedInfo` was modified
+
+* `validate()` was removed
+
+#### `models.JobSubTask` was modified
+
+* `withTaskId(int)` was removed
+* `withTaskStatus(java.lang.String)` was removed
+* `withAdditionalDetails(java.util.Map)` was removed
+* `validate()` was removed
+* `withTaskName(java.lang.String)` was removed
+
+#### `models.KubernetesClusterVaultTierRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.PatchResourceRequestInput` was modified
+
+* `validate()` was removed
+
+#### `models.KubernetesPVRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.SecretStoreBasedAuthCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRehydrationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduleBasedTriggerContext` was modified
+
+* `validate()` was removed
+
+#### `models.BackupInstances` was modified
+
+* `models.OperationJobExtendedInfo validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest,com.azure.core.util.Context)` -> `void validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest,com.azure.core.util.Context)`
+* `models.OperationJobExtendedInfo validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest)` -> `void validateForModifyBackup(java.lang.String,java.lang.String,java.lang.String,models.ValidateForModifyBackupRequest)`
+
+#### `models.RecoveryPointDataStoreDetails` was modified
+
+* `withType(java.lang.String)` was removed
+* `withState(java.lang.String)` was removed
+* `withCreationTime(java.time.OffsetDateTime)` was removed
+* `withVisible(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withExpiryTime(java.time.OffsetDateTime)` was removed
+* `withId(java.lang.String)` was removed
+* `withMetadata(java.lang.String)` was removed
+
+#### `models.CopyOnExpiryOption` was modified
+
+* `validate()` was removed
+
+#### `models.ImmutabilitySettings` was modified
+
+* `validate()` was removed
+
+#### `models.DataStoreInfoBase` was modified
+
+* `validate()` was removed
+
+#### `models.AdHocBackupRuleOptions` was modified
+
+* `validate()` was removed
+
+#### `models.KubernetesClusterRestoreCriteria` was modified
+
+* `validate()` was removed
+
+#### `models.FetchSecondaryRPsRequestParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceGuardProxyBase` was modified
+
+* `validate()` was removed
+
+#### `models.CrossRegionRestoreRequestObject` was modified
+
+* `validate()` was removed
+
+#### `models.BackupPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupRecoveryPoint` was modified
+
+* `validate()` was removed
+
+#### `models.ItemLevelRestoreTargetInfo` was modified
+
+* `validate()` was removed
+
+#### `models.SuspendBackupRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupFindRestorableTimeRangesRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceGuard` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `withRecoveryPointId(java.lang.String)` was removed
+* `withRetentionTagVersion(java.lang.String)` was removed
+* `withRecoveryPointState(models.RecoveryPointCompletionState)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withRecoveryPointType(java.lang.String)` was removed
+* `validate()` was removed
+* `withPolicyVersion(java.lang.String)` was removed
+* `withRecoveryPointTime(java.time.OffsetDateTime)` was removed
+* `withPolicyName(java.lang.String)` was removed
+* `withRetentionTagName(java.lang.String)` was removed
+* `withRecoveryPointDataStoresDetails(java.util.List)` was removed
+
+#### `models.AzureBackupRecoveryPointBasedRestoreRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ImmediateCopyOption` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBackupJob` was modified
+
+* `withBackupInstanceFriendlyName(java.lang.String)` was removed
+* `withDataSourceName(java.lang.String)` was removed
+* `withDataSourceSetName(java.lang.String)` was removed
+* `withDestinationDataStoreName(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withSourceDataStoreName(java.lang.String)` was removed
+* `withDataSourceLocation(java.lang.String)` was removed
+* `withDuration(java.lang.String)` was removed
+* `withIsUserTriggered(boolean)` was removed
+* `validate()` was removed
+* `withDataSourceType(java.lang.String)` was removed
+* `withStartTime(java.time.OffsetDateTime)` was removed
+* `withEtag(java.lang.String)` was removed
+* `withProgressEnabled(boolean)` was removed
+* `withSourceSubscriptionId(java.lang.String)` was removed
+* `withSubscriptionId(java.lang.String)` was removed
+* `withSupportedActions(java.util.List)` was removed
+* `withActivityId(java.lang.String)` was removed
+* `withVaultName(java.lang.String)` was removed
+* `withSourceResourceGroup(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withDataSourceId(java.lang.String)` was removed
+* `withOperationCategory(java.lang.String)` was removed
+
+#### `models.PatchResourceGuardInput` was modified
+
+* `validate()` was removed
+
+#### `models.DppIdentityDetails` was modified
+
+* `validate()` was removed
+
+#### `models.PolicyInfo` was modified
+
+* `validate()` was removed
+
+#### `models.BackupParameters` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.AKSVolumeTypes` was added
+
+* `models.OperationDisplay` was added
+
+* `models.Origin` was added
+
+* `models.ActionType` was added
+
+* `models.Operation` was added
+
+#### `models.DppBaseResource` was modified
+
+* `systemData()` was added
 
 ## 1.4.0 (2025-08-15)
 
