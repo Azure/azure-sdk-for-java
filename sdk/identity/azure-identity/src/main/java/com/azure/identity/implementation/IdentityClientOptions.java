@@ -70,7 +70,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
-    private String explicitCredential;
+    private String dacEnvConfiguredCredential;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -693,7 +693,7 @@ public final class IdentityClientOptions implements Cloneable {
             = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost
             = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
-        explicitCredential = configuration.get(AzureIdentityEnvVars.AZURE_TOKEN_CREDENTIALS.toString());
+        dacEnvConfiguredCredential = configuration.get(AzureIdentityEnvVars.AZURE_TOKEN_CREDENTIALS.toString());
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -827,20 +827,10 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the explict credential type that was configured
+     * @return the DAC Environment credential that was configured
      */
-    public String getExplicitCredential() {
-        return explicitCredential;
-    }
-
-    /**
-     * Specifies the explicit credential type.
-     * @param explicitCredential the explicit credential type  
-     * @return IdentityClientOptions
-     */
-    public IdentityClientOptions setExplicitCredential(String explicitCredential) {
-        this.explicitCredential = explicitCredential;
-        return this;
+    public String getDACEnvConfiguredCredential() {
+        return dacEnvConfiguredCredential;
     }
 
     public IdentityClientOptions clone() {

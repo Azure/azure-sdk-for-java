@@ -575,11 +575,12 @@ public class IdentityClient extends IdentityClientBase {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
         return Mono.fromSupplier(() -> {
-            boolean explicitlySelected = IdentityUtil.isManagedIdentityCredential(options);
+            boolean isManagedIdentityConfiguredForDac
+                = IdentityUtil.isManagedIdentityCredentialConfiguredForDac(options);
 
-            // Only probe if: chained AND using IMDS AND not explicitly selected
-            return !explicitlySelected
-                && options.isChained()
+            // Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
+            return options.isChained()
+                && !isManagedIdentityConfiguredForDac
                 && ManagedIdentitySourceType.DEFAULT_TO_IMDS
                     .equals(ManagedIdentityApplication.getManagedIdentitySource());
         })
