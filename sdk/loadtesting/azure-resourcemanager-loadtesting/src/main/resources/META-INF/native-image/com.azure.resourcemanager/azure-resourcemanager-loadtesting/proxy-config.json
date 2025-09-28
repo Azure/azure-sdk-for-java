@@ -1,1 +1,1 @@
-[["com.azure.resourcemanager.loadtesting.implementation.LoadTestsClientImpl$LoadTestsService"],["com.azure.resourcemanager.loadtesting.implementation.OperationsClientImpl$OperationsService"],["com.azure.resourcemanager.loadtesting.implementation.QuotasClientImpl$QuotasService"]]
+[["com.azure.resourcemanager.loadtesting.implementation.ResourceProvidersClientImpl$ResourceProvidersService"]]
