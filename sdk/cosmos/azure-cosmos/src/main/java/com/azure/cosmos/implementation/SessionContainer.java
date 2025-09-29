@@ -126,7 +126,7 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public synchronized ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request, String partitionKeyRangeId) {
+    public ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request, String partitionKeyRangeId) {
         return SessionTokenHelper.resolvePartitionLocalSessionToken(request,
                 partitionKeyRangeId,
                 this.getPartitionKeyRangeIdToTokenMap(request));
@@ -172,7 +172,7 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     @Override
-    public synchronized void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+    public void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
         if (this.disableSessionCapturing) {
             return;
         }
