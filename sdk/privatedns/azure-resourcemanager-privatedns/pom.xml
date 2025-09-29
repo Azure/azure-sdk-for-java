@@ -61,12 +61,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
+      <version>2.53.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -12,19 +12,9 @@ trigger:
     exclude:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 pr:
   branches:
@@ -39,63 +29,13 @@ pr:
     exclude:
       - sdk/resourcemanager/pom.xml
       - sdk/resourcemanager/azure-resourcemanager/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
-      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 parameters:
 - name: release_azureresourcemanager
   displayName: 'azure-resourcemanager'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerappplatform
-  displayName: 'azure-resourcemanager-appplatform'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerauthorization
-  displayName: 'azure-resourcemanager-authorization'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercosmos
-  displayName: 'azure-resourcemanager-cosmos'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagereventhubs
-  displayName: 'azure-resourcemanager-eventhubs'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagermonitor
-  displayName: 'azure-resourcemanager-monitor'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerredis
-  displayName: 'azure-resourcemanager-redis'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerresources
-  displayName: 'azure-resourcemanager-resources'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerservicebus
-  displayName: 'azure-resourcemanager-servicebus'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagersql
-  displayName: 'azure-resourcemanager-sql'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagertrafficmanager
-  displayName: 'azure-resourcemanager-trafficmanager'
   type: boolean
   default: true
 - name: release_azureresourcemanagertest
@@ -112,46 +52,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
         releaseInBatch: ${{ parameters.release_azureresourcemanager }}
-      - name: azure-resourcemanager-appplatform
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerappplatform
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerappplatform }}
-      - name: azure-resourcemanager-authorization
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerauthorization
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
-      - name: azure-resourcemanager-cosmos
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercosmos
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercosmos }}
-      - name: azure-resourcemanager-eventhubs
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagereventhubs
-        releaseInBatch: ${{ parameters.release_azureresourcemanagereventhubs }}
-      - name: azure-resourcemanager-monitor
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagermonitor
-        releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
-      - name: azure-resourcemanager-redis
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerredis
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerredis }}
-      - name: azure-resourcemanager-resources
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerresources
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
-      - name: azure-resourcemanager-servicebus
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerservicebus
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerservicebus }}
-      - name: azure-resourcemanager-sql
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagersql
-        releaseInBatch: ${{ parameters.release_azureresourcemanagersql }}
-      - name: azure-resourcemanager-trafficmanager
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagertrafficmanager
-        releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
       - name: azure-resourcemanager-test
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertest

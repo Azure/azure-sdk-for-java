@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-storage</artifactId>
-  <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+  <version>2.55.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Storage Management</name>
@@ -62,17 +62,17 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -89,13 +89,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.32.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.31.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

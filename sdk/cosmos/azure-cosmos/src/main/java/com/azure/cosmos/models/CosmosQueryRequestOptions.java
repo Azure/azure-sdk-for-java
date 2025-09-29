@@ -675,6 +675,13 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public void setMaxItemCount(CosmosQueryRequestOptions options, Integer maxItemCount) {
+                    options
+                        .actualRequestOptions
+                        .setMaxItemCount(maxItemCount);
+                }
+
+                @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
                 }

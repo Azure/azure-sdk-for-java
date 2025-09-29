@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-service</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
 
   <name>Spring Cloud Azure Service</name>
   <description>Spring Cloud Azure Service</description>
@@ -41,14 +41,20 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>9.37.3</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <!-- Azure SDKs-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.73.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.74.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -210,6 +216,7 @@
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.9.1]</include> <!-- {x-include-update;springboot3_org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.7.7]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

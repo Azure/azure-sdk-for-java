@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.SchemaVersionsClient;
@@ -200,25 +199,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SchemaVersionInner>> getWithResponseAsync(String resourceGroupName, String schemaName,
         String schemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -258,28 +238,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaVersionInner> getWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, schemaName, schemaVersionName, accept, context);
@@ -316,30 +274,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String schemaName, String schemaVersionName, SchemaVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -364,34 +298,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName, SchemaVersionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -415,34 +321,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName, SchemaVersionInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -586,30 +464,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SchemaVersionInner>> updateWithResponseAsync(String resourceGroupName, String schemaName,
         String schemaVersionName, SchemaVersionInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -654,34 +508,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaVersionInner> updateWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName, SchemaVersionInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -722,25 +548,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String schemaName,
         String schemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, schemaName, schemaVersionName, context))
@@ -761,28 +568,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, schemaName, schemaVersionName, Context.NONE);
     }
@@ -802,28 +587,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String schemaVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (schemaVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaVersionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, schemaName, schemaVersionName, context);
     }
@@ -947,21 +710,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SchemaVersionInner>> listBySchemaSinglePageAsync(String resourceGroupName,
         String schemaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySchema(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -999,24 +747,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaSinglePage(String resourceGroupName, String schemaName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SchemaVersionListResult> res
             = service.listBySchemaSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1039,24 +769,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaSinglePage(String resourceGroupName, String schemaName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SchemaVersionListResult> res
             = service.listBySchemaSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1111,13 +823,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SchemaVersionInner>> listBySchemaNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySchemaNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -1137,15 +842,6 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SchemaVersionListResult> res
             = service.listBySchemaNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1165,21 +861,10 @@ public final class SchemaVersionsClientImpl implements SchemaVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SchemaVersionInner> listBySchemaNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SchemaVersionListResult> res
             = service.listBySchemaNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SchemaVersionsClientImpl.class);
 }

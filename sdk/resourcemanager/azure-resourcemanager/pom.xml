@@ -71,32 +71,43 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.19.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.27.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
+      <version>2.53.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -106,92 +117,92 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.54.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerservice</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;dependency} -->
+      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-monitor</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.51.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+      <version>2.51.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerinstance</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-privatedns</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-redis</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-eventhubs</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-trafficmanager</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-trafficmanager;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-trafficmanager;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-servicebus</artifactId>
-      <version>2.54.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cdn</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-search</artifactId>
-      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;dependency} -->
+      <version>2.54.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -214,19 +225,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -282,7 +293,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>

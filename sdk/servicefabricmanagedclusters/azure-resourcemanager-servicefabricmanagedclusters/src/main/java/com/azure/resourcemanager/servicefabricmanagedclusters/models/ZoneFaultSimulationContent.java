@@ -81,18 +81,6 @@ public final class ZoneFaultSimulationContent extends FaultSimulationContent {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (constraints() != null) {
-            constraints().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

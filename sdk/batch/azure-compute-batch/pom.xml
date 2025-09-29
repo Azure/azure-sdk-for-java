@@ -57,12 +57,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -73,13 +73,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,4 +101,40 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
+          <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
+          <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
+          <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
+          <includeSource>true</includeSource>
+          <readmePath>${project.basedir}/README.md</readmePath>
+          <includeReadme>true</includeReadme>
+          <maxLineLength>120</maxLineLength>
+          <skip>false</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippet</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippet</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -34,30 +34,30 @@
     <module>../../monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml</module>
     <module>../../parents/azure-client-sdk-parent/pom.xml</module>
     <module>../../parents/azure-sdk-parent/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-appplatform/pom.xml</module>
+    <module>../../appplatform/azure-resourcemanager-appplatform/pom.xml</module>
     <module>../../appservice/azure-resourcemanager-appservice/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-authorization/pom.xml</module>
+    <module>../../authorization/azure-resourcemanager-authorization/pom.xml</module>
     <module>../../cdn/azure-resourcemanager-cdn/pom.xml</module>
     <module>../../compute/azure-resourcemanager-compute/pom.xml</module>
     <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
     <module>../../containerregistry/azure-resourcemanager-containerregistry/pom.xml</module>
     <module>../../containerservice/azure-resourcemanager-containerservice/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-cosmos/pom.xml</module>
+    <module>../../cosmos/azure-resourcemanager-cosmos/pom.xml</module>
     <module>../../dns/azure-resourcemanager-dns/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-eventhubs/pom.xml</module>
+    <module>../../eventhubs/azure-resourcemanager-eventhubs/pom.xml</module>
     <module>../../keyvault/azure-resourcemanager-keyvault/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-monitor/pom.xml</module>
+    <module>../../monitor/azure-resourcemanager-monitor/pom.xml</module>
     <module>../../msi/azure-resourcemanager-msi/pom.xml</module>
     <module>../../network/azure-resourcemanager-network/pom.xml</module>
     <module>../../privatedns/azure-resourcemanager-privatedns/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-redis/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-resources/pom.xml</module>
+    <module>../../redis/azure-resourcemanager-redis/pom.xml</module>
+    <module>../../resources/azure-resourcemanager-resources/pom.xml</module>
     <module>../../search/azure-resourcemanager-search/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-servicebus/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-sql/pom.xml</module>
+    <module>../../servicebus/azure-resourcemanager-servicebus/pom.xml</module>
+    <module>../../sql/azure-resourcemanager-sql/pom.xml</module>
     <module>../../storage/azure-resourcemanager-storage/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager-test/pom.xml</module>
-    <module>../../resourcemanager/azure-resourcemanager-trafficmanager/pom.xml</module>
+    <module>../../trafficmanager/azure-resourcemanager-trafficmanager/pom.xml</module>
     <module>../../resourcemanager/azure-resourcemanager/pom.xml</module>
     <module>../../serialization/azure-json/pom.xml</module>
     <module>../../serialization/azure-xml/pom.xml</module>

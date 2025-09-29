@@ -22,7 +22,6 @@ import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
-import org.apache.logging.log4j.Level
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -70,6 +69,7 @@ private[spark] object CosmosConfigNames {
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
   val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
+  val FeedRangeRefreshIntervalInSeconds = "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -198,6 +198,7 @@ private[spark] object CosmosConfigNames {
     ProactiveConnectionInitializationDurationInSeconds,
     GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
+    FeedRangeRefreshIntervalInSeconds,
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadConsistencyStrategy,
@@ -1184,7 +1185,7 @@ private object CosmosViewRepositoryConfig {
   }
 }
 
-private[cosmos] case class CosmosContainerConfig(database: String, container: String)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String, feedRangeRefreshIntervalInSecondsOpt: Option[Long])
 
 private[spark] case class DiagnosticsConfig
 (
@@ -1305,34 +1306,6 @@ private[spark] object DiagnosticsConfig {
     helpMessage = "The metric collection interval in seconds. A negative value will disable metric "
       + "collection in Azure Monitor.")
 
-
-  private val diagnosticsAzureMonitorLogLevel = CosmosConfigEntry[Level](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogLevel,
-    mandatory = false,
-    defaultValue = Some(Level.INFO),
-    parseFromStringFunction = text => if (Option(text).getOrElse("").isEmpty) {
-      Level.OFF
-    } else {
-      Level.toLevel(text)
-    },
-    helpMessage = "The log-level of logs emitted to the Azure-Monitor log4j appender. Any logs with lower "
-      + "log-level will not be captured in Azure-Monitor. 'Off' results in disabling log collection in Azure Monitor.")
-
-  private val diagnosticsAzureMonitorLogSamplingIntervalInSeconds = CosmosConfigEntry[Int](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogSamplingIntervalInSeconds,
-    mandatory = false,
-    defaultValue = Some(60),
-    parseFromStringFunction = text => text.toInt,
-    helpMessage = "The interval (in seconds) for which the max count of sample-in logs (with severity less than warning) is applied.")
-
-  private val diagnosticsAzureMonitorLogSamplingMaxCount = CosmosConfigEntry[Int](
-    key = CosmosConfigNames.DiagnosticsAzureMonitorLogSamplingMaxCount,
-    mandatory = false,
-    defaultValue = Some(100000),
-    parseFromStringFunction = text => text.toInt,
-    helpMessage = s"Max. number of logs (with severity less than warning) sampled-in per interval. This can be "
-      + s"used to force an upper-limit of informational logs to be emitted.")
-
   private val diagnosticsSamplingIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingIntervalInSeconds,
     mandatory = false,
     defaultValue = Some(60),
@@ -1422,10 +1395,7 @@ private[spark] object DiagnosticsConfig {
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingRate).get,
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingMaxCount).get,
           CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingIntervalInSeconds).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogLevel).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingMaxCount).get,
-          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingIntervalInSeconds).get
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get
         )
 
       AzureMonitorConfig.validateConfigUniqueness(azMonConfigCandidate)
@@ -1929,6 +1899,9 @@ private object CosmosSerializationConfig {
 }
 
 private object CosmosContainerConfig {
+  private[spark] val MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 1L * 60
+  private[spark] val MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 30L * 60
+
   private[spark] val DATABASE_NAME_KEY = CosmosConfigNames.Database
   private[spark] val CONTAINER_NAME_KEY = CosmosConfigNames.Container
 
@@ -1947,6 +1920,11 @@ private object CosmosContainerConfig {
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
+  private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Long](key = CosmosConfigNames.FeedRangeRefreshIntervalInSeconds,
+    mandatory = false,
+    parseFromStringFunction = refreshIntervalInSeconds => refreshIntervalInSeconds.toLong,
+    helpMessage = "The time interval in seconds to refresh the internal partition key range cache, valid between [60, 1800]. By default it is 120 seconds.")
+
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
     this.parseCosmosContainerConfig(cfg, None, None)
   }
@@ -1958,8 +1936,16 @@ private object CosmosContainerConfig {
 
     val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
+    val feedRangeRefreshIntervalInSecondsOpt = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier)
 
-    CosmosContainerConfig(databaseOpt, containerOpt)
+    if (feedRangeRefreshIntervalInSecondsOpt.isDefined) {
+      assert(
+        feedRangeRefreshIntervalInSecondsOpt.get >= MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS
+         && feedRangeRefreshIntervalInSecondsOpt.get <= MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS,
+        s"Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [$MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS, $MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS]")
+    }
+
+    CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInSecondsOpt)
   }
 }
 

@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -29,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.concurrent.Queues;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -310,9 +308,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             qryOptAccessor.setOperationId(cosmosQueryRequestOptions, callIdentifier);
             Instant addressCallStartTime = Instant.now();
 
-            int prefetch = Configs.isPartitionKeyRangePrefetchingEnabled() ? Queues.XS_BUFFER_SIZE : 1;
-
-            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}] with Prefetch [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier, prefetch);
+            logger.warn("Reading PartitionKeyRanges for collection : [{}] with rid : [{}] by UserAgent : [{}] by CallPath : [{}] by CallIdentifier [{}]", coll.getId(), collectionRid, this.client.getUserAgent(), sb != null ? sb.toString() : "N/A", callIdentifier);
 
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
@@ -326,7 +322,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     }
 
                     return Flux.fromIterable(p.getResults());
-                }, 1, prefetch).collectList();
+                }, 1).collectList();
         });
     }
 }

@@ -21,7 +21,7 @@ public final class FilesReadWithResponseMockTests {
     @Test
     public void testReadWithResponse() throws Exception {
         String responseStr
-            = "{\"uri\":\"qa\",\"headers\":{\"jnxjkht\":\"ubnsnstlpwq\",\"ztsm\":\"psvyouweuiyxfw\",\"fhkqytkzta\":\"fbevyllz\",\"rsvloy\":\"opgfzdgjfcy\"}}";
+            = "{\"uri\":\"ezb\",\"headers\":{\"fygpnyhgd\":\"ylslurb\",\"a\":\"uqs\",\"y\":\"qyvoupr\",\"mgw\":\"qzssl\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FilesReadWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileStorageInfo response = manager.files()
-            .readWithResponse("yntvzjyielbq", "vvbq", "knmp", "cqx", com.azure.core.util.Context.NONE)
+            .readWithResponse("wjflobh", "hqmomfeco", "kfrocgbmxl", "j", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qa", response.uri());
-        Assertions.assertEquals("ubnsnstlpwq", response.headers().get("jnxjkht"));
+        Assertions.assertEquals("ezb", response.uri());
+        Assertions.assertEquals("ylslurb", response.headers().get("fygpnyhgd"));
     }
 }

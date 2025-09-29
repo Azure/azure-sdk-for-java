@@ -22,15 +22,80 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Create_Asset_With_DiscoveredAssetRef.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
      */
     /**
-     * Sample code: Create_Asset_With_DiscoveredAssetRefs.
+     * Sample code: CreateOrReplace_Asset_Without_DisplayName.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        createAssetWithDiscoveredAssetRefs(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        createOrReplaceAssetWithoutDisplayName(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withEnabled(true)
+                .withExternalAssetId("8ZBA6LRHU0A458969")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileRef("myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDefaultDatasetsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
+                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
+                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
+                    .withDataPoints(Arrays.asList(
+                        new DataPoint().withName("dataPoint1")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
+                        new DataPoint().withName("dataPoint2")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
+                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withName("event1")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
+                                .withObservabilityMode(EventObservabilityMode.NONE),
+                            new Event().withName("event2")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
+                                .withObservabilityMode(EventObservabilityMode.LOG))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Asset_With_DiscoveredAssetRefs.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceAssetWithDiscoveredAssetRefs(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assets()
             .define("my-asset")
             .withRegion("West Europe")
@@ -89,15 +154,15 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Create_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
      */
     /**
-     * Sample code: Create_Asset_Without_ExternalAssetId.
+     * Sample code: CreateOrReplace_Asset_Without_ExternalAssetId.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        createAssetWithoutExternalAssetId(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void createOrReplaceAssetWithoutExternalAssetId(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assets()
             .define("my-asset")
             .withRegion("West Europe")
@@ -154,15 +219,15 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Create_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
      */
     /**
-     * Sample code: Create_Asset_With_ExternalAssetId.
+     * Sample code: CreateOrReplace_Asset_With_ExternalAssetId.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        createAssetWithExternalAssetId(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void createOrReplaceAssetWithExternalAssetId(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assets()
             .define("my-asset")
             .withRegion("West Europe")
@@ -174,71 +239,6 @@ public final class AssetsCreateOrReplaceSamples {
             .withProperties(new AssetProperties().withEnabled(true)
                 .withExternalAssetId("8ZBA6LRHU0A458969")
                 .withDisplayName("AssetDisplayName")
-                .withDescription("This is a sample Asset")
-                .withAssetEndpointProfileRef("myAssetEndpointProfile")
-                .withManufacturer("Contoso")
-                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
-                .withModel("ContosoModel")
-                .withProductCode("fakeTokenPlaceholder")
-                .withHardwareRevision("1.0")
-                .withSoftwareRevision("2.0")
-                .withDocumentationUri("https://www.example.com/manual")
-                .withSerialNumber("64-103816-519918-8")
-                .withDefaultDatasetsConfiguration(
-                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
-                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
-                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
-                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
-                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
-                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
-                    .withDataPoints(Arrays.asList(
-                        new DataPoint().withName("dataPoint1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
-                        new DataPoint().withName("dataPoint2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
-                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
-                .withEvents(
-                    Arrays
-                        .asList(
-                            new Event().withName("event1")
-                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                                .withEventConfiguration(
-                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
-                                .withObservabilityMode(EventObservabilityMode.NONE),
-                            new Event().withName("event2")
-                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                                .withEventConfiguration(
-                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
-                                .withObservabilityMode(EventObservabilityMode.LOG))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2024-11-01/Create_Asset_Without_DisplayName.json
-     */
-    /**
-     * Sample code: Create_Asset_Without_DisplayName.
-     * 
-     * @param manager Entry point to DeviceRegistryManager.
-     */
-    public static void
-        createAssetWithoutDisplayName(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
-        manager.assets()
-            .define("my-asset")
-            .withRegion("West Europe")
-            .withExistingResourceGroup("myResourceGroup")
-            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
-                .withName(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
-            .withTags(mapOf("site", "building-1"))
-            .withProperties(new AssetProperties().withEnabled(true)
-                .withExternalAssetId("8ZBA6LRHU0A458969")
                 .withDescription("This is a sample Asset")
                 .withAssetEndpointProfileRef("myAssetEndpointProfile")
                 .withManufacturer("Contoso")

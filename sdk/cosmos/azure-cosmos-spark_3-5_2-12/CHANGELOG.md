@@ -1,17 +1,23 @@
 ## Release History
 
-### 4.39.0-beta.1 (Unreleased)
+### 4.40.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for feed range cache refresh interval config. - See [46759](https://github.com/Azure/azure-sdk-for-java/pull/46759)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Reverted known issue due to shading log4j (which was introduced in 4.38.1). - See [PR 46546](https://github.com/Azure/azure-sdk-for-java/pull/46546)
-* Added change feed performance monitoring which is used to improve end lsn calculation in `CosmosPartitionPlanner`. - See [PR 46320](https://github.com/Azure/azure-sdk-for-java/pull/46320)
-* Added `spark.cosmos.auth.aad.audience` as a valid configuration option to allow using AAD tokens with custom audiences. - See [PR 46554](https://github.com/Azure/azure-sdk-for-java/pull/46554)
 
 #### Other Changes
+* Added improvement to reduce partition planning time for large containers. - See [46727](https://github.com/Azure/azure-sdk-for-java/pull/46727)
+
+### 4.39.0 (2025-09-05)
+
+#### Bugs Fixed
+* Reverted known issue due to shading log4j (which was introduced in 4.38.1). - See [PR 46546](https://github.com/Azure/azure-sdk-for-java/pull/46546) and [PR 46608](https://github.com/Azure/azure-sdk-for-java/pull/46608)
+* Added change feed performance monitoring which is used to improve end lsn calculation in `CosmosPartitionPlanner`. - See [PR 46320](https://github.com/Azure/azure-sdk-for-java/pull/46320)
+* Added `spark.cosmos.auth.aad.audience` as a valid configuration option to allow using AAD tokens with custom audiences. - See [PR 46554](https://github.com/Azure/azure-sdk-for-java/pull/46554)
 
 ### 4.38.1 (2025-08-22)
 

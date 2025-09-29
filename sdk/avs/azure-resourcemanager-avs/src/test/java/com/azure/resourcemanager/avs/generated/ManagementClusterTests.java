@@ -13,21 +13,21 @@ public final class ManagementClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementCluster model = BinaryData.fromString(
-            "{\"clusterSize\":116380968,\"provisioningState\":\"Cancelled\",\"clusterId\":1177990560,\"hosts\":[\"cjooxdjebwpucwwf\"],\"vsanDatastoreName\":\"vbvmeu\"}")
+            "{\"clusterSize\":1098465372,\"provisioningState\":\"Succeeded\",\"clusterId\":1151262260,\"hosts\":[\"hjdauwhvylwz\",\"tdhxujznbmpowuwp\"],\"vsanDatastoreName\":\"qlveualupjmkh\"}")
             .toObject(ManagementCluster.class);
-        Assertions.assertEquals(116380968, model.clusterSize());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.hosts().get(0));
-        Assertions.assertEquals("vbvmeu", model.vsanDatastoreName());
+        Assertions.assertEquals(1098465372, model.clusterSize());
+        Assertions.assertEquals("hjdauwhvylwz", model.hosts().get(0));
+        Assertions.assertEquals("qlveualupjmkh", model.vsanDatastoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementCluster model = new ManagementCluster().withClusterSize(116380968)
-            .withHosts(Arrays.asList("cjooxdjebwpucwwf"))
-            .withVsanDatastoreName("vbvmeu");
+        ManagementCluster model = new ManagementCluster().withClusterSize(1098465372)
+            .withHosts(Arrays.asList("hjdauwhvylwz", "tdhxujznbmpowuwp"))
+            .withVsanDatastoreName("qlveualupjmkh");
         model = BinaryData.fromObject(model).toObject(ManagementCluster.class);
-        Assertions.assertEquals(116380968, model.clusterSize());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.hosts().get(0));
-        Assertions.assertEquals("vbvmeu", model.vsanDatastoreName());
+        Assertions.assertEquals(1098465372, model.clusterSize());
+        Assertions.assertEquals("hjdauwhvylwz", model.hosts().get(0));
+        Assertions.assertEquals("qlveualupjmkh", model.vsanDatastoreName());
     }
 }

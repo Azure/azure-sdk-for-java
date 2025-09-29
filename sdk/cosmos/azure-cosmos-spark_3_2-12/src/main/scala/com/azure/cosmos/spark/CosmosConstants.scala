@@ -88,14 +88,4 @@ private[cosmos] object CosmosConstants {
        .orElse(sys.env.get(MetricsHistoryDecayFactorEnvName))
        .getOrElse(DefaultMetricsHistoryDecayFactor).toDouble
   }
-
-  object ContainerFeedRangesCacheConfigs {
-    private val FeedRangeRefreshIntervalPropertyName = "spark.cosmos.container.feedRange.refresh.interval"
-    private val FeedRangeRefreshIntervalEnvName = "SPARK.COSMOS.CONTAINER.FEEDRANGE.REFRESH.INTERVAL"
-    private val DefaultFeedRangeRefreshIntervalInMins = "5"
-    val feedRangeRefreshInterval: Long =
-      Option(System.getProperty(FeedRangeRefreshIntervalPropertyName))
-       .orElse(sys.env.get(FeedRangeRefreshIntervalEnvName))
-       .getOrElse(DefaultFeedRangeRefreshIntervalInMins).toLong
-  }
 }

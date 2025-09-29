@@ -27,10 +27,13 @@ jobs:
             - '**/*.xml'
             - 'common/perf-test-core'
             - 'sdk/appconfiguration/azure-data-appconfiguration'
+            - 'sdk/appplatform/azure-resourcemanager-appplatform'
             - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
             - 'sdk/appservice/azure-resourcemanager-appservice'
+            - 'sdk/authorization/azure-resourcemanager-authorization'
             - 'sdk/core'
             - 'sdk/cosmos/azure-cosmos'
+            - 'sdk/cosmos/azure-resourcemanager-cosmos'
             - 'sdk/cdn/azure-resourcemanager-cdn'
             - 'sdk/compute/azure-resourcemanager-compute'
             - 'sdk/containerinstance/azure-resourcemanager-containerinstance'
@@ -47,6 +50,8 @@ jobs:
             - 'sdk/msi/azure-resourcemanager-msi'
             - 'sdk/network'
             - 'sdk/privatedns/azure-resourcemanager-privatedns'
+            - 'sdk/redis/azure-resourcemanager-redis'
+            - 'sdk/resources/azure-resourcemanager-resources'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/parents/azure-client-sdk-parent'
@@ -56,10 +61,13 @@ jobs:
             - 'sdk/search/azure-resourcemanager-search'
             - 'sdk/serialization'
             - 'sdk/servicebus'
+            - 'sdk/sql/azure-resourcemanager-sql'
             - 'sdk/storage'
             - 'sdk/tools'
+            - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
         inputs:
           mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
           goals: 'install'
@@ -72,23 +80,29 @@ jobs:
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - bash: |
           echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
         displayName: 'Set supported Spring version to environment variables'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - bash: |
           echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
           echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
           echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
           echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
         displayName: 'Log Spring version and Maven pom path'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - script: |
           python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
         displayName: 'Insert Spring dependency managements'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - script: |
             python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)
         displayName: 'Remove unused dependency versions'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
       - task: Maven@4
         displayName: 'Run tests'
+        condition: ne(variables['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'], '')
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=- --fail-at-end'
           mavenPomFile: sdk/spring/pom.xml

@@ -51,18 +51,6 @@ public final class DeployJobParameter extends JobParameterBase {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (parameter() != null) {
-            parameter().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

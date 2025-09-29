@@ -538,12 +538,63 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
                     String scopeOverride = Configs.getAadScopeOverride();
-                    String defaultScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
-                    String scopeToUse = (scopeOverride != null && !scopeOverride.isEmpty()) ? scopeOverride : defaultScope;
+                    String accountScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
 
-                    this.tokenCredentialScopes = new String[] { scopeToUse };
-                    this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
-                        .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
+                    if (scopeOverride != null && !scopeOverride.isEmpty()) {
+                        // Use only the override scope; no fallback.
+                        this.tokenCredentialScopes = new String[] { scopeOverride };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope = this.tokenCredentialScopes[0];
+                            final TokenRequestContext ctx = new TokenRequestContext().addScopes(primaryScope);
+                            return this.tokenCredential.getToken(ctx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using override scope: {}", primaryScope);
+                                    }
+                                });
+                        });
+                    } else {
+                        // Account scope with fallback to default scope on AADSTS500011 error
+                        this.tokenCredentialScopes = new String[] { accountScope, Constants.AAD_DEFAULT_SCOPE };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope  = this.tokenCredentialScopes[0];
+                            final String fallbackScope = this.tokenCredentialScopes[1];
+
+                            final TokenRequestContext primaryCtx = new TokenRequestContext().addScopes(primaryScope);
+
+                            return this.tokenCredential.getToken(primaryCtx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using account scope: {}", primaryScope);
+                                    }
+                                })
+                                .onErrorResume(error -> {
+                                    final Throwable root = reactor.core.Exceptions.unwrap(error);
+                                    final String messageText = (root.getMessage() != null) ? root.getMessage() : "";
+                                    final boolean isAadAppNotFound = messageText.contains("AADSTS500011");
+
+                                    if (!isAadAppNotFound) {
+                                        return Mono.error(error);
+                                    }
+
+                                    if (logger.isWarnEnabled()) {
+                                        logger.warn(
+                                            "AAD token: account scope failed with AADSTS500011; retrying with fallback scope: {}",
+                                            fallbackScope);
+                                    }
+
+                                    final TokenRequestContext fallbackCtx = new TokenRequestContext().addScopes(fallbackScope);
+                                    return this.tokenCredential.getToken(fallbackCtx)
+                                        .doOnNext(t -> {
+                                            if (logger.isInfoEnabled()) {
+                                                logger.info("AAD token: acquired using fallback scope: {}", fallbackScope);
+                                            }
+                                        });
+                                });
+                        });
+                    }
                     this.authorizationTokenType = AuthorizationTokenType.AadToken;
                 }
             }
@@ -4831,16 +4882,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(
-        String collectionLink,
-        CosmosQueryRequestOptions options) {
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options) {
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
+        qryOptAccessor.setMaxItemCount(options, Configs.getMaxItemCountForReadFeedOfPartitionKeyRange());
+
+        return nonDocumentReadFeedInternal(
+            options,
+            ResourceType.PartitionKeyRange,
+            PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
-    }
+ }
 
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
                                                                RequestOptions options, OperationType operationType) {
@@ -6128,35 +6186,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-
-        return nonDocumentReadFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
-    }
-
-    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
-        CosmosQueryRequestOptions options,
-        ResourceType resourceType,
-        Class<T> klass,
-        String resourceLink) {
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> nonDocumentReadFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
-            retryPolicy);
+        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink);
     }
 
     private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,
-        String resourceLink,
-        DocumentClientRetryPolicy retryPolicy) {
+        String resourceLink) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
-
-        if (ResourceType.PartitionKeyRange.equals(resourceType)) {
-            maxPageSize = Configs.getPartitionKeyRangesReadFeedPageSize();
-        }
 
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
@@ -6166,15 +6207,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
             }
 
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
-            RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
-                OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
-
             if (ResourceType.PartitionKeyRange.equals(resourceType)) {
                 logger.warn("ReadFeed call made for ResourceType : [{}] and ResourceLink : [{}] with pageSize : [{}] for UserAgent : [{}] and CallIdentifier : [{}]", resourceType, resourceLink, pageSize, this.userAgentContainer.getUserAgent(), qryOptAccessor.getOperationId(nonNullOptions));
             }
 
-            retryPolicy.onBeforeSendRequest(request);
+            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
+            RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
+                OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
             return request;
         };
 
@@ -6186,7 +6225,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     klass));
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,

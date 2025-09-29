@@ -1,5 +1,21 @@
 ## Release History
 
+### 4.75.0-beta.1 (Unreleased)
+
+#### Features Added
+* AAD Auth: Added a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
+* Changed to use lower casing http header names for gateway response. - [46736](https://github.com/Azure/azure-sdk-for-java/pull/46736)
+* Added an option to suppress max item count retrieved from service for `PartitionKeyRange` resource. - [PR 46761](https://github.com/Azure/azure-sdk-for-java/pull/46761)
+* Improved resilience around several completion events for an ssl handshake. - [PR 46734](https://github.com/Azure/azure-sdk-for-java/pull/46734)
+* Added `MetadataThrottlingRetryPolicy` for `PartitionKeyRange` `RequestRateTooLargeException` handling. - [PR 46823](https://github.com/Azure/azure-sdk-for-java/pull/46823)
+
 ### 4.74.0 (2025-09-05)
 
 #### Features Added

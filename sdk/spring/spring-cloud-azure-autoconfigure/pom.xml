@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
 
   <name>Spring Cloud Azure AutoConfigure</name>
   <description>Spring Cloud Azure AutoConfigure</description>
@@ -41,13 +41,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-servicebus</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -120,7 +120,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -160,7 +160,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -184,13 +184,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.11.0</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.11.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -202,7 +202,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.73.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.74.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>

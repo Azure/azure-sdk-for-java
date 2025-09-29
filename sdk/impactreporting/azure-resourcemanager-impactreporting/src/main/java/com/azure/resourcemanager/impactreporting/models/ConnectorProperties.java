@@ -6,7 +6,6 @@ package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -105,21 +104,6 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
     public OffsetDateTime lastRunTimeStamp() {
         return this.lastRunTimeStamp;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (connectorType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectorType in model ConnectorProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ConnectorProperties.class);
 
     /**
      * {@inheritDoc}

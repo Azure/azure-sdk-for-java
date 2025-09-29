@@ -64,17 +64,17 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -84,12 +84,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appcontainers</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;dependency} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;beta_com.azure.resourcemanager:azure-resourcemanager-appcontainers;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

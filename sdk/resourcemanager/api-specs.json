@@ -1,6 +1,6 @@
 {
   "appplatform": {
-    "dir": "azure-resourcemanager-appplatform",
+    "dir": "../appplatform/azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
     "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --enable-sync-stack=false"
@@ -19,7 +19,7 @@
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
-    "dir": "azure-resourcemanager-authorization",
+    "dir": "../authorization/azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=package-2022-04-01 --enable-sync-stack=false"
@@ -70,7 +70,7 @@
     "dir": "../containerservice/azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2025-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --enable-sync-stack=false"
+    "args": "--tag=package-2025-07 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --enable-sync-stack=false"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
@@ -79,7 +79,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes --stream-style-serialization=false --enable-sync-stack=false"
   },
   "cosmos": {
-    "dir": "azure-resourcemanager-cosmos",
+    "dir": "../cosmos/azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
     "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
@@ -97,7 +97,7 @@
     "args": "--tag=package-2016-04 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "eventhubs": {
-    "dir": "azure-resourcemanager-eventhubs",
+    "dir": "../eventhubs/azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
     "args": "--tag=package-2024-01 --enable-sync-stack=false"
@@ -109,7 +109,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "features": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-features-2021-07 --graalvm-config-suffix=feature --enable-sync-stack=false"
@@ -147,7 +147,7 @@
     "args": "--tag=package-2019-09 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "locks": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-locks-2017-04 --graalvm-config-suffix=lock --enable-sync-stack=false"
@@ -159,7 +159,7 @@
     "args": "--tag=package-locks-2016-09 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "monitor": {
-    "dir": "azure-resourcemanager-monitor",
+    "dir": "../monitor/azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
     "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit --enable-sync-stack=false",
@@ -185,7 +185,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig --stream-style-serialization=false --enable-sync-stack=false"
   },
   "policy": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-policy-2023-04-java --graalvm-config-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
@@ -204,7 +204,7 @@
     "args": "--tag=package-2024-06 --enable-sync-stack=false"
   },
   "redis": {
-    "dir": "azure-resourcemanager-redis",
+    "dir": "../redis/azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.redis",
     "args": "--tag=package-2024-11 --rename-model=ErrorDetailAutoGenerated:ErrorDetail,RedisCommonPropertiesRedisConfiguration:RedisConfiguration --remove-inner=OperationStatusResult --enable-sync-stack=false",
@@ -217,20 +217,20 @@
     "args": "--tag=package-2017-04 --stream-style-serialization=false"
   },
   "resources": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
   },
   "deployments": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-2025-04 --title=DeploymentsManagementClient --add-inner=Deployment,Provider --graalvm-config-suffix=deployments --enable-sync-stack=false"
   },
   "deploymentstacks": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-2024-03 --graalvm-config-suffix=deploymentstacks --enable-sync-stack=false"
@@ -248,14 +248,14 @@
     "args": "--tag=package-2025-05-01 --remove-inner=CheckNameAvailabilityOutput --enable-sync-stack=false"
   },
   "servicebus": {
-    "dir": "azure-resourcemanager-servicebus",
+    "dir": "../servicebus/azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
     "args": "--tag=package-2021-11 --enable-sync-stack=false",
     "note": "1. Replace `CoreUtils.durationToStringWithDays` with `DurationSerializer.serialize` in `toJson` method of class 'SBTopicProperties', 'SBQueueProperties', 'SBSubscriptionProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
   },
   "sql": {
-    "dir": "azure-resourcemanager-sql",
+    "dir": "../sql/azure-resourcemanager-sql",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
     "args": "--tag=package-2021-11 --modelerfour.lenient-model-deduplication=true --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState --enable-sync-stack=false",
@@ -265,7 +265,7 @@
     "dir": "../storage/azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2024-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
+    "args": "--tag=package-2025-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --enable-sync-stack=false"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
@@ -274,7 +274,7 @@
     "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false --enable-sync-stack=false"
   },
   "subscriptions": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-subscriptions-2022-12 --graalvm-config-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations --enable-sync-stack=false"
@@ -286,7 +286,7 @@
     "args": "--tag=package-subscriptions-2016-06 --name-for-ungrouped-operations=ResourceName --stream-style-serialization=false --enable-sync-stack=false"
   },
   "trafficmanager": {
-    "dir": "azure-resourcemanager-trafficmanager",
+    "dir": "../trafficmanager/azure-resourcemanager-trafficmanager",
     "source": "specification/trafficmanager/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.trafficmanager",
     "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes --enable-sync-stack=false"
@@ -298,13 +298,13 @@
     "args": "--tag=package-2024-11-30 --add-client-flatten=Identity --enable-sync-stack=false"
   },
   "changes": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-changes-2022-05 --graalvm-config-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType --enable-sync-stack=false"
   },
   "databoundaries": {
-    "dir": "azure-resourcemanager-resources",
+    "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-databoundaries-2024-08 --title=DataBoundariesManagementClient --graalvm-config-suffix=databoundary --remove-operation-group=Operations --enable-sync-stack=false"

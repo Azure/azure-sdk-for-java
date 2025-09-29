@@ -30,8 +30,8 @@ public final class DatabaseMigrationsSqlVmsCancelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databaseMigrationsSqlVms()
-            .cancel("glskakddi", "ahzllrqmtlpb", "xroi", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("3d91a404-b4d1-4322-8a4b-6dbb13dc4f8d")), com.azure.core.util.Context.NONE);
+            .cancel("pwnibittozt", "dqumqvfm", "caddtgc", new MigrationOperationInput().withMigrationOperationId(
+                UUID.fromString("56f9f551-4a75-4b80-8f59-42816f6ba8b6")), com.azure.core.util.Context.NONE);
 
     }
 }

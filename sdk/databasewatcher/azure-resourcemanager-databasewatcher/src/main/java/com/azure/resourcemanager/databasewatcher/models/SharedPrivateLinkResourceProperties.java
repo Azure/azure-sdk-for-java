@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -166,31 +165,6 @@ public final class SharedPrivateLinkResourceProperties
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (privateLinkResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property privateLinkResourceId in model SharedPrivateLinkResourceProperties"));
-        }
-        if (groupId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property groupId in model SharedPrivateLinkResourceProperties"));
-        }
-        if (requestMessage() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property requestMessage in model SharedPrivateLinkResourceProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SharedPrivateLinkResourceProperties.class);
 
     /**
      * {@inheritDoc}

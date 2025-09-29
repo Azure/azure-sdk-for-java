@@ -21,7 +21,7 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"wae\",\"solutionSettings\":{\"\":{\"woyuhhziuief\":\"kopbminrf\",\"smlmzqhoftrm\":\"zbhd\"}},\"status\":\"New\",\"statusDetails\":\"iahxicsl\",\"lastSyncTime\":\"2021-03-06T05:00:38Z\"},\"id\":\"z\",\"name\":\"iyylhalnswhccsp\",\"type\":\"kaivwit\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"solutionType\":\"xnevfdnwn\",\"solutionSettings\":{\"bjudpfrxtrthzv\":\"zsyyceuzso\",\"qbrqubpaxhexiili\":\"ytdw\",\"q\":\"pdtii\"},\"status\":\"Completed\",\"statusDetails\":\"axoruzfgsquy\",\"lastSyncTime\":\"2021-03-18T06:01:03Z\"},\"id\":\"xleptramx\",\"name\":\"ezw\",\"type\":\"wnwxuqlcvyd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,10 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionConfiguration response = manager.solutionConfigurations()
-            .getWithResponse("akufgmjz", "wr", com.azure.core.util.Context.NONE)
+            .getWithResponse("ayffim", "zrtuzq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wae", response.properties().solutionType());
+        Assertions.assertEquals("xnevfdnwn", response.properties().solutionType());
+        Assertions.assertEquals("pdtii", response.properties().solutionSettings().additionalProperties().get("q"));
     }
 }

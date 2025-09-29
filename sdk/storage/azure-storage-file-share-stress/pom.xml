@@ -30,12 +30,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.59</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.60</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

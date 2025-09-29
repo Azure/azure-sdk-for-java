@@ -27,6 +27,16 @@ public final class JavaComponentType extends ExpandableStringEnum<JavaComponentT
     public static final JavaComponentType SPRING_CLOUD_CONFIG = fromString("SpringCloudConfig");
 
     /**
+     * Static value SpringCloudGateway for JavaComponentType.
+     */
+    public static final JavaComponentType SPRING_CLOUD_GATEWAY = fromString("SpringCloudGateway");
+
+    /**
+     * Static value Nacos for JavaComponentType.
+     */
+    public static final JavaComponentType NACOS = fromString("Nacos");
+
+    /**
      * Creates a new instance of JavaComponentType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
