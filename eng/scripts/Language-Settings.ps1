@@ -350,7 +350,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
-    ReleaseTag     = "$(groupId)+$($pkgId)_$($pkgVersion)"
+    ReleaseTag     = "$($groupId)+$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
