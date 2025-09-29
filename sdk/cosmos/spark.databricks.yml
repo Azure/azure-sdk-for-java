@@ -28,7 +28,7 @@ parameters:
 
 stages:
   - stage:
-    displayName: 'Spark Databricks integration ${{ parameters.SparkVersion }}'
+    displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
     dependsOn: []
     jobs:
     - job:
