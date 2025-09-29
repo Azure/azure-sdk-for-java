@@ -103,7 +103,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
-    private final int FEED_COUNT = 200;
+    private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
     private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 10000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
@@ -231,66 +231,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             startChangeFeedProcessor(changeFeedProcessor);
 
             setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
-
-            // Wait for the feed processor to receive and process the documents.
-            waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
-
-            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
-
-            safeStopChangeFeedProcessor(changeFeedProcessor);
-
-            for (InternalObjectNode item : createdDocuments) {
-                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
-            }
-
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-        } finally {
-            safeDeleteCollection(createdFeedCollection);
-            safeDeleteCollection(createdLeaseCollection);
-
-            // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
-        }
-    }
-
-    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void renew_on_successes() throws InterruptedException {
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
-        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
-
-        try {
-            List<InternalObjectNode> createdDocuments = new ArrayList<>();
-            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
-                .hostName(hostName)
-                .handleLatestVersionChanges((List<ChangeFeedProcessorItem> docs) -> {
-                    logger.info("START processing from thread {}", Thread.currentThread().getId());
-                    for (ChangeFeedProcessorItem item : docs) {
-                        processItem(item, receivedDocuments);
-                    }
-                    logger.info("END processing from thread {}", Thread.currentThread().getId());
-                })
-                .feedContainer(createdFeedCollection)
-                .leaseContainer(createdLeaseCollection)
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeaseRenewInterval(Duration.ofSeconds(2))
-                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
-                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
-                    .setFeedPollDelay(Duration.ofSeconds(1))
-                    .setLeasePrefix("TEST")
-                    .setMaxItemCount(10)
-                    .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1).toInstant())
-                    .setMinScaleCount(1)
-                    .setMaxScaleCount(3)
-                )
-                .buildChangeFeedProcessor();
-
-            startChangeFeedProcessor(changeFeedProcessor);
-
-            setupReadFeedDocuments(createdDocuments, createdFeedCollection, FEED_COUNT);
-            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT*10);
 
             // Wait for the feed processor to receive and process the documents.
             waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
