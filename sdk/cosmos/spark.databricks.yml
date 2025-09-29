@@ -72,9 +72,13 @@ stages:
         displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
-          script: databricks configure --token --host $DATABRICKSENDPOINT --token $DATABRICKSTOKEN --profile default
+          script: >-
+          databricks configure --token --profile default --host ${{ parameters.DatabricksEndpoint }} <<EOF
+          
+          $DATABRICKSTOKEN
+          
+          EOF 
         env:
-          DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
           DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
       - task: Bash@3
         displayName: Importing Jars
