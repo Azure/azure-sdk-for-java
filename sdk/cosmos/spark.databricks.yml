@@ -76,7 +76,7 @@ stages:
             databricks configure --token --profile default --host $DATABRICKSENDPOINT <<EOF
           
             $DATABRICKSTOKEN
-          
+
             EOF
         env:
           DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
