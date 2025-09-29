@@ -73,12 +73,13 @@ stages:
         inputs:
           targetType: inline
           script: >-
-          databricks configure --token --profile default --host ${{ parameters.DatabricksEndpoint }} <<EOF
+            databricks configure --token --profile default --host $DATABRICKSENDPOINT <<EOF
           
-          $DATABRICKSTOKEN
+            $DATABRICKSTOKEN
           
-          EOF 
+            EOF
         env:
+          DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
           DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
       - task: Bash@3
         displayName: Importing Jars
