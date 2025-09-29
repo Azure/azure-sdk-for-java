@@ -55,10 +55,18 @@ stages:
         inputs:
           versionSpec: $(PythonVersion)
       - task: Bash@3
+        displayName: Install setuptools and wheel
+        inputs:
+          targetType: inline
+          script: python -m pip install --upgrade pip setuptools wheel
+      - task: Bash@3
         displayName: Install Databricks CLI
         inputs:
           targetType: inline
-          script: python -m pip install --upgrade pip setuptools wheel databricks-cli
+          script: |
+            brew tap databricks/tap
+            brew install databricks
+            databricks -v
       - task: Bash@3
         displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
