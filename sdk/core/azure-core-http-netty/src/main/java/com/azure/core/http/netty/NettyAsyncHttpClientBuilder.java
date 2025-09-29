@@ -282,8 +282,7 @@ public class NettyAsyncHttpClientBuilder {
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
 
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null || setDefaultAddressResolverGroup) {
+            if (setDefaultAddressResolverGroup) {
                 if (nonProxyHostsPattern != null) {
                     // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
                     // alternate between the no-op resolver for proxying situations and the default resolve for
