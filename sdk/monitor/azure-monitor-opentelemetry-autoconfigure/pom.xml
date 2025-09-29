@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-  <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;current} -->
+  <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;current} -->
 
   <name>Azure Monitor OpenTelemetry SDK Autoconfigure Distro</name>
   <description>This package contains Azure Monitor OpenTelemetry SDK Autoconfigure Distro.</description>
