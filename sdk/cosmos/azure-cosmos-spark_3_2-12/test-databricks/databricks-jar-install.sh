@@ -1,7 +1,8 @@
 #!/bin/bash
 
 CLUSTER_NAME=$1
-JARPATH=$2
+AVOID_DBFS=$2
+JARPATH=$3
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$JARPATH" ]] && exit 1
 
@@ -41,9 +42,10 @@ then
 fi
 
 echo "CLUSTER_NAME: $CLUSTER_NAME"
+echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
 # Using cluster name for the cluster that was created with 16.4
-if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
+if [ $AVOID_DBFS == "true" ]; then
   echo "Importing files from $JARPATH/$JARFILE to /Workspace/libs/$JARFILE"
   databricks workspace files upload --local-path "$JARPATH/$JARFILE" --workspace-path "/Workspace/libs/$JARFILE" --overwrite
   if [$? -ne 0]; then

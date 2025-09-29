@@ -53,6 +53,7 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2'
+      AvoidDBFS: false
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
@@ -68,4 +69,5 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4'
+      AvoidDBFS: true
 
