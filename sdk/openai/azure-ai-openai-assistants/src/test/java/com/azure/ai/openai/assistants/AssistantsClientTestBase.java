@@ -150,7 +150,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("Content-Type",
                     "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
+                    "multipart\\/form-data; boundary=REDACTED", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
