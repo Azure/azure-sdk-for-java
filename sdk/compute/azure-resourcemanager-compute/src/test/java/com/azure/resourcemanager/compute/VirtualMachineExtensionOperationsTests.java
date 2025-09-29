@@ -68,7 +68,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .withExistingStorageAccount(storageAccount)
             .create();
 
@@ -127,7 +127,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .create();
 
         // Using VMAccess Linux extension to reset the password for the existing user 'Foo12'
@@ -219,7 +219,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .defineNewExtension("VMAccessForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("VMAccessForLinux")
@@ -290,7 +290,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .defineNewExtension("VMAccessForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("VMAccessForLinux")
@@ -347,7 +347,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .defineNewExtension("KeyVaultForLinux")
             .withPublisher("Microsoft.Azure.KeyVault")
             .withType("KeyVaultForLinux")

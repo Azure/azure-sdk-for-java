@@ -35,7 +35,8 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
             .filter(
                 image -> image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2
                     && image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS
-                    && image != KnownWindowsVirtualMachineImage.WINDOWS_DESKTOP_10_20H1_PRO)
+                    && image != KnownWindowsVirtualMachineImage.WINDOWS_DESKTOP_10_20H1_PRO
+                    && image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .collect(Collectors.toList())) {
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
@@ -47,7 +48,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularWindowsImage(image)
                 .withAdminUsername("testUser")
                 .withAdminPassword(password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
                 .createAsync();
             vmMonos.add(mono);
         }
@@ -68,7 +69,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
                 .createAsync();
             vmMonos.add(mono);
         }

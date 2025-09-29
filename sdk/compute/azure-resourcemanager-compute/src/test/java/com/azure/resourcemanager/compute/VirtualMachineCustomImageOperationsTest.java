@@ -111,8 +111,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withGeneralizedLinuxCustomImage(image.id())
             .withRootUsername("javauser")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .create();
 
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
@@ -222,7 +222,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withCaching(CachingTypes.READ_ONLY)
             .attach()
             .withNewUnmanagedDataDisk(100)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
@@ -358,9 +358,9 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withNewVhd(60)
             .withCaching(CachingTypes.READ_ONLY)
             .attach()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
             .create();
         //
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
