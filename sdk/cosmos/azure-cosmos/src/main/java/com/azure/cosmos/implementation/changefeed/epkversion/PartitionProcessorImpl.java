@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -56,6 +57,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
+    private final AtomicBoolean processedBatches;
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
@@ -67,7 +69,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                   Lease lease,
                                   Class<T> itemType,
                                   ChangeFeedMode changeFeedMode,
-                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
+                                  AtomicBoolean processedBatches) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -82,6 +85,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
+        this.processedBatches = processedBatches;
     }
 
     @Override
@@ -145,6 +149,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
+                    processedBatches.set(true);
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)

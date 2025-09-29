@@ -31,6 +31,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -54,7 +55,7 @@ public class PartitionProcessorImplTests {
         boolean shouldDoCheckpoint) {
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
-        
+
         // Setup initial state with continuation token
         ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
 
@@ -98,7 +99,8 @@ public class PartitionProcessorImplTests {
             leaseMock,
             ChangeFeedProcessorItem.class,
             ChangeFeedMode.INCREMENTAL,
-            null);
+            null,
+            new AtomicBoolean(false));
 
         StepVerifier
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
@@ -148,7 +150,8 @@ public class PartitionProcessorImplTests {
             leaseMock,
             ChangeFeedProcessorItem.class,
             ChangeFeedMode.INCREMENTAL,
-            null
+            null,
+            new AtomicBoolean(false)
         );
 
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))
@@ -184,7 +187,7 @@ public class PartitionProcessorImplTests {
 
         continuationBuilder.append("],")
             .append("\"PKRangeId\":\"").append(pkRangeId).append("\"}");
-        
+
         String continuationJson = continuationBuilder.toString();
 
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
