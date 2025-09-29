@@ -8,6 +8,9 @@ JARPATH=$3
 
 echo "Looking for cluster '$CLUSTER_NAME'"
 
+echo "Dumping clusters as JSON"
+databricks clusters list --output json
+
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
 if [[ -z "$CLUSTER_ID" ]]
