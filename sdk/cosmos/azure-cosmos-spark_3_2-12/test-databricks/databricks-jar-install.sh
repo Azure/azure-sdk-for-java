@@ -54,7 +54,7 @@ if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
   echo "Successfully uploaded JAR to Workspace."
   echo "Installing $JARFILE in $CLUSTER_ID"
   databricks libraries install --cluster-id "$CLUSTER_ID" --workspace-file "/Workspace/libs/$JARFILE"
-  if [$? -ne 0]; then
+  if [ $? -ne 0 ]; then
         echo "Failed to install JAR to cluster."
         echo $?
         exit $?
