@@ -72,14 +72,7 @@ stages:
         displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
-          script: >-
-            databricks configure --token <<EOF
-
-            $DATABRICKSENDPOINT
-
-            $DATABRICKSTOKEN
-
-            EOF
+          script: databricks configure --token --host $DATABRICKSENDPOINT --token $DATABRICKSTOKEN
         env:
           DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
           DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
