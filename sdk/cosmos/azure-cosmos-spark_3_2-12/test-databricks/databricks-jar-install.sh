@@ -11,13 +11,16 @@ echo "Looking for cluster '$CLUSTER_NAME'"
 echo "Dumping clusters as JSON"
 databricks clusters list --output json
 
-CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
+CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.[] | select(.cluster_name == $N) | .cluster_id')
 
 if [[ -z "$CLUSTER_ID" ]]
 then
 	echo "Cannot find a cluster named '$CLUSTER_NAME'"
 	exit 1
 fi
+
+echo "Dumping libraries"
+databricks libraries list --cluster-id $CLUSTER_ID
 
 echo "Uninstalling libraries in $CLUSTER_ID"
 LIBRARIES=$(databricks libraries list --cluster-id $CLUSTER_ID | jq -r '.library_statuses[] | .library.jar')
