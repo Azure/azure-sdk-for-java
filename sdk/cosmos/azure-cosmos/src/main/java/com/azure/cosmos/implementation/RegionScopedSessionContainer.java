@@ -202,13 +202,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion());
         }
 
-        boolean shouldUseBloomFilter = shouldUseBloomFilter(
-            request,
-            partitionKeyRangeId,
-            partitionKeyInternal,
-            partitionKeyDefinition,
-            partitionScopedRegionLevelProgress);
-
         return SessionTokenHelper.resolvePartitionLocalSessionToken(
             request,
             this.partitionKeyBasedBloomFilter,
@@ -218,7 +211,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             collectionRid,
             partitionKeyRangeId,
             this.firstPreferredReadableRegionCached.get(),
-            shouldUseBloomFilter);
+            this.globalEndpointManager);
     }
 
     @Override
@@ -365,21 +358,14 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
         if (partitionScopedRegionLevelProgress != null) {
 
-            boolean shouldUseBloomFilter = shouldUseBloomFilter(
-                request,
-                partitionKeyRangeId,
-                partitionKeyInternal,
-                partitionKeyDefinition,
-                partitionScopedRegionLevelProgress);
-
             this.recordRegionScopedSessionToken(
                 request,
                 partitionScopedRegionLevelProgress,
                 parsedSessionToken,
                 collectionResourceId,
                 partitionKeyRangeId,
-                regionRoutedTo,
-                shouldUseBloomFilter);
+                regionRoutedTo
+            );
 
         } else {
             this.collectionResourceIdToPartitionScopedRegionLevelProgress.compute(
@@ -399,13 +385,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             partitionScopedRegionLevelProgress =
                 this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(resourceId.getUniqueDocumentCollectionId());
 
-            boolean shouldUseBloomFilter = shouldUseBloomFilter(
-                request,
-                partitionKeyRangeId,
-                partitionKeyInternal,
-                partitionKeyDefinition,
-                partitionScopedRegionLevelProgress);
-
             if (partitionScopedRegionLevelProgress != null) {
                 this.recordRegionScopedSessionToken(
                     request,
@@ -413,8 +392,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                     parsedSessionToken,
                     collectionResourceId,
                     partitionKeyRangeId,
-                    regionRoutedTo,
-                    shouldUseBloomFilter);
+                    regionRoutedTo
+                );
             }
         }
     }
@@ -425,8 +404,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         ISessionToken parsedSessionToken,
         Long collectionRid,
         String partitionKeyRangeId,
-        String regionRoutedTo,
-        boolean shouldUseBloomFilter) {
+        String regionRoutedTo) {
 
         partitionScopedRegionLevelProgress.tryRecordSessionToken(
             request,
@@ -436,7 +414,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             this.firstPreferredReadableRegionCached.get(),
             regionRoutedTo,
             this.partitionKeyBasedBloomFilter,
-            shouldUseBloomFilter);
+            this.globalEndpointManager);
     }
 
     private String getCombinedSessionToken(PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress) {
@@ -468,40 +446,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         }
 
         return result.toString();
-    }
-
-    // validate whether the request can be scoped to a logical partition
-    // along with whether multi-write is enabled for the request / account
-    // multi-write setup needs to be verified since multiple regions can make progress
-    // independently as multiple regions can process writes
-    private boolean shouldUseBloomFilter(
-        RxDocumentServiceRequest request,
-        String partitionKeyRangeId,
-        Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal,
-        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition,
-        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress) {
-
-        checkNotNull(request, "request cannot be null!");
-        checkNotNull(this.globalEndpointManager, "globalEndpointManager cannot be nulL!");
-        checkNotNull(partitionScopedRegionLevelProgress, "partitionScopedRegionLevelProgress cannot be null!");
-
-        partitionKeyInternal.v = request.getPartitionKeyInternal();
-
-        if (partitionKeyInternal.v == null) {
-            return false;
-        }
-
-        partitionKeyDefinition.v = request.getPartitionKeyDefinition();
-
-        if (partitionKeyDefinition.v == null) {
-            return false;
-        }
-
-        if (partitionScopedRegionLevelProgress.useGlobalSessionTokenForPartitionKeyRangeId(partitionKeyRangeId)) {
-            return false;
-        }
-
-        return globalEndpointManager.canUseMultipleWriteLocations(request);
     }
 
     private String extractFirstEffectivePreferredReadableRegion() {
