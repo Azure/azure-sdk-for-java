@@ -1,8 +1,16 @@
 parameters:
-  ArtifactPath: $(Build.ArtifactStagingDirectory)
-  ArtifactName: 'packages'
-  RepoRoot: $(Build.SourcesDirectory)
-  Condition: true
+  - name: ArtifactPath
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+  - name: ArtifactName
+    type: string
+    default: 'packages'
+  - name: RepoRoot
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: Condition
+    type: boolean
+    default: true
 
 steps:
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
