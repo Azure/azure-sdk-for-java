@@ -1,5 +1,4 @@
-package com.azure.cosmos.implementation;// ...existing imports...
-// (imports stay the same)
+package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.GatewayTestUtils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -9,6 +8,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.net.URI;
@@ -33,6 +34,8 @@ import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientCon
 import static org.assertj.core.api.Fail.fail;
 
 public class RegionScopedSessionContainerConcurrencyTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainerConcurrencyTest.class);
 
     private static final URI EAST_US = createUrl("https://concurrency-east-us.documents.azure.com");
     private static final URI EAST_US2 = createUrl("https://concurrency-east-us-2.documents.azure.com");
@@ -64,10 +67,8 @@ public class RegionScopedSessionContainerConcurrencyTest {
 
     @Test(groups = "unit")
     public void concurrentSetAndResolveTokens() throws Exception {
-        final int WRITER_THREADS = 2;
-        final int READER_THREADS = 12;
         final int ITERATIONS_PER_WRITER = 5000;
-        final Duration TEST_TIMEOUT = Duration.ofSeconds(120); // shorter now that logic fixed
+        final Duration TEST_TIMEOUT = Duration.ofSeconds(120);
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer regionScopedSessionContainer =
@@ -87,6 +88,10 @@ public class RegionScopedSessionContainerConcurrencyTest {
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(CENTRAL_US), Mockito.any()))
             .thenReturn(REGION_CENTRAL_US);
 
+        int totalCores = Configs.getCPUCnt();
+        final int WRITER_THREADS = totalCores / 2;
+        final int READER_THREADS = totalCores / 2;
+
         ExecutorService exec = Executors.newFixedThreadPool(WRITER_THREADS + READER_THREADS);
         ConcurrentLinkedQueue<Throwable> errors = new ConcurrentLinkedQueue<>();
         Phaser startBarrier = new Phaser(1 + WRITER_THREADS + READER_THREADS);
@@ -101,168 +106,188 @@ public class RegionScopedSessionContainerConcurrencyTest {
 
         // NEW: per-range sequence generators (only for successful resolves) and ordered appliers
         AtomicLong[] sequenceGenerators = new AtomicLong[NUM_PK_RANGES];
-        for (int i = 0; i < NUM_PK_RANGES; i++) {
-            maxObservedGlobal[i] = new AtomicLong(-1);
-            maxObservedRegionPrimary[i] = new AtomicLong(-1);
-            maxObservedRegionSecondary[i] = new AtomicLong(-1);
-            sequenceGenerators[i] = new AtomicLong(0);
-            orderedAppliers[i] = new OrderedApplier(
-                i,
-                maxObservedGlobal,
-                maxObservedRegionPrimary,
-                maxObservedRegionSecondary
-            );
-        }
 
-        // Writers
-        for (int w = 0; w < WRITER_THREADS; w++) {
-            final int writerIndex = w;
-            exec.submit(wrap(errors, () -> {
-                startBarrier.arriveAndAwaitAdvance();
-                long version = 1;
-                long baseOffset = writerIndex * 10_000_000L;
-                for (int iter = 1; iter <= ITERATIONS_PER_WRITER; iter++) {
-                    int pkIdx = (iter - 1) % NUM_PK_RANGES;
-                    String pkRangeId = PK_RANGE_IDS[pkIdx];
-                    URI chosen = chooseRegionWithSkew();
+        try {
 
-                    RxDocumentServiceRequest writeRequest = RxDocumentServiceRequest.create(
-                        mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
-                        COLLECTION_FULL_NAME + "/docs", Utils.getUTF8Bytes("payload"), new HashMap<>());
-                    writeRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
+            // Starting state of lsn (global and regional) is -1 (no token)
+            // Sequence generators help enforce in-order application of observed tokens
+            for (int i = 0; i < NUM_PK_RANGES; i++) {
+                maxObservedGlobal[i] = new AtomicLong(-1);
+                maxObservedRegionPrimary[i] = new AtomicLong(-1);
+                maxObservedRegionSecondary[i] = new AtomicLong(-1);
+                sequenceGenerators[i] = new AtomicLong(0);
+                orderedAppliers[i] = new OrderedApplier(
+                    i,
+                    maxObservedGlobal,
+                    maxObservedRegionPrimary,
+                    maxObservedRegionSecondary
+                );
+            }
 
-                    PartitionKeyRange pkRange = new PartitionKeyRange();
-                    pkRange.setId(pkRangeId);
-                    GatewayTestUtils.setParent(pkRange, ImmutableList.of());
-                    writeRequest.requestContext.resolvedPartitionKeyRange = pkRange;
-                    writeRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
-                    writeRequest.setPartitionKeyDefinition(partitionKeyDefinition);
-
-                    long globalLsn = baseOffset + iter;
-                    long regionPrimaryLsn = globalLsn;
-                    long regionSecondaryLsn = globalLsn - (writerIndex % 2);
-
-                    String vector = buildVectorToken(version, globalLsn, regionPrimaryLsn, regionSecondaryLsn);
-                    String headerValue = pkRangeId + ":" + vector;
-
-                    Map<String, String> respHeaders = new HashMap<>();
-                    respHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, headerValue);
-                    respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, COLLECTION_FULL_NAME);
-                    if (INCLUDE_OWNER_ID) {
-                        respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, COLLECTION_RID);
-                    }
-
-                    regionScopedSessionContainer.setSessionToken(writeRequest, respHeaders);
-                    System.out.println(System.currentTimeMillis() + "=>" + "Writer " + writerIndex + " set token for " + pkRangeId + " => " + headerValue);
-
-                    if (!firstWritten[pkIdx]) {
-                        firstWritten[pkIdx] = true;
-                        // Minimal debug; switch to logger if desired
-                        // System.out.println("First token stored for " + pkRangeId + " => " + headerValue);
-                    }
-
-                    if ((iter & 0x3F) == 0) {
-                        Thread.sleep(ThreadLocalRandom.current().nextInt(1, 3));
-                    }
-                }
-                writersDone.countDown();
-            }));
-        }
-
-        // Readers
-        for (int r = 0; r < READER_THREADS; r++) {
-            exec.submit(wrap(errors, () -> {
-                startBarrier.arriveAndAwaitAdvance();
-                while (true) {
-                    for (int pkIdx = 0; pkIdx < NUM_PK_RANGES; pkIdx++) {
+            // Each writer writes to all ranges in round-robin fashion for x iterations
+            // Each write uses a random region (skewed towards default region)
+            // Each write increments global LSN by 1 and region-specific LSNs by either 0 or 1
+            // Each reader randomly reads all ranges in a loop until writers done
+            // Each read uses a random region (skewed towards default region)
+            // Each read resolves the token and records observed LSNs (global and region-specific)
+            // Finally, after writers done, readers do one more sweep of all ranges to resolve any
+            // tokens that may not have been observed, yet
+            // Finally we check that for each range the observed LSNs never decreased (globally and regionally)
+            for (int w = 0; w < WRITER_THREADS; w++) {
+                final int writerIndex = w;
+                exec.submit(wrap(errors, () -> {
+                    startBarrier.arriveAndAwaitAdvance();
+                    long version = 1;
+                    long baseOffset = writerIndex * 10_000_000L;
+                    for (int iter = 1; iter <= ITERATIONS_PER_WRITER; iter++) {
+                        int pkIdx = (iter - 1) % NUM_PK_RANGES;
                         String pkRangeId = PK_RANGE_IDS[pkIdx];
                         URI chosen = chooseRegionWithSkew();
 
-                        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
-                            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
-                            COLLECTION_FULL_NAME + "/docs/doc1", new HashMap<>());
-                        readRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
+                        RxDocumentServiceRequest writeRequest = RxDocumentServiceRequest.create(
+                            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
+                            COLLECTION_FULL_NAME + "/docs", Utils.getUTF8Bytes("payload"), new HashMap<>());
+                        writeRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
 
                         PartitionKeyRange pkRange = new PartitionKeyRange();
                         pkRange.setId(pkRangeId);
                         GatewayTestUtils.setParent(pkRange, ImmutableList.of());
-                        readRequest.requestContext.resolvedPartitionKeyRange = pkRange;
-                        readRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
-                        readRequest.setPartitionKeyDefinition(partitionKeyDefinition);
+                        writeRequest.requestContext.resolvedPartitionKeyRange = pkRange;
+                        writeRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
+                        writeRequest.setPartitionKeyDefinition(partitionKeyDefinition);
 
-                        long sequence = sequenceGenerators[pkIdx].getAndIncrement();
-                        ISessionToken sessionToken = regionScopedSessionContainer.resolvePartitionLocalSessionToken(readRequest, pkRangeId);
+                        long globalLsn = baseOffset + iter;
+                        long regionPrimaryLsn = globalLsn;
+                        long regionSecondaryLsn = globalLsn - (writerIndex % 2);
 
-                        if (sessionToken != null) {
-                            orderedAppliers[pkIdx].submit(sequence, sessionToken);
+                        // assumption: globalLsn always increases (per writer) and region-specific LSNs keep monotonically increasing
+                        // (this test assumes LSNs belonging to the same epoch are always monotonically increasing and therefore assumes there are no service-side regressions)
+                        String vector = buildVectorToken(version, globalLsn, regionPrimaryLsn, regionSecondaryLsn);
+                        String headerValue = pkRangeId + ":" + vector;
+
+                        Map<String, String> respHeaders = new HashMap<>();
+                        respHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, headerValue);
+                        respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, COLLECTION_FULL_NAME);
+                        if (INCLUDE_OWNER_ID) {
+                            respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, COLLECTION_RID);
                         }
-                    }
 
-                    if (writersDone.getCount() == 0) {
-                        // Single final sweep
+                        regionScopedSessionContainer.setSessionToken(writeRequest, respHeaders);
+                        logger.info(System.currentTimeMillis() + "=>" + "Writer " + writerIndex + " set token for " + pkRangeId + " => " + headerValue);
+
+                        if (!firstWritten[pkIdx]) {
+                            firstWritten[pkIdx] = true;
+                            // Minimal debug; switch to logger if desired
+                            // System.out.println("First token stored for " + pkRangeId + " => " + headerValue);
+                        }
+
+                        Thread.sleep(1);
+                    }
+                    writersDone.countDown();
+                }));
+            }
+
+            // Readers
+            for (int r = 0; r < READER_THREADS; r++) {
+                exec.submit(wrap(errors, () -> {
+                    startBarrier.arriveAndAwaitAdvance();
+                    while (true) {
                         for (int pkIdx = 0; pkIdx < NUM_PK_RANGES; pkIdx++) {
                             String pkRangeId = PK_RANGE_IDS[pkIdx];
-                            RxDocumentServiceRequest finalRead = RxDocumentServiceRequest.create(
+                            URI chosen = chooseRegionWithSkew();
+
+                            RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
                                 mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
                                 COLLECTION_FULL_NAME + "/docs/doc1", new HashMap<>());
-                            finalRead.requestContext.regionalRoutingContextToRoute =
-                                new RegionalRoutingContext(chooseRegionWithSkew());
-                            ISessionToken finalToken =
-                                regionScopedSessionContainer.resolvePartitionLocalSessionToken(finalRead, pkRangeId);
-                            if (finalToken != null) {
-                                maxObservedGlobal[pkIdx].getAndAccumulate(finalToken.getLSN(), Math::max);
+                            readRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
+
+                            PartitionKeyRange pkRange = new PartitionKeyRange();
+                            pkRange.setId(pkRangeId);
+                            GatewayTestUtils.setParent(pkRange, ImmutableList.of());
+                            readRequest.requestContext.resolvedPartitionKeyRange = pkRange;
+                            readRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
+                            readRequest.setPartitionKeyDefinition(partitionKeyDefinition);
+
+                            long sequence = sequenceGenerators[pkIdx].getAndIncrement();
+                            ISessionToken sessionToken = regionScopedSessionContainer.resolvePartitionLocalSessionToken(readRequest, pkRangeId);
+
+                            if (sessionToken != null) {
+                                orderedAppliers[pkIdx].submit(sequence, sessionToken);
                             }
                         }
-                        break;
+
+                        // There is a possibility that for some ranges no read happened after the last write
+                        // So after writers are done, we do one final sweep of all ranges to pick any
+                        // read stragglers
+                        if (writersDone.getCount() == 0) {
+                            // Single final sweep
+                            for (int pkIdx = 0; pkIdx < NUM_PK_RANGES; pkIdx++) {
+                                String pkRangeId = PK_RANGE_IDS[pkIdx];
+                                RxDocumentServiceRequest finalRead = RxDocumentServiceRequest.create(
+                                    mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
+                                    COLLECTION_FULL_NAME + "/docs/doc1", new HashMap<>());
+                                finalRead.requestContext.regionalRoutingContextToRoute =
+                                    new RegionalRoutingContext(chooseRegionWithSkew());
+                                ISessionToken finalToken =
+                                    regionScopedSessionContainer.resolvePartitionLocalSessionToken(finalRead, pkRangeId);
+                                if (finalToken != null) {
+                                    maxObservedGlobal[pkIdx].getAndAccumulate(finalToken.getLSN(), Math::max);
+                                }
+                            }
+                            break;
+                        }
+                        Thread.sleep(1);
                     }
-                    Thread.sleep(1);
+                }));
+            }
+
+            // All threads start executing once the main thread arrives here (this is done so reads and writed happen concurrently)
+            startBarrier.arriveAndDeregister();
+
+            boolean finished = writersDone.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+            exec.shutdown();
+            exec.awaitTermination(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+
+            if (!finished) {
+                fail("Writers did not finish within timeout " + TEST_TIMEOUT);
+            }
+            if (!errors.isEmpty()) {
+                List<Throwable> snapshot = new ArrayList<>(errors);
+                snapshot.forEach(Throwable::printStackTrace);
+                fail("Encountered " + snapshot.size() + " errors. First: " + snapshot.get(0));
+            }
+
+            // FINAL DRAIN: ensure all per-range buffered records are applied
+            for (int i = 0; i < NUM_PK_RANGES; i++) {
+                orderedAppliers[i].finalDrain();
+            }
+
+            // Diagnostic: how many ranges ever written
+            List<String> notWritten = new ArrayList<>();
+            for (int i = 0; i < NUM_PK_RANGES; i++) {
+                if (firstWritten[i]) {
+                } else {
+                    notWritten.add(PK_RANGE_IDS[i]);
                 }
-            }));
-        }
-
-        startBarrier.arriveAndDeregister();
-
-        boolean finished = writersDone.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
-        exec.shutdown();
-        exec.awaitTermination(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
-
-        if (!finished) {
-            fail("Writers did not finish within timeout " + TEST_TIMEOUT);
-        }
-        if (!errors.isEmpty()) {
-            List<Throwable> snapshot = new ArrayList<>(errors);
-            snapshot.forEach(Throwable::printStackTrace);
-            fail("Encountered " + snapshot.size() + " errors. First: " + snapshot.get(0));
-        }
-
-        // FINAL DRAIN: ensure all per-range buffered records are applied
-        for (int i = 0; i < NUM_PK_RANGES; i++) {
-            orderedAppliers[i].finalDrain();
-        }
-
-        // Diagnostic: how many ranges ever written
-        int writtenCount = 0;
-        List<String> notWritten = new ArrayList<>();
-        for (int i = 0; i < NUM_PK_RANGES; i++) {
-            if (firstWritten[i]) {
-                writtenCount++;
-            } else {
-                notWritten.add(PK_RANGE_IDS[i]);
             }
-        }
-        if (!notWritten.isEmpty()) {
-            fail("No writer recorded first token for ranges: " + notWritten);
-        }
-
-        // Check every pk range observed at least once
-        List<String> missingObserved = new ArrayList<>();
-        for (int i = 0; i < NUM_PK_RANGES; i++) {
-            if (maxObservedGlobal[i].get() < 0) {
-                missingObserved.add(PK_RANGE_IDS[i]);
+            if (!notWritten.isEmpty()) {
+                fail("No writer recorded first token for ranges: " + notWritten);
             }
-        }
-        if (!missingObserved.isEmpty()) {
-            fail("No token observed for ranges (despite writer writes): " + missingObserved);
+
+            // Check every pk range observed at least once
+            List<String> missingObserved = new ArrayList<>();
+            for (int i = 0; i < NUM_PK_RANGES; i++) {
+                if (maxObservedGlobal[i].get() < 0) {
+                    missingObserved.add(PK_RANGE_IDS[i]);
+                }
+            }
+            if (!missingObserved.isEmpty()) {
+                fail("No token observed for ranges (despite writer writes): " + missingObserved);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } finally {
+            exec.shutdown();
         }
     }
 
