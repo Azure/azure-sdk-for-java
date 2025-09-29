@@ -18,6 +18,14 @@
 - Fix Jackson annotations for all models
 - JobRouterClient and JobRouterAdminClient no longer throws 401 errors when HmacAuthenticationPolicy is not provided
 
+## 1.1.16 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 ## 1.1.15 (2025-08-21)
 
 ### Other Changes
