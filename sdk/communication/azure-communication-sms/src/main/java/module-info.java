@@ -8,6 +8,7 @@ module com.azure.communication.sms {
     // public API surface area
     exports com.azure.communication.sms;
     exports com.azure.communication.sms.models;
+    exports com.azure.communication.sms.implementation.models;
 
     opens com.azure.communication.sms.models to com.azure.core;
     opens com.azure.communication.sms.implementation.models to com.azure.core;

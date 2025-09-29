@@ -22,12 +22,13 @@ There is one swagger for Sms management APIs.
 ```ps
 cd <swagger-folder>
 autorest README.md --java
+```
 
 ### Code generation settings
 ``` yaml
-tag: package-sms-2021-03-07
-use: '@autorest/java@4.1.52'
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/Sms/readme.md
+tag: package-sms-2026-01-23
+use: '@autorest/java@4.1.58'
+require: C:\azure-rest-api-specs\specification\communication\data-plane\Sms\readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL	
