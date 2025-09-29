@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.Lease;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Factory class used to create instance(s) of {@link PartitionProcessor}.
  */
@@ -16,5 +18,5 @@ public interface PartitionProcessorFactory<T> {
      * @param changeFeedObserver the observer instace to be used.
      * @return an instance of {@link PartitionProcessor}.
      */
-    PartitionProcessor create(Lease lease, ChangeFeedObserver<T> changeFeedObserver, Class<T> classType);
+    PartitionProcessor create(Lease lease, ChangeFeedObserver<T> changeFeedObserver, Class<T> classType, AtomicBoolean processedBatches);
 }

@@ -31,6 +31,7 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -98,7 +99,8 @@ public class PartitionProcessorImplTests {
             processorSettings,
             partitionCheckpointer,
             leaseMock,
-            null);
+            null,
+            new AtomicBoolean(false));
 
         StepVerifier
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
@@ -146,7 +148,8 @@ public class PartitionProcessorImplTests {
             processorSettings,
             partitionCheckpointer,
             leaseMock,
-            null
+            null,
+            new AtomicBoolean(false)
         );
 
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))

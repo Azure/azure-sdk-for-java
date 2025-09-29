@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -59,13 +60,15 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
+    private final AtomicBoolean processedBatches;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
                                   PartitionCheckpointer checkPointer,
                                   Lease lease,
-                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
+                                  AtomicBoolean processedBatches) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -83,6 +86,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
+        this.processedBatches = processedBatches;
     }
 
     @Override
@@ -152,6 +156,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
+                    this.processedBatches.set(true);
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.warn(
                             "Exception was thrown from thread {}",
