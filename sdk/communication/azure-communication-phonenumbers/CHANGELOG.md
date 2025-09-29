@@ -1,5 +1,13 @@
 # Release History
 
+## 1.4.1 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+
+
 ## 1.4.0 (2025-08-28)
 
 ### Features Added
