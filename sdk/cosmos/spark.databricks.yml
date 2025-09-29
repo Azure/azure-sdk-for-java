@@ -69,20 +69,28 @@ stages:
             curl -fsSL curl https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
             databricks -v
       - task: Bash@3
+        displayName: Dump DBX auth before
+        inputs:
+          targetType: inline
+          script: databricks auth env --profile DEFAULT
+      - task: Bash@3
         displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
           script: >-
-            databricks auth env --profile DEFAULT
             databricks configure --token --profile DEFAULT --host $DATABRICKSENDPOINT <<EOF
           
             $DATABRICKSTOKEN
 
             EOF
-            databricks auth env --profile DEFAULT
         env:
           DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
           DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
+      - task: Bash@3
+        displayName: Dump DBX auth after
+        inputs:
+          targetType: inline
+          script: databricks auth env --profile DEFAULT
       - task: Bash@3
         displayName: Importing Jars
         inputs:
