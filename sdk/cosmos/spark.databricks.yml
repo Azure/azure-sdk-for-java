@@ -73,11 +73,13 @@ stages:
         inputs:
           targetType: inline
           script: >-
-            databricks configure --token --profile default --host $DATABRICKSENDPOINT <<EOF
+            databricks auth env --profile DEFAULT
+            databricks configure --token --profile DEFAULT --host $DATABRICKSENDPOINT <<EOF
           
             $DATABRICKSTOKEN
 
             EOF
+            databricks auth env --profile DEFAULT
         env:
           DATABRICKSENDPOINT: ${{ parameters.DatabricksEndpoint }}
           DATABRICKSTOKEN: ${{ parameters.DatabricksToken }}
