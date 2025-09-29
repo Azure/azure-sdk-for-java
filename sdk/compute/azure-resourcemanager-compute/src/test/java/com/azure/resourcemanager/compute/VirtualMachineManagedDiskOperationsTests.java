@@ -65,7 +65,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPopularLinuxImage(linuxImage)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         // Ensure default to managed disk
@@ -498,7 +498,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
@@ -528,7 +528,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
             .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -557,7 +557,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)
             .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
             .withNewAvailabilitySet(availSetName) // Default to managed availability set
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 

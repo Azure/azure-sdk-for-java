@@ -3,12 +3,11 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.core.management.Region;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,7 +47,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularWindowsImage(image)
                 .withAdminUsername("testUser")
                 .withAdminPassword(password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+                .withSize(generalPurposeVMSize())
                 .createAsync();
             vmMonos.add(mono);
         }
@@ -69,7 +68,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+                .withSize(generalPurposeVMSize())
                 .createAsync();
             vmMonos.add(mono);
         }

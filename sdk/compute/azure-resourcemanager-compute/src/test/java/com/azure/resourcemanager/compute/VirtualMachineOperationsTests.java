@@ -150,7 +150,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .createOrUpdate(rgName, crgNameForCreate, generateRandomResourceName("cr", 15),
                 new CapacityReservationInner().withLocation(region.name())
                     .withZones(Arrays.asList("1"))
-                    .withSku(new Sku().withName("Standard_D2s_v4").withCapacity(4L)));
+                    .withSku(new Sku().withName(generalPurposeVMSize().getValue()).withCapacity(4L)));
 
         // Create another capacity reservation group for update virtual machine
         CapacityReservationGroupInner crgForUpdate = computeManager.serviceClient()
@@ -172,7 +172,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .createOrUpdate(rgName, crgNameForUpdate, generateRandomResourceName("cr", 15),
                 new CapacityReservationInner().withLocation(region.name())
                     .withZones(Arrays.asList("1"))
-                    .withSku(new Sku().withName("Standard_D2s_v4").withCapacity(4L)));
+                    .withSku(new Sku().withName(generalPurposeVMSize().getValue()).withCapacity(4L)));
 
         // Create virtual machine without any capacity reservations
         VirtualMachine vm = computeManager.virtualMachines()
@@ -187,7 +187,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withNewDataDisk(127)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         // Update virtual machine with capacity reservation group
@@ -208,7 +208,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withNewDataDisk(127)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withCapacityReservationGroup(crgForCreate.id())
             .create();
 
@@ -237,7 +237,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withNewDataDisk(127)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withUserData(userDataForCreate)
             .create();
         Response<VirtualMachineInner> response = computeManager.serviceClient()
@@ -334,7 +334,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -349,13 +349,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             vm.deallocate();
             Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
             // make sure the VM state is refreshed after deallocate
-            Assertions.assertEquals(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"), vm.size());
+            Assertions.assertEquals(generalPurposeVMSize(), vm.size());
             try {
                 // update with an unavailable size, causing it to fail for sure
                 vm.update().withSize(VirtualMachineSizeTypes.fromString("D2_v2_Promo")).apply();
             } catch (Exception ex) {
                 // make sure the VM state is refreshed after failure
-                Assertions.assertEquals(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"), vm.size());
+                Assertions.assertEquals(generalPurposeVMSize(), vm.size());
             }
         }
     }
@@ -381,7 +381,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -475,7 +475,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -551,7 +551,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
@@ -667,7 +667,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -762,7 +762,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -1062,7 +1062,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("firstuser")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         // checking to see if withTag correctly update
@@ -1116,7 +1116,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("firstuser")
             .withSsh(sshPublicKey())
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());
@@ -1462,7 +1462,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
             .withExistingDataDisk(dataDisk)
             .withDataDiskDefaultCachingType(CachingTypes.NONE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .enableUltraSsd()
             .create();
 
@@ -1576,7 +1576,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v4", "Standard"))
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(generalPurposeVMSize().getValue(), "Standard"))
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -1795,7 +1795,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withTrustedLaunch()
             .withSecureBoot()
             .withVTpm()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
             .create();
 
@@ -2072,7 +2072,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -2104,7 +2104,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -2138,7 +2138,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -2323,7 +2323,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // require availability zone
             .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
             // require VM sku with "S", hence "DS" type
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         // verify after attach to VM
@@ -2371,7 +2371,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withExistingDataDisk(disk, 1, CachingTypes.NONE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         disk = disk.refresh();
@@ -2392,7 +2392,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withExistingDataDisk(disk, 1, CachingTypes.NONE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         disk = disk.refresh();

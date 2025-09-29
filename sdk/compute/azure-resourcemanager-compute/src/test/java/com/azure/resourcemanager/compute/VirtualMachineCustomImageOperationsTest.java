@@ -5,29 +5,19 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.compute.models.CachingTypes;
-import com.azure.resourcemanager.compute.models.Disk;
-import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
-import com.azure.resourcemanager.compute.models.ImageDataDisk;
-import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
-import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
-import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
-import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.compute.models.*;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private String rgName = "";
@@ -112,7 +102,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withRootUsername("javauser")
             .withSsh(sshPublicKey())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
@@ -222,7 +212,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withCaching(CachingTypes.READ_ONLY)
             .attach()
             .withNewUnmanagedDataDisk(100)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
@@ -360,7 +350,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .attach()
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
         //
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
