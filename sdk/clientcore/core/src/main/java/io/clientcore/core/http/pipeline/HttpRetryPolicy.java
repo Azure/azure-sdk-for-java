@@ -316,6 +316,9 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
             Duration delay = delayFromRetryCondition.apply(retryCondition);
             if (delay != null) {
                 return delay;
+            } else {
+                throw LOGGER.throwableAtWarning()
+                    .log("The delayFromRetryCondition function returned a null delay.", IllegalStateException::new);
             }
         }
 
