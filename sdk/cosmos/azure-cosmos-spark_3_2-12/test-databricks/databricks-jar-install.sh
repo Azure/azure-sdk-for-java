@@ -20,14 +20,14 @@ then
 fi
 
 echo "Dumping libraries"
-databricks libraries list --cluster-id $CLUSTER_ID
+databricks libraries cluster-status $CLUSTER_ID
 
 echo "Uninstalling libraries in $CLUSTER_ID"
-LIBRARIES=$(databricks libraries list --cluster-id $CLUSTER_ID | jq -r '.library_statuses[] | .library.jar')
+LIBRARIES=$(databricks libraries list --cluster-id $CLUSTER_ID | jq -r '.[] | .library.jar')
 for library in $LIBRARIES
 do
 	echo "Uninstalling $library"
-	databricks libraries uninstall --cluster-id $CLUSTER_ID --jar $library
+	databricks libraries uninstall --cluster-id $CLUSTER_ID --libraries '[{"jar": "$library"}]'
 done
 
 bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
