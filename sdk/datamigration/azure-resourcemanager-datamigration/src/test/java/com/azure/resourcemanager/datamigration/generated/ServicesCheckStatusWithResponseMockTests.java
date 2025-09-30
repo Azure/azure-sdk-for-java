@@ -21,7 +21,7 @@ public final class ServicesCheckStatusWithResponseMockTests {
     @Test
     public void testCheckStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"agentVersion\":\"huao\",\"agentConfiguration\":\"datajkehwvumosqi\",\"status\":\"amqprlo\",\"vmSize\":\"ugejcvjkjyczcmt\",\"supportedTaskTypes\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"]}";
+            = "{\"agentVersion\":\"lbsnosnqliw\",\"agentConfiguration\":\"dataz\",\"status\":\"fetya\",\"vmSize\":\"tg\",\"supportedTaskTypes\":[\"azg\",\"jbhrpgiqsttcu\",\"rcmmaixpqj\",\"wifhbksldttohq\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,12 @@ public final class ServicesCheckStatusWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DataMigrationServiceStatusResponse response = manager.services()
-            .checkStatusWithResponse("iibntojo", "fnybydhuihaouw", com.azure.core.util.Context.NONE)
-            .getValue();
+        DataMigrationServiceStatusResponse response
+            = manager.services().checkStatusWithResponse("m", "mcofn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("huao", response.agentVersion());
-        Assertions.assertEquals("amqprlo", response.status());
-        Assertions.assertEquals("ugejcvjkjyczcmt", response.vmSize());
-        Assertions.assertEquals("lajdyoljeqyxq", response.supportedTaskTypes().get(0));
+        Assertions.assertEquals("lbsnosnqliw", response.agentVersion());
+        Assertions.assertEquals("fetya", response.status());
+        Assertions.assertEquals("tg", response.vmSize());
+        Assertions.assertEquals("azg", response.supportedTaskTypes().get(0));
     }
 }

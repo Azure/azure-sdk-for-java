@@ -22,7 +22,7 @@ public final class FilesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"u\",\"properties\":{\"extension\":\"otauratnicppfzsc\",\"filePath\":\"fyrletndqlmfdggn\",\"lastModified\":\"2021-03-10T05:13:11Z\",\"mediaType\":\"pwovvvsfleevn\",\"size\":5807039809223720057},\"systemData\":{\"createdBy\":\"hjuqwvapxrlzhpz\",\"createdByType\":\"User\",\"createdAt\":\"2021-08-29T09:43Z\",\"lastModifiedBy\":\"qqzlxnqzubfo\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-20T12:48:09Z\"},\"id\":\"mkfw\",\"name\":\"jcw\",\"type\":\"ewfhxwyrkbre\"}]}";
+            = "{\"value\":[{\"etag\":\"ddeeqzqvabm\",\"properties\":{\"extension\":\"exduetbapfczew\",\"filePath\":\"rlqbpxyazkjpir\",\"lastModified\":\"2021-10-30T16:52:15Z\",\"mediaType\":\"bcz\",\"size\":8097921616932520249},\"id\":\"bthmsritj\",\"name\":\"uiggruno\",\"type\":\"fvua\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class FilesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProjectFile> response
-            = manager.files().list("akmhz", "hwahfbw", "hbnnxemv", com.azure.core.util.Context.NONE);
+            = manager.files().list("wyuskwgqrnta", "mdrcjlvkrkegtyc", "uppiyxlzm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("u", response.iterator().next().etag());
-        Assertions.assertEquals("otauratnicppfzsc", response.iterator().next().properties().extension());
-        Assertions.assertEquals("fyrletndqlmfdggn", response.iterator().next().properties().filePath());
-        Assertions.assertEquals("pwovvvsfleevn", response.iterator().next().properties().mediaType());
+        Assertions.assertEquals("ddeeqzqvabm", response.iterator().next().etag());
+        Assertions.assertEquals("exduetbapfczew", response.iterator().next().properties().extension());
+        Assertions.assertEquals("rlqbpxyazkjpir", response.iterator().next().properties().filePath());
+        Assertions.assertEquals("bcz", response.iterator().next().properties().mediaType());
     }
 }

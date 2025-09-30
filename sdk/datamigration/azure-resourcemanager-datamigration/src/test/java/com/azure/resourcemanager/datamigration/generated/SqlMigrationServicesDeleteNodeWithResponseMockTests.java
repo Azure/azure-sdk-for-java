@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class SqlMigrationServicesDeleteNodeWithResponseMockTests {
     @Test
     public void testDeleteNodeWithResponse() throws Exception {
-        String responseStr = "{\"nodeName\":\"vcp\",\"integrationRuntimeName\":\"dofuckclb\"}";
+        String responseStr = "{\"nodeName\":\"irmu\",\"integrationRuntimeName\":\"gftt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class SqlMigrationServicesDeleteNodeWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeleteNode response = manager.sqlMigrationServices()
-            .deleteNodeWithResponse("nycwz", "lv",
-                new DeleteNodeInner().withNodeName("snmr").withIntegrationRuntimeName("yjtrepwpwfkcauxu"),
+            .deleteNodeWithResponse("gdirda", "m",
+                new DeleteNodeInner().withNodeName("jgcf").withIntegrationRuntimeName("xtbw"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vcp", response.nodeName());
-        Assertions.assertEquals("dofuckclb", response.integrationRuntimeName());
+        Assertions.assertEquals("irmu", response.nodeName());
+        Assertions.assertEquals("gftt", response.integrationRuntimeName());
     }
 }
