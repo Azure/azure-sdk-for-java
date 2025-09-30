@@ -16,32 +16,40 @@ import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneExcept
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Implementation for {@link PartitionSupervisor}.
  */
 class PartitionSupervisorImpl<T> implements PartitionSupervisor {
+    private static final Logger logger = LoggerFactory.getLogger(PartitionSupervisorImpl.class);
     private final Lease lease;
     private final ChangeFeedObserver<T> observer;
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
     private final CancellationTokenSource childShutdownCts;
+    private Instant lastVerification;
+    private static final int VERIFICATION_FACTOR = 25;
 
     private volatile RuntimeException resultException;
 
     private final Scheduler scheduler;
 
-    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver<T> observer, PartitionProcessor processor, LeaseRenewer renewer, Scheduler scheduler) {
+    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver<T> observer, PartitionProcessor processor,
+                                   LeaseRenewer renewer, Scheduler scheduler) {
         this.lease = lease;
         this.observer = observer;
         this.processor = processor;
         this.renewer = renewer;
         this.scheduler = scheduler;
         this.childShutdownCts = new CancellationTokenSource();
+        this.lastVerification = Instant.now();
     }
 
     @Override
@@ -60,9 +68,25 @@ class PartitionSupervisorImpl<T> implements PartitionSupervisor {
 
         return Mono.just(this)
             .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
-            .repeat( () -> !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null)
+            .repeat( () -> shouldContinue(shutdownToken))
             .last()
             .flatMap( value -> this.afterRun(context, shutdownToken));
+    }
+
+    private boolean shouldContinue(CancellationToken shutdownToken) {
+        Duration timeSinceLastVerification = Duration.between(this.lastVerification, Instant.now());
+        if (timeSinceLastVerification.getSeconds() > this.renewer.getLeaseRenewInterval().getSeconds() * VERIFICATION_FACTOR) {
+            // if cfp has seen successes processing, we do a renew,
+            // otherwise we do not to allow lease stealing
+            if (processor.getProcessedBatches()) {
+                this.lastVerification = Instant.now();
+                logger.info("Lease with token {}: renewing lease as batches have been processed.", this.lease.getLeaseToken());
+            } else {
+                logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
+                return false;
+            }
+        }
+        return !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null;
     }
 
     private Mono<Void> afterRun(ChangeFeedObserverContext<T> context, CancellationToken shutdownToken) {

@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Implementation for the {@link LeaseRenewer}.
@@ -25,16 +24,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
     private final Duration leaseRenewInterval;
     private Lease lease;
     private RuntimeException resultException;
-    private Instant lastVerification;
-    private final AtomicBoolean processedBatches;
-    private static final int VERIFICATION_FACTOR = 25;
 
-    public LeaseRenewerImpl(Lease lease, LeaseManager leaseManager, Duration leaseRenewInterval, AtomicBoolean processedBatches) {
+    public LeaseRenewerImpl(Lease lease, LeaseManager leaseManager, Duration leaseRenewInterval) {
         this.lease = lease;
         this.leaseManager = leaseManager;
         this.leaseRenewInterval = leaseRenewInterval;
-        this.lastVerification = Instant.now();
-        this.processedBatches = processedBatches;
     }
 
     @Override
@@ -59,20 +53,6 @@ class LeaseRenewerImpl implements LeaseRenewer {
                 if (cancellationToken.isCancellationRequested()) {
                     return Mono.empty();
                 }
-                Duration timeSinceLastVerification = Duration.between(this.lastVerification, Instant.now());
-                if (timeSinceLastVerification.getSeconds() > this.leaseRenewInterval.getSeconds() * VERIFICATION_FACTOR) {
-                    this.lastVerification = Instant.now();
-                    // if cfp has seen successes processing, we do a renew,
-                    // otherwise we do not to allow lease stealing
-                    if (processedBatches.get()) {
-                        logger.info("Lease with token {}: renewing lease as batches have been processed.", this.lease.getLeaseToken());
-                        processedBatches.set(false);
-                        return this.renew(cancellationToken);
-                    } else {
-                        logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
-                        return Mono.empty();
-                    }
-                }
                 return this.renew(cancellationToken);
             })
             .repeat(() -> {
@@ -95,6 +75,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public Duration getLeaseRenewInterval() {
+        return this.leaseRenewInterval;
     }
 
     private Mono<Lease> renew(CancellationToken cancellationToken) {

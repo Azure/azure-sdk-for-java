@@ -62,10 +62,9 @@ class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
             throw new IllegalArgumentException("lease");
         }
 
-        AtomicBoolean processedBatches = new AtomicBoolean(false);
         ChangeFeedObserver<JsonNode> changeFeedObserver = this.observerFactory.createObserver();
-        PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver, processedBatches);
-        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval(), processedBatches);
+        PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver);
+        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval());
 
         return new PartitionSupervisorImpl(lease, changeFeedObserver, processor, renewer, this.scheduler);
     }

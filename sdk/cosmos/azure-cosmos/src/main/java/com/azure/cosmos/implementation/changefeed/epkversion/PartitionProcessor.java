@@ -30,4 +30,9 @@ public interface PartitionProcessor {
      * @return the inner exception if any, otherwise null.
      */
     RuntimeException getResultException();
+
+    /**
+     * @return true if at least one batch of changes has been processed; false otherwise.
+     */
+    boolean getProcessedBatches();
 }
