@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseRenewer;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.mockito.Mockito;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -30,7 +29,6 @@ public class PartitionSupervisorImplTests {
     private LeaseRenewer renewerMock;
     private ChangeFeedObserver<JsonNode> observerMock; // added field
 
-    @BeforeClass
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void setup() {
         leaseMock = Mockito.mock(Lease.class);
@@ -62,6 +60,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_NoVerificationWindow_NotCancelled_NoErrors() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         Mockito.when(processorMock.getResultException()).thenReturn(null);
@@ -75,6 +74,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_VerificationWindow_ProcessedBatchesTrue() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         Duration renewInterval = renewerMock.getLeaseRenewInterval();
@@ -91,6 +91,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_VerificationWindow_ProcessedBatchesFalse() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         Duration renewInterval = renewerMock.getLeaseRenewInterval();
@@ -106,6 +107,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_ProcessorError_Stops() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
@@ -118,6 +120,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_RenewerError_Stops() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
@@ -130,6 +133,7 @@ public class PartitionSupervisorImplTests {
 
     @Test(groups = "unit")
     public void shouldContinue_ShutdownRequested_Stops() throws Exception {
+        this.setup();
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         cts.cancel();

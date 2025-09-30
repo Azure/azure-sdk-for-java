@@ -294,8 +294,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
             })
             .then()
             .doFinally( any -> {
-                // check with qi this log
-                // run another change feed processor to without handle changes
                 logger.info("Partition {}: processing task exited with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
             });
     }
