@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseRenewer;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.mockito.Mockito;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -30,7 +30,7 @@ public class PartitionSupervisorImplTests {
     private LeaseRenewer renewerMock;
     private ChangeFeedObserver<JsonNode> observerMock; // added field
 
-    @BeforeMethod
+    @BeforeClass
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void setup() {
         leaseMock = Mockito.mock(Lease.class);
