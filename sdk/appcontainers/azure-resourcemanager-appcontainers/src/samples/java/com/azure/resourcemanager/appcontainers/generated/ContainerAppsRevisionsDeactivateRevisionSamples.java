@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsRevisionsDeactivateRevisionSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Revisions_Deactivate.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * Revisions_Deactivate.json
      */
     /**
      * Sample code: Deactivate Container App's revision.

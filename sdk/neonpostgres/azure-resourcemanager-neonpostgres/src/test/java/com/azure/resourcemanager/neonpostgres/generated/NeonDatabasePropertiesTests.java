@@ -14,26 +14,32 @@ public final class NeonDatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeonDatabaseProperties model = BinaryData.fromString(
-            "{\"entityId\":\"kvi\",\"entityName\":\"dscwxqupevzhf\",\"createdAt\":\"otxhojujby\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"uvhixbjxyfwn\",\"value\":\"lrcoolsttpki\"}],\"branchId\":\"kbnujr\",\"ownerName\":\"vtylbfpncu\"}")
+            "{\"entityId\":\"uzqgnjdgkynsc\",\"entityName\":\"qhzvhxnkomt\",\"createdAt\":\"bo\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"dxzxhi\",\"value\":\"frbbc\"},{\"name\":\"vqagtltdhlf\",\"value\":\"qojpy\"},{\"name\":\"vgtrdcnifmzzs\",\"value\":\"ymbrnysuxmpraf\"},{\"name\":\"g\",\"value\":\"khocxvdfffwaf\"}],\"branchId\":\"oudaspavehhrvk\",\"ownerName\":\"n\",\"databaseName\":\"zudhcxg\",\"lastUpdated\":\"oyxcdyuib\"}")
             .toObject(NeonDatabaseProperties.class);
-        Assertions.assertEquals("dscwxqupevzhf", model.entityName());
-        Assertions.assertEquals("uvhixbjxyfwn", model.attributes().get(0).name());
-        Assertions.assertEquals("lrcoolsttpki", model.attributes().get(0).value());
-        Assertions.assertEquals("kbnujr", model.branchId());
-        Assertions.assertEquals("vtylbfpncu", model.ownerName());
+        Assertions.assertEquals("qhzvhxnkomt", model.entityName());
+        Assertions.assertEquals("dxzxhi", model.attributes().get(0).name());
+        Assertions.assertEquals("frbbc", model.attributes().get(0).value());
+        Assertions.assertEquals("oudaspavehhrvk", model.branchId());
+        Assertions.assertEquals("n", model.ownerName());
+        Assertions.assertEquals("zudhcxg", model.databaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeonDatabaseProperties model = new NeonDatabaseProperties().withEntityName("dscwxqupevzhf")
-            .withAttributes(Arrays.asList(new Attributes().withName("uvhixbjxyfwn").withValue("lrcoolsttpki")))
-            .withBranchId("kbnujr")
-            .withOwnerName("vtylbfpncu");
+        NeonDatabaseProperties model = new NeonDatabaseProperties().withEntityName("qhzvhxnkomt")
+            .withAttributes(Arrays.asList(new Attributes().withName("dxzxhi").withValue("frbbc"),
+                new Attributes().withName("vqagtltdhlf").withValue("qojpy"),
+                new Attributes().withName("vgtrdcnifmzzs").withValue("ymbrnysuxmpraf"),
+                new Attributes().withName("g").withValue("khocxvdfffwaf")))
+            .withBranchId("oudaspavehhrvk")
+            .withOwnerName("n")
+            .withDatabaseName("zudhcxg");
         model = BinaryData.fromObject(model).toObject(NeonDatabaseProperties.class);
-        Assertions.assertEquals("dscwxqupevzhf", model.entityName());
-        Assertions.assertEquals("uvhixbjxyfwn", model.attributes().get(0).name());
-        Assertions.assertEquals("lrcoolsttpki", model.attributes().get(0).value());
-        Assertions.assertEquals("kbnujr", model.branchId());
-        Assertions.assertEquals("vtylbfpncu", model.ownerName());
+        Assertions.assertEquals("qhzvhxnkomt", model.entityName());
+        Assertions.assertEquals("dxzxhi", model.attributes().get(0).name());
+        Assertions.assertEquals("frbbc", model.attributes().get(0).value());
+        Assertions.assertEquals("oudaspavehhrvk", model.branchId());
+        Assertions.assertEquals("n", model.ownerName());
+        Assertions.assertEquals("zudhcxg", model.databaseName());
     }
 }

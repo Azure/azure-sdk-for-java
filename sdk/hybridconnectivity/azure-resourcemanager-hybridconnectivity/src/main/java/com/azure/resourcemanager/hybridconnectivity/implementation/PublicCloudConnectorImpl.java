@@ -11,6 +11,8 @@ import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudCon
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -77,6 +79,8 @@ public final class PublicCloudConnectorImpl
 
     private String publicCloudConnector;
 
+    private PublicCloudConnectorUpdate updateProperties;
+
     public PublicCloudConnectorImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -104,13 +108,14 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnectorImpl update() {
+        this.updateProperties = new PublicCloudConnectorUpdate();
         return this;
     }
 
     public PublicCloudConnector apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -118,7 +123,7 @@ public final class PublicCloudConnectorImpl
     public PublicCloudConnector apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, context)
             .getValue();
         return this;
     }
@@ -167,12 +172,26 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnectorImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public PublicCloudConnectorImpl withProperties(PublicCloudConnectorProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public PublicCloudConnectorImpl withProperties(PublicCloudConnectorPropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

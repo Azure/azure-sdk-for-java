@@ -886,6 +886,15 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxItemCountPerTrigger.get shouldEqual 54
   }
 
+  it should "parse change feed config with performance monitoring config" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.performance.monitoring.enabled" -> "false"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+    config.performanceMonitoringEnabled shouldBe false
+  }
+
   it should "complain when parsing invalid change feed mode" in {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "Whatever",
@@ -1490,6 +1499,34 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.bulkMaxPendingOperations.get shouldEqual 13
     config.maxInitialNoProgressIntervalInSeconds shouldEqual 157
     config.maxRetryNoProgressIntervalInSeconds shouldEqual 314
+  }
+
+  "CosmosContainerConfig" should "parse valid feed range refresh interval" in {
+    val containerConfig = Map(
+      "spark.cosmos.database" -> "TestDatabase",
+      "spark.cosmos.container" -> "TestContainer",
+      "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "240"
+    )
+
+    val parsedConfig = CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
+    parsedConfig.feedRangeRefreshIntervalInSecondsOpt.get shouldEqual 240L
+  }
+
+  "CosmosContainerConfig" should "throw for invalid feed range refresh interval" in {
+    val containerConfig = Map(
+      "spark.cosmos.database" -> "TestDatabase",
+      "spark.cosmos.container" -> "TestContainer",
+      "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "-1"
+    )
+
+    try {
+      CosmosContainerConfig.parseCosmosContainerConfig(containerConfig)
+      fail("Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [60, 1800]")
+    } catch {
+      case assertError: AssertionError =>
+        assertError.getMessage shouldEqual "assertion failed: Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [60, 1800]"
+      case _ => fail("expecting AssertionError for invalid spark.cosmos.metadata.feedRange.refreshIntervalInSeconds")
+    }
   }
 
   private case class PatchColumnConfigParameterTest

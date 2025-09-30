@@ -59,7 +59,7 @@ import static org.testng.AssertJUnit.fail;
 public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionTestBase {
 
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
-    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionEndpoint mismatch";
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionalRoutingContext mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
 
     private CosmosAsyncClient client;

@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class TrustedAccessRoleBindingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * TrustedAccessRoleBindings_CreateOrUpdate.json
      */
     /**

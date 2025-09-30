@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-docker-compose</artifactId>
-  <version>5.24.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
 
   <name>Spring Cloud Azure Docker Compose</name>
   <description>Spring Cloud Azure Docker Compose</description>
@@ -56,13 +56,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.24.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>6.1.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.31.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.31.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.26.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 

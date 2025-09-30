@@ -17,30 +17,32 @@ public final class SpringCloudEurekaComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpringCloudEurekaComponent model = BinaryData.fromString(
-            "{\"componentType\":\"SpringCloudEureka\",\"ingress\":{\"fqdn\":\"uug\"},\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"rfqkfuar\",\"value\":\"lvhhtklnvn\"}],\"scale\":{\"minReplicas\":1300202975,\"maxReplicas\":64736512},\"serviceBinds\":[{\"name\":\"ev\",\"serviceId\":\"oslc\"}]}")
+            "{\"componentType\":\"SpringCloudEureka\",\"ingress\":{\"fqdn\":\"tjdvqydieqqkwa\"},\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"qzxoebwgjxbi\",\"value\":\"nbau\"}],\"scale\":{\"minReplicas\":2081724594,\"maxReplicas\":611504027},\"serviceBinds\":[{\"name\":\"ozkxbzrpejplss\",\"serviceId\":\"bttt\"},{\"name\":\"s\",\"serviceId\":\"unrswgkpjhboyik\"}]}")
             .toObject(SpringCloudEurekaComponent.class);
-        Assertions.assertEquals("rfqkfuar", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("lvhhtklnvn", model.configurations().get(0).value());
-        Assertions.assertEquals(1300202975, model.scale().minReplicas());
-        Assertions.assertEquals(64736512, model.scale().maxReplicas());
-        Assertions.assertEquals("ev", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("oslc", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("qzxoebwgjxbi", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("nbau", model.configurations().get(0).value());
+        Assertions.assertEquals(2081724594, model.scale().minReplicas());
+        Assertions.assertEquals(611504027, model.scale().maxReplicas());
+        Assertions.assertEquals("ozkxbzrpejplss", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("bttt", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringCloudEurekaComponent model = new SpringCloudEurekaComponent()
             .withConfigurations(Arrays
-                .asList(new JavaComponentConfigurationProperty().withPropertyName("rfqkfuar").withValue("lvhhtklnvn")))
-            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1300202975).withMaxReplicas(64736512))
-            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("ev").withServiceId("oslc")))
+                .asList(new JavaComponentConfigurationProperty().withPropertyName("qzxoebwgjxbi").withValue("nbau")))
+            .withScale(new JavaComponentPropertiesScale().withMinReplicas(2081724594).withMaxReplicas(611504027))
+            .withServiceBinds(
+                Arrays.asList(new JavaComponentServiceBind().withName("ozkxbzrpejplss").withServiceId("bttt"),
+                    new JavaComponentServiceBind().withName("s").withServiceId("unrswgkpjhboyik")))
             .withIngress(new JavaComponentIngress());
         model = BinaryData.fromObject(model).toObject(SpringCloudEurekaComponent.class);
-        Assertions.assertEquals("rfqkfuar", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("lvhhtklnvn", model.configurations().get(0).value());
-        Assertions.assertEquals(1300202975, model.scale().minReplicas());
-        Assertions.assertEquals(64736512, model.scale().maxReplicas());
-        Assertions.assertEquals("ev", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("oslc", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("qzxoebwgjxbi", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("nbau", model.configurations().get(0).value());
+        Assertions.assertEquals(2081724594, model.scale().minReplicas());
+        Assertions.assertEquals(611504027, model.scale().maxReplicas());
+        Assertions.assertEquals("ozkxbzrpejplss", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("bttt", model.serviceBinds().get(0).serviceId());
     }
 }

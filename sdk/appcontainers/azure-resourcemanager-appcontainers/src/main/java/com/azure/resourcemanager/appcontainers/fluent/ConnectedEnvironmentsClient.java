@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentInner;
 import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentPatchResource;
 
 /**
  * An instance of this class provides access to all the operations defined in ConnectedEnvironmentsClient.
@@ -233,6 +234,7 @@ public interface ConnectedEnvironmentsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
+     * @param environmentEnvelope Configuration details of the connectedEnvironment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -243,7 +245,7 @@ public interface ConnectedEnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectedEnvironmentInner> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        Context context);
+        ConnectedEnvironmentPatchResource environmentEnvelope, Context context);
 
     /**
      * Update connected Environment's properties.

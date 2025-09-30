@@ -18,15 +18,14 @@ import java.io.IOException;
 public final class PlaywrightWorkspaceUpdateProperties
     implements JsonSerializable<PlaywrightWorkspaceUpdateProperties> {
     /*
-     * This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect
-     * to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the
-     * Azure region in which the workspace was initially created.
+     * Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to
+     * browsers in the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure
+     * region where the workspace was created.
      */
     private EnablementStatus regionalAffinity;
 
     /*
-     * When enabled, this feature allows the workspace to use local auth (through service access token) for executing
-     * operations.
+     * Enables the workspace to use local authentication through service access tokens for operations.
      */
     private EnablementStatus localAuth;
 
@@ -37,9 +36,9 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Get the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Get the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @return the regionalAffinity value.
      */
@@ -48,9 +47,9 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Set the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Set the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @param regionalAffinity the regionalAffinity value to set.
      * @return the PlaywrightWorkspaceUpdateProperties object itself.
@@ -61,8 +60,8 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Get the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Get the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @return the localAuth value.
      */
@@ -71,8 +70,8 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Set the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Set the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @param localAuth the localAuth value to set.
      * @return the PlaywrightWorkspaceUpdateProperties object itself.
@@ -80,14 +79,6 @@ public final class PlaywrightWorkspaceUpdateProperties
     public PlaywrightWorkspaceUpdateProperties withLocalAuth(EnablementStatus localAuth) {
         this.localAuth = localAuth;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

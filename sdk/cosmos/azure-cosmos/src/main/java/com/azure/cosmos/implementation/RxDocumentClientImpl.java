@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -533,17 +534,68 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
                 this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
-            } else {
+            }else {
                 hasAuthKeyResourceToken = false;
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
                     String scopeOverride = Configs.getAadScopeOverride();
-                    String defaultScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
-                    String scopeToUse = (scopeOverride != null && !scopeOverride.isEmpty()) ? scopeOverride : defaultScope;
+                    String accountScope = serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default";
 
-                    this.tokenCredentialScopes = new String[] { scopeToUse };
-                    this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
-                        .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
+                    if (scopeOverride != null && !scopeOverride.isEmpty()) {
+                        // Use only the override scope; no fallback.
+                        this.tokenCredentialScopes = new String[] { scopeOverride };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope = this.tokenCredentialScopes[0];
+                            final TokenRequestContext ctx = new TokenRequestContext().addScopes(primaryScope);
+                            return this.tokenCredential.getToken(ctx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using override scope: {}", primaryScope);
+                                    }
+                                });
+                        });
+                    } else {
+                        // Account scope with fallback to default scope on AADSTS500011 error
+                        this.tokenCredentialScopes = new String[] { accountScope, Constants.AAD_DEFAULT_SCOPE };
+
+                        this.tokenCredentialCache = new SimpleTokenCache(() -> {
+                            final String primaryScope  = this.tokenCredentialScopes[0];
+                            final String fallbackScope = this.tokenCredentialScopes[1];
+
+                            final TokenRequestContext primaryCtx = new TokenRequestContext().addScopes(primaryScope);
+
+                            return this.tokenCredential.getToken(primaryCtx)
+                                .doOnNext(t -> {
+                                    if (logger.isInfoEnabled()) {
+                                        logger.info("AAD token: acquired using account scope: {}", primaryScope);
+                                    }
+                                })
+                                .onErrorResume(error -> {
+                                    final Throwable root = reactor.core.Exceptions.unwrap(error);
+                                    final String messageText = (root.getMessage() != null) ? root.getMessage() : "";
+                                    final boolean isAadAppNotFound = messageText.contains("AADSTS500011");
+
+                                    if (!isAadAppNotFound) {
+                                        return Mono.error(error);
+                                    }
+
+                                    if (logger.isWarnEnabled()) {
+                                        logger.warn(
+                                            "AAD token: account scope failed with AADSTS500011; retrying with fallback scope: {}",
+                                            fallbackScope);
+                                    }
+
+                                    final TokenRequestContext fallbackCtx = new TokenRequestContext().addScopes(fallbackScope);
+                                    return this.tokenCredential.getToken(fallbackCtx)
+                                        .doOnNext(t -> {
+                                            if (logger.isInfoEnabled()) {
+                                                logger.info("AAD token: acquired using fallback scope: {}", fallbackScope);
+                                            }
+                                        });
+                                });
+                        });
+                    }
                     this.authorizationTokenType = AuthorizationTokenType.AadToken;
                 }
             }
@@ -4821,7 +4873,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
+        return nonDocumentReadFeedInternal(
+            options,
+            ResourceType.PartitionKeyRange,
+            PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
 
@@ -6111,27 +6166,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-
-        return nonDocumentReadFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
-    }
-
-    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
-        CosmosQueryRequestOptions options,
-        ResourceType resourceType,
-        Class<T> klass,
-        String resourceLink) {
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> nonDocumentReadFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
-            retryPolicy);
+        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink);
     }
 
     private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,
-        String resourceLink,
-        DocumentClientRetryPolicy retryPolicy) {
+        String resourceLink) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
@@ -6147,7 +6189,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
-            retryPolicy.onBeforeSendRequest(request);
             return request;
         };
 
@@ -6159,7 +6200,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     klass));
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
@@ -6431,6 +6473,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.gatewayProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
+        this.thinProxy.configureFaultInjectorProvider(injectorProvider, this.configs);
     }
 
     @Override
@@ -7848,7 +7891,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return operationType.isPointOperation()
                     || operationType == OperationType.Query
-                    || operationType == OperationType.Batch;
+                    || operationType == OperationType.Batch
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(

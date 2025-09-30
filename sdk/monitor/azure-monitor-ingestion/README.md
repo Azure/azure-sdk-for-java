@@ -70,6 +70,11 @@ the following examples use `DefaultAzureCredentialBuilder` from the [azure-ident
 
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -81,8 +86,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 #### Synchronous Logs Ingestion client
 
@@ -250,4 +253,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [log_analytics_workspace]: https://learn.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
 [logging]: https://learn.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
-
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

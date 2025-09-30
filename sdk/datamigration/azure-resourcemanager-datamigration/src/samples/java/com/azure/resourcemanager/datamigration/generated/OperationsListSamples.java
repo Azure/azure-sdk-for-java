@@ -10,8 +10,8 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
-     * ListOperation.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ListOperation.
+     * json
      */
     /**
      * Sample code: Lists all of the available SQL Rest API operations.

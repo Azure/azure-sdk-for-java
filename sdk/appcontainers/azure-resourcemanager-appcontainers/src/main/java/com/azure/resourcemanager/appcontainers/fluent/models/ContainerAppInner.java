@@ -11,9 +11,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
@@ -42,6 +44,12 @@ public final class ContainerAppInner extends Resource {
      * removed from the template since it is managed by another resource.
      */
     private String managedBy;
+
+    /*
+     * Metadata used to render different experiences for resources of the same type; e.g. WorkflowApp is a kind of
+     * Microsoft.App/ContainerApps type. If supported, the resource provider must validate and persist this value.
+     */
+    private Kind kind;
 
     /*
      * ContainerApp resource specific properties
@@ -141,6 +149,30 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the kind property: Metadata used to render different experiences for resources of the same type; e.g.
+     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
+     * persist this value.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Metadata used to render different experiences for resources of the same type; e.g.
+     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
+     * persist this value.
+     * 
+     * @param kind the kind value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withKind(Kind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: ContainerApp resource specific properties.
      * 
      * @return the innerProperties value.
@@ -225,6 +257,15 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentErrors();
+    }
+
+    /**
      * Get the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
      * 
      * @return the managedEnvironmentId value.
@@ -290,6 +331,30 @@ public final class ContainerAppInner extends Resource {
             this.innerProperties = new ContainerAppProperties();
         }
         this.innerProperties().withWorkloadProfileName(workloadProfileName);
+        return this;
+    }
+
+    /**
+     * Get the patchingConfiguration property: Container App auto patch configuration.
+     * 
+     * @return the patchingConfiguration value.
+     */
+    public ContainerAppPropertiesPatchingConfiguration patchingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().patchingConfiguration();
+    }
+
+    /**
+     * Set the patchingConfiguration property: Container App auto patch configuration.
+     * 
+     * @param patchingConfiguration the patchingConfiguration value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner
+        withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerAppProperties();
+        }
+        this.innerProperties().withPatchingConfiguration(patchingConfiguration);
         return this;
     }
 
@@ -421,6 +486,7 @@ public final class ContainerAppInner extends Resource {
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -458,6 +524,8 @@ public final class ContainerAppInner extends Resource {
                     deserializedContainerAppInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("managedBy".equals(fieldName)) {
                     deserializedContainerAppInner.managedBy = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = Kind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

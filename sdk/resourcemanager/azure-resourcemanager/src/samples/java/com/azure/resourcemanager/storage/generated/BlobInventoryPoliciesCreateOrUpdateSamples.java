@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
      */
     /**
@@ -84,7 +84,7 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetBlobInventoryPolicy.json
      */
     /**
@@ -138,7 +138,7 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
      */
     /**

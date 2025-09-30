@@ -353,6 +353,12 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public AccessToken authenticateWithAzureCli(TokenRequestContext request) {
+        // Check for claims challenge - if claims are provided, this credential cannot handle them
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String errorMessage = buildClaimsChallengeErrorMessage(request);
+            throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(errorMessage));
+        }
         StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
@@ -395,7 +401,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public AccessToken authenticateWithAzureDeveloperCli(TokenRequestContext request) {
 
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --no-prompt --scope ");
 
         List<String> scopes = request.getScopes();
 
@@ -422,6 +428,11 @@ public class IdentitySyncClient extends IdentityClientBase {
 
         if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azdCommand.append(" --tenant-id ").append(tenant);
+        }
+
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+            azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
         }
 
         try {

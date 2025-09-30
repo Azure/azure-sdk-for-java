@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.DiscoveryRulesClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.DiscoveryRuleInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.DiscoveryRuleListResult;
@@ -182,26 +181,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiscoveryRuleInner>> getWithResponseAsync(String resourceGroupName, String healthModelName,
         String discoveryRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, accept, context))
@@ -241,28 +220,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveryRuleInner> getWithResponse(String resourceGroupName, String healthModelName,
         String discoveryRuleName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, healthModelName, discoveryRuleName, accept, context);
@@ -300,31 +257,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiscoveryRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String discoveryRuleName, DiscoveryRuleInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -371,34 +303,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveryRuleInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String discoveryRuleName, DiscoveryRuleInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -440,26 +344,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String discoveryRuleName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, context))
@@ -498,28 +382,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String discoveryRuleName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (discoveryRuleName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter discoveryRuleName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, context);
     }
@@ -555,22 +417,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveryRuleInner>> listByHealthModelSinglePageAsync(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -631,24 +477,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveryRuleInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoveryRuleListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -673,24 +501,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveryRuleInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoveryRuleListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -749,13 +559,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveryRuleInner>> listByHealthModelNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModelNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -775,15 +578,6 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveryRuleInner> listByHealthModelNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoveryRuleListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -803,21 +597,10 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoveryRuleInner> listByHealthModelNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoveryRuleListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DiscoveryRulesClientImpl.class);
 }

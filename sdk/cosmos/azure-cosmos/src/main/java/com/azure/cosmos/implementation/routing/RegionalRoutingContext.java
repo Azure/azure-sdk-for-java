@@ -61,6 +61,14 @@ public class RegionalRoutingContext {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpointAsString, this.thinclientRegionalEndpointAsString);
+        return Objects.hash(this.gatewayRegionalEndpoint, this.thinclientRegionalEndpoint);
+    }
+
+    @Override
+    public String toString() {
+        return "RegionalRoutingContext{" +
+            "gatewayRegionalEndpoint=" + gatewayRegionalEndpointAsString +
+            ", thinclientRegionalEndpoint=" + thinclientRegionalEndpointAsString +
+            '}';
     }
 }

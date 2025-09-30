@@ -5,20 +5,38 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.appcontainers.models.Level;
+import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgent;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgentLogging;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class RuntimeJavaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuntimeJava model = BinaryData.fromString("{\"enableMetrics\":false}").toObject(RuntimeJava.class);
-        Assertions.assertEquals(false, model.enableMetrics());
+        RuntimeJava model = BinaryData.fromString(
+            "{\"enableMetrics\":false,\"javaAgent\":{\"enabled\":false,\"logging\":{\"loggerSettings\":[{\"logger\":\"lgzrfzeeyeb\",\"level\":\"trace\"},{\"logger\":\"ikayuhqlbjbsybb\",\"level\":\"off\"},{\"logger\":\"r\",\"level\":\"error\"}]}}}")
+            .toObject(RuntimeJava.class);
+        Assertions.assertFalse(model.enableMetrics());
+        Assertions.assertFalse(model.javaAgent().enabled());
+        Assertions.assertEquals("lgzrfzeeyeb", model.javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.TRACE, model.javaAgent().logging().loggerSettings().get(0).level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeJava model = new RuntimeJava().withEnableMetrics(false);
+        RuntimeJava model = new RuntimeJava().withEnableMetrics(false)
+            .withJavaAgent(new RuntimeJavaAgent().withEnabled(false)
+                .withLogging(new RuntimeJavaAgentLogging().withLoggerSettings(
+                    Arrays.asList(new LoggerSetting().withLogger("lgzrfzeeyeb").withLevel(Level.TRACE),
+                        new LoggerSetting().withLogger("ikayuhqlbjbsybb").withLevel(Level.OFF),
+                        new LoggerSetting().withLogger("r").withLevel(Level.ERROR)))));
         model = BinaryData.fromObject(model).toObject(RuntimeJava.class);
-        Assertions.assertEquals(false, model.enableMetrics());
+        Assertions.assertFalse(model.enableMetrics());
+        Assertions.assertFalse(model.javaAgent().enabled());
+        Assertions.assertEquals("lgzrfzeeyeb", model.javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.TRACE, model.javaAgent().logging().loggerSettings().get(0).level());
     }
 }

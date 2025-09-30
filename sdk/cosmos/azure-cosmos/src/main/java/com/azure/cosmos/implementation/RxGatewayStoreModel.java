@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigur
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -225,7 +226,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                HttpUtils.unescape(headers.toMap()),
+                HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
                 size);
         } else {
@@ -235,7 +236,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return new StoreResponse(
             endpoint,
             statusCode,
-            HttpUtils.unescape(headers.toMap()),
+            HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
             0);
     }
@@ -520,6 +521,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
             }
 
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
+
             if (request.requestContext.cosmosDiagnostics != null) {
                 if (httpRequest.reactorNettyRequestRecord() != null) {
                     ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
@@ -590,7 +596,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toLowerCaseMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

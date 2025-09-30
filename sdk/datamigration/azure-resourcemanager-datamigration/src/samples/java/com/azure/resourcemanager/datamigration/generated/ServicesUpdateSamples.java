@@ -12,8 +12,8 @@ import com.azure.resourcemanager.datamigration.models.DataMigrationService;
 public final class ServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
-     * Services_Update.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Services_Update.
+     * json
      */
     /**
      * Sample code: Services_CreateOrUpdate.

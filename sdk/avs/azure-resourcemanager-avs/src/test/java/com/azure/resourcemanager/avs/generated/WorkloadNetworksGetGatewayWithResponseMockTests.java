@@ -21,7 +21,7 @@ public final class WorkloadNetworksGetGatewayWithResponseMockTests {
     @Test
     public void testGetGatewayWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"pmxelnwcltyje\",\"path\":\"xxmlfmkqscazua\"},\"id\":\"tzxpuamwabzxrv\",\"name\":\"cush\",\"type\":\"phai\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"qehbhbcds\",\"path\":\"ryrando\"},\"id\":\"mbltoo\",\"name\":\"mkfqlwxldy\",\"type\":\"alsygao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class WorkloadNetworksGetGatewayWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkGateway response = manager.workloadNetworks()
-            .getGatewayWithResponse("orq", "bttzhraglkafhonq", "ujeickp", com.azure.core.util.Context.NONE)
+            .getGatewayWithResponse("br", "ffg", "lukkutvlxhrpqhvm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pmxelnwcltyje", response.displayName());
+        Assertions.assertEquals("qehbhbcds", response.displayName());
     }
 }

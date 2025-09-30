@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class IpRule implements JsonSerializable<IpRule> {
     /*
-     * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+     * Specifies the IP or IP range in CIDR format.
      */
     private String ipAddressOrRange;
 
@@ -34,7 +34,7 @@ public final class IpRule implements JsonSerializable<IpRule> {
     }
 
     /**
-     * Get the ipAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+     * Get the ipAddressOrRange property: Specifies the IP or IP range in CIDR format.
      * 
      * @return the ipAddressOrRange value.
      */
@@ -43,7 +43,7 @@ public final class IpRule implements JsonSerializable<IpRule> {
     }
 
     /**
-     * Set the ipAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+     * Set the ipAddressOrRange property: Specifies the IP or IP range in CIDR format.
      * 
      * @param ipAddressOrRange the ipAddressOrRange value to set.
      * @return the IpRule object itself.

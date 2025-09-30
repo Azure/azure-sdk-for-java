@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ContainerAppsApiClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -47,6 +47,13 @@ public interface ContainerAppsApiClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the AppResilienciesClient object to access its operations.
+     * 
+     * @return the AppResilienciesClient object.
+     */
+    AppResilienciesClient getAppResiliencies();
+
+    /**
      * Gets the ContainerAppsAuthConfigsClient object to access its operations.
      * 
      * @return the ContainerAppsAuthConfigsClient object.
@@ -66,6 +73,34 @@ public interface ContainerAppsApiClient {
      * @return the BillingMetersClient object.
      */
     BillingMetersClient getBillingMeters();
+
+    /**
+     * Gets the BuildersClient object to access its operations.
+     * 
+     * @return the BuildersClient object.
+     */
+    BuildersClient getBuilders();
+
+    /**
+     * Gets the BuildsByBuilderResourcesClient object to access its operations.
+     * 
+     * @return the BuildsByBuilderResourcesClient object.
+     */
+    BuildsByBuilderResourcesClient getBuildsByBuilderResources();
+
+    /**
+     * Gets the BuildsClient object to access its operations.
+     * 
+     * @return the BuildsClient object.
+     */
+    BuildsClient getBuilds();
+
+    /**
+     * Gets the BuildAuthTokensClient object to access its operations.
+     * 
+     * @return the BuildAuthTokensClient object.
+     */
+    BuildAuthTokensClient getBuildAuthTokens();
 
     /**
      * Gets the ConnectedEnvironmentsClient object to access its operations.
@@ -101,6 +136,34 @@ public interface ContainerAppsApiClient {
      * @return the ContainerAppsClient object.
      */
     ContainerAppsClient getContainerApps();
+
+    /**
+     * Gets the ContainerAppsBuildsByContainerAppsClient object to access its operations.
+     * 
+     * @return the ContainerAppsBuildsByContainerAppsClient object.
+     */
+    ContainerAppsBuildsByContainerAppsClient getContainerAppsBuildsByContainerApps();
+
+    /**
+     * Gets the ContainerAppsBuildsClient object to access its operations.
+     * 
+     * @return the ContainerAppsBuildsClient object.
+     */
+    ContainerAppsBuildsClient getContainerAppsBuilds();
+
+    /**
+     * Gets the ContainerAppsLabelHistoriesClient object to access its operations.
+     * 
+     * @return the ContainerAppsLabelHistoriesClient object.
+     */
+    ContainerAppsLabelHistoriesClient getContainerAppsLabelHistories();
+
+    /**
+     * Gets the ContainerAppsPatchesClient object to access its operations.
+     * 
+     * @return the ContainerAppsPatchesClient object.
+     */
+    ContainerAppsPatchesClient getContainerAppsPatches();
 
     /**
      * Gets the ContainerAppsRevisionsClient object to access its operations.
@@ -145,6 +208,20 @@ public interface ContainerAppsApiClient {
     JobsClient getJobs();
 
     /**
+     * Gets the DotNetComponentsClient object to access its operations.
+     * 
+     * @return the DotNetComponentsClient object.
+     */
+    DotNetComponentsClient getDotNetComponents();
+
+    /**
+     * Gets the FunctionsExtensionsClient object to access its operations.
+     * 
+     * @return the FunctionsExtensionsClient object.
+     */
+    FunctionsExtensionsClient getFunctionsExtensions();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -171,6 +248,13 @@ public interface ContainerAppsApiClient {
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    LogicAppsClient getLogicApps();
 
     /**
      * Gets the ManagedEnvironmentsClient object to access its operations.
@@ -201,11 +285,53 @@ public interface ContainerAppsApiClient {
     NamespacesClient getNamespaces();
 
     /**
+     * Gets the ManagedEnvironmentPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateEndpointConnectionsClient object.
+     */
+    ManagedEnvironmentPrivateEndpointConnectionsClient getManagedEnvironmentPrivateEndpointConnections();
+
+    /**
+     * Gets the ManagedEnvironmentPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateLinkResourcesClient object.
+     */
+    ManagedEnvironmentPrivateLinkResourcesClient getManagedEnvironmentPrivateLinkResources();
+
+    /**
+     * Gets the DaprComponentResiliencyPoliciesClient object to access its operations.
+     * 
+     * @return the DaprComponentResiliencyPoliciesClient object.
+     */
+    DaprComponentResiliencyPoliciesClient getDaprComponentResiliencyPolicies();
+
+    /**
      * Gets the DaprComponentsClient object to access its operations.
      * 
      * @return the DaprComponentsClient object.
      */
     DaprComponentsClient getDaprComponents();
+
+    /**
+     * Gets the DaprSubscriptionsClient object to access its operations.
+     * 
+     * @return the DaprSubscriptionsClient object.
+     */
+    DaprSubscriptionsClient getDaprSubscriptions();
+
+    /**
+     * Gets the HttpRouteConfigsClient object to access its operations.
+     * 
+     * @return the HttpRouteConfigsClient object.
+     */
+    HttpRouteConfigsClient getHttpRouteConfigs();
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     * 
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
      * Gets the ManagedEnvironmentsStoragesClient object to access its operations.

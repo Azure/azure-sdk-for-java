@@ -24,7 +24,6 @@ public class FaultInjectionRequestContext {
     private final Map<Long, List<String>> transportRequestIdRuleEvaluationMap;
     private final AtomicBoolean addressForceRefreshed;
 
-    private volatile URI locationEndpointToRoute;
     private volatile RegionalRoutingContext regionalRoutingContextToRoute;
 
     /***
@@ -97,13 +96,12 @@ public class FaultInjectionRequestContext {
         return this.transportRequestIdRuleIdMap.getOrDefault(transportRequestId, null);
     }
 
-    public void setLocationEndpointToRoute(URI locationEndpointToRoute) {
-        this.locationEndpointToRoute = locationEndpointToRoute;
-        this.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute, null);
+    public void setRegionalRoutingContextToRoute(RegionalRoutingContext regionalRoutingContextToRoute) {
+        this.regionalRoutingContextToRoute = regionalRoutingContextToRoute;
     }
 
-    public URI getLocationEndpointToRoute() {
-        return this.locationEndpointToRoute;
+    public RegionalRoutingContext getRegionalRoutingContextToRoute() {
+        return this.regionalRoutingContextToRoute;
     }
 
     public List<String> getFaultInjectionRuleEvaluationResults(long transportRequestId) {

@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;current} -->
+  <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;current} -->
 
   <name>Azure Monitor OpenTelemetry SDK Autoconfigure Distro</name>
   <description>This package contains Azure Monitor OpenTelemetry SDK Autoconfigure Distro.</description>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.56.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -89,11 +89,6 @@
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
       <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-semconv</artifactId>
-      <version>0.14.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -123,13 +118,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -141,37 +136,37 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.8.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.21.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.59</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.60</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.21.0</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.21.1</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -187,19 +182,18 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-semconv:[0.14.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-api:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>com.squareup.okio:okio:[3.9.1]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
+                <include>com.squareup.okio:okio:[3.16.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

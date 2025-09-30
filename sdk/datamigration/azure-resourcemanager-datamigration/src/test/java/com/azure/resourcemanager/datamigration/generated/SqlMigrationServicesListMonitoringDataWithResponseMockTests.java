@@ -20,7 +20,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
     @Test
     public void testListMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"mnrqstjcmetwml\",\"nodes\":[{\"additionalProperties\":{\"hgjnaq\":\"datapvv\",\"vcdsvm\":\"dataqipslz\",\"kdtfo\":\"databit\"},\"nodeName\":\"fiybxqich\",\"availableMemoryInMB\":260276405,\"cpuUtilization\":1475304415,\"concurrentJobsLimit\":88878227,\"concurrentJobsRunning\":2019590204,\"maxConcurrentJobs\":2098412904,\"sentBytes\":60.81948882509376,\"receivedBytes\":7.011253579337295},{\"additionalProperties\":{\"htre\":\"datazulrqt\",\"ryfmxmdu\":\"datapzl\",\"giln\":\"datazf\"},\"nodeName\":\"dccgndjgdpriggqq\",\"availableMemoryInMB\":1749113504,\"cpuUtilization\":303696107,\"concurrentJobsLimit\":370186911,\"concurrentJobsRunning\":164279924,\"maxConcurrentJobs\":797374219,\"sentBytes\":51.24575061535565,\"receivedBytes\":60.674506685245724}]}";
+            = "{\"name\":\"okvqbvwg\",\"nodes\":[{\"additionalProperties\":{\"ses\":\"datavxakglh\",\"qiy\":\"datafga\",\"yqyxyjrcbqpbis\":\"datavxcgdhyhgoqgs\",\"yjz\":\"dataglqjoxtdahneaoov\"},\"nodeName\":\"vfwjlo\",\"availableMemoryInMB\":1543117782,\"cpuUtilization\":632658800,\"concurrentJobsLimit\":1971359660,\"concurrentJobsRunning\":1044266833,\"maxConcurrentJobs\":486021761,\"sentBytes\":79.8518679409335,\"receivedBytes\":26.859809674171565}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeMonitoringData response = manager.sqlMigrationServices()
-            .listMonitoringDataWithResponse("cbgvsbt", "ertoxadhxuvj", com.azure.core.util.Context.NONE)
+            .listMonitoringDataWithResponse("y", "mhweqjfyxyd", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

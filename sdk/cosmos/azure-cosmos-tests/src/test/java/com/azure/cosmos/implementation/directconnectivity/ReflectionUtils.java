@@ -45,6 +45,7 @@ import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputRequestTh
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.FeedResponse;
 import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -474,6 +475,10 @@ public class ReflectionUtils {
 
     public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
+    }
+
+    public static void setNoChanges(FeedResponse feedResponse, boolean noChanges) {
+        set(feedResponse, noChanges, "nochanges");
     }
 
     public static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {

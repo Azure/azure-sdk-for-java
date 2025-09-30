@@ -8,7 +8,23 @@
 
 ### Bugs Fixed
 
+## 1.1.29 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.5.7` to version `1.5.8`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 1.1.28 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-data-schemaregistry` from `1.5.6` to version `1.5.7`.
 
 ## 1.1.27 (2025-07-29)
 
@@ -19,7 +35,6 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.5` to version `1.6.0-beta.1`.
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 
-
 ## 1.1.26 (2025-06-19)
 
 ### Other Changes
@@ -28,7 +43,6 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.5.4` to version `1.5.5`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
-
 
 ## 1.1.25 (2025-03-24)
 
@@ -39,7 +53,6 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.3` to version `1.6.0-beta.1`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
-
 ## 1.1.24 (2025-02-25)
 
 ### Other Changes
@@ -48,7 +61,6 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.5.2` to version `1.6.0-beta.1`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
-
 
 ## 1.1.23 (2024-12-04)
 
@@ -59,7 +71,6 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.1` to version `1.5.2`.
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 
-
 ## 1.1.22 (2024-10-25)
 
 ### Other Changes
@@ -69,7 +80,6 @@
 - Upgraded `avro` from `1.11.3` to version `1.11.4`.
 - Upgraded `azure-data-schemaregistry` from `1.5.0` to version `1.6.0-beta.1`.
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
-
 
 ## 1.1.21 (2024-09-13)
 
@@ -89,7 +99,6 @@
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-data-schemaregistry` from `1.4.6` to version `1.4.7`.
 
-
 ## 1.1.17 (2024-05-28)
 
 ### Other Changes
@@ -98,7 +107,6 @@
 
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-data-schemaregistry` from `1.4.5` to version `1.4.6`.
-
 
 ## 1.1.16 (2024-04-23)
 
@@ -109,7 +117,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-data-schemaregistry` from `1.4.4` to version `1.4.5`.
 
-
 ## 1.1.15 (2024-03-20)
 
 ### Other Changes
@@ -118,7 +125,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-data-schemaregistry` from `1.4.3` to version `1.4.4`.
-
 
 ## 1.1.14 (2024-02-22)
 
@@ -129,7 +135,6 @@
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-data-schemaregistry` from `1.4.2` to version `1.4.3`.
 
-
 ## 1.1.13 (2023-12-04)
 
 ### Other Changes
@@ -138,7 +143,6 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.4.1` to version `1.4.2`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
-
 
 ## 1.1.12 (2023-11-20)
 
