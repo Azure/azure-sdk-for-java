@@ -6,7 +6,6 @@ package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaBinderOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaSpringCloudStreamConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.kafka.BindingServicePropertiesBeanPostProcessor;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
