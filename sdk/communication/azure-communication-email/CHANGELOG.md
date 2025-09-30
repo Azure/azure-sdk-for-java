@@ -1,11 +1,15 @@
 # Release History
 
-## 1.1.0 (2025-09-01)
+## 1.2.0 (2025-09-01)
 
 ### Features Added
 
 - Consumers can now provide a value for the `ContentId` property when sending emails with attachments.
   This allows consumers to reference attachments in the email body using the `cid` scheme. The `ContentId` property can be set on the `EmailAttachment` object.
+
+### Bug fixes
+
+- Fixed change introduced in preview versions that required EmailAttachment Content to be pre-encoded in base64. Content should now again be constructed using raw binary data.
 
 ## 1.0.24 (2025-08-21)
 
@@ -16,7 +20,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 - Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
-
 
 ## 1.0.23 (2025-07-29)
 
