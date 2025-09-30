@@ -2957,7 +2957,8 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all cloud services in the subscription, regardless of the associated resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -2984,7 +2985,8 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all cloud services in the subscription, regardless of the associated resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -3009,7 +3011,8 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all cloud services under a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -3035,7 +3038,8 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all cloud services under a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {

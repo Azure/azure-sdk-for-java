@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -315,5 +316,16 @@ public abstract class ComputeManagementTest extends ResourceManagerTestProxyTest
             .attach()
             .create();
         return loadBalancer;
+    }
+
+    /**
+     * Gets a general-purpose VM size for test purpose.
+     * Test subscription constantly changes which VM SKUs are available. To allow for quick switch, gets a general-purpose
+     * VM SKU with enough features to cover most of the VM tests.
+     *
+     * @return the general-purpose VM size for test purpose
+     */
+    protected VirtualMachineSizeTypes generalPurposeVMSize() {
+        return VirtualMachineSizeTypes.fromString("Standard_D2s_v4");
     }
 }
