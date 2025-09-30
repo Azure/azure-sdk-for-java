@@ -62,7 +62,7 @@ if [ $AVOID_DBFS == "true" ]; then
   fi
   echo "Successfully uploaded JAR to Workspace."
   echo "Installing $JARFILE in $CLUSTER_ID"
-  databricks libraries install --cluster-id "$CLUSTER_ID" --workspace-file "/Workspace/libs/$JARFILE"
+  databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"/Workspace/libs/$JARFILE\"}]}"
   if [ $? -ne 0 ]; then
         echo "Failed to install JAR to cluster."
         echo $?
@@ -81,7 +81,7 @@ else
   dbfs ls dbfs:/tmp/libraries/
 
   echo "Installing $JARFILE in $CLUSTER_ID"
-  databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
+  databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"dbfs:/tmp/libraries/$JARFILE\"}]}"
 fi
 
 bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
