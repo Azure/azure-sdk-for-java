@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetPublicIpAddressConfigurationProperties;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration.
@@ -35,6 +36,11 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration
      * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      */
     private PublicIpAddressSku sku;
+
+    /*
+     * Resource tags applied to the publicIP address created by this PublicIPAddressConfiguration
+     */
+    private Map<String, String> tags;
 
     /**
      * Creates an instance of VirtualMachineScaleSetPublicIpAddressConfiguration class.
@@ -89,6 +95,28 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withSku(PublicIpAddressSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags applied to the publicIP address created by this
+     * PublicIPAddressConfiguration.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags applied to the publicIP address created by this
+     * PublicIPAddressConfiguration.
+     * 
+     * @param tags the tags value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -265,6 +293,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -294,6 +323,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration
                 } else if ("sku".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetPublicIpAddressConfiguration.sku
                         = PublicIpAddressSku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfiguration.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
