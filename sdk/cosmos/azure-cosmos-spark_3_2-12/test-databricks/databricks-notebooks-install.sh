@@ -26,7 +26,9 @@ COSMOSDATABASENAME=${11}
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.[] | select(.cluster_name == $N) | .cluster_id')
 
 echo "Deleting existing notebooks"
-databricks workspace delete --recursive /notebooks
+if databricks workspace list / | grep -q notebooks; then
+  databricks workspace delete --recursive /notebooks
+fi
 
 echo "Importing notebooks from $NOTEBOOKSFOLDER"
 databricks workspace import-dir "$NOTEBOOKSFOLDER" /notebooks
@@ -35,7 +37,7 @@ NOTEBOOKS=$(databricks workspace list /notebooks)
 for f in $NOTEBOOKS
 do
 	echo "Creating job for $f"
-	JOB_ID=$(databricks jobs create --json "{\"existing_cluster_id\": \"$CLUSTER_ID\", \"name\": \"$f\",\"notebook_task\": { \"notebook_path\": \"/notebooks/$f\" }}" | jq -r '.job_id')
+	JOB_ID=$(databricks jobs create --json "{\"name\": \"$f\", \"tasks\": [{\"task_key\": \"${f}_task\", \"existing_cluster_id\": \"$CLUSTER_ID\", \"notebook_task\": { \"notebook_path\": \"/notebooks/$f\" }}]}" | jq -r '.job_id')
 
 	if [[ -z "$JOB_ID" ]]
 	then
