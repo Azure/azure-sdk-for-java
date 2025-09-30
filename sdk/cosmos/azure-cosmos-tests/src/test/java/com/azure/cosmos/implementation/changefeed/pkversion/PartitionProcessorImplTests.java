@@ -35,7 +35,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -143,9 +143,12 @@ public class PartitionProcessorImplTests {
         @SuppressWarnings("unchecked") FeedResponse<ChangeFeedProcessorItem> feedResponseMock = Mockito.mock(FeedResponse.class);
         List<ChangeFeedProcessorItem> results = new ArrayList<>();
         results.add(Mockito.mock(ChangeFeedProcessorItem.class));
-        Mockito.when(feedResponseMock.getResults()).thenReturn(results);
-        // Continuation token after processing stays the same for simplicity
-        Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(startState.toString());
+        AtomicInteger counter = new AtomicInteger(0);
+        Mockito.when(feedResponseMock.getResults()).thenAnswer(invocation ->
+            counter.getAndIncrement() < 10 ? results : new ArrayList<>()
+        );
+        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+        Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(changeFeedState.toString());
 
         // The processor will continuously fetch, but we will cancel shortly after first batch
         Mockito.doReturn(Flux.just(feedResponseMock))
@@ -162,9 +165,11 @@ public class PartitionProcessorImplTests {
 
         CancellationTokenSource cts = new CancellationTokenSource();
         Mono<Void> runMono = processor.run(cts.getToken());
-        Mono<Void> cancelMono = Mono.delay(Duration.ofMillis(50)).doOnNext(v -> cts.cancel()).then();
 
-        StepVerifier.create(Mono.firstWithSignal(runMono, cancelMono)).verifyComplete();
+        StepVerifier.create(runMono)
+            .thenAwait(Duration.ofMillis(800))
+            .then(cts::cancel)
+            .verifyComplete();
 
         assertThat(processor.getProcessedBatches()).isTrue();
     }
