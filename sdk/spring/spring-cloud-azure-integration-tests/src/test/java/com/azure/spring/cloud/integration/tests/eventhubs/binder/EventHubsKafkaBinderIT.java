@@ -32,7 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
                 classes = {AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class,
                            AzureEventHubsKafkaOAuth2AutoConfiguration.class,
-                           AzureKafkaSpringCloudStreamConfiguration.class})
+                           AzureKafkaSpringCloudStreamConfiguration.class,
+                           EventHubsKafkaBinderIT.TestConfig.class,})
 @ActiveProfiles("eventhubs-kafka-binder")
 class EventHubsKafkaBinderIT {
 
