@@ -123,6 +123,101 @@ public class RegionScopedSessionContainerConcurrencyTest {
         };
     }
 
+    /**
+     * Stress / correctness test for {@link RegionScopedSessionContainer} exercising concurrent
+     * {@code setSessionToken} (writers) and {@code resolvePartitionLocalSessionToken} (readers)
+     * across a large fan-out of physical partition key range ids and multiple region orderings.
+     * <p>
+     * The test is parameterized via a TestNG {@code @DataProvider}; each invocation ("profile")
+     * may vary:
+     * <ul>
+     *   <li>Bloom filter sizing (expected insertion count & false positive probability)</li>
+     *   <li>Endpoint ordering (first element treated as the "primary" for probabilistic routing)</li>
+     *   <li>Probability of routing to a non-primary region</li>
+     *   <li>Number of writer iterations (synthetic writes)</li>
+     *   <li>Number of simulated physical partition key ranges</li>
+     * </ul>
+     *
+     * <h3>Key Behaviors Simulated</h3>
+     * <ul>
+     *   <li>Writers emit synthetic vector session tokens for each partition range in round-robin fashion.</li>
+     *   <li>Each token includes a global LSN and two region-local LSN components (satellite regions),
+     *       with a small probability of <em>emitting a regressed (lower) value</em> to mimic out-of-order
+     *       or stale arrivals (the container must still maintain monotonic visibility on resolution).</li>
+     *   <li>Readers continuously resolve local partition session tokens from randomly (skew) selected regions,
+     *       buffering observations per-partition and enforcing in-order application via a per-range
+     *       sequence + gap-buffer (OrderedApplier) to avoid false regression assertions due to
+     *       thread interleaving.</li>
+     *   <li>Bloom filter parameters influence whether region-scoped session tokens or global tokens
+     *       are resolved (higher false positive rate → more fallbacks / global resolutions).</li>
+     * </ul>
+     *
+     * <h3>Invariants Asserted Per Physical Partition (pkRangeId)</h3>
+     * <ul>
+     *   <li>Observed (resolved) global LSN never decreases.</li>
+     *   <li>Observed satellite region local LSNs (Region IDs {@code REGION_ID_SATELLITE_ONE} and
+     *       {@code REGION_ID_SATELLITE_TWO}) never decrease.</li>
+     *   <li>At least one token was written (first write recorded).</li>
+     *   <li>At least one token was eventually observed by a reader.</li>
+     * </ul>
+     *
+     * <h3>Ordering Strategy</h3>
+     * Resolved tokens are not asserted immediately. Instead each successful resolve gets a strictly
+     * increasing per-partition sequence number; records are stored in a concurrent buffer and applied
+     * only when all prior sequences have been applied, ensuring logical (resolve) order and eliminating
+     * spurious monotonicity failures caused by racing reader threads.
+     *
+     * <h3>Regression Injection</h3>
+     * A small configurable probability (see constants {@code REGRESSION_EMISSION_PROBABILITY} and
+     * {@code REGRESSION_MAX_DELTA}) causes writers to emit artificially "regressed" (older) global
+     * or local LSN values. The container is expected to merge via max semantics so that externally
+     * resolved tokens still exhibit monotonic progression; any decrease detected after ordered
+     * application constitutes a real bug in session token capture/merge.
+     *
+     * <h3>Failure Modes</h3>
+     * The test fails fast with descriptive messages if:
+     * <ul>
+     *   <li>Any per-partition monotonic LSN invariant is violated.</li>
+     *   <li>Writers do not finish within the allotted timeout.</li>
+     *   <li>No token is ever written or observed for a given partition range.</li>
+     *   <li>Unhandled exceptions occur in writer or reader tasks (first one surfaced).</li>
+     * </ul>
+     *
+     * <h3>Resource & Runtime Notes</h3>
+     * <ul>
+     *   <li>High CPU thread counts (split between writers and readers) can make this test
+     *       expensive; adjust {@code iterationsPerWriter} or {@code numPkRanges} for a lighter profile.</li>
+     *   <li>Bloom filter system properties are set before each profile run and cleared in {@code finally}.</li>
+     *   <li>Logging includes profile parameters and counts of emitted regressions to aid diagnosis.</li>
+     * </ul>
+     *
+     * <h3>Thread Safety & Concurrency Constructs</h3>
+     * <ul>
+     *   <li>{@link Phaser} acts as a one-time start gate (all worker threads begin simultaneously).</li>
+     *   <li>{@link CountDownLatch} tracks completion of all writers.</li>
+     *   <li>{@link java.util.concurrent.atomic.AtomicLong} arrays hold per-partition max LSN state.</li>
+     *   <li>Ordered application uses a gap-buffer + CAS on a {@code nextToApply} counter.</li>
+     * </ul>
+     *
+     * <h3>Parameters (from DataProvider)</h3>
+     * @param profileName human-readable name describing this parameter set (appears in logs / failure messages)
+     * @param bloomFilterExpectedInsertionCount expected element count used to size the partition/region Bloom filter (affects false positive rate)
+     * @param bloomFilterExpectedFfpRate target (approximate) Bloom filter false positive rate (string form for direct system property injection)
+     * @param orderedReadEndpoints array of region endpoints; index 0 is treated as the primary for skewed routing probability calculations
+     * @param nonPrimaryRegionProbability probability (0.0–1.0) that a request (read or write) is routed to a non-primary endpoint
+     * @param iterationsPerWriter number of synthetic write iterations per writer thread (each iteration targets one partition range)
+     * @param numPkRanges number of simulated physical partition key range ids (fan-out); higher values increase concurrency stress
+     *
+     * @throws Exception on unexpected execution failures or if assertions / invariants fail
+     *
+     * @implNote Sets and clears system properties
+     *           {@code COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT} and
+     *           {@code COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE} per invocation.
+     *           Emitted regressions are counted but not asserted for minimum quantity (can be added if needed).
+     *
+     * @see RegionScopedSessionContainer
+     * @see com.azure.cosmos.implementation.ISessionToken
+     */
     @Test(groups = "unit", dataProvider = "concurrentSetAndResolveTokensDataArgs")
     public void concurrentSetAndResolveTokens(String profileName,
                                               String bloomFilterExpectedInsertionCount,
