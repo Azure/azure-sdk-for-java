@@ -240,7 +240,11 @@ public class PartitionScopedRegionLevelProgress {
                 return regionLevelProgressAsVal;
             });
         } catch (Throwable t) {
-            throw constructInternalServerErrorException(request, t.getMessage());
+            if (!(t instanceof CosmosException)) {
+                throw constructInternalServerErrorException(request, t.getMessage());
+            } else {
+                throw t;
+            }
         }
     }
 
@@ -255,7 +259,7 @@ public class PartitionScopedRegionLevelProgress {
         checkNotNull(request, "request cannot be null!");
         checkNotNull(request.requestContext, "requestContext cannot be null!");
 
-        AtomicReference<ISessionToken> resultantSessionToken = new AtomicReference<>();
+        Utils.ValueHolder<ISessionToken> resultantSessionToken = new Utils.ValueHolder<>(null);
 
         try {
             this.partitionKeyRangeIdToRegionLevelProgress.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionLevelProgressAsVal) -> {
@@ -300,20 +304,20 @@ public class PartitionScopedRegionLevelProgress {
                     throw constructInternalServerErrorException(request, "globalSessionToken cannot be null!");
                 }
 
+                RegionLevelProgress globalLevelProgressAsVal = globalLevelProgress.get();
+                ISessionToken globalSessionTokenAsVal = globalSessionToken.get();
+
                 // if region level scoping is not allowed, then resolve to the global session token
                 // region level scoping is allowed in the following cases:
                 //      1. when the request is targeted to a specific logical partition
                 //      2. when multiple write locations are configured
                 if (!canUseRegionScopedSessionTokens) {
-                    globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                    resultantSessionToken.set(globalSessionToken.get());
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
-                if (globalLevelProgress.get().hasPartitionSeenNonPointDocumentOperations.get()) {
-                    request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since partition has seen non-point requests.");
-                    globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                    resultantSessionToken.set(globalSessionToken.get());
+                if (globalLevelProgressAsVal.hasPartitionSeenNonPointDocumentOperations.get()) {
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
@@ -324,9 +328,7 @@ public class PartitionScopedRegionLevelProgress {
                 Optional<RegionLevelProgress> baseLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, firstEffectivePreferredReadableRegion);
 
                 if (!baseLevelProgress.isPresent() || !baseLevelProgress.get().getSessionToken().isPresent()) {
-                    request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token corresponding to first preferred readable region doesn't exist.");
-                    globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                    resultantSessionToken.set(globalSessionToken.get());
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
@@ -335,8 +337,7 @@ public class PartitionScopedRegionLevelProgress {
                 // the partition key of the request has not been requested from lesser preferred regions
                 // hence just return the base session token or in other words the session recorded for the first preferred readable region
                 if (lesserPreferredRegionsPkProbablyRequestedFrom.isEmpty() && baseSessionToken.isPresent()) {
-                    request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the session token corresponding to the first preferred readable region since the requested logical partition has not been resolved to other regions.");
-                    resultantSessionToken.set(baseSessionToken.get());
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
@@ -345,20 +346,16 @@ public class PartitionScopedRegionLevelProgress {
                 Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion = new Utils.ValueHolder<>();
 
                 // return global merged progress of the session token for a given physical partition since regionId to localLsn mappings cannot be resolved
-                if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(globalSessionToken.get(), localLsnByRegion)) {
-                    request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token either because session token doesn't have region id to localLsn mappings or is not a vector session token.");
-                    globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                    resultantSessionToken.set(globalSessionToken.get());
+                if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(globalSessionTokenAsVal, localLsnByRegion)) {
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
                 Utils.ValueHolder<Long> sessionTokenVersion = new Utils.ValueHolder<>();
 
                 // return global merged progress of the session token for a given physical partition since version cannot be resolved
-                if (!SessionTokenHelper.tryEvaluateVersion(globalSessionToken.get(), sessionTokenVersion)) {
-                    request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token recorded prior because the version cannot be recorded from the global session token.");
-                    globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                    resultantSessionToken.set(globalSessionToken.get());
+                if (!SessionTokenHelper.tryEvaluateVersion(globalSessionTokenAsVal, sessionTokenVersion)) {
+                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
 
@@ -379,9 +376,7 @@ public class PartitionScopedRegionLevelProgress {
                             logger.debug("regionId with value - {} which has no known region name has been seen in the vector session token", regionId);
                         }
 
-                        request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token provided doesn't have a known region name mapping for region id : " + regionId + ".");
-                        globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                        resultantSessionToken.set(globalSessionToken.get());
+                        resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                         return regionLevelProgressAsVal;
                     }
 
@@ -402,24 +397,8 @@ public class PartitionScopedRegionLevelProgress {
                             // this condition should ideally be hit probabilistically since the bloom filter
                             // indicated that the partition key has probably seen requests routed to this region but the session container doesn't have any region specific progress recorded
                             // hence resolve to the global session token recorded prior
-                            RegionLevelProgress globalLevelProgressInner = globalLevelProgress.get();
-                            globalLevelProgressInner.isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-
-                            if (logger.isWarnEnabled()) {
-                                logger.warn("Region specific progress for region - {} could not be found even though the bloom filter indicated that the partition key has probably seen requests routed to this region", normalizedRegionName);
-                                logger.warn("Resolving to the global session token recorded prior");
-                            }
-
-                            Optional<ISessionToken> globalSessionTokenInner = globalLevelProgressInner.getSessionToken();
-
-                            if (!globalSessionTokenInner.isPresent()) {
-                                throw constructInternalServerErrorException(request, "globalLevelProgress.get().getSessionToken() cannot be null!");
-                            } else {
-                                request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token recorded prior since region specific progress for region - " + normalizedRegionName + " could not be found even though the bloom filter indicated that the partition key has probably seen requests routed to this region.");
-                                globalLevelProgressInner.isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                                resultantSessionToken.set(globalSessionTokenInner.get());
-                                return regionLevelProgressAsVal;
-                            }
+                            resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
+                            return regionLevelProgressAsVal;
                         }
                     } else {
                         request.requestContext.getSessionTokenEvaluationResults().add("No region specific progress to resolve from " + normalizedRegionName);
@@ -430,6 +409,8 @@ public class PartitionScopedRegionLevelProgress {
                     }
                 }
 
+                Utils.ValueHolder<ISessionToken> hubSessionToken = new Utils.ValueHolder<>(null);
+
                 // Obtain globalLsn from hub region
                 for (String lesserPreferredRegionPkProbablyRequestedFrom : lesserPreferredRegionsPkProbablyRequestedFrom) {
                     int regionId = RegionNameToRegionIdMap.getRegionId(lesserPreferredRegionPkProbablyRequestedFrom);
@@ -439,26 +420,10 @@ public class PartitionScopedRegionLevelProgress {
                         Optional<RegionLevelProgress> hubLevelProgress = this.resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, lesserPreferredRegionPkProbablyRequestedFrom);
 
                         if (hubLevelProgress.isPresent()) {
-                            globalLsn = Math.max(globalLsn, hubLevelProgress.get().getMaxGlobalLsnSeen());
+                            hubSessionToken.v = hubLevelProgress.get().getSessionToken().orElse(null);
                         } else {
-                            RegionLevelProgress globalLevelProgressInner = globalLevelProgress.get();
-                            globalLevelProgressInner.isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-
-                            if (logger.isWarnEnabled()) {
-                                logger.warn("Region specific progress for hub region - {} could not be found even though the bloom filter indicated that the partition key has probably seen requests routed to this region", lesserPreferredRegionPkProbablyRequestedFrom);
-                                logger.warn("Resolving to the global session token recorded prior");
-                            }
-
-                            Optional<ISessionToken> globalSessionTokenInner = globalLevelProgressInner.getSessionToken();
-
-                            if (!globalSessionTokenInner.isPresent()) {
-                                throw constructInternalServerErrorException(request, "globalLevelProgress.get().getSessionToken() cannot be null!");
-                            } else {
-                                request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token recorded prior since region specific progress for hub region - " + lesserPreferredRegionPkProbablyRequestedFrom + " could not be found even though the bloom filter indicated that the partition key has probably seen requests routed to this region.");
-                                globalLevelProgressInner.isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-                                resultantSessionToken.set(globalSessionTokenInner.get());
-                                return regionLevelProgressAsVal;
-                            }
+                            resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
+                            return regionLevelProgressAsVal;
                         }
                     }
                 }
@@ -471,20 +436,31 @@ public class PartitionScopedRegionLevelProgress {
 
                 // one additional step of merging base session token / first preferred read region and resolved session token
                 if (SessionTokenHelper.tryParse(sbPartOne.append(sbPartTwo).toString(), resolvedSessionToken)) {
-                    resultantSessionToken.set(baseSessionToken.get().merge(resolvedSessionToken.v));
+
+                    ISessionToken baseSessionTokenAsVal = baseSessionToken.get();
+
+                    if (hubSessionToken.v != null) {
+                        resultantSessionToken.v
+                            = baseSessionTokenAsVal.merge(hubSessionToken.v).merge(resolvedSessionToken.v);
+                    } else {
+                        resultantSessionToken.v
+                            = baseSessionTokenAsVal.merge(resolvedSessionToken.v);
+                    }
+
                     return regionLevelProgressAsVal;
                 }
 
-                request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token since session token from the first preferred region couldn't be merged with region-resolved session token : " + resolvedSessionToken.v.convertToString() + ".");
-                globalLevelProgress.get().isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
-
-                resultantSessionToken.set(globalSessionToken.get());
+                resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                 return regionLevelProgressAsVal;
             });
 
-            return resultantSessionToken.get();
+            return resultantSessionToken.v;
         } catch (Throwable t) {
-            throw constructInternalServerErrorException(request, t.getMessage());
+            if (!(t instanceof CosmosException)) {
+                throw constructInternalServerErrorException(request, t.getMessage());
+            } else {
+                throw t;
+            }
         }
     }
 
@@ -540,7 +516,7 @@ public class PartitionScopedRegionLevelProgress {
         return false;
     }
 
-    private CosmosException constructInternalServerErrorException(RxDocumentServiceRequest request, String message) {
+    private static CosmosException constructInternalServerErrorException(RxDocumentServiceRequest request, String message) {
         CosmosException cosmosException = new InternalServerErrorException(
             message,
             HttpConstants.SubStatusCodes.REGION_SCOPED_SESSION_CONTAINER_IN_BAD_STATE);
@@ -579,6 +555,29 @@ public class PartitionScopedRegionLevelProgress {
         }
 
         return globalEndpointManager.canUseMultipleWriteLocations(request);
+    }
+
+    private static ISessionToken fallbackToGlobalSessionToken(
+        RxDocumentServiceRequest request,
+        Optional<RegionLevelProgress> globalLevelProgress) {
+
+        if (!globalLevelProgress.isPresent()) {
+            throw constructInternalServerErrorException(request, "globalSessionToken cannot be null!");
+        }
+
+        Optional<ISessionToken> globalSessionToken = globalLevelProgress.get().getSessionToken();
+
+        if (!globalSessionToken.isPresent()) {
+            throw constructInternalServerErrorException(request, "globalSessionToken cannot be null!");
+        }
+
+        RegionLevelProgress globalLevelProgressAsVal = globalLevelProgress.get();
+        ISessionToken globalSessionTokenAsVal = globalSessionToken.get();
+
+        globalLevelProgressAsVal.isGlobalSessionTokenUsedForPartitionKeyRange.set(true);
+        request.requestContext.getSessionTokenEvaluationResults().add("Resolving to the global session token recorded prior since region specific progress couldn't be found.");
+
+        return globalSessionTokenAsVal;
     }
 
     static class RegionLevelProgress {
