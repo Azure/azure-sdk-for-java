@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -54,10 +53,9 @@ class PartitionSupervisorFactoryImpl<T> implements PartitionSupervisorFactory {
     public PartitionSupervisor create(Lease lease) {
         checkNotNull(lease, "Argument 'lease' can not be null");
 
-        AtomicBoolean processedBatches = new AtomicBoolean(false);
         ChangeFeedObserver<T> changeFeedObserver = this.observerFactory.createObserver();
-        PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver, this.partitionProcessItemType, processedBatches);
-        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval(), processedBatches);
+        PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver, this.partitionProcessItemType);
+        LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval());
 
         return new PartitionSupervisorImpl<>(lease, changeFeedObserver, processor, renewer, this.scheduler);
     }

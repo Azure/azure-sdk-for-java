@@ -67,8 +67,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                   ProcessorSettings settings,
                                   PartitionCheckpointer checkPointer,
                                   Lease lease,
-                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
-                                  AtomicBoolean processedBatches) {
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -86,7 +85,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
-        this.processedBatches = processedBatches;
+        this.processedBatches = new AtomicBoolean(false);
     }
 
     @Override
@@ -321,6 +320,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public boolean getProcessedBatches() {
+        return this.processedBatches.get();
     }
 
     private Mono<Void> dispatchChanges(

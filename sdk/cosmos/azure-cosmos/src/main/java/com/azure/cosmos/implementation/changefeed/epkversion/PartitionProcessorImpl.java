@@ -69,8 +69,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                   Lease lease,
                                   Class<T> itemType,
                                   ChangeFeedMode changeFeedMode,
-                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
-                                  AtomicBoolean processedBatches) {
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -85,7 +84,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
-        this.processedBatches = processedBatches;
+        this.processedBatches = new AtomicBoolean(false);
     }
 
     @Override
@@ -326,6 +325,11 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public boolean getProcessedBatches() {
+        return processedBatches.get();
     }
 
     private Mono<Void> dispatchChanges(

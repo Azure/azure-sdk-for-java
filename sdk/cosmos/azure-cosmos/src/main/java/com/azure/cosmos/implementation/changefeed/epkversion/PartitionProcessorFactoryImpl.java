@@ -16,8 +16,6 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -57,7 +55,7 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
     }
 
     @Override
-    public PartitionProcessor create(Lease lease, ChangeFeedObserver<T> observer, Class<T> classType, AtomicBoolean processedBatches) {
+    public PartitionProcessor create(Lease lease, ChangeFeedObserver<T> observer, Class<T> classType) {
         checkNotNull(observer, "Argument 'observer' can not be null");
         checkNotNull(lease, "Argument 'lease' can not be null");
 
@@ -90,7 +88,6 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
             lease,
             classType,
             this.changeFeedMode,
-            this.feedRangeThroughputControlConfigManager,
-            processedBatches);
+            this.feedRangeThroughputControlConfigManager);
     }
 }

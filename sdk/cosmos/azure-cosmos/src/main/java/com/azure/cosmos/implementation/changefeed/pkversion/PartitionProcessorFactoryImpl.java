@@ -20,8 +20,6 @@ import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -80,7 +78,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
     }
 
     @Override
-    public PartitionProcessor create(Lease lease, ChangeFeedObserver<JsonNode> observer, AtomicBoolean processedBatches) {
+    public PartitionProcessor create(Lease lease, ChangeFeedObserver<JsonNode> observer) {
         checkNotNull(observer, "Argument 'observer' can not be null");
         checkNotNull(lease, "Argument 'lease' can not be null");
 
@@ -111,7 +109,6 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
             settings,
             checkpointer,
             lease,
-            this.feedRangeThroughputControlConfigManager,
-            processedBatches);
+            this.feedRangeThroughputControlConfigManager);
     }
 }

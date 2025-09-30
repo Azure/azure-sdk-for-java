@@ -16,10 +16,12 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.mockito.Mockito;
@@ -29,7 +31,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -99,8 +103,7 @@ public class PartitionProcessorImplTests {
             processorSettings,
             partitionCheckpointer,
             leaseMock,
-            null,
-            new AtomicBoolean(false));
+            null);
 
         StepVerifier
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
@@ -117,6 +120,53 @@ public class PartitionProcessorImplTests {
                 .verify(partitionCheckpointer, Mockito.times(0))
                 .checkpointPartition(Mockito.any());
         }
+    }
+
+    @Test(groups = "unit")
+    public void processedBatchesFlagSetAfterProcessing() {
+        ChangeFeedObserver<JsonNode> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
+
+        ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+
+        ChangeFeedStateV1 startState = getChangeFeedStateWithContinuationTokens(1);
+        ProcessorSettings settings = new ProcessorSettings(startState, containerMock);
+        settings.withMaxItemCount(10);
+
+        Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
+        Mockito.when(leaseMock.getContinuationToken()).thenReturn(startState.toString());
+
+        PartitionCheckpointer checkpointerMock = Mockito.mock(PartitionCheckpointerImpl.class);
+
+        // Create a feed response with one mocked result
+        @SuppressWarnings("unchecked") FeedResponse<ChangeFeedProcessorItem> feedResponseMock = Mockito.mock(FeedResponse.class);
+        List<ChangeFeedProcessorItem> results = new ArrayList<>();
+        results.add(Mockito.mock(ChangeFeedProcessorItem.class));
+        Mockito.when(feedResponseMock.getResults()).thenReturn(results);
+        // Continuation token after processing stays the same for simplicity
+        Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(startState.toString());
+
+        // The processor will continuously fetch, but we will cancel shortly after first batch
+        Mockito.doReturn(Flux.just(feedResponseMock))
+            .when(changeFeedContextClientMock)
+            .createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any());
+
+        PartitionProcessorImpl processor = new PartitionProcessorImpl(
+            observerMock,
+            changeFeedContextClientMock,
+            settings,
+            checkpointerMock,
+            leaseMock,
+            null);
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        Mono<Void> runMono = processor.run(cts.getToken());
+        Mono<Void> cancelMono = Mono.delay(Duration.ofMillis(50)).doOnNext(v -> cts.cancel()).then();
+
+        StepVerifier.create(Mono.firstWithSignal(runMono, cancelMono)).verifyComplete();
+
+        assertThat(processor.getProcessedBatches()).isTrue();
     }
 
     @Test
@@ -148,9 +198,7 @@ public class PartitionProcessorImplTests {
             processorSettings,
             partitionCheckpointer,
             leaseMock,
-            null,
-            new AtomicBoolean(false)
-        );
+            null);
 
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))
                     .verifyComplete();
