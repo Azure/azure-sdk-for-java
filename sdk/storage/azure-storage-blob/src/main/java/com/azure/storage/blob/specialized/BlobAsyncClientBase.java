@@ -1482,40 +1482,17 @@ public class BlobAsyncClientBase {
                     }
                 };
 
-                // Apply structured message decoding if enabled - this allows both MD5 and structured message to coexist
+                // If structured message decoding was applied, we need to create a new StreamResponse with the processed stream
                 if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                    // Use the content length from headers to determine expected length for structured message decoding
-                    Long contentLength = blobDownloadHeaders.getContentLength();
-                    Flux<ByteBuffer> processedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(response.getValue(), contentLength, contentValidationOptions);
+                    // Create a new StreamResponse using the deprecated but available constructor
+                    @SuppressWarnings("deprecation")
+                    StreamResponse processedResponse = new StreamResponse(
+                        response.getRequest(), 
+                        response.getStatusCode(), 
+                        response.getHeaders(), 
+                        processedStream
+                    );
                     
-                    // Create a new StreamResponse with the processed stream
-                    StreamResponse processedResponse = new StreamResponse() {
-                        @Override
-                        public int getStatusCode() {
-                            return response.getStatusCode();
-                        }
-
-                        @Override
-                        public HttpHeaders getHeaders() {
-                            return response.getHeaders();
-                        }
-
-                        @Override
-                        public Flux<ByteBuffer> getValue() {
-                            return processedStream;
-                        }
-
-                        @Override
-                        public HttpRequest getRequest() {
-                            return response.getRequest();
-                        }
-
-                        @Override
-                        public void close() {
-                            response.close();
-                        }
-                    };
-
                     return BlobDownloadAsyncResponseConstructorProxy.create(processedResponse, onDownloadErrorResume, finalOptions);
                 } else {
                     // No structured message processing needed, use original response
