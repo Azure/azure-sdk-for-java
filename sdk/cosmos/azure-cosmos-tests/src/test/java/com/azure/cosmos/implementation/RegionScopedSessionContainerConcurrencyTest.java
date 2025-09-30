@@ -10,6 +10,7 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.net.URI;
@@ -63,10 +64,31 @@ public class RegionScopedSessionContainerConcurrencyTest {
 
     private static final int REGION_ID_PRIMARY = 2;
     private static final int REGION_ID_SECONDARY = 7;
-    private static final double NON_DEFAULT_REGION_PROBABILITY = 0.25;
+    private static final double NON_DEFAULT_REGION_PROBABILITY = 0.55;
 
-    @Test(groups = "unit")
-    public void concurrentSetAndResolveTokens() throws Exception {
+    @DataProvider
+    public Object[][] concurrentSetAndResolveTokensDataArgs() {
+        return new Object[][] {
+            // For small expected insertion counts, the bloom filter is more likely to have false positives
+            // which increases the likelihood of region-specific LSNs to not be present in the region-scoped session container
+            // This increases the likelihood of the global session token to be resolved
+            {
+                "1000",  // bloomFilterExpectedInsertionCount
+                "0.1"    // bloomFilterExpectedFfpRate
+            },
+            {
+                "5000000",  // bloomFilterExpectedInsertionCount
+                "0.001"    // bloomFilterExpectedFfpRate
+            }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "concurrentSetAndResolveTokensDataArgs")
+    public void concurrentSetAndResolveTokens(String bloomFilterExpectedInsertionCount, String bloomFilterExpectedFfpRate) throws Exception {
+
+        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", bloomFilterExpectedInsertionCount);
+        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", bloomFilterExpectedFfpRate);
+
         final int ITERATIONS_PER_WRITER = 5000;
         final Duration TEST_TIMEOUT = Duration.ofSeconds(120);
 
@@ -87,6 +109,7 @@ public class RegionScopedSessionContainerConcurrencyTest {
             .thenReturn(REGION_EAST_US2);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(CENTRAL_US), Mockito.any()))
             .thenReturn(REGION_CENTRAL_US);
+        Mockito.when(globalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any())).thenReturn(true);
 
         int totalCores = Configs.getCPUCnt();
         final int WRITER_THREADS = totalCores / 2;
@@ -153,6 +176,8 @@ public class RegionScopedSessionContainerConcurrencyTest {
                         pkRange.setId(pkRangeId);
                         GatewayTestUtils.setParent(pkRange, ImmutableList.of());
                         writeRequest.requestContext.resolvedPartitionKeyRange = pkRange;
+
+                        // Consistency of mapping crucial PK should always map to same PK Range ID.
                         writeRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
                         writeRequest.setPartitionKeyDefinition(partitionKeyDefinition);
 
@@ -177,8 +202,6 @@ public class RegionScopedSessionContainerConcurrencyTest {
 
                         if (!firstWritten[pkIdx]) {
                             firstWritten[pkIdx] = true;
-                            // Minimal debug; switch to logger if desired
-                            // System.out.println("First token stored for " + pkRangeId + " => " + headerValue);
                         }
 
                         Thread.sleep(1);
@@ -205,6 +228,8 @@ public class RegionScopedSessionContainerConcurrencyTest {
                             pkRange.setId(pkRangeId);
                             GatewayTestUtils.setParent(pkRange, ImmutableList.of());
                             readRequest.requestContext.resolvedPartitionKeyRange = pkRange;
+
+                            // Consistency of mapping crucial PK should always map to same PK Range ID.
                             readRequest.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pkRangeId)));
                             readRequest.setPartitionKeyDefinition(partitionKeyDefinition);
 
@@ -288,6 +313,9 @@ public class RegionScopedSessionContainerConcurrencyTest {
             throw new RuntimeException(e);
         } finally {
             exec.shutdown();
+            globalEndpointManagerMock.close();
+            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
         }
     }
 
