@@ -23,7 +23,7 @@ echo "Dumping libraries"
 databricks libraries cluster-status $CLUSTER_ID
 
 echo "Uninstalling libraries in $CLUSTER_ID"
-LIBRARIES=$(databricks libraries list --cluster-id $CLUSTER_ID | jq -r '.[] | .library.jar')
+LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
 for library in $LIBRARIES
 do
 	echo "Uninstalling $library"
