@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagediscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -138,28 +137,6 @@ public final class StorageDiscoveryWorkspaceProperties
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (workspaceRoots() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property workspaceRoots in model StorageDiscoveryWorkspaceProperties"));
-        }
-        if (scopes() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property scopes in model StorageDiscoveryWorkspaceProperties"));
-        } else {
-            scopes().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageDiscoveryWorkspaceProperties.class);
 
     /**
      * {@inheritDoc}
