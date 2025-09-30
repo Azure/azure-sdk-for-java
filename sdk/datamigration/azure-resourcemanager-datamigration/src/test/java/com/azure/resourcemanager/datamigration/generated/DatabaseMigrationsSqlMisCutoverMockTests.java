@@ -31,7 +31,7 @@ public final class DatabaseMigrationsSqlMisCutoverMockTests {
 
         manager.databaseMigrationsSqlMis()
             .cutover("gfyys", "yekgafxc", "vfcck", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("58067ab5-efd6-42da-81da-142f14282da5")), com.azure.core.util.Context.NONE);
+                UUID.fromString("e44004cf-6fad-47f2-ab7c-1a1784cc996f")), com.azure.core.util.Context.NONE);
 
     }
 }
