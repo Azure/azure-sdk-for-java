@@ -28,7 +28,7 @@ private[spark] class CosmosReadManyReader(
   val clientConfig: CosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   val readConfig: CosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   val cosmosContainerConfig: CosmosContainerConfig =
-    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, None, None)
+    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   //scalastyle:off multiple.string.literals
   val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"

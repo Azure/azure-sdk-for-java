@@ -9,7 +9,7 @@ package com.azure.resourcemanager.terraform.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-07-01-preview/ListOperations.json
+     * x-ms-original-file: 2025-09-01-preview/ListOperations.json
      */
     /**
      * Sample code: Get a list of operations for a resource provider.

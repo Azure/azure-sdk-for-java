@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UninstallSolutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UninstallSolutionParameter model
-            = BinaryData.fromString("{\"solutionTemplateId\":\"cgwrtzjuz\",\"solutionInstanceName\":\"yzm\"}")
-                .toObject(UninstallSolutionParameter.class);
-        Assertions.assertEquals("cgwrtzjuz", model.solutionTemplateId());
-        Assertions.assertEquals("yzm", model.solutionInstanceName());
+        UninstallSolutionParameter model = BinaryData
+            .fromString("{\"solutionTemplateId\":\"mkcdyhbpkkpwdre\",\"solutionInstanceName\":\"ovvqfovljxywsu\"}")
+            .toObject(UninstallSolutionParameter.class);
+        Assertions.assertEquals("mkcdyhbpkkpwdre", model.solutionTemplateId());
+        Assertions.assertEquals("ovvqfovljxywsu", model.solutionInstanceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UninstallSolutionParameter model
-            = new UninstallSolutionParameter().withSolutionTemplateId("cgwrtzjuz").withSolutionInstanceName("yzm");
+        UninstallSolutionParameter model = new UninstallSolutionParameter().withSolutionTemplateId("mkcdyhbpkkpwdre")
+            .withSolutionInstanceName("ovvqfovljxywsu");
         model = BinaryData.fromObject(model).toObject(UninstallSolutionParameter.class);
-        Assertions.assertEquals("cgwrtzjuz", model.solutionTemplateId());
-        Assertions.assertEquals("yzm", model.solutionInstanceName());
+        Assertions.assertEquals("mkcdyhbpkkpwdre", model.solutionTemplateId());
+        Assertions.assertEquals("ovvqfovljxywsu", model.solutionInstanceName());
     }
 }

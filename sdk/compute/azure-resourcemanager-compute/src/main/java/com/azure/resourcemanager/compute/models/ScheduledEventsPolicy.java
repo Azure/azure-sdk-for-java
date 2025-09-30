@@ -31,6 +31,11 @@ public final class ScheduledEventsPolicy implements JsonSerializable<ScheduledEv
      */
     private ScheduledEventsAdditionalPublishingTargets scheduledEventsAdditionalPublishingTargets;
 
+    /*
+     * The configuration parameters used while creating AllInstancesDown scheduled event setting creation.
+     */
+    private AllInstancesDown allInstancesDown;
+
     /**
      * Creates an instance of ScheduledEventsPolicy class.
      */
@@ -105,6 +110,28 @@ public final class ScheduledEventsPolicy implements JsonSerializable<ScheduledEv
     }
 
     /**
+     * Get the allInstancesDown property: The configuration parameters used while creating AllInstancesDown scheduled
+     * event setting creation.
+     * 
+     * @return the allInstancesDown value.
+     */
+    public AllInstancesDown allInstancesDown() {
+        return this.allInstancesDown;
+    }
+
+    /**
+     * Set the allInstancesDown property: The configuration parameters used while creating AllInstancesDown scheduled
+     * event setting creation.
+     * 
+     * @param allInstancesDown the allInstancesDown value to set.
+     * @return the ScheduledEventsPolicy object itself.
+     */
+    public ScheduledEventsPolicy withAllInstancesDown(AllInstancesDown allInstancesDown) {
+        this.allInstancesDown = allInstancesDown;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -119,6 +146,9 @@ public final class ScheduledEventsPolicy implements JsonSerializable<ScheduledEv
         if (scheduledEventsAdditionalPublishingTargets() != null) {
             scheduledEventsAdditionalPublishingTargets().validate();
         }
+        if (allInstancesDown() != null) {
+            allInstancesDown().validate();
+        }
     }
 
     /**
@@ -131,6 +161,7 @@ public final class ScheduledEventsPolicy implements JsonSerializable<ScheduledEv
         jsonWriter.writeJsonField("userInitiatedReboot", this.userInitiatedReboot);
         jsonWriter.writeJsonField("scheduledEventsAdditionalPublishingTargets",
             this.scheduledEventsAdditionalPublishingTargets);
+        jsonWriter.writeJsonField("allInstancesDown", this.allInstancesDown);
         return jsonWriter.writeEndObject();
     }
 
@@ -156,6 +187,8 @@ public final class ScheduledEventsPolicy implements JsonSerializable<ScheduledEv
                 } else if ("scheduledEventsAdditionalPublishingTargets".equals(fieldName)) {
                     deserializedScheduledEventsPolicy.scheduledEventsAdditionalPublishingTargets
                         = ScheduledEventsAdditionalPublishingTargets.fromJson(reader);
+                } else if ("allInstancesDown".equals(fieldName)) {
+                    deserializedScheduledEventsPolicy.allInstancesDown = AllInstancesDown.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

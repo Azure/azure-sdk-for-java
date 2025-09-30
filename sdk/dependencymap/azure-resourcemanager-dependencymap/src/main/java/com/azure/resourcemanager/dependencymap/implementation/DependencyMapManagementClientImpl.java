@@ -187,7 +187,7 @@ public final class DependencyMapManagementClientImpl implements DependencyMapMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-01-31-preview";
+        this.apiVersion = "2025-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.maps = new MapsClientImpl(this);
         this.discoverySources = new DiscoverySourcesClientImpl(this);

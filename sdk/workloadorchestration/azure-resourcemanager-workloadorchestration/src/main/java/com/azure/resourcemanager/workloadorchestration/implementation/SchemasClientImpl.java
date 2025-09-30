@@ -40,6 +40,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaInner
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.SchemaListResult;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -119,7 +120,7 @@ public final class SchemasClientImpl implements SchemasClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("schemaName") String schemaName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SchemaInner properties, Context context);
+            @BodyParam("application/json") SchemaUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}")
         @ExpectedResponses({ 200 })
@@ -128,7 +129,7 @@ public final class SchemasClientImpl implements SchemasClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("schemaName") String schemaName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SchemaInner properties, Context context);
+            @BodyParam("application/json") SchemaUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}")
@@ -508,7 +509,7 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SchemaInner>> updateWithResponseAsync(String resourceGroupName, String schemaName,
-        SchemaInner properties) {
+        SchemaUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -528,7 +529,7 @@ public final class SchemasClientImpl implements SchemasClient {
      * @return schema Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SchemaInner> updateAsync(String resourceGroupName, String schemaName, SchemaInner properties) {
+    private Mono<SchemaInner> updateAsync(String resourceGroupName, String schemaName, SchemaUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, schemaName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -546,8 +547,8 @@ public final class SchemasClientImpl implements SchemasClient {
      * @return schema Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName, SchemaInner properties,
-        Context context) {
+    public Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName,
+        SchemaUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -566,7 +567,7 @@ public final class SchemasClientImpl implements SchemasClient {
      * @return schema Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaInner update(String resourceGroupName, String schemaName, SchemaInner properties) {
+    public SchemaInner update(String resourceGroupName, String schemaName, SchemaUpdate properties) {
         return updateWithResponse(resourceGroupName, schemaName, properties, Context.NONE).getValue();
     }
 

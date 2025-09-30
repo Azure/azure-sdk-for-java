@@ -12,8 +12,8 @@ public final class SchemaReferencePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaReferenceProperties model
-            = BinaryData.fromString("{\"schemaId\":\"synljphuopxodl\",\"provisioningState\":\"InProgress\"}")
+            = BinaryData.fromString("{\"schemaId\":\"lfoakg\",\"provisioningState\":\"InProgress\"}")
                 .toObject(SchemaReferenceProperties.class);
-        Assertions.assertEquals("synljphuopxodl", model.schemaId());
+        Assertions.assertEquals("lfoakg", model.schemaId());
     }
 }

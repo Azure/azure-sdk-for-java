@@ -29,7 +29,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
 
     val cosmosContainerConfig: CosmosContainerConfig =
-      CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, None, None)
+      CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
 
     Loan(
       List[Option[CosmosClientCacheItem]](

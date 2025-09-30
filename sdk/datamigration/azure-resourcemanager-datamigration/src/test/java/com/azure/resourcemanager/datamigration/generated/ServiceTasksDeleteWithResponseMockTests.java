@@ -27,7 +27,8 @@ public final class ServiceTasksDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.serviceTasks().deleteWithResponse("me", "lhbp", "bap", true, com.azure.core.util.Context.NONE);
+        manager.serviceTasks()
+            .deleteWithResponse("vbxxyjisskobqoc", "flioewyhxe", "smvrkdpsqe", false, com.azure.core.util.Context.NONE);
 
     }
 }

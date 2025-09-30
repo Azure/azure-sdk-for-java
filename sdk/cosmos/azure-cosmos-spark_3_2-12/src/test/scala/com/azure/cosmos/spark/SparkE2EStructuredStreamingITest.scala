@@ -733,7 +733,7 @@ class SparkE2EStructuredStreamingITest
       .option("checkpointLocation", s"/tmp/$testId/")
       .start()
 
-    Thread.sleep(5000)
+    Thread.sleep(10000)
 
     microBatchQuery.lastProgress should not be null
     microBatchQuery.lastProgress.sources should not be null

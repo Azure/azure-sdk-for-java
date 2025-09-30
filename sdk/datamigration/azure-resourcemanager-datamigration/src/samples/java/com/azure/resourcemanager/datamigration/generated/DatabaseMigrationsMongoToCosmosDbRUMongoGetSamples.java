@@ -10,7 +10,7 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigrationExpanded.json
      */
     /**
@@ -27,7 +27,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigration.json
      */
     /**

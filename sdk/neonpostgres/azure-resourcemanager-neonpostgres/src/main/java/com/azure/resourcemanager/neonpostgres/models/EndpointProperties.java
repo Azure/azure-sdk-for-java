@@ -57,6 +57,31 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      */
     private EndpointType endpointType;
 
+    /*
+     * Unique identifier for the compute endpoint
+     */
+    private String endpointId;
+
+    /*
+     * Name of the compute endpoint
+     */
+    private String computeName;
+
+    /*
+     * The current status of the compute endpoint
+     */
+    private EndpointStatus status;
+
+    /*
+     * The timestamp when the compute endpoint was last active
+     */
+    private String lastActive;
+
+    /*
+     * The compute units size range for autoscaling (MinCU-MaxCU)
+     */
+    private AutoscalingSize size;
+
     /**
      * Creates an instance of EndpointProperties class.
      */
@@ -191,6 +216,84 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
     }
 
     /**
+     * Get the endpointId property: Unique identifier for the compute endpoint.
+     * 
+     * @return the endpointId value.
+     */
+    public String endpointId() {
+        return this.endpointId;
+    }
+
+    /**
+     * Set the endpointId property: Unique identifier for the compute endpoint.
+     * 
+     * @param endpointId the endpointId value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withEndpointId(String endpointId) {
+        this.endpointId = endpointId;
+        return this;
+    }
+
+    /**
+     * Get the computeName property: Name of the compute endpoint.
+     * 
+     * @return the computeName value.
+     */
+    public String computeName() {
+        return this.computeName;
+    }
+
+    /**
+     * Set the computeName property: Name of the compute endpoint.
+     * 
+     * @param computeName the computeName value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withComputeName(String computeName) {
+        this.computeName = computeName;
+        return this;
+    }
+
+    /**
+     * Get the status property: The current status of the compute endpoint.
+     * 
+     * @return the status value.
+     */
+    public EndpointStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the lastActive property: The timestamp when the compute endpoint was last active.
+     * 
+     * @return the lastActive value.
+     */
+    public String lastActive() {
+        return this.lastActive;
+    }
+
+    /**
+     * Get the size property: The compute units size range for autoscaling (MinCU-MaxCU).
+     * 
+     * @return the size value.
+     */
+    public AutoscalingSize size() {
+        return this.size;
+    }
+
+    /**
+     * Set the size property: The compute units size range for autoscaling (MinCU-MaxCU).
+     * 
+     * @param size the size value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withSize(AutoscalingSize size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -201,6 +304,9 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
         jsonWriter.writeStringField("projectId", this.projectId);
         jsonWriter.writeStringField("branchId", this.branchId);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("endpointId", this.endpointId);
+        jsonWriter.writeStringField("computeName", this.computeName);
+        jsonWriter.writeJsonField("size", this.size);
         return jsonWriter.writeEndObject();
     }
 
@@ -237,6 +343,16 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
                     deserializedEndpointProperties.branchId = reader.getString();
                 } else if ("endpointType".equals(fieldName)) {
                     deserializedEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("endpointId".equals(fieldName)) {
+                    deserializedEndpointProperties.endpointId = reader.getString();
+                } else if ("computeName".equals(fieldName)) {
+                    deserializedEndpointProperties.computeName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedEndpointProperties.status = EndpointStatus.fromString(reader.getString());
+                } else if ("lastActive".equals(fieldName)) {
+                    deserializedEndpointProperties.lastActive = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedEndpointProperties.size = AutoscalingSize.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
