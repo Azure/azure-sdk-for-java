@@ -304,7 +304,6 @@ public class PartitionScopedRegionLevelProgress {
                     throw constructInternalServerErrorException(request, "globalSessionToken cannot be null!");
                 }
 
-                RegionLevelProgress globalLevelProgressAsVal = globalLevelProgress.get();
                 ISessionToken globalSessionTokenAsVal = globalSessionToken.get();
 
                 // if region level scoping is not allowed, then resolve to the global session token
@@ -312,11 +311,6 @@ public class PartitionScopedRegionLevelProgress {
                 //      1. when the request is targeted to a specific logical partition
                 //      2. when multiple write locations are configured
                 if (!canUseRegionScopedSessionTokens) {
-                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
-                    return regionLevelProgressAsVal;
-                }
-
-                if (globalLevelProgressAsVal.hasPartitionSeenNonPointDocumentOperations.get()) {
                     resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
                     return regionLevelProgressAsVal;
                 }
