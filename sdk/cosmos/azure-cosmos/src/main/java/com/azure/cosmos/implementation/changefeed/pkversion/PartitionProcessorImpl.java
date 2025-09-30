@@ -60,7 +60,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
-    private final AtomicBoolean processedBatches;
+    private Instant lastProcessedTime;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
@@ -85,7 +85,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
-        this.processedBatches = new AtomicBoolean(false);
+        this.lastProcessedTime = Instant.now();
     }
 
     @Override
@@ -153,9 +153,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.lastServerContinuationToken = currentServerContinuationToken;
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
+                this.lastProcessedTime = Instant.now();
+                logger.info("Partition {}: received response with continuation token {}.", this.lease.getLeaseToken(), this.lastServerContinuationToken);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
-                    this.processedBatches.set(true);
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.warn(
                             "Exception was thrown from thread {}",
@@ -293,6 +294,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
             })
             .then()
             .doFinally( any -> {
+                // check with qi this log
+                // run another change feed processor to without handle changes
                 logger.info("Partition {}: processing task exited with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
             });
     }
@@ -323,8 +326,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
     }
 
     @Override
-    public boolean getProcessedBatches() {
-        return this.processedBatches.get();
+    public Instant getLastProcessedTime() {
+        return this.lastProcessedTime;
     }
 
     private Mono<Void> dispatchChanges(

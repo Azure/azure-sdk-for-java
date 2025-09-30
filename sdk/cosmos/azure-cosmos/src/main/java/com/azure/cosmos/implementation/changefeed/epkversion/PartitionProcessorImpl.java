@@ -34,7 +34,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -57,10 +56,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
-    private final AtomicBoolean processedBatches;
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
+    private Instant lastProcessedTime;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -84,7 +83,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
-        this.processedBatches = new AtomicBoolean(false);
+        this.lastProcessedTime = Instant.now();
     }
 
     @Override
@@ -147,8 +146,9 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 this.lastServerContinuationToken = continuationToken;
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
 
+                lastProcessedTime = Instant.now();
+                logger.info("Lease with token {}: received response with continuation token {}.", this.lease.getLeaseToken(), this.lastServerContinuationToken);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
-                    processedBatches.set(true);
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
@@ -328,8 +328,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     }
 
     @Override
-    public boolean getProcessedBatches() {
-        return processedBatches.get();
+    public Instant getLastProcessedTime() {
+        return this.lastProcessedTime;
     }
 
     private Mono<Void> dispatchChanges(

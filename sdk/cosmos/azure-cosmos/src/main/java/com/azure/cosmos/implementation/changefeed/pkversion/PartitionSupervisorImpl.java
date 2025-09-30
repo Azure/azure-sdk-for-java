@@ -35,7 +35,6 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
     private final CancellationTokenSource childShutdownCts;
-    private Instant lastVerification;
     private static final int VERIFICATION_FACTOR = 25;
 
     private volatile RuntimeException resultException;
@@ -50,7 +49,6 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
         this.renewer = renewer;
         this.scheduler = scheduler;
         this.childShutdownCts = new CancellationTokenSource();
-        this.lastVerification = Instant.now();
     }
 
     @Override
@@ -75,18 +73,14 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
     }
 
     private boolean shouldContinue(CancellationToken shutdownToken) {
-        Duration timeSinceLastVerification = Duration.between(this.lastVerification, Instant.now());
-        if (timeSinceLastVerification.getSeconds() > this.renewer.getLeaseRenewInterval().getSeconds() * VERIFICATION_FACTOR) {
-            // if cfp has seen successes processing, we do a renew,
-            // otherwise we do not to allow lease stealing
-            if (processor.getProcessedBatches()) {
-                this.lastVerification = Instant.now();
-                logger.info("Lease with token {}: renewing lease as batches have been processed.", this.lease.getLeaseToken());
-            } else {
-                logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
-                return false;
-            }
+        Duration timeSinceLastProcessedChanges = Duration.between(processor.getLastProcessedTime(), Instant.now());
+        // if cfp has seen successes processing, we do a renew,
+        // otherwise we do not to allow lease stealing
+        if (timeSinceLastProcessedChanges.getSeconds() > this.renewer.getLeaseRenewInterval().getSeconds() * VERIFICATION_FACTOR) {
+            logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
+            return false;
         }
+        logger.info("Lease with token {}: time since last processed changes {}.", this.lease.getLeaseToken(), timeSinceLastProcessedChanges);
         return !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null;
     }
 

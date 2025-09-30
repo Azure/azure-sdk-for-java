@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,7 +124,7 @@ public class PartitionProcessorImplTests {
     }
 
     @Test(groups = "unit")
-    public void processedBatchesFlagSetAfterProcessing() {
+    public void processedTimeSetAfterProcessing() {
         ChangeFeedObserver<JsonNode> observerMock = Mockito.mock(ChangeFeedObserver.class);
         Mockito.when(observerMock.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
 
@@ -162,6 +163,7 @@ public class PartitionProcessorImplTests {
             checkpointerMock,
             leaseMock,
             null);
+        Instant initialTime = processor.getLastProcessedTime();
 
         CancellationTokenSource cts = new CancellationTokenSource();
         Mono<Void> runMono = processor.run(cts.getToken());
@@ -171,7 +173,7 @@ public class PartitionProcessorImplTests {
             .then(cts::cancel)
             .verifyComplete();
 
-        assertThat(processor.getProcessedBatches()).isTrue();
+        assertThat(processor.getLastProcessedTime()).isAfter(initialTime);
     }
 
     @Test
@@ -203,7 +205,8 @@ public class PartitionProcessorImplTests {
             processorSettings,
             partitionCheckpointer,
             leaseMock,
-            null);
+            null
+        );
 
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))
                     .verifyComplete();

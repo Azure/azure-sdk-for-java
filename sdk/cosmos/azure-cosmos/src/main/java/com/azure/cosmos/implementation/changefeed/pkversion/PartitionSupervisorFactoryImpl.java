@@ -13,8 +13,6 @@ import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * Implementation for the partition supervisor factory.
  */

@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.Lease;
 
-
 /**
  * Factory class used to create instance(s) of {@link PartitionProcessor}.
  */

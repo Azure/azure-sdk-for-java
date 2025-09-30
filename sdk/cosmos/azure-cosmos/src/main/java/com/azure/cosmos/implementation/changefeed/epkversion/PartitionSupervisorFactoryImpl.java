@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import reactor.core.scheduler.Scheduler;
 
-
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
