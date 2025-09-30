@@ -26,7 +26,7 @@ COSMOSDATABASENAME=${11}
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.[] | select(.cluster_name == $N) | .cluster_id')
 
 echo "Deleting existing notebooks"
-databricks workspace delete /notebooks -r
+databricks workspace delete --recursive /notebooks
 
 echo "Importing notebooks from $NOTEBOOKSFOLDER"
 databricks workspace import-dir "$NOTEBOOKSFOLDER" /notebooks
