@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
@@ -56,21 +55,9 @@ public class PartitionSupervisorImplTests {
     }
 
     private boolean invokeShouldContinue(PartitionSupervisorImpl sup, CancellationToken token) throws Exception {
-        Method m = PartitionSupervisorImpl.class.getDeclaredMethod("shouldContinue", com.azure.cosmos.implementation.changefeed.CancellationToken.class);
+        Method m = PartitionSupervisorImpl.class.getDeclaredMethod("shouldContinue", CancellationToken.class);
         m.setAccessible(true);
         return (boolean) m.invoke(sup, token);
-    }
-
-    private void setLastVerification(PartitionSupervisorImpl sup, Instant instant) throws Exception {
-        Field f = PartitionSupervisorImpl.class.getDeclaredField("lastVerification");
-        f.setAccessible(true);
-        f.set(sup, instant);
-    }
-
-    private Instant getLastVerification(PartitionSupervisorImpl sup) throws Exception {
-        Field f = PartitionSupervisorImpl.class.getDeclaredField("lastVerification");
-        f.setAccessible(true);
-        return (Instant) f.get(sup);
     }
 
     @Test(groups = "unit")
@@ -79,6 +66,7 @@ public class PartitionSupervisorImplTests {
         CancellationTokenSource cts = new CancellationTokenSource();
         Mockito.when(processorMock.getResultException()).thenReturn(null);
         Mockito.when(renewerMock.getResultException()).thenReturn(null);
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
 
         boolean result = invokeShouldContinue(sup, cts.getToken());
         // double check this metho
@@ -89,32 +77,28 @@ public class PartitionSupervisorImplTests {
     public void shouldContinue_VerificationWindow_ProcessedBatchesTrue() throws Exception {
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
-        Mockito.when(processorMock.getProcessedBatches()).thenReturn(true);
+        Duration renewInterval = renewerMock.getLeaseRenewInterval();
+        // Force verification window elapsed: interval * 25 + 1s
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now().minus(renewInterval
+            .multipliedBy(24)).minusSeconds(1));
         Mockito.when(processorMock.getResultException()).thenReturn(null);
         Mockito.when(renewerMock.getResultException()).thenReturn(null);
 
-        // Force verification window elapsed: interval * 25 + 1s
-        Duration renewInterval = renewerMock.getLeaseRenewInterval();
-        setLastVerification(sup, Instant.now().minus(renewInterval.multipliedBy(25)).minusSeconds(1));
-        Instant before = getLastVerification(sup);
-
         boolean result = invokeShouldContinue(sup, cts.getToken());
-        Instant after = getLastVerification(sup);
 
         assertThat(result).isTrue();
-        assertThat(after).isAfter(before); // lastVerification updated
     }
 
     @Test(groups = "unit")
     public void shouldContinue_VerificationWindow_ProcessedBatchesFalse() throws Exception {
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
-        Mockito.when(processorMock.getProcessedBatches()).thenReturn(false);
+        Duration renewInterval = renewerMock.getLeaseRenewInterval();
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now().minus(renewInterval
+            .multipliedBy(25)).minusSeconds(1));
         Mockito.when(processorMock.getResultException()).thenReturn(null);
         Mockito.when(renewerMock.getResultException()).thenReturn(null);
 
-        Duration renewInterval = renewerMock.getLeaseRenewInterval();
-        setLastVerification(sup, Instant.now().minus(renewInterval.multipliedBy(25)).minusSeconds(1));
 
         boolean result = invokeShouldContinue(sup, cts.getToken());
         assertThat(result).isFalse(); // should stop due to no processed batches
@@ -124,7 +108,7 @@ public class PartitionSupervisorImplTests {
     public void shouldContinue_ProcessorError_Stops() throws Exception {
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
-        Mockito.when(processorMock.getProcessedBatches()).thenReturn(true);
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
         Mockito.when(processorMock.getResultException()).thenReturn(new RuntimeException("failure"));
         Mockito.when(renewerMock.getResultException()).thenReturn(null);
 
@@ -136,7 +120,7 @@ public class PartitionSupervisorImplTests {
     public void shouldContinue_RenewerError_Stops() throws Exception {
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
-        Mockito.when(processorMock.getProcessedBatches()).thenReturn(true);
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
         Mockito.when(processorMock.getResultException()).thenReturn(null);
         Mockito.when(renewerMock.getResultException()).thenReturn(new RuntimeException("lease error"));
 
@@ -149,7 +133,7 @@ public class PartitionSupervisorImplTests {
         PartitionSupervisorImpl sup = createSupervisor();
         CancellationTokenSource cts = new CancellationTokenSource();
         cts.cancel();
-        Mockito.when(processorMock.getProcessedBatches()).thenReturn(true);
+        Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
         Mockito.when(processorMock.getResultException()).thenReturn(null);
         Mockito.when(renewerMock.getResultException()).thenReturn(null);
 

@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Provides an API to run continious processing on a single partition of some resource.
  * <p>
@@ -32,7 +34,7 @@ public interface PartitionProcessor {
     RuntimeException getResultException();
 
     /**
-     * @return true if at least one batch of changes has been processed; false otherwise.
+     * @return the last time a record was processed from the partition.
      */
-    boolean getProcessedBatches();
+    Instant getLastProcessedTime();
 }
