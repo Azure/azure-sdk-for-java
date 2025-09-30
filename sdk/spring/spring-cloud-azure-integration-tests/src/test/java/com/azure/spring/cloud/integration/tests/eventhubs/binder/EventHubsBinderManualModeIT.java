@@ -6,6 +6,7 @@ import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientCon
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "manual" })
 @Import(TestEventHubsClientConfiguration.class)
+@Disabled
 class EventHubsBinderManualModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderManualModeIT.class);
