@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -62,9 +64,10 @@ public class RegionScopedSessionContainerConcurrencyTest {
         }
     }
 
-    private static final int REGION_ID_PRIMARY = 2;
-    private static final int REGION_ID_SECONDARY = 7;
-    private static final double NON_DEFAULT_REGION_PROBABILITY = 0.55;
+    private static final int REGION_ID_SATELLITE_ONE = 2;
+    private static final int REGION_ID_SATELLITE_TWO = 7;
+    private static final double REGRESSION_EMISSION_PROBABILITY = 0.05;
+    private static final long REGRESSION_MAX_DELTA = 10;
 
     @DataProvider
     public Object[][] concurrentSetAndResolveTokensDataArgs() {
@@ -73,34 +76,87 @@ public class RegionScopedSessionContainerConcurrencyTest {
             // which increases the likelihood of region-specific LSNs to not be present in the region-scoped session container
             // This increases the likelihood of the global session token to be resolved
             {
+                "Low expected insertion count => more false positives => more global session token resolutions",
                 "1000",  // bloomFilterExpectedInsertionCount
-                "0.1"    // bloomFilterExpectedFfpRate
+                "0.1",    // bloomFilterExpectedFfpRate
+                new URI[] { EAST_US, EAST_US2, CENTRAL_US },
+                0.5,
+                5000,
+                5000
             },
             {
-                "5000000",  // bloomFilterExpectedInsertionCount
-                "0.001"    // bloomFilterExpectedFfpRate
-            }
+                "Low expected insertion count => more false positives => more global session token resolutions",
+                "1000",  // bloomFilterExpectedInsertionCount
+                "0.1",    // bloomFilterExpectedFfpRate
+                new URI[] { EAST_US2, EAST_US, CENTRAL_US },
+                0.5,
+                5000,
+                5000
+            },
+            {
+                "Low expected insertion count => more false positives => more global session token resolutions",
+                "1000",  // bloomFilterExpectedInsertionCount
+                "0.1",    // bloomFilterExpectedFfpRate
+                new URI[] { EAST_US2, CENTRAL_US, EAST_US },
+                0.5,
+                5000,
+                5000
+            },
+            {
+                "High expected insertion count => less false positives => more region-specific session token resolutions",
+                "1000000",  // bloomFilterExpectedInsertionCount
+                "0.001",    // bloomFilterExpectedFfpRate
+                new URI[] { EAST_US2, CENTRAL_US, EAST_US },
+                0.5,
+                5000,
+                5000
+            },
+            {
+                "High expected insertion count => less false positives => more region-specific session token resolutions",
+                "1000000",  // bloomFilterExpectedInsertionCount
+                "0.001",    // bloomFilterExpectedFfpRate
+                new URI[] { EAST_US, EAST_US2, CENTRAL_US },
+                0.5,
+                5000,
+                5000
+            },
         };
     }
 
     @Test(groups = "unit", dataProvider = "concurrentSetAndResolveTokensDataArgs")
-    public void concurrentSetAndResolveTokens(String bloomFilterExpectedInsertionCount, String bloomFilterExpectedFfpRate) throws Exception {
+    public void concurrentSetAndResolveTokens(String profileName,
+                                              String bloomFilterExpectedInsertionCount,
+                                              String bloomFilterExpectedFfpRate,
+                                              URI[] orderedReadEndpoints,
+                                              double nonPrimaryRegionProbability,
+                                              int iterationsPerWriter,
+                                              int numPkRanges) throws Exception {
+
+        logger.info("Starting profile=[{}] bloomInsertionCount=[{}] bloomFpp=[{}] endpoints=[{}] nonPrimaryProb=[{}] iterationsPerWriter=[{}] numPkRanges=[{}]",
+            profileName,
+            bloomFilterExpectedInsertionCount,
+            bloomFilterExpectedFfpRate,
+            Arrays.toString(orderedReadEndpoints),
+            nonPrimaryRegionProbability,
+            iterationsPerWriter,
+            numPkRanges);
 
         System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", bloomFilterExpectedInsertionCount);
         System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", bloomFilterExpectedFfpRate);
 
-        final int ITERATIONS_PER_WRITER = 5000;
         final Duration TEST_TIMEOUT = Duration.ofSeconds(120);
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer regionScopedSessionContainer =
             new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(EAST_US),
-                new RegionalRoutingContext(EAST_US2),
-                new RegionalRoutingContext(CENTRAL_US)));
+        // Build endpoints per ordering
+        ImmutableList.Builder<RegionalRoutingContext> endpointBuilder = ImmutableList.builder();
+        for (URI u : orderedReadEndpoints) {
+            endpointBuilder.add(new RegionalRoutingContext(u));
+        }
+        UnmodifiableList<RegionalRoutingContext> endpoints =
+            new UnmodifiableList<>(endpointBuilder.build());
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(EAST_US), Mockito.any()))
@@ -121,8 +177,8 @@ public class RegionScopedSessionContainerConcurrencyTest {
         CountDownLatch writersDone = new CountDownLatch(WRITER_THREADS);
 
         AtomicLong[] maxObservedGlobal = new AtomicLong[NUM_PK_RANGES];
-        AtomicLong[] maxObservedRegionPrimary = new AtomicLong[NUM_PK_RANGES];
-        AtomicLong[] maxObservedRegionSecondary = new AtomicLong[NUM_PK_RANGES];
+        AtomicLong[] maxObservedLocalLsnSatelliteOne = new AtomicLong[NUM_PK_RANGES];
+        AtomicLong[] maxObservedLocalLsnSatelliteTwo = new AtomicLong[NUM_PK_RANGES];
         boolean[] firstWritten = new boolean[NUM_PK_RANGES];
         OrderedApplier[] orderedAppliers = new OrderedApplier[NUM_PK_RANGES];
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk"));
@@ -130,20 +186,24 @@ public class RegionScopedSessionContainerConcurrencyTest {
         // NEW: per-range sequence generators (only for successful resolves) and ordered appliers
         AtomicLong[] sequenceGenerators = new AtomicLong[NUM_PK_RANGES];
 
+        AtomicInteger globalLsnRegressionsCount = new AtomicInteger();
+        AtomicInteger satelliteOneLocalLsnRegressionsCount = new AtomicInteger();
+        AtomicInteger satelliteTwoLocalLsnRegressionsCount = new AtomicInteger();
+
         try {
 
             // Starting state of lsn (global and regional) is -1 (no token)
             // Sequence generators help enforce in-order application of observed tokens
             for (int i = 0; i < NUM_PK_RANGES; i++) {
                 maxObservedGlobal[i] = new AtomicLong(-1);
-                maxObservedRegionPrimary[i] = new AtomicLong(-1);
-                maxObservedRegionSecondary[i] = new AtomicLong(-1);
+                maxObservedLocalLsnSatelliteOne[i] = new AtomicLong(-1);
+                maxObservedLocalLsnSatelliteTwo[i] = new AtomicLong(-1);
                 sequenceGenerators[i] = new AtomicLong(0);
                 orderedAppliers[i] = new OrderedApplier(
                     i,
                     maxObservedGlobal,
-                    maxObservedRegionPrimary,
-                    maxObservedRegionSecondary
+                    maxObservedLocalLsnSatelliteOne,
+                    maxObservedLocalLsnSatelliteTwo
                 );
             }
 
@@ -162,15 +222,14 @@ public class RegionScopedSessionContainerConcurrencyTest {
                     startBarrier.arriveAndAwaitAdvance();
                     long version = 1;
                     long baseOffset = writerIndex * 10_000_000L;
-                    for (int iter = 1; iter <= ITERATIONS_PER_WRITER; iter++) {
+                    for (int iter = 1; iter <= iterationsPerWriter; iter++) {
                         int pkIdx = (iter - 1) % NUM_PK_RANGES;
                         String pkRangeId = PK_RANGE_IDS[pkIdx];
-                        URI chosen = chooseRegionWithSkew();
 
                         RxDocumentServiceRequest writeRequest = RxDocumentServiceRequest.create(
                             mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                             COLLECTION_FULL_NAME + "/docs", Utils.getUTF8Bytes("payload"), new HashMap<>());
-                        writeRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
+                        writeRequest.requestContext.regionalRoutingContextToRoute = chooseRegionWithSkew(endpoints, nonPrimaryRegionProbability);
 
                         PartitionKeyRange pkRange = new PartitionKeyRange();
                         pkRange.setId(pkRangeId);
@@ -182,12 +241,16 @@ public class RegionScopedSessionContainerConcurrencyTest {
                         writeRequest.setPartitionKeyDefinition(partitionKeyDefinition);
 
                         long globalLsn = baseOffset + iter;
-                        long regionPrimaryLsn = globalLsn;
-                        long regionSecondaryLsn = globalLsn - (writerIndex % 2);
+                        long satelliteOneLocalLsn = globalLsn;
+                        long satelliteTwoLocalLsn = globalLsn - (writerIndex % 2);
+
+                        long possiblyRegressedGlobalLsn = maybeRegress(globalLsn, REGRESSION_EMISSION_PROBABILITY, REGRESSION_MAX_DELTA, globalLsnRegressionsCount);
+                        long possiblyRegressedSatelliteOneLocalLsn = maybeRegress(satelliteOneLocalLsn, REGRESSION_EMISSION_PROBABILITY, REGRESSION_MAX_DELTA, satelliteOneLocalLsnRegressionsCount);
+                        long possiblyRegressedSatelliteTwoLocalLsn = maybeRegress(satelliteTwoLocalLsn, REGRESSION_EMISSION_PROBABILITY, REGRESSION_MAX_DELTA, satelliteTwoLocalLsnRegressionsCount);
 
                         // assumption: globalLsn always increases (per writer) and region-specific LSNs keep monotonically increasing
                         // (this test assumes LSNs belonging to the same epoch are always monotonically increasing and therefore assumes there are no service-side regressions)
-                        String vector = buildVectorToken(version, globalLsn, regionPrimaryLsn, regionSecondaryLsn);
+                        String vector = buildVectorToken(version, possiblyRegressedGlobalLsn, possiblyRegressedSatelliteOneLocalLsn, possiblyRegressedSatelliteTwoLocalLsn);
                         String headerValue = pkRangeId + ":" + vector;
 
                         Map<String, String> respHeaders = new HashMap<>();
@@ -217,12 +280,11 @@ public class RegionScopedSessionContainerConcurrencyTest {
                     while (true) {
                         for (int pkIdx = 0; pkIdx < NUM_PK_RANGES; pkIdx++) {
                             String pkRangeId = PK_RANGE_IDS[pkIdx];
-                            URI chosen = chooseRegionWithSkew();
 
                             RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
                                 mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
                                 COLLECTION_FULL_NAME + "/docs/doc1", new HashMap<>());
-                            readRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(chosen);
+                            readRequest.requestContext.regionalRoutingContextToRoute = chooseRegionWithSkew(endpoints, nonPrimaryRegionProbability);
 
                             PartitionKeyRange pkRange = new PartitionKeyRange();
                             pkRange.setId(pkRangeId);
@@ -252,7 +314,7 @@ public class RegionScopedSessionContainerConcurrencyTest {
                                     mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
                                     COLLECTION_FULL_NAME + "/docs/doc1", new HashMap<>());
                                 finalRead.requestContext.regionalRoutingContextToRoute =
-                                    new RegionalRoutingContext(chooseRegionWithSkew());
+                                    chooseRegionWithSkew(endpoints, nonPrimaryRegionProbability);
                                 ISessionToken finalToken =
                                     regionScopedSessionContainer.resolvePartitionLocalSessionToken(finalRead, pkRangeId);
                                 if (finalToken != null) {
@@ -309,6 +371,9 @@ public class RegionScopedSessionContainerConcurrencyTest {
             if (!missingObserved.isEmpty()) {
                 fail("No token observed for ranges (despite writer writes): " + missingObserved);
             }
+
+            logger.info("Emitted regressions: globalLsnRegressionsCount=[{}] satelliteOneLocalLsnRegressionCount=[{}] satelliteTwoLocalLsnRegressionCount=[{}]",
+                globalLsnRegressionsCount.get(), satelliteOneLocalLsnRegressionsCount.get(), satelliteTwoLocalLsnRegressionsCount.get());
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } finally {
@@ -319,19 +384,23 @@ public class RegionScopedSessionContainerConcurrencyTest {
         }
     }
 
-    private static URI chooseRegionWithSkew() {
-        double d = ThreadLocalRandom.current().nextDouble();
-        if (d < NON_DEFAULT_REGION_PROBABILITY) {
-            return ThreadLocalRandom.current().nextBoolean() ? EAST_US2 : CENTRAL_US;
+    private static RegionalRoutingContext chooseRegionWithSkew(List<RegionalRoutingContext> endpoints, double nonPrimaryProb) {
+        if (endpoints.size() <= 1) {
+            return endpoints.get(0);
         }
-        return EAST_US;
+        double d = ThreadLocalRandom.current().nextDouble();
+        if (d >= nonPrimaryProb) {
+            return endpoints.get(0); // primary per ordering
+        }
+        int idx = 1 + ThreadLocalRandom.current().nextInt(endpoints.size() - 1);
+        return endpoints.get(idx);
     }
 
     private static String buildVectorToken(long version,
                                            long globalLsn,
-                                           long primaryLocal,
-                                           long secondaryLocal) {
-        return version + "#" + globalLsn + "#" + REGION_ID_PRIMARY + "=" + primaryLocal + "#" + REGION_ID_SECONDARY + "=" + secondaryLocal;
+                                           long satelliteOneLocalLsn,
+                                           long satelliteTwoLocalLsn) {
+        return version + "#" + globalLsn + "#" + REGION_ID_SATELLITE_ONE + "=" + satelliteOneLocalLsn + "#" + REGION_ID_SATELLITE_TWO + "=" + satelliteTwoLocalLsn;
     }
 
     private static ParsedVector parseVector(String vector) {
@@ -362,6 +431,18 @@ public class RegionScopedSessionContainerConcurrencyTest {
         };
     }
 
+    private static long maybeRegress(long baseline,
+                                     double probability,
+                                     long maxDelta,
+                                     AtomicInteger counter) {
+        if (ThreadLocalRandom.current().nextDouble() < probability && baseline > 0) {
+            long delta = 1 + ThreadLocalRandom.current().nextLong(Math.min(maxDelta, baseline));
+            counter.incrementAndGet();
+            return baseline - delta;
+        }
+        return baseline;
+    }
+
     @FunctionalInterface
     private interface ThrowingRunnable { void run() throws Exception; }
 
@@ -376,13 +457,13 @@ public class RegionScopedSessionContainerConcurrencyTest {
     private static final class ObservedRecord {
         final long seq;
         final long globalLsn;
-        final long primaryLsn;
-        final long secondaryLsn;
-        ObservedRecord(long seq, long globalLsn, long primaryLsn, long secondaryLsn) {
+        final long satelliteOneLocalLsn;
+        final long satelliteTwoLocalLsn;
+        ObservedRecord(long seq, long globalLsn, long satelliteOneLocalLsn, long satelliteTwoLocalLsn) {
             this.seq = seq;
             this.globalLsn = globalLsn;
-            this.primaryLsn = primaryLsn;
-            this.secondaryLsn = secondaryLsn;
+            this.satelliteOneLocalLsn = satelliteOneLocalLsn;
+            this.satelliteTwoLocalLsn = satelliteTwoLocalLsn;
         }
     }
 
@@ -392,27 +473,27 @@ public class RegionScopedSessionContainerConcurrencyTest {
         private final ConcurrentHashMap<Long, ObservedRecord> buffer = new ConcurrentHashMap<>();
 
         // References to shared arrays for assertions
-        private final AtomicLong[] maxObservedGlobal;
-        private final AtomicLong[] maxObservedRegionPrimary;
-        private final AtomicLong[] maxObservedRegionSecondary;
+        private final AtomicLong[] maxObservedGlobalLsn;
+        private final AtomicLong[] maxObservedSatelliteOneLocalLsn;
+        private final AtomicLong[] maxObservedSatelliteTwoLocalLsn;
 
         OrderedApplier(int pkIdx,
-                       AtomicLong[] maxObservedGlobal,
-                       AtomicLong[] maxObservedRegionPrimary,
-                       AtomicLong[] maxObservedRegionSecondary) {
+                       AtomicLong[] maxObservedGlobalLsn,
+                       AtomicLong[] maxObservedSatelliteOneLocalLsn,
+                       AtomicLong[] maxObservedSatelliteTwoLocalLsn) {
             this.pkIdx = pkIdx;
-            this.maxObservedGlobal = maxObservedGlobal;
-            this.maxObservedRegionPrimary = maxObservedRegionPrimary;
-            this.maxObservedRegionSecondary = maxObservedRegionSecondary;
+            this.maxObservedGlobalLsn = maxObservedGlobalLsn;
+            this.maxObservedSatelliteOneLocalLsn = maxObservedSatelliteOneLocalLsn;
+            this.maxObservedSatelliteTwoLocalLsn = maxObservedSatelliteTwoLocalLsn;
         }
 
         void submit(long seq, ISessionToken token) {
             ParsedVector pv = parseVector(token.convertToString());
             long glsn = token.getLSN();
-            long primary = pv.regionIdToLsn.getOrDefault(REGION_ID_PRIMARY, -1L);
-            long secondary = pv.regionIdToLsn.getOrDefault(REGION_ID_SECONDARY, -1L);
+            long satelliteOneLocalLsn = pv.regionIdToLsn.getOrDefault(REGION_ID_SATELLITE_ONE, -1L);
+            long satelliteTwoLocalLsn = pv.regionIdToLsn.getOrDefault(REGION_ID_SATELLITE_TWO, -1L);
 
-            buffer.put(seq, new ObservedRecord(seq, glsn, primary, secondary));
+            buffer.put(seq, new ObservedRecord(seq, glsn, satelliteOneLocalLsn, satelliteTwoLocalLsn));
             drainInOrder();
         }
 
@@ -436,23 +517,23 @@ public class RegionScopedSessionContainerConcurrencyTest {
 
         private void apply(ObservedRecord rec) {
             // Monotonic assertions now enforced strictly in resolve sequence order
-            long prevG = maxObservedGlobal[pkIdx].getAndAccumulate(rec.globalLsn, Math::max);
+            long prevG = maxObservedGlobalLsn[pkIdx].getAndAccumulate(rec.globalLsn, Math::max);
             if (prevG > rec.globalLsn) {
                 fail("Global LSN decreased (seq=" + rec.seq + ") for " + PK_RANGE_IDS[pkIdx] +
                     ": prev=" + prevG + " new=" + rec.globalLsn);
             }
-            if (rec.primaryLsn >= 0) {
-                long prevP = maxObservedRegionPrimary[pkIdx].getAndAccumulate(rec.primaryLsn, Math::max);
-                if (prevP > rec.primaryLsn) {
+            if (rec.satelliteOneLocalLsn >= 0) {
+                long prevP = maxObservedSatelliteOneLocalLsn[pkIdx].getAndAccumulate(rec.satelliteOneLocalLsn, Math::max);
+                if (prevP > rec.satelliteOneLocalLsn) {
                     fail("Primary local LSN decreased (seq=" + rec.seq + ") for " + PK_RANGE_IDS[pkIdx] +
-                        ": prev=" + prevP + " new=" + rec.primaryLsn);
+                        ": prev=" + prevP + " new=" + rec.satelliteOneLocalLsn);
                 }
             }
-            if (rec.secondaryLsn >= 0) {
-                long prevS = maxObservedRegionSecondary[pkIdx].getAndAccumulate(rec.secondaryLsn, Math::max);
-                if (prevS > rec.secondaryLsn) {
+            if (rec.satelliteTwoLocalLsn >= 0) {
+                long prevS = maxObservedSatelliteTwoLocalLsn[pkIdx].getAndAccumulate(rec.satelliteTwoLocalLsn, Math::max);
+                if (prevS > rec.satelliteTwoLocalLsn) {
                     fail("Secondary local LSN decreased (seq=" + rec.seq + ") for " + PK_RANGE_IDS[pkIdx] +
-                        ": prev=" + prevS + " new=" + rec.secondaryLsn);
+                        ": prev=" + prevS + " new=" + rec.satelliteTwoLocalLsn);
                 }
             }
         }
