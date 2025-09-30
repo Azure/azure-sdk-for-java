@@ -73,12 +73,12 @@ else
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
   echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
-  dbfs rm dbfs:/tmp/libraries/$JARFILE
-  dbfs ls dbfs:/tmp/libraries/
+  databricks fs rm dbfs:/tmp/libraries/$JARFILE
+  databricks fs ls dbfs:/tmp/libraries/
 
   echo "Copying files to DBFS $JARPATH/$JARFILE"
-  dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
-  dbfs ls dbfs:/tmp/libraries/
+  databricks fs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
+  databricks fs ls dbfs:/tmp/libraries/
 
   echo "Installing $JARFILE in $CLUSTER_ID"
   databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"dbfs:/tmp/libraries/$JARFILE\"}]}"
