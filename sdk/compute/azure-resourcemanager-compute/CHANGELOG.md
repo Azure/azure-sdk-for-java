@@ -1,18 +1,11 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.54.0 (2025-09-30)
 
 ### Other Changes
 
 - Deprecated `KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER`. 
   Refer [New options for Windows Server 2012/R2 end of support from Azure](https://www.microsoft.com/windows-server/blog/2023/07/18/new-options-for-windows-server-2012-r2-end-of-support-from-azure).
-
 
 #### Dependency Updates
 
