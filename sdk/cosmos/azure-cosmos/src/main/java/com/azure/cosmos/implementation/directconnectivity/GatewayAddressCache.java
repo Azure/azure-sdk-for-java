@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -110,6 +111,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,

@@ -39,24 +39,19 @@ public class BarrierRequestTests  extends TestSuiteBase {
                 .consistencyLevel(ConsistencyLevel.STRONG)
                 .directMode();
 
-        clientBuilder.httpRequestInterceptor((request) -> {
+        clientBuilder.httpRequestInterceptor((request, uri) -> {
             // After the initial write, simulate a network failure on address resolution.
             // This will trigger the SDK's failover logic.
-            if (request.requestContext.regionalRoutingContextToRoute.getRegion().equals(this.primaryRegion)) // Target the primary region
+            if (simulateAddressRefreshFailures.get() &&
+                request.requestContext.regionalRoutingContextToRoute.getRegion().equals(this.primaryRegion)) // Target the primary region
             {
-                while (!failoverTriggered.compareAndSet(false, true)) { // Signal that the failover process has started
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
                 logger.info("Simulating network failure for address resolution for region " + this.primaryRegion);
+                failoverTriggered.set(true);
                 throw new InternalServerErrorException("Simulated network failure for address resolution.", HttpConstants.SubStatusCodes.UNKNOWN);
             }
 
             // Once the failover is triggered, intercept the subsequent metadata refresh call.
-            if (failoverTriggered.get())
+            if (failoverTriggered.get() && uri.getPath() == "/")
             {
                 // Return the modified account properties, making the SDK believe a failover has occurred.
                 logger.info("Intercepting metadata call and returning modified account properties. New write region: " + this.secondaryRegion);
@@ -68,8 +63,7 @@ public class BarrierRequestTests  extends TestSuiteBase {
 
         clientBuilder.storeResponseInterceptor((request, storeResponse) -> {
 
-            if ((request.getOperationType() == OperationType.Create && request.getResourceType() == ResourceType.Document)
-                    || request.getOperationType() == OperationType.Head) {
+            if ((request.getOperationType() == OperationType.Create && request.getResourceType() == ResourceType.Document)) {
 
                 String lsn = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN);
 
@@ -79,7 +73,24 @@ public class BarrierRequestTests  extends TestSuiteBase {
                 storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, manipulatedGclsn);
 
                 // Enable address refresh failures for subsequent barrier requests in the primary region.
-                simulateAddressRefreshFailures.set(true);
+                simulateAddressRefreshFailures.compareAndSet(false, true);
+            }
+
+            // Track barrier requests (Head operations on a collection)
+            if (request.getOperationType() == OperationType.Head && request.getResourceType() == ResourceType.DocumentCollection)
+            {
+                // If the barrier request is in the secondary region, allow it to succeed.
+                if (request.requestContext.regionalRoutingContextToRoute.getRegion().equals(this.secondaryRegion))
+                {
+                    // Satisfy the barrier condition by setting GCLSN >= LSN
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(storeResponse.getLSN()));
+                }
+                    else
+                {
+                    // For any other region (initially the primary), keep the barrier condition unmet.
+                    long lsn = storeResponse.getLSN() - 2;
+                    storeResponse.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(lsn));
+                }
             }
 
             return storeResponse;

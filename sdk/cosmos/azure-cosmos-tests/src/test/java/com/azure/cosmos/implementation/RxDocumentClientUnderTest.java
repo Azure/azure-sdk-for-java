@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.mockito.Mockito.doAnswer;
@@ -77,7 +78,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             HttpClient rxOrigClient,
             ApiType apiType,
-            Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+            BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);

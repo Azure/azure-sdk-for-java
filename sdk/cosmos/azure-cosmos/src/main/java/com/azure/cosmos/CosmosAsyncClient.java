@@ -120,7 +120,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
     private final BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
-    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
+    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper

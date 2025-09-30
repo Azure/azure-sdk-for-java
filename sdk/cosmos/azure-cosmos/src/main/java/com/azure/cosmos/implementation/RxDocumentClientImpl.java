@@ -721,7 +721,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                      Function<HttpClient, HttpClient> httpClientInterceptor,
-                     Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor,
+                     BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor,
                      BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
         try {
 
@@ -883,7 +883,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
                                              ApiType apiType,
-                                             Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                             BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -901,7 +901,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          UserAgentContainer userAgentContainer,
                                          GlobalEndpointManager globalEndpointManager,
                                          HttpClient httpClient,
-                                         Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                         BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
         return new ThinClientStoreModel(
             this,
             sessionContainer,

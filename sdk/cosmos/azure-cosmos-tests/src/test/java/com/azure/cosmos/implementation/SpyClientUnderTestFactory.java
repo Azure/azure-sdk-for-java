@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -128,7 +129,7 @@ public class SpyClientUnderTestFactory {
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
                                                  ApiType apiType,
-                                                 Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                                 BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,

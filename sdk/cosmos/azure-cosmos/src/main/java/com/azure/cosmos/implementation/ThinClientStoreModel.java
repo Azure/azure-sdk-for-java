@@ -25,6 +25,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -47,7 +48,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+        BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
         super(
             clientContext,
             sessionContainer,

@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
@@ -80,7 +81,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
+    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -91,7 +92,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType,
-        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
+        BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
 
         this.clientContext = clientContext;
 
@@ -306,7 +307,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         try {
             if (this.httpRequestInterceptor != null) {
-                RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request);
+                RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request, requestUri);
                 if (result != null) {
                     return Mono.just(result);
                 }
