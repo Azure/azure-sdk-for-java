@@ -46,6 +46,8 @@ datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+datamigration/Microsoft.DataMigration/DataMigration:
+  service: datamigration
 developerhub:
   service: devhub
 dnc:
