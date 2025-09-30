@@ -15,10 +15,10 @@ then
 	done
 
 	echo "Restarting cluster $CLUSTER_ID"
-	databricks clusters restart --cluster-id $CLUSTER_ID
+	databricks clusters restart $CLUSTER_ID
 else
 	echo "Starting cluster $CLUSTER_ID"
-	databricks clusters start --cluster-id $CLUSTER_ID	
+	databricks clusters start $CLUSTER_ID
 fi
 
 STATE=$(databricks clusters list --output json | jq -r --arg I "$CLUSTER_ID" '.[] | select(.cluster_id == $I) | .state')

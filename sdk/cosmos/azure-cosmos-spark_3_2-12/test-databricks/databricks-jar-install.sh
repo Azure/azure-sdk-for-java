@@ -26,8 +26,9 @@ echo "Uninstalling libraries in $CLUSTER_ID"
 LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
 for library in $LIBRARIES
 do
+  databricks -v
 	echo "Uninstalling $library"
-	databricks libraries uninstall --cluster-id $CLUSTER_ID --libraries '[{"jar": "$library"}]'
+	databricks libraries uninstall --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"$library\"}]}"
 done
 
 bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
