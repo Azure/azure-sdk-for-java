@@ -11,7 +11,8 @@ public final class ReplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProperties model = BinaryData
-            .fromString("{\"sourceResourceId\":\"v\",\"role\":\"GeoAsyncReplica\",\"replicationState\":\"Active\"}")
+            .fromString(
+                "{\"sourceResourceId\":\"fxxypininmayhuy\",\"role\":\"AsyncReplica\",\"replicationState\":\"Catchup\"}")
             .toObject(ReplicationProperties.class);
     }
 }
