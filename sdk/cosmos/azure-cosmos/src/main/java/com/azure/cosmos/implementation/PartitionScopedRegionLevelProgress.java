@@ -337,7 +337,7 @@ public class PartitionScopedRegionLevelProgress {
                 // the partition key of the request has not been requested from lesser preferred regions
                 // hence just return the base session token or in other words the session recorded for the first preferred readable region
                 if (lesserPreferredRegionsPkProbablyRequestedFrom.isEmpty() && baseSessionToken.isPresent()) {
-                    resultantSessionToken.v = fallbackToGlobalSessionToken(request, globalLevelProgress);
+                    resultantSessionToken.v = baseSessionToken.get();
                     return regionLevelProgressAsVal;
                 }
 
