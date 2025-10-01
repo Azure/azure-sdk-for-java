@@ -186,7 +186,7 @@ public class IdentityUtilTests {
     }
 
     @Test
-    public void testShouldProbeImds_WhenChainedAndImdsAndNotConfiguredForDac_ReturnsTrue() {
+    public void testShouldProbeImdsWhenChainedAndImdsAndNotConfiguredForDacReturnsTrue() {
         IdentityClientOptions options = new IdentityClientOptions();
         options.setChained(true);
         try (
@@ -200,7 +200,7 @@ public class IdentityUtilTests {
     }
 
     @Test
-    public void testShouldProbeImds_WhenConfiguredForDac_ReturnsFalse() {
+    public void testShouldProbeImdsWhenConfiguredForDacReturnsFalse() {
         Configuration configuration = TestUtils.createTestConfiguration(
             new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "managedidentitycredential"));
 
@@ -219,7 +219,7 @@ public class IdentityUtilTests {
     }
 
     @Test
-    public void testShouldProbeImds_WhenAllConditionsFalse_ReturnsFalse() {
+    public void testShouldProbeImdsWhenAllConditionsFalseReturnsFalse() {
         Configuration configuration = TestUtils.createTestConfiguration(
             new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "Managedidentitycredential"));
 
