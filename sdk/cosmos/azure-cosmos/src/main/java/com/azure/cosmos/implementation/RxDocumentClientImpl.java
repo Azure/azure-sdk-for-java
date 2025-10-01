@@ -279,7 +279,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
-    private Function<DatabaseAccount, Void> perPartitionFailoverConfigModifier;
+    private Consumer<DatabaseAccount> perPartitionFailoverConfigModifier;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -798,7 +798,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 = (databaseAccount -> {
                 this.initializePerPartitionFailover(databaseAccount);
                 this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
-                return null;
             });
 
             this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
@@ -1490,7 +1489,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Http2ConnectionConfig http2ConnectionConfig = this.connectionPolicy.getHttp2ConnectionConfig();
 
-            if (http2ConnectionConfig.isEnabled() != null && !http2ConnectionConfig.isEnabled()) {
+            if (http2ConnectionConfig.isEnabled() != null) {
+
+                if (!http2ConnectionConfig.isEnabled()) {
+                    userAgentFeatureFlags.add(UserAgentFeatureFlags.Http2);
+                } else {
+                    userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
+                }
+
                 userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
             }
         }
@@ -7437,7 +7443,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (Configs.isReadAvailabilityStrategyEnabledWithPpaf()) {
 
-            logger.warn("As Per-Partition Automatic Failover (PPAF) is enabled a default End-to-End Operation Latency Policy will be applied for read, query, readAll and readyMany operation types.");
+            logger.info("ATTN: As Per-Partition Automatic Failover (PPAF) is enabled a default End-to-End Operation Latency Policy will be applied for read, query, readAll and readyMany operation types.");
 
             if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
                 Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
@@ -7900,10 +7906,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             // Override custom config to enabled if PPAF is enabled
-            logger.warn("Per-Partition Circuit Breaker is enabled because Per-Partition Automatic Failover is enabled.");
+            logger.info("ATTN: Per-Partition Circuit Breaker is enabled because Per-Partition Automatic Failover is enabled.");
             partitionLevelCircuitBreakerConfig = PartitionLevelCircuitBreakerConfig.fromExplicitArgs(Boolean.TRUE);
         } else {
-            logger.warn("As Per-Partition Automatic Failover is disabled, Per-Partition Circuit Breaker will be enabled or disabled based on client configuration.");
+            logger.info("ATTN: As Per-Partition Automatic Failover is disabled, Per-Partition Circuit Breaker will be enabled or disabled based on client configuration.");
             partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         }
 
@@ -7918,9 +7924,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         );
 
         if (this.ppafEnforcedE2ELatencyPolicyConfigForReads != null) {
-            logger.warn("Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is enabled.");
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is enabled.");
         } else {
-            logger.warn("Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is disabled.");
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is disabled.");
         }
     }
 

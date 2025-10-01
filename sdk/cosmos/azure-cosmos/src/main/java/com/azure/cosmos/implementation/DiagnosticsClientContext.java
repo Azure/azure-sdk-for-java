@@ -255,14 +255,8 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
-        public DiagnosticsClientConfig withIsPerPartitionAutomaticFailoverEnabled(boolean isPpafEnabled) {
-
-            if (isPpafEnabled) {
-                this.isPerPartitionAutomaticFailoverEnabledAsString = "true";
-            } else {
-                this.isPerPartitionAutomaticFailoverEnabledAsString = "false";
-            }
-
+        public DiagnosticsClientConfig withIsPerPartitionAutomaticFailoverEnabled(Boolean isPpafEnabled) {
+            this.isPerPartitionAutomaticFailoverEnabledAsString = (isPpafEnabled != null && isPpafEnabled) ? "true" : "false";
             return this;
         }
 
