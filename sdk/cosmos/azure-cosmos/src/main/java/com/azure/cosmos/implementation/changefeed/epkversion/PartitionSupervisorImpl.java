@@ -79,7 +79,6 @@ class PartitionSupervisorImpl<T> implements PartitionSupervisor {
             logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());
             return false;
         }
-        logger.info("Lease with token {}: time since last processed changes {}.", this.lease.getLeaseToken(), timeSinceLastProcessedChanges);
         return !shutdownToken.isCancellationRequested() && this.processor.getResultException() == null && this.renewer.getResultException() == null;
     }
 
