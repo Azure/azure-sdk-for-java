@@ -6155,7 +6155,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-
         return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink, false);
     }
 
@@ -6192,28 +6191,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
             request -> {
-                DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-                retryPolicy.onBeforeSendRequest(request);
-                return ObservableHelper.inlineIfPossibleAsObs(
-                    () -> readFeed(request)
-                        .map(response -> {
-                            if (isChangeFeed) {
-                                return feedResponseAccessor.createChangeFeedResponse(
-                                    response,
-                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                                    klass);
-                            } else {
-                               return feedResponseAccessor.createFeedResponse(
-                                    response,
-                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
-                                    klass);
-                            }
-                        }),
-                    retryPolicy);
+                return readFeed(request)
+                    .map(response -> {
+                        if (isChangeFeed) {
+                            return feedResponseAccessor.createChangeFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        } else {
+                            return feedResponseAccessor.createFeedResponse(
+                                response,
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                klass);
+                        }
+                    });
             };
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,

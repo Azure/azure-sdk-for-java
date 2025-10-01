@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigTemplateProperties model = BinaryData.fromString(
-            "{\"description\":\"qqqxhrnxrx\",\"latestVersion\":\"juisavokqdzf\",\"provisioningState\":\"Canceled\"}")
+        ConfigTemplateProperties model = BinaryData
+            .fromString(
+                "{\"description\":\"zjvusfzldmo\",\"latestVersion\":\"xylfsb\",\"provisioningState\":\"InProgress\"}")
             .toObject(ConfigTemplateProperties.class);
-        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals("zjvusfzldmo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateProperties model = new ConfigTemplateProperties().withDescription("qqqxhrnxrx");
+        ConfigTemplateProperties model = new ConfigTemplateProperties().withDescription("zjvusfzldmo");
         model = BinaryData.fromObject(model).toObject(ConfigTemplateProperties.class);
-        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals("zjvusfzldmo", model.description());
     }
 }

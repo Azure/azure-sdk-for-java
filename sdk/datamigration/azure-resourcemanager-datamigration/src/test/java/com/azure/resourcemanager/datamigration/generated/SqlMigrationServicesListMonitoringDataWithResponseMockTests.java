@@ -20,7 +20,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
     @Test
     public void testListMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"okvqbvwg\",\"nodes\":[{\"additionalProperties\":{\"ses\":\"datavxakglh\",\"qiy\":\"datafga\",\"yqyxyjrcbqpbis\":\"datavxcgdhyhgoqgs\",\"yjz\":\"dataglqjoxtdahneaoov\"},\"nodeName\":\"vfwjlo\",\"availableMemoryInMB\":1543117782,\"cpuUtilization\":632658800,\"concurrentJobsLimit\":1971359660,\"concurrentJobsRunning\":1044266833,\"maxConcurrentJobs\":486021761,\"sentBytes\":79.8518679409335,\"receivedBytes\":26.859809674171565}]}";
+            = "{\"name\":\"mebgszplu\",\"nodes\":[{\"additionalProperties\":{\"kyejidbdq\":\"datadzzmssgpgv\",\"wsnmrkkyjt\":\"datasqunycwztlv\",\"auxuvavcpfpdofu\":\"dataepwpwfk\"},\"nodeName\":\"clbtxl\",\"availableMemoryInMB\":1905174501,\"cpuUtilization\":454396213,\"concurrentJobsLimit\":2000712450,\"concurrentJobsRunning\":1466861493,\"maxConcurrentJobs\":818718730,\"sentBytes\":41.640663948225665,\"receivedBytes\":84.65147793850902},{\"additionalProperties\":{\"uxjxhfxf\":\"datab\",\"wgzzxljb\":\"datawpdkktpmbmxbmb\"},\"nodeName\":\"xsdpla\",\"availableMemoryInMB\":3133648,\"cpuUtilization\":700847507,\"concurrentJobsLimit\":824490983,\"concurrentJobsRunning\":1091789824,\"maxConcurrentJobs\":397656526,\"sentBytes\":80.00554556140439,\"receivedBytes\":75.37977065983443},{\"additionalProperties\":{\"vwglgwzpv\":\"datavq\"},\"nodeName\":\"kglhpsesrf\",\"availableMemoryInMB\":642972437,\"cpuUtilization\":1538093056,\"concurrentJobsLimit\":2111400224,\"concurrentJobsRunning\":1307458482,\"maxConcurrentJobs\":2008019421,\"sentBytes\":25.67358657305,\"receivedBytes\":18.80104308738284}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeMonitoringData response = manager.sqlMigrationServices()
-            .listMonitoringDataWithResponse("y", "mhweqjfyxyd", com.azure.core.util.Context.NONE)
+            .listMonitoringDataWithResponse("cvucgytoxu", "httnzqs", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -23,7 +23,7 @@ public final class SolutionTemplatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"emxhzzy\",\"capabilities\":[\"vusxiv\"],\"latestVersion\":\"rryveimipskdy\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Succeeded\"},\"eTag\":\"aftjvvruxwigsy\",\"location\":\"pq\",\"tags\":{\"smk\":\"jtgrqgdgkkileplk\",\"floygbdgwumg\":\"hwtbbaedorvvm\"},\"id\":\"dgdhpabgdexj\",\"name\":\"d\",\"type\":\"jsaqwotmmwllcols\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"ui\",\"capabilities\":[\"ri\",\"fohyk\",\"kxbbcbrwjiutgnj\"],\"latestVersion\":\"beewoi\",\"state\":\"active\",\"enableExternalValidation\":false,\"provisioningState\":\"Initialized\"},\"eTag\":\"yrsrziuctixgb\",\"location\":\"uifr\",\"tags\":{\"parybjufpt\":\"aapezkiswqjmdghs\",\"daswvpp\":\"jczjnciuiyqv\",\"rr\":\"sqqzlgcndhz\",\"uww\":\"cfsrhkhgsn\"},\"id\":\"pphefsbzx\",\"name\":\"bzxomeik\",\"type\":\"clwzacnmwpfsu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class SolutionTemplatesListMockTests {
 
         PagedIterable<SolutionTemplate> response = manager.solutionTemplates().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pq", response.iterator().next().location());
-        Assertions.assertEquals("jtgrqgdgkkileplk", response.iterator().next().tags().get("smk"));
-        Assertions.assertEquals("emxhzzy", response.iterator().next().properties().description());
-        Assertions.assertEquals("vusxiv", response.iterator().next().properties().capabilities().get(0));
+        Assertions.assertEquals("uifr", response.iterator().next().location());
+        Assertions.assertEquals("aapezkiswqjmdghs", response.iterator().next().tags().get("parybjufpt"));
+        Assertions.assertEquals("ui", response.iterator().next().properties().description());
+        Assertions.assertEquals("ri", response.iterator().next().properties().capabilities().get(0));
         Assertions.assertEquals(ResourceState.ACTIVE, response.iterator().next().properties().state());
-        Assertions.assertTrue(response.iterator().next().properties().enableExternalValidation());
+        Assertions.assertFalse(response.iterator().next().properties().enableExternalValidation());
     }
 }

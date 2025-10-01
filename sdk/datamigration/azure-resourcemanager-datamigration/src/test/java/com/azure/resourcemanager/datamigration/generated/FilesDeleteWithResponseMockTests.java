@@ -28,8 +28,7 @@ public final class FilesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.files()
-            .deleteWithResponse("iuepmaxfnzlpqmp", "t", "efvulblmr", "uxyprhfcaeooifqd",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("zubfo", "fdbgmkfwm", "cwtewfhxwyrkb", "ehzlry", com.azure.core.util.Context.NONE);
 
     }
 }

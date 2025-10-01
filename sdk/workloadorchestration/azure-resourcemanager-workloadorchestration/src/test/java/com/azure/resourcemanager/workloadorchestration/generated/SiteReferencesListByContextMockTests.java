@@ -22,7 +22,7 @@ public final class SiteReferencesListByContextMockTests {
     @Test
     public void testListByContext() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"siteId\":\"zjqr\",\"provisioningState\":\"Failed\"},\"id\":\"nmdyfoebo\",\"name\":\"tjpp\",\"type\":\"laohoqkp\"}]}";
+            = "{\"value\":[{\"properties\":{\"siteId\":\"ysemtmesrfsvpin\",\"provisioningState\":\"Failed\"},\"id\":\"tqtdis\",\"name\":\"xspvckojazb\",\"type\":\"gspftesu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class SiteReferencesListByContextMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SiteReference> response
-            = manager.siteReferences().listByContext("lyymffhmjpddny", "fzuvrzmz", com.azure.core.util.Context.NONE);
+            = manager.siteReferences().listByContext("axikhfjqebglcxk", "gzzromv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zjqr", response.iterator().next().properties().siteId());
+        Assertions.assertEquals("ysemtmesrfsvpin", response.iterator().next().properties().siteId());
     }
 }

@@ -22,7 +22,7 @@ public final class SqlMigrationServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"zhapejovtk\",\"integrationRuntimeState\":\"nhwhhnoyrzaao\"},\"systemData\":{\"createdBy\":\"pmjen\",\"createdByType\":\"User\",\"createdAt\":\"2021-07-04T22:36:22Z\",\"lastModifiedBy\":\"axxcrxoxdj\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-10-26T14:42:13Z\"},\"location\":\"ryyinz\",\"tags\":{\"edoyqxlunkft\":\"lrndwdbvxvza\",\"n\":\"mcxqqxmyzklao\"},\"id\":\"ohrvmz\",\"name\":\"qr\",\"type\":\"zadi\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"soy\",\"integrationRuntimeState\":\"xyjrcbqpb\"},\"location\":\"pglqjo\",\"tags\":{\"vfwjlo\":\"ahneaoovtyjzt\",\"foc\":\"zekfsrmauklajv\",\"kwxnhwhhnoyrza\":\"hapejov\"},\"id\":\"oeehpmjenvjeatea\",\"name\":\"xc\",\"type\":\"xoxdjxldnaryyi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class SqlMigrationServicesListMockTests {
         PagedIterable<SqlMigrationService> response
             = manager.sqlMigrationServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ryyinz", response.iterator().next().location());
-        Assertions.assertEquals("lrndwdbvxvza", response.iterator().next().tags().get("edoyqxlunkft"));
+        Assertions.assertEquals("pglqjo", response.iterator().next().location());
+        Assertions.assertEquals("ahneaoovtyjzt", response.iterator().next().tags().get("vfwjlo"));
     }
 }

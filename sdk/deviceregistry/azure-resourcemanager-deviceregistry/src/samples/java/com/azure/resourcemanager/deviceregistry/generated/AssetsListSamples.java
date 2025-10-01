@@ -9,14 +9,15 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/List_Assets_Subscription.json
+     * x-ms-original-file: 2025-07-01-preview/List_Assets_BySubscription.json
      */
     /**
-     * Sample code: List_Assets_Subscription.
+     * Sample code: List_Assets_BySubscription.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void listAssetsSubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void
+        listAssetsBySubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assets().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicesafeguards.generated;
  */
 public final class DeploymentSafeguardsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-02-preview/DeploymentSafeguards_Get.json
+     * x-ms-original-file: 2025-07-01/DeploymentSafeguards_Get.json
      */
     /**
      * Sample code: Gets a DeploymentSafeguard resource.

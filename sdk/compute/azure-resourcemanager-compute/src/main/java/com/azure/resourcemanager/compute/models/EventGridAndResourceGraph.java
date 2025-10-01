@@ -21,6 +21,11 @@ public final class EventGridAndResourceGraph implements JsonSerializable<EventGr
      */
     private Boolean enable;
 
+    /*
+     * Specifies the api-version to determine which Scheduled Events configuration schema version will be delivered.
+     */
+    private String scheduledEventsApiVersion;
+
     /**
      * Creates an instance of EventGridAndResourceGraph class.
      */
@@ -50,6 +55,28 @@ public final class EventGridAndResourceGraph implements JsonSerializable<EventGr
     }
 
     /**
+     * Get the scheduledEventsApiVersion property: Specifies the api-version to determine which Scheduled Events
+     * configuration schema version will be delivered.
+     * 
+     * @return the scheduledEventsApiVersion value.
+     */
+    public String scheduledEventsApiVersion() {
+        return this.scheduledEventsApiVersion;
+    }
+
+    /**
+     * Set the scheduledEventsApiVersion property: Specifies the api-version to determine which Scheduled Events
+     * configuration schema version will be delivered.
+     * 
+     * @param scheduledEventsApiVersion the scheduledEventsApiVersion value to set.
+     * @return the EventGridAndResourceGraph object itself.
+     */
+    public EventGridAndResourceGraph withScheduledEventsApiVersion(String scheduledEventsApiVersion) {
+        this.scheduledEventsApiVersion = scheduledEventsApiVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -64,6 +91,7 @@ public final class EventGridAndResourceGraph implements JsonSerializable<EventGr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeStringField("scheduledEventsApiVersion", this.scheduledEventsApiVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +112,8 @@ public final class EventGridAndResourceGraph implements JsonSerializable<EventGr
 
                 if ("enable".equals(fieldName)) {
                     deserializedEventGridAndResourceGraph.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scheduledEventsApiVersion".equals(fieldName)) {
+                    deserializedEventGridAndResourceGraph.scheduledEventsApiVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

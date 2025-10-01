@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datamigration.fluent.models.DeleteNodeInner;
 public final class SqlMigrationServicesDeleteNodeSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * DeleteIntegrationRuntimeNode.json
      */
     /**

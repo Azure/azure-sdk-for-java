@@ -171,7 +171,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCapacityReservationGroup(this.client.getEndpoint(), apiVersion,
@@ -213,7 +213,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +338,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -386,7 +386,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -496,7 +496,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -549,7 +549,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -776,7 +776,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
@@ -828,7 +828,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1008,7 +1008,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1041,7 +1042,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1053,7 +1054,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1087,7 +1089,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(
                 new IllegalArgumentException("Parameter capacityReservationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1097,7 +1099,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1119,7 +1122,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1143,7 +1147,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1163,7 +1168,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1184,7 +1190,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1204,7 +1211,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1226,7 +1234,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
@@ -1243,7 +1252,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
+     * details. Note: Block capacity reservations cannot be deleted after it has been successfully allocated until the
+     * schedule end time.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
