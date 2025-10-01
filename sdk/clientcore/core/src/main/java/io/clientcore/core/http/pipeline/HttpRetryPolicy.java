@@ -127,7 +127,9 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         this.fixedDelay = fixedDelay;
         this.maxRetries = maxRetries;
         this.delayFromRetryCondition = delayFromRetryCondition;
-        this.shouldRetryCondition = shouldRetryCondition;
+        this.shouldRetryCondition = (shouldRetryCondition == null)
+            ? this::defaultShouldRetryCondition
+            : shouldRetryCondition;
     }
 
     @Override
@@ -170,7 +172,6 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException err) {
             HttpRetryCondition retryCondition = new HttpRetryCondition(null, err, tryCount, suppressed);
             if (shouldRetryException(retryCondition)) {
-
                 Duration delayDuration = calculateRetryDelay(retryCondition);
                 logRetry(logger.atVerbose(), tryCount, delayDuration, err, false, instrumentationContext);
 
@@ -212,8 +213,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         }
 
         HttpRetryCondition retryCondition = new HttpRetryCondition(response, null, tryCount, suppressed);
-        if (shouldRetryResponse(retryCondition)) {
-            final Duration delayDuration = determineDelayDuration(retryCondition, delayFromRetryCondition);
+        if (shouldRetryCondition.test(retryCondition)) {
+            final Duration delayDuration = determineDelayDuration(retryCondition);
 
             logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
 
@@ -242,28 +243,14 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    private Duration determineDelayDuration(HttpRetryCondition retryCondition,
-        Function<HttpRetryCondition, Duration> delayFromHeaders) {
-        // If the retry after header hasn't been configured, attempt to look up the well-known headers.
-        if (delayFromHeaders == null) {
+    private Duration determineDelayDuration(HttpRetryCondition retryCondition) {
+        // If custom delay duration handling wasn't configured, attempt to look up the well-known headers.
+        if (delayFromRetryCondition == null) {
             return getWellKnownRetryDelay(retryCondition, OffsetDateTime::now);
-        }
-
-        Duration delay = delayFromHeaders.apply(retryCondition);
-        if (delay != null) {
-            return delay;
         }
 
         // Retry header is missing or empty, return the default delay duration.
         return calculateRetryDelay(retryCondition);
-    }
-
-    private boolean shouldRetryResponse(HttpRetryCondition retryCondition) {
-        if (shouldRetryCondition != null) {
-            return retryCondition.getTryCount() < maxRetries && shouldRetryCondition.test(retryCondition);
-        } else {
-            return retryCondition.getTryCount() < maxRetries && defaultShouldRetryCondition(retryCondition);
-        }
     }
 
     private boolean shouldRetryException(HttpRetryCondition retryCondition) {
@@ -277,12 +264,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable instanceof IOException || causalThrowable instanceof TimeoutException) {
-            // If there is a Predicate for retrying, test it.
-            if (shouldRetryCondition != null) {
-                if (shouldRetryCondition.test(retryCondition)) {
-                    return true;
-                }
-            } else if (defaultShouldRetryCondition(retryCondition)) {
+            if (shouldRetryCondition.test(retryCondition)) {
                 return true;
             }
 
@@ -316,9 +298,6 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
             Duration delay = delayFromRetryCondition.apply(retryCondition);
             if (delay != null) {
                 return delay;
-            } else {
-                throw LOGGER.throwableAtWarning()
-                    .log("The delayFromRetryCondition function returned a null delay.", IllegalStateException::new);
             }
         }
 
@@ -336,7 +315,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return Duration.ofNanos(Math.min((1L << retryCondition.getTryCount()) * delayWithJitterInNanos, maxDelayNanos));
     }
 
-    private boolean defaultShouldRetryCondition(HttpRetryCondition requestRetryCondition) {
+    private static boolean defaultShouldRetryCondition(HttpRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             return RetryUtils.isRetryable(requestRetryCondition.getResponse().getStatusCode());
         }
@@ -344,14 +323,10 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return RetryUtils.isRetryable(requestRetryCondition.getException());
     }
 
-    private ClientLogger getLogger(HttpRequest httpRequest) {
-        ClientLogger logger = null;
-
-        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
-            logger = httpRequest.getContext().getLogger();
-        }
-
-        return logger == null ? LOGGER : logger;
+    private static ClientLogger getLogger(HttpRequest httpRequest) {
+        return (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null)
+            ? httpRequest.getContext().getLogger()
+            : LOGGER;
     }
 
     // TODO (alzimmer): This cannot exist in ClientCore as 'x-ms-*' headers are using the Microsoft header extension
