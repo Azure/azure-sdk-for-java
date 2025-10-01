@@ -79,7 +79,7 @@ extends:
       PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
     ${{ if eq(parameters.AutoApproveRelease, true) }}:
       PublicPublishEnvironment: none
-    ServiceDirectory: template
+    ServiceDirectory: template-v2
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true
