@@ -4,6 +4,7 @@ parameters:
   ServiceDirectory: ''
   TagSeparator: '_'
   TestPipeline: false
+  ArtifactsJson: ''
 
 steps:
 - ${{ if eq(parameters.TestPipeline, 'true') }}:
@@ -18,4 +19,5 @@ steps:
           -PackageNames '${{ coalesce(parameters.PackageName, parameters.PackageNames) }}'
           -ServiceDirectory '${{ parameters.ServiceDirectory }}'
           -TagSeparator '${{ parameters.TagSeparator }}'
+          -ArtifactsJson '${{ parameters.ArtifactsJson }}'
         pwsh: true
