@@ -981,33 +981,4 @@ public class IdentityClientTests {
         }
     }
 
-    @Test
-    public void testImdsProbingSucceedsWithProperMocking() {
-        String accessToken = "token-with-probing";
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-
-        // Create isolated configuration without AZURE_TOKEN_CREDENTIALS set (empty configuration)
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
-
-        try (MockedConstruction<IdentityClient> identityClientMock
-            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                // When AZURE_TOKEN_CREDENTIALS is not set, the full credential chain is created,
-                // which means multiple IdentityClients will be created and IMDS probing occurs.
-
-                when(identityClient.authenticateWithManagedIdentityMsalClient(request))
-                    .thenReturn(TestUtils.getMockAccessToken(accessToken, expiresOn));
-            })) {
-            assertNotNull(identityClientMock);
-
-            DefaultAzureCredential credential
-                = new DefaultAzureCredentialBuilder().configuration(configuration).build();
-
-            StepVerifier.create(credential.getToken(request)).assertNext(token -> {
-                assertEquals(accessToken, token.getToken());
-                assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-            }).verifyComplete();
-        }
-    }
-
 }

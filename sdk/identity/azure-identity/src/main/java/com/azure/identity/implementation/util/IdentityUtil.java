@@ -15,6 +15,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -247,9 +249,22 @@ public final class IdentityUtil {
         return java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static boolean isManagedIdentityCredentialConfiguredForDac(IdentityClientOptions options) {
+    /**
+     * Determines if IMDS probing should be performed for ManagedIdentityCredential.
+     * Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
+     *
+     * @param options the identity client options
+     * @return true if IMDS probing should be performed, false otherwise
+     */
+    public static boolean shouldProbeImds(IdentityClientOptions options) {
         String dacEnvConfiguredCredential = options.getDACEnvConfiguredCredential();
-        return "managedidentitycredential".equalsIgnoreCase(dacEnvConfiguredCredential);
+        boolean isManagedIdentityConfiguredForDac
+            = "managedidentitycredential".equalsIgnoreCase(dacEnvConfiguredCredential);
+
+        // Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
+        return options.isChained()
+            && !isManagedIdentityConfiguredForDac
+            && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource());
     }
 
 }

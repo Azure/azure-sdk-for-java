@@ -574,16 +574,7 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
 
-        return Mono.fromSupplier(() -> {
-            boolean isManagedIdentityConfiguredForDac
-                = IdentityUtil.isManagedIdentityCredentialConfiguredForDac(options);
-
-            // Only probe if: chained AND using IMDS AND managed identity is not configured for DAC
-            return options.isChained()
-                && !isManagedIdentityConfiguredForDac
-                && ManagedIdentitySourceType.DEFAULT_TO_IMDS
-                    .equals(ManagedIdentityApplication.getManagedIdentitySource());
-        })
+        return Mono.fromSupplier(() -> IdentityUtil.shouldProbeImds(options))
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
             .flatMap(ignored -> getTokenFromMsalMIClient(resource));
     }
