@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -184,7 +184,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
       </plugin>
 
       <plugin>
@@ -231,7 +231,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>java12-plus-mr</id>
@@ -268,7 +268,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <!-- Add the JMH annotation processor to the classpath. -->
               <annotationProcessorPaths>

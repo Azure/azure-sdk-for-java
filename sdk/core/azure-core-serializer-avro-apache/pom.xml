@@ -96,13 +96,13 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.18.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.19.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -135,7 +135,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.19.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.avro:avro:[1.11.4]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
               </includes>
             </bannedDependencies>

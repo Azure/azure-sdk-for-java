@@ -112,7 +112,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -134,7 +134,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <!-- Add the JMH annotation processor to the classpath. -->
               <annotationProcessorPaths>

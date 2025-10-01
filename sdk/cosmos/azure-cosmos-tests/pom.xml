@@ -111,12 +111,12 @@ Licensed under the MIT License.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
-      <version>2.17.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+      <version>2.20.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -140,13 +140,13 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
-      <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
-      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+      <version>4.5.0</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -175,7 +175,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -230,7 +230,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>
@@ -271,7 +271,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -309,7 +309,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
@@ -331,7 +331,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
@@ -353,7 +353,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
@@ -375,7 +375,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
@@ -397,7 +397,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
@@ -419,7 +419,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
@@ -441,7 +441,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
@@ -463,7 +463,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
@@ -485,7 +485,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-read-all-read-many-testng.xml</suiteXmlFile>
@@ -507,7 +507,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-direct-testng.xml</suiteXmlFile>
@@ -529,7 +529,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-gateway-testng.xml</suiteXmlFile>
@@ -551,7 +551,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
@@ -573,7 +573,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
@@ -595,7 +595,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
@@ -618,7 +618,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/examples-testng.xml</suiteXmlFile>
@@ -648,7 +648,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
@@ -670,7 +670,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/long-emulator-testng.xml</suiteXmlFile>
@@ -692,7 +692,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-vnext-testng.xml</suiteXmlFile>
@@ -714,7 +714,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
@@ -736,7 +736,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/thinclient-testng.xml</suiteXmlFile>
@@ -758,7 +758,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-thinclient-multi-region-testng.xml</suiteXmlFile>
@@ -779,7 +779,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-thinclient-multi-master-testng.xml</suiteXmlFile>

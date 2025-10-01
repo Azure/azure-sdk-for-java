@@ -66,14 +66,14 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
-      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+      <version>4.5.0</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
-      <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -97,7 +97,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -149,7 +149,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>

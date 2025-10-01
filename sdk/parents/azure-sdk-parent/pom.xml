@@ -145,7 +145,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+          <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
        </plugin>
 
         <!-- This plugin is used to copy resources of your project. -->
@@ -170,7 +170,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <!-- Sets the VM argument line used when unit tests are run. -->
             <argLine>${surefireArgLine}</argLine>
@@ -211,38 +211,11 @@
           </configuration>
         </plugin>
 
-        <!--This plugin's configuration is used to store Eclipse m2e settings only.
-            It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version> <!-- {x-version-update;org.eclipse.m2e:lifecycle-mapping;external_dependency} -->
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>com.googlecode.addjars-maven-plugin</groupId>
-                    <artifactId>addjars-maven-plugin</artifactId>
-                    <versionRange>[1.0.5,)</versionRange>
-                    <goals>
-                      <goal>add-jars</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-
         <!-- This plugin is used to run integration tests. -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <executions>
             <execution>
               <goals>
@@ -287,7 +260,7 @@
         <plugin>
           <groupId>org.owasp</groupId>
           <artifactId>dependency-check-maven</artifactId>
-          <version>12.1.1</version> <!-- {x-version-update;org.owasp:dependency-check-maven;external_dependency} -->
+          <version>12.1.6</version> <!-- {x-version-update;org.owasp:dependency-check-maven;external_dependency} -->
           <configuration>
             <skipProvidedScope>true</skipProvidedScope>
           </configuration>

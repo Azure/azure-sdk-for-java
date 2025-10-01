@@ -76,14 +76,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
-      <version>2.2.1</version> <!-- {x-version-update;org.apache.maven:maven-project;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>maven-core</artifactId>
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.javaparser</groupId>
@@ -142,7 +136,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -205,7 +199,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>

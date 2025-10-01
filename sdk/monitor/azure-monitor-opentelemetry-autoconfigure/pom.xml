@@ -104,7 +104,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -172,7 +172,7 @@
     <dependency>
       <groupId>io.github.hakky54</groupId>
       <artifactId>logcaptor</artifactId>
-      <version>2.9.3</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
+      <version>2.12.1</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

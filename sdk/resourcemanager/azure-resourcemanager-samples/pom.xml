@@ -84,12 +84,12 @@
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
+      <version>3.12.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java</artifactId>
-      <version>3.4.0</version>  <!-- {x-version-update;com.github.docker-java:docker-java;external_dependency} -->
+      <version>3.6.0</version>  <!-- {x-version-update;com.github.docker-java:docker-java;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -129,7 +129,7 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
-      <version>6.12.1</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
+      <version>6.14.0</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
@@ -189,13 +189,13 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                <include>io.fabric8:kubernetes-client:[6.12.1]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
+                <include>io.fabric8:kubernetes-client:[6.14.0]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                 <include>com.google.guava:guava:[33.1.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
-                <include>com.github.docker-java:docker-java:[3.4.0]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
+                <include>com.github.docker-java:docker-java:[3.6.0]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
-                <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
+                <include>commons-net:commons-net:[3.12.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>

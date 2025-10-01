@@ -165,13 +165,13 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.6</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -283,7 +283,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.19.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
@@ -326,7 +326,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -343,7 +343,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -437,7 +437,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>02-shade</id>
@@ -745,7 +745,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <includes>
                 <include>**/*.*</include>
@@ -795,7 +795,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -804,7 +804,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -833,7 +833,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>
