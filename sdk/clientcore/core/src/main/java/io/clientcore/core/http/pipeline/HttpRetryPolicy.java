@@ -127,9 +127,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         this.fixedDelay = fixedDelay;
         this.maxRetries = maxRetries;
         this.delayFromRetryCondition = delayFromRetryCondition;
-        this.shouldRetryCondition = (shouldRetryCondition == null)
-            ? this::defaultShouldRetryCondition
-            : shouldRetryCondition;
+        this.shouldRetryCondition
+            = (shouldRetryCondition == null) ? HttpRetryPolicy::defaultShouldRetryCondition : shouldRetryCondition;
     }
 
     @Override
@@ -213,7 +212,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         }
 
         HttpRetryCondition retryCondition = new HttpRetryCondition(response, null, tryCount, suppressed);
-        if (shouldRetryCondition.test(retryCondition)) {
+        if (tryCount < maxRetries && shouldRetryCondition.test(retryCondition)) {
             final Duration delayDuration = determineDelayDuration(retryCondition);
 
             logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
