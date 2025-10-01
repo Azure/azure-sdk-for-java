@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationServiceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"atrwyhqmibzyh\":\"ked\",\"cdpu\":\"itsmypyyn\",\"sorgj\":\"nzgmwznmabik\",\"vokotllxdyh\":\"xbldtlwwrlkdmtn\"}}")
+        MigrationServiceUpdate model = BinaryData.fromString("{\"tags\":{\"ynl\":\"gplsaknynf\",\"op\":\"ph\"}}")
             .toObject(MigrationServiceUpdate.class);
-        Assertions.assertEquals("ked", model.tags().get("atrwyhqmibzyh"));
+        Assertions.assertEquals("gplsaknynf", model.tags().get("ynl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationServiceUpdate model = new MigrationServiceUpdate().withTags(mapOf("atrwyhqmibzyh", "ked", "cdpu",
-            "itsmypyyn", "sorgj", "nzgmwznmabik", "vokotllxdyh", "xbldtlwwrlkdmtn"));
+        MigrationServiceUpdate model = new MigrationServiceUpdate().withTags(mapOf("ynl", "gplsaknynf", "op", "ph"));
         model = BinaryData.fromObject(model).toObject(MigrationServiceUpdate.class);
-        Assertions.assertEquals("ked", model.tags().get("atrwyhqmibzyh"));
+        Assertions.assertEquals("gplsaknynf", model.tags().get("ynl"));
     }
 
     // Use "Map.of" if available

@@ -16,6 +16,7 @@
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
   <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
     This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service.
@@ -61,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

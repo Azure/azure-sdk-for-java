@@ -10,7 +10,8 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class FilesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Files_List.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * Files_List.json
      */
     /**
      * Sample code: Files_List.
