@@ -15,13 +15,13 @@ class TokenCredentialProvidersTest {
     @Test
     void testOptionsIsNull() {
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(null);
-        Assertions.assertTrue(credentialProvider instanceof DefaultTokenCredentialProvider);
+        Assertions.assertInstanceOf(DefaultTokenCredentialProvider.class, credentialProvider);
     }
 
     @Test
     void testDefaultConstructor() {
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance();
-        Assertions.assertTrue(credentialProvider instanceof DefaultTokenCredentialProvider);
+        Assertions.assertInstanceOf(DefaultTokenCredentialProvider.class, credentialProvider);
     }
 
     @Test
@@ -29,7 +29,7 @@ class TokenCredentialProvidersTest {
         TokenCredentialProviderOptions option = new TokenCredentialProviderOptions();
         option.setTokenCredentialProviderClassName(SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(option);
-        Assertions.assertTrue(credentialProvider instanceof TestSpringTokenCredentialProvider);
+        Assertions.assertInstanceOf(TestSpringTokenCredentialProvider.class, credentialProvider);
     }
 
 }

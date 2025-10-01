@@ -4,17 +4,14 @@
 package com.azure.identity.extensions.jdbc.mysql;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
-import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativePacketPayload;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,22 +22,10 @@ import static org.mockito.Mockito.when;
 class AzureMysqlAuthenticationPluginTest {
     private static final String CLEAR_PASSWORD = "mysql_clear_password";
 
-    Protocol<NativePacketPayload> protocol;
-    Properties properties = new Properties();
-
-    @BeforeEach
-    @SuppressWarnings("unchecked")
-    void setUp() {
-        protocol = mock(Protocol.class);
-        PropertySet propertySet = mock(PropertySet.class);
-        when(protocol.getPropertySet()).thenReturn(propertySet);
-        when(propertySet.exposeAsProperties()).thenReturn(properties);
-    }
-
     @Test
     void testTokenAsPasswordAsyncWithoutInit() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
-        assertThrows(IllegalStateException.class, () -> template.getTokenAsPasswordAsync());
+        assertThrows(IllegalStateException.class, template::getTokenAsPasswordAsync);
     }
 
     @Test
@@ -64,7 +49,7 @@ class AzureMysqlAuthenticationPluginTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testNextAuthenticationStep() throws UnsupportedEncodingException {
+    void testNextAuthenticationStep() {
         AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
         when(template.getTokenAsPassword()).thenReturn("fake-password");
 
@@ -76,7 +61,7 @@ class AzureMysqlAuthenticationPluginTest {
         NativePacketPayload fromServer = new NativePacketPayload(new byte[0]);
         List<NativePacketPayload> toServer = new ArrayList<>();
         plugin.nextAuthenticationStep(fromServer, toServer);
-        assertTrue(new String(toServer.get(0).getByteBuffer(), "utf-8").startsWith("fake-password"));
+        assertTrue(new String(toServer.get(0).getByteBuffer(), StandardCharsets.UTF_8).startsWith("fake-password"));
     }
 
 }

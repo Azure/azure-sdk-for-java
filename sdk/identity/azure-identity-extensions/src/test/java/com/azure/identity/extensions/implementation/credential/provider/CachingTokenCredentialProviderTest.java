@@ -9,7 +9,9 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class CachingTokenCredentialProviderTest {
 
@@ -25,9 +27,9 @@ class CachingTokenCredentialProviderTest {
             = new CachingTokenCredentialProvider(null, defaultTokenCredentialProvider2);
 
         TokenCredential tokenCredential2 = provider2.get();
-        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential1);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     @Test
@@ -47,9 +49,9 @@ class CachingTokenCredentialProviderTest {
             = new CachingTokenCredentialProvider(customOptions2, defaultTokenCredentialProvider2);
 
         TokenCredential tokenCredential2 = cachingProvider2.get();
-        assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential1);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     @Test
@@ -69,9 +71,9 @@ class CachingTokenCredentialProviderTest {
             = new CachingTokenCredentialProvider(customOptions2, defaultTokenCredentialProvider2);
 
         TokenCredential tokenCredential2 = cachingProvider2.get(customOptions2);
-        assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential1);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     @Test
@@ -92,9 +94,9 @@ class CachingTokenCredentialProviderTest {
             = new CachingTokenCredentialProvider(customOptions2, defaultTokenCredentialProvider2);
 
         TokenCredential tokenCredential2 = cachingProvider2.get(customOptions2);
-        assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential1 != tokenCredential2);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential1);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential2);
+        assertNotSame(tokenCredential1, tokenCredential2);
     }
 
     private static TokenCredentialProviderOptions getUserManagedIdentityCredentialProviderOptions(String clientId) {

@@ -18,7 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class DefaultTokenCredentialProviderTest {
 
@@ -27,9 +28,9 @@ class DefaultTokenCredentialProviderTest {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(null);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
-        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential1);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     @Test
@@ -37,9 +38,9 @@ class DefaultTokenCredentialProviderTest {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider();
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
-        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential1);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     private static Stream<Arguments> provideAuthorityHosts() {
@@ -66,9 +67,9 @@ class DefaultTokenCredentialProviderTest {
         TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential1 instanceof ClientSecretCredential);
-        assertTrue(tokenCredential2 instanceof ClientSecretCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(ClientSecretCredential.class, tokenCredential1);
+        assertInstanceOf(ClientSecretCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
 
     }
 
@@ -88,9 +89,9 @@ class DefaultTokenCredentialProviderTest {
         TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential1 instanceof ClientCertificateCredential);
-        assertTrue(tokenCredential2 instanceof ClientCertificateCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(ClientCertificateCredential.class, tokenCredential1);
+        assertInstanceOf(ClientCertificateCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
     @ParameterizedTest
@@ -110,9 +111,9 @@ class DefaultTokenCredentialProviderTest {
         TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential1 instanceof UsernamePasswordCredential);
-        assertTrue(tokenCredential2 instanceof UsernamePasswordCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(UsernamePasswordCredential.class, tokenCredential1);
+        assertInstanceOf(UsernamePasswordCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
 
     }
 
@@ -127,9 +128,9 @@ class DefaultTokenCredentialProviderTest {
         TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential1);
+        assertInstanceOf(ManagedIdentityCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
 
     }
 
@@ -141,9 +142,9 @@ class DefaultTokenCredentialProviderTest {
         TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
-        assertTrue(tokenCredential1 == tokenCredential2);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential1);
+        assertInstanceOf(DefaultAzureCredential.class, tokenCredential2);
+        assertSame(tokenCredential1, tokenCredential2);
     }
 
 }

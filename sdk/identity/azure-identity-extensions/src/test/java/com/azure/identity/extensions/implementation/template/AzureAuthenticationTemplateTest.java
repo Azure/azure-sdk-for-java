@@ -118,7 +118,7 @@ class AzureAuthenticationTemplateTest {
         // setup
         String token1 = "token1";
         String token2 = "token2";
-        int tokenExpireSeconds = 2;
+        int tokenExpireSeconds = 3;
         OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
         TokenCredential mockTokenCredential = request -> {
             if (OffsetDateTime.now().isBefore(offsetDateTime)) {
