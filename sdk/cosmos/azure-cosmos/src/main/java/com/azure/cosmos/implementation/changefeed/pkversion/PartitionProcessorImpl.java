@@ -154,7 +154,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
                 this.lastProcessedTime = Instant.now();
-                logger.info("Partition {}: received response with continuation token {}.", this.lease.getLeaseToken(), this.lastServerContinuationToken);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)

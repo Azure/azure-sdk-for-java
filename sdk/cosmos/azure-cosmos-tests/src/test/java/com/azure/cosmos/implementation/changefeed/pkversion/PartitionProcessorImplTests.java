@@ -145,9 +145,10 @@ public class PartitionProcessorImplTests {
         List<ChangeFeedProcessorItem> results = new ArrayList<>();
         results.add(Mockito.mock(ChangeFeedProcessorItem.class));
         AtomicInteger counter = new AtomicInteger(0);
-        Mockito.when(feedResponseMock.getResults()).thenAnswer(invocation ->
-            counter.getAndIncrement() < 10 ? results : new ArrayList<>()
-        );
+        Mockito.when(feedResponseMock.getResults()).thenAnswer(invocation -> {
+            Thread.sleep(500);
+            return counter.getAndIncrement() < 10 ? results : new ArrayList<>();
+        });
         ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
         Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(changeFeedState.toString());
 
