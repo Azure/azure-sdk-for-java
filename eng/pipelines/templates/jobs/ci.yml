@@ -79,7 +79,7 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
-    
+
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
       templateContext:
@@ -270,229 +270,229 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
-  - job: 'Analyze'
-    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+  # - job: 'Analyze'
+  #   condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
-    pool:
-      name: $(LINUXPOOL)
-      image: $(LINUXVMIMAGE)
-      os: linux
+  #   pool:
+  #     name: $(LINUXPOOL)
+  #     image: $(LINUXVMIMAGE)
+  #     os: linux
 
-    steps:
-      - task: UsePythonVersion@0
-        displayName: 'Use Python $(PythonVersion)'
-        inputs:
-          versionSpec: $(PythonVersion)
+  #   steps:
+  #     - task: UsePythonVersion@0
+  #       displayName: 'Use Python $(PythonVersion)'
+  #       inputs:
+  #         versionSpec: $(PythonVersion)
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/*.yml'
-              - '.vscode/cspell.json'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+  #     # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  #     # as we require the GitHub service connection to be loaded.
+  #     - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+  #       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+  #         parameters:
+  #           Paths:
+  #             - '**/*.xml'
+  #             - '**/*.md'
+  #             - '**/*.yml'
+  #             - '.vscode/cspell.json'
+  #             - '!sdk/**/test-recordings'
+  #             - '!sdk/**/session-records'
 
-      - task: PowerShell@2
-        displayName: 'Verify versions in POM files'
-        inputs:
-          pwsh: true
-          workingDirectory: $(Build.SourcesDirectory)
-          filePath: $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
-          arguments: -Debug:$$(IsDebug)
+  #     - task: PowerShell@2
+  #       displayName: 'Verify versions in POM files'
+  #       inputs:
+  #         pwsh: true
+  #         workingDirectory: $(Build.SourcesDirectory)
+  #         filePath: $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
+  #         arguments: -Debug:$$(IsDebug)
 
-      - task: PythonScript@0
-        displayName: 'Verify version text files'
-        inputs:
-          scriptPath: eng/versioning/find_unused_dependencies.py
+  #     - task: PythonScript@0
+  #       displayName: 'Verify version text files'
+  #       inputs:
+  #         scriptPath: eng/versioning/find_unused_dependencies.py
 
-      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-        parameters:
-          JobType: 'Analyze'
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
-          ExcludePaths: ${{parameters.ExcludePaths}}
+  #     - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+  #       parameters:
+  #         JobType: 'Analyze'
+  #         ServiceDirectory: ${{parameters.ServiceDirectory}}
+  #         ExcludePaths: ${{parameters.ExcludePaths}}
 
-      - task: PowerShell@2
-        displayName: Generate directories variable for sparse checkout
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
-          arguments: >
-            -SourcesDirectory $(Build.SourcesDirectory)
-            -ProjectList $(ProjectList)
+  #     - task: PowerShell@2
+  #       displayName: Generate directories variable for sparse checkout
+  #       inputs:
+  #         pwsh: true
+  #         filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+  #         arguments: >
+  #           -SourcesDirectory $(Build.SourcesDirectory)
+  #           -ProjectList $(ProjectList)
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
-          parameters:
-            Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
+  #     # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  #     # as we require the GitHub service connection to be loaded.
+  #     - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+  #       - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
+  #         parameters:
+  #           Paths: $(SparseCheckoutDirectories)
+  #           SkipCheckoutNone: true
 
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
-          ContinueOnError: false
+  #     - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+  #       parameters:
+  #         CspellConfigPath: .vscode/cspell.json
+  #         ContinueOnError: false
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+  #     - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+  #       parameters:
+  #         PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+  #         ServiceDirectory: "template"
+  #         TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: ''
-            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: sdk/${{ parameters.ServiceDirectory }}
-          CheckLinkGuidance: $true
+  #     - template: /eng/common/pipelines/templates/steps/verify-links.yml
+  #       parameters:
+  #         ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  #           Directory: ''
+  #           Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+  #         ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+  #           Directory: sdk/${{ parameters.ServiceDirectory }}
+  #         CheckLinkGuidance: $true
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
-        # the verify samples
-        - pwsh: |
-            $packageInfoFiles = Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Filter "*.json" -File
-            $serviceDirectories = @()
-            foreach ($packageInfoFile in $packageInfoFiles) {
-                $packageInfo = Get-Content -Path $packageInfoFile | ConvertFrom-Json
-                $serviceDirectories += $packageInfo.ServiceDirectory
-            }
-            # dedupe the list
-            $serviceDirectories = $serviceDirectories | Select-Object -Unique
-            $changedServicesString = $serviceDirectories -join ","
-            Write-Host "changedServicesString='$changedServicesString'"
-            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
-          displayName: Set PRServiceDirectories from PackageInfo files
-      - ${{ else }}:
-        - pwsh: |
-            $changedServicesString='${{ parameters.ServiceDirectory }}'
-            Write-Host "changedServicesString='$changedServicesString'"
-            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
-          displayName: Set PRServiceDirectories to ServiceDirectory parameter
+  #     - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+  #       # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
+  #       # the verify samples
+  #       - pwsh: |
+  #           $packageInfoFiles = Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Filter "*.json" -File
+  #           $serviceDirectories = @()
+  #           foreach ($packageInfoFile in $packageInfoFiles) {
+  #               $packageInfo = Get-Content -Path $packageInfoFile | ConvertFrom-Json
+  #               $serviceDirectories += $packageInfo.ServiceDirectory
+  #           }
+  #           # dedupe the list
+  #           $serviceDirectories = $serviceDirectories | Select-Object -Unique
+  #           $changedServicesString = $serviceDirectories -join ","
+  #           Write-Host "changedServicesString='$changedServicesString'"
+  #           Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+  #         displayName: Set PRServiceDirectories from PackageInfo files
+  #     - ${{ else }}:
+  #       - pwsh: |
+  #           $changedServicesString='${{ parameters.ServiceDirectory }}'
+  #           Write-Host "changedServicesString='$changedServicesString'"
+  #           Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+  #         displayName: Set PRServiceDirectories to ServiceDirectory parameter
 
-      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-        parameters:
-          ServiceDirectories: $(PRServiceDirectories)
+  #     - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+  #       parameters:
+  #         ServiceDirectories: $(PRServiceDirectories)
 
-      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
-      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
-        parameters:
-          SourceDirectory: $(Build.SourcesDirectory)
-          BasePathLength: 38
+  #     # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+  #     - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+  #       parameters:
+  #         SourceDirectory: $(Build.SourcesDirectory)
+  #         BasePathLength: 38
 
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
+  #     - ${{if ne(parameters.SDKType, 'data')}}:
+  #       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+  #         - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+  #           parameters:
+  #             PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+  #       - ${{ else }}:
+  #         - ${{ each artifact in parameters.Artifacts }}:
+  #           - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+  #             - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+  #               parameters:
+  #                 PackageName: ${{artifact.name}}
+  #                 ServiceName: ${{parameters.ServiceDirectory}}
+  #                 ForRelease: false
 
-      - task: UseNode@1
-        inputs:
-          version: 22.x
-        displayName: Use Node.js 22.x
+  #     - task: UseNode@1
+  #       inputs:
+  #         version: 22.x
+  #       displayName: Use Node.js 22.x
 
-      - task: PowerShell@2
-        displayName: Verify Swagger and TypeSpec Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
-            -RegenerationType 'All'
+  #     - task: PowerShell@2
+  #       displayName: Verify Swagger and TypeSpec Code Generation
+  #       inputs:
+  #         pwsh: true
+  #         filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+  #         arguments: >
+  #           -ServiceDirectories '$(PRServiceDirectories)'
+  #           -RegenerationType 'All'
 
-      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
-        parameters:
-          JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
-          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-          BuildParallelization: ${{ parameters.BuildParallelization }}
-          RunLinting: true
-          SDKType: ${{ parameters.SDKType }}
+  #     - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+  #       parameters:
+  #         JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+  #         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+  #         BuildParallelization: ${{ parameters.BuildParallelization }}
+  #         RunLinting: true
+  #         SDKType: ${{ parameters.SDKType }}
 
-      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
+  #     - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
-      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+  #     - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-      # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
-      # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
-      # during testing if tests failed, and linting reports.
-      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        parameters:
-          ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
-          ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
-          SbomEnabled: false
-          CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+  #     # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+  #     # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+  #     # during testing if tests failed, and linting reports.
+  #     - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+  #       parameters:
+  #         ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+  #         ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
+  #         SbomEnabled: false
+  #         CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
 
-      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        parameters:
-          ArtifactName: 'repository-$(System.JobName)'
-          ArtifactPath: '$(System.DefaultWorkingDirectory)'
-          SbomEnabled: false
-          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+  #     - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+  #       parameters:
+  #         ArtifactName: 'repository-$(System.JobName)'
+  #         ArtifactPath: '$(System.DefaultWorkingDirectory)'
+  #         SbomEnabled: false
+  #         CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
-  - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
-    parameters:
-      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-      OsVmImage: $(LINUXVMIMAGE)
-      Pool: $(LINUXPOOL)
-      Os: linux
-      MatrixConfigs:
-        - ${{ each config in parameters.MatrixConfigs }}:
-          - ${{ config }}
-        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-          - ${{ config }}
-      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
-        EnablePRGeneration: true
-        PRMatrixSparseIndirect: true
-        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
-        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
-        # Overall, using a large batch size reduces overall CI time.
-        PRJobBatchSize: 50
-        # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
-        PRMatrixKey: 'Name'
-        SparseCheckoutPaths:
-          - '**/*.xml'
-          - '**/*.md'
-          - '**/ci*.yml' # necessary for save-package-properties.yml
-          - "**/*matrix*.json" # necessary for test matrix generation
-        PreGenerationSteps:
-          - task: UsePythonVersion@0
-            displayName: 'Use Python $(PythonVersion)'
-            inputs:
-              versionSpec: $(PythonVersion)
-          - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-            parameters:
-              ServiceDirectory: ${{parameters.ServiceDirectory}}
-              ExcludePaths: ${{parameters.ExcludePaths}}
-      MatrixFilters: ${{ parameters.MatrixFilters }}
-      MatrixReplace: ${{ parameters.MatrixReplace }}
-      CloudConfig:
-        Cloud: Public
-      AdditionalParameters:
-        SDKType: ${{ parameters.SDKType }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        ExcludePaths: ${{ parameters.ExcludePaths }}
-        TestPipeline: ${{ parameters.TestPipeline }}
-        PreTestSteps: ${{ parameters.PreTestSteps }}
-        PreBuildSteps: ${{ parameters.PreBuildSteps }}
-        TestGoals: ${{ parameters.TestGoals }}
-        TestOptions: ${{ parameters.TestOptions }}
-        TestParallelization: ${{ parameters.TestParallelization }}
-        BuildParallelization: ${{ parameters.BuildParallelization }}
-        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-        EnvVars: ${{ parameters.EnvVars }}
-        VersionOverride: ${{ parameters.VersionOverride }}
+  # - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+  #   parameters:
+  #     JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+  #     OsVmImage: $(LINUXVMIMAGE)
+  #     Pool: $(LINUXPOOL)
+  #     Os: linux
+  #     MatrixConfigs:
+  #       - ${{ each config in parameters.MatrixConfigs }}:
+  #         - ${{ config }}
+  #       - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+  #         - ${{ config }}
+  #     ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+  #       EnablePRGeneration: true
+  #       PRMatrixSparseIndirect: true
+  #       # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+  #       # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+  #       # Overall, using a large batch size reduces overall CI time.
+  #       PRJobBatchSize: 50
+  #       # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
+  #       PRMatrixKey: 'Name'
+  #       SparseCheckoutPaths:
+  #         - '**/*.xml'
+  #         - '**/*.md'
+  #         - '**/ci*.yml' # necessary for save-package-properties.yml
+  #         - "**/*matrix*.json" # necessary for test matrix generation
+  #       PreGenerationSteps:
+  #         - task: UsePythonVersion@0
+  #           displayName: 'Use Python $(PythonVersion)'
+  #           inputs:
+  #             versionSpec: $(PythonVersion)
+  #         - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+  #           parameters:
+  #             ServiceDirectory: ${{parameters.ServiceDirectory}}
+  #             ExcludePaths: ${{parameters.ExcludePaths}}
+  #     MatrixFilters: ${{ parameters.MatrixFilters }}
+  #     MatrixReplace: ${{ parameters.MatrixReplace }}
+  #     CloudConfig:
+  #       Cloud: Public
+  #     AdditionalParameters:
+  #       SDKType: ${{ parameters.SDKType }}
+  #       ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  #       ExcludePaths: ${{ parameters.ExcludePaths }}
+  #       TestPipeline: ${{ parameters.TestPipeline }}
+  #       PreTestSteps: ${{ parameters.PreTestSteps }}
+  #       PreBuildSteps: ${{ parameters.PreBuildSteps }}
+  #       TestGoals: ${{ parameters.TestGoals }}
+  #       TestOptions: ${{ parameters.TestOptions }}
+  #       TestParallelization: ${{ parameters.TestParallelization }}
+  #       BuildParallelization: ${{ parameters.BuildParallelization }}
+  #       AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+  #       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+  #       EnvVars: ${{ parameters.EnvVars }}
+  #       VersionOverride: ${{ parameters.VersionOverride }}

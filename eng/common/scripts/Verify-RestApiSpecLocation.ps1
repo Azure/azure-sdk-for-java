@@ -11,17 +11,11 @@
 .PARAMETER PackageName
   The name of the package, which is the artifact name in pipeline.
 
-.PARAMETER ArtifactLocation
-  The location of the generated artifact for the package.
-
 .PARAMETER GitHubPat
   The GitHub personal access token used for authentication. By default, it will use the environment variable GH_TOKEN.
 
-.PARAMETER PackageInfoDirectory
-  The directory path where the package information is stored.
-
 .EXAMPLE
-  Verify-RestApiSpecLocation -ServiceDirectory "template" -PackageName "Azure.Template" -ArtifactLocation "/home/ab/artifacts" -GitHubPat "xxxxxxxxxxxx" -PackageInfoDirectory "/home/ab/artifacts/PackageInfo"
+  Verify-RestApiSpecLocation -ServiceDirectory "template" -PackageName "Azure.Template" -GitHubPat "xxxxxxxxxxxx"
 
 #>
 [CmdletBinding()]
@@ -32,11 +26,7 @@ param (
   [Parameter(Position = 1)]
   [ValidateNotNullOrEmpty()]
   [string] $PackageName,
-  [ValidateNotNullOrEmpty()]
-  [string] $ArtifactLocation,
-  [Parameter(Position = 2)]
-  [string]$GitHubPat = $($env:GH_TOKEN),
-  [string]$PackageInfoDirectory
+  [string]$GitHubPat = $($env:GH_TOKEN)
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -49,13 +39,13 @@ if (-not $GitHubPat) {
 }
 
 Write-Host "The spec used to release SDK should be from the main branch of Azure/azure-rest-api-specs repository."
-Write-Host "ServiceDir:$ServiceDirectory, PackageName:$PackageName, ArtifactLocation:$ArtifactLocation, PackageInfoDirectory:$PackageInfoDirectory."
+Write-Host "ServiceDir:$ServiceDirectory, PackageName:$PackageName."
 Install-ModuleIfNotInstalled "powershell-yaml" "0.4.7" | Import-Module
 
 # This function is used to verify the 'require' and 'input-file' settings in autorest.md point to the main branch of Azure/azure-rest-api-specs repository
-# input-file may be: 
+# input-file may be:
 # https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/purview/data-plane/Azure.Analytics.Purview.MetadataPolicies/preview/2021-07-01-preview/purviewMetadataPolicy.json
-# or 
+# or
 # https://github.com/Azure/azure-rest-api-specs/blob/0ebd4949e8e1cd9537ca5a07384c7661162cc7a6/specification/purview/data-plane/Azure.Analytics.Purview.Account/preview/2019-11-01-preview/account.json
 function Verify-Url([string]$fileUrl, [string]$configFilePath) {
   if ($fileUrl -match "^https://(raw\.githubusercontent\.com|github\.com)/(?<repo>[^/]*/azure-rest-api-specs)(/(blob|tree))?/(?<commit>[^\/]+(\/[^\/]+)*|[0-9a-f]{40})/(?<path>specification/.*)") {
@@ -164,21 +154,8 @@ function Verify-YamlContent([string]$markdownContent, [string]$configFilePath) {
 
 function Verify-PackageVersion() {
   try {
-    if (-not $PackageInfoDirectory) {
-      $PackageInfoDirectory = Join-Path -Path $ArtifactLocation "PackageInfo"
-      if (-not (Test-Path -Path $PackageInfoDirectory)) {
-        # Call Save-Package-Properties.ps1 script to generate package info json files
-        $savePropertiesScriptPath = Join-Path -Path $PSScriptRoot "Save-Package-Properties.ps1"
-        & $savePropertiesScriptPath -serviceDirectory $ServiceDirectory -outDirectory $PackageInfoDirectory
-      }
-    }
-    $pkgPropPath = Join-Path -Path $PackageInfoDirectory "$PackageName.json"
-    if (-Not (Test-Path $pkgPropPath)) {
-      Write-Host "ServiceDir:$ServiceDirectory, no package info is found for package $PackageName at $pkgPropPath, the validation of spec location is ignored."
-      exit 0
-    }
-    # Get package info from json file
-    $pkgInfo = Get-Content $pkgPropPath | ConvertFrom-Json
+    # Get package info in memory
+    $pkgInfo = Get-PkgProperties -PackageName $PackageName -ServiceDirectory $ServiceDirectory
     $version = [AzureEngSemanticVersion]::ParseVersionString($pkgInfo.Version)
     if ($null -eq $version) {
       LogError "ServiceDir:$ServiceDirectory, Version info is not available for package $PackageName, because version '$(pkgInfo.Version)' is invalid. Please check if the version follows Azure SDK package versioning guidelines."

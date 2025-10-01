@@ -80,18 +80,9 @@ function Submit-Request($filePath, $packageName)
     return $StatusCode
 }
 
-function Should-Process-Package($pkgPath, $packageName)
+function Should-Process-Package($packageInfo)
 {
-    $pkg = Split-Path -Leaf $pkgPath
-    $pkgPropPath = Join-Path -Path $configFileDir "$packageName.json"
-    if (!(Test-Path $pkgPropPath))
-    {
-        LogWarning "Package property file path $($pkgPropPath) is invalid."
-        return $False
-    }
-    # Get package info from json file created before updating version to daily dev
-    $pkgInfo = Get-Content $pkgPropPath | ConvertFrom-Json
-    $packagePath = $pkgInfo.DirectoryPath
+    $packagePath = $packageInfo.DirectoryPath
     $modifiedFiles  = @(Get-ChangedFiles -DiffPath "$packagePath/*" -DiffFilterType '')
     $filteredFileCount = $modifiedFiles.Count
     LogInfo "Number of modified files for package: $filteredFileCount"
@@ -126,24 +117,24 @@ $responses = @{}
 
 LogInfo "Processing PackageInfo at $configFileDir"
 
-$packageProperties = Get-ChildItem -Recurse -Force "$configFileDir" `
-  | Where-Object { 
+$packageInfoFiles = Get-ChildItem -Recurse -Force "$configFileDir" `
+  | Where-Object {
       $_.Extension -eq '.json' -and ($_.FullName.Substring($configFileDir.Length + 1) -notmatch '^_.*?[\\\/]')
     }
 
-foreach ($packagePropFile in $packageProperties)
+foreach ($packageInfoFile in $packageInfoFiles)
 {
-    $packageMetadata = Get-Content $packagePropFile | ConvertFrom-Json
-    $pkgArtifactName = $packageMetadata.ArtifactName ?? $packageMetadata.Name
+    $packageInfo = Get-Content $packageInfoFile | ConvertFrom-Json
+    $pkgArtifactName = $packageInfo.ArtifactName ?? $packageInfo.Name
 
     LogInfo "Processing $($pkgArtifactName)"
 
-    $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName
+    $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName $packageInfo
 
     if ($packages)
     {
         $pkgPath = $packages.Values[0]
-        $isRequired = Should-Process-Package -pkgPath $pkgPath -packageName $pkgArtifactName
+        $isRequired = Should-Process-Package $packageInfo
         LogInfo "Is API change detect required for $($pkgArtifactName):$($isRequired)"
         if ($isRequired -eq $True)
         {
