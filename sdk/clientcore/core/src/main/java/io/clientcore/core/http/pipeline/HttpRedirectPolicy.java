@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
@@ -85,10 +86,15 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
-        InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
+        return attemptRedirect(getLogger(httpRequest), next, 0, new LinkedHashSet<>(),
+            httpRequest.getContext().getInstrumentationContext());
+    }
 
-        ClientLogger logger = getLogger(httpRequest);
-        return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        // Reset the attemptedRedirectUris for each individual request.
+        return attemptRedirectAsync(getLogger(httpRequest), next, 0, new LinkedHashSet<>(),
+            httpRequest.getContext().getInstrumentationContext());
     }
 
     @Override
@@ -100,24 +106,47 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<BinaryData> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
-        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
-        InstrumentationContext instrumentationContext) {
+    private Response<BinaryData> attemptRedirect(ClientLogger logger, HttpPipelineNextPolicy next, int redirectAttempt,
+        LinkedHashSet<String> attemptedRedirectUris, InstrumentationContext context) {
 
         // Make sure the context is not modified during redirect, except for the URI
         Response<BinaryData> response = next.copy().process();
 
-        HttpRedirectCondition requestRedirectCondition
-            = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
-
-        if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
-            || (shouldRedirectCondition == null
-                && defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext))) {
+        if (shouldAttemptRedirect(response, redirectAttempt, logger, attemptedRedirectUris, context)) {
             createRedirectRequest(response);
-            return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
+            return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, context);
         }
 
         return response;
+    }
+
+    /**
+     * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
+     * new redirect URI.
+     */
+    private CompletableFuture<Response<BinaryData>> attemptRedirectAsync(ClientLogger logger,
+        HttpPipelineNextPolicy next, int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
+        InstrumentationContext context) {
+
+        // Make sure the context is not modified during redirect, except for the URI
+        return next.copy().processAsync().thenCompose(response -> {
+            if (shouldAttemptRedirect(response, redirectAttempt, logger, attemptedRedirectUris, context)) {
+                createRedirectRequest(response);
+                return attemptRedirectAsync(logger, next, redirectAttempt + 1, attemptedRedirectUris, context);
+            }
+
+            return CompletableFuture.completedFuture(response);
+        });
+    }
+
+    private boolean shouldAttemptRedirect(Response<BinaryData> response, int redirectAttempt, ClientLogger logger,
+        LinkedHashSet<String> attemptedRedirectUris, InstrumentationContext instrumentationContext) {
+        HttpRedirectCondition requestRedirectCondition
+            = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+
+        return (shouldRedirectCondition != null)
+            ? shouldRedirectCondition.test(requestRedirectCondition)
+            : defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext);
     }
 
     private boolean defaultShouldAttemptRedirect(ClientLogger logger, HttpRedirectCondition requestRedirectCondition,
@@ -158,13 +187,12 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Checks if the incoming request status code is a valid redirect status code.
+     * Checks if the incoming response status code is a valid redirect status code.
      *
-     * @param statusCode the status code of the incoming request.
-     *
-     * @return {@code true} if the request {@code statusCode} is a valid http redirect method, {@code false} otherwise.
+     * @param statusCode the status code of the incoming response.
+     * @return Whether the response {@code statusCode} is a valid redirect status code.
      */
-    private boolean isValidRedirectStatusCode(int statusCode) {
+    private static boolean isValidRedirectStatusCode(int statusCode) {
         return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
             || statusCode == HttpURLConnection.HTTP_MOVED_PERM
             || statusCode == PERMANENT_REDIRECT_STATUS_CODE
@@ -195,18 +223,17 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private String redactUri(String location) {
-        URI uri;
+    private static String redactUri(String location) {
         try {
-            uri = URI.create(location);
+            // TODO: make it configurable? Or don't log URL?
+            return getRedactedUri(URI.create(location), Collections.emptySet());
         } catch (IllegalArgumentException e) {
             return null;
         }
-        // TODO: make it configurable? Or don't log URL?
-        return getRedactedUri(uri, Collections.emptySet());
+
     }
 
-    private ClientLogger getLogger(HttpRequest httpRequest) {
+    private static ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
         if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {

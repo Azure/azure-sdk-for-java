@@ -9,13 +9,24 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class HttpPipelineTests {
+    private final boolean isAsync;
+
+    public HttpPipelineTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
     @Test
     public void constructorWithNoArguments() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> null).build();
@@ -53,11 +64,12 @@ public class HttpPipelineTests {
 
             return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
-        final Response<?> response
-            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        HttpRequest request = new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri);
+        try (Response<BinaryData> response = sendRequest(httpPipeline, request, isAsync)) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -71,10 +83,11 @@ public class HttpPipelineTests {
 
             return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
-        final Response<?> response
-            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        HttpRequest request = new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri);
+        try (Response<BinaryData> response = sendRequest(httpPipeline, request, isAsync)) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+        }
     }
 }
