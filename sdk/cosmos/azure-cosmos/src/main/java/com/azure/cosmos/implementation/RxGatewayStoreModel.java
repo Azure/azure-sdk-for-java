@@ -222,7 +222,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                HttpUtils.unescape(headers.toMap()),
+                HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
                 size);
         } else {
@@ -232,7 +232,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return new StoreResponse(
             endpoint,
             statusCode,
-            HttpUtils.unescape(headers.toMap()),
+            HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
             0);
     }
@@ -616,7 +616,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toLowerCaseMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

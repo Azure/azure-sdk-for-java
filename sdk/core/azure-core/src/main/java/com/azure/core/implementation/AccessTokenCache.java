@@ -256,6 +256,10 @@ public final class AccessTokenCache {
                 ? tokenRequestContext.getClaims() == null
                 : (tokenRequestContext.getClaims() != null
                     && tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            && (this.tokenRequestContext.getTenantId() == null
+                ? tokenRequestContext.getTenantId() == null
+                : (tokenRequestContext.getTenantId() != null
+                    && tokenRequestContext.getTenantId().equals(this.tokenRequestContext.getTenantId())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 

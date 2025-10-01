@@ -1,6 +1,6 @@
 # Release History
 
-## 6.0.0-beta.2 (Unreleased)
+## 6.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 6.0.0 (2025-09-22)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#600-2025-09-22) for more details.
 
 ## 5.23.0 (2025-08-05)
 

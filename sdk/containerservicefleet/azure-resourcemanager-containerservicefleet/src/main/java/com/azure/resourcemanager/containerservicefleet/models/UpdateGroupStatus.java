@@ -94,26 +94,6 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (members() != null) {
-            members().forEach(e -> e.validate());
-        }
-        if (beforeGates() != null) {
-            beforeGates().forEach(e -> e.validate());
-        }
-        if (afterGates() != null) {
-            afterGates().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

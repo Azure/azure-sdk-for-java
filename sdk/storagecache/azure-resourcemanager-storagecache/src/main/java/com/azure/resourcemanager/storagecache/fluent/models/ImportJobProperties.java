@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ConflictResolutionMode;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import com.azure.resourcemanager.storagecache.models.ImportJobProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.ImportStatusType;
 import java.io.IOException;
@@ -25,6 +26,12 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
      * ARM provisioning state.
      */
     private ImportJobProvisioningStateType provisioningState;
+
+    /*
+     * The administrative status of the import job. Possible values: 'Active', 'Cancel'. Passing in a value of 'Cancel'
+     * will cancel the current active import job. By default it is set to 'Active'.
+     */
+    private ImportJobAdminStatus adminStatus;
 
     /*
      * An array of blob paths/prefixes that get imported into the cluster namespace. It has '/' as the default value.
@@ -66,6 +73,28 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
      */
     public ImportJobProvisioningStateType provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'.
+     * 
+     * @return the adminStatus value.
+     */
+    public ImportJobAdminStatus adminStatus() {
+        return this.adminStatus;
+    }
+
+    /**
+     * Set the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'.
+     * 
+     * @param adminStatus the adminStatus value to set.
+     * @return the ImportJobProperties object itself.
+     */
+    public ImportJobProperties withAdminStatus(ImportJobAdminStatus adminStatus) {
+        this.adminStatus = adminStatus;
+        return this;
     }
 
     /**
@@ -156,11 +185,11 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
     }
 
     /**
-     * Get the state property: The state of the import job. InProgress indicates the import is still running. Canceled
-     * indicates it has been canceled by the user. Completed indicates import finished, successfully importing all
-     * discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either
-     * were found to be conflicting and could not be imported or other errors were encountered. Failed means the import
-     * was unable to complete due to a fatal error.
+     * Get the state property: The operational state of the import job. InProgress indicates the import is still
+     * running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully
+     * importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some
+     * blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed
+     * means the import was unable to complete due to a fatal error.
      * 
      * @return the state value.
      */
@@ -205,6 +234,62 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
     }
 
     /**
+     * Get the importedFiles property: New or modified files that have been imported into the filesystem.
+     * 
+     * @return the importedFiles value.
+     */
+    public Long importedFiles() {
+        return this.innerStatus() == null ? null : this.innerStatus().importedFiles();
+    }
+
+    /**
+     * Get the importedDirectories property: New or modified directories that have been imported into the filesystem.
+     * 
+     * @return the importedDirectories value.
+     */
+    public Long importedDirectories() {
+        return this.innerStatus() == null ? null : this.innerStatus().importedDirectories();
+    }
+
+    /**
+     * Get the importedSymlinks property: Newly added symbolic links into the filesystem.
+     * 
+     * @return the importedSymlinks value.
+     */
+    public Long importedSymlinks() {
+        return this.innerStatus() == null ? null : this.innerStatus().importedSymlinks();
+    }
+
+    /**
+     * Get the preexistingFiles property: Files that already exist in the filesystem and have not been modified.
+     * 
+     * @return the preexistingFiles value.
+     */
+    public Long preexistingFiles() {
+        return this.innerStatus() == null ? null : this.innerStatus().preexistingFiles();
+    }
+
+    /**
+     * Get the preexistingDirectories property: Directories that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingDirectories value.
+     */
+    public Long preexistingDirectories() {
+        return this.innerStatus() == null ? null : this.innerStatus().preexistingDirectories();
+    }
+
+    /**
+     * Get the preexistingSymlinks property: Symbolic links that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingSymlinks value.
+     */
+    public Long preexistingSymlinks() {
+        return this.innerStatus() == null ? null : this.innerStatus().preexistingSymlinks();
+    }
+
+    /**
      * Get the blobsImportedPerSecond property: A recent and frequently updated rate of total files, directories, and
      * symlinks imported per second.
      * 
@@ -215,7 +300,7 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
     }
 
     /**
-     * Get the lastCompletionTime property: The time of the last completed archive operation.
+     * Get the lastCompletionTime property: The time (in UTC) of the last completed import job.
      * 
      * @return the lastCompletionTime value.
      */
@@ -224,7 +309,7 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
     }
 
     /**
-     * Get the lastStartedTime property: The time the latest archive operation started.
+     * Get the lastStartedTime property: The time (in UTC) the latest import job started.
      * 
      * @return the lastStartedTime value.
      */
@@ -267,6 +352,7 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminStatus", this.adminStatus == null ? null : this.adminStatus.toString());
         jsonWriter.writeArrayField("importPrefixes", this.importPrefixes,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("conflictResolutionMode",
@@ -293,6 +379,8 @@ public final class ImportJobProperties implements JsonSerializable<ImportJobProp
                 if ("provisioningState".equals(fieldName)) {
                     deserializedImportJobProperties.provisioningState
                         = ImportJobProvisioningStateType.fromString(reader.getString());
+                } else if ("adminStatus".equals(fieldName)) {
+                    deserializedImportJobProperties.adminStatus = ImportJobAdminStatus.fromString(reader.getString());
                 } else if ("importPrefixes".equals(fieldName)) {
                     List<String> importPrefixes = reader.readArray(reader1 -> reader1.getString());
                     deserializedImportJobProperties.importPrefixes = importPrefixes;

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -102,24 +101,6 @@ public final class ExecutionProperties implements JsonSerializable<ExecutionProp
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (workflowVersionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property workflowVersionId in model ExecutionProperties"));
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExecutionProperties.class);
 
     /**
      * {@inheritDoc}

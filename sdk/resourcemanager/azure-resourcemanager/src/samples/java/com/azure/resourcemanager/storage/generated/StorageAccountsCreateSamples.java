@@ -27,6 +27,7 @@ import com.azure.resourcemanager.storage.models.KeyVaultProperties;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
+import com.azure.resourcemanager.storage.models.Placement;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingChoice;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
 import com.azure.resourcemanager.storage.models.VirtualNetworkRule;
+import com.azure.resourcemanager.storage.models.ZonePlacementPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +48,7 @@ import java.util.Map;
 public final class StorageAccountsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/NfsV3AccountCreate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/NfsV3AccountCreate.json
      */
     /**
      * Sample code: NfsV3AccountCreate.
@@ -74,107 +76,8 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreatePremiumBlockBlobStorage.json
-     */
-    /**
-     * Sample code: StorageAccountCreatePremiumBlockBlobStorage.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        storageAccountCreatePremiumBlockBlobStorage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts()
-            .manager()
-            .serviceClient()
-            .getStorageAccounts()
-            .create("res9101", "sto4445",
-                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.PREMIUM_LRS))
-                    .withKind(Kind.BLOCK_BLOB_STORAGE)
-                    .withLocation("eastus")
-                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                    .withEncryption(new Encryption()
-                        .withServices(new EncryptionServices()
-                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                        .withKeySource(KeySource.MICROSOFT_STORAGE)
-                        .withRequireInfrastructureEncryption(false))
-                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
-                    .withAllowSharedKeyAccess(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreateWithImmutabilityPolicy.json
-     */
-    /**
-     * Sample code: StorageAccountCreateWithImmutabilityPolicy.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        storageAccountCreateWithImmutabilityPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts()
-            .manager()
-            .serviceClient()
-            .getStorageAccounts()
-            .create("res9101", "sto4445",
-                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_GRS))
-                    .withKind(Kind.STORAGE)
-                    .withLocation("eastus")
-                    .withExtendedLocation(
-                        new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
-                    .withImmutableStorageWithVersioning(new ImmutableStorageAccount().withEnabled(true)
-                        .withImmutabilityPolicy(
-                            new AccountImmutabilityPolicyProperties().withImmutabilityPeriodSinceCreationInDays(15)
-                                .withState(AccountImmutabilityPolicyState.UNLOCKED)
-                                .withAllowProtectedAppendWrites(true))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreateAllowedCopyScopeToPrivateLink.json
-     */
-    /**
-     * Sample code: StorageAccountCreateAllowedCopyScopeToPrivateLink.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        storageAccountCreateAllowedCopyScopeToPrivateLink(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts()
-            .manager()
-            .serviceClient()
-            .getStorageAccounts()
-            .create("res9101", "sto4445", new StorageAccountCreateParameters()
-                .withSku(new Sku().withName(SkuName.STANDARD_GRS))
-                .withKind(Kind.STORAGE)
-                .withLocation("eastus")
-                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                .withAllowedCopyScope(AllowedCopyScope.PRIVATE_LINK)
-                .withSasPolicy(
-                    new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
-                .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
-                .withEncryption(new Encryption()
-                    .withServices(new EncryptionServices()
-                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                    .withKeySource(KeySource.MICROSOFT_STORAGE)
-                    .withRequireInfrastructureEncryption(false))
-                .withIsHnsEnabled(true)
-                .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
-                    .withPublishMicrosoftEndpoints(true)
-                    .withPublishInternetEndpoints(true))
-                .withAllowBlobPublicAccess(false)
-                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
-                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
-    }
-
-    /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountCreate.json
      */
     /**
      * Sample code: StorageAccountCreate.
@@ -214,16 +117,16 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreateEnablePublicNetworkAccess.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/StorageAccountCreate_zones.
+     * json
      */
     /**
-     * Sample code: StorageAccountCreateEnablePublicNetworkAccess.
+     * Sample code: StorageAccountCreate_zones.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        storageAccountCreateEnablePublicNetworkAccess(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void storageAccountCreateZones(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.storageAccounts()
             .manager()
             .serviceClient()
@@ -234,8 +137,8 @@ public final class StorageAccountsCreateSamples {
                 .withLocation("eastus")
                 .withExtendedLocation(
                     new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
+                .withZones(Arrays.asList("1"))
                 .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withSasPolicy(
                     new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
                 .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
@@ -245,25 +148,27 @@ public final class StorageAccountsCreateSamples {
                         .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
                     .withKeySource(KeySource.MICROSOFT_STORAGE)
                     .withRequireInfrastructureEncryption(false))
+                .withIsSftpEnabled(true)
                 .withIsHnsEnabled(true)
                 .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
                     .withPublishMicrosoftEndpoints(true)
                     .withPublishInternetEndpoints(true))
                 .withAllowBlobPublicAccess(false)
                 .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
-                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
+                .withAllowSharedKeyAccess(true)
+                .withDefaultToOAuthAuthentication(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreate_placement.json
      */
     /**
-     * Sample code: StorageAccountCreateAllowedCopyScopeToAAD.
+     * Sample code: StorageAccountCreate_placement.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountCreateAllowedCopyScopeToAAD(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void storageAccountCreatePlacement(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.storageAccounts()
             .manager()
             .serviceClient()
@@ -272,8 +177,10 @@ public final class StorageAccountsCreateSamples {
                 .withSku(new Sku().withName(SkuName.STANDARD_GRS))
                 .withKind(Kind.STORAGE)
                 .withLocation("eastus")
+                .withExtendedLocation(
+                    new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
+                .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicy.ANY))
                 .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                .withAllowedCopyScope(AllowedCopyScope.AAD)
                 .withSasPolicy(
                     new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
                 .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
@@ -283,54 +190,19 @@ public final class StorageAccountsCreateSamples {
                         .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
                     .withKeySource(KeySource.MICROSOFT_STORAGE)
                     .withRequireInfrastructureEncryption(false))
+                .withIsSftpEnabled(true)
                 .withIsHnsEnabled(true)
                 .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
                     .withPublishMicrosoftEndpoints(true)
                     .withPublishInternetEndpoints(true))
                 .withAllowBlobPublicAccess(false)
                 .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
-                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
+                .withAllowSharedKeyAccess(true)
+                .withDefaultToOAuthAuthentication(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
-     * StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
-     */
-    /**
-     * Sample code: StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts()
-            .manager()
-            .serviceClient()
-            .getStorageAccounts()
-            .create("res131918", "sto131918", new StorageAccountCreateParameters()
-                .withSku(new Sku().withName(SkuName.STANDARD_LRS))
-                .withKind(Kind.STORAGE)
-                .withLocation("eastus")
-                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
-                        new UserAssignedIdentity())))
-                .withEncryption(new Encryption()
-                    .withServices(new EncryptionServices()
-                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
-                    .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
-                        .withKeyVersion("fakeTokenPlaceholder")
-                        .withKeyVaultUri("fakeTokenPlaceholder"))
-                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(
-                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}")
-                        .withEncryptionFederatedIdentityClientId("f83c6b1b-4d34-47e4-bb34-9d83df58b540"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateDisallowPublicNetworkAccess.json
      */
     /**
@@ -371,7 +243,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateDnsEndpointTypeToStandard.json
      */
     /**
@@ -414,7 +286,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
      */
     /**
@@ -457,7 +329,222 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreatePremiumBlockBlobStorage.json
+     */
+    /**
+     * Sample code: StorageAccountCreatePremiumBlockBlobStorage.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        storageAccountCreatePremiumBlockBlobStorage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "sto4445",
+                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.PREMIUM_LRS))
+                    .withKind(Kind.BLOCK_BLOB_STORAGE)
+                    .withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE)
+                        .withRequireInfrastructureEncryption(false))
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                    .withAllowSharedKeyAccess(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreateWithImmutabilityPolicy.json
+     */
+    /**
+     * Sample code: StorageAccountCreateWithImmutabilityPolicy.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        storageAccountCreateWithImmutabilityPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "sto4445",
+                new StorageAccountCreateParameters().withSku(new Sku().withName(SkuName.STANDARD_GRS))
+                    .withKind(Kind.STORAGE)
+                    .withLocation("eastus")
+                    .withExtendedLocation(
+                        new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
+                    .withImmutableStorageWithVersioning(new ImmutableStorageAccount().withEnabled(true)
+                        .withImmutabilityPolicy(
+                            new AccountImmutabilityPolicyProperties().withImmutabilityPeriodSinceCreationInDays(15)
+                                .withState(AccountImmutabilityPolicyState.UNLOCKED)
+                                .withAllowProtectedAppendWrites(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+     */
+    /**
+     * Sample code: StorageAccountCreateAllowedCopyScopeToPrivateLink.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        storageAccountCreateAllowedCopyScopeToPrivateLink(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "sto4445", new StorageAccountCreateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_GRS))
+                .withKind(Kind.STORAGE)
+                .withLocation("eastus")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                .withAllowedCopyScope(AllowedCopyScope.PRIVATE_LINK)
+                .withSasPolicy(
+                    new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
+                .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_STORAGE)
+                    .withRequireInfrastructureEncryption(false))
+                .withIsHnsEnabled(true)
+                .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                    .withPublishMicrosoftEndpoints(true)
+                    .withPublishInternetEndpoints(true))
+                .withAllowBlobPublicAccess(false)
+                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreateEnablePublicNetworkAccess.json
+     */
+    /**
+     * Sample code: StorageAccountCreateEnablePublicNetworkAccess.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        storageAccountCreateEnablePublicNetworkAccess(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "sto4445", new StorageAccountCreateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_GRS))
+                .withKind(Kind.STORAGE)
+                .withLocation("eastus")
+                .withExtendedLocation(
+                    new ExtendedLocation().withName("losangeles001").withType(ExtendedLocationTypes.EDGE_ZONE))
+                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withSasPolicy(
+                    new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
+                .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_STORAGE)
+                    .withRequireInfrastructureEncryption(false))
+                .withIsHnsEnabled(true)
+                .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                    .withPublishMicrosoftEndpoints(true)
+                    .withPublishInternetEndpoints(true))
+                .withAllowBlobPublicAccess(false)
+                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreateAllowedCopyScopeToAAD.json
+     */
+    /**
+     * Sample code: StorageAccountCreateAllowedCopyScopeToAAD.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountCreateAllowedCopyScopeToAAD(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res9101", "sto4445", new StorageAccountCreateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_GRS))
+                .withKind(Kind.STORAGE)
+                .withLocation("eastus")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                .withAllowedCopyScope(AllowedCopyScope.AAD)
+                .withSasPolicy(
+                    new SasPolicy().withSasExpirationPeriod("1.15:59:59").withExpirationAction(ExpirationAction.LOG))
+                .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_STORAGE)
+                    .withRequireInfrastructureEncryption(false))
+                .withIsHnsEnabled(true)
+                .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                    .withPublishMicrosoftEndpoints(true)
+                    .withPublishInternetEndpoints(true))
+                .withAllowBlobPublicAccess(false)
+                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                .withAllowSharedKeyAccess(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
+     * StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+     */
+    /**
+     * Sample code: StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .create("res131918", "sto131918", new StorageAccountCreateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                .withKind(Kind.STORAGE)
+                .withLocation("eastus")
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
+                        new UserAssignedIdentity())))
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
+                    .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withKeyVaultUri("fakeTokenPlaceholder"))
+                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}")
+                        .withEncryptionFederatedIdentityClientId("f83c6b1b-4d34-47e4-bb34-9d83df58b540"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**

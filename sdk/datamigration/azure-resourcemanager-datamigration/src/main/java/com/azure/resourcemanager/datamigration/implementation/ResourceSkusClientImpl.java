@@ -227,6 +227,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
     }
 
     /**
+     * Get supported SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -254,6 +256,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
     }
 
     /**
+     * Get supported SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -281,6 +285,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
     }
 
     /**
+     * Get supported SKUs
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

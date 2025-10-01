@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.feature.management.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Reference to a Variant containing the Variant name, configuration value, and possible status override.
@@ -20,6 +21,7 @@ public class VariantReference {
      * The configuration value associated with this variant reference.
      * This can be any type of object depending on the feature configuration.
      */
+    @JsonProperty("configuration_value")
     private Object configurationValue;
 
     /**

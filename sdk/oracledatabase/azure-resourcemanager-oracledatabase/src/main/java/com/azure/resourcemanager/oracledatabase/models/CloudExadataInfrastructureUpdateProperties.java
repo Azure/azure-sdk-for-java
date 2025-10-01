@@ -161,20 +161,6 @@ public final class CloudExadataInfrastructureUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (maintenanceWindow() != null) {
-            maintenanceWindow().validate();
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

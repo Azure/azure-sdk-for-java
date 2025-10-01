@@ -1299,13 +1299,15 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
     }
 
     /**
+     * Gets a list of OpenShift managed clusters in the specified subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List OpenShift Managed Clusters operation along with {@link PagedResponse} on
+     * @return a list of OpenShift managed clusters in the specified subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1325,6 +1327,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
     }
 
     /**
+     * Gets a list of OpenShift managed clusters in the specified subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1332,7 +1336,7 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List OpenShift Managed Clusters operation along with {@link PagedResponse} on
+     * @return a list of OpenShift managed clusters in the specified subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1353,6 +1357,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
     }
 
     /**
+     * Lists OpenShift managed clusters in the specified subscription and resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1381,6 +1387,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
     }
 
     /**
+     * Lists OpenShift managed clusters in the specified subscription and resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

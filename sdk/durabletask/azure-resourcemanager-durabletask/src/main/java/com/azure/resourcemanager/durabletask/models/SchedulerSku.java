@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -88,20 +87,6 @@ public final class SchedulerSku implements JsonSerializable<SchedulerSku> {
     public RedundancyState redundancyState() {
         return this.redundancyState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model SchedulerSku"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SchedulerSku.class);
 
     /**
      * {@inheritDoc}

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -100,37 +99,6 @@ public final class StorageTaskPreviewActionProperties implements JsonSerializabl
         this.action = action;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (container() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property container in model StorageTaskPreviewActionProperties"));
-        } else {
-            container().validate();
-        }
-        if (blobs() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property blobs in model StorageTaskPreviewActionProperties"));
-        } else {
-            blobs().forEach(e -> e.validate());
-        }
-        if (action() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property action in model StorageTaskPreviewActionProperties"));
-        } else {
-            action().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageTaskPreviewActionProperties.class);
 
     /**
      * {@inheritDoc}
