@@ -4,7 +4,12 @@ $additionalModulesList = @()
 
 . "${PSScriptRoot}/../../common/scripts/common.ps1"
 
+# DEBUG: Show key environment variables
+Write-Host "env:ARTIFACTSJSON = '$env:ARTIFACTSJSON'"
+Write-Host "env:PACKAGEINFODIR = '$ENV:PACKAGEINFODIR'"
+
 if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
+  Write-Host "DEBUG: Using ARTIFACTSJSON"
   $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
   foreach ($artifact in $artifacts) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
@@ -21,10 +26,13 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
   }
 }
 
+Write-Host "Using env: projectList.Length = $($projectList.Length)"
+
 # If the project list is empty this is because the Artifacts and AdditionalModules are both empty
 # which means this is running as part of the pullrequest pipeline and the project list needs to
 # be figured out from the packageInfo files.
 if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
+  Write-Host "Using PackageInfo files"
   $packageInfoFiles = @()
   # This is the case where this is being called as part of the set of test matrix runs.
   # The ArtifactPackageNames environment variable will be set if this is being called
@@ -42,6 +50,7 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
       [array]$pkgInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "$($artifactPackageName).json"
       if ($pkgInfoFiles) {
         $packageInfoFiles += $pkgInfoFiles
+        Write-Host "DEBUG: Found PackageInfo file for $artifactPackageName"
       } else {
         LogError "No PackageInfo file found for $artifactPackageName"
       }
@@ -52,6 +61,7 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
   foreach($packageInfoFile in $packageInfoFiles) {
     $packageInfoJson = Get-Content $packageInfoFile -Raw
     $packageInfo = ConvertFrom-Json $packageInfoJson
+    Write-Host "DEBUG: Found $($packageInfo.Group):$($packageInfo.ArtifactName) in PackageInfo"
     $fullArtifactName = "$($packageInfo.Group):$($packageInfo.ArtifactName)"
     $projectList += $fullArtifactName
     $artifactsList += $fullArtifactName
