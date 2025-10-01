@@ -31,7 +31,7 @@ public final class DatabaseMigrationsSqlVmsCutoverMockTests {
 
         manager.databaseMigrationsSqlVms()
             .cutover("egtvgwyurbel", "nzzryizwbxgde", "xlayunomir", new MigrationOperationInput()
-                .withMigrationOperationId(UUID.fromString("ecb17e5a-99de-4eaa-8cae-723f0faba45e")),
+                .withMigrationOperationId(UUID.fromString("c9cb8e72-77a6-4533-b611-417b5b9ec56a")),
                 com.azure.core.util.Context.NONE);
 
     }

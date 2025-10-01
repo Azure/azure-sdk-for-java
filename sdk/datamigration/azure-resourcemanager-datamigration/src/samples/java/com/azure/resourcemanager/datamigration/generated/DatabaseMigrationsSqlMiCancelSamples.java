@@ -13,7 +13,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlMiCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCancelDatabaseMigration.json
      */
     /**

@@ -11,7 +11,7 @@ public final class GetUserTablesSqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetUserTablesSqlTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"tngfdgugeyzihgr\",\"databasesToTables\":\"ui\",\"validationErrors\":[{\"message\":\"nmfpp\",\"actionableMessage\":\"jee\",\"filePath\":\"hyhsgzfczbg\",\"lineNumber\":\"fgbegl\",\"hResult\":1755759085,\"stackTrace\":\"o\"},{\"message\":\"betnluankrrfxee\",\"actionableMessage\":\"tijv\",\"filePath\":\"vbmqzbqq\",\"lineNumber\":\"aj\",\"hResult\":99469711,\"stackTrace\":\"acevehjkuyx\"}]}")
+            "{\"id\":\"oq\",\"databasesToTables\":\"uojrngiflr\",\"validationErrors\":[{\"message\":\"ccbiuimzdlyjdfq\",\"actionableMessage\":\"kyoqufdv\",\"filePath\":\"zslzojhp\",\"lineNumber\":\"fnmdxotn\",\"hResult\":923226003,\"stackTrace\":\"ugeyzihgrkyuiza\"},{\"message\":\"nmfpp\",\"actionableMessage\":\"jee\",\"filePath\":\"hyhsgzfczbg\",\"lineNumber\":\"fgbegl\",\"hResult\":1755759085,\"stackTrace\":\"o\"}]}")
             .toObject(GetUserTablesSqlTaskOutput.class);
     }
 

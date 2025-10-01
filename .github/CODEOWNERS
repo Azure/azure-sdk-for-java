@@ -695,16 +695,16 @@
 /sdk/onlineexperimentation/                                        @Azure/azure-sdk-write-onlineexperimentation @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai/                                       @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai/                                       @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-assistants/                            @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-assistants/                            @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-realtime/                              @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-realtime/                              @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-stainless/                             @brandom-msft @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-stainless/                             @jpalvarezl @Azure/azure-java-sdk
 
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                                   @AzmonLogA
