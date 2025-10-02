@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Adds `RetryStrategy.calculateRetryDelay(RequestRetryCondition)` to allow for richer inspection of the reason the
+  request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+
 ### Breaking Changes
 
 ### Bugs Fixed

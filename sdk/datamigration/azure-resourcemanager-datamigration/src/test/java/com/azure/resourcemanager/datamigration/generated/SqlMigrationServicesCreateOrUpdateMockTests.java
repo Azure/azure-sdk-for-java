@@ -23,7 +23,7 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"ylqlocvvujexaygl\"},\"systemData\":{\"createdBy\":\"gjnm\",\"createdByType\":\"Application\",\"createdAt\":\"2021-01-04T16:50:12Z\",\"lastModifiedBy\":\"vxjfiuofpieidzlv\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-11-24T07:45:58Z\"},\"location\":\"jopackyhydv\",\"tags\":{\"illxg\":\"fngp\",\"dye\":\"scizwgsoriobijei\",\"ybriop\":\"ynhbokayrg\",\"igsioctqkm\":\"weoftnorw\"},\"id\":\"ja\",\"name\":\"xvzfffhtjnwos\",\"type\":\"tfjxtvlx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"udcaytujrax\"},\"location\":\"pryj\",\"tags\":{\"msvvylj\":\"nsewouxl\",\"hqqylmpc\":\"rkepos\"},\"id\":\"wjwdsdlzmkxer\",\"name\":\"xx\",\"type\":\"teehk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,14 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SqlMigrationService response = manager.sqlMigrationServices()
-            .define("khjqjpvbaihxjtg")
-            .withRegion("yckhefrbhseue")
-            .withExistingResourceGroup("znllaslk")
-            .withTags(
-                mapOf("aytujraxdtpryjm", "pxebjlud", "ly", "tnsewou", "vyljurkeposehqq", "s", "dsdlzmk", "lmpctwj"))
+            .define("edoyqxlunkft")
+            .withRegion("hrvmzrqrazadi")
+            .withExistingResourceGroup("zkdolrndwdbvxvza")
+            .withTags(mapOf("aihxjtgzgtaiywbq", "llaslkskhjqjpv", "mhljqlxspm", "roigbsfsgsaenwld", "ryldsxeb", "jc"))
             .create();
 
-        Assertions.assertEquals("jopackyhydv", response.location());
-        Assertions.assertEquals("fngp", response.tags().get("illxg"));
+        Assertions.assertEquals("pryj", response.location());
+        Assertions.assertEquals("nsewouxl", response.tags().get("msvvylj"));
     }
 
     // Use "Map.of" if available

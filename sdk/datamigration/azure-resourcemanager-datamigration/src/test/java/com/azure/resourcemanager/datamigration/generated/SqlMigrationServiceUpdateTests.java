@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlMigrationServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlMigrationServiceUpdate model = BinaryData
-            .fromString("{\"tags\":{\"eqidbqfatpx\":\"ebdunyg\",\"cyjmoadsuvarmy\":\"lr\",\"hhyxxrw\":\"dmjsjqb\"}}")
+        SqlMigrationServiceUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"byxbaaabjy\":\"njijpxacqqudf\",\"zrtuzq\":\"ayffim\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"}}")
             .toObject(SqlMigrationServiceUpdate.class);
-        Assertions.assertEquals("ebdunyg", model.tags().get("eqidbqfatpx"));
+        Assertions.assertEquals("njijpxacqqudf", model.tags().get("byxbaaabjy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlMigrationServiceUpdate model = new SqlMigrationServiceUpdate()
-            .withTags(mapOf("eqidbqfatpx", "ebdunyg", "cyjmoadsuvarmy", "lr", "hhyxxrw", "dmjsjqb"));
+            .withTags(mapOf("byxbaaabjy", "njijpxacqqudf", "zrtuzq", "ayffim", "fdnw", "gsexne", "euzsoi", "wmewzsyy"));
         model = BinaryData.fromObject(model).toObject(SqlMigrationServiceUpdate.class);
-        Assertions.assertEquals("ebdunyg", model.tags().get("eqidbqfatpx"));
+        Assertions.assertEquals("njijpxacqqudf", model.tags().get("byxbaaabjy"));
     }
 
     // Use "Map.of" if available

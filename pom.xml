@@ -20,9 +20,9 @@
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
-    <module>sdk/appplatform</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appplatform</module>
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -250,6 +250,7 @@
     <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
+    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>

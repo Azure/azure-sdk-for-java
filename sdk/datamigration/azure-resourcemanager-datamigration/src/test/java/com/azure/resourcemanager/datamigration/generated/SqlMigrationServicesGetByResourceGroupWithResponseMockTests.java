@@ -21,7 +21,7 @@ public final class SqlMigrationServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"bo\",\"integrationRuntimeState\":\"bmdqrxyglae\"},\"systemData\":{\"createdBy\":\"flwtjdt\",\"createdByType\":\"Application\",\"createdAt\":\"2021-07-14T15:54:26Z\",\"lastModifiedBy\":\"oyycuxdtz\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-11T04:15:03Z\"},\"location\":\"dudgcozzomeh\",\"tags\":{\"juxkqll\":\"ntolamlb\",\"pvwdtgckzdqiq\":\"z\",\"kwx\":\"lrat\",\"lhpryjfzihuio\":\"auwxsuykznhrfgsl\"},\"id\":\"eo\",\"name\":\"pajtfeyvkbd\",\"type\":\"dd\"}";
+            = "{\"properties\":{\"provisioningState\":\"bo\",\"integrationRuntimeState\":\"bmdqrxyglae\"},\"location\":\"cflwtjdtlr\",\"tags\":{\"cuxd\":\"ooy\"},\"id\":\"zcqipsdudgcozzo\",\"name\":\"ehxlantolamlb\",\"type\":\"juxkqll\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class SqlMigrationServicesGetByResourceGroupWithResponseMockTests {
             .getByResourceGroupWithResponse("jqwahoyi", "axqvjweiwtczkddn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dudgcozzomeh", response.location());
-        Assertions.assertEquals("ntolamlb", response.tags().get("juxkqll"));
+        Assertions.assertEquals("cflwtjdtlr", response.location());
+        Assertions.assertEquals("ooy", response.tags().get("cuxd"));
     }
 }

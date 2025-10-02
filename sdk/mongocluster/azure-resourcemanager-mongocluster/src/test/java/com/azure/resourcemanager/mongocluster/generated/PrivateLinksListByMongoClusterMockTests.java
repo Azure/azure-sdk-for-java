@@ -22,7 +22,7 @@ public final class PrivateLinksListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ualupjmkh\",\"requiredMembers\":[\"bbcswsrtjri\"],\"requiredZoneNames\":[\"bpbewtghfgb\",\"c\",\"wxzvlvqhjkb\",\"gibtnm\"]},\"id\":\"ebwwaloayqc\",\"name\":\"wrtz\",\"type\":\"uzgwyzmhtx\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"isgwbnbbeldawkz\",\"requiredMembers\":[\"io\",\"rqhakauha\",\"hsfwxosowzxcug\"],\"requiredZoneNames\":[\"ooxdjebwpuc\",\"wfvovbv\",\"euecivyhzceuoj\"]},\"id\":\"rw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinksListByMongoClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateLinkResource> response = manager.privateLinks()
-            .listByMongoCluster("vylwzbtdhxuj", "nbmpowuwprzq", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response
+            = manager.privateLinks().listByMongoCluster("rcrgvx", "vgomz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bpbewtghfgb", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("ooxdjebwpuc", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }
