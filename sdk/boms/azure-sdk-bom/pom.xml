@@ -307,11 +307,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-mixedreality-remoterendering</artifactId>
-        <version>1.1.40</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
         <artifactId>azure-monitor-ingestion</artifactId>
         <version>1.2.12</version>
       </dependency>
