@@ -208,8 +208,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("CosmosException: Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
+                    logger.warn("CosmosException: Partition {} from thread {} with owner {}" +
+                            "exception msg {}, exception cause {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            clientException.getMessage(),
+                            clientException.getCause() == null ? "" : clientException.getCause().getMessage(),
+                            clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
