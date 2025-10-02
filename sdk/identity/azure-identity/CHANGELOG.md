@@ -3,6 +3,7 @@
 ## 1.19.0-beta.1 (Unreleased)
 
 ### Features Added
+- Fixed `DefaultAzureCredential` behavior when `AZURE_TOKEN_CREDENTIALS` environment variable is explicitly set to `ManagedIdentityCredential`. The credential now skips unnecessary probe requests and enables retry logic with exponential backoff for improved resiliency in environments where the managed identity endpoint may be temporarily unavailable.
 
 ### Breaking Changes
 
