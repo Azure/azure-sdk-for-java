@@ -483,7 +483,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.warn("Network failure", exception);
+                logger.warn("Network failure: exception msg - {}, cause msg - {}",
+                    exception.getMessage(),
+                    exception.getCause() == null ? "" : exception.getCause().getMessage(),
+                    exception);
 
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
