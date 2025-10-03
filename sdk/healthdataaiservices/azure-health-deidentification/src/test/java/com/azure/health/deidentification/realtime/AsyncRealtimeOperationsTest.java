@@ -87,8 +87,8 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
         content.setOperationType(DeidentificationOperationType.SURROGATE_ONLY);
-        content.setTaggedEntities(new TaggedPhiEntities(TextEncodingType.UTF16,
-            Collections.singletonList(new SimplePhiEntity(PhiCategory.PATIENT, 18, 10))));
+        content.setTaggedEntities(
+            new TaggedPhiEntities(Collections.singletonList(new SimplePhiEntity(PhiCategory.PATIENT, 18, 10))));
 
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();

@@ -32,7 +32,17 @@ public final class TaggedPhiEntities implements JsonSerializable<TaggedPhiEntiti
 
     /**
      * Creates an instance of TaggedPhiEntities class.
-     * 
+     *
+     * @param entities the entities value to set.
+     */
+    public TaggedPhiEntities(List<SimplePhiEntity> entities) {
+        this.encoding = TextEncodingType.UTF16;
+        this.entities = entities;
+    }
+
+    /**
+     * Creates an instance of TaggedPhiEntities class.
+     *
      * @param encoding the encoding value to set.
      * @param entities the entities value to set.
      */
@@ -44,7 +54,7 @@ public final class TaggedPhiEntities implements JsonSerializable<TaggedPhiEntiti
 
     /**
      * Get the encoding property: The encoding type used for all entities in this group.
-     * 
+     *
      * @return the encoding value.
      */
     @Generated
@@ -54,7 +64,7 @@ public final class TaggedPhiEntities implements JsonSerializable<TaggedPhiEntiti
 
     /**
      * Get the entities property: List of PHI entities using the specified encoding.
-     * 
+     *
      * @return the entities value.
      */
     @Generated
@@ -76,7 +86,7 @@ public final class TaggedPhiEntities implements JsonSerializable<TaggedPhiEntiti
 
     /**
      * Reads an instance of TaggedPhiEntities from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TaggedPhiEntities if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
