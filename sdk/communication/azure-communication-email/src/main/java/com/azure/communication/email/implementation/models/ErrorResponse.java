@@ -7,7 +7,7 @@ package com.azure.communication.email.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error responsenull. */
+/** Error response. */
 @Fluent
 public final class ErrorResponse {
     /*
