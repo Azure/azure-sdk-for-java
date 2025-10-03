@@ -105,8 +105,6 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String jobName = getTestMode() == TestMode.LIVE ? getJobName() : FAKE_JOB_NAME_WITH_NEXTLINK;
-
-        String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
