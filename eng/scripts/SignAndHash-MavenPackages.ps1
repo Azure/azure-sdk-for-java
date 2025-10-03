@@ -36,6 +36,11 @@ function ConvertTo-DeploymentDetails($PackageDetail) {
     ? $packageDetail.AssociatedArtifacts[0] `
     : ($packageDetail.AssociatedArtifacts | Where-Object { ($null -eq $_.Classifier) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) })
 
+  # If no JAR/AAR found, use POM as the main file artifact for POM-only packages
+  if (-not $fileArtifact) {
+    $fileArtifact = $pomArtifact
+  }
+
   $javadocArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq "javadoc") -and ($_.Type -eq "jar")}
 
   $sourcesArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq "sources") -and ($_.Type -eq "jar") }
@@ -95,13 +100,8 @@ foreach ($packageDetail in $packageDetails) {
   $pomOption = "-DpomFile=$($packageDetail.PomArtifact.File.FullName)"
   Write-Host "POM Option is: $pomOption"
 
-  $fileOption = ""
-  if (-not $packageDetail.FileArtifact) {
-    Write-Host "No File artifact (JAR/AAR), omitting File Option"
-  } else {
-    $fileOption = "-Dfile=$($packageDetail.FileArtifact.File.FullName)"
-    Write-Host "File Option is: $fileOption"
-  }
+  $fileOption = "-Dfile=$($packageDetail.FileArtifact.File.FullName)"
+  Write-Host "File Option is: $fileOption"
 
   $javadocOption = ""
   if (-not $packageDetail.JavadocArtifact) {
