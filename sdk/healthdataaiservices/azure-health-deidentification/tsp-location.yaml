@@ -1,5 +1,5 @@
-commit: 2ef1b39379ea5ce43c068343c9f4895fffdeb75d
+commit: eebf27d637a5fb3864f685af45a82e2904f7cdec
 additionalDirectories: []
-repo: jovinson-ms/azure-rest-api-specs
+repo: Azure/azure-rest-api-specs
 directory: specification/healthdataaiservices/HealthDataAIServices.DeidServices
 
