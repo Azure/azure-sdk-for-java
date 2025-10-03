@@ -36,7 +36,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -208,7 +207,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("CosmosException: Partition {} from thread {} with owner {}" +
+                    logger.warn("CosmosException: Partition {} from thread {} with owner {} " +
                             "exception msg {}, exception cause {}",
                             this.lease.getLeaseToken(),
                             Thread.currentThread().getId(),
