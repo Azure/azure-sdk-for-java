@@ -95,8 +95,13 @@ foreach ($packageDetail in $packageDetails) {
   $pomOption = "-DpomFile=$($packageDetail.PomArtifact.File.FullName)"
   Write-Host "POM Option is: $pomOption"
 
-  $fileOption = "-Dfile=$($packageDetail.FileArtifact.File.FullName)"
-  Write-Host "File Option is: $fileOption"
+  $fileOption = ""
+  if (-not $packageDetail.FileArtifact) {
+    Write-Host "No File artifact (JAR/AAR), omitting File Option"
+  } else {
+    $fileOption = "-Dfile=$($packageDetail.FileArtifact.File.FullName)"
+    Write-Host "File Option is: $fileOption"
+  }
 
   $javadocOption = ""
   if (-not $packageDetail.JavadocArtifact) {
