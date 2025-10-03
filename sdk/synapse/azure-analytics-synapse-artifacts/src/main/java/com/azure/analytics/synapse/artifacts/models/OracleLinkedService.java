@@ -657,7 +657,9 @@ public class OracleLinkedService extends LinkedService {
             || fetchTswtzAsTimestamp != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             if (this.server != null) {
                 jsonWriter.writeUntypedField("server", this.server);
             }
@@ -719,7 +721,6 @@ public class OracleLinkedService extends LinkedService {
      * @param jsonReader The JsonReader being read.
      * @return An instance of OracleLinkedService if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OracleLinkedService.
      */
     @Generated

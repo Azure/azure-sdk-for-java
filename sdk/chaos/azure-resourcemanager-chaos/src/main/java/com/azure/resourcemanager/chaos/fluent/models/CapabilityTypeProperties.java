@@ -179,17 +179,6 @@ public final class CapabilityTypeProperties implements JsonSerializable<Capabili
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (runtimeProperties() != null) {
-            runtimeProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

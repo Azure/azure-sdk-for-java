@@ -12,24 +12,24 @@ public final class Nfs3TargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Nfs3Target model = BinaryData.fromString(
-            "{\"target\":\"blmhvkzuhb\",\"usageModel\":\"vyhgs\",\"verificationTimer\":2121939227,\"writeBackTimer\":792266928}")
+            "{\"target\":\"vwz\",\"usageModel\":\"nhlmctlpdng\",\"verificationTimer\":1360421335,\"writeBackTimer\":1613274561}")
             .toObject(Nfs3Target.class);
-        Assertions.assertEquals("blmhvkzuhb", model.target());
-        Assertions.assertEquals("vyhgs", model.usageModel());
-        Assertions.assertEquals(2121939227, model.verificationTimer());
-        Assertions.assertEquals(792266928, model.writeBackTimer());
+        Assertions.assertEquals("vwz", model.target());
+        Assertions.assertEquals("nhlmctlpdng", model.usageModel());
+        Assertions.assertEquals(1360421335, model.verificationTimer());
+        Assertions.assertEquals(1613274561, model.writeBackTimer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Nfs3Target model = new Nfs3Target().withTarget("blmhvkzuhb")
-            .withUsageModel("vyhgs")
-            .withVerificationTimer(2121939227)
-            .withWriteBackTimer(792266928);
+        Nfs3Target model = new Nfs3Target().withTarget("vwz")
+            .withUsageModel("nhlmctlpdng")
+            .withVerificationTimer(1360421335)
+            .withWriteBackTimer(1613274561);
         model = BinaryData.fromObject(model).toObject(Nfs3Target.class);
-        Assertions.assertEquals("blmhvkzuhb", model.target());
-        Assertions.assertEquals("vyhgs", model.usageModel());
-        Assertions.assertEquals(2121939227, model.verificationTimer());
-        Assertions.assertEquals(792266928, model.writeBackTimer());
+        Assertions.assertEquals("vwz", model.target());
+        Assertions.assertEquals("nhlmctlpdng", model.usageModel());
+        Assertions.assertEquals(1360421335, model.verificationTimer());
+        Assertions.assertEquals(1613274561, model.writeBackTimer());
     }
 }

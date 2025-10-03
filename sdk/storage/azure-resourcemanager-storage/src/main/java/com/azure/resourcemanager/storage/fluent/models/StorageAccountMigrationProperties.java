@@ -15,7 +15,7 @@ import com.azure.resourcemanager.storage.models.SkuName;
 import java.io.IOException;
 
 /**
- * The properties of a storage account’s ongoing or enqueued migration.
+ * The properties of a storage account's ongoing or enqueued migration.
  */
 @Fluent
 public final class StorageAccountMigrationProperties implements JsonSerializable<StorageAccountMigrationProperties> {

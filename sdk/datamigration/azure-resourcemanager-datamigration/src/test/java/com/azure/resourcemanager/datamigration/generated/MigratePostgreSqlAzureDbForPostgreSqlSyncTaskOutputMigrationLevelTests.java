@@ -12,17 +12,17 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-09-07T22:24:15Z\",\"endedOn\":\"2021-09-27T10:44:18Z\",\"sourceServerVersion\":\"innixjawrtmjfj\",\"sourceServer\":\"ccxlzhcoxovnek\",\"targetServerVersion\":\"nlusfnrd\",\"targetServer\":\"xtxrdcqtjvidt\",\"sourceServerType\":\"Sybase\",\"targetServerType\":\"AzureDBForMySql\",\"state\":\"UNDEFINED\",\"databaseCount\":48.88273,\"id\":\"tc\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-06-28T02:42:03Z\",\"endedOn\":\"2021-09-05T22:45:53Z\",\"sourceServerVersion\":\"pxtivhjk\",\"sourceServer\":\"dibgqjxgpnrhgov\",\"targetServerVersion\":\"pikqmh\",\"targetServer\":\"owjrmzvuporqz\",\"sourceServerType\":\"SQLRDS\",\"targetServerType\":\"AzureDBForPostgresSQL\",\"state\":\"FAILED\",\"databaseCount\":80.61733,\"id\":\"xcnqmxqpswokmvkh\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
-        Assertions.assertEquals(48.88273F, model.databaseCount());
+        Assertions.assertEquals(80.61733F, model.databaseCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel().withDatabaseCount(48.88273F);
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel().withDatabaseCount(80.61733F);
         model = BinaryData.fromObject(model)
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
-        Assertions.assertEquals(48.88273F, model.databaseCount());
+        Assertions.assertEquals(80.61733F, model.databaseCount());
     }
 }

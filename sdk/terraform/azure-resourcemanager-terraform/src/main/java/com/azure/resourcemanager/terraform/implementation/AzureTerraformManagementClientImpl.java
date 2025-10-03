@@ -172,7 +172,7 @@ public final class AzureTerraformManagementClientImpl implements AzureTerraformM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-07-01-preview";
+        this.apiVersion = "2025-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.terraforms = new TerraformsClientImpl(this);
     }

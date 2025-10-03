@@ -34,7 +34,7 @@ import java.util.Map;
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_EnableFIPS.json
      */
     /**
@@ -58,7 +58,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPools_Update.json
      */
     /**
@@ -87,7 +87,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_GPUMIG.json
      */
     /**
@@ -127,7 +127,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
@@ -151,7 +151,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
@@ -175,7 +175,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_Update.json
      */
     /**
@@ -204,7 +204,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_WindowsDisableOutboundNAT.json
      */
     /**
@@ -230,7 +230,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPools_Start.json
      */
     /**
@@ -250,7 +250,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_Spot.json
      */
     /**
@@ -278,7 +278,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_Ephemeral.json
      */
     /**
@@ -303,7 +303,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
@@ -328,7 +328,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
@@ -352,7 +352,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_WasmWasi.json
      */
     /**
@@ -379,7 +379,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_Snapshot.json
      */
     /**
@@ -404,7 +404,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_PPG.json
      */
     /**
@@ -428,7 +428,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
@@ -468,7 +468,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPools_Stop.json
      */
     /**
@@ -488,7 +488,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_MessageOfTheDay.json
      */
     /**
@@ -514,7 +514,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_CRG.json
      */
     /**
@@ -539,7 +539,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_OSSKU.json
      */
     /**
@@ -579,7 +579,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsCreate_TypeVirtualMachines.json
      */
     /**

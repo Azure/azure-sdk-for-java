@@ -22,6 +22,7 @@
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appplatform</module>
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
@@ -51,7 +52,6 @@
     <module>sdk/communication</module>
     <module>sdk/compute</module>
     <module>sdk/computefleet</module>
-    <module>sdk/computerecommender</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
@@ -250,6 +250,7 @@
     <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
+    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>

@@ -389,44 +389,6 @@ public final class VirtualMachineInstanceProperties implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (placementProfile() != null) {
-            placementProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (httpProxyConfig() != null) {
-            httpProxyConfig().validate();
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
-        }
-        if (status() != null) {
-            status().validate();
-        }
-        if (guestAgentInstallStatus() != null) {
-            guestAgentInstallStatus().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

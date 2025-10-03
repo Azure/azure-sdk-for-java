@@ -658,7 +658,8 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all guest operating system versions available to be specified in the XML service configuration
+     * (.cscfg) for a cloud service along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OSVersionInner>> listOSVersionsNextSinglePageAsync(String nextLink) {
@@ -685,7 +686,8 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all guest operating system versions available to be specified in the XML service configuration
+     * (.cscfg) for a cloud service along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OSVersionInner>> listOSVersionsNextSinglePageAsync(String nextLink, Context context) {
@@ -710,7 +712,8 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all guest operating system families available to be specified in the XML service configuration
+     * (.cscfg) for a cloud service along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OSFamilyInner>> listOSFamiliesNextSinglePageAsync(String nextLink) {
@@ -737,7 +740,8 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all guest operating system families available to be specified in the XML service configuration
+     * (.cscfg) for a cloud service along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OSFamilyInner>> listOSFamiliesNextSinglePageAsync(String nextLink, Context context) {

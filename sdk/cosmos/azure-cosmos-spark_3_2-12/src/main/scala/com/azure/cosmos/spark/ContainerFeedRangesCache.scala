@@ -2,41 +2,34 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import scala.collection.concurrent.TrieMap
+import scala.util.Random
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[spark] object ContainerFeedRangesCache {
-
+  private val rnd = Random
+  private val DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 120L
   private val cache = new TrieMap[String, CachedFeedRanges]
-  private var feedRangeRefreshIntervalOverride: Option[Long] = None
-
-  def overrideFeedRangeRefreshInterval(newInterval: Long): Unit = {
-    this.feedRangeRefreshIntervalOverride = Some(newInterval)
-  }
-
-  def resetFeedRangeRefreshInterval(): Unit = {
-    this.feedRangeRefreshIntervalOverride = None
-  }
 
   def getFeedRanges
   (
-    container: CosmosAsyncContainer
+   container: CosmosAsyncContainer,
+   feedRangeRefreshIntervalInSecondsOpt: Option[Long],
   ): SMono[List[FeedRange]] = {
 
     val key = SparkBridgeInternal.getCacheKeyForContainer(container)
-
     val cacheExpirationThreshold = Instant.now.minus(
-      feedRangeRefreshIntervalOverride.getOrElse(CosmosConstants.feedRangesCacheIntervalInMinutes),
-      ChronoUnit.MINUTES)
+      feedRangeRefreshIntervalInSecondsOpt.getOrElse(DEFAULT_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS),
+      ChronoUnit.SECONDS)
 
     cache.get(key) match {
       case Some(cached) =>
@@ -53,16 +46,15 @@ private[spark] object ContainerFeedRangesCache {
   }
 
   private[this] def refreshFeedRanges(key: String, container: CosmosAsyncContainer): SMono[List[FeedRange]] = {
-
-    TransientErrorsRetryPolicy.executeWithRetry(() =>
-      container
-        .getFeedRanges
-        .map[List[FeedRange]](javaList => {
-          val scalaList = javaList.asScala.toList
-          cache.put(key, CachedFeedRanges(scalaList, Instant.now))
-          scalaList
-        })
-        .asScala)
+   TransientErrorsRetryPolicy.executeWithRetry(() =>
+    container
+     .getFeedRanges
+     .map[List[FeedRange]](javaList => {
+      val scalaList = javaList.asScala.toList
+      cache.put(key, CachedFeedRanges(scalaList, Instant.now))
+      scalaList
+     })
+     .asScala)
   }
 
   private case class CachedFeedRanges(feedRanges: List[FeedRange], retrievedAt: Instant)

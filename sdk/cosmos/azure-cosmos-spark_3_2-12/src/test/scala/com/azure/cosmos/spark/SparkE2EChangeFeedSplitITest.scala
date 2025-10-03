@@ -50,7 +50,8 @@ class SparkE2EChangeFeedSplitITest
     "spark.cosmos.read.inferSchema.enabled" -> "false",
     "spark.cosmos.changeFeed.startFrom" -> "Beginning",
     "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
-    "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
+    "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation,
+    "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "1800" // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
    )
 
    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
@@ -102,37 +103,29 @@ class SparkE2EChangeFeedSplitITest
 
    response.getStatusCode shouldEqual 200
 
-   // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
-   ContainerFeedRangesCache.overrideFeedRangeRefreshInterval(Int.MaxValue)
+   val initialPartitionCount = df1.rdd.getNumPartitions
+   var currentPartitionCount = separateClient
+    .getDatabase(cosmosDatabase)
+    .getContainer(cosmosContainer)
+    .getFeedRanges
+    .size()
 
-   try {
-    val initialPartitionCount = df1.rdd.getNumPartitions
-    var currentPartitionCount = separateClient
+   while (currentPartitionCount < initialPartitionCount * 2) {
+    logInfo(s"Offer replace still pending current Partition count '$currentPartitionCount' - " +
+     s"target Partition count '${initialPartitionCount * 2}'- waiting for 1 second...")
+    Thread.sleep(1000)
+
+    currentPartitionCount = separateClient
      .getDatabase(cosmosDatabase)
      .getContainer(cosmosContainer)
      .getFeedRanges
      .size()
-
-    while (currentPartitionCount < initialPartitionCount * 2) {
-     logInfo(s"Offer replace still pending current Partition count '$currentPartitionCount' - " +
-      s"target Partition count '${initialPartitionCount * 2}'- waiting for 1 second...")
-     Thread.sleep(1000)
-
-     currentPartitionCount = separateClient
-      .getDatabase(cosmosDatabase)
-      .getContainer(cosmosContainer)
-      .getFeedRanges
-      .size()
-    }
-
-    val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
-    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
-    val rowsArray2 = df2.collect()
-    rowsArray2 should have size 50 - initialCount
-   } finally {
-    // Resetting FeedRange cache refresh to avoid unintended side-effects for other tests
-    ContainerFeedRangesCache.resetFeedRangeRefreshInterval()
    }
+
+   val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
+   val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
+   val rowsArray2 = df2.collect()
+   rowsArray2 should have size 50 - initialCount
   }
  }
 

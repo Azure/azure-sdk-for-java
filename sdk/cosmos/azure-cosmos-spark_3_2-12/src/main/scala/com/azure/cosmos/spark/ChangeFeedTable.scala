@@ -15,7 +15,6 @@ import org.apache.spark.sql.connector.read.ScanBuilder
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util
-import java.util.UUID
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer._
