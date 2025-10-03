@@ -56,7 +56,7 @@ jobs:
         - task: Maven@4
           displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
           inputs:
-            mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
+            mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{ if endsWith(artifact.safeName, 'v2') }}${{artifact.name}}-v2${{ else }}${{artifact.name}}${{ endif }}/pom.xml
             goals: 'deploy'
             options: '$(DefaultOptions) -pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
