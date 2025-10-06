@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.deviceprovisioningservices;
 
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.resourcemanager.deviceprovisioningservices.DeviceProvisioningServicesManager;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
@@ -24,7 +25,7 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
     @LiveOnly
     public void certificateCRUD() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.deviceprovisioningservices;
 
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.resourcemanager.deviceprovisioningservices.DeviceProvisioningServicesManager;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AllocationPolicy;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
@@ -18,7 +19,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @LiveOnly
     public void get() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
@@ -38,7 +39,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @LiveOnly
     public void update() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {

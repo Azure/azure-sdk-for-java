@@ -5,6 +5,7 @@ package com.azure.resourcemanager.deviceprovisioningservices;
 
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.deviceprovisioningservices.DeviceProvisioningServicesManager;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
@@ -23,7 +24,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     @LiveOnly
     public void serviceCRUD() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         String serviceName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
@@ -87,7 +88,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     @LiveOnly
     public void updateSKU() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
@@ -116,7 +117,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     @LiveOnly
     public void createFailure() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
