@@ -138,7 +138,7 @@ public class SpyClientUnderTestFactory {
                 globalEndpointManager,
                 rxClient,
                 apiType,
-                httpRequestInterceptor);
+                null);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();

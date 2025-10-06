@@ -495,6 +495,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Important: this is to make the fault injection context will not be lost between each retries
         this.request.faultInjectionRequestContext = this.faultInjectionRequestContext;
 
+        logger.info("inside onBeforeSendRequest");
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
         this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);

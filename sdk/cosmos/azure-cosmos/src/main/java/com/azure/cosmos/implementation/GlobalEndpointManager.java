@@ -191,6 +191,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public Mono<Void> refreshLocationAsync(DatabaseAccount databaseAccount, boolean forceRefresh) {
+        logger.info("refreshLocationAsync invoked. forceRefresh: {}", forceRefresh);
         return Mono.defer(() -> {
             logger.debug("refreshLocationAsync() invoked");
 
@@ -242,6 +243,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
+        logger.info("inside refreshLocationPrivateAsync");
         return Mono.defer(() -> {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
 

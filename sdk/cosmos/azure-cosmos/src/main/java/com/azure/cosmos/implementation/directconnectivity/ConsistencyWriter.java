@@ -389,6 +389,8 @@ public class ConsistencyWriter {
     {
         // validate that a regional failover has not occurred since the initial write.
         String currentRegion = barrierRequest.requestContext.regionalRoutingContextToRoute.getRegion();
+        logger.info("Entered validateGlobalStrongWriteRegion. CurrentRegion: {}, OriginalWriteRegion: {}",
+                currentRegion, barrierRequest.requestContext.globalStrongWriteRegion);
         if (barrierRequest.requestContext.globalStrongWriteRegion != null &&
                 !Objects.equals(barrierRequest.requestContext.globalStrongWriteRegion, currentRegion))
         {

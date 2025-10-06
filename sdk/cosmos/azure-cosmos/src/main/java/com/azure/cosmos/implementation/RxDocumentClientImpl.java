@@ -260,6 +260,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
+    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
     private volatile boolean useMultipleWriteLocations;
 
     // creator of TransportClient is responsible for disposing it.
@@ -795,8 +796,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.consistencyLevel,
                 this.userAgentContainer,
                 this.globalEndpointManager,
-                this.reactorHttpClient,
-                httpRequestInterceptor);
+                this.reactorHttpClient);
 
             this.globalEndpointManager.init();
 
@@ -823,6 +823,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
                 collectionCache);
+
+            this.httpRequestInterceptor = httpRequestInterceptor;
 
             updateGatewayProxy();
             updateThinProxy();
@@ -889,7 +891,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy,
-            this.apiType);
+            this.apiType,
+            this.httpRequestInterceptor);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,
@@ -952,16 +955,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          ConsistencyLevel consistencyLevel,
                                          UserAgentContainer userAgentContainer,
                                          GlobalEndpointManager globalEndpointManager,
-                                         HttpClient httpClient,
-                                         BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                         HttpClient httpClient) {
         return new ThinClientStoreModel(
             this,
             sessionContainer,
             consistencyLevel,
             userAgentContainer,
             globalEndpointManager,
-            httpClient,
-            httpRequestInterceptor);
+            httpClient);
     }
 
     private HttpClient httpClient() {

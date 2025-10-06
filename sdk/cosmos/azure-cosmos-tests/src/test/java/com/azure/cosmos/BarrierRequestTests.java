@@ -3,19 +3,19 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import io.netty.channel.ConnectTimeoutException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
@@ -40,29 +40,43 @@ public class BarrierRequestTests  extends TestSuiteBase {
                 .directMode();
 
         clientBuilder.httpRequestInterceptor((request, uri) -> {
-            // After the initial write, simulate a network failure on address resolution.
-            // This will trigger the SDK's failover logic.
-            if (simulateAddressRefreshFailures.get() &&
-                request.requestContext.regionalRoutingContextToRoute.getRegion().equals(this.primaryRegion)) // Target the primary region
-            {
-                logger.info("Simulating network failure for address resolution for region " + this.primaryRegion);
-                failoverTriggered.set(true);
-                throw new InternalServerErrorException("Simulated network failure for address resolution.", HttpConstants.SubStatusCodes.UNKNOWN);
-            }
+            logger.info("inside httpRequestInterceptor, simulateAddressRefreshFailures: {}, operationType: {}, resourceType: {}, uri: {}",
+                simulateAddressRefreshFailures.get(), request.getOperationType(), request.getResourceType(), uri);
 
             // Once the failover is triggered, intercept the subsequent metadata refresh call.
-            if (failoverTriggered.get() && uri.getPath() == "/")
+            logger.info("Checking failoverTriggered to intercept metadata refresh call: " + failoverTriggered.get());
+            logger.info("isMetadataRequest: " + request.isMetadataRequest());
+            logger.info("ResourceType: " + request.getResourceType());
+            logger.info("OperationType: " + request.getOperationType());
+            if (failoverTriggered.get() &&
+                request.isMetadataRequest() &&
+                request.getResourceType() == ResourceType.DatabaseAccount)
+               // request.getOperationType() == OperationType.Read)
             {
                 // Return the modified account properties, making the SDK believe a failover has occurred.
                 logger.info("Intercepting metadata call and returning modified account properties. New write region: " + this.secondaryRegion);
                 return new RxDocumentServiceResponse(null, null);
             }
 
+            // After the initial write, simulate a network failure on address resolution.
+            // This will trigger the SDK's failover logic.
+            if (simulateAddressRefreshFailures.get() &&
+                request.isAddressRefresh() &&
+                request.requestContext.regionalRoutingContextToRoute.getRegion().equals(this.primaryRegion)) // Target the primary region
+            {
+                logger.info("Simulating network failure for address resolution for region " + this.primaryRegion);
+                logger.info("failoverTriggered: " + failoverTriggered.get());
+                failoverTriggered.compareAndSet(false, true);
+                logger.info("failoverTriggered: " + failoverTriggered.get());
+                Map<String, String> headers = new HashMap<>();
+                headers.put(HttpConstants.HttpHeaders.SUB_STATUS, Integer.toString(GATEWAY_ENDPOINT_UNAVAILABLE));
+                throw new CosmosException(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE, "Simulating network failure for address resolution for region", headers, new ConnectTimeoutException());
+            }
+
             return null; // let other requests proceed normally
         });
 
         clientBuilder.storeResponseInterceptor((request, storeResponse) -> {
-
             if ((request.getOperationType() == OperationType.Create && request.getResourceType() == ResourceType.Document)) {
 
                 String lsn = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LSN);
@@ -74,6 +88,7 @@ public class BarrierRequestTests  extends TestSuiteBase {
 
                 // Enable address refresh failures for subsequent barrier requests in the primary region.
                 simulateAddressRefreshFailures.compareAndSet(false, true);
+                logger.info("inside storeResponseInterceptor, set simulateAddressRefreshFailures to {}", simulateAddressRefreshFailures.get());
             }
 
             // Track barrier requests (Head operations on a collection)

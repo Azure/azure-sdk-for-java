@@ -145,6 +145,7 @@ public class LocationCache {
      * @param databaseAccount READ DatabaseAccount
      */
     public void onDatabaseAccountRead(DatabaseAccount databaseAccount) {
+        logger.info("inside onDatabaseAccountRead");
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),

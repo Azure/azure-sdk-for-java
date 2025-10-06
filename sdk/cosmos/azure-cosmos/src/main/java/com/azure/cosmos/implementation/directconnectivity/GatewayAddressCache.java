@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -111,7 +112,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
+    public BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -357,6 +358,16 @@ public class GatewayAddressCache implements IAddressCache {
         if (logger.isDebugEnabled()) {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
+        }
+
+        logger.debug("inside getServerAddressesViaGatewayInternalAsync");
+        logger.debug("httpRequestInterceptor is " + (this.httpRequestInterceptor != null ? "not null" : "null"));
+        if (this.httpRequestInterceptor != null) {
+            logger.debug("getServerAddressesViaGatewayInternalAsync intercepted");
+            RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request, null);
+            if (result != null) {
+                return Mono.just(result.getQueryResponse(null, Address.class));
+            }
         }
 
         // track address refresh has happened, this is only meant to be used for fault injection validation

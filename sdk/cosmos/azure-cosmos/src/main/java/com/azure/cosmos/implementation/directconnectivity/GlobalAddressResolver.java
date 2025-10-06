@@ -4,18 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -40,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
@@ -62,6 +52,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -74,7 +65,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         UserAgentContainer userAgentContainer,
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
-        ApiType apiType) {
+        ApiType apiType,
+        BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -86,6 +78,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.serviceConfigReader = serviceConfigReader;
         this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
         this.connectionPolicy = connectionPolicy;
+        this.httpRequestInterceptor = httpRequestInterceptor;
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
@@ -291,6 +284,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
                 this.gatewayServerErrorInjector);
+            gatewayAddressCache.httpRequestInterceptor = this.httpRequestInterceptor;
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
