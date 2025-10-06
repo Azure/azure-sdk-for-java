@@ -254,7 +254,10 @@ public final class EmailClientBuilder implements HttpTrait<EmailClientBuilder>, 
         }
 
         AzureCommunicationEmailServiceImpl innerClient
-            = new AzureCommunicationEmailServiceImplBuilder().endpoint(endpoint).pipeline(pipeline).buildClient();
+            = new AzureCommunicationEmailServiceImplBuilder().endpoint(endpoint)
+                .pipeline(pipeline)
+                .apiVersion(serviceVersion.getVersion())
+                .buildClient();
 
         return innerClient;
     }

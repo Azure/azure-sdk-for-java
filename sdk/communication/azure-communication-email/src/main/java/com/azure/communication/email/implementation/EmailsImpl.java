@@ -25,15 +25,26 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Emails. */
+/**
+ * An instance of this class provides access to all the operations defined in Emails.
+ */
 public final class EmailsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EmailsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureCommunicationEmailServiceImpl client;
 
     /**
@@ -58,7 +69,7 @@ public final class EmailsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<EmailsGetSendResultResponse> getSendResult(@HostParam("endpoint") String endpoint,
             @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/emails:send")
         @ExpectedResponses({ 202 })
@@ -66,7 +77,7 @@ public final class EmailsImpl {
         Mono<EmailsSendResponse> send(@HostParam("endpoint") String endpoint,
             @HeaderParam("Operation-Id") UUID operationId, @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") EmailMessage message,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -76,12 +87,13 @@ public final class EmailsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the email send operation.
+     * @return the status of the email send operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsGetSendResultResponse> getSendResultWithResponseAsync(String operationId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSendResult(this.client.getEndpoint(), operationId,
-            this.client.getApiVersion(), context));
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -92,11 +104,13 @@ public final class EmailsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the email send operation.
+     * @return the status of the email send operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsGetSendResultResponse> getSendResultWithResponseAsync(String operationId, Context context) {
-        return service.getSendResult(this.client.getEndpoint(), operationId, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.getSendResult(this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -106,17 +120,11 @@ public final class EmailsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the email send operation.
+     * @return the status of the email send operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailSendResult> getSendResultAsync(String operationId) {
-        return getSendResultWithResponseAsync(operationId).flatMap((EmailsGetSendResultResponse res) -> {
-            if (res.getValue() != null) {
-                return Mono.just(res.getValue());
-            } else {
-                return Mono.empty();
-            }
-        });
+        return getSendResultWithResponseAsync(operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -127,17 +135,11 @@ public final class EmailsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the email send operation.
+     * @return the status of the email send operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailSendResult> getSendResultAsync(String operationId, Context context) {
-        return getSendResultWithResponseAsync(operationId, context).flatMap((EmailsGetSendResultResponse res) -> {
-            if (res.getValue() != null) {
-                return Mono.just(res.getValue());
-            } else {
-                return Mono.empty();
-            }
-        });
+        return getSendResultWithResponseAsync(operationId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -145,18 +147,19 @@ public final class EmailsImpl {
      *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
-     *     not provided by the customer, the service will generate one.
+     * not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the long running operation.
+     * @return status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsSendResponse> sendWithResponseAsync(EmailMessage message, UUID operationId,
         UUID clientRequestId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), operationId, clientRequestId,
-            this.client.getApiVersion(), message, context));
+            this.client.getApiVersion(), message, accept, context));
     }
 
     /**
@@ -164,19 +167,20 @@ public final class EmailsImpl {
      *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
-     *     not provided by the customer, the service will generate one.
+     * not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the long running operation.
+     * @return status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsSendResponse> sendWithResponseAsync(EmailMessage message, UUID operationId, UUID clientRequestId,
         Context context) {
+        final String accept = "application/json";
         return service.send(this.client.getEndpoint(), operationId, clientRequestId, this.client.getApiVersion(),
-            message, context);
+            message, accept, context);
     }
 
     /**
@@ -184,22 +188,22 @@ public final class EmailsImpl {
      *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
-     *     not provided by the customer, the service will generate one.
+     * not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the long running operation.
+     * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EmailSendResult> sendAsync(EmailMessage message, UUID operationId, UUID clientRequestId) {
-        return sendWithResponseAsync(message, operationId, clientRequestId).flatMap((EmailsSendResponse res) -> {
-            if (res.getValue() != null) {
-                return Mono.just(res.getValue());
-            } else {
-                return Mono.empty();
-            }
-        });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(EmailMessage message, UUID operationId,
+        UUID clientRequestId) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.sendWithResponseAsync(message, operationId, clientRequestId),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 
     /**
@@ -207,24 +211,22 @@ public final class EmailsImpl {
      *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
-     *     not provided by the customer, the service will generate one.
+     * not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the long running operation.
+     * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EmailSendResult> sendAsync(EmailMessage message, UUID operationId, UUID clientRequestId,
-        Context context) {
-        return sendWithResponseAsync(message, operationId, clientRequestId, context)
-            .flatMap((EmailsSendResponse res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(EmailMessage message, UUID operationId,
+        UUID clientRequestId, Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.sendWithResponseAsync(message, operationId, clientRequestId, context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 }

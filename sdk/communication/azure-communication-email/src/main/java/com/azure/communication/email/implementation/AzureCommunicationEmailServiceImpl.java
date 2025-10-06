@@ -6,15 +6,18 @@ package com.azure.communication.email.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the AzureCommunicationEmailService type. */
+/**
+ * Initializes a new instance of the AzureCommunicationEmailService type.
+ */
 public final class AzureCommunicationEmailServiceImpl {
-    /** The communication resource, for example https://my-resource.communication.azure.com. */
+    /**
+     * The communication resource, for example https://my-resource.communication.azure.com.
+     */
     private final String endpoint;
 
     /**
@@ -26,7 +29,9 @@ public final class AzureCommunicationEmailServiceImpl {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
@@ -38,7 +43,9 @@ public final class AzureCommunicationEmailServiceImpl {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -50,7 +57,9 @@ public final class AzureCommunicationEmailServiceImpl {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
@@ -62,7 +71,9 @@ public final class AzureCommunicationEmailServiceImpl {
         return this.serializerAdapter;
     }
 
-    /** The EmailsImpl object to access its operations. */
+    /**
+     * The EmailsImpl object to access its operations.
+     */
     private final EmailsImpl emails;
 
     /**
@@ -74,19 +85,26 @@ public final class AzureCommunicationEmailServiceImpl {
         return this.emails;
     }
 
-    /** Initializes an instance of AzureCommunicationEmailService client. */
-    AzureCommunicationEmailServiceImpl(String endpoint) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    /**
+     * Initializes an instance of AzureCommunicationEmailService client.
+     *
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
+     */
+    AzureCommunicationEmailServiceImpl(String endpoint, String apiVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
      * Initializes an instance of AzureCommunicationEmailService client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    AzureCommunicationEmailServiceImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    AzureCommunicationEmailServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -94,13 +112,15 @@ public final class AzureCommunicationEmailServiceImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    AzureCommunicationEmailServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint) {
+    AzureCommunicationEmailServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = apiVersion;
         this.emails = new EmailsImpl(this);
     }
 }
