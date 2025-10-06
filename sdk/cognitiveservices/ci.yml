@@ -10,6 +10,7 @@ trigger:
     include:
       - sdk/cognitiveservices/ci.yml
       - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/
+      - sdk/cognitiveservices/azure-ai-speech-transcription/
     exclude:
       - sdk/cognitiveservices/pom.xml
       - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/pom.xml
@@ -24,6 +25,7 @@ pr:
     include:
       - sdk/cognitiveservices/ci.yml
       - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/
+      - sdk/cognitiveservices/azure-ai-speech-transcription/
     exclude:
       - sdk/cognitiveservices/pom.xml
       - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/pom.xml
@@ -36,3 +38,6 @@ extends:
       - name: azure-resourcemanager-cognitiveservices
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercognitiveservices
+      - name: azure-ai-speech-transcription
+        groupId: com.azure
+        safeName: azureaispeechtranscription

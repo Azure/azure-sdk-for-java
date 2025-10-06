@@ -15,6 +15,36 @@ import java.util.List;
 
 /**
  * The result of the transcribe operation.
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <!-- src_embed com.azure.ai.speech.transcription.transcriptionresult.detailed -->
+ * <pre>
+ * TranscriptionResult result = client.transcribe&#40;requestContent&#41;;
+ *
+ * &#47;&#47; Get overall duration
+ * System.out.println&#40;&quot;Total duration: &quot; + result.getDurationMilliseconds&#40;&#41; + &quot;ms&quot;&#41;;
+ *
+ * &#47;&#47; Process each phrase with detailed information
+ * result.getPhrases&#40;&#41;.forEach&#40;phrase -&gt; &#123;
+ *     System.out.println&#40;&quot;&#92;nPhrase: &quot; + phrase.getText&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;  Channel: &quot; + phrase.getChannel&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;  Speaker: &quot; + phrase.getSpeaker&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;  Locale: &quot; + phrase.getLocale&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;  Confidence: &quot; + phrase.getConfidence&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;  Timing: &quot; + phrase.getOffsetMilliseconds&#40;&#41; + &quot;ms - &quot;
+ *         + &#40;phrase.getOffsetMilliseconds&#40;&#41; + phrase.getDurationMilliseconds&#40;&#41;&#41; + &quot;ms&quot;&#41;;
+ *
+ *     &#47;&#47; Process individual words with timestamps
+ *     if &#40;phrase.getWords&#40;&#41; != null&#41; &#123;
+ *         phrase.getWords&#40;&#41;.forEach&#40;word -&gt; &#123;
+ *             System.out.println&#40;&quot;    Word: &quot; + word.getText&#40;&#41; + &quot; &#64; &quot;
+ *                 + word.getOffsetMilliseconds&#40;&#41; + &quot;ms&quot;&#41;;
+ *         &#125;&#41;;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.speech.transcription.transcriptionresult.detailed -->
  */
 @Immutable
 public final class TranscriptionResult implements JsonSerializable<TranscriptionResult> {
@@ -38,7 +68,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
 
     /**
      * Creates an instance of TranscriptionResult class.
-     * 
+     *
      * @param durationMilliseconds the durationMilliseconds value to set.
      * @param combinedPhrases the combinedPhrases value to set.
      * @param phrases the phrases value to set.
@@ -53,7 +83,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
 
     /**
      * Get the durationMilliseconds property: The duration of the audio in milliseconds.
-     * 
+     *
      * @return the durationMilliseconds value.
      */
     @Generated
@@ -63,7 +93,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
 
     /**
      * Get the combinedPhrases property: The full transcript for each channel.
-     * 
+     *
      * @return the combinedPhrases value.
      */
     @Generated
@@ -73,7 +103,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
 
     /**
      * Get the phrases property: The transcription results segmented into phrases.
-     * 
+     *
      * @return the phrases value.
      */
     @Generated
@@ -97,7 +127,7 @@ public final class TranscriptionResult implements JsonSerializable<Transcription
 
     /**
      * Reads an instance of TranscriptionResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TranscriptionResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

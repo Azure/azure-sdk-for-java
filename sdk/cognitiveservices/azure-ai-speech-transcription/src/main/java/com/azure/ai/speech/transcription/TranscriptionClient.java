@@ -22,6 +22,21 @@ import com.azure.core.util.BinaryData;
 
 /**
  * Initializes a new instance of the synchronous TranscriptionClient type.
+ *
+ * <p><strong>Instantiating a synchronous TranscriptionClient</strong></p>
+ *
+ * <!-- src_embed com.azure.ai.speech.transcription.transcriptionclient.instantiation -->
+ * <pre>
+ * TranscriptionClient client = new TranscriptionClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&lt;your-resource-name&gt;.cognitiveservices.azure.com&#47;&quot;&#41;
+ *     .credential&#40;new KeyCredential&#40;&quot;&lt;your-api-key&gt;&quot;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.speech.transcription.transcriptionclient.instantiation -->
+ *
+ * <p>View {@link TranscriptionClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see TranscriptionClientBuilder
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class)
 public final class TranscriptionClient {
@@ -30,7 +45,7 @@ public final class TranscriptionClient {
 
     /**
      * Initializes an instance of TranscriptionClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,7 +56,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -73,7 +88,7 @@ public final class TranscriptionClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param body The body of the multipart request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -92,7 +107,31 @@ public final class TranscriptionClient {
 
     /**
      * Transcribes the provided audio stream.
-     * 
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.ai.speech.transcription.transcriptionclient.transcribe -->
+     * <pre>
+     * byte[] audioData = Files.readAllBytes&#40;Paths.get&#40;&quot;path&#47;to&#47;audio.wav&quot;&#41;&#41;;
+     *
+     * AudioFileDetails audioFileDetails = new AudioFileDetails&#40;BinaryData.fromBytes&#40;audioData&#41;&#41;
+     *     .setFilename&#40;&quot;audio.wav&quot;&#41;;
+     *
+     * TranscriptionOptions options = new TranscriptionOptions&#40;&#41;;
+     *
+     * TranscribeRequestContent requestContent = new TranscribeRequestContent&#40;&#41;
+     *     .setAudio&#40;audioFileDetails&#41;
+     *     .setOptions&#40;options&#41;;
+     *
+     * TranscriptionResult result = client.transcribe&#40;requestContent&#41;;
+     *
+     * System.out.println&#40;&quot;Duration: &quot; + result.getDurationMilliseconds&#40;&#41; + &quot;ms&quot;&#41;;
+     * result.getCombinedPhrases&#40;&#41;.forEach&#40;phrase -&gt; &#123;
+     *     System.out.println&#40;&quot;Transcription: &quot; + phrase.getText&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.speech.transcription.transcriptionclient.transcribe -->
+     *
      * @param body The body of the multipart request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

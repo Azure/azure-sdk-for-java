@@ -42,6 +42,27 @@ import java.util.Objects;
 
 /**
  * A builder for creating a new instance of the TranscriptionClient type.
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <!-- src_embed com.azure.ai.speech.transcription.transcriptionclientbuilder.configuration -->
+ * <pre>
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;;
+ *
+ * RetryOptions retryOptions = new RetryOptions&#40;new ExponentialBackoffOptions&#40;&#41;
+ *     .setMaxRetries&#40;5&#41;
+ *     .setBaseDelay&#40;java.time.Duration.ofSeconds&#40;1&#41;&#41;
+ *     .setMaxDelay&#40;java.time.Duration.ofSeconds&#40;60&#41;&#41;&#41;;
+ *
+ * TranscriptionClient client = new TranscriptionClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&lt;your-resource-name&gt;.cognitiveservices.azure.com&#47;&quot;&#41;
+ *     .credential&#40;new KeyCredential&#40;&quot;&lt;your-api-key&gt;&quot;&#41;&#41;
+ *     .httpLogOptions&#40;logOptions&#41;
+ *     .retryOptions&#40;retryOptions&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.speech.transcription.transcriptionclientbuilder.configuration -->
  */
 @ServiceClientBuilder(serviceClients = { TranscriptionClient.class, TranscriptionAsyncClient.class })
 public final class TranscriptionClientBuilder
@@ -218,7 +239,7 @@ public final class TranscriptionClientBuilder
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
      * @return the TranscriptionClientBuilder.
      */
@@ -236,7 +257,7 @@ public final class TranscriptionClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the TranscriptionClientBuilder.
      */
@@ -248,7 +269,7 @@ public final class TranscriptionClientBuilder
 
     /**
      * Builds an instance of TranscriptionClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of TranscriptionClientImpl.
      */
     @Generated
@@ -309,7 +330,7 @@ public final class TranscriptionClientBuilder
 
     /**
      * Builds an instance of TranscriptionAsyncClient class.
-     * 
+     *
      * @return an instance of TranscriptionAsyncClient.
      */
     @Generated
@@ -319,7 +340,7 @@ public final class TranscriptionClientBuilder
 
     /**
      * Builds an instance of TranscriptionClient class.
-     * 
+     *
      * @return an instance of TranscriptionClient.
      */
     @Generated

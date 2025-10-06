@@ -16,6 +16,38 @@ import java.util.Map;
 
 /**
  * Metadata for a transcription request.
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <!-- src_embed com.azure.ai.speech.transcription.transcriptionoptions.advanced -->
+ * <pre>
+ * byte[] audioData = Files.readAllBytes&#40;Paths.get&#40;&quot;path&#47;to&#47;audio.wav&quot;&#41;&#41;;
+ *
+ * AudioFileDetails audioFileDetails = new AudioFileDetails&#40;BinaryData.fromBytes&#40;audioData&#41;&#41;
+ *     .setFilename&#40;&quot;audio.wav&quot;&#41;;
+ *
+ * &#47;&#47; Configure advanced options
+ * TranscriptionOptions options = new TranscriptionOptions&#40;&#41;
+ *     .setLocales&#40;java.util.Arrays.asList&#40;&quot;en-US&quot;, &quot;es-ES&quot;&#41;&#41;  &#47;&#47; Specify candidate locales
+ *     .setProfanityFilterMode&#40;ProfanityFilterMode.MASKED&#41;     &#47;&#47; Mask profanity
+ *     .setDiarization&#40;new TranscriptionDiarizationOptions&#40;&#41;   &#47;&#47; Enable speaker diarization
+ *         .setEnabled&#40;true&#41;
+ *         .setMaxSpeakers&#40;5&#41;&#41;;
+ *
+ * TranscribeRequestContent requestContent = new TranscribeRequestContent&#40;&#41;
+ *     .setAudio&#40;audioFileDetails&#41;
+ *     .setOptions&#40;options&#41;;
+ *
+ * TranscriptionResult result = client.transcribe&#40;requestContent&#41;;
+ *
+ * &#47;&#47; Access detailed results
+ * result.getPhrases&#40;&#41;.forEach&#40;phrase -&gt; &#123;
+ *     System.out.println&#40;&quot;Speaker &quot; + phrase.getSpeaker&#40;&#41; + &quot;: &quot; + phrase.getText&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Confidence: &quot; + phrase.getConfidence&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Offset: &quot; + phrase.getOffsetMilliseconds&#40;&#41; + &quot;ms&quot;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.speech.transcription.transcriptionoptions.advanced -->
  */
 @Fluent
 public final class TranscriptionOptions implements JsonSerializable<TranscriptionOptions> {
@@ -81,7 +113,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Get the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
      * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
-     * 
+     *
      * @return the audioUrl value.
      */
     @Generated
@@ -92,7 +124,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Set the audioUrl property: The URL of the audio to be transcribed. The audio must be shorter than 2 hours in
      * audio duration and smaller than 250 MB in size. If both Audio and AudioUrl are provided, Audio is used.
-     * 
+     *
      * @param audioUrl the audioUrl value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -105,7 +137,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Get the locales property: A list of possible locales for the transcription. If not specified, the locale of the
      * speech in the audio is detected automatically from all supported locales.
-     * 
+     *
      * @return the locales value.
      */
     @Generated
@@ -116,7 +148,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Set the locales property: A list of possible locales for the transcription. If not specified, the locale of the
      * speech in the audio is detected automatically from all supported locales.
-     * 
+     *
      * @param locales the locales value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -129,7 +161,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Get the models property: Maps some or all candidate locales to a model URI to be used for transcription. If no
      * mapping is given, the default model for the locale is used.
-     * 
+     *
      * @return the models value.
      */
     @Generated
@@ -140,7 +172,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Set the models property: Maps some or all candidate locales to a model URI to be used for transcription. If no
      * mapping is given, the default model for the locale is used.
-     * 
+     *
      * @param models the models value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -152,7 +184,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Get the profanityFilterMode property: Mode of profanity filtering.
-     * 
+     *
      * @return the profanityFilterMode value.
      */
     @Generated
@@ -162,7 +194,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Set the profanityFilterMode property: Mode of profanity filtering.
-     * 
+     *
      * @param profanityFilterMode the profanityFilterMode value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -174,7 +206,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Get the diarization property: Mode of diarization.
-     * 
+     *
      * @return the diarization value.
      */
     @Generated
@@ -184,7 +216,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Set the diarization property: Mode of diarization.
-     * 
+     *
      * @param diarization the diarization value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -197,7 +229,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Get the channels property: The 0-based indices of the channels to be transcribed separately. If not specified,
      * multiple channels are merged and transcribed jointly. Only up to two channels are supported.
-     * 
+     *
      * @return the channels value.
      */
     @Generated
@@ -208,7 +240,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /**
      * Set the channels property: The 0-based indices of the channels to be transcribed separately. If not specified,
      * multiple channels are merged and transcribed jointly. Only up to two channels are supported.
-     * 
+     *
      * @param channels the channels value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -220,7 +252,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Get the enhancedMode property: Enhanced mode properties.
-     * 
+     *
      * @return the enhancedMode value.
      */
     @Generated
@@ -230,7 +262,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Set the enhancedMode property: Enhanced mode properties.
-     * 
+     *
      * @param enhancedMode the enhancedMode value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -242,7 +274,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Get the phraseList property: Phrase list properties.
-     * 
+     *
      * @return the phraseList value.
      */
     @Generated
@@ -252,7 +284,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Set the phraseList property: Phrase list properties.
-     * 
+     *
      * @param phraseList the phraseList value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -283,7 +315,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
 
     /**
      * Reads an instance of TranscriptionOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TranscriptionOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
