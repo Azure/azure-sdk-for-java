@@ -734,7 +734,7 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(DATA.getDefaultDataSize());
         primaryFileClient.uploadFromFile(uploadFile.toString());
 
-        // Throws a Exceptions.ReactiveException.class because of Flux.error
+        // Throws an Exceptions.ReactiveException.class because of Flux.error
         Throwable thrown = assertThrows(Throwable.class, () -> downloadClient.downloadToFile(outFile.toString()));
         assertInstanceOf(IOException.class, thrown.getCause());
 
@@ -1074,7 +1074,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void uploadFileDoesNotExist() throws IOException {
-        File uploadFile = new File(testFolder.getPath() + "/fakefile.txt");
+        File uploadFile = new File(testFolder.getPath() + "/fake_file.txt");
         Files.deleteIfExists(uploadFile.toPath());
         UncheckedIOException e
             = assertThrows(UncheckedIOException.class, () -> primaryFileClient.uploadFromFile(uploadFile.getPath()));
@@ -2612,9 +2612,9 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2023-01-03")
     @Test
     public void listHandlesAccessRights() {
-        ShareClient shareClient = primaryFileServiceClient.getShareClient("myshare");
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("mydirectory");
-        ShareFileClient fileClient = directoryClient.getFileClient("myfile");
+        ShareClient shareClient = primaryFileServiceClient.getShareClient("share");
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("directory");
+        ShareFileClient fileClient = directoryClient.getFileClient("file");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertEquals(ShareFileHandleAccessRights.WRITE, list.get(0).getAccessRights().get(0));
     }
@@ -2811,7 +2811,7 @@ class FileApiTests extends FileShareTestBase {
             () -> primaryFileClient
                 .renameWithResponse(
                     new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission)
-                        .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")),
+                        .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionKey")),
                     null, null)
                 .getValue());
     }
@@ -2942,11 +2942,11 @@ class FileApiTests extends FileShareTestBase {
     public void renameContentType() {
         primaryFileClient.create(512);
         Response<ShareFileClient> resp = primaryFileClient
-            .renameWithResponse(new ShareFileRenameOptions(generatePathName()).setContentType("mytype"), null, null);
+            .renameWithResponse(new ShareFileRenameOptions(generatePathName()).setContentType("type"), null, null);
 
         ShareFileClient renamedClient = resp.getValue();
         ShareFileProperties props = renamedClient.getProperties();
-        assertEquals("mytype", props.getContentType());
+        assertEquals("type", props.getContentType());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -3412,7 +3412,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithData() {
+    public void createFileWithBinaryData() {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
 
@@ -3426,7 +3426,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataFail() {
+    public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
 
         assertThrows(ShareStorageException.class,
@@ -3435,22 +3435,23 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataPartiallyEmpty() {
-        ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    public void createFileWithBinaryDataPartiallyEmpty() {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         primaryFileClient.download(stream);
 
+        // When the max file size is larger than the data size, the rest of the file is zeroed out.
+        // We only check the part we wrote to here, which is why we use copyOfRange.
         assertArrayEquals(DATA.getDefaultBytes(),
             Arrays.copyOfRange(stream.toByteArray(), 0, DATA.getDefaultDataSize()));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeData() {
+    public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
@@ -3466,7 +3467,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeDataPartiallyEmpty() {
+    public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
@@ -3482,9 +3483,8 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataMD5() throws NoSuchAlgorithmException {
-        ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         primaryFileClient.createWithResponse(options, null, Context.NONE);
 
@@ -3497,7 +3497,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
+    public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 

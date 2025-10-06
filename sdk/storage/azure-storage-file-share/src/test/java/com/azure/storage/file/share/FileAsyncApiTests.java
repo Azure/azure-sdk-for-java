@@ -508,7 +508,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void uploadFileDoesNotExist() {
-        File uploadFile = new File(testFolder.getPath() + "/fakefile.txt");
+        File uploadFile = new File(testFolder.getPath() + "/fakeFile.txt");
 
         if (uploadFile.exists()) {
             assertTrue(uploadFile.delete());
@@ -2251,7 +2251,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithData() {
+    public void createFileWithBinaryData() {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
 
@@ -2264,7 +2264,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataFail() {
+    public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
 
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options))
@@ -2273,13 +2273,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataPartiallyEmpty() {
-        ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    public void createFileWithBinaryDataPartiallyEmpty() {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
                 .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
+            // When the max file size is larger than the data size, the rest of the file is zeroed out.
+            // We only check the part we wrote to here, which is why we use copyOfRange.
             .assertNext(bytes -> assertArrayEquals(DATA.getDefaultBytes(),
                 Arrays.copyOfRange(bytes, 0, DATA.getDefaultDataSize())))
             .verifyComplete();
@@ -2287,7 +2288,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeData() {
+    public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
@@ -2302,7 +2303,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeDataPartiallyEmpty() {
+    public void createFileWithLargeBinaryDataBackedByFlux() {
+        ByteBuffer randomByteBuffer = getRandomByteBuffer(Constants.MB * 4);
+
+        Mono<byte[]> response
+            = BinaryData.fromFlux(Flux.just(randomByteBuffer), Constants.MB * 4L, false).flatMap(data -> {
+                ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
+                return primaryFileAsyncClient.createWithResponse(options)
+                    .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download()));
+            });
+
+        StepVerifier.create(response)
+            .assertNext(bytes -> assertArrayEquals(randomByteBuffer.array(), bytes))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
@@ -2317,9 +2335,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithDataMD5() throws NoSuchAlgorithmException {
-        ShareFileCreateOptions options
-            = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
 
         MessageDigest md5Digest = MessageDigest.getInstance("MD5");
         byte[] expectedMd5 = md5Digest.digest(DATA.getDefaultText().getBytes());
@@ -2333,7 +2350,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
-    public void createFileWithLargeDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
+    public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
 
