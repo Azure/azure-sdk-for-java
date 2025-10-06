@@ -4,4 +4,4 @@
 /**
  * This package contains classes for the template project.
  */
-package com.azure.sdk.template.three;
+package com.azure.v2.sdk.template.three;

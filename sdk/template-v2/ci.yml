@@ -8,15 +8,14 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/template/
+      - sdk/template-v2/
       # eng/common code changes trigger template pipeline for basic checking.
       - eng/common
     exclude:
-      - sdk/template/pom.xml
-      - sdk/template/azure-sdk-template/pom.xml
-      - sdk/template/azure-sdk-template-two/pom.xml
-      - sdk/template/azure-sdk-template-three/pom.xml
-      - sdk/template/azure-template-perf/pom.xml
+      - sdk/template-v2/pom.xml
+      - sdk/template-v2/azure-sdk-template/pom.xml
+      - sdk/template-v2/azure-sdk-template-two/pom.xml
+      - sdk/template-v2/azure-sdk-template-three/pom.xml
 
 pr:
   branches:
@@ -27,17 +26,16 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/template/
+      - sdk/template-v2/
       # eng/common code changes trigger template pipeline for basic checking.
       - eng/common
       # The following path should only be included in template/ci.yml, and removed from any other SDKs which copy this file.
       - common/perf-test-core/
     exclude:
-      - sdk/template/pom.xml
-      - sdk/template/azure-sdk-template/pom.xml
-      - sdk/template/azure-sdk-template-two/pom.xml
-      - sdk/template/azure-sdk-template-three/pom.xml
-      - sdk/template/azure-template-perf/pom.xml
+      - sdk/template-v2/pom.xml
+      - sdk/template-v2/azure-sdk-template/pom.xml
+      - sdk/template-v2/azure-sdk-template-two/pom.xml
+      - sdk/template-v2/azure-sdk-template-three/pom.xml
 
 parameters:
   - name: release_dependsonlivetests
@@ -81,37 +79,31 @@ extends:
       PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
     ${{ if eq(parameters.AutoApproveRelease, true) }}:
       PublicPublishEnvironment: none
-    ServiceDirectory: template
+    ServiceDirectory: template-v2
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true
     Artifacts:
       - name: azure-sdk-template
-        groupId: com.azure
+        groupId: com.azure.v2
         safeName: azuresdktemplate
         releaseInBatch: ${{ parameters.release_azuresdktemplate }}
         skipPublishDocMs: true
       - name: azure-sdk-template-two
-        groupId: com.azure
+        groupId: com.azure.v2
         safeName: azuresdktemplatetwo
         releaseInBatch: ${{ parameters.release_azuresdktemplatetwo }}
         skipPublishDocMs: true
       - name: azure-sdk-template-three
-        groupId: com.azure
+        groupId: com.azure.v2
         safeName: azuresdktemplatethree
         releaseInBatch: ${{ parameters.release_azuresdktemplatethree }}
         skipPublishDocMs: true
-    AdditionalModules:
-      - name: azure-template-perf
-        groupId: com.azure
-        # required by the above perf library
-      - name: perf-test-core
-        groupId: com.azure
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          ServiceDirectory: template
+          ServiceDirectory: template-v2
           Artifacts:
             - name: azure-sdk-template
-              groupId: com.azure
+              groupId: com.azure.v2
               safeName: azuresdktemplate

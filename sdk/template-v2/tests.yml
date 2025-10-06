@@ -6,7 +6,7 @@ extends:
     ServiceDirectory: appconfiguration
     Artifacts:
       - name: azure-sdk-template
-        groupId: com.azure
+        groupId: com.azure.v2
         safeName: azuresdktemplate
     EnvVars:
       AZURE_TENANT_ID: $(TEMPLATE_TENANT_ID)

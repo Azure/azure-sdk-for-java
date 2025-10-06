@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.sdk.template.two;
+package com.azure.v2.sdk.template.two;
 
 /**
  * This is a sample class for template app.
