@@ -5,26 +5,43 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The EmailsSendHeaders model. */
+/**
+ * The EmailsSendHeaders model.
+ */
 @Fluent
 public final class EmailsSendHeaders {
     /*
      * The retry-after property.
      */
-    @JsonProperty(value = "retry-after")
     private Integer retryAfter;
 
     /*
      * The Operation-Location property.
      */
-    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
+
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of EmailsSendHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public EmailsSendHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+    }
 
     /**
      * Get the retryAfter property: The retry-after property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer getRetryAfter() {
@@ -33,7 +50,7 @@ public final class EmailsSendHeaders {
 
     /**
      * Set the retryAfter property: The retry-after property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the EmailsSendHeaders object itself.
      */
@@ -44,7 +61,7 @@ public final class EmailsSendHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -53,7 +70,7 @@ public final class EmailsSendHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the EmailsSendHeaders object itself.
      */

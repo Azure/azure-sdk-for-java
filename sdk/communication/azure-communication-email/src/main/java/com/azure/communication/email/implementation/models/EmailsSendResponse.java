@@ -8,11 +8,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the send operation. */
+/**
+ * Contains all response data for the send operation.
+ */
 public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, EmailSendResult> {
     /**
      * Creates an instance of EmailsSendResponse.
-     *
+     * 
      * @param request the request which resulted in this EmailsSendResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -24,7 +26,11 @@ public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, Em
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     * 
+     * @return the deserialized response body.
+     */
     @Override
     public EmailSendResult getValue() {
         return super.getValue();

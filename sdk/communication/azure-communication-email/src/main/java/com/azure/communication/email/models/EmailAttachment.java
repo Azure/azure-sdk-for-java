@@ -32,7 +32,7 @@ public final class EmailAttachment {
      *
      * @param name the name value to set.
      * @param contentType the contentType value to set.
-     * @param content the content value to set.
+     * @param content the contentInBase64 value to set.
      */
     public EmailAttachment(String name, String contentType, BinaryData content) {
         this.name = name;
