@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Azure HTTP client implementation dependencies -->
@@ -76,22 +76,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
     </dependency>
 
     <!-- Common external testing dependencies -->
