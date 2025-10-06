@@ -40,7 +40,9 @@ az cognitiveservices account keys list --name <your-resource-name> --resource-gr
 
 Once you have an API key, you can authenticate using `KeyCredential`:
 
-```java com.azure.ai.speech.transcription.transcriptionclient.instantiation
+```java
+import com.azure.core.credential.KeyCredential;
+
 TranscriptionClient client = new TranscriptionClientBuilder()
     .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
     .credential(new KeyCredential("<your-api-key>"))
@@ -74,22 +76,6 @@ You can customize transcription with options like:
 - **Language detection**: Automatically detect the spoken language
 
 ## Examples
-
-The following sections provide code snippets covering common scenarios. For complete, runnable samples, see the [samples directory](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples/java/com/azure/ai/speech/transcription).
-
-### Available Samples
-
-| Sample | Description |
-|--------|-------------|
-| [BasicTranscriptionSample.java][basic_sample] | Demonstrates basic synchronous transcription with default settings |
-| [AdvancedTranscriptionSample.java][advanced_sample] | Shows advanced features: custom client configuration, profanity filtering, speaker diarization, and detailed result processing |
-| [AsyncTranscriptionSample.java][async_sample] | Demonstrates asynchronous operations using TranscriptionAsyncClient with reactive patterns |
-| [ErrorHandlingSample.java][error_sample] | Shows comprehensive error handling for authentication, file I/O, and service errors |
-
-[basic_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples/java/com/azure/ai/speech/transcription/BasicTranscriptionSample.java
-[advanced_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples/java/com/azure/ai/speech/transcription/AdvancedTranscriptionSample.java
-[async_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples/java/com/azure/ai/speech/transcription/AsyncTranscriptionSample.java
-[error_sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples/java/com/azure/ai/speech/transcription/ErrorHandlingSample.java
 
 ### Transcribe an audio file
 
