@@ -511,7 +511,7 @@ com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
-com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.2
+com.azure.v2:azure-client-sdk-parent;2.0.0-beta.2;2.0.0-beta.2
 com.azure.v2:azure-perf-test-parent;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-core;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-core-test;2.0.0-beta.1;2.0.0-beta.1
