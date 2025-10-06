@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class AgentPoolsUpgradeNodeImageVersionSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * AgentPoolsUpgradeNodeImageVersion.json
      */
     /**

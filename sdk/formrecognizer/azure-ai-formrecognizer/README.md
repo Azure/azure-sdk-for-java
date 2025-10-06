@@ -175,13 +175,9 @@ Authentication with AAD requires some initial setup:
 * [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Form Recognizer by assigning the `"Cognitive Services User"` role to your service principal.
 
-After the setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
-As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
-
-Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
@@ -738,6 +734,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
-[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-
-
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

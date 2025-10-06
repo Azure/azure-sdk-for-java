@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeployJobParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeployJobParameter model
-            = BinaryData.fromString("{\"jobType\":\"deploy\",\"parameter\":{\"solutionVersionId\":\"piu\"}}")
-                .toObject(DeployJobParameter.class);
-        Assertions.assertEquals("piu", model.parameter().solutionVersionId());
+        DeployJobParameter model = BinaryData
+            .fromString("{\"jobType\":\"deploy\",\"parameter\":{\"solutionVersionId\":\"fkuwbcrnwbmehhse\"}}")
+            .toObject(DeployJobParameter.class);
+        Assertions.assertEquals("fkuwbcrnwbmehhse", model.parameter().solutionVersionId());
     }
 }

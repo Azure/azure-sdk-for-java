@@ -51,17 +51,6 @@ public final class WaitStatus implements JsonSerializable<WaitStatus> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

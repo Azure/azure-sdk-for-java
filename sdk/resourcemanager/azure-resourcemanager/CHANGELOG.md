@@ -10,6 +10,38 @@
 
 ### Other Changes
 
+## 2.55.0 (2025-09-30)
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `NetworkSecurityGroup.listAssociatedSubnets` returns a list of `null`.
+
+### azure-resourcemanager-storage
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-07-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.54.0 (2025-08-27)
 
 ### azure-resourcemanager-search

@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Mongo Cluster Management</name>
-  <description>This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-07-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-08-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -67,13 +67,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

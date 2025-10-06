@@ -149,7 +149,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * for complex fields.
      */
     @Generated
-    private LexicalNormalizerName normalizer;
+    private LexicalNormalizerName normalizerName;
 
     /*
      * The dimensionality of the vector field.
@@ -552,28 +552,28 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the normalizer property: The name of the normalizer to use for the field. This option can be used only with
-     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Get the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
      *
-     * @return the normalizer value.
+     * @return the normalizerName value.
      */
     @Generated
     public LexicalNormalizerName getNormalizerName() {
-        return this.normalizer;
+        return this.normalizerName;
     }
 
     /**
-     * Set the normalizer property: The name of the normalizer to use for the field. This option can be used only with
-     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Set the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
      *
-     * @param normalizer the normalizer value to set.
+     * @param normalizerName the normalizerName value to set.
      * @return the SearchField object itself.
      */
     @Generated
-    public SearchField setNormalizerName(LexicalNormalizerName normalizer) {
-        this.normalizer = normalizer;
+    public SearchField setNormalizerName(LexicalNormalizerName normalizerName) {
+        this.normalizerName = normalizerName;
         return this;
     }
 
@@ -722,7 +722,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
         jsonWriter.writeStringField("indexAnalyzer",
             this.indexAnalyzerName == null ? null : this.indexAnalyzerName.toString());
-        jsonWriter.writeStringField("normalizer", this.normalizer == null ? null : this.normalizer.toString());
+        jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
         jsonWriter.writeStringField("vectorEncoding",
@@ -760,7 +760,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
-            LexicalNormalizerName normalizer = null;
+            LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
             VectorEncodingFormat vectorEncodingFormat = null;
@@ -798,7 +798,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 } else if ("indexAnalyzer".equals(fieldName)) {
                     indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("normalizer".equals(fieldName)) {
-                    normalizer = LexicalNormalizerName.fromString(reader.getString());
+                    normalizerName = LexicalNormalizerName.fromString(reader.getString());
                 } else if ("dimensions".equals(fieldName)) {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
@@ -826,7 +826,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.analyzerName = analyzerName;
                 deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                 deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
-                deserializedSearchField.normalizer = normalizer;
+                deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
                 deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;

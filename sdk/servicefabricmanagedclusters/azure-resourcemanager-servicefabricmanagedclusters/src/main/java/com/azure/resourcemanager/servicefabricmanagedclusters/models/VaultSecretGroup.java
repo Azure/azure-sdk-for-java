@@ -6,7 +6,6 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -76,27 +75,6 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
         this.vaultCertificates = vaultCertificates;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sourceVault() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sourceVault in model VaultSecretGroup"));
-        }
-        if (vaultCertificates() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property vaultCertificates in model VaultSecretGroup"));
-        } else {
-            vaultCertificates().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VaultSecretGroup.class);
 
     /**
      * {@inheritDoc}

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -62,24 +61,6 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
         this.organizations = organizations;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (organizations() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property organizations in model GitHubOrganizationProfile"));
-        } else {
-            organizations().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GitHubOrganizationProfile.class);
 
     /**
      * {@inheritDoc}

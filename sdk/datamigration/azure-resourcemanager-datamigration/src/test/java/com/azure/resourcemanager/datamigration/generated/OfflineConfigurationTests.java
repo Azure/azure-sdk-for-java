@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OfflineConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OfflineConfiguration model = BinaryData.fromString("{\"offline\":false,\"lastBackupName\":\"xus\"}")
+        OfflineConfiguration model = BinaryData.fromString("{\"offline\":true,\"lastBackupName\":\"ooxdjebwpuc\"}")
             .toObject(OfflineConfiguration.class);
-        Assertions.assertFalse(model.offline());
-        Assertions.assertEquals("xus", model.lastBackupName());
+        Assertions.assertTrue(model.offline());
+        Assertions.assertEquals("ooxdjebwpuc", model.lastBackupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfflineConfiguration model = new OfflineConfiguration().withOffline(false).withLastBackupName("xus");
+        OfflineConfiguration model = new OfflineConfiguration().withOffline(true).withLastBackupName("ooxdjebwpuc");
         model = BinaryData.fromObject(model).toObject(OfflineConfiguration.class);
-        Assertions.assertFalse(model.offline());
-        Assertions.assertEquals("xus", model.lastBackupName());
+        Assertions.assertTrue(model.offline());
+        Assertions.assertEquals("ooxdjebwpuc", model.lastBackupName());
     }
 }

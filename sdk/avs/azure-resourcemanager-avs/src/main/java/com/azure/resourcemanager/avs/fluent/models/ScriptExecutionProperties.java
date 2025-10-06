@@ -6,7 +6,6 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -332,27 +331,6 @@ public final class ScriptExecutionProperties implements JsonSerializable<ScriptE
     public List<String> errors() {
         return this.errors;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
-        }
-        if (hiddenParameters() != null) {
-            hiddenParameters().forEach(e -> e.validate());
-        }
-        if (timeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timeout in model ScriptExecutionProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionProperties.class);
 
     /**
      * {@inheritDoc}

@@ -36,7 +36,7 @@ public final class StorageAccountMigrationInner implements JsonSerializable<Stor
     private String type;
 
     /*
-     * The properties of a storage account’s ongoing or enqueued migration.
+     * The properties of a storage account's ongoing or enqueued migration.
      */
     private StorageAccountMigrationProperties innerStorageAccountMigrationDetails
         = new StorageAccountMigrationProperties();
@@ -97,7 +97,7 @@ public final class StorageAccountMigrationInner implements JsonSerializable<Stor
     }
 
     /**
-     * Get the innerStorageAccountMigrationDetails property: The properties of a storage account’s ongoing or enqueued
+     * Get the innerStorageAccountMigrationDetails property: The properties of a storage account's ongoing or enqueued
      * migration.
      * 
      * @return the innerStorageAccountMigrationDetails value.

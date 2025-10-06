@@ -134,17 +134,6 @@ public final class AssetEndpointProfileUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (authentication() != null) {
-            authentication().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

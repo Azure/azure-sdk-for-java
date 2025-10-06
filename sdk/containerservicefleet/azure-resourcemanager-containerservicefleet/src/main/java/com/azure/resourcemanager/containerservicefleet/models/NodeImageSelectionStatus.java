@@ -38,17 +38,6 @@ public final class NodeImageSelectionStatus implements JsonSerializable<NodeImag
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (selectedNodeImageVersions() != null) {
-            selectedNodeImageVersions().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.MigrateVMToVirtualMachineScaleSe
 public final class VirtualMachinesMigrateToVMScaleSetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
      */
     /**

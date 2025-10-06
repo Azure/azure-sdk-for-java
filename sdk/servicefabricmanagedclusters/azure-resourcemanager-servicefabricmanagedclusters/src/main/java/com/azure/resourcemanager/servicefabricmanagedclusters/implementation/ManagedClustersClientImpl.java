@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedClustersClient;
@@ -325,21 +324,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -381,24 +365,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
@@ -435,26 +401,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, ManagedClusterInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -478,30 +424,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -524,30 +446,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -680,26 +578,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedClusterInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -740,30 +618,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
         ManagedClusterUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -799,21 +653,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
@@ -832,24 +671,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
     }
@@ -867,24 +688,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
     }
@@ -996,18 +799,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1045,20 +836,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1080,20 +857,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1144,14 +907,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1185,16 +940,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -1214,16 +959,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -1275,26 +1010,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FaultSimulationInner>> getFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1337,30 +1052,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FaultSimulationInner> getFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.getFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1398,21 +1089,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationSinglePageAsync(String resourceGroupName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1451,24 +1127,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1491,24 +1149,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1565,26 +1205,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, FaultSimulationContentWrapper parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.startFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1606,30 +1226,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
@@ -1650,30 +1246,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context);
@@ -1802,26 +1374,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.stopFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1843,30 +1395,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, Context.NONE);
@@ -1887,30 +1415,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, parameters, context);
@@ -2036,13 +1540,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2064,15 +1561,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2093,15 +1581,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2121,13 +1600,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2149,15 +1621,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2178,15 +1641,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedClusterInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ManagedClusterListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2206,13 +1660,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2233,15 +1680,6 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2261,21 +1699,10 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClustersClientImpl.class);
 }

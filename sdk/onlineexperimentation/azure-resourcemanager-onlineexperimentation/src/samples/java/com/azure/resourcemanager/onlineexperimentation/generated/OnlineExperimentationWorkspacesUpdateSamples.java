@@ -11,6 +11,7 @@ import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIden
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspace;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspacePatchProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.onlineexperimentation.models.ResourceEncryptionConfiguration;
 import com.azure.resourcemanager.onlineexperimentation.models.UserAssignedIdentity;
 import java.util.HashMap;
@@ -21,14 +22,14 @@ import java.util.Map;
  */
 public final class OnlineExperimentationWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Update.json
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_Update.json
      */
     /**
-     * Sample code: Update an Online Experimentation Workspace.
+     * Sample code: Update an Online Experiment Workspace.
      * 
      * @param manager Entry point to OnlineExperimentationManager.
      */
-    public static void updateAnOnlineExperimentationWorkspace(
+    public static void updateAnOnlineExperimentWorkspace(
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
         OnlineExperimentationWorkspace resource = manager.onlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE)
@@ -45,7 +46,7 @@ public final class OnlineExperimentationWorkspacesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_UpdateWithEncryption.json
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_UpdateWithEncryption.json
      */
     /**
      * Sample code: Update an Online Experimentation Workspace with customer managed encryption key.
@@ -75,6 +76,25 @@ public final class OnlineExperimentationWorkspacesUpdateSamples {
                         .withUserAssignedIdentityResourceId(
                             "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
                         .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_UpdatePublicNetworkAccess.json
+     */
+    /**
+     * Sample code: Update an Online Experimentation Workspace with public network access.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void updateAnOnlineExperimentationWorkspaceWithPublicNetworkAccess(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        OnlineExperimentationWorkspace resource = manager.onlineExperimentationWorkspaces()
+            .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new OnlineExperimentationWorkspacePatchProperties()
+                .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED))
             .apply();
     }
 

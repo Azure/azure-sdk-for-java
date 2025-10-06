@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.ServiceConfigurationsClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.ServiceConfigurationResourceInner;
 import com.azure.resourcemanager.hybridconnectivity.implementation.models.ServiceConfigurationList;
@@ -211,20 +210,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> getWithResponseAsync(String resourceUri,
         String endpointName, String serviceConfigurationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -265,24 +250,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceConfigurationResourceInner> getWithResponse(String resourceUri, String endpointName,
         String serviceConfigurationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
             serviceConfigurationName, accept, context);
@@ -322,26 +289,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     private Mono<Response<ServiceConfigurationResourceInner>> createOrupdateWithResponseAsync(String resourceUri,
         String endpointName, String serviceConfigurationName,
         ServiceConfigurationResourceInner serviceConfigurationResource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
-        if (serviceConfigurationResource == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationResource is required and cannot be null."));
-        } else {
-            serviceConfigurationResource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -388,31 +335,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     public Response<ServiceConfigurationResourceInner> createOrupdateWithResponse(String resourceUri,
         String endpointName, String serviceConfigurationName,
         ServiceConfigurationResourceInner serviceConfigurationResource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
-        if (serviceConfigurationResource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter serviceConfigurationResource is required and cannot be null."));
-        } else {
-            serviceConfigurationResource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrupdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -455,26 +377,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     private Mono<Response<ServiceConfigurationResourceInner>> updateWithResponseAsync(String resourceUri,
         String endpointName, String serviceConfigurationName,
         ServiceConfigurationResourcePatch serviceConfigurationResource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
-        if (serviceConfigurationResource == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationResource is required and cannot be null."));
-        } else {
-            serviceConfigurationResource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -520,31 +422,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     public Response<ServiceConfigurationResourceInner> updateWithResponse(String resourceUri, String endpointName,
         String serviceConfigurationName, ServiceConfigurationResourcePatch serviceConfigurationResource,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
-        if (serviceConfigurationResource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter serviceConfigurationResource is required and cannot be null."));
-        } else {
-            serviceConfigurationResource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
@@ -584,20 +461,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String endpointName,
         String serviceConfigurationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
                 endpointName, serviceConfigurationName, context))
@@ -636,24 +499,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String endpointName, String serviceConfigurationName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (serviceConfigurationName == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter serviceConfigurationName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
             serviceConfigurationName, context);
     }
@@ -689,16 +534,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>
         listByEndpointResourceSinglePageAsync(String resourceUri, String endpointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEndpointResource(this.client.getEndpoint(),
@@ -742,19 +577,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceSinglePage(String resourceUri,
         String endpointName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ServiceConfigurationList> res = service.listByEndpointResourceSync(this.client.getEndpoint(),
             this.client.getApiVersion(), resourceUri, endpointName, accept, Context.NONE);
@@ -778,19 +600,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceSinglePage(String resourceUri,
         String endpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ServiceConfigurationList> res = service.listByEndpointResourceSync(this.client.getEndpoint(),
             this.client.getApiVersion(), resourceUri, endpointName, accept, context);
@@ -852,13 +661,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>
         listByEndpointResourceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -881,15 +683,6 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ServiceConfigurationList> res
             = service.listByEndpointResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -912,21 +705,10 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServiceConfigurationResourceInner> listByEndpointResourceNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ServiceConfigurationList> res
             = service.listByEndpointResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceConfigurationsClientImpl.class);
 }

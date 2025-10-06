@@ -21,7 +21,7 @@ public final class FilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"cpraswkuhydtnac\",\"properties\":{\"extension\":\"wfatga\",\"filePath\":\"hnskivdwgtqcume\",\"lastModified\":\"2021-05-10T22:32:28Z\",\"mediaType\":\"q\",\"size\":7085728280711266749},\"systemData\":{\"createdBy\":\"uy\",\"createdByType\":\"Application\",\"createdAt\":\"2021-11-30T15:56Z\",\"lastModifiedBy\":\"wkrbhzh\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-02-18T14:32:31Z\"},\"id\":\"mqowiuasfgqg\",\"name\":\"cyhfaimqvdru\",\"type\":\"zkgyfpeoe\"}";
+            = "{\"etag\":\"u\",\"properties\":{\"extension\":\"otauratnicppfzsc\",\"filePath\":\"fyrletndqlmfdggn\",\"lastModified\":\"2021-03-10T05:13:11Z\",\"mediaType\":\"pwovvvsfleevn\",\"size\":5807039809223720057},\"id\":\"ehjuqwvapxrlzhpz\",\"name\":\"hacen\",\"type\":\"qzlxn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class FilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProjectFile response = manager.files()
-            .getWithResponse("qh", "qpfzlpejtznxlue", "ujqbbgsimwejl", "bkbpjzobd", com.azure.core.util.Context.NONE)
+            .getWithResponse("jthoivsdwsngkr", "ihscjvakmhzbhw", "hf", "wihbnnxemv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cpraswkuhydtnac", response.etag());
-        Assertions.assertEquals("wfatga", response.properties().extension());
-        Assertions.assertEquals("hnskivdwgtqcume", response.properties().filePath());
-        Assertions.assertEquals("q", response.properties().mediaType());
+        Assertions.assertEquals("u", response.etag());
+        Assertions.assertEquals("otauratnicppfzsc", response.properties().extension());
+        Assertions.assertEquals("fyrletndqlmfdggn", response.properties().filePath());
+        Assertions.assertEquals("pwovvvsfleevn", response.properties().mediaType());
     }
 }

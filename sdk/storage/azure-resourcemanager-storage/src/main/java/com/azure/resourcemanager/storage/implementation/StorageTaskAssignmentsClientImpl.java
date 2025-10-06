@@ -123,7 +123,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         Mono<Response<StorageTaskAssignmentsList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @QueryParam("$maxpagesize") Integer maxpagesize, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1153,8 +1153,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param top Optional, specifies the maximum number of storage task assignment Ids to be included in the list
+     * response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1163,7 +1163,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskAssignmentInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, Integer maxpagesize) {
+        String accountName, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1182,7 +1182,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, maxpagesize, this.client.getApiVersion(), accept, context))
+                resourceGroupName, accountName, top, this.client.getApiVersion(), accept, context))
             .<PagedResponse<StorageTaskAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1194,8 +1194,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param top Optional, specifies the maximum number of storage task assignment Ids to be included in the list
+     * response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1205,7 +1205,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskAssignmentInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, Integer maxpagesize, Context context) {
+        String accountName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1224,8 +1224,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
-                maxpagesize, this.client.getApiVersion(), accept, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, top,
+                this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1236,17 +1236,16 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param top Optional, specifies the maximum number of storage task assignment Ids to be included in the list
+     * response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of storage task assignments for the storage account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName,
-        Integer maxpagesize) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize),
+    public PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1263,8 +1262,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName) {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize),
+        final Integer top = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1274,8 +1273,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param top Optional, specifies the maximum number of storage task assignment Ids to be included in the list
+     * response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1283,9 +1282,9 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @return list of storage task assignments for the storage account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName,
-        Integer maxpagesize, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, context),
+    private PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1303,8 +1302,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName) {
-        final Integer maxpagesize = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize));
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, top));
     }
 
     /**
@@ -1313,8 +1312,8 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param top Optional, specifies the maximum number of storage task assignment Ids to be included in the list
+     * response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1323,9 +1322,9 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName,
-        Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, context));
+    public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName, Integer top,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, top, context));
     }
 
     /**

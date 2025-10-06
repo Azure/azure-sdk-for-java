@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -172,40 +171,6 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
         this.devCenterProjectResourceId = devCenterProjectResourceId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (organizationProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property organizationProfile in model PoolProperties"));
-        } else {
-            organizationProfile().validate();
-        }
-        if (agentProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property agentProfile in model PoolProperties"));
-        } else {
-            agentProfile().validate();
-        }
-        if (fabricProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property fabricProfile in model PoolProperties"));
-        } else {
-            fabricProfile().validate();
-        }
-        if (devCenterProjectResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property devCenterProjectResourceId in model PoolProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PoolProperties.class);
 
     /**
      * {@inheritDoc}
