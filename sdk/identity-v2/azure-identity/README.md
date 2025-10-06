@@ -1,6 +1,6 @@
 # Azure Identity client library for Java
 
-The Azure Identity V2 library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/entra/fundamentals/new-name)) token authentication support across the Azure SDK.
+The Azure Identity V2 library provides [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) token-based authentication support across the Azure SDK.
 
 ## Getting started
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagediscovery.generated;
  */
 public final class StorageDiscoveryWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/StorageDiscoveryWorkspaces_ListBySubscription.json
+     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_ListBySubscription.json
      */
     /**
      * Sample code: List StorageDiscoveryWorkspaces by Subscription.
