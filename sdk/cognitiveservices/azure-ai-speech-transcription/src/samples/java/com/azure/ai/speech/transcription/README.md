@@ -129,7 +129,7 @@ The service supports various audio formats:
 ## Getting Help
 
 - [Azure AI Speech Documentation](https://learn.microsoft.com/azure/ai-services/speech-service/)
-- [SDK Documentation](https://learn.microsoft.com/java/api/overview/azure/ai-speech-transcription-readme)
+- [SDK README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription)
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues)
 
 ## Additional Resources
