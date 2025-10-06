@@ -1,10 +1,6 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.16.2 (2025-10-06)
 
 ### Bugs Fixed
 
@@ -15,6 +11,13 @@
   deregistered from an `EventLoop`, resulting in the network connection from being cleaned up properly.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Reactor Netty from `1.2.9` to `1.2.10`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Netty dependencies from `4.1.126.Final` to `4.1.127.Final`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
 
 ## 1.16.1 (2025-09-05)
 
