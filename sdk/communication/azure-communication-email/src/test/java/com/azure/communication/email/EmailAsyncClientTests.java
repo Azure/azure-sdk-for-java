@@ -99,21 +99,4 @@ public class EmailAsyncClientTests extends EmailTestBase {
             assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
         }).verifyComplete();
     }
-
-    @ParameterizedTest
-    @MethodSource("getTestParameters")
-    public void beginSendFromExistingOperationId(HttpClient httpClient) {
-        emailAsyncClient = getEmailAsyncClient(httpClient);
-
-        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
-            .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject - beginSendFromExistingOperationId - async")
-            .setBodyHtml("<h1>test message</h1>");
-
-        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
-            StepVerifier.create(emailAsyncClient.beginSend(response.getValue().getId()).last()).assertNext(res -> {
-                assertEquals(res.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
-            }).verifyComplete();
-        }).verifyComplete();
-    }
 }

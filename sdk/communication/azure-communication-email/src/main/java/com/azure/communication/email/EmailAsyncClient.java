@@ -120,25 +120,6 @@ public final class EmailAsyncClient {
             TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 
-    /**
-     * Creates a poller from an existing operation id.
-     *
-     * @param operationId The operation id of a previous send email operation.
-     * @return A poller that can be used to poll for the status of the email.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId) {
-        return beginSend(operationId, null);
-    }
-
-    PollerFlux<EmailSendResult, EmailSendResult> beginSend(String operationId, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> emailServiceClient.getSendResultWithResponseAsync(operationId),
-            new DefaultPollingStrategy<>(this.serviceClient.getHttpPipeline(),
-                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()), null, context),
-            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
-    }
-
     void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {
         if (recipients != null) {
             for (EmailAddress recipient : recipients) {

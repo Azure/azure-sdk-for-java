@@ -104,23 +104,4 @@ public class EmailClientTests extends EmailTestBase {
 
         assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
     }
-
-    @ParameterizedTest
-    @MethodSource("getTestParameters")
-    public void beginSendFromExistingOperationId(HttpClient httpClient) {
-        emailClient = getEmailClient(httpClient);
-
-        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
-            .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject - beginSendFromExistingOperationId")
-            .setBodyHtml("<h1>test message</h1>");
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
-        PollResponse<EmailSendResult> response = poller.waitForCompletion();
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller2 = emailClient.beginSend(response.getValue().getId());
-        PollResponse<EmailSendResult> response2 = poller2.waitForCompletion();
-
-        assertEquals(response2.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
-    }
 }
