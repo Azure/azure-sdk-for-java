@@ -94,7 +94,7 @@ class LeaseRenewerImpl implements LeaseRenewer {
                 if (throwable instanceof LeaseLostException) {
                     LeaseLostException lle = (LeaseLostException) throwable;
                     this.resultException = lle;
-                    logger.error("Partition {}: lost lease on renew.", this.lease.getLeaseToken(), lle);
+                    logger.error("Partition " + this.lease.getLeaseToken() + ": lost lease on renew.", lle);
                     return Mono.error(lle);
                 }
 
