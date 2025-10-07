@@ -2612,9 +2612,9 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2023-01-03")
     @Test
     public void listHandlesAccessRights() {
-        ShareClient shareClient = primaryFileServiceClient.getShareClient("share");
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("directory");
-        ShareFileClient fileClient = directoryClient.getFileClient("file");
+        ShareClient shareClient = primaryFileServiceClient.getShareClient("myshare");
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("mydirectory");
+        ShareFileClient fileClient = directoryClient.getFileClient("myfile");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertEquals(ShareFileHandleAccessRights.WRITE, list.get(0).getAccessRights().get(0));
     }
