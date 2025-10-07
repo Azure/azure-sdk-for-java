@@ -18,7 +18,7 @@ Before running the tests, you need:
 1. An Azure Cognitive Services Speech resource. Create one using the [Azure Portal](https://portal.azure.com/).
 2. Java Development Kit (JDK) 8 or later
 3. Maven 3.x or later
-4. A sample audio file for testing (see [SAMPLE_AUDIO_README.md](SAMPLE_AUDIO_README.md))
+4. A sample audio file for testing (WAV, MP3, or OGG format, shorter than 2 hours, smaller than 250 MB)
 
 ## Set Environment Variables
 
@@ -134,7 +134,7 @@ To test with token-based authentication, some tests use `createClient(false, tru
 ### Common Issues
 
 1. **Missing environment variables**: Ensure `SPEECH_ENDPOINT` and `SPEECH_API_KEY` are set correctly
-2. **Missing sample audio file**: Make sure you have a `sample.wav` file in the test directory (see [SAMPLE_AUDIO_README.md](SAMPLE_AUDIO_README.md))
+2. **Missing sample audio file**: Make sure you have a `sample.wav` file in the test directory (WAV, MP3, or OGG format, shorter than 2 hours, smaller than 250 MB)
 3. **Test proxy issues**: If playback tests fail, try running in LIVE or RECORD mode first
 4. **Network issues**: Check your network connection and firewall settings
 
