@@ -84,7 +84,7 @@ class PartitionControllerImpl implements PartitionController {
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                logger.warn("Partition " + lease.getLeaseToken() + ": unexpected error; removing lease from current cache.", throwable);
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
