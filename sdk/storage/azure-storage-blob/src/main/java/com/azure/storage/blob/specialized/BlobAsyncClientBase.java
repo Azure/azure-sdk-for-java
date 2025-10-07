@@ -1305,102 +1305,22 @@ public class BlobAsyncClientBase {
     private Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponseHelper(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, DownloadContentValidationOptions contentValidationOptions, Context context) {
         
-        // Determine if content validation is needed
-        boolean hasContentValidation = contentValidationOptions != null && 
-            (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled());
-        
-        if (hasContentValidation) {
-            return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders())));
-        } else {
-            return downloadStreamWithResponse(null, options, requestConditions, false, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders())));
-        }
+        // Call the unified downloadStreamWithResponse method directly - it handles validation options internally
+        return downloadStreamWithResponse(null, options, requestConditions, false, contentValidationOptions, context)
+            .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                    data, r.getDeserializedHeaders())));
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
-        BlobRange finalRange = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
-        BlobRequestConditions finalRequestConditions
-            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
-
-        // The first range should eagerly convert headers as they'll be used to create response types.
-        Context firstRangeContext = context == null
-            ? new Context("azure-eagerly-convert-headers", true)
-            : context.addData("azure-eagerly-convert-headers", true);
-
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
-            firstRangeContext).map(response -> {
-                BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
-                String eTag = blobsDownloadHeaders.getETag();
-                BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
-                    ModelHelper.getErrorCode(response.getHeaders()));
-
-                /*
-                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
-                 * from the response for better book-keeping towards the end.
-                 */
-                long finalCount;
-                long initialOffset = finalRange.getOffset();
-                if (finalRange.getCount() == null) {
-                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
-                    finalCount = blobLength - initialOffset;
-                } else {
-                    finalCount = finalRange.getCount();
-                }
-
-                // The resume function takes throwable and offset at the destination.
-                // I.e. offset is relative to the starting point.
-                BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
-                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
-                        return Mono.error(throwable);
-                    }
-
-                    long newCount = finalCount - offset;
-
-                    /*
-                     * It's possible that the network stream will throw an error after emitting all data but before
-                     * completing. Issuing a retry at this stage would leave the download in a bad state with
-                     * incorrect count and offset values. Because we have read the intended amount of data, we can
-                     * ignore the error at the end of the stream.
-                     */
-                    if (newCount == 0) {
-                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
-                            + "but before stream signaled completion. Returning success as all data was downloaded. "
-                            + "Exception message: " + throwable.getMessage());
-                        return Mono.empty();
-                    }
-
-                    try {
-                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, getMD5, context);
-                    } catch (Exception e) {
-                        return Mono.error(e);
-                    }
-                };
-
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
-            });
+        // Delegate to the overload with null content validation options
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, null, context);
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, DownloadContentValidationOptions contentValidationOptions, Context context) {
         
-        // Consolidate validation logic - check if any content validation is needed
-        boolean hasContentValidation = contentValidationOptions != null && 
-            (contentValidationOptions.isStructuredMessageValidationEnabled() || contentValidationOptions.isMd5ValidationEnabled());
-        
-        // For backward compatibility, if no content validation options are provided, use the original method
-        if (!hasContentValidation) {
-            return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context);
-        }
-
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         
         // Determine MD5 validation: properly consider both getRangeContentMd5 parameter and validation options
