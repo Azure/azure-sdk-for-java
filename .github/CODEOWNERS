@@ -171,10 +171,10 @@
 # AzureSdkOwners:                                                  @g2vinay @joshfree
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @skapur12 @wiboris @dpwatrous @NickKouds @Azure/azure-java-sdk
+/sdk/batch/                                                        @skapur12 @wiboris @ReneOv-MSFT @dpwatrous @Azure/azure-java-sdk
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
+# ServiceOwners:                                                   @skapur12 @wiboris @ReneOv-MSFT @dpwatrous
 
 # ServiceLabel: %Billing
 # ServiceOwners:                                                   @cabbpt
