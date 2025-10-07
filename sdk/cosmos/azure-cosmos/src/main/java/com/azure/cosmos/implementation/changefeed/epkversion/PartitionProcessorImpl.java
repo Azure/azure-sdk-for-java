@@ -59,6 +59,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
+    private int counter = 0;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -119,6 +120,12 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     this.options.setThroughputControlGroupName(configValueHolder.v.getGroupName());
                 }
 
+                counter++;
+
+                if (counter == 6) {
+                    throw new CosmosException(503, "Simulated 503");
+                }
+
                 return this.documentClient.createDocumentChangeFeedQuery(
                         this.settings.getCollectionSelfLink(),
                         this.options,
@@ -149,9 +156,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.warn(
-                            "Lease with token {}: Exception was thrown from thread {}",
-                            this.lease.getLeaseToken(),
-                            Thread.currentThread().getId(),
+                            String.format("Lease with token %s: Exception was thrown from thread %s",
+                                this.lease.getLeaseToken(), Thread.currentThread().getId()),
                             throwable))
                         .doOnSuccess((Void) -> {
                             this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
