@@ -108,7 +108,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("contentType", this.contentType);
-        jsonWriter.writeStringField("contentInBase64", Base64.getEncoder().encodeToString(this.content.toBytes()));
+        jsonWriter.writeStringField("contentInBase64", Base64FromBinaryData(this.content));
         jsonWriter.writeStringField("contentId", this.contentId);
         return jsonWriter.writeEndObject();
     }
@@ -170,5 +170,13 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
             throw new IllegalStateException(
                 "Missing required property/properties: " + String.join(", ", missingProperties));
         });
+    }
+
+    private static String Base64FromBinaryData(BinaryData content) {
+        if (content != null) {
+            return Base64.getEncoder().encodeToString(content.toBytes());
+        }
+
+        return null;
     }
 }
