@@ -270,7 +270,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         }
 
         List<TokenRequestContext> captured = credential.getContexts();
-        // fails here with expected: <3> but was: <1>
         assertEquals(tenants.length, captured.size());
         for (int i = 0; i < tenants.length; i++) {
             TokenRequestContext ctx = captured.get(i);
@@ -290,8 +289,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
             return next.process();
         }).httpClient(ignored -> Mono.empty()).build();
 
-        callContextCreator.sendSync(request, Context.NONE);
-
+        HttpResponse response = callContextCreator.sendSync(request, Context.NONE);
+        if (response != null) {
+            response.close();
+        }
         return callContextReference.get();
     }
 
@@ -302,7 +303,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext requestContext) {
-            // Snapshot to avoid mutation side-effects if the same instance is reused.
+            // Snapshot to avoid mutation side effects if the same instance is reused.
             TokenRequestContext snapshot
                 = new TokenRequestContext().addScopes(requestContext.getScopes().toArray(new String[0]))
                     .setTenantId(requestContext.getTenantId())
