@@ -59,7 +59,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
-    private int counter = 0;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -118,12 +117,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             .flatMap(configValueHolder -> {
                 if (configValueHolder.v != null) {
                     this.options.setThroughputControlGroupName(configValueHolder.v.getGroupName());
-                }
-
-                counter++;
-
-                if (counter == 6) {
-                    throw new CosmosException(503, "Simulated 503");
                 }
 
                 return this.documentClient.createDocumentChangeFeedQuery(

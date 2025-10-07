@@ -181,7 +181,7 @@ public class CosmosException extends AzureException {
      * @param statusCode the http status code of the response.
      * @param errorMessage the error message.
      */
-    public CosmosException(int statusCode, String errorMessage) {
+    protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
         cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
