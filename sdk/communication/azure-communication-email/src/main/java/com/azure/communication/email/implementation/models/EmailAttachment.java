@@ -108,7 +108,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("contentType", this.contentType);
-        jsonWriter.writeStringField("contentInBase64", Base64FromBinaryData(this.content));
+        jsonWriter.writeStringField("contentInBase64", base64FromBinaryData(this.content));
         jsonWriter.writeStringField("contentId", this.contentId);
         return jsonWriter.writeEndObject();
     }
@@ -172,7 +172,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
         });
     }
 
-    private static String Base64FromBinaryData(BinaryData content) {
+    private static String base64FromBinaryData(BinaryData content) {
         if (content != null) {
             return Base64.getEncoder().encodeToString(content.toBytes());
         }
