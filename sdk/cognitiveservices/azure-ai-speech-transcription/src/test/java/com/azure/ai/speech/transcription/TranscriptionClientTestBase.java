@@ -18,15 +18,17 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import reactor.test.StepVerifier;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -34,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class TranscriptionClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClientTestBase.class);
+    private static final Duration TEST_TIMEOUT = Duration.ofSeconds(30);
 
     final Boolean printResults = false; // Set to true to print results to console window
 
@@ -43,6 +46,25 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
     // The clients that will be used for tests
     private TranscriptionClient client = null;
     private TranscriptionAsyncClient asyncClient = null;
+
+    /**
+     * Sets up the test resources before each test.
+     */
+    @BeforeEach
+    public void setupTest() {
+        // Reset clients before each test to ensure clean state
+        client = null;
+        asyncClient = null;
+    }
+
+    /**
+     * Cleans up test resources after each test.
+     */
+    @AfterEach
+    public void cleanupTest() {
+        // Clean up any resources if needed
+        // Note: The clients don't require explicit cleanup as they are managed by the test framework
+    }
 
     /**
      * Creates a client for testing.
@@ -131,18 +153,23 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                 }
                 validateTranscriptionResult(testName, result);
             } else {
+                // Use StepVerifier for async tests instead of blocking
                 if (!transcribeWithResponse) {
-                    asyncClient.transcribe(requestContent)
-                        .doOnSuccess(result -> validateTranscriptionResult(testName, result))
-                        .block();
+                    StepVerifier.create(asyncClient.transcribe(requestContent))
+                        .assertNext(result -> validateTranscriptionResult(testName, result))
+                        .expectComplete()
+                        .verify(TEST_TIMEOUT);
                 } else {
-                    asyncClient.transcribeWithResponse(BinaryData.fromObject(requestContent), requestOptions)
-                        .doOnSuccess(response -> {
+                    StepVerifier
+                        .create(
+                            asyncClient.transcribeWithResponse(BinaryData.fromObject(requestContent), requestOptions))
+                        .assertNext(response -> {
                             printHttpRequestAndResponse(response);
                             TranscriptionResult result = response.getValue().toObject(TranscriptionResult.class);
                             validateTranscriptionResult(testName, result);
                         })
-                        .block();
+                        .expectComplete()
+                        .verify(TEST_TIMEOUT);
                 }
             }
         } catch (Exception e) {

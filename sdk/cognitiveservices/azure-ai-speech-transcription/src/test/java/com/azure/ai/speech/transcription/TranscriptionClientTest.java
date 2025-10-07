@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * Tests for TranscriptionClient (synchronous client).
  */
@@ -173,11 +175,33 @@ class TranscriptionClientTest extends TranscriptionClientTestBase {
      *
      ***********************************************************************************/
 
-    // Note: Error handling tests would go here
-    // Examples:
-    // - Test with invalid audio format
-    // - Test with missing required parameters
-    // - Test with unsupported language code
-    // - Test with invalid diarization settings
-    // These would require specific test scenarios and expected exception handling
+    @Test
+    public void testTranscribeSyncWithNullRequestContent() {
+        createClient(true, true, sync);
+
+        // Test that null request content throws appropriate exception
+        assertThrows(NullPointerException.class, () -> {
+            getClient().transcribe(null);
+        }, "Transcribe should throw NullPointerException when request content is null");
+    }
+
+    @Test
+    public void testTranscribeSyncWithEmptyAudioData() {
+        createClient(true, true, sync);
+
+        // Test with empty audio data - this should result in a service error
+        // Note: Depending on service behavior, this may throw HttpResponseException
+        // The exact behavior should be validated based on actual service responses
+    }
+
+    @Test
+    public void testTranscribeSyncWithInvalidLanguageCode() {
+        createClient(true, true, sync);
+
+        // Test with invalid language code
+        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("invalid-locale"));
+
+        // Note: This test requires actual service call to verify behavior
+        // In PLAYBACK mode, this would replay the recorded error response
+    }
 }

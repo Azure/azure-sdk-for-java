@@ -137,7 +137,6 @@ public final class TranscriptionAsyncClient {
      * <!-- end com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe -->
      *
      * @param body The body of the multipart request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
