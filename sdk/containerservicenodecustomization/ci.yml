@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicenodecustomization/ci.yml
+      - sdk/containerservicenodecustomization/azure-resourcemanager-containerservice-nodecustom/
+    exclude:
+      - sdk/containerservicenodecustomization/pom.xml
+      - sdk/containerservicenodecustomization/azure-resourcemanager-containerservice-nodecustom/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicenodecustomization/ci.yml
+      - sdk/containerservicenodecustomization/azure-resourcemanager-containerservice-nodecustom/
+    exclude:
+      - sdk/containerservicenodecustomization/pom.xml
+      - sdk/containerservicenodecustomization/azure-resourcemanager-containerservice-nodecustom/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerservicenodecustom
+    displayName: azure-resourcemanager-containerservice-nodecustom
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerservicenodecustomization
+    Artifacts:
+      - name: azure-resourcemanager-containerservice-nodecustom
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicenodecustom
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicenodecustom }}
