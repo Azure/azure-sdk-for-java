@@ -249,8 +249,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         String authority = getRequestAuthority(request);
-        Map<String, String> challengeAttributes
-            = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
+        Map<String, String> challengeAttributes = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {

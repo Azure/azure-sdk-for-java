@@ -91,8 +91,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
                 TokenRequestContext tokenRequestContext
                     = new TokenRequestContext().addScopes(this.challenge.getScopes())
-                    .setTenantId(this.challenge.getTenantId())
-                    .setCaeEnabled(true);
+                        .setTenantId(this.challenge.getTenantId())
+                        .setCaeEnabled(true);
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -249,8 +249,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         String authority = getRequestAuthority(request);
-        Map<String, String> challengeAttributes
-            = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
+        Map<String, String> challengeAttributes = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {

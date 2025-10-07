@@ -73,21 +73,10 @@ public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticatio
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return Mono.just(false);
         } else {
-            AuthenticateChallenge bearerChallenge = CoreUtils.parseAuthenticateHeader(authHeader)
-                .stream()
-                .filter(challenge -> "Bearer".equalsIgnoreCase(challenge.getScheme()))
-                .findFirst()
-                .orElse(null);
+            ContainerRegistryTokenRequestContext tokenRequestContext = createTokenRequestContext(authHeader);
 
-            if (bearerChallenge == null) {
-                return Mono.just(false);
-            }
-            String scope = bearerChallenge.getParameters().get(SCOPES_PARAMETER);
-            String serviceName = bearerChallenge.getParameters().get(SERVICE_PARAMETER);
-
-            if (scope != null && serviceName != null) {
-                return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
-                    .thenReturn(true);
+            if (tokenRequestContext != null) {
+                return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
             }
             return Mono.just(false);
         }
@@ -121,24 +110,28 @@ public class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticatio
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
-            AuthenticateChallenge bearerChallenge = CoreUtils.parseAuthenticateHeader(authHeader)
-                .stream()
-                .filter(challenge -> "Bearer".equalsIgnoreCase(challenge.getScheme()))
-                .findFirst()
-                .orElse(null);
-
-            if (bearerChallenge == null) {
-                return false;
-            }
-            String scope = bearerChallenge.getParameters().get(SCOPES_PARAMETER);
-            String serviceName = bearerChallenge.getParameters().get(SERVICE_PARAMETER);
-
-            if (scope != null && serviceName != null) {
-                setAuthorizationHeaderSync(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
+            ContainerRegistryTokenRequestContext tokenRequestContext = createTokenRequestContext(authHeader);
+            if (tokenRequestContext != null) {
+                setAuthorizationHeaderSync(context, tokenRequestContext);
                 return true;
             }
         }
 
         return false;
+    }
+
+    private static ContainerRegistryTokenRequestContext createTokenRequestContext(String authHeader) {
+        AuthenticateChallenge bearerChallenge = CoreUtils.parseAuthenticateHeader(authHeader)
+            .stream()
+            .filter(challenge -> "Bearer".equalsIgnoreCase(challenge.getScheme()))
+            .findFirst()
+            .orElse(null);
+
+        String scope = bearerChallenge.getParameters().get(SCOPES_PARAMETER);
+        String serviceName = bearerChallenge.getParameters().get(SERVICE_PARAMETER);
+
+        return (scope != null && serviceName != null)
+            ? new ContainerRegistryTokenRequestContext(serviceName, scope)
+            : null;
     }
 }
