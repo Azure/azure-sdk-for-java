@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2025-09-29)
+## 1.1.0-beta.2 (2025-10-08)
 
 - Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -84,11 +84,11 @@
 
 #### `models.StorageProperties` was modified
 
-* `iops()` was removed
-* `validate()` was removed
-* `withThroughput(java.lang.Long)` was removed
 * `withIops(java.lang.Long)` was removed
+* `withThroughput(java.lang.Long)` was removed
+* `iops()` was removed
 * `throughput()` was removed
+* `validate()` was removed
 
 #### `models.EntraIdentityProvider` was modified
 
