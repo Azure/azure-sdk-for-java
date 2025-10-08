@@ -132,8 +132,7 @@ public final class EmailAsyncClient {
 
     private static BinaryData formatToBase64(BinaryData content) {
         if (content == null) {
-            throw LOGGER.logExceptionAsError(
-                new NullPointerException("'content' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'content' cannot be null."));
         }
 
         String encodedContent = Base64.getEncoder().encodeToString(content.toBytes());
