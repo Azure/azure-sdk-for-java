@@ -57,8 +57,10 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
                 this.isVirtualDirectory = true;
                 this.properties = null;
                 return;
-            } else {
+            } else if (e.getStatusCode() == 404) {
                 throw new IOException("Path: " + path.toString(), e);
+            } else {
+                throw LoggingUtility.logError(LOGGER, new IOException("Path: " + path.toString(), e));
             }
         }
         this.properties = props;
