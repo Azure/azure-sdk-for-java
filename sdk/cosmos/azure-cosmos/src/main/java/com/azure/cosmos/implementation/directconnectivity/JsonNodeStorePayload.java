@@ -16,6 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
@@ -43,6 +44,14 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
                 return fromJsonWithFallbackCharsetDecoder(bytes);
             } else {
+
+                if (Configs.isNonParseableDocumentLoggingEnabled()) {
+                    String documentSample = Base64.getEncoder().encodeToString(bytes);
+                    logger.error("Failed to parse JSON document. No customized charset decoder configured. Document in Base64 format: [" + documentSample + "]", e);
+                } else {
+                    logger.error("Failed to parse JSON document. No customized charset decoder configured.");
+                }
+
                 throw new IllegalStateException("Unable to parse JSON.", e);
             }
         }
@@ -53,6 +62,14 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
             String sanitizedJson = fallbackCharsetDecoder.decode(ByteBuffer.wrap(bytes)).toString();
             return Utils.getSimpleObjectMapper().readTree(sanitizedJson);
         } catch (IOException e) {
+
+            if (Configs.isNonParseableDocumentLoggingEnabled()) {
+                String documentSample = Base64.getEncoder().encodeToString(bytes);
+                logger.error("Failed to parse JSON document even after applying fallback charset decoder. Document in Base64 format: [" + documentSample + "]", e);
+            } else {
+                logger.error("Failed to parse JSON document even after applying fallback charset decoder.");
+            }
+
             throw new IllegalStateException(
                 String.format(
                     "Unable to parse JSON with fallback charset decoder[OnMalformedInput %s, OnUnmappedCharacter %s]",

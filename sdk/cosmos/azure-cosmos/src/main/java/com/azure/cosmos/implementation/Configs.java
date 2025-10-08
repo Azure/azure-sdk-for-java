@@ -360,6 +360,10 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    private static final boolean DEFAULT_SHOULD_LOG_NON_PARSEABLE_PAYLOADS = false;
+    private static final String SHOULD_LOG_NON_PARSEABLE_PAYLOADS = "COSMOS.SHOULD_LOG_NON_PARSEABLE_PAYLOADS";
+    private static final String SHOULD_LOG_NON_PARSEABLE_PAYLOADS_VARIABLE = "COSMOS_SHOULD_LOG_NON_PARSEABLE_PAYLOADS";
+
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
@@ -1239,5 +1243,15 @@ public class Configs {
         }
 
         return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+    }
+
+    public static boolean isNonParseableDocumentLoggingEnabled() {
+        String isNonParseableDocumentLoggingEnabledAsString = System.getProperty(
+            SHOULD_LOG_NON_PARSEABLE_PAYLOADS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(SHOULD_LOG_NON_PARSEABLE_PAYLOADS_VARIABLE)),
+                String.valueOf(DEFAULT_SHOULD_LOG_NON_PARSEABLE_PAYLOADS)));
+
+        return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
     }
 }
