@@ -1174,6 +1174,56 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Reads a range of bytes from a blob with optional content validation. Uploading data must be done from the 
+     * {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * com.azure.storage.blob.options.DownloadContentValidationOptions validationOptions =
+     *     new com.azure.storage.blob.options.DownloadContentValidationOptions&#40;&#41;
+     *         .setStructuredMessageDecodingEnabled&#40;true&#41;
+     *         .setExpectedContentLength&#40;2048&#41;;
+     *
+     * client.downloadStreamWithResponse&#40;range, options, null, false, validationOptions&#41;.subscribe&#40;response -&gt; &#123;
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *         try &#123;
+     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *         &#125; catch &#40;IOException ex&#41; &#123;
+     *             throw new UncheckedIOException&#40;ex&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param contentValidationOptions {@link com.azure.storage.blob.options.DownloadContentValidationOptions} for validating downloaded content.
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        com.azure.storage.blob.options.DownloadContentValidationOptions contentValidationOptions) {
+        try {
+            return withContext(context -> downloadStreamWithResponse(range, options, requestConditions,
+                getRangeContentMd5, contentValidationOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
      * PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1216,6 +1266,12 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, null, context);
+    }
+
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        com.azure.storage.blob.options.DownloadContentValidationOptions contentValidationOptions, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
@@ -1245,6 +1301,13 @@ public class BlobAsyncClientBase {
                     finalCount = blobLength - initialOffset;
                 } else {
                     finalCount = finalRange.getCount();
+                }
+
+                // Apply structured message decoding if enabled
+                StreamResponse processedResponse = response;
+                if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageDecodingEnabled()) {
+                    processedResponse
+                        = applyStructuredMessageDecoding(response, contentValidationOptions.getExpectedContentLength());
                 }
 
                 // The resume function takes throwable and offset at the destination.
@@ -1277,8 +1340,33 @@ public class BlobAsyncClientBase {
                     }
                 };
 
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
+                return BlobDownloadAsyncResponseConstructorProxy.create(processedResponse, onDownloadErrorResume,
+                    finalOptions);
             });
+    }
+
+    private StreamResponse applyStructuredMessageDecoding(StreamResponse response, long expectedContentLength) {
+        com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder decoder
+            = new com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder(
+                expectedContentLength);
+
+        Flux<ByteBuffer> decodedBody = response.getValue().map(buffer -> {
+            try {
+                return decoder.decode(buffer);
+            } catch (Exception e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to decode structured message", e));
+            }
+        }).doOnComplete(() -> {
+            try {
+                decoder.finalizeDecoding();
+            } catch (Exception e) {
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException("Failed to finalize structured message decoding", e));
+            }
+        });
+
+        // Create a new StreamResponse with the decoded body
+        return new StreamResponse(response.getRequest(), response.getStatusCode(), response.getHeaders(), decodedBody);
     }
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
