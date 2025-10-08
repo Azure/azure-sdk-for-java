@@ -17,11 +17,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.core.util.logging.ClientLogger;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -132,12 +131,12 @@ public final class EmailAsyncClient {
     }
 
     private static BinaryData formatToBase64(BinaryData content) {
-        String encodedContent;
-        if (content != null) {
-            encodedContent = Base64.getEncoder().encodeToString(content.toBytes());
-        } else {
-            encodedContent = "";
+        if (content == null) {
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException("'content' cannot be null."));
         }
+
+        String encodedContent = Base64.getEncoder().encodeToString(content.toBytes());
 
         return BinaryData.fromString(encodedContent);
     }
