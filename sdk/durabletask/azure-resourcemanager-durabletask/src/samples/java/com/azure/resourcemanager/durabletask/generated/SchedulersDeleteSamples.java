@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class SchedulersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Schedulers_Delete.json
+     * x-ms-original-file: 2025-11-01/Schedulers_Delete.json
      */
     /**
      * Sample code: Schedulers_Delete.
