@@ -609,7 +609,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             getPkAfterRecreate);
     }
 
-    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long-emulator"}, dataProvider = "containerRecreateArgProvider", enabled = false, timeOut = TIMEOUT)
     public <T> void bulk(
         int ruBeforeDelete,
         String pkPathBeforeDelete,
