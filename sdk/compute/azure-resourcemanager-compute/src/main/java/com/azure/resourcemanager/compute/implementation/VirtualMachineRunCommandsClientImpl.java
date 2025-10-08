@@ -181,7 +181,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -215,7 +215,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -287,7 +287,9 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,7 +312,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, location, commandId,
@@ -322,7 +324,9 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -347,7 +351,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, location, commandId, this.client.getSubscriptionId(),
@@ -358,7 +362,9 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -373,7 +379,9 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -389,7 +397,9 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -430,7 +440,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualMachine(this.client.getEndpoint(), apiVersion,
@@ -471,7 +481,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -603,7 +613,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (runCommandName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByVirtualMachine(this.client.getEndpoint(), apiVersion,
@@ -646,7 +656,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (runCommandName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByVirtualMachine(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -749,7 +759,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, vmName, runCommandName, runCommand, accept, context))
@@ -796,7 +806,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1005,7 +1015,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1054,7 +1064,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1254,7 +1264,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (runCommandName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -1295,7 +1305,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         if (runCommandName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

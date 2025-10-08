@@ -20,7 +20,7 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
     @Test
     public void testListReplicasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-10-05T02:02:46Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"dudxjascowvfdjk\",\"containers\":[{},{},{}],\"initContainers\":[{},{}]},\"id\":\"kk\",\"name\":\"nmgzvyfijdkzuqnw\",\"type\":\"it\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-11-06T10:49:20Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"fxcz\",\"containers\":[{},{},{}],\"initContainers\":[{}]},\"id\":\"rtwletyves\",\"name\":\"rtlhpdhwyn\",\"type\":\"tacz\"},{\"properties\":{\"createdTime\":\"2021-06-25T10:53:07Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"fnv\",\"containers\":[{},{}],\"initContainers\":[{},{},{}]},\"id\":\"vnk\",\"name\":\"tiklsm\",\"type\":\"ihqlcoqks\"},{\"properties\":{\"createdTime\":\"2021-12-10T20:03:40Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"wbgbudav\",\"containers\":[{},{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"cqcdhthojv\",\"name\":\"irknucosaw\",\"type\":\"dtnagzlgpyaix\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicaCollection response = manager.containerAppsRevisionReplicas()
-            .listReplicasWithResponse("rxhxkn", "ccrmmk", "upijubyqjfkakfq", com.azure.core.util.Context.NONE)
+            .listReplicasWithResponse("ulhgltoiz", "xvsc", "sgfy", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

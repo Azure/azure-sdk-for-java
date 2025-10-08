@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfigu
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -287,15 +288,12 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @EnableWebSecurity
     public static class AadB2cTestWebSecurityConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer) throws Exception {
             // @formatter:off
             http
-                .authorizeHttpRequests()
-                .anyRequest().authenticated()
-                .and()
-                .apply(configurer);
+                .authorizeHttpRequests(req -> req.anyRequest().authenticated())
+                .with(configurer, Customizer.withDefaults());
             // @formatter:on
             return http.build();
         }

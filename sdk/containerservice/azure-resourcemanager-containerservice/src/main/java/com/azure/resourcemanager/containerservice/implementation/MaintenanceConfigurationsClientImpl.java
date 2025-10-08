@@ -141,7 +141,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagedCluster(this.client.getEndpoint(), apiVersion,
@@ -181,7 +181,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -296,7 +296,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -338,7 +338,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -436,7 +436,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, resourceName, configName, parameters, accept, context))
@@ -483,7 +483,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -582,7 +582,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -623,7 +623,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -680,13 +680,15 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
+     * Gets a list of maintenance configurations in the specified managed cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation along with {@link PagedResponse} on
+     * @return a list of maintenance configurations in the specified managed cluster along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -709,6 +711,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
+     * Gets a list of maintenance configurations in the specified managed cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -716,7 +720,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation along with {@link PagedResponse} on
+     * @return a list of maintenance configurations in the specified managed cluster along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

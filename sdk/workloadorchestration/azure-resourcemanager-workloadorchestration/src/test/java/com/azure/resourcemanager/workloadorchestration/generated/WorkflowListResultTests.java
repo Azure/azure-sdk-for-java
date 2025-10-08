@@ -13,10 +13,10 @@ public final class WorkflowListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"tcktyhjtqedcgzu\",\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"rqzz\",\"type\":\"CustomLocation\"},\"eTag\":\"vpglydz\",\"id\":\"rvqeevtoepryutn\",\"name\":\"ytp\",\"type\":\"dmovzvfva\"}],\"nextLink\":\"zqadf\"}")
+            "{\"value\":[{\"properties\":{\"workflowTemplateId\":\"ocwah\",\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"tjeaahhvjhh\",\"type\":\"EdgeZone\"},\"eTag\":\"zybbj\",\"id\":\"dj\",\"name\":\"syxkyxvxevblb\",\"type\":\"ednljl\"}],\"nextLink\":\"euaulxu\"}")
             .toObject(WorkflowListResult.class);
-        Assertions.assertEquals("rqzz", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("zqadf", model.nextLink());
+        Assertions.assertEquals("tjeaahhvjhh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("euaulxu", model.nextLink());
     }
 }

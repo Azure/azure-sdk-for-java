@@ -28,7 +28,7 @@ public final class TargetsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.targets()
-            .deleteWithResponse("ordilmywwtkgkxny", "dabg", "vudtjuewbcihx", "uwhcjyxccybv", "ayakkudzpx",
+            .deleteWithResponse("raehtwdwrft", "wib", "rcdlbhshfwpr", "cstwity", "hevxcced",
                 com.azure.core.util.Context.NONE);
 
     }

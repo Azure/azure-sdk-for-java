@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -50,28 +49,6 @@ public final class SourceTargetMap implements JsonSerializable<SourceTargetMap> 
     public TargetEndpoint targetEndpoint() {
         return this.targetEndpoint;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sourceEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sourceEndpoint in model SourceTargetMap"));
-        } else {
-            sourceEndpoint().validate();
-        }
-        if (targetEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property targetEndpoint in model SourceTargetMap"));
-        } else {
-            targetEndpoint().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SourceTargetMap.class);
 
     /**
      * {@inheritDoc}

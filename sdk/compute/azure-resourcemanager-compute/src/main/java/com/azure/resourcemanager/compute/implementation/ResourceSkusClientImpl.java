@@ -234,8 +234,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Resource Skus operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listNextSinglePageAsync(String nextLink) {
@@ -261,8 +261,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Resource Skus operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listNextSinglePageAsync(String nextLink, Context context) {

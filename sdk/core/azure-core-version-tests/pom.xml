@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.58.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.7.9</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -111,7 +111,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
     </dependency>
   </dependencies>
 
@@ -120,12 +120,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-core:[3.7.9]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.7.11]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.18.4.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->

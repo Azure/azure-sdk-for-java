@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_CreateOrReplace_MaximumSet.

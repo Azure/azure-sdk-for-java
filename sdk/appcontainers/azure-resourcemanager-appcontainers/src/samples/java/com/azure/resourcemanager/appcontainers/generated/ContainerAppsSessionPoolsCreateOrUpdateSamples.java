@@ -28,7 +28,8 @@ import java.util.Arrays;
  */
 public final class ContainerAppsSessionPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * SessionPools_LifecycleOnContainerExit_CreateOrUpdate.json
      */
     /**
@@ -70,7 +71,8 @@ public final class ContainerAppsSessionPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * SessionPools_LifecycleTimed_CreateOrUpdate.json
      */
     /**
@@ -92,8 +94,7 @@ public final class ContainerAppsSessionPoolsCreateOrUpdateSamples {
             .withScaleConfiguration(
                 new ScaleConfiguration().withMaxConcurrentSessions(500).withReadySessionInstances(100))
             .withDynamicPoolConfiguration(new DynamicPoolConfiguration().withLifecycleConfiguration(
-                new LifecycleConfiguration().withLifecycleType(LifecycleType.ON_CONTAINER_EXIT)
-                    .withMaxAlivePeriodInSeconds(86400)))
+                new LifecycleConfiguration().withLifecycleType(LifecycleType.TIMED).withCooldownPeriodInSeconds(600)))
             .withCustomContainerTemplate(new CustomContainerTemplate()
                 .withRegistryCredentials(new SessionRegistryCredentials().withServer("test.azurecr.io")
                     .withIdentity(

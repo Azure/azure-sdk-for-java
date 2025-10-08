@@ -4,13 +4,12 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.core.management.Region;
-import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -323,7 +322,6 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withBootDiagnosticsOnManagedStorageAccount()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .create();
 
         Assertions.assertNotNull(virtualMachine);

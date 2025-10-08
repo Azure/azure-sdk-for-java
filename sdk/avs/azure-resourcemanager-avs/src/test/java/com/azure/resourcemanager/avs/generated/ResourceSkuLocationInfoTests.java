@@ -12,12 +12,12 @@ public final class ResourceSkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuLocationInfo model = BinaryData.fromString(
-            "{\"location\":\"heafidlt\",\"zones\":[\"sr\",\"smkss\",\"h\"],\"zoneDetails\":[{\"name\":[\"txfkfweg\",\"rhptilluc\"],\"capabilities\":[{\"name\":\"qtgdqohmcwsl\",\"value\":\"riz\"},{\"name\":\"tpwb\",\"value\":\"a\"}]},{\"name\":[\"libph\",\"qzmiza\",\"a\",\"ankjpdnjzh\"],\"capabilities\":[{\"name\":\"oylhjlmuoyxprimr\",\"value\":\"opteecj\"},{\"name\":\"eislstvasylwx\",\"value\":\"zaum\"}]}]}")
+            "{\"location\":\"zh\",\"zones\":[\"kj\",\"qrvqq\"],\"zoneDetails\":[{\"name\":[\"jinrvgoupmfiibfg\"],\"capabilities\":[{\"name\":\"ioolvrwxkvtkkgll\",\"value\":\"wjygvjayvblmhvk\"},{\"name\":\"uhbxvvy\",\"value\":\"gsopbyrqufegxu\"},{\"name\":\"wz\",\"value\":\"bnhlmc\"}]},{\"name\":[\"p\"],\"capabilities\":[{\"name\":\"gitvg\",\"value\":\"mhrixkwmyijejve\"},{\"name\":\"rh\",\"value\":\"pna\"},{\"name\":\"xexccbdreaxhcexd\",\"value\":\"rvqahqkghtpwi\"},{\"name\":\"nhyjsv\",\"value\":\"ycxzbfvoo\"}]},{\"name\":[\"rvmtgjq\",\"pyostronzmyhgfi\",\"nsxkmcwaekrrjr\",\"afxtsgum\"],\"capabilities\":[{\"name\":\"glikkxwslolb\",\"value\":\"pvuzlmv\"},{\"name\":\"elfk\",\"value\":\"gplcrpwjxeznoigb\"},{\"name\":\"njwmwkpnbsazejj\",\"value\":\"qkagfhsxt\"},{\"name\":\"augzxnfaazpxdtn\",\"value\":\"dm\"}]},{\"name\":[\"j\",\"lwuenvrkp\"],\"capabilities\":[{\"name\":\"uaibrebqaaysj\",\"value\":\"ixqtn\"}]}]}")
             .toObject(ResourceSkuLocationInfo.class);
-        Assertions.assertEquals("heafidlt", model.location());
-        Assertions.assertEquals("sr", model.zones().get(0));
-        Assertions.assertEquals("txfkfweg", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("qtgdqohmcwsl", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("riz", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("zh", model.location());
+        Assertions.assertEquals("kj", model.zones().get(0));
+        Assertions.assertEquals("jinrvgoupmfiibfg", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("wjygvjayvblmhvk", model.zoneDetails().get(0).capabilities().get(0).value());
     }
 }

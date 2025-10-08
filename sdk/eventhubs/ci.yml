@@ -14,6 +14,7 @@ trigger:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
+      - sdk/eventhubs/azure-resourcemanager-eventhubs/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
@@ -21,6 +22,7 @@ trigger:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
+      - sdk/eventhubs/azure-resourcemanager-eventhubs/pom.xml
 
 pr:
   branches:
@@ -37,6 +39,7 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
+      - sdk/eventhubs/azure-resourcemanager-eventhubs/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
@@ -44,6 +47,7 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
+      - sdk/eventhubs/azure-resourcemanager-eventhubs/pom.xml
 
 parameters:
 - name: release_azuremessagingeventhubs
@@ -58,6 +62,10 @@ parameters:
   displayName: 'azure-messaging-eventhubs-checkpointstore-jedis'
   type: boolean
   default: true
+- name: release_azureresourcemanagereventhubs
+  displayName: 'azure-resourcemanager-eventhubs'
+  type: boolean
+  default: false
 - name: release_dependsonlivetests
   displayName: 'Release depends on live tests'
   type: boolean
@@ -80,6 +88,10 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstorejedis
         releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstorejedis }}
+      - name: azure-resourcemanager-eventhubs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventhubs
+        releaseInBatch: ${{ parameters.release_azureresourcemanagereventhubs }}
     AdditionalModules:
       - name: azure-messaging-eventhubs-track2-perf
         groupId: com.azure

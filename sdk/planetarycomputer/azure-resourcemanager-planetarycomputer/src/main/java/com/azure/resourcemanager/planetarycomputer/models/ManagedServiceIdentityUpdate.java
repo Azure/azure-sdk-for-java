@@ -75,21 +75,6 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (userAssignedIdentities() != null) {
-            userAssignedIdentities().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.avs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -599,28 +598,6 @@ public final class PrivateCloudInner extends Resource {
         this.innerProperties().withDnsZoneType(dnsZoneType);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model PrivateCloudInner"));
-        } else {
-            sku().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudInner.class);
 
     /**
      * {@inheritDoc}

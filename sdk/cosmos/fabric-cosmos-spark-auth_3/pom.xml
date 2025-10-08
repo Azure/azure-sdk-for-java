@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>fabric-cosmos-spark-auth_3</artifactId>
-  <version>1.0.0-beta.2</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
+  <version>1.1.0-beta.1</version>  <!-- {x-version-update;com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/fabric-cosmos-spark-auth_3</url>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API Account Data Resolver for Fabric</name>
@@ -100,14 +100,14 @@
     <dependency>
       <groupId>com.azure.cosmos.spark</groupId>
       <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-      <version>4.39.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+      <version>4.41.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -126,7 +126,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-sources</id>
@@ -169,7 +169,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -185,7 +185,7 @@
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.39.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.41.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
                 <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure.synapse:synapseutils_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -208,7 +208,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -225,7 +225,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -504,7 +504,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <includes>
                 <include>**/*.*</include>
@@ -530,7 +530,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -539,7 +539,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -568,7 +568,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>

@@ -17,6 +17,11 @@ public final class OrchestrationServiceNames extends ExpandableStringEnum<Orches
     public static final OrchestrationServiceNames AUTOMATIC_REPAIRS = fromString("AutomaticRepairs");
 
     /**
+     * Static value AutomaticZoneRebalancing for OrchestrationServiceNames.
+     */
+    public static final OrchestrationServiceNames AUTOMATIC_ZONE_REBALANCING = fromString("AutomaticZoneRebalancing");
+
+    /**
      * Creates a new instance of OrchestrationServiceNames value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

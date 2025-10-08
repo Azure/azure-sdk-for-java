@@ -66,7 +66,9 @@ public interface VirtualMachineRunCommandsClient {
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,7 +82,9 @@ public interface VirtualMachineRunCommandsClient {
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,7 +97,9 @@ public interface VirtualMachineRunCommandsClient {
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -107,7 +113,9 @@ public interface VirtualMachineRunCommandsClient {
      * Gets specific run command for a subscription in a location.
      * 
      * @param location The name of Azure region.
-     * @param commandId The command id.
+     * @param commandId Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed
+     * at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

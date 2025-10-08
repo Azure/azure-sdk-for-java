@@ -19,7 +19,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
     /*
      * The name of the SKU
      */
-    private String name;
+    private SchedulerSkuName name;
 
     /*
      * The SKU capacity. This allows scale out/in for the resource and impacts zone redundancy
@@ -42,7 +42,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * 
      * @return the name value.
      */
-    public String name() {
+    public SchedulerSkuName name() {
         return this.name;
     }
 
@@ -52,7 +52,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * @param name the name value to set.
      * @return the SchedulerSkuUpdate object itself.
      */
-    public SchedulerSkuUpdate withName(String name) {
+    public SchedulerSkuUpdate withName(SchedulerSkuName name) {
         this.name = name;
         return this;
     }
@@ -89,20 +89,12 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         jsonWriter.writeNumberField("capacity", this.capacity);
         return jsonWriter.writeEndObject();
     }
@@ -123,7 +115,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedSchedulerSkuUpdate.name = reader.getString();
+                    deserializedSchedulerSkuUpdate.name = SchedulerSkuName.fromString(reader.getString());
                 } else if ("capacity".equals(fieldName)) {
                     deserializedSchedulerSkuUpdate.capacity = reader.getNullable(JsonReader::getInt);
                 } else if ("redundancyState".equals(fieldName)) {

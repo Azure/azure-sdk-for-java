@@ -23,7 +23,7 @@ public final class PublicCloudConnectorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"wznm\",\"excludedAccounts\":[\"knso\",\"gj\",\"xbldtlwwrlkdmtn\"],\"isOrganizationalAccount\":false},\"hostType\":\"AWS\",\"provisioningState\":\"Failed\",\"connectorPrimaryIdentifier\":\"lxdy\"},\"location\":\"syocogjltdtbnnha\",\"tags\":{\"amqgxqquezikyw\":\"crkvcikhnv\",\"lla\":\"gxk\",\"z\":\"melwuipiccjz\"},\"id\":\"v\",\"name\":\"vvcnayr\",\"type\":\"yrnxxmueedn\"}]}";
+            = "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"washr\",\"excludedAccounts\":[\"kcnqxwbpo\",\"ulpiuj\"],\"isOrganizationalAccount\":false},\"hostType\":\"AWS\",\"provisioningState\":\"Failed\",\"connectorPrimaryIdentifier\":\"i\"},\"location\":\"byuqerpqlp\",\"tags\":{\"t\":\"ciuqgbdb\",\"mhykojoxafnndl\":\"uvfbtkuwh\",\"kkpwdreqnovvq\":\"ichkoymkcdyhb\",\"syrsndsytgadgvra\":\"ovljxywsu\"},\"id\":\"aeneqnzarrwl\",\"name\":\"uu\",\"type\":\"jfqka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,14 @@ public final class PublicCloudConnectorsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PublicCloudConnector> response
-            = manager.publicCloudConnectors().listByResourceGroup("pcdpumnz", com.azure.core.util.Context.NONE);
+            = manager.publicCloudConnectors().listByResourceGroup("wo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("syocogjltdtbnnha", response.iterator().next().location());
-        Assertions.assertEquals("crkvcikhnv", response.iterator().next().tags().get("amqgxqquezikyw"));
-        Assertions.assertEquals("wznm", response.iterator().next().properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("knso",
+        Assertions.assertEquals("byuqerpqlp", response.iterator().next().location());
+        Assertions.assertEquals("ciuqgbdb", response.iterator().next().tags().get("t"));
+        Assertions.assertEquals("washr", response.iterator().next().properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("kcnqxwbpo",
             response.iterator().next().properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(false,
-            response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(response.iterator().next().properties().awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, response.iterator().next().properties().hostType());
     }
 }

@@ -26,7 +26,7 @@ public final class ExecutionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowVersionId\":\"a\",\"specification\":{},\"status\":{\"updateTime\":\"2021-07-30T03:54:50Z\",\"status\":190169721,\"statusMessage\":\"mkxettcsloj\",\"stageHistory\":[{\"status\":734161368,\"statusMessage\":\"qtoqxjhqxcsq\",\"stage\":\"kbtn\",\"nextstage\":\"rngl\",\"errorMessage\":\"biipsnawwlqkznx\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"kwmuqqo\",\"type\":\"EdgeZone\"},\"eTag\":\"eiyglesrwvaexhdc\",\"id\":\"ceqnkbrupobehd\",\"name\":\"lj\",\"type\":\"acvumepj\"}";
+            = "{\"properties\":{\"workflowVersionId\":\"hskxx\",\"specification\":{},\"status\":{\"updateTime\":\"2021-12-04T06:38:55Z\",\"status\":435024183,\"statusMessage\":\"qgvtojrulfu\",\"stageHistory\":[{\"status\":1905255839,\"statusMessage\":\"hcfjzhxlyubqjro\",\"stage\":\"vrjeqmtzzbeqrztr\",\"nextstage\":\"lxrdhabsrwrsn\",\"errorMessage\":\"pqatiwkkvyanxkv\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":84399472,\"statusMessage\":\"jkqxetqmmli\",\"stage\":\"jjxnwxdchpoj\",\"nextstage\":\"ehzl\",\"errorMessage\":\"gfquwz\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1998740765,\"statusMessage\":\"rwkwbpjxljtxbus\",\"stage\":\"bxxn\",\"nextstage\":\"i\",\"errorMessage\":\"zhgbdgzpagsecn\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":159804724,\"statusMessage\":\"llmqiyne\",\"stage\":\"ellnkkii\",\"nextstage\":\"mtum\",\"errorMessage\":\"ymdjfua\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"guncan\",\"type\":\"CustomLocation\"},\"eTag\":\"wzor\",\"id\":\"bm\",\"name\":\"aqklxy\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,15 +36,16 @@ public final class ExecutionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Execution response = manager.executions()
-            .define("wmseharxifvqn")
-            .withExistingVersion("hbkgfyrt", "gm", "mjpjscdfpdqwty", "ev")
-            .withProperties(new ExecutionProperties().withWorkflowVersionId("tmbpjp").withSpecification(mapOf()))
-            .withExtendedLocation(new ExtendedLocation().withName("lf").withType(ExtendedLocationType.EDGE_ZONE))
+            .define("chgjtnhtukfacih")
+            .withExistingVersion("hthdklmvetatlakf", "oixwgiksb", "vtooxrpo", "wp")
+            .withProperties(new ExecutionProperties().withWorkflowVersionId("fntumeezbxvqx").withSpecification(mapOf()))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("srqorcgenmvceb").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("a", response.properties().workflowVersionId());
-        Assertions.assertEquals("kwmuqqo", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
+        Assertions.assertEquals("hskxx", response.properties().workflowVersionId());
+        Assertions.assertEquals("guncan", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 
     // Use "Map.of" if available

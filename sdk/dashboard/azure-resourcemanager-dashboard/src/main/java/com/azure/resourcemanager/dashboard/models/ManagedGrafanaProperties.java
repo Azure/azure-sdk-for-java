@@ -352,33 +352,6 @@ public final class ManagedGrafanaProperties implements JsonSerializable<ManagedG
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (grafanaIntegrations() != null) {
-            grafanaIntegrations().validate();
-        }
-        if (enterpriseConfigurations() != null) {
-            enterpriseConfigurations().validate();
-        }
-        if (grafanaConfigurations() != null) {
-            grafanaConfigurations().validate();
-        }
-        if (grafanaPlugins() != null) {
-            grafanaPlugins().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
