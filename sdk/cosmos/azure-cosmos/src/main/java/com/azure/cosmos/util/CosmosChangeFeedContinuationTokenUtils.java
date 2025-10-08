@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.util;
 
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
@@ -107,5 +109,17 @@ public final class CosmosChangeFeedContinuationTokenUtils {
         }
 
         return segmentedTokens;
+    }
+
+    public static String extractContinuationTokenFromCosmosException(CosmosException ce) {
+        Map<String, String> responseHeaders = ce.getResponseHeaders();
+        return getValueOrNull(responseHeaders, HttpConstants.HttpHeaders.E_TAG);
+    }
+
+    private static String getValueOrNull(Map<String, String> map, String key) {
+        if (map != null) {
+            return map.get(key);
+        }
+        return null;
     }
 }

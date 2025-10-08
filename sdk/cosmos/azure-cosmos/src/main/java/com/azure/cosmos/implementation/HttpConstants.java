@@ -465,6 +465,8 @@ public class HttpConstants {
         public static final int UNKNOWN_QUORUM_RESULT = 20909;
         public static final int INVALID_RESULT = 20910;
         public static final int CLOSED_CLIENT = 20912;
+        public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 20914;
+        public static final int JACKSON_STREAMS_CONSTRAINED = 20915;
 
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses

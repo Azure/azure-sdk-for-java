@@ -201,7 +201,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
-        ByteBuf retainedContent) {
+        ByteBuf retainedContent) throws Exception {
 
         checkNotNull(headers, "Argument 'headers' must not be null.");
         checkNotNull(
@@ -222,7 +222,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 statusCode,
                 HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
-                size);
+                size,
+                request.requestContext.getResponseInterceptor());
         } else {
             retainedContent.release();
         }
@@ -232,7 +233,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             statusCode,
             HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
-            0);
+            0,
+            request.requestContext.getResponseInterceptor());
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
@@ -401,7 +403,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      */
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
                                                                       RxDocumentServiceRequest request,
-                                                                      HttpRequest httpRequest) {
+                                                                      HttpRequest httpRequest) throws Exception {
 
         return httpResponseMono.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).flatMap(httpResponse -> {
 
@@ -429,9 +431,14 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                     }
 
-                    StoreResponse rsp = request
-                        .getEffectiveHttpTransportSerializer(this)
-                        .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
+                    StoreResponse rsp = null;
+                    try {
+                        rsp = request
+                            .getEffectiveHttpTransportSerializer(this)
+                            .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
+                    } catch (Exception e) {
+                        throw reactor.core.Exceptions.propagate(e);
+                    }
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());

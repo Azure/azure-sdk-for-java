@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -24,20 +24,30 @@ class ResponseUtils {
             // transforms to Mono<StoreResponse>
             int size = 0;
             if (byteBufContent == null || (size = byteBufContent.readableBytes()) == 0) {
+                try {
+                    return new StoreResponse(
+                        endpoint,
+                        httpClientResponse.statusCode(),
+                        HttpUtils.unescape(httpResponseHeaders.toMap()),
+                        null,
+                        0,
+                        null);
+                } catch (Exception e) {
+                    throw reactor.core.Exceptions.propagate(e);
+                }
+            }
+
+            try {
                 return new StoreResponse(
                     endpoint,
                     httpClientResponse.statusCode(),
                     HttpUtils.unescape(httpResponseHeaders.toMap()),
-                    null,
-                    0);
+                    new ByteBufInputStream(byteBufContent, true),
+                    size,
+                    null);
+            } catch (Exception e) {
+                throw reactor.core.Exceptions.propagate(e);
             }
-
-            return new StoreResponse(
-                endpoint,
-                httpClientResponse.statusCode(),
-                HttpUtils.unescape(httpResponseHeaders.toMap()),
-                new ByteBufInputStream(byteBufContent, true),
-                size);
         });
     }
 }

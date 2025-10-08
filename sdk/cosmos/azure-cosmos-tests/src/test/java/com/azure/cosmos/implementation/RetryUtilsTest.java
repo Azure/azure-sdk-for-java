@@ -147,7 +147,7 @@ public class RetryUtilsTest {
         });
     }
 
-    private StoreResponse getStoreResponse() {
+    private StoreResponse getStoreResponse() throws Exception {
         StoreResponseBuilder storeResponseBuilder = new StoreResponseBuilder().withContent("{\"id\":\"Test content\"}")
                 .withStatus(200);
         return storeResponseBuilder.build();

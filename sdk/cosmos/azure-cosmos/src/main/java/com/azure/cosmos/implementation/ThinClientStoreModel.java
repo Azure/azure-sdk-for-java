@@ -96,7 +96,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
-        ByteBuf content) {
+        ByteBuf content) throws Exception {
 
         if (content == null) {
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
