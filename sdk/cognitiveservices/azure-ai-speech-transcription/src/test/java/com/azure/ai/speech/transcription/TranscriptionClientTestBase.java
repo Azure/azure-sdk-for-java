@@ -146,8 +146,21 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                 if (!transcribeWithResponse) {
                     result = client.transcribe(requestContent);
                 } else {
-                    Response<BinaryData> response
-                        = client.transcribeWithResponse(BinaryData.fromObject(requestContent), requestOptions);
+                    // For transcribeWithResponse, we need to manually prepare the multipart request body
+                    if (requestOptions == null) {
+                        requestOptions = new RequestOptions();
+                    }
+                    BinaryData multipartBody
+                        = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
+                            .serializeJsonField("definition", requestContent.getOptions())
+                            .serializeFileField("audio",
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
+                            .end()
+                            .getRequestBody();
+
+                    Response<BinaryData> response = client.transcribeWithResponse(multipartBody, requestOptions);
                     printHttpRequestAndResponse(response);
                     result = response.getValue().toObject(TranscriptionResult.class);
                 }
@@ -160,9 +173,21 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                         .expectComplete()
                         .verify(TEST_TIMEOUT);
                 } else {
-                    StepVerifier
-                        .create(
-                            asyncClient.transcribeWithResponse(BinaryData.fromObject(requestContent), requestOptions))
+                    // For transcribeWithResponse, we need to manually prepare the multipart request body
+                    if (requestOptions == null) {
+                        requestOptions = new RequestOptions();
+                    }
+                    BinaryData multipartBody
+                        = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
+                            .serializeJsonField("definition", requestContent.getOptions())
+                            .serializeFileField("audio",
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
+                                requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
+                            .end()
+                            .getRequestBody();
+
+                    StepVerifier.create(asyncClient.transcribeWithResponse(multipartBody, requestOptions))
                         .assertNext(response -> {
                             printHttpRequestAndResponse(response);
                             TranscriptionResult result = response.getValue().toObject(TranscriptionResult.class);
