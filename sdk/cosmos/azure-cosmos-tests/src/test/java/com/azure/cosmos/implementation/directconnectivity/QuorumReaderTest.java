@@ -56,7 +56,7 @@ public class QuorumReaderTest {
         };
     }
 
-    private StoreResponse storeResponse(Long lsn, Long localLSN, Double rc) {
+    private StoreResponse storeResponse(Long lsn, Long localLSN, Double rc) throws Exception {
         StoreResponseBuilder srb = StoreResponseBuilder.create();
         if (rc != null) {
             srb.withRequestCharge(rc);
@@ -74,7 +74,7 @@ public class QuorumReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "simpleReadStrongArgProvider")
-    public void basicReadStrong_AllReplicasSameLSN(int replicaCountToRead, ReadMode readMode, Long lsn, Long localLSN) {
+    public void basicReadStrong_AllReplicasSameLSN(int replicaCountToRead, ReadMode readMode, Long lsn, Long localLSN) throws Exception {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         Uri primaryReplicaURI = Uri.create("primary");
         ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
@@ -143,7 +143,7 @@ public class QuorumReaderTest {
 
     @Test(groups = "unit", dataProvider = "readStrong_RequestBarrierArgProvider")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void readStrong_OnlySecondary_RequestBarrier_Success(int numberOfBarrierRequestTillCatchUp) {
+    public void readStrong_OnlySecondary_RequestBarrier_Success(int numberOfBarrierRequestTillCatchUp) throws Exception {
         // scenario: we get lsn l1, l2 where l1 > l2
         // we do barrier request and send it to all replicas till we have two replicas with at least l1 lsn
 
@@ -288,7 +288,7 @@ public class QuorumReaderTest {
 
     @Test(groups = "unit", dataProvider = "readStrong_SecondaryReadBarrierExhausted_ReadBarrierOnPrimary_SuccessArgProvider")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void readStrong_SecondaryReadBarrierExhausted_ReadBarrierOnPrimary_Success(int numberOfHeadBarriersWithPrimaryIncludedTillQuorumMet) {
+    public void readStrong_SecondaryReadBarrierExhausted_ReadBarrierOnPrimary_Success(int numberOfHeadBarriersWithPrimaryIncludedTillQuorumMet) throws Exception {
         // scenario: we exhaust all barrier request retries on secondaries
         // after that we start barrier requests including the primary
 
@@ -449,7 +449,7 @@ public class QuorumReaderTest {
 
     @Test(groups = "unit")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void readStrong_QuorumNotSelected_ReadPrimary() {
+    public void readStrong_QuorumNotSelected_ReadPrimary() throws Exception {
         // scenario: attempts to read from secondaries,
         // only one secondary is available so ends in QuorumNotSelected State
         // reads from Primary and succeeds
@@ -554,7 +554,7 @@ public class QuorumReaderTest {
     }
 
     @DataProvider(name = "readPrimaryArgProvider")
-    public Object[][] readPrimaryArgProvider() {
+    public Object[][] readPrimaryArgProvider() throws Exception {
         return new Object[][]{
                 // endpoint, verifier for endpoint expected result, verifying the StoreResponse returned
                 {

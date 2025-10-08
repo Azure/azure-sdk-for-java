@@ -37,7 +37,7 @@ public class ReplicatedResourceClientRetryWithTest {
     protected static final int TIMEOUT = 120000;
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void retryWith_RetrySucceeds() throws URISyntaxException {
+    public void retryWith_RetrySucceeds() throws Exception {
         Uri primaryAddress = Uri.create("http://primary/");
         List<Uri> secondaryAddresses = new ArrayList<>();
         secondaryAddresses.add(Uri.create("http://secondary-1/"));

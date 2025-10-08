@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.IllegalReferenceCountException;
+import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -51,7 +53,8 @@ public class StoreResponse {
             int status,
             Map<String, String> headerMap,
             ByteBufInputStream contentStream,
-            int responsePayloadLength) {
+            int responsePayloadLength,
+            Callable<Void> responseInterceptor) throws Exception {
 
         checkArgument((contentStream == null) == (responsePayloadLength == 0),
             "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
@@ -71,8 +74,14 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
+<<<<<<< HEAD
                 this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
             } finally {
+=======
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap, responseInterceptor);
+            }
+            finally {
+>>>>>>> 8f6eb3273f6 (Add a way to skip records in Change Feed Processor. (#26))
                 try {
                     contentStream.close();
                 } catch (Throwable e) {
@@ -202,6 +211,35 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    //NOTE: only used for testing purpose to change the response header value
+    private void setHeaderValue(String headerName, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
+                responseHeaderValues[i] = value;
+                break;
+            }
+        }
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
+            } finally {
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap, responseInterceptor);
+            }
+            finally {
+                } catch (Throwable e) {
+                    if (!(e instanceof IllegalReferenceCountException)) {
+                        // Log as warning instead of debug to make ByteBuf leak issues more visible
+                        logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                    }
+    // NOTE: Only used in local test through transport client interceptor
+    public void setGCLSN(long gclsn) {
+        this.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(gclsn));
+    }
+
     }
 
     //NOTE: only used for testing purpose to change the response header value

@@ -250,6 +250,11 @@ public class Configs {
     public static final String CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER";
     public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = StringUtils.EMPTY;
 
+    // Config to enable recovery for CFP on malformed response
+    public static final String CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED = "COSMOS.CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED";
+    public static final String CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED_VARIABLE = "COSMOS_CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED";
+    public static final boolean DEFAULT_CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED = true;
+
     // Metrics
     // Samples:
     //            System.setProperty(
@@ -1227,6 +1232,16 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static boolean isChangeFeedProcessorMalformedResponseRecoveryEnabled() {
+        String isMalformedResponseRecoveryEnabled = System.getProperty(
+            CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_CHANGE_FEED_PROCESSOR_MALFORMED_RESPONSE_RECOVERY_ENABLED)));
+
+        return Boolean.parseBoolean(isMalformedResponseRecoveryEnabled);
     }
 
     public static String getAzureMonitorConnectionString() {

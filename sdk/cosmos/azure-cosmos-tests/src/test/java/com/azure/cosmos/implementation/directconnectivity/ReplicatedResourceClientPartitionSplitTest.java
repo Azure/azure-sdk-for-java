@@ -46,7 +46,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
     }
 
     @Test(groups = { "unit" }, dataProvider = "partitionIsSplittingArgProvider", timeOut = TIMEOUT)
-    public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) {
+    public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) throws Exception {
         Uri secondary1AddressBeforeMove = Uri.create("secondary");
         Uri secondary1AddressAfterMove = Uri.create("secondaryNew");
 

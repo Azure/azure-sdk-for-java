@@ -208,12 +208,12 @@ public class ConsistencyWriterTest {
     }
 
     @Test(groups = "unit")
-    public void getLsnAndGlobalCommittedLsn() {
+    public void getLsnAndGlobalCommittedLsn() throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put(WFConstants.BackendHeaders.LSN, "3");
         headers.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2");
 
-        StoreResponse sr = new StoreResponse(null, 0, headers, null, 0);
+        StoreResponse sr = new StoreResponse(null, 0, headers, null, 0, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);
         Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-2l);
         ConsistencyWriter.getLsnAndGlobalCommittedLsn(sr, lsn, globalCommittedLsn);
@@ -314,7 +314,7 @@ public class ConsistencyWriterTest {
     }
 
     @DataProvider(name = "globalStrongArgProvider")
-    public Object[][] globalStrongArgProvider() {
+    public Object[][] globalStrongArgProvider() throws Exception {
         return new Object[][]{
                 {
                         ConsistencyLevel.SESSION,

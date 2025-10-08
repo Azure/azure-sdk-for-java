@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.List;
@@ -75,7 +74,7 @@ public class StoreReaderDotNetTest {
      * Tests for TransportClient
      */
     @Test(groups = "unit")
-    public void transportClient() {
+    public void transportClient() throws Exception {
         // create a real document service request
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
@@ -122,7 +121,7 @@ public class StoreReaderDotNetTest {
         validator.validate(response);
     }
 
-    private TransportClient getMockTransportClientDuringUpgrade(AddressInformation[] addressInformation) {
+    private TransportClient getMockTransportClientDuringUpgrade(AddressInformation[] addressInformation) throws Exception {
         // create objects for all the dependencies of the StoreReader
         TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
 
@@ -186,7 +185,7 @@ public class StoreReaderDotNetTest {
         QuorumNotSelected
     }
 
-    private TransportClient getMockTransportClientForGlobalStrongReads(AddressInformation[] addressInformation, ReadQuorumResultKind result) {
+    private TransportClient getMockTransportClientForGlobalStrongReads(AddressInformation[] addressInformation, ReadQuorumResultKind result) throws Exception {
         // create objects for all the dependencies of the StoreReader
         TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
 
@@ -303,8 +302,7 @@ public class StoreReaderDotNetTest {
             int indexOfCaughtUpReplica,
             boolean undershootGlobalCommittedLsnDuringBarrier,
             boolean overshootLsnDuringBarrier,
-            boolean overshootGlobalCommittedLsnDuringBarrier)
-    {
+            boolean overshootGlobalCommittedLsnDuringBarrier) throws Exception {
         TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
 
         // create mock store response object
@@ -435,7 +433,7 @@ public class StoreReaderDotNetTest {
      * Tests for {@link StoreReader}
      */
     @Test(groups = "unit")
-    public void storeReaderBarrier() {
+    public void storeReaderBarrier() throws Exception {
         // create a real document service request
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
@@ -562,7 +560,7 @@ public class StoreReaderDotNetTest {
      */
     @Test(groups = "unit", enabled = false)
     @SuppressWarnings("unchecked")
-    public void storeClient() throws URISyntaxException {
+    public void storeClient() throws Exception {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
@@ -650,7 +648,7 @@ public class StoreReaderDotNetTest {
      */
     @Test(groups = "unit")
     @SuppressWarnings("unchecked")
-    public void globalStrongConsistentWrite() {
+    public void globalStrongConsistentWrite() throws Exception {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
@@ -737,7 +735,7 @@ public class StoreReaderDotNetTest {
      */
     @Test(groups = "unit", priority = 1)
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void globalStrongConsistency() {
+    public void globalStrongConsistency() throws Exception {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
