@@ -23,12 +23,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * This type is meant to be a logical grouping of operations and data associated with an azure resource. It is NOT
@@ -129,12 +131,16 @@ final class AzureResource {
     This method will determine the status of the directory given it is already known whether or not there is an object
     at the target.
      */
-    DirectoryStatus checkDirStatus(boolean exists) throws IOException {
+    DirectoryStatus checkDirStatus(boolean blobExists) throws IOException {
         BlobContainerClient containerClient = this.getContainerClient();
 
         // List on the directory name + '/' so that we only get things under the directory if any
+        String directory = Arrays.stream(this.blobClient.getBlobName().split("/"))
+            .filter(item -> !item.contains("."))
+            .collect(Collectors.joining("/"));
+
         ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2)
-            .setPrefix(this.blobClient.getBlobName() + AzureFileSystem.PATH_SEPARATOR)
+            .setPrefix(directory)
             .setDetails(new BlobListDetails().setRetrieveMetadata(true));
 
         /*
@@ -146,7 +152,7 @@ final class AzureResource {
                 = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
             if (blobIterator.hasNext()) {
                 return DirectoryStatus.NOT_EMPTY;
-            } else if (exists) {
+            } else if (blobExists) {
                 return DirectoryStatus.EMPTY;
             } else {
                 return DirectoryStatus.DOES_NOT_EXIST;
