@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.carbonoptimization.fluent.CarbonServicesClient;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
@@ -105,16 +104,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CarbonEmissionDataListResultInner>>
         queryCarbonEmissionReportsWithResponseAsync(QueryFilter queryParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (queryParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter queryParameters is required and cannot be null."));
-        } else {
-            queryParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -151,17 +140,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataListResultInner>
         queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (queryParameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter queryParameters is required and cannot be null."));
-        } else {
-            queryParameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.queryCarbonEmissionReportsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -193,10 +171,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CarbonEmissionDataAvailableDateRangeInner>>
         queryCarbonEmissionDataAvailableDateRangeWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.queryCarbonEmissionDataAvailableDateRange(this.client.getEndpoint(),
@@ -229,11 +203,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataAvailableDateRangeInner>
         queryCarbonEmissionDataAvailableDateRangeWithResponse(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.queryCarbonEmissionDataAvailableDateRangeSync(this.client.getEndpoint(),
             this.client.getApiVersion(), accept, context);
@@ -250,6 +219,4 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     public CarbonEmissionDataAvailableDateRangeInner queryCarbonEmissionDataAvailableDateRange() {
         return queryCarbonEmissionDataAvailableDateRangeWithResponse(Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CarbonServicesClientImpl.class);
 }

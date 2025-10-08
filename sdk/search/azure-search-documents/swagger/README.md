@@ -445,46 +445,6 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### Rename `AI Studio` to `AI Foundry`
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AIStudioModelCatalogName
-    transform: $["x-ms-enum"].name = "AIFoundryModelCatalogName";
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AMLVectorizer
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AMLParameters.properties.modelName
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AIStudioModelCatalogName
-    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.VectorSearchVectorizerKind
-    transform: >
-      $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
-        ...v,
-        description: v.description.replace("Azure AI Studio", "Azure AI Foundry"),
-      }));
-```
-
 ### Make `SearchIndexerStatus.name` optional
 
 ```yaml $(tag) == 'searchservice'
@@ -513,4 +473,30 @@ directive:
       "description": "Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier) in the initial search. This increases the set of results that will be reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.",
       "x-nullable": true
     };
+```
+
+### Archboard feedback for 2025-09-01
+
+#### `RE_RANKER_SCORE` -> `RERANKER_SCORE`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.RankingOrder
+  transform: >
+    $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
+      value: v.value,
+      name: v.name === "ReRankedScore" ? "RerankerScore" : v.name,
+      description: v.description
+    }));
+```
+
+#### `RescoringOptions.isEnableRescoring` -> `RescoringOptions.isRescoringEnabled`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.RescoringOptions
+  transform: >
+    $.properties["enableRescoring"]["x-ms-client-name"] = "rescoringEnabled";
 ```

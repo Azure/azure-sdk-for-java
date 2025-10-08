@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -72,24 +71,6 @@ public final class Hierarchy implements JsonSerializable<Hierarchy> {
         this.description = description;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model Hierarchy"));
-        }
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property description in model Hierarchy"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Hierarchy.class);
 
     /**
      * {@inheritDoc}

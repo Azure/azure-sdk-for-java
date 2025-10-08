@@ -15,9 +15,9 @@ public final class WorkflowInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowInner model = BinaryData.fromString(
-            "{\"properties\":{\"workflowTemplateId\":\"rkambt\",\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"vmnvu\",\"type\":\"CustomLocation\"},\"eTag\":\"vldspa\",\"id\":\"jbkkdmflvestmjl\",\"name\":\"rriloz\",\"type\":\"peewchpxlkt\"}")
+            "{\"properties\":{\"workflowTemplateId\":\"gcealzxwh\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"ymo\",\"type\":\"CustomLocation\"},\"eTag\":\"lwigdivbkbx\",\"id\":\"mf\",\"name\":\"juwasqvdaeyyguxa\",\"type\":\"jsqzhzbezk\"}")
             .toObject(WorkflowInner.class);
-        Assertions.assertEquals("vmnvu", model.extendedLocation().name());
+        Assertions.assertEquals("ymo", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
@@ -25,9 +25,9 @@ public final class WorkflowInnerTests {
     public void testSerialize() throws Exception {
         WorkflowInner model = new WorkflowInner().withProperties(new WorkflowProperties())
             .withExtendedLocation(
-                new ExtendedLocation().withName("vmnvu").withType(ExtendedLocationType.CUSTOM_LOCATION));
+                new ExtendedLocation().withName("ymo").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(WorkflowInner.class);
-        Assertions.assertEquals("vmnvu", model.extendedLocation().name());
+        Assertions.assertEquals("ymo", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 }

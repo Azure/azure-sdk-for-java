@@ -1321,7 +1321,7 @@ public final class SearchAsyncClient {
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
             .setTop(options.getTop())
-            .setDebug(options.getDebug());
+            .setDebug(options.getDebugMode());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {

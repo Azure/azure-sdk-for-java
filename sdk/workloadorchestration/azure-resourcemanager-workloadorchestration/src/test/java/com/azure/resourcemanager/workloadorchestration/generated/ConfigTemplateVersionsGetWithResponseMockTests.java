@@ -21,7 +21,7 @@ public final class ConfigTemplateVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"jbfqzdk\",\"provisioningState\":\"Deleting\"},\"eTag\":\"ixh\",\"id\":\"ratqxmbjro\",\"name\":\"mzznvalqjrhuzgfx\",\"type\":\"njt\"}";
+            = "{\"properties\":{\"configurations\":\"j\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ocrdzgczeunt\",\"id\":\"dnc\",\"name\":\"q\",\"type\":\"tiekoifuvnyttz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ConfigTemplateVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplateVersion response = manager.configTemplateVersions()
-            .getWithResponse("ih", "vjdrqcrjidhftuk", "hdxlw", com.azure.core.util.Context.NONE)
+            .getWithResponse("lmhxdqaolfylnk", "bjpjvlyw", "tmfwobbjwhl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jbfqzdk", response.properties().configurations());
+        Assertions.assertEquals("j", response.properties().configurations());
     }
 }

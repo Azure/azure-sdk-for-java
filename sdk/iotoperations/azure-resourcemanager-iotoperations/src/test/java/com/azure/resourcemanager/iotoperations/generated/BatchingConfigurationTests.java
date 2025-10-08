@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchingConfiguration model = BinaryData.fromString("{\"latencySeconds\":44093722,\"maxMessages\":1453079674}")
-            .toObject(BatchingConfiguration.class);
-        Assertions.assertEquals(44093722, model.latencySeconds());
-        Assertions.assertEquals(1453079674, model.maxMessages());
+        BatchingConfiguration model
+            = BinaryData.fromString("{\"latencySeconds\":1119495390,\"maxMessages\":1338594793}")
+                .toObject(BatchingConfiguration.class);
+        Assertions.assertEquals(1119495390, model.latencySeconds());
+        Assertions.assertEquals(1338594793, model.maxMessages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BatchingConfiguration model
-            = new BatchingConfiguration().withLatencySeconds(44093722).withMaxMessages(1453079674);
+            = new BatchingConfiguration().withLatencySeconds(1119495390).withMaxMessages(1338594793);
         model = BinaryData.fromObject(model).toObject(BatchingConfiguration.class);
-        Assertions.assertEquals(44093722, model.latencySeconds());
-        Assertions.assertEquals(1453079674, model.maxMessages());
+        Assertions.assertEquals(1119495390, model.latencySeconds());
+        Assertions.assertEquals(1338594793, model.maxMessages());
     }
 }

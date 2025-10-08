@@ -154,17 +154,6 @@ public final class CryptoKey implements JsonSerializable<CryptoKey> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (pairedKey() != null) {
-            pairedKey().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JavaComponentsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Get.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * JavaComponents_Get.json
      */
     /**
      * Sample code: Get Java Component.
@@ -24,7 +25,8 @@ public final class JavaComponentsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Get_ServiceBind.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * JavaComponents_Get_ServiceBind.json
      */
     /**
      * Sample code: Get Java Component with ServiceBinds.

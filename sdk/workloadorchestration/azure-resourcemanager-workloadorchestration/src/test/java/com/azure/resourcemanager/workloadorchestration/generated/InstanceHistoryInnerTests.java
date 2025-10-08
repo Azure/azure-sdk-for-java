@@ -14,10 +14,10 @@ public final class InstanceHistoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceHistoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"solutionVersion\":{\"solutionVersionId\":\"scyhwz\",\"specification\":{}},\"target\":{\"targetId\":\"ujb\",\"targetSpecification\":{},\"solutionScope\":\"vzzbtdcq\"},\"solutionScope\":\"niyujv\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"shfssnrbgyef\"},\"status\":{\"lastModified\":\"2021-08-04T00:45:18Z\",\"deployed\":1164354320,\"expectedRunningJobId\":225590692,\"runningJobId\":800665018,\"status\":\"nc\",\"statusDetails\":\"mrfhirctymox\",\"generation\":849605054,\"targetStatuses\":[{\"name\":\"iwyczuh\",\"status\":\"cpqjlihhyu\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"asdvl\",\"status\":\"wdgzxulucv\",\"componentStatuses\":[{},{},{},{}]}]},\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"euzvx\",\"type\":\"CustomLocation\"},\"eTag\":\"sjnhn\",\"id\":\"xifqjzgxm\",\"name\":\"hu\",\"type\":\"lw\"}")
+            "{\"properties\":{\"solutionVersion\":{\"solutionVersionId\":\"id\",\"specification\":{}},\"target\":{\"targetId\":\"kuvscxkdm\",\"targetSpecification\":{},\"solutionScope\":\"vibrxkpmloazuruo\"},\"solutionScope\":\"goorbteo\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"xakvvjgslor\"},\"status\":{\"lastModified\":\"2021-12-03T21:15:41Z\",\"deployed\":1094227624,\"expectedRunningJobId\":229675569,\"runningJobId\":525599305,\"status\":\"xnyed\",\"statusDetails\":\"gyvudtjuewbc\",\"generation\":1871891438,\"targetStatuses\":[{\"name\":\"hcjyxc\",\"status\":\"bvpa\",\"componentStatuses\":[{},{}]},{\"name\":\"udzpxgwjplmagstc\",\"status\":\"hpfkyrkdbdgi\",\"componentStatuses\":[{},{}]},{\"name\":\"kmnwqjnobaiyhddv\",\"status\":\"cegfnmntfp\",\"componentStatuses\":[{},{},{},{}]}]},\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"nczdwvv\",\"type\":\"CustomLocation\"},\"eTag\":\"xlllchp\",\"id\":\"bzevwrd\",\"name\":\"hfuk\",\"type\":\"vsjcswsmystuluqy\"}")
             .toObject(InstanceHistoryInner.class);
-        Assertions.assertEquals(ActiveState.ACTIVE, model.properties().activeState());
-        Assertions.assertEquals("euzvx", model.extendedLocation().name());
+        Assertions.assertEquals(ActiveState.INACTIVE, model.properties().activeState());
+        Assertions.assertEquals("nczdwvv", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 }

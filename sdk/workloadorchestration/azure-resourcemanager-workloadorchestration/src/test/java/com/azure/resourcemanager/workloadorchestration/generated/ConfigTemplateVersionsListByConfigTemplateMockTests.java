@@ -22,7 +22,7 @@ public final class ConfigTemplateVersionsListByConfigTemplateMockTests {
     @Test
     public void testListByConfigTemplate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurations\":\"fqiu\",\"provisioningState\":\"InProgress\"},\"eTag\":\"rowsocnequy\",\"id\":\"jboq\",\"name\":\"rmtqjkqevadr\",\"type\":\"mwiuawvcm\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurations\":\"ehlq\",\"provisioningState\":\"Failed\"},\"eTag\":\"flkn\",\"id\":\"ndpgfjodhda\",\"name\":\"otwfhipxwgsab\",\"type\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ConfigTemplateVersionsListByConfigTemplateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ConfigTemplateVersion> response = manager.configTemplateVersions()
-            .listByConfigTemplate("usllywpvtiotz", "pdbollg", com.azure.core.util.Context.NONE);
+        PagedIterable<ConfigTemplateVersion> response
+            = manager.configTemplateVersions().listByConfigTemplate("ixgy", "ihlgm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fqiu", response.iterator().next().properties().configurations());
+        Assertions.assertEquals("ehlq", response.iterator().next().properties().configurations());
     }
 }

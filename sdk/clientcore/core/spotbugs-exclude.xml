@@ -17,6 +17,7 @@
       <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
       <Class name="io.clientcore.core.http.models.HttpRange" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
+      <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.http.pipeline.OAuthBearerTokenAuthenticationPolicy" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.implementation.ReflectionSerializable" />

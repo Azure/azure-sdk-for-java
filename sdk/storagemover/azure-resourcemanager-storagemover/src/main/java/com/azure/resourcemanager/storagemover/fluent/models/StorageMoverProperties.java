@@ -63,14 +63,6 @@ public final class StorageMoverProperties implements JsonSerializable<StorageMov
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

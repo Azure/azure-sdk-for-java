@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersi
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionWithUpdateTypeInner;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -121,7 +122,7 @@ public interface SchemasClient {
      * @return schema Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName, SchemaInner properties,
+    Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName, SchemaUpdate properties,
         Context context);
 
     /**
@@ -136,7 +137,7 @@ public interface SchemasClient {
      * @return schema Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaInner update(String resourceGroupName, String schemaName, SchemaInner properties);
+    SchemaInner update(String resourceGroupName, String schemaName, SchemaUpdate properties);
 
     /**
      * Delete a Schema Resource.

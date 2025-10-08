@@ -67,7 +67,7 @@ The new `azure-monitor-query-metrics` library only includes the functionality pr
 
 Here are some samples on how to use the `azure-resourcemanager-monitor` library:
 
-- [Authenticating the `MonitorManager`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-monitor/src/samples/java/com/azure/resourcemanager/monitor/ReadmeSamples.java)
+- [Authenticating the `MonitorManager`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-resourcemanager-monitor/src/samples/java/com/azure/resourcemanager/monitor/ReadmeSamples.java)
 - [Get metrics and activity logs for a resource](https://github.com/Azure-Samples/monitor-java-query-metrics-activitylogs)
 - [Configuring activity log alerts to be triggered on potential security breaches or risks.](https://github.com/Azure-Samples/monitor-java-activitylog-alerts-on-security-breach-or-risk)
 - [Configuring metric alerts to be triggered on potential performance downgrade.](https://github.com/Azure-Samples/monitor-java-metric-alerts-on-critical-performance)

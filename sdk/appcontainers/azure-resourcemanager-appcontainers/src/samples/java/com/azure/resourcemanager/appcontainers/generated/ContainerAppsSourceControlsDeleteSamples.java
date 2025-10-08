@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsSourceControlsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/SourceControls_Delete.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * SourceControls_Delete.json
      */
     /**
      * Sample code: Delete Container App SourceControl.
@@ -20,6 +21,7 @@ public final class ContainerAppsSourceControlsDeleteSamples {
     public static void
         deleteContainerAppSourceControl(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.containerAppsSourceControls()
-            .delete("workerapps-rg-xj", "testcanadacentral", "current", com.azure.core.util.Context.NONE);
+            .delete("workerapps-rg-xj", "testcanadacentral", "current", "githubaccesstoken", false, false,
+                com.azure.core.util.Context.NONE);
     }
 }
