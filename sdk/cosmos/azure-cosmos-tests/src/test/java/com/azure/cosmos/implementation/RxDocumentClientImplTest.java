@@ -214,7 +214,7 @@ public class RxDocumentClientImplTest {
             .thenReturn(Mono.just(dummyCollectionObs().v));
 
         Mockito
-            .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+            .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
         RetryContext retryContext = new RetryContext();

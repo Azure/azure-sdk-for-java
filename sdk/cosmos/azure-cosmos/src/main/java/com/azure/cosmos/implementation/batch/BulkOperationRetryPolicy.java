@@ -110,6 +110,10 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
                      subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("BulkOperationRetryPolicy.shouldRetryInMainSink").append(",");
+
                 return collectionCache
                        .resolveByNameAsync(null, collectionLink, null)
                        .flatMap(collection -> this.partitionKeyRangeCache
@@ -118,7 +122,8 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                                                                                 FeedRangeEpkImpl.forFullRange()
                                                                                     .getRange(),
                                                                                 true,
-                                                                                null /*properties*/)
+                                                                                null /*properties*/,
+                                                                                sb)
                                                   .then(Mono.just(true)));
             }
 

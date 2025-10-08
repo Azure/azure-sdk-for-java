@@ -21,6 +21,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import org.apache.commons.io.IOUtils;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -263,6 +264,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -305,6 +307,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -378,6 +381,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -409,6 +413,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 eq(false),
+                any(),
                 any());
     }
 
@@ -466,6 +471,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -499,6 +505,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -524,11 +531,12 @@ public class FeedRangeTest {
         Mockito
             .verify(routingMapProviderMock, Mockito.times(1))
             .tryGetPartitionKeyRangeByIdAsync(
-                null,
-                null,
-                partitionKeyRange.getId(),
-                false,
-                null);
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.anyBoolean(),
+                Mockito.any(),
+                Mockito.any());
     }
 
     @Test(groups = "unit")
@@ -552,6 +560,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)));
@@ -593,6 +602,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
@@ -623,6 +633,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any());
     }
 
@@ -786,6 +797,7 @@ public class FeedRangeTest {
                 any(),
                 any(),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
