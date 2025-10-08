@@ -32,7 +32,7 @@ public class TransactionalBatchResponseTests {
     private static final int TIMEOUT = 40000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void validateAllSetValuesInResponse() {
+    public void validateAllSetValuesInResponse() throws Exception {
         List<CosmosBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
@@ -79,7 +79,8 @@ public class TransactionalBatchResponseTests {
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length);
+            blob.length,
+            null);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
@@ -105,7 +106,7 @@ public class TransactionalBatchResponseTests {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void validateEmptyHeaderInResponse() {
+    public void validateEmptyHeaderInResponse() throws Exception {
         List<CosmosBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
@@ -143,7 +144,8 @@ public class TransactionalBatchResponseTests {
             HttpResponseStatus.OK.code(),
             new HashMap<>(),
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
-            blob.length);
+            blob.length,
+            null);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),

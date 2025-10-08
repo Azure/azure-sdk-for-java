@@ -41,7 +41,7 @@ public class ReplicatedResourceClientGoneForWriteTest {
         groups = { "unit" },
         dataProvider = "goneOnWriteRefreshesAddressesArgProvider",
         timeOut = ReplicatedResourceClientPartitionSplitTest.TIMEOUT)
-    public void gone_RefreshCache_Write(ConsistencyLevel consistencyLevel) {
+    public void gone_RefreshCache_Write(ConsistencyLevel consistencyLevel) throws Exception {
 
         Uri primaryAddress = Uri.create("http://primary/");
         List<Uri> secondaryAddresses = new ArrayList<>();
