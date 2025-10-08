@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import java.util.Map;
+import java.util.HashMap;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
@@ -45,6 +48,79 @@ public class ClientRetryPolicyTest {
         };
     }
 
+    @DataProvider(name = "requestRateTooLargeArgProvider")
+    public static Object[][] requestRateTooLargeArgProvider() {
+        return new Object[][]{
+            // OperationType, ResourceType, useMetadataThrottling
+            { OperationType.ReadFeed, ResourceType.PartitionKeyRange, true },
+            { OperationType.Read, ResourceType.Document, false },
+            { OperationType.ReadFeed, ResourceType.DocumentCollection, false }
+        };
+    }
+    
+    @Test(groups = "unit", dataProvider = "requestRateTooLargeArgProvider")
+    public void requestRateTooLarge(
+        OperationType operationType,
+        ResourceType resourceType,
+        boolean useMetadataThrottlingPolicy) throws Exception {
+        ThrottlingRetryOptions throttlingRetryOptions =
+            new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(1);
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+
+        Mockito
+            .doReturn(new RegionalRoutingContext(new URI("http://localhost")))
+            .when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
+            mockDiagnosticsClientContext(),
+            endpointManager,
+            true,
+            throttlingRetryOptions,
+            null,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+
+        // Create throttling exception with retry delay
+        Map<String, String> headers = new HashMap<>();
+        headers.put(
+            HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
+            "1000");
+        headers.put(WFConstants.BackendHeaders.SUB_STATUS,
+            Integer.toString(HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE));
+        RequestRateTooLargeException throttlingException = new RequestRateTooLargeException(null, 1, "1", headers);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            operationType,
+            "/dbs/db/colls/col",
+            resourceType);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.routeToLocation(0, true);
+
+        clientRetryPolicy.onBeforeSendRequest(request);
+
+        Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(throttlingException);
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .build());
+
+        shouldRetry = clientRetryPolicy.shouldRetry(throttlingException);
+        if (useMetadataThrottlingPolicy) {
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .nullException()
+                .shouldRetry(true)
+                .build());
+        } else {
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .shouldRetry(false)
+                .build());
+        }
+    }
+    
     @DataProvider(name = "tcpNetworkFailureOnWriteArgProvider")
     public static Object[][] tcpNetworkFailureOnWriteArgProvider() {
         return new Object[][]{

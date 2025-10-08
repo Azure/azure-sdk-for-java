@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplateRequest;
@@ -90,20 +89,6 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GenerateAwsTemplateResponseInner>>
         postWithResponseAsync(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (generateAwsTemplateRequest == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter generateAwsTemplateRequest is required and cannot be null."));
-        } else {
-            generateAwsTemplateRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -141,23 +126,6 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateAwsTemplateResponseInner>
         postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (generateAwsTemplateRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter generateAwsTemplateRequest is required and cannot be null."));
-        } else {
-            generateAwsTemplateRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -178,6 +146,4 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
     public GenerateAwsTemplateResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponse(generateAwsTemplateRequest, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GenerateAwsTemplatesClientImpl.class);
 }

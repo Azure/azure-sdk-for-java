@@ -121,7 +121,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -165,7 +165,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -282,7 +282,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (machineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -328,7 +328,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (machineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -391,13 +391,15 @@ public final class MachinesClientImpl implements MachinesClient {
     }
 
     /**
+     * Gets a list of machines in the specified agent pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Machines operation along with {@link PagedResponse} on successful completion
+     * @return a list of machines in the specified agent pool along with {@link PagedResponse} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -417,6 +419,8 @@ public final class MachinesClientImpl implements MachinesClient {
     }
 
     /**
+     * Gets a list of machines in the specified agent pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -424,7 +428,7 @@ public final class MachinesClientImpl implements MachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Machines operation along with {@link PagedResponse} on successful completion
+     * @return a list of machines in the specified agent pool along with {@link PagedResponse} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

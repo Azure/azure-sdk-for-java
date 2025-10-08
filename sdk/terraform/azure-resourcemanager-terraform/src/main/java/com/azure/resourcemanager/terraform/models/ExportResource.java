@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Export parameter for individual resources.
+ * Specified resources to be exported by their ids.
  */
 @Fluent
 public final class ExportResource extends BaseExportModel {
@@ -23,24 +22,37 @@ public final class ExportResource extends BaseExportModel {
     private Type type = Type.EXPORT_RESOURCE;
 
     /*
-     * The id of the resource to be exported
+     * The id(s) of the resource to be exported. Example:
+     * `["/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/my-rg"].
      */
     private List<String> resourceIds;
 
     /*
-     * The Terraform resource name. Only works when `resourceIds` contains only one item.
+     * The Terraform id of the exported resource. Only effective when `resourceIds` contains only one item. Defaults to
+     * `res-0`.
      */
     private String resourceName;
 
     /*
-     * The Terraform resource type. Only works when `resourceIds` contains only one item.
+     * The Terraform resource type to map to. Only effective when `resourceIds` has one item. Example:
+     * `azurerm_virtual_network`. Automatic type mapping will be performed if not provided.
      */
     private String resourceType;
 
     /*
-     * The name pattern of the Terraform resources
+     * The id prefix for the exported Terraform resources. Defaults to `res-`.
      */
     private String namePattern;
+
+    /*
+     * Recursively includes child resources. Defaults to `false`.
+     */
+    private Boolean recursive;
+
+    /*
+     * Includes the resource group in the exported Terraform resources. Defaults to `false`.
+     */
+    private Boolean includeResourceGroup;
 
     /**
      * Creates an instance of ExportResource class.
@@ -59,7 +71,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Get the resourceIds property: The id of the resource to be exported.
+     * Get the resourceIds property: The id(s) of the resource to be exported. Example:
+     * `["/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/my-rg"].
      * 
      * @return the resourceIds value.
      */
@@ -68,7 +81,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Set the resourceIds property: The id of the resource to be exported.
+     * Set the resourceIds property: The id(s) of the resource to be exported. Example:
+     * `["/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/my-rg"].
      * 
      * @param resourceIds the resourceIds value to set.
      * @return the ExportResource object itself.
@@ -79,7 +93,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Get the resourceName property: The Terraform resource name. Only works when `resourceIds` contains only one item.
+     * Get the resourceName property: The Terraform id of the exported resource. Only effective when `resourceIds`
+     * contains only one item. Defaults to `res-0`.
      * 
      * @return the resourceName value.
      */
@@ -88,7 +103,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Set the resourceName property: The Terraform resource name. Only works when `resourceIds` contains only one item.
+     * Set the resourceName property: The Terraform id of the exported resource. Only effective when `resourceIds`
+     * contains only one item. Defaults to `res-0`.
      * 
      * @param resourceName the resourceName value to set.
      * @return the ExportResource object itself.
@@ -99,7 +115,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Get the resourceType property: The Terraform resource type. Only works when `resourceIds` contains only one item.
+     * Get the resourceType property: The Terraform resource type to map to. Only effective when `resourceIds` has one
+     * item. Example: `azurerm_virtual_network`. Automatic type mapping will be performed if not provided.
      * 
      * @return the resourceType value.
      */
@@ -108,7 +125,8 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Set the resourceType property: The Terraform resource type. Only works when `resourceIds` contains only one item.
+     * Set the resourceType property: The Terraform resource type to map to. Only effective when `resourceIds` has one
+     * item. Example: `azurerm_virtual_network`. Automatic type mapping will be performed if not provided.
      * 
      * @param resourceType the resourceType value to set.
      * @return the ExportResource object itself.
@@ -119,7 +137,7 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Get the namePattern property: The name pattern of the Terraform resources.
+     * Get the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @return the namePattern value.
      */
@@ -128,13 +146,55 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Set the namePattern property: The name pattern of the Terraform resources.
+     * Set the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @param namePattern the namePattern value to set.
      * @return the ExportResource object itself.
      */
     public ExportResource withNamePattern(String namePattern) {
         this.namePattern = namePattern;
+        return this;
+    }
+
+    /**
+     * Get the recursive property: Recursively includes child resources. Defaults to `false`.
+     * 
+     * @return the recursive value.
+     */
+    public Boolean recursive() {
+        return this.recursive;
+    }
+
+    /**
+     * Set the recursive property: Recursively includes child resources. Defaults to `false`.
+     * 
+     * @param recursive the recursive value to set.
+     * @return the ExportResource object itself.
+     */
+    public ExportResource withRecursive(Boolean recursive) {
+        this.recursive = recursive;
+        return this;
+    }
+
+    /**
+     * Get the includeResourceGroup property: Includes the resource group in the exported Terraform resources. Defaults
+     * to `false`.
+     * 
+     * @return the includeResourceGroup value.
+     */
+    public Boolean includeResourceGroup() {
+        return this.includeResourceGroup;
+    }
+
+    /**
+     * Set the includeResourceGroup property: Includes the resource group in the exported Terraform resources. Defaults
+     * to `false`.
+     * 
+     * @param includeResourceGroup the includeResourceGroup value to set.
+     * @return the ExportResource object itself.
+     */
+    public ExportResource withIncludeResourceGroup(Boolean includeResourceGroup) {
+        this.includeResourceGroup = includeResourceGroup;
         return this;
     }
 
@@ -166,19 +226,40 @@ public final class ExportResource extends BaseExportModel {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (resourceIds() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resourceIds in model ExportResource"));
-        }
+    public ExportResource withIncludeRoleAssignment(Boolean includeRoleAssignment) {
+        super.withIncludeRoleAssignment(includeRoleAssignment);
+        return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ExportResource.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResource withIncludeManagedResource(Boolean includeManagedResource) {
+        super.withIncludeManagedResource(includeManagedResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResource withExcludeAzureResource(List<String> excludeAzureResource) {
+        super.withExcludeAzureResource(excludeAzureResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportResource withExcludeTerraformResource(List<String> excludeTerraformResource) {
+        super.withExcludeTerraformResource(excludeTerraformResource);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -189,11 +270,19 @@ public final class ExportResource extends BaseExportModel {
         jsonWriter.writeStringField("targetProvider", targetProvider() == null ? null : targetProvider().toString());
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
+        jsonWriter.writeBooleanField("includeRoleAssignment", includeRoleAssignment());
+        jsonWriter.writeBooleanField("includeManagedResource", includeManagedResource());
+        jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludeTerraformResource", excludeTerraformResource(),
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("resourceIds", this.resourceIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("resourceName", this.resourceName);
         jsonWriter.writeStringField("resourceType", this.resourceType);
         jsonWriter.writeStringField("namePattern", this.namePattern);
+        jsonWriter.writeBooleanField("recursive", this.recursive);
+        jsonWriter.writeBooleanField("includeResourceGroup", this.includeResourceGroup);
         return jsonWriter.writeEndObject();
     }
 
@@ -219,6 +308,16 @@ public final class ExportResource extends BaseExportModel {
                     deserializedExportResource.withFullProperties(reader.getNullable(JsonReader::getBoolean));
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedExportResource.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeRoleAssignment".equals(fieldName)) {
+                    deserializedExportResource.withIncludeRoleAssignment(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeManagedResource".equals(fieldName)) {
+                    deserializedExportResource.withIncludeManagedResource(reader.getNullable(JsonReader::getBoolean));
+                } else if ("excludeAzureResource".equals(fieldName)) {
+                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportResource.withExcludeAzureResource(excludeAzureResource);
+                } else if ("excludeTerraformResource".equals(fieldName)) {
+                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportResource.withExcludeTerraformResource(excludeTerraformResource);
                 } else if ("resourceIds".equals(fieldName)) {
                     List<String> resourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedExportResource.resourceIds = resourceIds;
@@ -230,6 +329,10 @@ public final class ExportResource extends BaseExportModel {
                     deserializedExportResource.resourceType = reader.getString();
                 } else if ("namePattern".equals(fieldName)) {
                     deserializedExportResource.namePattern = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedExportResource.recursive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeResourceGroup".equals(fieldName)) {
+                    deserializedExportResource.includeResourceGroup = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

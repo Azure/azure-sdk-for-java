@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Mcc cache node resource install script properties.
@@ -40,6 +41,21 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * Mcc Iot Central temporary device registration key, used once.
      */
     private String registrationKey;
+
+    /*
+     * Mcc Tls certificate provisioning key.
+     */
+    private String tlsCertificateProvisioningKey;
+
+    /*
+     * Cache node resource drive configurations.
+     */
+    private List<CacheNodeDriveConfiguration> driveConfiguration;
+
+    /*
+     * proxyUrl configuration of the cache node
+     */
+    private ProxyUrlConfiguration proxyUrlConfiguration;
 
     /**
      * Creates an instance of CacheNodeInstallProperties class.
@@ -93,11 +109,30 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
     }
 
     /**
-     * Validates the instance.
+     * Get the tlsCertificateProvisioningKey property: Mcc Tls certificate provisioning key.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the tlsCertificateProvisioningKey value.
      */
-    public void validate() {
+    public String tlsCertificateProvisioningKey() {
+        return this.tlsCertificateProvisioningKey;
+    }
+
+    /**
+     * Get the driveConfiguration property: Cache node resource drive configurations.
+     * 
+     * @return the driveConfiguration value.
+     */
+    public List<CacheNodeDriveConfiguration> driveConfiguration() {
+        return this.driveConfiguration;
+    }
+
+    /**
+     * Get the proxyUrlConfiguration property: proxyUrl configuration of the cache node.
+     * 
+     * @return the proxyUrlConfiguration value.
+     */
+    public ProxyUrlConfiguration proxyUrlConfiguration() {
+        return this.proxyUrlConfiguration;
     }
 
     /**
@@ -108,6 +143,9 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("customerId", this.customerId);
         jsonWriter.writeStringField("cacheNodeId", this.cacheNodeId);
+        jsonWriter.writeArrayField("driveConfiguration", this.driveConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("proxyUrlConfiguration", this.proxyUrlConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,6 +174,15 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
                     deserializedCacheNodeInstallProperties.secondaryAccountKey = reader.getString();
                 } else if ("registrationKey".equals(fieldName)) {
                     deserializedCacheNodeInstallProperties.registrationKey = reader.getString();
+                } else if ("tlsCertificateProvisioningKey".equals(fieldName)) {
+                    deserializedCacheNodeInstallProperties.tlsCertificateProvisioningKey = reader.getString();
+                } else if ("driveConfiguration".equals(fieldName)) {
+                    List<CacheNodeDriveConfiguration> driveConfiguration
+                        = reader.readArray(reader1 -> CacheNodeDriveConfiguration.fromJson(reader1));
+                    deserializedCacheNodeInstallProperties.driveConfiguration = driveConfiguration;
+                } else if ("proxyUrlConfiguration".equals(fieldName)) {
+                    deserializedCacheNodeInstallProperties.proxyUrlConfiguration
+                        = ProxyUrlConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

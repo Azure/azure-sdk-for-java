@@ -30,7 +30,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purestorageblock.fluent.AvsVmsClient;
@@ -185,30 +184,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String storagePoolName,
         String avsVmId, AvsVmUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -234,34 +209,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         AvsVmUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -286,34 +233,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         AvsVmUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -456,25 +375,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvsVmInner>> getWithResponseAsync(String resourceGroupName, String storagePoolName,
         String avsVmId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -514,28 +414,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvsVmInner> getWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, storagePoolName, avsVmId, accept, context);
@@ -571,25 +449,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storagePoolName,
         String avsVmId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, context))
@@ -609,28 +468,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName, String avsVmId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, Context.NONE);
     }
@@ -650,28 +487,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName, String avsVmId,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (avsVmId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter avsVmId is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, avsVmId, context);
     }
@@ -794,22 +609,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvsVmInner>> listByStoragePoolSinglePageAsync(String resourceGroupName,
         String storagePoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStoragePool(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -847,24 +646,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmInner> listByStoragePoolSinglePage(String resourceGroupName, String storagePoolName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsVmListResult> res
             = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -887,24 +668,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmInner> listByStoragePoolSinglePage(String resourceGroupName, String storagePoolName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsVmListResult> res
             = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -959,13 +722,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvsVmInner>> listByStoragePoolNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStoragePoolNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -985,15 +741,6 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmInner> listByStoragePoolNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsVmListResult> res
             = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1013,21 +760,10 @@ public final class AvsVmsClientImpl implements AvsVmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsVmInner> listByStoragePoolNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsVmListResult> res
             = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AvsVmsClientImpl.class);
 }

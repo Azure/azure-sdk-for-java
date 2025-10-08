@@ -463,50 +463,6 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-        if (diagnosticsProfile() != null) {
-            diagnosticsProfile().validate();
-        }
-        if (extensionProfile() != null) {
-            extensionProfile().validate();
-        }
-        if (scheduledEventsProfile() != null) {
-            scheduledEventsProfile().validate();
-        }
-        if (capacityReservation() != null) {
-            capacityReservation().validate();
-        }
-        if (applicationProfile() != null) {
-            applicationProfile().validate();
-        }
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (serviceArtifactReference() != null) {
-            serviceArtifactReference().validate();
-        }
-        if (securityPostureReference() != null) {
-            securityPostureReference().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -22,7 +22,7 @@ public final class ExecutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowVersionId\":\"ibuyvpirf\",\"specification\":{},\"status\":{\"updateTime\":\"2021-01-03T00:43:50Z\",\"status\":1671411460,\"statusMessage\":\"sbede\",\"stageHistory\":[{\"status\":160688731,\"statusMessage\":\"bhxv\",\"stage\":\"nul\",\"nextstage\":\"nhj\",\"errorMessage\":\"dyznfajsvks\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1522602449,\"statusMessage\":\"hjrliizjixlqfh\",\"stage\":\"kwabsolronqq\",\"nextstage\":\"gn\",\"errorMessage\":\"xsjxtelexhvuqboz\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"uzlbcnn\",\"type\":\"EdgeZone\"},\"eTag\":\"nx\",\"id\":\"qytl\",\"name\":\"hd\",\"type\":\"z\"}";
+            = "{\"properties\":{\"workflowVersionId\":\"clctzey\",\"specification\":{},\"status\":{\"updateTime\":\"2021-04-17T02:25:11Z\",\"status\":221950277,\"statusMessage\":\"wzqauxzanhmkvf\",\"stageHistory\":[{\"status\":1650089892,\"statusMessage\":\"rbcp\",\"stage\":\"xudqyemebunaucmc\",\"nextstage\":\"tneemmjauwcgxef\",\"errorMessage\":\"haitranize\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1177263124,\"statusMessage\":\"bvfbngfcocefhpri\",\"stage\":\"fmpztraudsvh\",\"nextstage\":\"dculregp\",\"errorMessage\":\"moj\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":776813116,\"statusMessage\":\"hqrdgrtwmewjzlpy\",\"stage\":\"fa\",\"nextstage\":\"wjcayerzrr\",\"errorMessage\":\"syb\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"srleinkfscjfn\",\"type\":\"EdgeZone\"},\"eTag\":\"vuagfqwtl\",\"id\":\"gvmreuptrklzmi\",\"name\":\"ajwolxfs\",\"type\":\"aghm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,11 @@ public final class ExecutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Execution response = manager.executions()
-            .getWithResponse("wvpsoz", "iihjriybmrzo", "pnx", "dvwnjkgvfnmxa", "rsqftib",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("ewfopazdazg", "sqgpewqcfu", "mdpv", "zgl", "jbkn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ibuyvpirf", response.properties().workflowVersionId());
-        Assertions.assertEquals("uzlbcnn", response.extendedLocation().name());
+        Assertions.assertEquals("clctzey", response.properties().workflowVersionId());
+        Assertions.assertEquals("srleinkfscjfn", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

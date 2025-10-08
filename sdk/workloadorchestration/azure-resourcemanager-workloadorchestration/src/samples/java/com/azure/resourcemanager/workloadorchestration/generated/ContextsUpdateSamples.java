@@ -6,7 +6,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.Capability;
 import com.azure.resourcemanager.workloadorchestration.models.ContextModel;
-import com.azure.resourcemanager.workloadorchestration.models.ContextProperties;
+import com.azure.resourcemanager.workloadorchestration.models.ContextUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.Hierarchy;
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public final class ContextsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key9545", "fakeTokenPlaceholder"))
-            .withProperties(new ContextProperties()
+            .withProperties(new ContextUpdateProperties()
                 .withCapabilities(Arrays.asList(new Capability().withName("tpylinjcmlnycfpofpxjtqmt")
                     .withDescription("banbenutsngwytoqh")
                     .withState(ResourceState.ACTIVE)))

@@ -754,6 +754,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
         cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
       try {
+        val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
         val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
@@ -761,7 +762,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkMaxPendingOperations = Some(900)
         )
 
-        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(),new TestOutputMetricsPublisher, 1)
+        val bulkWriter = new BulkWriter(container, containerConfig, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(),new TestOutputMetricsPublisher, 1)
 
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -795,7 +796,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
             field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
         })
 
-        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, subpartitionKeyDefinition)
+        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, containerConfig, subpartitionKeyDefinition)
 
         patchPartialUpdateItem.fields().asScala.foreach(field => {
           columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
@@ -1286,14 +1287,22 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
               cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
           try {
-              val writeConfig = CosmosWriteConfig(
+            val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
+            val writeConfig = CosmosWriteConfig(
                   ItemWriteStrategy.ItemOverwrite,
                   5,
                   bulkEnabled = true,
                   bulkMaxPendingOperations = Some(900)
               )
 
-              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(),new TestOutputMetricsPublisher, 1)
+              val bulkWriter = new BulkWriter(
+                container,
+                containerConfig,
+                subpartitionKeyDefinition,
+                writeConfig,
+                DiagnosticsConfig(),
+                new TestOutputMetricsPublisher,
+                1)
 
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)

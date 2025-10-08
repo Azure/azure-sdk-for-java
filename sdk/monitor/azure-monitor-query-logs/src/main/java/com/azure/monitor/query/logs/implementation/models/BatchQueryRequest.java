@@ -32,8 +32,8 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     private Map<String, String> headers;
 
     /*
-     * The Analytics query. Learn more about the [Analytics query
-     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
+     * The Analytics query. Learn more about the
+     * [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
      */
     @Generated
     private final QueryBody body;
@@ -106,8 +106,8 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     }
 
     /**
-     * Get the body property: The Analytics query. Learn more about the [Analytics query
-     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * Get the body property: The Analytics query. Learn more about the
+     * [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      *
      * @return the body value.
      */

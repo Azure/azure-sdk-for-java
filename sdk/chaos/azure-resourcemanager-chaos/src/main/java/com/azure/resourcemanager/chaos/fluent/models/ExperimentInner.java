@@ -7,7 +7,6 @@ package com.azure.resourcemanager.chaos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -200,26 +199,6 @@ public final class ExperimentInner extends Resource {
         this.innerProperties().withSelectors(selectors);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
-        if (innerProperties() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property innerProperties in model ExperimentInner"));
-        } else {
-            innerProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExperimentInner.class);
 
     /**
      * {@inheritDoc}
