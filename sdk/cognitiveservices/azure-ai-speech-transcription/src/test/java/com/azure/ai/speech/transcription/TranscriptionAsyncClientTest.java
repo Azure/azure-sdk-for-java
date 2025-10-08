@@ -179,25 +179,36 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     }
 
     @Test
-    public void testTranscribeAsyncWithDifferentProfanityModes() {
+    public void testTranscribeAsyncWithProfanityModeMasked() {
         createClient(true, true, sync);
 
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        // Test with MASKED mode
-        TranscriptionOptions optionsMasked
-            = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.MASKED);
-        doTranscription(methodName + ":Masked", sync, false, audioFile, optionsMasked, null);
+        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.MASKED);
+        doTranscription(methodName, sync, false, audioFile, options, null);
+    }
 
-        // Test with REMOVED mode
-        TranscriptionOptions optionsRemoved
-            = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.REMOVED);
-        doTranscription(methodName + ":Removed", sync, false, audioFile, optionsRemoved, null);
+    @Test
+    public void testTranscribeAsyncWithProfanityModeRemoved() {
+        createClient(true, true, sync);
 
-        // Test with TAGS mode
-        TranscriptionOptions optionsTags = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.TAGS);
-        doTranscription(methodName + ":Tags", sync, false, audioFile, optionsTags, null);
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+
+        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.REMOVED);
+        doTranscription(methodName, sync, false, audioFile, options, null);
+    }
+
+    @Test
+    public void testTranscribeAsyncWithProfanityModeTags() {
+        createClient(true, true, sync);
+
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+
+        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.TAGS);
+        doTranscription(methodName, sync, false, audioFile, options, null);
     }
 
     /***********************************************************************************
@@ -241,7 +252,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         // In PLAYBACK mode, this would replay the recorded error response
         // Example implementation with StepVerifier:
         // StepVerifier.create(getAsyncClient().transcribe(requestContentWithInvalidLocale))
-        //     .expectErrorMatches(throwable -> throwable instanceof HttpResponseException 
+        //     .expectErrorMatches(throwable -> throwable instanceof HttpResponseException
         //         && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400)
         //     .verify(Duration.ofSeconds(30));
     }
