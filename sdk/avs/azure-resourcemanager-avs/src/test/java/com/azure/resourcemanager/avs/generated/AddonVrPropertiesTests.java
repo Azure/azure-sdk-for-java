@@ -12,15 +12,15 @@ public final class AddonVrPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonVrProperties model
-            = BinaryData.fromString("{\"addonType\":\"VR\",\"vrsCount\":2125136939,\"provisioningState\":\"Canceled\"}")
+            = BinaryData.fromString("{\"addonType\":\"VR\",\"vrsCount\":1543997460,\"provisioningState\":\"Deleting\"}")
                 .toObject(AddonVrProperties.class);
-        Assertions.assertEquals(2125136939, model.vrsCount());
+        Assertions.assertEquals(1543997460, model.vrsCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonVrProperties model = new AddonVrProperties().withVrsCount(2125136939);
+        AddonVrProperties model = new AddonVrProperties().withVrsCount(1543997460);
         model = BinaryData.fromObject(model).toObject(AddonVrProperties.class);
-        Assertions.assertEquals(2125136939, model.vrsCount());
+        Assertions.assertEquals(1543997460, model.vrsCount());
     }
 }

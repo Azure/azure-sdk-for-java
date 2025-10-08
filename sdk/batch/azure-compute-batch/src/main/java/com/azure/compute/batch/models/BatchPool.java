@@ -246,16 +246,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * A list of name-value pairs associated with the Pool as metadata.
      */
     @Generated
-    private List<MetadataItem> metadata;
-
-    /*
-     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
-     * the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
-     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
-     * typical delay is about 30 minutes.
-     */
-    @Generated
-    private BatchPoolStatistics stats;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
@@ -654,21 +645,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
-    }
-
-    /**
-     * Get the stats property: Utilization and resource usage statistics for the entire lifetime of the Pool. This
-     * property is populated only if the BatchPool was retrieved with an expand clause including the 'stats' attribute;
-     * otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic
-     * roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchPoolStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -831,10 +809,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                     List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
                     deserializedBatchPool.userAccounts = userAccounts;
                 } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    List<BatchMetadataItem> metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                     deserializedBatchPool.metadata = metadata;
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchPool.stats = BatchPoolStatistics.fromJson(reader);
+                    deserializedBatchPool.poolStatistics = BatchPoolStatistics.fromJson(reader);
                 } else if ("mountConfiguration".equals(fieldName)) {
                     List<MountConfiguration> mountConfiguration
                         = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
@@ -855,5 +833,27 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
             }
             return deserializedBatchPool;
         });
+    }
+
+    /*
+     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
+     * the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
+     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
+     * typical delay is about 30 minutes.
+     */
+    @Generated
+    private BatchPoolStatistics poolStatistics;
+
+    /**
+     * Get the poolStatistics property: Utilization and resource usage statistics for the entire lifetime of the Pool.
+     * This property is populated only if the BatchPool was retrieved with an expand clause including the 'stats'
+     * attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
+     *
+     * @return the poolStatistics value.
+     */
+    @Generated
+    public BatchPoolStatistics getPoolStatistics() {
+        return this.poolStatistics;
     }
 }

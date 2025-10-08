@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner;
 
 /**
@@ -47,9 +48,130 @@ public interface NeonRole {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner object.
      * 
      * @return the inner object.
      */
     NeonRoleInner innerModel();
+
+    /**
+     * The entirety of the NeonRole definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The NeonRole definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the NeonRole definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the NeonRole definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, organizationName, projectName, branchName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param organizationName Name of the Neon Organizations resource.
+             * @param projectName The name of the Project.
+             * @param branchName The name of the Branch.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingBranche(String resourceGroupName, String organizationName, String projectName,
+                String branchName);
+        }
+
+        /**
+         * The stage of the NeonRole definition which contains all the minimum required properties for the resource to
+         * be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            NeonRole create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            NeonRole create(Context context);
+        }
+
+        /**
+         * The stage of the NeonRole definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(NeonRoleProperties properties);
+        }
+    }
+
+    /**
+     * Begins update for the NeonRole resource.
+     * 
+     * @return the stage of resource update.
+     */
+    NeonRole.Update update();
+
+    /**
+     * The template for NeonRole update.
+     */
+    interface Update extends UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        NeonRole apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        NeonRole apply(Context context);
+    }
+
+    /**
+     * The NeonRole update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the NeonRole update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(NeonRoleProperties properties);
+        }
+    }
 }

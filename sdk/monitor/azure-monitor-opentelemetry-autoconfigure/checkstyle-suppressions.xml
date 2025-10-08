@@ -93,7 +93,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMapper.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.OperationNames.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.RequestChecker.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.SemanticAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.SpanDataMapper.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatExporter.java" checks="IllegalImportCheck" />
@@ -108,6 +107,27 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporterTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipeline.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.AttributeKeyTemplate.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ClientAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.CodeAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.DbAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ExceptionAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.NetworkAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ServerAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UrlAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.UserAgentAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.CodeIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.DbIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.EnduserIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.HttpIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.MessagingIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.NetIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.PeerIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.RpcIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.SessionIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.ThreadIncubatingAttributes.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.UrlIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeat.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatTelemetryPipelineListener.java" checks="IllegalImportCheck" />

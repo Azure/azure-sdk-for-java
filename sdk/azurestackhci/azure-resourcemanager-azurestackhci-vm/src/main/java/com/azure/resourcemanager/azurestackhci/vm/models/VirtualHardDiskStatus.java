@@ -122,23 +122,6 @@ public final class VirtualHardDiskStatus implements JsonSerializable<VirtualHard
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (provisioningStatus() != null) {
-            provisioningStatus().validate();
-        }
-        if (downloadStatus() != null) {
-            downloadStatus().validate();
-        }
-        if (uploadStatus() != null) {
-            uploadStatus().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Attributes model = BinaryData.fromString("{\"name\":\"qnyhgb\",\"value\":\"j\"}").toObject(Attributes.class);
-        Assertions.assertEquals("qnyhgb", model.name());
-        Assertions.assertEquals("j", model.value());
+        Attributes model = BinaryData.fromString("{\"name\":\"brhu\",\"value\":\"skh\"}").toObject(Attributes.class);
+        Assertions.assertEquals("brhu", model.name());
+        Assertions.assertEquals("skh", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Attributes model = new Attributes().withName("qnyhgb").withValue("j");
+        Attributes model = new Attributes().withName("brhu").withValue("skh");
         model = BinaryData.fromObject(model).toObject(Attributes.class);
-        Assertions.assertEquals("qnyhgb", model.name());
-        Assertions.assertEquals("j", model.value());
+        Assertions.assertEquals("brhu", model.name());
+        Assertions.assertEquals("skh", model.value());
     }
 }

@@ -57,6 +57,16 @@ public final class Dapr implements JsonSerializable<Dapr> {
      */
     private Boolean enableApiLogging;
 
+    /*
+     * Dapr application health check configuration
+     */
+    private DaprAppHealth appHealth;
+
+    /*
+     * Maximum number of concurrent requests, events handled by the Dapr sidecar
+     */
+    private Integer maxConcurrency;
+
     /**
      * Creates an instance of Dapr class.
      */
@@ -232,11 +242,54 @@ public final class Dapr implements JsonSerializable<Dapr> {
     }
 
     /**
+     * Get the appHealth property: Dapr application health check configuration.
+     * 
+     * @return the appHealth value.
+     */
+    public DaprAppHealth appHealth() {
+        return this.appHealth;
+    }
+
+    /**
+     * Set the appHealth property: Dapr application health check configuration.
+     * 
+     * @param appHealth the appHealth value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withAppHealth(DaprAppHealth appHealth) {
+        this.appHealth = appHealth;
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrency property: Maximum number of concurrent requests, events handled by the Dapr sidecar.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public Integer maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * Set the maxConcurrency property: Maximum number of concurrent requests, events handled by the Dapr sidecar.
+     * 
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withMaxConcurrency(Integer maxConcurrency) {
+        this.maxConcurrency = maxConcurrency;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (appHealth() != null) {
+            appHealth().validate();
+        }
     }
 
     /**
@@ -253,6 +306,8 @@ public final class Dapr implements JsonSerializable<Dapr> {
         jsonWriter.writeNumberField("httpMaxRequestSize", this.httpMaxRequestSize);
         jsonWriter.writeStringField("logLevel", this.logLevel == null ? null : this.logLevel.toString());
         jsonWriter.writeBooleanField("enableApiLogging", this.enableApiLogging);
+        jsonWriter.writeJsonField("appHealth", this.appHealth);
+        jsonWriter.writeNumberField("maxConcurrency", this.maxConcurrency);
         return jsonWriter.writeEndObject();
     }
 
@@ -287,6 +342,10 @@ public final class Dapr implements JsonSerializable<Dapr> {
                     deserializedDapr.logLevel = LogLevel.fromString(reader.getString());
                 } else if ("enableApiLogging".equals(fieldName)) {
                     deserializedDapr.enableApiLogging = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appHealth".equals(fieldName)) {
+                    deserializedDapr.appHealth = DaprAppHealth.fromJson(reader);
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedDapr.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

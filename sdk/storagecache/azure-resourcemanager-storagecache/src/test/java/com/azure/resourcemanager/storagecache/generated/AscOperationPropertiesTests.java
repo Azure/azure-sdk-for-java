@@ -12,15 +12,15 @@ import java.util.Map;
 public final class AscOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AscOperationProperties model = BinaryData
-            .fromString("{\"output\":{\"xsaga\":\"datalrwdmhdlxyj\",\"kcvqvpke\":\"datacnihgwqapnedgfbc\"}}")
+        AscOperationProperties model = BinaryData.fromString(
+            "{\"output\":{\"mcbxvwvxysl\":\"dataqtdo\",\"ytkblmpew\":\"databhsfxob\",\"shqjohxcrsbf\":\"datawfbkrvrns\"}}")
             .toObject(AscOperationProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AscOperationProperties model = new AscOperationProperties()
-            .withOutput(mapOf("xsaga", "datalrwdmhdlxyj", "kcvqvpke", "datacnihgwqapnedgfbc"));
+            .withOutput(mapOf("mcbxvwvxysl", "dataqtdo", "ytkblmpew", "databhsfxob", "shqjohxcrsbf", "datawfbkrvrns"));
         model = BinaryData.fromObject(model).toObject(AscOperationProperties.class);
     }
 

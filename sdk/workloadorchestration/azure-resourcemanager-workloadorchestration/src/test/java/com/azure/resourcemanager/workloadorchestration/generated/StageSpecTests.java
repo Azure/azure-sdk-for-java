@@ -19,33 +19,36 @@ public final class StageSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StageSpec model = BinaryData.fromString(
-            "{\"name\":\"zeyqxtjjfzqlqhyc\",\"specification\":{},\"tasks\":[{\"name\":\"gxdbeesmie\",\"targetId\":\"lrariaawiu\",\"specification\":{}},{\"name\":\"ydwqfbylyrf\",\"targetId\":\"agt\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1650535228,\"errorAction\":{\"mode\":\"stopOnAnyFailure\",\"maxToleratedFailures\":842850517}}}")
+            "{\"name\":\"oqaqhvseufuq\",\"specification\":{},\"tasks\":[{\"name\":\"lcgqlsismj\",\"targetId\":\"rddga\",\"specification\":{}},{\"name\":\"uhiosrsju\",\"targetId\":\"fcdis\",\"specification\":{}},{\"name\":\"rnxzh\",\"targetId\":\"exrxzbujrtrhq\",\"specification\":{}},{\"name\":\"revkhgnlnzo\",\"targetId\":\"lrpiqywnc\",\"specification\":{}}],\"taskOption\":{\"concurrency\":162010613,\"errorAction\":{\"mode\":\"stopOnAnyFailure\",\"maxToleratedFailures\":1957842604}}}")
             .toObject(StageSpec.class);
-        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.name());
-        Assertions.assertEquals("gxdbeesmie", model.tasks().get(0).name());
-        Assertions.assertEquals("lrariaawiu", model.tasks().get(0).targetId());
-        Assertions.assertEquals(1650535228, model.taskOption().concurrency());
+        Assertions.assertEquals("oqaqhvseufuq", model.name());
+        Assertions.assertEquals("lcgqlsismj", model.tasks().get(0).name());
+        Assertions.assertEquals("rddga", model.tasks().get(0).targetId());
+        Assertions.assertEquals(162010613, model.taskOption().concurrency());
         Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.taskOption().errorAction().mode());
-        Assertions.assertEquals(842850517, model.taskOption().errorAction().maxToleratedFailures());
+        Assertions.assertEquals(1957842604, model.taskOption().errorAction().maxToleratedFailures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StageSpec model = new StageSpec().withName("zeyqxtjjfzqlqhyc")
-            .withSpecification(mapOf())
-            .withTasks(Arrays.asList(
-                new TaskSpec().withName("gxdbeesmie").withTargetId("lrariaawiu").withSpecification(mapOf()),
-                new TaskSpec().withName("ydwqfbylyrf").withTargetId("agt").withSpecification(mapOf())))
-            .withTaskOption(new TaskOption().withConcurrency(1650535228)
-                .withErrorAction(new ErrorAction().withMode(ErrorActionMode.STOP_ON_ANY_FAILURE)
-                    .withMaxToleratedFailures(842850517)));
+        StageSpec model
+            = new StageSpec().withName("oqaqhvseufuq")
+                .withSpecification(mapOf())
+                .withTasks(Arrays.asList(
+                    new TaskSpec().withName("lcgqlsismj").withTargetId("rddga").withSpecification(mapOf()),
+                    new TaskSpec().withName("uhiosrsju").withTargetId("fcdis").withSpecification(mapOf()),
+                    new TaskSpec().withName("rnxzh").withTargetId("exrxzbujrtrhq").withSpecification(mapOf()),
+                    new TaskSpec().withName("revkhgnlnzo").withTargetId("lrpiqywnc").withSpecification(mapOf())))
+                .withTaskOption(new TaskOption().withConcurrency(162010613)
+                    .withErrorAction(new ErrorAction().withMode(ErrorActionMode.STOP_ON_ANY_FAILURE)
+                        .withMaxToleratedFailures(1957842604)));
         model = BinaryData.fromObject(model).toObject(StageSpec.class);
-        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.name());
-        Assertions.assertEquals("gxdbeesmie", model.tasks().get(0).name());
-        Assertions.assertEquals("lrariaawiu", model.tasks().get(0).targetId());
-        Assertions.assertEquals(1650535228, model.taskOption().concurrency());
+        Assertions.assertEquals("oqaqhvseufuq", model.name());
+        Assertions.assertEquals("lcgqlsismj", model.tasks().get(0).name());
+        Assertions.assertEquals("rddga", model.tasks().get(0).targetId());
+        Assertions.assertEquals(162010613, model.taskOption().concurrency());
         Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.taskOption().errorAction().mode());
-        Assertions.assertEquals(842850517, model.taskOption().errorAction().maxToleratedFailures());
+        Assertions.assertEquals(1957842604, model.taskOption().errorAction().maxToleratedFailures());
     }
 
     // Use "Map.of" if available

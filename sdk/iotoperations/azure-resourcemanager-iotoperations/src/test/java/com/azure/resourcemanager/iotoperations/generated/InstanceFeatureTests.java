@@ -15,21 +15,20 @@ import org.junit.jupiter.api.Assertions;
 public final class InstanceFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InstanceFeature model = BinaryData.fromString(
-            "{\"mode\":\"Disabled\",\"settings\":{\"ntnbybkzg\":\"Disabled\",\"rwclxxwrljdo\":\"Disabled\",\"kcqvkocrc\":\"Disabled\",\"kwt\":\"Enabled\"}}")
-            .toObject(InstanceFeature.class);
-        Assertions.assertEquals(InstanceFeatureMode.DISABLED, model.mode());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.settings().get("ntnbybkzg"));
+        InstanceFeature model
+            = BinaryData.fromString("{\"mode\":\"Stable\",\"settings\":{\"emkkvnipjox\":\"Disabled\"}}")
+                .toObject(InstanceFeature.class);
+        Assertions.assertEquals(InstanceFeatureMode.STABLE, model.mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.settings().get("emkkvnipjox"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceFeature model = new InstanceFeature().withMode(InstanceFeatureMode.DISABLED)
-            .withSettings(mapOf("ntnbybkzg", OperationalMode.DISABLED, "rwclxxwrljdo", OperationalMode.DISABLED,
-                "kcqvkocrc", OperationalMode.DISABLED, "kwt", OperationalMode.ENABLED));
+        InstanceFeature model = new InstanceFeature().withMode(InstanceFeatureMode.STABLE)
+            .withSettings(mapOf("emkkvnipjox", OperationalMode.DISABLED));
         model = BinaryData.fromObject(model).toObject(InstanceFeature.class);
-        Assertions.assertEquals(InstanceFeatureMode.DISABLED, model.mode());
-        Assertions.assertEquals(OperationalMode.DISABLED, model.settings().get("ntnbybkzg"));
+        Assertions.assertEquals(InstanceFeatureMode.STABLE, model.mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.settings().get("emkkvnipjox"));
     }
 
     // Use "Map.of" if available

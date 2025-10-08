@@ -21,7 +21,7 @@ public final class BillingMetersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"vuicp\",\"properties\":{\"category\":\"rrmhwrbfdp\",\"meterType\":\"lubhvjg\",\"displayName\":\"ocu\"},\"id\":\"lw\",\"name\":\"hmem\",\"type\":\"ooclutnp\"}]}";
+            = "{\"value\":[{\"id\":\"sdsu\",\"name\":\"eqdgcruxsp\",\"type\":\"ymmqgwokmikp\",\"location\":\"bmjxuvjipf\",\"properties\":{\"category\":\"axdvwzaehp\",\"meterType\":\"thd\",\"displayName\":\"mvetatlakfq\"}},{\"id\":\"xwgiks\",\"name\":\"vtooxrpo\",\"type\":\"phchgjtnhtukfaci\",\"location\":\"fntumeezbxvqx\",\"properties\":{\"category\":\"vwcga\",\"meterType\":\"omtmjzwxuqgov\",\"displayName\":\"pwwztjfmkkhtgf\"}},{\"id\":\"dmlsc\",\"name\":\"ll\",\"type\":\"na\",\"location\":\"owazhpabacom\",\"properties\":{\"category\":\"t\",\"meterType\":\"wsxnsrqor\",\"displayName\":\"enmvcebxeetq\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class BillingMetersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingMeterCollection response
-            = manager.billingMeters().getWithResponse("pjrtws", com.azure.core.util.Context.NONE).getValue();
+            = manager.billingMeters().getWithResponse("qhnmhk", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("vuicp", response.value().get(0).location());
-        Assertions.assertEquals("rrmhwrbfdp", response.value().get(0).properties().category());
-        Assertions.assertEquals("lubhvjg", response.value().get(0).properties().meterType());
-        Assertions.assertEquals("ocu", response.value().get(0).properties().displayName());
+        Assertions.assertEquals("bmjxuvjipf", response.value().get(0).location());
+        Assertions.assertEquals("axdvwzaehp", response.value().get(0).properties().category());
+        Assertions.assertEquals("thd", response.value().get(0).properties().meterType());
+        Assertions.assertEquals("mvetatlakfq", response.value().get(0).properties().displayName());
     }
 }

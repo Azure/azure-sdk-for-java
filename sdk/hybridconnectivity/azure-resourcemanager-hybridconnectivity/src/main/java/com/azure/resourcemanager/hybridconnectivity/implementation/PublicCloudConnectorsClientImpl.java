@@ -32,13 +32,13 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridconnectivity.fluent.PublicCloudConnectorsClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
 import com.azure.resourcemanager.hybridconnectivity.implementation.models.PublicCloudConnectorListResult;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,7 +123,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("publicCloudConnector") String publicCloudConnector,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") PublicCloudConnectorInner properties, Context context);
+            @BodyParam("application/json") PublicCloudConnectorUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}")
         @ExpectedResponses({ 200 })
@@ -133,7 +133,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("publicCloudConnector") String publicCloudConnector,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") PublicCloudConnectorInner properties, Context context);
+            @BodyParam("application/json") PublicCloudConnectorUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}")
@@ -253,22 +253,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PublicCloudConnectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String publicCloudConnector) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -307,24 +291,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicCloudConnectorInner> getByResourceGroupWithResponse(String resourceGroupName,
         String publicCloudConnector, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicCloudConnector, accept, context);
@@ -359,27 +325,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String publicCloudConnector, PublicCloudConnectorInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -403,30 +348,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String publicCloudConnector,
         PublicCloudConnectorInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -449,30 +370,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String publicCloudConnector,
         PublicCloudConnectorInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -607,28 +504,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PublicCloudConnectorInner>> updateWithResponseAsync(String resourceGroupName,
-        String publicCloudConnector, PublicCloudConnectorInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+        String publicCloudConnector, PublicCloudConnectorUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -651,7 +527,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PublicCloudConnectorInner> updateAsync(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties) {
+        PublicCloudConnectorUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, publicCloudConnector, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -670,31 +546,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicCloudConnectorInner> updateWithResponse(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+        PublicCloudConnectorUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -715,7 +567,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicCloudConnectorInner update(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties) {
+        PublicCloudConnectorUpdate properties) {
         return updateWithResponse(resourceGroupName, publicCloudConnector, properties, Context.NONE).getValue();
     }
 
@@ -731,22 +583,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String publicCloudConnector) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, publicCloudConnector, context))
@@ -781,24 +617,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String publicCloudConnector, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicCloudConnector, context);
     }
@@ -830,18 +648,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicCloudConnectorInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -877,20 +683,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -911,20 +703,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -973,14 +751,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicCloudConnectorInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1012,16 +782,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -1040,16 +800,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -1097,22 +847,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> testPermissionsWithResponseAsync(String resourceGroupName,
         String publicCloudConnector) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.testPermissions(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1132,24 +866,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> testPermissionsWithResponse(String resourceGroupName, String publicCloudConnector) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.testPermissionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicCloudConnector, accept, Context.NONE);
@@ -1169,24 +885,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> testPermissionsWithResponse(String resourceGroupName, String publicCloudConnector,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicCloudConnector == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicCloudConnector is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.testPermissionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicCloudConnector, accept, context);
@@ -1310,13 +1008,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicCloudConnectorInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1337,15 +1028,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1366,15 +1048,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1394,13 +1067,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicCloudConnectorInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1421,15 +1087,6 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1450,21 +1107,10 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PublicCloudConnectorInner> listBySubscriptionNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PublicCloudConnectorListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PublicCloudConnectorsClientImpl.class);
 }

@@ -12,15 +12,15 @@ public final class CloudLinkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudLinkProperties model = BinaryData
-            .fromString("{\"provisioningState\":\"Canceled\",\"status\":\"Active\",\"linkedCloud\":\"uvarmywdmjsjq\"}")
+            .fromString("{\"provisioningState\":\"Canceled\",\"status\":\"Failed\",\"linkedCloud\":\"mihe\"}")
             .toObject(CloudLinkProperties.class);
-        Assertions.assertEquals("uvarmywdmjsjq", model.linkedCloud());
+        Assertions.assertEquals("mihe", model.linkedCloud());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudLinkProperties model = new CloudLinkProperties().withLinkedCloud("uvarmywdmjsjq");
+        CloudLinkProperties model = new CloudLinkProperties().withLinkedCloud("mihe");
         model = BinaryData.fromObject(model).toObject(CloudLinkProperties.class);
-        Assertions.assertEquals("uvarmywdmjsjq", model.linkedCloud());
+        Assertions.assertEquals("mihe", model.linkedCloud());
     }
 }

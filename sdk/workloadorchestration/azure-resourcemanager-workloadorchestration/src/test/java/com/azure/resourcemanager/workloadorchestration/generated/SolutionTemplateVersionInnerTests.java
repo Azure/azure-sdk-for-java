@@ -16,20 +16,20 @@ public final class SolutionTemplateVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurations\":\"qal\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Failed\"},\"eTag\":\"pxacqqudfn\",\"id\":\"xbaaabjyv\",\"name\":\"yffimrzrtuzqogs\",\"type\":\"xnevfdnwn\"}")
+            "{\"properties\":{\"configurations\":\"aivwitqscywu\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Failed\"},\"eTag\":\"czbwemhairsbr\",\"id\":\"dwmsweypqwd\",\"name\":\"ggicccnxqhue\",\"type\":\"mkttlstvlzywem\"}")
             .toObject(SolutionTemplateVersionInner.class);
-        Assertions.assertEquals("qal", model.properties().configurations());
+        Assertions.assertEquals("aivwitqscywu", model.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.properties().orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SolutionTemplateVersionInner model = new SolutionTemplateVersionInner()
-            .withProperties(new SolutionTemplateVersionProperties().withConfigurations("qal")
+            .withProperties(new SolutionTemplateVersionProperties().withConfigurations("aivwitqscywu")
                 .withSpecification(mapOf())
                 .withOrchestratorType(OrchestratorType.TO));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionInner.class);
-        Assertions.assertEquals("qal", model.properties().configurations());
+        Assertions.assertEquals("aivwitqscywu", model.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.properties().orchestratorType());
     }
 

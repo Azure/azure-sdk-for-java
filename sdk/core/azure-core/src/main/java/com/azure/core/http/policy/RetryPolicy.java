@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -77,8 +76,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * the retry delay when a recoverable HTTP error is returned.
      *
      * @param retryAfterHeader The HTTP header, such as {@code Retry-After} or {@code x-ms-retry-after-ms}, to lookup
-     * for the retry delay. If the value is null, {@link RetryStrategy#calculateRetryDelay(int)} will compute the delay
-     * and ignore the delay provided in response header.
+     * for the retry delay. If the value is null, {@link RetryStrategy#calculateRetryDelay(RequestRetryCondition)} will
+     * compute the delay and ignore the delay provided in response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. Null is valid if, and only if,
      * {@code retryAfterHeader} is null.
      * @throws NullPointerException When {@code retryAfterTimeUnit} is null and {@code retryAfterHeader} is not null.
@@ -189,7 +188,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(err);
                 return addBackoffDelay(attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal),
-                    retryStrategy.calculateRetryDelay(tryCount));
+                    retryStrategy.calculateRetryDelay(new RequestRetryCondition(null, err, tryCount, suppressedLocal)));
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
                 if (suppressed != null) {
@@ -218,7 +217,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
-                Duration delayDuration = retryStrategy.calculateRetryDelay(tryCount);
+                Duration delayDuration
+                    = retryStrategy.calculateRetryDelay(new RequestRetryCondition(null, err, tryCount, suppressed));
                 if (!delayDuration.isNegative() && !delayDuration.isZero()) {
                     try {
                         Thread.sleep(delayDuration.toMillis());
@@ -320,14 +320,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
         HttpHeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (retryAfterHeader == null) {
-            return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
+            return getWellKnownRetryDelay(response, tryCount, retryStrategy, OffsetDateTime::now);
         }
 
         String retryHeaderValue = response.getHeaderValue(retryAfterHeader);
 
         // Retry header is missing or empty, return the default delay duration.
         if (isNullOrEmpty(retryHeaderValue)) {
-            return retryStrategy.calculateRetryDelay(tryCount);
+            return retryStrategy.calculateRetryDelay(new RequestRetryCondition(response, null, tryCount, null));
         }
 
         // Use the response delay duration, the server returned it for a reason.
@@ -337,14 +337,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
+    static Duration getWellKnownRetryDelay(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
         Supplier<OffsetDateTime> nowSupplier) {
-        Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
+        Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
         }
 
         // None of the well-known headers have been found, return the default delay duration.
-        return retryStrategy.calculateRetryDelay(tryCount);
+        return retryStrategy.calculateRetryDelay(new RequestRetryCondition(response, null, tryCount, null));
     }
 }
