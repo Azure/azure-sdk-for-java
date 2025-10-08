@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.AvailableWorkloadProfilesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadProfileInner;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfilesCollection;
@@ -60,7 +61,7 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientAvailableWorkloadProfiles")
     public interface AvailableWorkloadProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/availableManagedEnvironmentsWorkloadProfileTypes")
@@ -71,10 +72,26 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/availableManagedEnvironmentsWorkloadProfileTypes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AvailableWorkloadProfilesCollection> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailableWorkloadProfilesCollection>> getNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AvailableWorkloadProfilesCollection> getNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -119,41 +136,6 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      * Get all available workload profiles for a location.
      * 
      * @param location The name of Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available workload profiles for a location along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailableWorkloadProfileInner>> getSinglePageAsync(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, this.client.getApiVersion(),
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get available workload profiles by location.
-     * 
-     * Get all available workload profiles for a location.
-     * 
-     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,16 +152,67 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      * Get all available workload profiles for a location.
      * 
      * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available workload profiles for a location along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AvailableWorkloadProfileInner> getSinglePage(String location) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AvailableWorkloadProfilesCollection> res = service.getSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), location, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get available workload profiles by location.
+     * 
+     * Get all available workload profiles for a location.
+     * 
+     * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available workload profiles for a location as paginated response with {@link PagedFlux}.
+     * @return all available workload profiles for a location along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailableWorkloadProfileInner> getAsync(String location, Context context) {
-        return new PagedFlux<>(() -> getSinglePageAsync(location, context),
-            nextLink -> getNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AvailableWorkloadProfileInner> getSinglePage(String location, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AvailableWorkloadProfilesCollection> res = service.getSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), location, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -195,7 +228,7 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableWorkloadProfileInner> get(String location) {
-        return new PagedIterable<>(getAsync(location));
+        return new PagedIterable<>(() -> getSinglePage(location), nextLink -> getNextSinglePage(nextLink));
     }
 
     /**
@@ -212,18 +245,21 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableWorkloadProfileInner> get(String location, Context context) {
-        return new PagedIterable<>(getAsync(location, context));
+        return new PagedIterable<>(() -> getSinglePage(location, context),
+            nextLink -> getNextSinglePage(nextLink, context));
     }
 
     /**
+     * Get available workload profiles by location.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of available workload profiles in the location along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all available workload profiles for a location along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableWorkloadProfileInner>> getNextSinglePageAsync(String nextLink) {
@@ -242,6 +278,37 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
     }
 
     /**
+     * Get available workload profiles by location.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available workload profiles for a location along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AvailableWorkloadProfileInner> getNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AvailableWorkloadProfilesCollection> res
+            = service.getNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get available workload profiles by location.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -249,23 +316,25 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of available workload profiles in the location along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all available workload profiles for a location along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailableWorkloadProfileInner>> getNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<AvailableWorkloadProfileInner> getNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AvailableWorkloadProfilesCollection> res
+            = service.getNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableWorkloadProfilesClientImpl.class);
 }

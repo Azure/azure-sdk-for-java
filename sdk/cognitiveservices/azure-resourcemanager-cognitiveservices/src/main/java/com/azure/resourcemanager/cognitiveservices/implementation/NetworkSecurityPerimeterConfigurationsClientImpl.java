@@ -689,8 +689,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for an Cognitive Services account along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of NSP configurations for an account along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -716,7 +716,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for an Cognitive Services account along with {@link PagedResponse}.
+     * @return a list of NSP configurations for an account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNextSinglePage(String nextLink) {
@@ -744,7 +744,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for an Cognitive Services account along with {@link PagedResponse}.
+     * @return a list of NSP configurations for an account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNextSinglePage(String nextLink,

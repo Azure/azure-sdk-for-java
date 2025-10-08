@@ -174,20 +174,6 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

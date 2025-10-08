@@ -5,21 +5,44 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.appcontainers.models.Level;
+import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.Runtime;
+import com.azure.resourcemanager.appcontainers.models.RuntimeDotnet;
 import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgent;
+import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgentLogging;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class RuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Runtime model = BinaryData.fromString("{\"java\":{\"enableMetrics\":true}}").toObject(Runtime.class);
-        Assertions.assertEquals(true, model.java().enableMetrics());
+        Runtime model = BinaryData.fromString(
+            "{\"java\":{\"enableMetrics\":true,\"javaAgent\":{\"enabled\":true,\"logging\":{\"loggerSettings\":[{\"logger\":\"fsdjpvkvp\",\"level\":\"error\"},{\"logger\":\"xbkzbzkdvncj\",\"level\":\"off\"},{\"logger\":\"udurgkakmokz\",\"level\":\"warn\"}]}}},\"dotnet\":{\"autoConfigureDataProtection\":true}}")
+            .toObject(Runtime.class);
+        Assertions.assertTrue(model.java().enableMetrics());
+        Assertions.assertTrue(model.java().javaAgent().enabled());
+        Assertions.assertEquals("fsdjpvkvp", model.java().javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.ERROR, model.java().javaAgent().logging().loggerSettings().get(0).level());
+        Assertions.assertTrue(model.dotnet().autoConfigureDataProtection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Runtime model = new Runtime().withJava(new RuntimeJava().withEnableMetrics(true));
+        Runtime model = new Runtime()
+            .withJava(new RuntimeJava().withEnableMetrics(true)
+                .withJavaAgent(new RuntimeJavaAgent().withEnabled(true)
+                    .withLogging(new RuntimeJavaAgentLogging().withLoggerSettings(
+                        Arrays.asList(new LoggerSetting().withLogger("fsdjpvkvp").withLevel(Level.ERROR),
+                            new LoggerSetting().withLogger("xbkzbzkdvncj").withLevel(Level.OFF),
+                            new LoggerSetting().withLogger("udurgkakmokz").withLevel(Level.WARN))))))
+            .withDotnet(new RuntimeDotnet().withAutoConfigureDataProtection(true));
         model = BinaryData.fromObject(model).toObject(Runtime.class);
-        Assertions.assertEquals(true, model.java().enableMetrics());
+        Assertions.assertTrue(model.java().enableMetrics());
+        Assertions.assertTrue(model.java().javaAgent().enabled());
+        Assertions.assertEquals("fsdjpvkvp", model.java().javaAgent().logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.ERROR, model.java().javaAgent().logging().loggerSettings().get(0).level());
+        Assertions.assertTrue(model.dotnet().autoConfigureDataProtection());
     }
 }

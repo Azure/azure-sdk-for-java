@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 
@@ -83,18 +85,33 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
+     * Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName);
+
+    /**
+     * Create or Update a Certificate.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Certificate to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
-     * {@link Response}.
+     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
+     * Managed Environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String certificateName, CertificateInner certificateEnvelope, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CertificateInner>, CertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope, Context context);
 
     /**
      * Create or Update a Certificate.
@@ -103,8 +120,7 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
@@ -112,21 +128,21 @@ public interface ConnectedEnvironmentsCertificatesClient {
     CertificateInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName, String certificateName);
 
     /**
-     * Deletes the specified Certificate.
+     * Create or Update a Certificate.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Certificate to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String certificateName,
-        Context context);
+    CertificateInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName, String certificateName,
+        CertificateInner certificateEnvelope, Context context);
 
     /**
      * Deletes the specified Certificate.
@@ -135,33 +151,56 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName);
+
+    /**
+     * Deletes the specified Certificate.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context);
+
+    /**
+     * Deletes the specified Certificate.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName);
 
     /**
-     * Update properties of a certificate
-     * 
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Deletes the specified Certificate.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
-     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String certificateName, CertificatePatch certificateEnvelope, Context context);
+    void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context);
 
     /**
      * Update properties of a certificate
@@ -173,12 +212,69 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
+     * Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CertificateInner>, CertificateInner> beginUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope);
+
+    /**
+     * Update properties of a certificate
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Properties of a certificate that need to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of certificate used for Custom Domain bindings of Container Apps in a
+     * Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CertificateInner>, CertificateInner> beginUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope, Context context);
+
+    /**
+     * Update properties of a certificate
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Properties of a certificate that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         CertificatePatch certificateEnvelope);
+
+    /**
+     * Update properties of a certificate
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the Connected Environment.
+     * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Properties of a certificate that need to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
+        CertificatePatch certificateEnvelope, Context context);
 }

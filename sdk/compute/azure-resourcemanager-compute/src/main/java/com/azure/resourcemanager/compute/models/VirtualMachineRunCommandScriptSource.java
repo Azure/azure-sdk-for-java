@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the script sources for run command. Use only one of script, scriptUri, commandId.
+ * Describes the script sources for run command. Use only one of these script sources: script, scriptUri, commandId,
+ * galleryScriptReferenceId.
  */
 @Fluent
 public final class VirtualMachineRunCommandScriptSource
@@ -29,7 +30,9 @@ public final class VirtualMachineRunCommandScriptSource
     private String scriptUri;
 
     /*
-     * Specifies a commandId of predefined built-in script.
+     * Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed at
+     * https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      */
     private String commandId;
 
@@ -41,6 +44,20 @@ public final class VirtualMachineRunCommandScriptSource
      * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
      */
     private RunCommandManagedIdentity scriptUriManagedIdentity;
+
+    /*
+     * Optional. Specify which shell to use for running the script. These values must match those expected by the
+     * extension. Currently supported only for Windows VMs, script uses Powershell 7 when specified. Powershell 7 must
+     * be already installed on the machine to use Powershell7 parameter value.
+     */
+    private ScriptShellTypes scriptShell;
+
+    /*
+     * The resource ID of a Gallery Script version that needs to be executed. Example ID looks like
+     * /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{
+     * scriptName}/versions/{version}.
+     */
+    private String galleryScriptReferenceId;
 
     /**
      * Creates an instance of VirtualMachineRunCommandScriptSource class.
@@ -91,7 +108,9 @@ public final class VirtualMachineRunCommandScriptSource
     }
 
     /**
-     * Get the commandId property: Specifies a commandId of predefined built-in script.
+     * Get the commandId property: Specifies a commandId of predefined built-in script. Command IDs available for Linux
+     * are listed at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * 
      * @return the commandId value.
      */
@@ -100,7 +119,9 @@ public final class VirtualMachineRunCommandScriptSource
     }
 
     /**
-     * Set the commandId property: Specifies a commandId of predefined built-in script.
+     * Set the commandId property: Specifies a commandId of predefined built-in script. Command IDs available for Linux
+     * are listed at https://aka.ms/RunCommandManagedLinux#available-commands, Windows at
+     * https://aka.ms/RunCommandManagedWindows#available-commands.
      * 
      * @param commandId the commandId value to set.
      * @return the VirtualMachineRunCommandScriptSource object itself.
@@ -140,6 +161,54 @@ public final class VirtualMachineRunCommandScriptSource
     }
 
     /**
+     * Get the scriptShell property: Optional. Specify which shell to use for running the script. These values must
+     * match those expected by the extension. Currently supported only for Windows VMs, script uses Powershell 7 when
+     * specified. Powershell 7 must be already installed on the machine to use Powershell7 parameter value.
+     * 
+     * @return the scriptShell value.
+     */
+    public ScriptShellTypes scriptShell() {
+        return this.scriptShell;
+    }
+
+    /**
+     * Set the scriptShell property: Optional. Specify which shell to use for running the script. These values must
+     * match those expected by the extension. Currently supported only for Windows VMs, script uses Powershell 7 when
+     * specified. Powershell 7 must be already installed on the machine to use Powershell7 parameter value.
+     * 
+     * @param scriptShell the scriptShell value to set.
+     * @return the VirtualMachineRunCommandScriptSource object itself.
+     */
+    public VirtualMachineRunCommandScriptSource withScriptShell(ScriptShellTypes scriptShell) {
+        this.scriptShell = scriptShell;
+        return this;
+    }
+
+    /**
+     * Get the galleryScriptReferenceId property: The resource ID of a Gallery Script version that needs to be executed.
+     * Example ID looks like
+     * /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{scriptName}/versions/{version}.
+     * 
+     * @return the galleryScriptReferenceId value.
+     */
+    public String galleryScriptReferenceId() {
+        return this.galleryScriptReferenceId;
+    }
+
+    /**
+     * Set the galleryScriptReferenceId property: The resource ID of a Gallery Script version that needs to be executed.
+     * Example ID looks like
+     * /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{scriptName}/versions/{version}.
+     * 
+     * @param galleryScriptReferenceId the galleryScriptReferenceId value to set.
+     * @return the VirtualMachineRunCommandScriptSource object itself.
+     */
+    public VirtualMachineRunCommandScriptSource withGalleryScriptReferenceId(String galleryScriptReferenceId) {
+        this.galleryScriptReferenceId = galleryScriptReferenceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -160,6 +229,8 @@ public final class VirtualMachineRunCommandScriptSource
         jsonWriter.writeStringField("scriptUri", this.scriptUri);
         jsonWriter.writeStringField("commandId", this.commandId);
         jsonWriter.writeJsonField("scriptUriManagedIdentity", this.scriptUriManagedIdentity);
+        jsonWriter.writeStringField("scriptShell", this.scriptShell == null ? null : this.scriptShell.toString());
+        jsonWriter.writeStringField("galleryScriptReferenceId", this.galleryScriptReferenceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,6 +259,11 @@ public final class VirtualMachineRunCommandScriptSource
                 } else if ("scriptUriManagedIdentity".equals(fieldName)) {
                     deserializedVirtualMachineRunCommandScriptSource.scriptUriManagedIdentity
                         = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("scriptShell".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.scriptShell
+                        = ScriptShellTypes.fromString(reader.getString());
+                } else if ("galleryScriptReferenceId".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.galleryScriptReferenceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -88,7 +88,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
      */
     /**
@@ -107,7 +107,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
      */
     /**

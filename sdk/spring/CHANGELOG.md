@@ -1,6 +1,43 @@
 # Release History
-# (Unreleased)
-Upgrade Spring Boot dependencies version to 3.5.5 and Spring Cloud dependencies version to 2025.0.0
+
+## 6.0.0 (2025-09-22)
+- This release is compatible with Spring Boot 3.5.0-3.5.5. (Note: 3.5.x (x>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.38.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `ServiceBusJmsConnectionFactoryCustomizer.customize(ServiceBusJmsConnectionFactory factory)`.
+- Remove deprecated APIs `AzureEventHubsKafkaAutoConfiguration.eventHubsKafkaConnectionString(Environment environment)`, `AzureEventHubsKafkaAutoConfiguration.kafkaPropertiesBeanPostProcessor()`.
+
+### Spring Cloud Stream Service Bus Binder Core
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus-core` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type)`, `validateOrCreateForProducer(String name, ServiceBusEntityType type)`.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#600-2025-09-22) for more details.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `ServiceBusJmsConnectionFactoryCustomizer.customize(ServiceBusJmsConnectionFactory factory)`.
+- Remove deprecated APIs `AzureEventHubsKafkaAutoConfiguration.eventHubsKafkaConnectionString(Environment environment)`, `AzureEventHubsKafkaAutoConfiguration.kafkaPropertiesBeanPostProcessor()`.
+
+### Spring Cloud Stream Service Bus Binder Core
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus-core` module.
+
+#### Breaking Changes
+- Remove deprecated APIs `validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type)`, `validateOrCreateForProducer(String name, ServiceBusEntityType type)`.
 
 ## 5.23.0 (2025-08-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.4, 3.4.0-3.4.8, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.5.x (x>4) and 3.4.y (y>8) should be supported, but they aren't tested with this release.)

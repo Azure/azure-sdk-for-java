@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public final class SchedulersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"bkbfkgukdkex\",\"ipAllowlist\":[\"pofm\",\"axcfjpgddtocjjx\",\"vpmouexhdzxib\",\"eojnxqbzvddn\"],\"sku\":{\"name\":\"wndeicbtwnp\",\"capacity\":1464431072,\"redundancyState\":\"Zone\"}},\"location\":\"hrhcffcyddglmjth\",\"tags\":{\"hix\":\"wpyeicxmqciwqvh\"},\"id\":\"igdtopbob\",\"name\":\"og\",\"type\":\"m\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"endpoint\":\"rlovmclwhijcoej\",\"ipAllowlist\":[\"bzaqsqsycbkbfk\",\"ukdkexxppofmxa\",\"c\",\"jpgd\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":263932996,\"redundancyState\":\"None\"}},\"location\":\"hvpmoue\",\"tags\":{\"xqbzvddntwnd\":\"zxibqeoj\",\"vuhrhcffcyddgl\":\"icbtwnpzao\",\"xmqci\":\"jthjqkwpyei\",\"hkh\":\"q\"},\"id\":\"xuigdtopbobj\",\"name\":\"ghmewuam\",\"type\":\"uhrzayvvt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +34,10 @@ public final class SchedulersListMockTests {
 
         PagedIterable<Scheduler> response = manager.schedulers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().location());
-        Assertions.assertEquals("wpyeicxmqciwqvh", response.iterator().next().tags().get("hix"));
-        Assertions.assertEquals("pofm", response.iterator().next().properties().ipAllowlist().get(0));
-        Assertions.assertEquals("wndeicbtwnp", response.iterator().next().properties().sku().name());
-        Assertions.assertEquals(1464431072, response.iterator().next().properties().sku().capacity());
+        Assertions.assertEquals("hvpmoue", response.iterator().next().location());
+        Assertions.assertEquals("zxibqeoj", response.iterator().next().tags().get("xqbzvddntwnd"));
+        Assertions.assertEquals("bzaqsqsycbkbfk", response.iterator().next().properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, response.iterator().next().properties().sku().name());
+        Assertions.assertEquals(263932996, response.iterator().next().properties().sku().capacity());
     }
 }

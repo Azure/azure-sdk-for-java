@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public final class ConnectedEnvironmentsCertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ConnectedEnvironmentsCertificates_Patch.json
      */
     /**

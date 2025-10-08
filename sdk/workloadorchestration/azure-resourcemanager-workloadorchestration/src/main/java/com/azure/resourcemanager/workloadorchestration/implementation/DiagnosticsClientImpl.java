@@ -31,12 +31,12 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.DiagnosticInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.DiagnosticListResult;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -118,7 +118,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diagnosticName") String diagnosticName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}")
@@ -128,7 +128,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("diagnosticName") String diagnosticName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiagnosticUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -229,21 +229,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String diagnosticName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -281,24 +266,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticInner> getByResourceGroupWithResponse(String resourceGroupName, String diagnosticName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, diagnosticName, accept, context);
@@ -333,26 +300,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String diagnosticName, DiagnosticInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -376,30 +323,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String diagnosticName,
         DiagnosticInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -422,30 +345,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String diagnosticName,
         DiagnosticInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -577,27 +476,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+        DiagnosticUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -620,31 +499,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+        DiagnosticUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -666,31 +521,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+        DiagnosticUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -711,7 +542,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdateAsync(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties) {
+        String diagnosticName, DiagnosticUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diagnosticName, properties);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(mono, this.client.getHttpPipeline(),
             DiagnosticInner.class, DiagnosticInner.class, this.client.getContext());
@@ -730,7 +561,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties) {
+        String diagnosticName, DiagnosticUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, diagnosticName, properties);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
             DiagnosticInner.class, Context.NONE);
@@ -750,7 +581,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties, Context context) {
+        String diagnosticName, DiagnosticUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, diagnosticName, properties, context);
         return this.client.<DiagnosticInner, DiagnosticInner>getLroResult(response, DiagnosticInner.class,
             DiagnosticInner.class, context);
@@ -769,7 +600,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticInner> updateAsync(String resourceGroupName, String diagnosticName,
-        DiagnosticInner properties) {
+        DiagnosticUpdate properties) {
         return beginUpdateAsync(resourceGroupName, diagnosticName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -786,7 +617,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties) {
+    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties) {
         return beginUpdate(resourceGroupName, diagnosticName, properties).getFinalResult();
     }
 
@@ -803,7 +634,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties,
+    public DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties,
         Context context) {
         return beginUpdate(resourceGroupName, diagnosticName, properties, context).getFinalResult();
     }
@@ -820,21 +651,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diagnosticName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, diagnosticName, context))
@@ -853,24 +669,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String diagnosticName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, diagnosticName, Context.NONE);
     }
@@ -888,24 +686,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String diagnosticName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (diagnosticName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter diagnosticName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, diagnosticName, context);
     }
@@ -1018,18 +798,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1065,20 +833,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1098,20 +852,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1160,14 +900,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1199,16 +931,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, Context.NONE);
@@ -1227,16 +949,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
@@ -1283,13 +995,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1310,15 +1015,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1338,15 +1034,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1366,13 +1053,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1393,15 +1073,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1421,21 +1092,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiagnosticInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiagnosticListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DiagnosticsClientImpl.class);
 }

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.workloadorchestration.models.InstallSolutionPar
 import com.azure.resourcemanager.workloadorchestration.models.RemoveRevisionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionVersionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.TargetUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.UninstallSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateExternalValidationStatusParameter;
 
@@ -125,7 +126,7 @@ public interface TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
-        TargetInner properties);
+        TargetUpdate properties);
 
     /**
      * update a Target Resource.
@@ -141,7 +142,7 @@ public interface TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TargetInner>, TargetInner> beginUpdate(String resourceGroupName, String targetName,
-        TargetInner properties, Context context);
+        TargetUpdate properties, Context context);
 
     /**
      * update a Target Resource.
@@ -155,7 +156,7 @@ public interface TargetsClient {
      * @return target Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TargetInner update(String resourceGroupName, String targetName, TargetInner properties);
+    TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties);
 
     /**
      * update a Target Resource.
@@ -170,7 +171,7 @@ public interface TargetsClient {
      * @return target Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TargetInner update(String resourceGroupName, String targetName, TargetInner properties, Context context);
+    TargetInner update(String resourceGroupName, String targetName, TargetUpdate properties, Context context);
 
     /**
      * Delete a Target Resource.

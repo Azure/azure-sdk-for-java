@@ -315,6 +315,6 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
