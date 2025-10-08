@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * QuickBooks server linked service.
+ * QuickBooks server linked service. This linked service has supported version property. The Version 1.0 is scheduled
+ * for deprecation while your pipeline will continue to run after EOL but without any bug fix or new features.
  */
 @Fluent
 public class QuickBooksLinkedService extends LinkedService {
@@ -45,28 +46,34 @@ public class QuickBooksLinkedService extends LinkedService {
     private Object companyId;
 
     /*
-     * The consumer key for OAuth 1.0 authentication.
+     * The consumer key for OAuth 2.0 authentication.
      */
     @Generated
     private Object consumerKey;
 
     /*
-     * The consumer secret for OAuth 1.0 authentication.
+     * The consumer secret for OAuth 2.0 authentication.
      */
     @Generated
     private SecretBase consumerSecret;
 
     /*
-     * The access token for OAuth 1.0 authentication.
+     * The access token for OAuth 2.0 authentication.
      */
     @Generated
     private SecretBase accessToken;
 
     /*
-     * The access token secret for OAuth 1.0 authentication.
+     * The access token secret is deprecated for OAuth 1.0 authentication. Only used for version 1.0.
      */
     @Generated
     private SecretBase accessTokenSecret;
+
+    /*
+     * The refresh token for OAuth 2.0 authentication.
+     */
+    @Generated
+    private SecretBase refreshToken;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
@@ -168,7 +175,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the consumerKey property: The consumer key for OAuth 1.0 authentication.
+     * Get the consumerKey property: The consumer key for OAuth 2.0 authentication.
      * 
      * @return the consumerKey value.
      */
@@ -178,7 +185,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the consumerKey property: The consumer key for OAuth 1.0 authentication.
+     * Set the consumerKey property: The consumer key for OAuth 2.0 authentication.
      * 
      * @param consumerKey the consumerKey value to set.
      * @return the QuickBooksLinkedService object itself.
@@ -190,7 +197,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
+     * Get the consumerSecret property: The consumer secret for OAuth 2.0 authentication.
      * 
      * @return the consumerSecret value.
      */
@@ -200,7 +207,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
+     * Set the consumerSecret property: The consumer secret for OAuth 2.0 authentication.
      * 
      * @param consumerSecret the consumerSecret value to set.
      * @return the QuickBooksLinkedService object itself.
@@ -212,7 +219,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the accessToken property: The access token for OAuth 1.0 authentication.
+     * Get the accessToken property: The access token for OAuth 2.0 authentication.
      * 
      * @return the accessToken value.
      */
@@ -222,7 +229,7 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the accessToken property: The access token for OAuth 1.0 authentication.
+     * Set the accessToken property: The access token for OAuth 2.0 authentication.
      * 
      * @param accessToken the accessToken value to set.
      * @return the QuickBooksLinkedService object itself.
@@ -234,7 +241,8 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
+     * Get the accessTokenSecret property: The access token secret is deprecated for OAuth 1.0 authentication. Only used
+     * for version 1.0.
      * 
      * @return the accessTokenSecret value.
      */
@@ -244,7 +252,8 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
+     * Set the accessTokenSecret property: The access token secret is deprecated for OAuth 1.0 authentication. Only used
+     * for version 1.0.
      * 
      * @param accessTokenSecret the accessTokenSecret value to set.
      * @return the QuickBooksLinkedService object itself.
@@ -252,6 +261,28 @@ public class QuickBooksLinkedService extends LinkedService {
     @Generated
     public QuickBooksLinkedService setAccessTokenSecret(SecretBase accessTokenSecret) {
         this.accessTokenSecret = accessTokenSecret;
+        return this;
+    }
+
+    /**
+     * Get the refreshToken property: The refresh token for OAuth 2.0 authentication.
+     * 
+     * @return the refreshToken value.
+     */
+    @Generated
+    public SecretBase getRefreshToken() {
+        return this.refreshToken;
+    }
+
+    /**
+     * Set the refreshToken property: The refresh token for OAuth 2.0 authentication.
+     * 
+     * @param refreshToken the refreshToken value to set.
+     * @return the QuickBooksLinkedService object itself.
+     */
+    @Generated
+    public QuickBooksLinkedService setRefreshToken(SecretBase refreshToken) {
+        this.refreshToken = refreshToken;
         return this;
     }
 
@@ -373,6 +404,7 @@ public class QuickBooksLinkedService extends LinkedService {
             || consumerSecret != null
             || accessToken != null
             || accessTokenSecret != null
+            || refreshToken != null
             || useEncryptedEndpoints != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
@@ -385,6 +417,7 @@ public class QuickBooksLinkedService extends LinkedService {
             jsonWriter.writeJsonField("consumerSecret", this.consumerSecret);
             jsonWriter.writeJsonField("accessToken", this.accessToken);
             jsonWriter.writeJsonField("accessTokenSecret", this.accessTokenSecret);
+            jsonWriter.writeJsonField("refreshToken", this.refreshToken);
             if (this.useEncryptedEndpoints != null) {
                 jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
             }
@@ -453,6 +486,8 @@ public class QuickBooksLinkedService extends LinkedService {
                             deserializedQuickBooksLinkedService.accessToken = SecretBase.fromJson(reader);
                         } else if ("accessTokenSecret".equals(fieldName)) {
                             deserializedQuickBooksLinkedService.accessTokenSecret = SecretBase.fromJson(reader);
+                        } else if ("refreshToken".equals(fieldName)) {
+                            deserializedQuickBooksLinkedService.refreshToken = SecretBase.fromJson(reader);
                         } else if ("useEncryptedEndpoints".equals(fieldName)) {
                             deserializedQuickBooksLinkedService.useEncryptedEndpoints = reader.readUntyped();
                         } else if ("encryptedCredential".equals(fieldName)) {

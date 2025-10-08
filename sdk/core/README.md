@@ -10,19 +10,21 @@ The main shared concepts of Azure Core (and therefore all Azure client libraries
 
 - Configuring service clients, e.g. configuring retries, logging, etc.
 - Accessing HTTP response details (`Response<T>`).
-- Calling long running operations (`Poller<T>`).
+- Calling long-running operations (`Poller<T>`).
 - Paging and asynchronous streams (`PagedFlux<T>`).
 - Exceptions for reporting errors from service requests in a consistent fashion.
 - Abstractions for representing Azure SDK credentials.
 
 ## Sub-projects
 
-Azure Core is split into a number of sub-components:
+Azure Core is split into a number of subcomponents:
 
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core) is the primary library, used by all client libraries to offer the functionality outlined above.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp) provides functionality related to AMQP (Advanced Message Queuing Protocol).
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-jdk-httpclient](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-jdk-httpclient) provides a JDK 12+ derived HTTP client.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-vertx](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-vertx) provides an Vert.x derived HTTP client.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management) provides APIs used by the Azure management libraries, but which are redundant to client libraries.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test) provides utilities and API to make writing tests for Azure Core simpler and consistent.
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry) provides an OpenTelemetry based tracing library.
