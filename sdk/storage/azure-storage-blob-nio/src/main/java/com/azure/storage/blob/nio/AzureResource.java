@@ -42,6 +42,14 @@ import java.util.Objects;
 final class AzureResource {
     private static final ClientLogger LOGGER = new ClientLogger(AzureResource.class);
 
+    /**
+     * Metadata key used to mark virtual directories in Azure Blob Storage.
+     *
+     * <p>When this metadata key is set to "true" on a zero-length blob without extension,
+     * it represents a virtual directory in the blob hierarchy.
+     *
+     * @see Constants.HeaderConstants#DIRECTORY_METADATA_KEY
+     */
     static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
     private final AzurePath path;
@@ -84,9 +92,16 @@ final class AzureResource {
         return dirStatus.equals(DirectoryStatus.EMPTY) || dirStatus.equals(DirectoryStatus.NOT_EMPTY);
     }
 
-    /*
-    This method will check specifically whether there is a virtual directory at this location. It must be known before
-    that there is no file present at the destination.
+    /**
+     * Checks if a virtual directory exists at this location.
+     *
+     * <p>A virtual directory is defined as an empty, extensionless file with the
+     * {@link #DIR_METADATA_MARKER} metadata set to "true".
+     *
+     * <p>This method assumes no file exists at the destination.
+     *
+     * @return true if a virtual directory exists at this location
+     * @throws IOException if an I/O error occurs
      */
     boolean checkVirtualDirectoryExists() throws IOException {
         DirectoryStatus dirStatus = this.checkDirStatus(false);
@@ -125,9 +140,17 @@ final class AzureResource {
         return checkDirStatus(exists);
     }
 
-    /*
-    This method will determine the status of the directory given it is already known whether or not there is an object
-    at the target.
+    /**
+     * Checks if a virtual directory exists at this location.
+     *
+     * <p>A virtual directory is defined as an empty, extensionless file with the
+     * {@link #DIR_METADATA_MARKER} metadata set to "true".
+     *
+     * <p>This method assumes no file exists at the destination.
+     *
+     * @param blobExists Whether a non-directory blob exists at this location.
+     * @return true if a virtual directory exists at this location
+     * @throws IOException if an I/O error occurs
      */
     DirectoryStatus checkDirStatus(boolean exists) throws IOException {
         BlobContainerClient containerClient = this.getContainerClient();
