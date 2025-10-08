@@ -12,5 +12,6 @@
   <modules>
       <module>azure-resourcemanager-cognitiveservices</module>
       <module>azure-ai-speech-transcription</module>
+      <module>azure-ai-speech-batchtranscription</module>
       </modules>
 </project>
