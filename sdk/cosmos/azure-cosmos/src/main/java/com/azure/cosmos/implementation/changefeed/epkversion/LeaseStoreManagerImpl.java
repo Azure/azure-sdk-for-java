@@ -191,7 +191,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     }
                 }
 
-                logger.error("Failed to create lease document for {}.", leaseToken, ex);
+                logger.error("Failed to create lease document for " + leaseToken + ".", ex);
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> {
@@ -324,7 +324,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                 }
-                logger.warn("Lease with token {} : failed to release lease.", lease.getLeaseToken(), ex);
+                logger.warn("Lease with token " + lease.getLeaseToken() + " : failed to release lease.", ex);
 
                 return Mono.error(ex);
             })
@@ -370,7 +370,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         throw new LeaseLostException(lease);
                     }
                 }
-                logger.warn("Lease with token {} : failed to renew lease.", lease.getLeaseToken(), ex);
+                logger.warn("Lease with token " + lease.getLeaseToken() + " : failed to renew lease.", ex);
                 return Mono.error(ex);
             })
             .map( documentResourceResponse -> ServiceItemLeaseV1.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
@@ -465,8 +465,12 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     });
             })
             .doOnError(throwable -> {
-                logger.info("Lease with token {}  : lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
-                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken(), throwable);
+                logger.info(
+                    "Lease with token " + lease.getLeaseToken() +
+                        "  : lease with token '" + lease.getConcurrencyToken() +
+                        "' failed to checkpoint for owner '" + lease.getOwner() +
+                        "' with continuation token '" + lease.getReadableContinuationToken() + "'",
+                    throwable);
             });
     }
 

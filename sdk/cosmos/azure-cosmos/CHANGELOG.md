@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
 
 #### Other Changes
 * Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
