@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -31,9 +30,9 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
     private final String contentType;
 
     /*
-     * Binary data of contents of the attachment
+     * Base64 encoded contents of the attachment
      */
-    private final BinaryData content;
+    private final BinaryData contentInBase64;
 
     /*
      * Unique identifier (CID) to reference an inline attachment.
@@ -47,10 +46,10 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
      */
-    public EmailAttachment(String name, String contentType, BinaryData content) {
+    public EmailAttachment(String name, String contentType, BinaryData contentInBase64) {
         this.name = name;
         this.contentType = contentType;
-        this.content = content;
+        this.contentInBase64 = contentInBase64;
     }
 
     /**
@@ -72,12 +71,23 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
     }
 
     /**
+     * @deprecated Use {@link #getContentInBase64()} instead.
      * Returns the content of the attachment.
      *
      * @return The content of the attachment as BinaryData.
      */
+    @Deprecated
     public BinaryData getContent() {
-        return this.content;
+        return this.contentInBase64;
+    }
+
+    /**
+     * Get the contentInBase64 property: Base64 encoded contents of the attachment.
+     *
+     * @return the contentInBase64 value.
+     */
+    public BinaryData getContentInBase64() {
+        return this.contentInBase64;
     }
 
     /**
@@ -108,7 +118,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("contentType", this.contentType);
-        jsonWriter.writeStringField("contentInBase64", base64FromBinaryData(this.content));
+        jsonWriter.writeStringField("contentInBase64", this.contentInBase64.toString());
         jsonWriter.writeStringField("contentId", this.contentId);
         return jsonWriter.writeEndObject();
     }
@@ -170,13 +180,5 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
             throw new IllegalStateException(
                 "Missing required property/properties: " + String.join(", ", missingProperties));
         });
-    }
-
-    private static String base64FromBinaryData(BinaryData content) {
-        if (content != null) {
-            return Base64.getEncoder().encodeToString(content.toBytes());
-        }
-
-        return null;
     }
 }

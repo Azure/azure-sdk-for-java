@@ -15,6 +15,7 @@ import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
@@ -23,6 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,7 +94,7 @@ public final class EmailAsyncClient {
                 com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
 
                 attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
-                    attachment.getName(), attachment.getContentType(), attachment.getContent());
+                    attachment.getName(), attachment.getContentType(), formatToBase64(attachment.getContent()));
 
                 String contentId = attachment.getContentId();
 
@@ -127,5 +129,16 @@ public final class EmailAsyncClient {
                 Objects.requireNonNull(recipient.getAddress(), "EmailAddress 'address' cannot be null.");
             }
         }
+    }
+
+    private static BinaryData formatToBase64(BinaryData content) {
+        String encodedContent;
+        if (content != null) {
+            encodedContent = Base64.getEncoder().encodeToString(content.toBytes());
+        } else {
+            encodedContent = "";
+        }
+
+        return BinaryData.fromString(encodedContent);
     }
 }
