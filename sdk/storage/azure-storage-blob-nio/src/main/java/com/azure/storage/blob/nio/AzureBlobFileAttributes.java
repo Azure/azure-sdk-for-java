@@ -58,7 +58,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
                 this.properties = null;
                 return;
             } else {
-                throw LoggingUtility.logError(LOGGER, new IOException("Path: " + path.toString(), e));
+                throw new IOException("Path: " + path.toString(), e);
             }
         }
         this.properties = props;

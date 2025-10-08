@@ -23,14 +23,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * This type is meant to be a logical grouping of operations and data associated with an azure resource. It is NOT
@@ -135,12 +133,8 @@ final class AzureResource {
         BlobContainerClient containerClient = this.getContainerClient();
 
         // List on the directory name + '/' so that we only get things under the directory if any
-        String directory = Arrays.stream(this.blobClient.getBlobName().split("/"))
-            .filter(item -> !item.contains("."))
-            .collect(Collectors.joining("/"));
-
         ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2)
-            .setPrefix(directory)
+            .setPrefix(this.blobClient.getBlobName() + AzureFileSystem.PATH_SEPARATOR)
             .setDetails(new BlobListDetails().setRetrieveMetadata(true));
 
         /*
