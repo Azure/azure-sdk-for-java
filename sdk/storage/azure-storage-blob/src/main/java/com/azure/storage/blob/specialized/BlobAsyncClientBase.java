@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -1355,15 +1354,14 @@ public class BlobAsyncClientBase {
             try {
                 return decoder.decode(buffer);
             } catch (Exception e) {
-                LOGGER.error("Error decoding structured message", e);
-                throw new RuntimeException("Failed to decode structured message", e);
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to decode structured message", e));
             }
         }).doOnComplete(() -> {
             try {
                 decoder.finalizeDecoding();
             } catch (Exception e) {
-                LOGGER.error("Error finalizing structured message decoding", e);
-                throw new RuntimeException("Failed to finalize structured message decoding", e);
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException("Failed to finalize structured message decoding", e));
             }
         });
 
