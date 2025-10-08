@@ -1181,6 +1181,25 @@ public class BlobAsyncClientBase {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * com.azure.storage.blob.options.DownloadContentValidationOptions validationOptions =
+     *     new com.azure.storage.blob.options.DownloadContentValidationOptions&#40;&#41;
+     *         .setStructuredMessageDecodingEnabled&#40;true&#41;
+     *         .setExpectedContentLength&#40;2048&#41;;
+     *
+     * client.downloadStreamWithResponse&#40;range, options, null, false, validationOptions&#41;.subscribe&#40;response -&gt; &#123;
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *         try &#123;
+     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *         &#125; catch &#40;IOException ex&#41; &#123;
+     *             throw new UncheckedIOException&#40;ex&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions -->
      *
      * <p>For more information, see the

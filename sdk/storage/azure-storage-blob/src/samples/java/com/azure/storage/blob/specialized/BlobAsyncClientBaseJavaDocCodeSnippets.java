@@ -480,6 +480,34 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobAsyncClientBase#downloadStreamWithResponse(BlobRange, DownloadRetryOptions,
+     * BlobRequestConditions, boolean, com.azure.storage.blob.options.DownloadContentValidationOptions)}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadStreamWithResponseWithValidationCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions
+        BlobRange range = new BlobRange(1024, (long) 2048);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        com.azure.storage.blob.options.DownloadContentValidationOptions validationOptions =
+            new com.azure.storage.blob.options.DownloadContentValidationOptions()
+                .setStructuredMessageDecodingEnabled(true)
+                .setExpectedContentLength(2048);
+
+        client.downloadStreamWithResponse(range, options, null, false, validationOptions).subscribe(response -> {
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            response.getValue().subscribe(piece -> {
+                try {
+                    downloadData.write(piece.array());
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-DownloadContentValidationOptions
+    }
+
+    /**
      * Code snippets for {@link BlobAsyncClientBase#downloadContentWithResponse(DownloadRetryOptions,
      * BlobRequestConditions)}
      *
