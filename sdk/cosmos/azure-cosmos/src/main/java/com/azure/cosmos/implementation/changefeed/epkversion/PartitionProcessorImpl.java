@@ -200,13 +200,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
                     CosmosException clientException = (CosmosException) throwable;
                     logger.warn(
-                        "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {} " +
-                            "exception msg {}, exception cause {}",
+                        "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {}",
                         this.lease.getLeaseToken(),
                         Thread.currentThread().getId(),
                         this.lease.getOwner(),
-                        clientException.getMessage(),
-                        clientException.getCause() == null ? "" : clientException.getCause().getMessage(),
                         clientException);
                     StatusCodeErrorType docDbError =
                         ExceptionClassifier.classifyClientException(clientException);
