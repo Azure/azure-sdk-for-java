@@ -20,12 +20,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import reactor.test.StepVerifier;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class TranscriptionClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClientTestBase.class);
-    private static final Duration TEST_TIMEOUT = Duration.ofSeconds(30);
 
     final Boolean printResults = false; // Set to true to print results to console window
 
@@ -166,12 +163,9 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                 }
                 validateTranscriptionResult(testName, result);
             } else {
-                // Use StepVerifier for async tests instead of blocking
+                TranscriptionResult result = null;
                 if (!transcribeWithResponse) {
-                    StepVerifier.create(asyncClient.transcribe(requestContent))
-                        .assertNext(result -> validateTranscriptionResult(testName, result))
-                        .expectComplete()
-                        .verify(TEST_TIMEOUT);
+                    result = asyncClient.transcribe(requestContent).block();
                 } else {
                     // For transcribeWithResponse, we need to manually prepare the multipart request body
                     if (requestOptions == null) {
@@ -187,15 +181,12 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                             .end()
                             .getRequestBody();
 
-                    StepVerifier.create(asyncClient.transcribeWithResponse(multipartBody, requestOptions))
-                        .assertNext(response -> {
-                            printHttpRequestAndResponse(response);
-                            TranscriptionResult result = response.getValue().toObject(TranscriptionResult.class);
-                            validateTranscriptionResult(testName, result);
-                        })
-                        .expectComplete()
-                        .verify(TEST_TIMEOUT);
+                    Response<BinaryData> response
+                        = asyncClient.transcribeWithResponse(multipartBody, requestOptions).block();
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue().toObject(TranscriptionResult.class);
                 }
+                validateTranscriptionResult(testName, result);
             }
         } catch (Exception e) {
             LOGGER.error("Error in test {}: {}", testName, e.getMessage());
