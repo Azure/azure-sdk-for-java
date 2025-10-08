@@ -31,6 +31,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -540,15 +541,25 @@ public class ShareFileClient {
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
 
+        Long contentLength;
+        byte[] contentMD5;
+        if (options.getData() != null) {
+            contentLength = options.getData().getLength();
+            contentMD5 = UploadUtils.computeMd5(options.getData().toByteBuffer(), LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5 = null;
+        }
+
         Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .createWithResponse(shareName, filePath, options.getSize(), null, options.getMetadata(),
                 options.getFilePermission(), options.getFilePermissionFormat(), smbProperties.getFilePermissionKey(),
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 requestConditions.getLeaseId(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), null, null, null, null,
-                options.getShareFileHttpHeaders(), finalContext);
-        //temporary, parameters will be added with create file with data feature
+                fileposixProperties.getFileMode(), fileposixProperties.getFileType(), contentMD5,
+                options.getFilePropertySemantics(), contentLength, options.getData(), options.getShareFileHttpHeaders(),
+                finalContext);
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
