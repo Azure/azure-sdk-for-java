@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum TranscriptionServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2025-10-15.
+     * Enum value 2024-11-15.
      */
-    V2025_10_15("2025-10-15");
+    V2024_11_15("2024-11-15");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum TranscriptionServiceVersion implements ServiceVersion {
      * @return The latest {@link TranscriptionServiceVersion}.
      */
     public static TranscriptionServiceVersion getLatest() {
-        return V2025_10_15;
+        return V2024_11_15;
     }
 }

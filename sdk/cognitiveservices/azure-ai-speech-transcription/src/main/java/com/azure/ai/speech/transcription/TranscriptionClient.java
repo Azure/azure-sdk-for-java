@@ -19,6 +19,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous TranscriptionClient type.
@@ -40,6 +41,8 @@ import com.azure.core.util.BinaryData;
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class)
 public final class TranscriptionClient {
+    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClient.class);
+
     @Generated
     private final TranscriptionClientImpl serviceClient;
 
@@ -133,11 +136,11 @@ public final class TranscriptionClient {
      * <!-- end com.azure.ai.speech.transcription.transcriptionclient.transcribe -->
      *
      * @param body The body of the multipart request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws NullPointerException thrown if the body parameter is null.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the transcribe operation.
      */
@@ -146,6 +149,10 @@ public final class TranscriptionClient {
     public TranscriptionResult transcribe(TranscribeRequestContent body) {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        // Validate that body is not null
+        if (body == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'body' cannot be null"));
+        }
         return transcribeWithResponse(
             new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", body.getOptions())
                 .serializeFileField("audio", body.getAudio() == null ? null : body.getAudio().getContent(),

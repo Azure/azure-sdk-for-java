@@ -160,9 +160,8 @@ public final class TranscriptionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> transcribe(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/transcriptions:transcribe")
@@ -172,9 +171,8 @@ public final class TranscriptionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> transcribeSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -224,10 +222,10 @@ public final class TranscriptionClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transcribeWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+        // Content-Type will be set by MultipartFormDataHelper with boundary
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.transcribe(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -276,9 +274,9 @@ public final class TranscriptionClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> transcribeWithResponse(BinaryData body, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+        // Content-Type will be set by MultipartFormDataHelper with boundary
         final String accept = "application/json";
-        return service.transcribeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.transcribeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
+            requestOptions, Context.NONE);
     }
 }
