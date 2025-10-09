@@ -32,7 +32,7 @@ public final class QueryParamPolicy extends HttpPipelineSyncPolicy {
                             int equalIndex = pair.indexOf('=');
                             return equalIndex != -1
                                 ? pair.substring(0, equalIndex).toLowerCase() + "=" + pair.substring(equalIndex + 1)
-                                : pair.toLowerCase() + "=";
+                                : pair.toLowerCase();
                         }).sorted().collect(Collectors.joining("&"));
                     String urlWithoutQuery = url.substring(0, queryIndex);
                     String newUrl = urlWithoutQuery + "?" + normalizedQuery;
