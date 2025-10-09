@@ -12,9 +12,9 @@ public final class AutonomousDatabaseNationalCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseNationalCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"x\"},\"id\":\"n\",\"name\":\"rxcpjuisavo\",\"type\":\"qdzfvazivjlfrqtt\"},{\"properties\":{\"characterSet\":\"jlkatnwxy\"},\"id\":\"pidkqqfkuvscxkdm\",\"name\":\"igovi\",\"type\":\"rxkpmloazuruoc\"},{\"properties\":{\"characterSet\":\"oorb\"},\"id\":\"oybfhjxakvvj\",\"name\":\"slordilmyww\",\"type\":\"kgkxn\"}],\"nextLink\":\"dabg\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"spuunnoxyhkxgq\"},\"id\":\"rihpfhoq\",\"name\":\"aaewdaomdjv\",\"type\":\"pjxxkzb\"},{\"properties\":{\"characterSet\":\"sgeivsiy\"},\"id\":\"kdncj\",\"name\":\"xonbzoggculapz\",\"type\":\"y\"},{\"properties\":{\"characterSet\":\"gogtqxepnylbf\"},\"id\":\"jlyjtlvofq\",\"name\":\"hvfcibyfmow\",\"type\":\"xrkjpvdw\"},{\"properties\":{\"characterSet\":\"zwiivwzjbhyzs\"},\"id\":\"rkambt\",\"name\":\"negvmnvuqe\",\"type\":\"vldspa\"}],\"nextLink\":\"jbkkdmflvestmjl\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).properties().characterSet());
-        Assertions.assertEquals("dabg", model.nextLink());
+        Assertions.assertEquals("spuunnoxyhkxgq", model.value().get(0).properties().characterSet());
+        Assertions.assertEquals("jbkkdmflvestmjl", model.nextLink());
     }
 }
