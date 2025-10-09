@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class MongoClustersCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"qzahmgkbrp\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"txfvjrbirph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class MongoClustersCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.mongoClusters()
-            .checkNameAvailabilityWithResponse("odebfqkkrbmpu",
-                new CheckNameAvailabilityRequest().withName("riwflzlfb").withType("puz"),
+            .checkNameAvailabilityWithResponse("lihkaetcktvfc",
+                new CheckNameAvailabilityRequest().withName("fsnkymuctq").withType("fbebrjcxer"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertTrue(response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("qzahmgkbrp", response.message());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("txfvjrbirph", response.message());
     }
 }

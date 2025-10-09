@@ -6,7 +6,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplate;
-import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateUpdateProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ public final class SolutionTemplatesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key8772", "fakeTokenPlaceholder"))
-            .withProperties(new SolutionTemplateProperties().withDescription("onqlteg")
+            .withProperties(new SolutionTemplateUpdateProperties().withDescription("onqlteg")
                 .withCapabilities(Arrays.asList("relsv"))
                 .withState(ResourceState.ACTIVE)
                 .withEnableExternalValidation(true))

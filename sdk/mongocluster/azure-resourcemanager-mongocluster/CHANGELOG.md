@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,159 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2025-09-29)
+
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.MongoClusterRestoreParameters` was modified
+
+* `validate()` was removed
+
+#### `models.KeyEncryptionKeyIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseRole` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityProvider` was modified
+
+* `validate()` was removed
+
+#### `models.ShardingProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EntraIdentityProviderProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterReplicaParameters` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PromoteReplicaRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AdministratorProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.HighAvailabilityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BackupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CustomerManagedKeyEncryptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.StorageProperties` was modified
+
+* `iops()` was removed
+* `validate()` was removed
+* `withThroughput(java.lang.Long)` was removed
+* `withIops(java.lang.Long)` was removed
+* `throughput()` was removed
+
+#### `models.EntraIdentityProvider` was modified
+
+* `validate()` was removed
+
+#### `models.FirewallRuleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `validate()` was removed
+
+#### `models.ReplicationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AuthConfigProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DataApiProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionString` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+#### `models.MongoClusterUpdateProperties` was modified
+
+* `encryption()` was added
+* `withEncryption(models.EncryptionProperties)` was added
 
 ## 1.1.0-beta.1 (2025-07-23)
 

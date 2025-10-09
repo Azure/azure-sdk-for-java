@@ -37,6 +37,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final static int MaxServiceUnavailableRetryCount = 1;
 
     private final DocumentClientRetryPolicy throttlingRetry;
+    private final DocumentClientRetryPolicy metadataThrottlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private int failoverRetryCount;
@@ -74,6 +75,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             throttlingRetryOptions.getMaxRetryWaitTime(),
             BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
             false);
+        this.metadataThrottlingRetry = new MetadataThrottlingRetryPolicy(BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
         this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -189,7 +191,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return this.shouldRetryOnInternalServerError();
         }
 
-        return this.throttlingRetry.shouldRetry(e);
+        if (this.request != null
+            && this.request.getOperationType() == OperationType.ReadFeed
+            && this.request.getResourceType() == ResourceType.PartitionKeyRange) {
+            // currently only limit the metadata throttling policy to get partition key ranges
+            return this.metadataThrottlingRetry.shouldRetry(e);
+        } else {
+            return this.throttlingRetry.shouldRetry(e);
+        }
     }
 
     private boolean canRequestToGatewayBeSafelyRetriedOnReadTimeout(RxDocumentServiceRequest request) {

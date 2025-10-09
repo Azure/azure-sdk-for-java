@@ -226,7 +226,6 @@ class ServiceBusJmsAutoConfigurationTests {
             });
     }
 
-    @SuppressWarnings("removal")
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
     void jmsPropertiesConfiguredCorrectly(String pricingTier) {
@@ -234,7 +233,7 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
-                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.session.acknowledge-mode=client",
                 "spring.jms.listener.concurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
@@ -244,7 +243,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(JmsProperties.class);
                 JmsProperties jmsProperties = context.getBean(JmsProperties.class);
                 assertThat(jmsProperties.getListener().isAutoStartup()).isFalse();
-                assertThat(jmsProperties.getListener().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
+                assertThat(jmsProperties.getListener().getSession().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
                 assertThat(jmsProperties.getListener().formatConcurrency()).isEqualTo("2-10");
                 assertThat(jmsProperties.getListener().getReceiveTimeout()).isEqualTo(Duration.ofSeconds(2));
                 assertThat(jmsProperties.getListener().getMaxConcurrency()).isEqualTo(10);
@@ -275,7 +274,7 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
-                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.session.acknowledge-mode=client",
                 "spring.jms.listener.concurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",

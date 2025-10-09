@@ -13,13 +13,13 @@ public final class DataflowProfileResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowProfileResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"naenqpehindo\"},\"metrics\":{\"prometheusPort\":1553722584}},\"instanceCount\":1126761283,\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"name\":\"zdnds\",\"type\":\"CustomLocation\"},\"id\":\"ayqigynduhav\",\"name\":\"qlkth\",\"type\":\"maqolbgycduie\"},{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"y\"},\"metrics\":{\"prometheusPort\":50940581}},\"instanceCount\":76010479,\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"lqlfm\",\"type\":\"CustomLocation\"},\"id\":\"bbglzpswiydmc\",\"name\":\"yhz\",\"type\":\"xssadbzmnvdf\"}],\"nextLink\":\"ud\"}")
+            "{\"value\":[{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"sw\"},\"metrics\":{\"prometheusPort\":1626950587}},\"instanceCount\":1836763667,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"bpbewtghfgb\",\"type\":\"CustomLocation\"},\"id\":\"wxzvlvqhjkb\",\"name\":\"gibtnm\",\"type\":\"iebwwaloayqcgwrt\"},{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"wyzmhtxon\"},\"metrics\":{\"prometheusPort\":831729875}},\"instanceCount\":1391077197,\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"name\":\"pwxqp\",\"type\":\"CustomLocation\"},\"id\":\"nftguvriuhpr\",\"name\":\"mdyvxqtayriw\",\"type\":\"ro\"},{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"rmcqiby\"},\"metrics\":{\"prometheusPort\":934632065}},\"instanceCount\":988905675,\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"fqsgzvahapjy\",\"type\":\"CustomLocation\"},\"id\":\"vgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}],\"nextLink\":\"nnprn\"}")
             .toObject(DataflowProfileResourceListResult.class);
-        Assertions.assertEquals("naenqpehindo", model.value().get(0).properties().diagnostics().logs().level());
-        Assertions.assertEquals(1553722584, model.value().get(0).properties().diagnostics().metrics().prometheusPort());
-        Assertions.assertEquals(1126761283, model.value().get(0).properties().instanceCount());
-        Assertions.assertEquals("zdnds", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("sw", model.value().get(0).properties().diagnostics().logs().level());
+        Assertions.assertEquals(1626950587, model.value().get(0).properties().diagnostics().metrics().prometheusPort());
+        Assertions.assertEquals(1836763667, model.value().get(0).properties().instanceCount());
+        Assertions.assertEquals("bpbewtghfgb", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ud", model.nextLink());
+        Assertions.assertEquals("nnprn", model.nextLink());
     }
 }

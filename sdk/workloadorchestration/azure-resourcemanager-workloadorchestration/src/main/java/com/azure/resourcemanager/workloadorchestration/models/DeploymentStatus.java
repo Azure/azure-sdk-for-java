@@ -139,17 +139,6 @@ public final class DeploymentStatus implements JsonSerializable<DeploymentStatus
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (targetStatuses() != null) {
-            targetStatuses().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

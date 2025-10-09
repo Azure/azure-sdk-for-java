@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-01-preview/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.
@@ -28,10 +28,11 @@ public final class InstanceCreateOrUpdateSamples {
     public static void instanceCreateOrUpdate(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
         manager.instances()
             .define("aio-instance")
-            .withRegion("xvewadyhycrjpu")
+            .withRegion("eastus2")
             .withExistingResourceGroup("rgiotoperations")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withTags(mapOf())
             .withProperties(new InstanceProperties().withDescription("kpqtgocs")
                 .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId(

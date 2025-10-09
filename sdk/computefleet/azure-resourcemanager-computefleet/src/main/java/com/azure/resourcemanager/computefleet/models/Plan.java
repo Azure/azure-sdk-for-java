@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -152,26 +151,6 @@ public final class Plan implements JsonSerializable<Plan> {
         this.version = version;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Plan"));
-        }
-        if (publisher() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property publisher in model Plan"));
-        }
-        if (product() == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property product in model Plan"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Plan.class);
 
     /**
      * {@inheritDoc}

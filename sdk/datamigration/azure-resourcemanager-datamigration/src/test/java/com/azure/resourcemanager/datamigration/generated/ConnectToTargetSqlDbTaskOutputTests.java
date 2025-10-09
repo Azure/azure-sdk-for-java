@@ -11,7 +11,7 @@ public final class ConnectToTargetSqlDbTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetSqlDbTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"pgfewetwlyx\",\"databases\":\"cxy\",\"targetServerVersion\":\"hdjhlimmbcx\",\"targetServerBrandVersion\":\"bcporxvxcjzhqizx\"}")
+            "{\"id\":\"uzjyihsasbhudypo\",\"databases\":\"uemsly\",\"targetServerVersion\":\"qyrp\",\"targetServerBrandVersion\":\"obrltt\"}")
             .toObject(ConnectToTargetSqlDbTaskOutput.class);
     }
 

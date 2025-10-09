@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -102,29 +101,6 @@ public final class AzureResourceSignalGroup implements JsonSerializable<AzureRes
         this.azureResourceId = azureResourceId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (signalAssignments() != null) {
-            signalAssignments().forEach(e -> e.validate());
-        }
-        if (authenticationSetting() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property authenticationSetting in model AzureResourceSignalGroup"));
-        }
-        if (azureResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property azureResourceId in model AzureResourceSignalGroup"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureResourceSignalGroup.class);
 
     /**
      * {@inheritDoc}

@@ -12,9 +12,9 @@ public final class AutonomousDatabaseCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"oqytibyowbblgy\"},\"id\":\"utp\",\"name\":\"hjoxo\",\"type\":\"smsks\"},{\"properties\":{\"characterSet\":\"iml\"},\"id\":\"ljxkcgxxlx\",\"name\":\"ffgcvizqz\",\"type\":\"wlvwlyoupf\"}],\"nextLink\":\"bkjubdyhgkfmins\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"cybvpayakkudzpxg\"},\"id\":\"plmag\",\"name\":\"tcyohpfkyrk\",\"type\":\"bdgiogsjk\"},{\"properties\":{\"characterSet\":\"wqjnob\"},\"id\":\"yhddvia\",\"name\":\"egfnmntfpmvmemfn\",\"type\":\"zdwvvbalxl\"}],\"nextLink\":\"chp\"}")
             .toObject(AutonomousDatabaseCharacterSetListResult.class);
-        Assertions.assertEquals("oqytibyowbblgy", model.value().get(0).properties().characterSet());
-        Assertions.assertEquals("bkjubdyhgkfmins", model.nextLink());
+        Assertions.assertEquals("cybvpayakkudzpxg", model.value().get(0).properties().characterSet());
+        Assertions.assertEquals("chp", model.nextLink());
     }
 }

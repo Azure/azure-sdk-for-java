@@ -12,8 +12,8 @@ public final class SchemaReferenceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaReferenceInner model = BinaryData.fromString(
-            "{\"properties\":{\"schemaId\":\"e\",\"provisioningState\":\"Canceled\"},\"eTag\":\"fpubjibwwi\",\"id\":\"ohqkvpuvksgpls\",\"name\":\"kn\",\"type\":\"n\"}")
+            "{\"properties\":{\"schemaId\":\"wlwnwxuqlcv\",\"provisioningState\":\"Deleting\"},\"eTag\":\"atdooaojkniod\",\"id\":\"oebwnujhemms\",\"name\":\"vdkcrodtj\",\"type\":\"nfwjlfltkacjvefk\"}")
             .toObject(SchemaReferenceInner.class);
-        Assertions.assertEquals("e", model.properties().schemaId());
+        Assertions.assertEquals("wlwnwxuqlcv", model.properties().schemaId());
     }
 }

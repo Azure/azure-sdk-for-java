@@ -454,13 +454,21 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCreateAndUpdateFunctionAppOnACA() {
         rgName2 = null;
 
-        Region region = Region.US_EAST;
+        Region region = Region.US_WEST3;
         ResourceGroup resourceGroup
             = appServiceManager.resourceManager().resourceGroups().define(rgName1).withRegion(region).create();
         webappName1 = generateRandomResourceName("java-function-", 20);
         // function app not created, get will throw exception
         Assertions.assertThrows(ManagementException.class,
             () -> appServiceManager.serviceClient().getWebApps().getByResourceGroup(rgName1, webappName1));
+
+        String functionAppStorageName = generateRandomResourceName("sa", 20);
+        StorageAccount functionAppStorage = storageManager.storageAccounts()
+            .define(functionAppStorageName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .disableSharedKeyAccess()
+            .create();
 
         String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
         appServiceManager.functionApps()
@@ -471,6 +479,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withMaxReplicas(10)
             .withMinReplicas(3)
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            .withExistingStorageAccount(functionAppStorage)
             // backend has bug, it returns Array instead of Object:
             // https://github.com/Azure/azure-rest-api-specs/issues/27176
             //            .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)

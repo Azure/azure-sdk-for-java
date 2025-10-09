@@ -6,12 +6,13 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.ConflictResolutionMode;
 import com.azure.resourcemanager.storagecache.models.ImportJob;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,23 +23,24 @@ public final class ImportJobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"importPrefixes\":[\"xacpqjli\",\"hyus\",\"skasdvlmfwdgzxu\",\"ucvpamrs\"],\"conflictResolutionMode\":\"Fail\",\"maximumErrors\":2029618474,\"status\":{\"state\":\"Canceled\",\"statusMessage\":\"sjnhn\",\"totalBlobsWalked\":903498405558136167,\"blobsWalkedPerSecond\":4175162265983348993,\"totalBlobsImported\":1511206213026031817,\"blobsImportedPerSecond\":6352328391564368443,\"lastCompletionTime\":\"2021-09-12T16:20:50Z\",\"lastStartedTime\":\"2021-07-06T09:24:09Z\",\"totalErrors\":1373835899,\"totalConflicts\":1928242324}},\"location\":\"trgjupauutpwoqh\",\"tags\":{\"fqntcyp\":\"jqgwzp\",\"rcizjxvyd\":\"xjvfoimwksl\"},\"id\":\"ceacvlhvygdy\",\"name\":\"t\",\"type\":\"mrtwna\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"qbcvhzlhplod\",\"kdl\",\"wqfbumlkxtrqjfsm\",\"mbtxhwgf\"],\"conflictResolutionMode\":\"OverwriteIfDirty\",\"maximumErrors\":18128175,\"status\":{\"state\":\"CompletedPartial\",\"statusMessage\":\"zbrhubskhudyg\",\"totalBlobsWalked\":3757334132859952072,\"blobsWalkedPerSecond\":4463320086185749721,\"totalBlobsImported\":1203547452318646707,\"importedFiles\":5019273304929200151,\"importedDirectories\":648948306510074398,\"importedSymlinks\":6949675039403619507,\"preexistingFiles\":70762031919814620,\"preexistingDirectories\":1282280237596006606,\"preexistingSymlinks\":8965070920681415790,\"blobsImportedPerSecond\":6465679018217833710,\"lastCompletionTime\":\"2021-06-02T11:29:06Z\",\"lastStartedTime\":\"2021-07-18T06:03:13Z\",\"totalErrors\":1053197687,\"totalConflicts\":1877295480}},\"location\":\"yjkqabqgzslesjcb\",\"tags\":{\"tiewdj\":\"n\",\"ehwagoh\":\"vbquwr\",\"xtdr\":\"uffkmrqemvvh\"},\"id\":\"futacoebjvewzc\",\"name\":\"znmwcp\",\"type\":\"guaadraufactkahz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImportJob response = manager.importJobs()
-            .getWithResponse("rymsgaojfmw", "cotmr", "hirctymoxoftpipi", com.azure.core.util.Context.NONE)
+            .getWithResponse("wrck", "yklyhpluodpvruud", "gzibthostgktstv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("trgjupauutpwoqh", response.location());
-        Assertions.assertEquals("jqgwzp", response.tags().get("fqntcyp"));
-        Assertions.assertEquals("xacpqjli", response.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.FAIL, response.conflictResolutionMode());
-        Assertions.assertEquals(2029618474, response.maximumErrors());
+        Assertions.assertEquals("yjkqabqgzslesjcb", response.location());
+        Assertions.assertEquals("n", response.tags().get("tiewdj"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, response.adminStatus());
+        Assertions.assertEquals("qbcvhzlhplod", response.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_IF_DIRTY, response.conflictResolutionMode());
+        Assertions.assertEquals(18128175, response.maximumErrors());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -371,21 +370,6 @@ public final class DbSystemShapeProperties implements JsonSerializable<DbSystemS
     public String displayName() {
         return this.displayName;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (shapeName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property shapeName in model DbSystemShapeProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DbSystemShapeProperties.class);
 
     /**
      * {@inheritDoc}

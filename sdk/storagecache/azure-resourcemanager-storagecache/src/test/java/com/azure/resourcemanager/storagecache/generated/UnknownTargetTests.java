@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UnknownTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnknownTarget model
-            = BinaryData.fromString("{\"attributes\":{\"fbn\":\"xuvw\"}}").toObject(UnknownTarget.class);
-        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
+        UnknownTarget model = BinaryData.fromString(
+            "{\"attributes\":{\"dreaxh\":\"jvegrhbpnaixexcc\",\"tpwijnh\":\"exdrrvqahqkg\",\"vmtgjqppy\":\"jsvfycxzbfvoowv\",\"ronzmyhgfip\":\"s\"}}")
+            .toObject(UnknownTarget.class);
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.attributes().get("dreaxh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("fbn", "xuvw"));
+        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("dreaxh", "jvegrhbpnaixexcc", "tpwijnh",
+            "exdrrvqahqkg", "vmtgjqppy", "jsvfycxzbfvoowv", "ronzmyhgfip", "s"));
         model = BinaryData.fromObject(model).toObject(UnknownTarget.class);
-        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.attributes().get("dreaxh"));
     }
 
     // Use "Map.of" if available

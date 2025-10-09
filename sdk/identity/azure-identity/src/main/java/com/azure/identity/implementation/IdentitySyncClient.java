@@ -430,6 +430,11 @@ public class IdentitySyncClient extends IdentityClientBase {
             azdCommand.append(" --tenant-id ").append(tenant);
         }
 
+        if (request.getClaims() != null && !request.getClaims().trim().isEmpty()) {
+            String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+            azdCommand.append(" --claims ").append(shellEscape(encodedClaims));
+        }
+
         try {
             return getTokenFromAzureDeveloperCLIAuthentication(azdCommand);
         } catch (RuntimeException e) {

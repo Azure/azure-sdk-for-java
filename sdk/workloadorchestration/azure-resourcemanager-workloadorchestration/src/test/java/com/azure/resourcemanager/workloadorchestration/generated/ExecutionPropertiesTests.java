@@ -14,17 +14,17 @@ public final class ExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionProperties model = BinaryData.fromString(
-            "{\"workflowVersionId\":\"skawaoqvmmb\",\"specification\":{},\"status\":{\"updateTime\":\"2021-04-20T09:58:27Z\",\"status\":1516123032,\"statusMessage\":\"zmegnitgvk\",\"stageHistory\":[{\"status\":1806013013,\"statusMessage\":\"rfe\",\"stage\":\"ealzxwhcansymoyq\",\"nextstage\":\"wigdi\",\"errorMessage\":\"kbxgom\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1426574768,\"statusMessage\":\"aeyyg\",\"stage\":\"akjsqz\",\"nextstage\":\"bezkgimsidxasic\",\"errorMessage\":\"yvvjskgfmo\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":789499857,\"statusMessage\":\"eaahhvjhhn\",\"stage\":\"zybbj\",\"nextstage\":\"dj\",\"errorMessage\":\"yxkyxvx\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":995606751,\"statusMessage\":\"jlageu\",\"stage\":\"lxunsmjbnkppxy\",\"nextstage\":\"nlsvxeiz\",\"errorMessage\":\"wklnsrmffeyc\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Canceled\"}")
+            "{\"workflowVersionId\":\"mcmuapc\",\"specification\":{},\"status\":{\"updateTime\":\"2021-12-02T23:21:10Z\",\"status\":15684677,\"statusMessage\":\"xeyskonqzinkfkbg\",\"stageHistory\":[{\"status\":1881387928,\"statusMessage\":\"eqocljmygvk\",\"stage\":\"kjjeokbz\",\"nextstage\":\"ezrxcczurtleipqx\",\"errorMessage\":\"wvz\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":202407711,\"statusMessage\":\"xzmqpnodawop\",\"stage\":\"ewjptmcg\",\"nextstage\":\"ostzelndlatu\",\"errorMessage\":\"zlbiojlvfhrbbpn\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"InProgress\"}")
             .toObject(ExecutionProperties.class);
-        Assertions.assertEquals("skawaoqvmmb", model.workflowVersionId());
+        Assertions.assertEquals("mcmuapc", model.workflowVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionProperties model
-            = new ExecutionProperties().withWorkflowVersionId("skawaoqvmmb").withSpecification(mapOf());
+            = new ExecutionProperties().withWorkflowVersionId("mcmuapc").withSpecification(mapOf());
         model = BinaryData.fromObject(model).toObject(ExecutionProperties.class);
-        Assertions.assertEquals("skawaoqvmmb", model.workflowVersionId());
+        Assertions.assertEquals("mcmuapc", model.workflowVersionId());
     }
 
     // Use "Map.of" if available
