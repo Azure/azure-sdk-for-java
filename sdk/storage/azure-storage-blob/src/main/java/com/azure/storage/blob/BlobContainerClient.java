@@ -1504,4 +1504,114 @@ public final class BlobContainerClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Combined Methods: create, createWithResponse, createIfNotExists, createIfNotExistsWithResponse
+     * Reason: These methods all create a new container, with variations for metadata, access type, and existence checks. Wrapping them into a single method using the options pattern improves discoverability and reduces overload confusion, following the guidelines for option parameters and simple/complex overloads.
+     *
+     * Comment: Creates a new container or ensures it exists, with options for metadata, public access type, and conditional creation. Returns true if the container was created, false if it already existed.
+     */
+    public boolean createContainer(BlobContainerCreateOptions options, boolean onlyIfNotExists, Duration timeout, Context context) {
+        if (onlyIfNotExists) {
+            return createIfNotExistsWithResponse(options, timeout, context).getValue();
+        } else {
+            createWithResponse(options.getMetadata(), options.getPublicAccessType(), timeout, context);
+            return true;
+        }
+    }
+    
+    /**
+     * Combined Methods: delete, deleteWithResponse, deleteIfExists, deleteIfExistsWithResponse
+     * Reason: These methods all delete a container, with variations for conditional deletion and existence checks. Wrapping them into a single method using the options pattern and a flag for "if exists" improves developer experience by reducing overloads and clarifying intent.
+     *
+     * Comment: Deletes the container, with optional request conditions and existence check. Returns true if the container was deleted, false if it did not exist.
+     */
+    public boolean deleteContainer(BlobRequestConditions requestConditions, boolean onlyIfExists, Duration timeout, Context context) {
+        if (onlyIfExists) {
+            return deleteIfExistsWithResponse(requestConditions, timeout, context).getValue();
+        } else {
+            deleteWithResponse(requestConditions, timeout, context);
+            return true;
+        }
+    }
+    
+    /**
+     * Combined Methods: setMetadata, setMetadataWithResponse
+     * Reason: Both methods set the container's metadata, with one returning a response and the other being a simple overload. Wrapping them into a single method with an option to return the response improves clarity and reduces overloads.
+     *
+     * Comment: Sets the container's metadata. Optionally returns the full response if requested.
+     */
+    public Response<Void> setContainerMetadata(Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context, boolean returnResponse) {
+        Response<Void> response = setMetadataWithResponse(metadata, requestConditions, timeout, context);
+        if (returnResponse) {
+            return response;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Combined Methods: getProperties, getPropertiesWithResponse
+     * Reason: Both methods retrieve the container's properties, with one returning just the properties and the other returning the full response. Wrapping them into a single method with an option to return the response improves usability and reduces overloads.
+     *
+     * Comment: Gets the container's properties. Optionally returns the full response if requested.
+     */
+    public Response<BlobContainerProperties> getContainerProperties(String leaseId, Duration timeout, Context context, boolean returnResponse) {
+        Response<BlobContainerProperties> response = getPropertiesWithResponse(leaseId, timeout, context);
+        if (returnResponse) {
+            return response;
+        } else {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue());
+        }
+    }
+    
+    /**
+     * Combined Methods: setAccessPolicy, setAccessPolicyWithResponse
+     * Reason: Both methods set the container's access policy, with one returning a response and the other being a simple overload. Wrapping them into a single method with an option to return the response improves clarity and reduces overloads.
+     *
+     * Comment: Sets the container's access policy. Optionally returns the full response if requested.
+     */
+    public Response<Void> setContainerAccessPolicy(PublicAccessType accessType, List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions, Duration timeout, Context context, boolean returnResponse) {
+        Response<Void> response = setAccessPolicyWithResponse(accessType, identifiers, requestConditions, timeout, context);
+        if (returnResponse) {
+            return response;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Combined Methods: getAccessPolicy, getAccessPolicyWithResponse
+     * Reason: Both methods retrieve the container's access policy, with one returning just the policy and the other returning the full response. Wrapping them into a single method with an option to return the response improves usability and reduces overloads.
+     *
+     * Comment: Gets the container's access policy. Optionally returns the full response if requested.
+     */
+    public Response<BlobContainerAccessPolicies> getContainerAccessPolicy(String leaseId, Duration timeout, Context context, boolean returnResponse) {
+        Response<BlobContainerAccessPolicies> response = getAccessPolicyWithResponse(leaseId, timeout, context);
+        if (returnResponse) {
+            return response;
+        } else {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue());
+        }
+    }
+    
+    /**
+     * Combined Methods: exists, existsWithResponse
+     * Reason: Both methods check if the container exists, with one returning just the boolean and the other returning the full response. Wrapping them into a single method with an option to return the response improves usability and reduces overloads.
+     *
+     * Comment: Checks if the container exists. Optionally returns the full response if requested.
+     */
+    public Response<Boolean> containerExists(Duration timeout, Context context, boolean returnResponse) {
+        Response<Boolean> response = existsWithResponse(timeout, context);
+        if (returnResponse) {
+            return response;
+        } else {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue());
+        }
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }
