@@ -277,12 +277,12 @@ public class QueryParamPolicyTest {
      */
     @SyncAsyncTest
     public void multipleTagsParameters() {
-        final String originalUrl
-            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
+        final String originalUrl = BASE_URL + ENDPOINT_PATH
+            + "?api-version=2023-11-01&key=*&label=dev&tags=environment%3Ddev&tags=team%3Dfrontend";
 
         // The URL should preserve multiple tags parameters after processing (with alphabetical sorting)
-        final String expectedUrl
-            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
+        final String expectedUrl = BASE_URL + ENDPOINT_PATH
+            + "?api-version=2023-11-01&key=*&label=dev&tags=environment%3Ddev&tags=team%3Dfrontend";
 
         QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
 
@@ -340,10 +340,10 @@ public class QueryParamPolicyTest {
      */
     @SyncAsyncTest
     public void multipleTagsParametersWithOrderingVerification() {
-        final String originalUrl
-            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
-        final String expectedUrl
-            = BASE_URL + ENDPOINT_PATH + "?api-version=2023-11-01&key=*&label=dev&tags=tag1%3D&tags=tag2%3D";
+        final String originalUrl = BASE_URL + ENDPOINT_PATH
+            + "?api-version=2023-11-01&key=*&label=dev&tags=version%3D1.2.0&tags=region%3Deast";
+        final String expectedUrl = BASE_URL + ENDPOINT_PATH
+            + "?api-version=2023-11-01&key=*&label=dev&tags=region%3Deast&tags=version%3D1.2.0";
 
         QueryParamPolicy queryParamPolicy = new QueryParamPolicy();
 
