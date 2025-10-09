@@ -154,15 +154,13 @@ final class AzureResource {
     }
 
     /**
-     * Checks if a virtual directory exists at this location.
+     * Checks the status of a directory (concrete or virtual) at this location.
      *
-     * <p>A virtual directory is defined as an empty, extensionless file with the
-     * {@link #DIR_METADATA_MARKER} metadata set to "true".
+     * <p>This method determines if the directory is not empty, empty, does not exist, or is not a directory,
+     * based on whether a blob exists at the location and the results of listing blobs under the directory path.
      *
-     * <p>This method assumes no file exists at the destination.
-     *
-     * @param blobExists Whether a non-directory blob exists at this location.
-     * @return true if a virtual directory exists at this location
+     * @param exists {@code true} if a blob exists at this location; {@code false} otherwise.
+     * @return the {@link DirectoryStatus} representing the status of the directory at this location
      * @throws IOException if an I/O error occurs
      */
     DirectoryStatus getDirectoryStatus(boolean blobExists) throws IOException {
