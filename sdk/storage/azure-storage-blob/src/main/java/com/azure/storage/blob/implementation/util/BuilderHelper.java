@@ -140,6 +140,9 @@ public final class BuilderHelper {
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
+        // Add structured message decoder policy to handle structured message decoding
+        policies.add(new StructuredMessageDecoderPolicy());
+
         policies.add(getResponseValidationPolicy());
 
         policies.add(new HttpLoggingPolicy(logOptions));
