@@ -275,7 +275,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
         @ExpectedResponses({ 204 })
@@ -285,7 +285,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deid")
         @ExpectedResponses({ 200 })
@@ -2061,8 +2061,9 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobName, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobName, accept, requestOptions, context));
     }
 
     /**
@@ -2080,8 +2081,9 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobName, RequestOptions requestOptions) {
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, requestOptions,
-            Context.NONE);
+        final String accept = "application/json";
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
