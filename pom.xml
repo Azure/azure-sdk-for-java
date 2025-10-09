@@ -258,6 +258,7 @@
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
+    <module>sdk/template-v2</module>
     <module>sdk/terraform</module>
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
