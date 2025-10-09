@@ -26,6 +26,26 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     private List<String> cacheNodePropertiesDetailsIssuesList;
 
     /*
+     * current cache node issue list.
+     */
+    private List<String> issuesList;
+
+    /*
+     * Number of cache node issues.
+     */
+    private Integer issuesCount;
+
+    /*
+     * cache node current tls certificate.
+     */
+    private MccCacheNodeTlsCertificate currentTlsCertificate;
+
+    /*
+     * cache node last auto update information.
+     */
+    private MccCacheNodeAutoUpdateInfo lastAutoUpdateInfo;
+
+    /*
      * Cache node resource aggregated status details.
      */
     private String aggregatedStatusDetails;
@@ -82,11 +102,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     private ProxyUrlConfiguration proxyUrlConfiguration;
 
     /*
-     * Cache node resource Mcc proxy Url
-     */
-    private String proxyUrl;
-
-    /*
      * Cache node resource requires a proxy
      */
     private ProxyRequired isProxyRequired;
@@ -95,11 +110,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * Operating system of the cache node
      */
     private OsType osType;
-
-    /*
-     * Update Cycle Type
-     */
-    private CycleType updateCycleType;
 
     /*
      * Auto update or fast update version
@@ -150,6 +160,16 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * Auto update last triggered date time of mcc install
      */
     private OffsetDateTime autoUpdateLastTriggeredDateTime;
+
+    /*
+     * Resource creation method of mcc cache node resource, cli or portal
+     */
+    private Integer creationMethod;
+
+    /*
+     * Cache node tls certificate status.
+     */
+    private String tlsStatus;
 
     /*
      * Optional property #1 of Mcc response object
@@ -203,6 +223,42 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
         withCacheNodePropertiesDetailsIssuesList(List<String> cacheNodePropertiesDetailsIssuesList) {
         this.cacheNodePropertiesDetailsIssuesList = cacheNodePropertiesDetailsIssuesList;
         return this;
+    }
+
+    /**
+     * Get the issuesList property: current cache node issue list.
+     * 
+     * @return the issuesList value.
+     */
+    public List<String> issuesList() {
+        return this.issuesList;
+    }
+
+    /**
+     * Get the issuesCount property: Number of cache node issues.
+     * 
+     * @return the issuesCount value.
+     */
+    public Integer issuesCount() {
+        return this.issuesCount;
+    }
+
+    /**
+     * Get the currentTlsCertificate property: cache node current tls certificate.
+     * 
+     * @return the currentTlsCertificate value.
+     */
+    public MccCacheNodeTlsCertificate currentTlsCertificate() {
+        return this.currentTlsCertificate;
+    }
+
+    /**
+     * Get the lastAutoUpdateInfo property: cache node last auto update information.
+     * 
+     * @return the lastAutoUpdateInfo value.
+     */
+    public MccCacheNodeAutoUpdateInfo lastAutoUpdateInfo() {
+        return this.lastAutoUpdateInfo;
     }
 
     /**
@@ -339,26 +395,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     }
 
     /**
-     * Get the proxyUrl property: Cache node resource Mcc proxy Url.
-     * 
-     * @return the proxyUrl value.
-     */
-    public String proxyUrl() {
-        return this.proxyUrl;
-    }
-
-    /**
-     * Set the proxyUrl property: Cache node resource Mcc proxy Url.
-     * 
-     * @param proxyUrl the proxyUrl value to set.
-     * @return the AdditionalCacheNodeProperties object itself.
-     */
-    public AdditionalCacheNodeProperties withProxyUrl(String proxyUrl) {
-        this.proxyUrl = proxyUrl;
-        return this;
-    }
-
-    /**
      * Get the isProxyRequired property: Cache node resource requires a proxy.
      * 
      * @return the isProxyRequired value.
@@ -395,26 +431,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      */
     public AdditionalCacheNodeProperties withOsType(OsType osType) {
         this.osType = osType;
-        return this;
-    }
-
-    /**
-     * Get the updateCycleType property: Update Cycle Type.
-     * 
-     * @return the updateCycleType value.
-     */
-    public CycleType updateCycleType() {
-        return this.updateCycleType;
-    }
-
-    /**
-     * Set the updateCycleType property: Update Cycle Type.
-     * 
-     * @param updateCycleType the updateCycleType value to set.
-     * @return the AdditionalCacheNodeProperties object itself.
-     */
-    public AdditionalCacheNodeProperties withUpdateCycleType(CycleType updateCycleType) {
-        this.updateCycleType = updateCycleType;
         return this;
     }
 
@@ -544,6 +560,35 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     }
 
     /**
+     * Get the creationMethod property: Resource creation method of mcc cache node resource, cli or portal.
+     * 
+     * @return the creationMethod value.
+     */
+    public Integer creationMethod() {
+        return this.creationMethod;
+    }
+
+    /**
+     * Set the creationMethod property: Resource creation method of mcc cache node resource, cli or portal.
+     * 
+     * @param creationMethod the creationMethod value to set.
+     * @return the AdditionalCacheNodeProperties object itself.
+     */
+    public AdditionalCacheNodeProperties withCreationMethod(Integer creationMethod) {
+        this.creationMethod = creationMethod;
+        return this;
+    }
+
+    /**
+     * Get the tlsStatus property: Cache node tls certificate status.
+     * 
+     * @return the tlsStatus value.
+     */
+    public String tlsStatus() {
+        return this.tlsStatus;
+    }
+
+    /**
      * Get the optionalProperty1 property: Optional property #1 of Mcc response object.
      * 
      * @return the optionalProperty1 value.
@@ -644,23 +689,6 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (driveConfiguration() != null) {
-            driveConfiguration().forEach(e -> e.validate());
-        }
-        if (bgpConfiguration() != null) {
-            bgpConfiguration().validate();
-        }
-        if (proxyUrlConfiguration() != null) {
-            proxyUrlConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -672,18 +700,16 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("bgpConfiguration", this.bgpConfiguration);
         jsonWriter.writeJsonField("proxyUrlConfiguration", this.proxyUrlConfiguration);
-        jsonWriter.writeStringField("proxyUrl", this.proxyUrl);
         jsonWriter.writeStringField("isProxyRequired",
             this.isProxyRequired == null ? null : this.isProxyRequired.toString());
         jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
-        jsonWriter.writeStringField("updateCycleType",
-            this.updateCycleType == null ? null : this.updateCycleType.toString());
         jsonWriter.writeStringField("autoUpdateVersion", this.autoUpdateVersion);
         jsonWriter.writeStringField("updateInfoDetails", this.updateInfoDetails);
         jsonWriter.writeStringField("updateRequestedDateTime",
             this.updateRequestedDateTime == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updateRequestedDateTime));
+        jsonWriter.writeNumberField("creationMethod", this.creationMethod);
         jsonWriter.writeStringField("optionalProperty1", this.optionalProperty1);
         jsonWriter.writeStringField("optionalProperty2", this.optionalProperty2);
         jsonWriter.writeStringField("optionalProperty3", this.optionalProperty3);
@@ -713,6 +739,17 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
                         = reader.readArray(reader1 -> reader1.getString());
                     deserializedAdditionalCacheNodeProperties.cacheNodePropertiesDetailsIssuesList
                         = cacheNodePropertiesDetailsIssuesList;
+                } else if ("issuesList".equals(fieldName)) {
+                    List<String> issuesList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdditionalCacheNodeProperties.issuesList = issuesList;
+                } else if ("issuesCount".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.issuesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("currentTlsCertificate".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.currentTlsCertificate
+                        = MccCacheNodeTlsCertificate.fromJson(reader);
+                } else if ("lastAutoUpdateInfo".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.lastAutoUpdateInfo
+                        = MccCacheNodeAutoUpdateInfo.fromJson(reader);
                 } else if ("aggregatedStatusDetails".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.aggregatedStatusDetails = reader.getString();
                 } else if ("aggregatedStatusText".equals(fieldName)) {
@@ -740,16 +777,11 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
                 } else if ("proxyUrlConfiguration".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.proxyUrlConfiguration
                         = ProxyUrlConfiguration.fromJson(reader);
-                } else if ("proxyUrl".equals(fieldName)) {
-                    deserializedAdditionalCacheNodeProperties.proxyUrl = reader.getString();
                 } else if ("isProxyRequired".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.isProxyRequired
                         = ProxyRequired.fromString(reader.getString());
                 } else if ("osType".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.osType = OsType.fromString(reader.getString());
-                } else if ("updateCycleType".equals(fieldName)) {
-                    deserializedAdditionalCacheNodeProperties.updateCycleType
-                        = CycleType.fromString(reader.getString());
                 } else if ("autoUpdateVersion".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.autoUpdateVersion = reader.getString();
                 } else if ("updateInfoDetails".equals(fieldName)) {
@@ -774,6 +806,10 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
                 } else if ("autoUpdateLastTriggeredDateTime".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.autoUpdateLastTriggeredDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("creationMethod".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.creationMethod = reader.getNullable(JsonReader::getInt);
+                } else if ("tlsStatus".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.tlsStatus = reader.getString();
                 } else if ("optionalProperty1".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.optionalProperty1 = reader.getString();
                 } else if ("optionalProperty2".equals(fieldName)) {

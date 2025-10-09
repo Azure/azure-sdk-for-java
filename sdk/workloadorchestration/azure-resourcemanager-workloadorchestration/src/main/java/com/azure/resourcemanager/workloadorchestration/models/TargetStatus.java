@@ -66,17 +66,6 @@ public final class TargetStatus implements JsonSerializable<TargetStatus> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (componentStatuses() != null) {
-            componentStatuses().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -149,24 +149,6 @@ public final class ApplicationHealthPolicy implements JsonSerializable<Applicati
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (defaultServiceTypeHealthPolicy() != null) {
-            defaultServiceTypeHealthPolicy().validate();
-        }
-        if (serviceTypeHealthPolicyMap() != null) {
-            serviceTypeHealthPolicyMap().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

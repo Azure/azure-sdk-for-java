@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class BrokerAuthenticationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-01-preview/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate.
@@ -36,8 +36,6 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
         manager.brokerAuthentications()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new BrokerAuthenticationProperties()
                     .withAuthenticationMethods(
@@ -57,11 +55,14 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
                                             .withAttributes(mapOf("key186", "fakeTokenPlaceholder"))
                                             .withSubject("jpgwctfeixitptfgfnqhua")))
                                     .withTrustedClientCaCert("vlctsqddl")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-07-01-preview/BrokerAuthentication_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate_Complex.
@@ -73,8 +74,6 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
         manager.brokerAuthentications()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthenticationProperties().withAuthenticationMethods(Arrays.asList(
                 new BrokerAuthenticatorMethods().withMethod(BrokerAuthenticationMethod.SERVICE_ACCOUNT_TOKEN)
                     .withServiceAccountTokenSettings(
@@ -91,6 +90,9 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
                         new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("building", "17"))
                             .withSubject("CN = smart-fan")))
                         .withTrustedClientCaCert("my-ca")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 

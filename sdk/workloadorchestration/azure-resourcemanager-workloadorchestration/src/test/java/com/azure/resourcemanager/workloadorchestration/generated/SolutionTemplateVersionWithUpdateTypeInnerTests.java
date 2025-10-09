@@ -18,27 +18,27 @@ public final class SolutionTemplateVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Patch\",\"version\":\"gofel\",\"solutionTemplateVersion\":{\"properties\":{\"configurations\":\"grqmqhldvrii\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Canceled\"},\"eTag\":\"hfkvtvsexsowuel\",\"id\":\"hhahhxvrhmzkwpjg\",\"name\":\"wspughftqsxhqx\",\"type\":\"j\"}}")
+            "{\"updateType\":\"Major\",\"version\":\"bqaays\",\"solutionTemplateVersion\":{\"properties\":{\"configurations\":\"ixqtn\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"fffiak\",\"id\":\"pqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}}")
             .toObject(SolutionTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
-        Assertions.assertEquals("gofel", model.version());
-        Assertions.assertEquals("grqmqhldvrii", model.solutionTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("bqaays", model.version());
+        Assertions.assertEquals("ixqtn", model.solutionTemplateVersion().properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.solutionTemplateVersion().properties().orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SolutionTemplateVersionWithUpdateTypeInner model
-            = new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
-                .withVersion("gofel")
+            = new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
+                .withVersion("bqaays")
                 .withSolutionTemplateVersion(new SolutionTemplateVersionInner()
-                    .withProperties(new SolutionTemplateVersionProperties().withConfigurations("grqmqhldvrii")
+                    .withProperties(new SolutionTemplateVersionProperties().withConfigurations("ixqtn")
                         .withSpecification(mapOf())
                         .withOrchestratorType(OrchestratorType.TO)));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
-        Assertions.assertEquals("gofel", model.version());
-        Assertions.assertEquals("grqmqhldvrii", model.solutionTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
+        Assertions.assertEquals("bqaays", model.version());
+        Assertions.assertEquals("ixqtn", model.solutionTemplateVersion().properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.solutionTemplateVersion().properties().orchestratorType());
     }
 

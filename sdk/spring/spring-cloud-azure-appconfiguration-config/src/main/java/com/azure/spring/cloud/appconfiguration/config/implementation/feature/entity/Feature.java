@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
+import java.util.List;
+
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +25,12 @@ public final class Feature {
 
     @JsonProperty("conditions")
     private Conditions conditions;
+
+    @JsonProperty("variants")
+    private List<Variant> variants;
+
+    @JsonProperty("allocation")
+    private Allocation allocation;
 
     @JsonProperty("telemetry")
     private FeatureTelemetry telemetry;
@@ -103,6 +111,34 @@ public final class Feature {
      */
     public void setConditions(Conditions conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
     }
 
     /**

@@ -23,7 +23,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName);
+    PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName, String connectedEnvironmentName);
 
     /**
      * Get the Dapr Components for a connected environment.
@@ -37,7 +37,8 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName, Context context);
+    PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName, String connectedEnvironmentName,
+        Context context);
 
     /**
      * Get a dapr component.
@@ -52,8 +53,8 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    Response<DaprComponent> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, Context context);
+    Response<ConnectedEnvironmentDaprComponent> getWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, Context context);
 
     /**
      * Get a dapr component.
@@ -67,7 +68,22 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component.
      */
-    DaprComponent get(String resourceGroupName, String connectedEnvironmentName, String componentName);
+    ConnectedEnvironmentDaprComponent get(String resourceGroupName, String connectedEnvironmentName,
+        String componentName);
+
+    /**
+     * Delete a Dapr Component.
+     * 
+     * Delete a Dapr Component from a connected environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param connectedEnvironmentName Name of the connected environment.
+     * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String connectedEnvironmentName, String componentName);
 
     /**
      * Delete a Dapr Component.
@@ -79,28 +95,10 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String componentName,
-        Context context);
-
-    /**
-     * Delete a Dapr Component.
-     * 
-     * Delete a Dapr Component from a connected environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connected environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String connectedEnvironmentName, String componentName);
+    void delete(String resourceGroupName, String connectedEnvironmentName, String componentName, Context context);
 
     /**
      * List secrets for a dapr component.
@@ -142,7 +140,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    DaprComponent getById(String id);
+    ConnectedEnvironmentDaprComponent getById(String id);
 
     /**
      * Get a dapr component.
@@ -155,7 +153,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
-    Response<DaprComponent> getByIdWithResponse(String id, Context context);
+    Response<ConnectedEnvironmentDaprComponent> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete a Dapr Component.
@@ -164,8 +162,7 @@ public interface ConnectedEnvironmentsDaprComponents {
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
@@ -178,18 +175,16 @@ public interface ConnectedEnvironmentsDaprComponents {
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new DaprComponent resource.
+     * Begins definition for a new ConnectedEnvironmentDaprComponent resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new DaprComponent definition.
+     * @return the first stage of the new ConnectedEnvironmentDaprComponent definition.
      */
-    DaprComponent.DefinitionStages.Blank define(String name);
+    ConnectedEnvironmentDaprComponent.DefinitionStages.Blank define(String name);
 }

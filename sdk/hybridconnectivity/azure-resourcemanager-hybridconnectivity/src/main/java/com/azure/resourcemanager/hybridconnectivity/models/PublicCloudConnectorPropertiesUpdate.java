@@ -49,17 +49,6 @@ public final class PublicCloudConnectorPropertiesUpdate
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (awsCloudProfile() != null) {
-            awsCloudProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

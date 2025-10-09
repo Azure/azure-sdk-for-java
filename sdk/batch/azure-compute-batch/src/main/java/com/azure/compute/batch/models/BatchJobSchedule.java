@@ -111,14 +111,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
-
-    /*
-     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The
-     * Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     */
-    @Generated
-    private BatchJobScheduleStatistics stats;
+    private List<BatchMetadataItem> metadata;
 
     /**
      * Creates an instance of BatchJobSchedule class.
@@ -288,7 +281,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -300,21 +293,9 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * @return the BatchJobSchedule object itself.
      */
     @Generated
-    public BatchJobSchedule setMetadata(List<MetadataItem> metadata) {
+    public BatchJobSchedule setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    /**
-     * Get the stats property: The lifetime resource usage statistics for the Job Schedule. The statistics may not be
-     * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
-     * minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchJobScheduleStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -355,8 +336,8 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
             OffsetDateTime previousStateTransitionTime = null;
             BatchJobScheduleConfiguration schedule = null;
             BatchJobScheduleExecutionInfo executionInfo = null;
-            List<MetadataItem> metadata = null;
-            BatchJobScheduleStatistics stats = null;
+            List<BatchMetadataItem> metadata = null;
+            BatchJobScheduleStatistics jobScheduleStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -391,9 +372,9 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
                 } else if ("executionInfo".equals(fieldName)) {
                     executionInfo = BatchJobScheduleExecutionInfo.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("stats".equals(fieldName)) {
-                    stats = BatchJobScheduleStatistics.fromJson(reader);
+                    jobScheduleStatistics = BatchJobScheduleStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -412,8 +393,27 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
             deserializedBatchJobSchedule.schedule = schedule;
             deserializedBatchJobSchedule.executionInfo = executionInfo;
             deserializedBatchJobSchedule.metadata = metadata;
-            deserializedBatchJobSchedule.stats = stats;
+            deserializedBatchJobSchedule.jobScheduleStatistics = jobScheduleStatistics;
             return deserializedBatchJobSchedule;
         });
+    }
+
+    /*
+     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The
+     * Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     */
+    @Generated
+    private BatchJobScheduleStatistics jobScheduleStatistics;
+
+    /**
+     * Get the jobScheduleStatistics property: The lifetime resource usage statistics for the Job Schedule. The
+     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
+     * typical delay is about 30 minutes.
+     *
+     * @return the jobScheduleStatistics value.
+     */
+    @Generated
+    public BatchJobScheduleStatistics getJobScheduleStatistics() {
+        return this.jobScheduleStatistics;
     }
 }

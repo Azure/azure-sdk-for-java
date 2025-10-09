@@ -15,30 +15,30 @@ public final class InstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceProperties model = BinaryData.fromString(
-            "{\"solutionVersionId\":\"qncygupkvi\",\"targetId\":\"mdscwxqupev\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"otxhojujby\"},\"solutionScope\":\"lmcuvhixb\",\"status\":{\"lastModified\":\"2021-05-06T10:55:08Z\",\"deployed\":32806532,\"expectedRunningJobId\":1015582593,\"runningJobId\":1461211866,\"status\":\"o\",\"statusDetails\":\"ttpkiwkkbnujrywv\",\"generation\":209065244,\"targetStatuses\":[{\"name\":\"ncu\",\"status\":\"oiwiithtywub\",\"componentStatuses\":[{\"name\":\"h\",\"status\":\"knfd\"},{\"name\":\"wjchrdg\",\"status\":\"hxumwctondzj\"},{\"name\":\"udfdlwgg\",\"status\":\"sb\"}]},{\"name\":\"ovvtgseinqfiu\",\"status\":\"qknp\",\"componentStatuses\":[{\"name\":\"epttwqmsniff\",\"status\":\"mqnrojlpijnkr\"},{\"name\":\"rddh\",\"status\":\"atiz\"},{\"name\":\"onasxifto\",\"status\":\"yzhftwesgogczh\"}]}]},\"deploymentTimestampEpoch\":8192981272541420643,\"provisioningState\":\"Canceled\"}")
+            "{\"solutionVersionId\":\"vlhv\",\"targetId\":\"gdyftumrtwna\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"iw\"},\"solutionScope\":\"jgcyztsfmznba\",\"status\":{\"lastModified\":\"2021-03-23T01:57:59Z\",\"deployed\":1138539224,\"expectedRunningJobId\":1311384548,\"runningJobId\":1941100702,\"status\":\"pxehuwrykqga\",\"statusDetails\":\"mvikl\",\"generation\":703238637,\"targetStatuses\":[{\"name\":\"bejdznxcv\",\"status\":\"rhnj\",\"componentStatuses\":[{\"name\":\"v\",\"status\":\"ovqfzge\"},{\"name\":\"dftuljltduce\",\"status\":\"tmczuomejwcwwqi\"},{\"name\":\"nssxmojmsvpk\",\"status\":\"rvkwc\"}]},{\"name\":\"ql\",\"status\":\"x\",\"componentStatuses\":[{\"name\":\"heyd\",\"status\":\"dshmkxmaehvbbx\"},{\"name\":\"iplt\",\"status\":\"htba\"}]},{\"name\":\"gx\",\"status\":\"rc\",\"componentStatuses\":[{\"name\":\"lyhpluodpvruud\",\"status\":\"zibt\"},{\"name\":\"stgktst\",\"status\":\"xeclzedqbcvhzlhp\"},{\"name\":\"dqkdlwwqfbu\",\"status\":\"kxtrq\"},{\"name\":\"smlmbtxhwgfwsrta\",\"status\":\"oezbrhubsk\"}]}]},\"deploymentTimestampEpoch\":2353090484810813231,\"provisioningState\":\"Succeeded\"}")
             .toObject(InstanceProperties.class);
-        Assertions.assertEquals("qncygupkvi", model.solutionVersionId());
-        Assertions.assertEquals("mdscwxqupev", model.targetId());
+        Assertions.assertEquals("vlhv", model.solutionVersionId());
+        Assertions.assertEquals("gdyftumrtwna", model.targetId());
         Assertions.assertEquals(ActiveState.ACTIVE, model.activeState());
         Assertions.assertEquals(ReconciliationState.ACTIVE, model.reconciliationPolicy().state());
-        Assertions.assertEquals("otxhojujby", model.reconciliationPolicy().interval());
-        Assertions.assertEquals("lmcuvhixb", model.solutionScope());
+        Assertions.assertEquals("iw", model.reconciliationPolicy().interval());
+        Assertions.assertEquals("jgcyztsfmznba", model.solutionScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceProperties model = new InstanceProperties().withSolutionVersionId("qncygupkvi")
-            .withTargetId("mdscwxqupev")
+        InstanceProperties model = new InstanceProperties().withSolutionVersionId("vlhv")
+            .withTargetId("gdyftumrtwna")
             .withActiveState(ActiveState.ACTIVE)
             .withReconciliationPolicy(
-                new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE).withInterval("otxhojujby"))
-            .withSolutionScope("lmcuvhixb");
+                new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE).withInterval("iw"))
+            .withSolutionScope("jgcyztsfmznba");
         model = BinaryData.fromObject(model).toObject(InstanceProperties.class);
-        Assertions.assertEquals("qncygupkvi", model.solutionVersionId());
-        Assertions.assertEquals("mdscwxqupev", model.targetId());
+        Assertions.assertEquals("vlhv", model.solutionVersionId());
+        Assertions.assertEquals("gdyftumrtwna", model.targetId());
         Assertions.assertEquals(ActiveState.ACTIVE, model.activeState());
         Assertions.assertEquals(ReconciliationState.ACTIVE, model.reconciliationPolicy().state());
-        Assertions.assertEquals("otxhojujby", model.reconciliationPolicy().interval());
-        Assertions.assertEquals("lmcuvhixb", model.solutionScope());
+        Assertions.assertEquals("iw", model.reconciliationPolicy().interval());
+        Assertions.assertEquals("jgcyztsfmznba", model.solutionScope());
     }
 }

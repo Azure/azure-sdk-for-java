@@ -101,17 +101,6 @@ public final class GuestAgentProperties implements JsonSerializable<GuestAgentPr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (credentials() != null) {
-            credentials().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

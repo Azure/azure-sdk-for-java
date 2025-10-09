@@ -119,20 +119,6 @@ public final class ConnectionStringType implements JsonSerializable<ConnectionSt
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (allConnectionStrings() != null) {
-            allConnectionStrings().validate();
-        }
-        if (profiles() != null) {
-            profiles().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

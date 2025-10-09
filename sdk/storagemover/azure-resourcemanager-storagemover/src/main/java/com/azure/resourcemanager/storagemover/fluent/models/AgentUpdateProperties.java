@@ -82,17 +82,6 @@ public final class AgentUpdateProperties implements JsonSerializable<AgentUpdate
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (uploadLimitSchedule() != null) {
-            uploadLimitSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -57,7 +57,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
     private byte[] cer;
 
     /*
-     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12'.
      */
     @Generated
     private String contentType;
@@ -69,7 +69,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
     private CertificateAttributes attributes;
 
     /*
-     * Application specific metadata in the form of key-value pairs
+     * Application specific metadata in the form of key-value pairs.
      */
     @Generated
     private Map<String, String> tags;
@@ -153,7 +153,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
 
     /**
      * Get the contentType property: The content type of the secret. eg. 'application/x-pem-file' or
-     * 'application/x-pkcs12',.
+     * 'application/x-pkcs12'.
      * 
      * @return the contentType value.
      */

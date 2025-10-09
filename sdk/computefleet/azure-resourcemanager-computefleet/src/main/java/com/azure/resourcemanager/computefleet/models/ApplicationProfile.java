@@ -52,17 +52,6 @@ public final class ApplicationProfile implements JsonSerializable<ApplicationPro
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (galleryApplications() != null) {
-            galleryApplications().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

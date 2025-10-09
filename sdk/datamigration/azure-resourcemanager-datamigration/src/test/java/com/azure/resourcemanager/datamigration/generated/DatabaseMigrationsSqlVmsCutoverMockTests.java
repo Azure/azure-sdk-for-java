@@ -30,8 +30,9 @@ public final class DatabaseMigrationsSqlVmsCutoverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databaseMigrationsSqlVms()
-            .cutover("y", "ypffmnoiicsudyh", "rjjtalxrdsjrho", new MigrationOperationInput().withMigrationOperationId(
-                UUID.fromString("894dc5fe-1480-4d34-a2b8-4264e58d1dd0")), com.azure.core.util.Context.NONE);
+            .cutover("egtvgwyurbel", "nzzryizwbxgde", "xlayunomir", new MigrationOperationInput()
+                .withMigrationOperationId(UUID.fromString("c9cb8e72-77a6-4533-b611-417b5b9ec56a")),
+                com.azure.core.util.Context.NONE);
 
     }
 }
