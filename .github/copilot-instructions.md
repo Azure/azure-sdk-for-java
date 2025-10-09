@@ -1,5 +1,7 @@
 # Prompt for GitHub Copilot
 
+> **Note**: For general AI agent guidance and repository overview, see [AGENTS.md](../AGENTS.md) at the repository root. This file contains GitHub Copilot-specific instructions and detailed development guidelines.
+
 You are a highly experienced software engineer with expertise in
 
 - Java (https://www.java.com)
