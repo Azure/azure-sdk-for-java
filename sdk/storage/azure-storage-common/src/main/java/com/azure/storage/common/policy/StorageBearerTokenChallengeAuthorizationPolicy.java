@@ -9,13 +9,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.AuthenticateChallenge;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -82,13 +83,12 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     // Processes the bearer challenge from the authentication header.
     TokenRequestContext processBearerChallenge(String authHeader) {
-        AuthenticateChallenge bearerChallenge = findBearer(authHeader);
-        if (bearerChallenge == null || bearerChallenge.getParameters().isEmpty()) {
+        Map<String, String> challengeAttributes = extractChallengeAttributes(authHeader);
+        if (challengeAttributes == null || challengeAttributes.isEmpty()) {
             return null;
         }
 
-        Map<String, String> attributes = bearerChallenge.getParameters();
-        return createTokenRequestContext(attributes);
+        return createTokenRequestContext(challengeAttributes);
     }
 
     // Creates a token request context from challenge attributes.
@@ -120,14 +120,76 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return new String[] { scope };
     }
 
-    // Returns the first Bearer challenge or null.
-    static AuthenticateChallenge findBearer(String authenticateHeader) {
-        for (AuthenticateChallenge ch : CoreUtils.parseAuthenticateHeader(authenticateHeader)) {
-            if (BEARER_TOKEN_PREFIX.equalsIgnoreCase(ch.getScheme())) {
-                return ch;
+    static Map<String, String> extractChallengeAttributes(String header) {
+        if (header == null) {
+            return null;
+        }
+
+        // Find the beginning of the Bearer challenge even if it is not the first challenge.
+        int bearerIndex = indexOfBearerChallenge(header);
+        if (bearerIndex < 0) {
+            return null;
+        }
+
+        // Substring starting at "Bearer"
+        String bearerPortion = header.substring(bearerIndex);
+
+        if (!bearerPortion.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length())) {
+            return null; // Defensive, should not happen.
+        }
+
+        // Remove "Bearer" prefix and trim any leading whitespace
+        String remainingHeader = bearerPortion.substring(BEARER_TOKEN_PREFIX.length()).trim();
+
+        // Split on commas first; if no commas present fall back to spaces.
+        String[] parts = remainingHeader.contains(",") ? remainingHeader.split(",") : remainingHeader.split(" ");
+
+        Map<String, String> output = new HashMap<>();
+        for (String pair : parts) {
+            String part = pair.trim();
+            if (part.isEmpty()) {
+                continue;
+            }
+            // Validate presence of '=' and that it's not the last character
+            int eq = part.indexOf('=');
+            if (eq < 0 || eq == part.length() - 1) {
+                continue; // ignore malformed
+            }
+
+            // Extract key/value, trim, lowercase key
+            // Strip surrounding quotes from value if present
+            String key = part.substring(0, eq).trim().toLowerCase(Locale.ROOT);
+            String value = stripQuotes(part.substring(eq + 1).trim());
+
+            output.put(key, value);
+        }
+        return output;
+    }
+
+    // Finds the index of a Bearer challenge token with a valid boundary (start, space, or comma before).
+    private static int indexOfBearerChallenge(String header) {
+        String lower = header.toLowerCase(Locale.ROOT);
+        String needle = BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT);
+        for (int i = 0; i <= lower.length() - needle.length(); i++) {
+            if (lower.regionMatches(i, needle, 0, needle.length())) {
+                // Ensure boundary before (start, space, or comma)
+                if (i == 0) {
+                    return i;
+                }
+                char prev = header.charAt(i - 1);
+                if (Character.isWhitespace(prev) || prev == ',') {
+                    return i;
+                }
             }
         }
-        return null;
+        return -1;
+    }
+
+    private static String stripQuotes(String v) {
+        if (v.length() >= 2 && v.startsWith("\"") && v.endsWith("\"")) {
+            return v.substring(1, v.length() - 1);
+        }
+        return v;
     }
 
     String extractTenantIdFromUri(String uri) {

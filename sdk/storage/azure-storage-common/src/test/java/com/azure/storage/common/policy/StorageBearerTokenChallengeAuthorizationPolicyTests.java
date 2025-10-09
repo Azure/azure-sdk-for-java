@@ -16,7 +16,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.AuthenticateChallenge;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.findBearer;
+import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.extractChallengeAttributes;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,6 +44,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     private StorageBearerTokenChallengeAuthorizationPolicy policy;
     private static final String DEFAULT_SCOPE = "https://storage.azure.com/.default";
+    private static final String RESOURCE_ID = "resource_id";
+    private static final String AUTHORIZATION_URI = "authorization_uri";
 
     @BeforeEach
     public void setup() {
@@ -87,44 +88,42 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     @Test
     public void testFindBearerWithNullHeader() {
-        AuthenticateChallenge challenge = findBearer(null);
-        assertNull(challenge);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(null);
+        assertNull(challengeAttributes);
     }
 
     @Test
     public void testFindBearerWithEmptyHeader() {
-        AuthenticateChallenge challenge = findBearer("");
-        assertNull(challenge);
+        Map<String, String> challengeAttributes = extractChallengeAttributes("");
+        assertNull(challengeAttributes);
     }
 
     @Test
     public void testFindBearerWithNonBearerHeader() {
         String header = "Basic realm=\"test\"";
-        AuthenticateChallenge challenge = findBearer(header);
-        assertNull(challenge);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
+        assertNull(challengeAttributes);
     }
 
     @Test
     public void testFindBearerWithBearerHeader() {
         String header
             = "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        AuthenticateChallenge challenge = findBearer(header);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
 
-        assertNotNull(challenge);
-        assertEquals("Bearer", challenge.getScheme());
-        assertEquals("https://storage.azure.com", challenge.getParameters().get("resource_id"));
+        assertNotNull(challengeAttributes);
+        assertEquals("https://storage.azure.com", challengeAttributes.get(RESOURCE_ID));
         assertEquals("https://login.microsoftonline.com/tenant/oauth2/authorize",
-            challenge.getParameters().get("authorization_uri"));
+            challengeAttributes.get(AUTHORIZATION_URI));
     }
 
     @Test
     public void testFindBearerWithMultipleChallenges() {
         String header = "Basic realm=\"test\", Bearer resource_id=\"https://storage.azure.com\", Digest nonce=\"123\"";
-        AuthenticateChallenge challenge = findBearer(header);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
 
-        assertNotNull(challenge);
-        assertEquals("Bearer", challenge.getScheme());
-        assertEquals("https://storage.azure.com", challenge.getParameters().get("resource_id"));
+        assertNotNull(challengeAttributes);
+        assertEquals("https://storage.azure.com", challengeAttributes.get(RESOURCE_ID));
     }
 
     @Test
@@ -176,8 +175,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     @Test
     public void testCreateTokenRequestContextWithResourceAndAuthUrl() {
         Map<String, String> attributes = new HashMap<>();
-        attributes.put("resource_id", "https://storage.azure.com");
-        attributes.put("authorization_uri", "https://login.microsoftonline.com/tenant/oauth2/authorize");
+        attributes.put(RESOURCE_ID, "https://storage.azure.com");
+        attributes.put(AUTHORIZATION_URI, "https://login.microsoftonline.com/tenant/oauth2/authorize");
 
         TokenRequestContext result = policy.createTokenRequestContext(attributes);
 
@@ -191,7 +190,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     @Test
     public void testCreateTokenRequestContextWithResourceOnly() {
         Map<String, String> attributes = new HashMap<>();
-        attributes.put("resource_id", "https://storage.azure.com");
+        attributes.put(RESOURCE_ID, "https://storage.azure.com");
 
         TokenRequestContext result = policy.createTokenRequestContext(attributes);
 
@@ -205,7 +204,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     @Test
     public void testCreateTokenRequestContextWithAuthUrlOnly() {
         Map<String, String> attributes = new HashMap<>();
-        attributes.put("authorization_uri", "https://login.microsoftonline.com/tenant/oauth2/authorize");
+        attributes.put(AUTHORIZATION_URI, "https://login.microsoftonline.com/tenant/oauth2/authorize");
 
         TokenRequestContext result = policy.createTokenRequestContext(attributes);
 
