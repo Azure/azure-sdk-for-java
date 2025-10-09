@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (2025-08-29)
+## 1.4.0 (2025-10-09)
 
 - Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -22,16 +22,110 @@
 
 #### `models.ProjectList` was removed
 
+#### `models.Credentials` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointBaseUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.SmbMountEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Recurrence` was modified
+
+* `validate()` was removed
+
+#### `models.StorageMoverUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.NfsMountEndpointUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureKeyVaultSmbCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.WeeklyRecurrence` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStorageSmbFileShareEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.JobDefinitionUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStorageBlobContainerEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointBaseUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AgentUpdateParameters` was modified
+
+* `validate()` was removed
+
 #### `models.JobRunError` was modified
 
+* `withMessage(java.lang.String)` was removed
 * `withCode(java.lang.String)` was removed
 * `withTarget(java.lang.String)` was removed
-* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStorageSmbFileShareEndpointUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Time` was modified
+
+* `validate()` was removed
+
+#### `models.UploadLimitWeeklyRecurrence` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStorageBlobContainerEndpointUpdateProperties` was modified
+
+* `validate()` was removed
 
 #### `models.AgentPropertiesErrorDetails` was modified
 
-* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
 * `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.SmbMountEndpointUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UploadLimitSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.NfsMountEndpointProperties` was modified
+
+* `validate()` was removed
 
 ### Features Added
 
@@ -70,8 +164,8 @@
 
 #### `models.Minute` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Endpoint$Definition` was modified
 
@@ -92,8 +186,8 @@
 
 #### `models.JobDefinition$Definition` was modified
 
-* `withJobType(models.JobType)` was added
 * `withSourceTargetMap(models.JobDefinitionPropertiesSourceTargetMap)` was added
+* `withJobType(models.JobType)` was added
 
 ## 1.3.0 (2024-12-23)
 
