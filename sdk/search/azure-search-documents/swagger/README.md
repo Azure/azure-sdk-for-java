@@ -486,7 +486,7 @@ directive:
   transform: >
     $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
       value: v.value,
-      name: v.name === "ReRankedScore" ? "RerankerScore" : v.name,
+      name: v.name === "ReRankerScore" ? "RerankerScore" : v.name,
       description: v.description
     }));
 ```
