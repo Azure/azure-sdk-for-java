@@ -120,6 +120,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return new String[] { scope };
     }
 
+    // Extracts challenge attributes from the authentication header and parses them into a map.
     static Map<String, String> extractChallengeAttributes(String header) {
         if (header == null) {
             return null;
