@@ -1,21 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.v2.core.http.polling.LongRunningOperationStatus;
-import com.azure.v2.core.http.polling.PollResponse;
-import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
-import com.azure.v2.security.keyvault.certificates.CertificateClient;
-import com.azure.v2.security.keyvault.certificates.CertificateClientBuilder;
-import com.azure.v2.security.keyvault.certificates.models.CertificateKeyCurveName;
-import com.azure.v2.security.keyvault.certificates.models.CertificateKeyType;
-import com.azure.v2.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.v2.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.v2.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.v2.security.keyvault.certificates.models.SubjectAlternativeNames;
-import io.clientcore.core.http.models.RequestContext;
+package com.azure.security.keyvault.certificates;
+
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,7 +47,7 @@ public class BackupAndRestoreOperations {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
         for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .endpoint("<your-key-vault-url>")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -61,7 +61,7 @@ public class BackupAndRestoreOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
             certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
@@ -77,7 +77,7 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(certificateBackup, backupFilePath);
 
         // The certificate is no longer in use, so you delete it.
-        Poller<DeletedCertificate, Void> deletedCertificatePoller =
+        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
@@ -91,7 +91,7 @@ public class BackupAndRestoreOperations {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
-        certificateClient.purgeDeletedCertificate("certificateName");
+        certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
 
         // To ensure the certificate is purged server-side.
         Thread.sleep(15000);
