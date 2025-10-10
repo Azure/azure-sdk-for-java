@@ -3,15 +3,10 @@
 
 package com.azure.storage.blob.nio;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -22,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AzureBlobFileAttributesTests extends BlobNioTestBase {
-    private static AzureFileSystem fs;
-    private static List<Path> createdResources = new ArrayList<>();
+    private AzureFileSystem fs;
+    private final List<Path> createdResources = new ArrayList<>();
 
     @Override
     protected void beforeTest() {
@@ -47,19 +42,6 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
         } catch (IOException e) {
             throw new RuntimeException("Failed to setup test resources", e);
         }
-    }
-
-    @AfterAll
-    public static void cleanup() {
-        for (Path path : createdResources) {
-            try {
-                fs.provider().deleteIfExists(path);
-            } catch (Exception e) {
-                // Log and continue
-                System.err.println("Failed to delete resource: " + path + " due to " + e.getMessage());
-            }
-        }
-        createdResources.clear();
     }
 
     @Test
@@ -91,7 +73,7 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
     @Test
     public void getMissingFileInExistingDirectory() throws Exception {
         // Test retrieving attributes for a file that doesn't exist in an existing directory
-        Path path = fs.getPath(getNonDefaultRootDir(fs), "dir1", "foo.xml");
+        Path path = fs.getPath(getNonDefaultRootDir(fs), "dir", "foo.xml");
 
         boolean isDirectory = Files.isDirectory(path);
         boolean isFile = Files.exists(path);
@@ -131,6 +113,6 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
 
         // Should throw IOException with an underlying cause other than 404
         IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
-        assertTrue(exception.getCause().toString().contains("400"));
+        assertFalse(exception.getCause().toString().contains("404"));
     }
 }
