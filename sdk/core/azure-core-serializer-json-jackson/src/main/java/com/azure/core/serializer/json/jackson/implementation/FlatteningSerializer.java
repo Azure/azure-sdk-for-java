@@ -310,7 +310,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             try {
                 Object anyValue = anyGetter.getValue(value);
                 if (anySerializer instanceof MapSerializer) {
-                    ((MapSerializer) anySerializer).serializeWithoutTypeInfo((Map<?, ?>) anyValue, gen, provider);
+                    ((MapSerializer) anySerializer).serializeFields((Map<?, ?>) anyValue, gen, provider);
                 } else {
                     ((JsonSerializer<Object>) anySerializer).serialize(anyValue, gen, provider);
                 }
