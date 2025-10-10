@@ -33,6 +33,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
+import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -47,8 +48,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ApplicationGatewayTests extends NetworkManagementTest {
 
@@ -632,6 +635,47 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         appGateway.update().withoutProbe(probeName).apply();
 
         Assertions.assertTrue(appGateway.probes().isEmpty());
+    }
+
+    @Test
+    public void canListAvailabilityZones() {
+        String appGatewayName = generateRandomResourceName("agw", 15);
+
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        PublicIpAddress pip = networkManager.publicIpAddresses()
+            .define(appPublicIp)
+            .withRegion(REGION)
+            .withNewResourceGroup(rgName)
+            .withSku(PublicIPSkuType.STANDARD)
+            .withStaticIP()
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
+            .create();
+
+        ApplicationGateway appGateway = networkManager.applicationGateways()
+            .define(appGatewayName)
+            .withRegion(REGION)
+            .withNewResourceGroup(rgName)
+            // Request routing rules
+            .defineRequestRoutingRule("rule1")
+            // BASIC still needs a public frontend. With private only, it'll report error:
+            // "Application Gateway does not support Application Gateway without Public IP for the selected SKU tier Basic.
+            // Supported SKU tiers are Standard,WAF."
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("11.1.1.1")
+            .attach()
+            .withExistingPublicIpAddress(pip)
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
+            .create();
+
+        Set<AvailabilityZoneId> expectedZones = new HashSet<>();
+        expectedZones.add(AvailabilityZoneId.ZONE_1);
+        expectedZones.add(AvailabilityZoneId.ZONE_2);
+
+        Assertions.assertEquals(expectedZones, appGateway.availabilityZones());
     }
 
     private String createKeyVaultCertificate(String signedInUser, String identityPrincipal) {
