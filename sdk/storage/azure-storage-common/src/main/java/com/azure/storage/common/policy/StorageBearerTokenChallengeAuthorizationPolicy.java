@@ -15,22 +15,23 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Map;
 
 /**
- * The storage authorization policy which supports challenge.
+ * The storage authorization policy which supports challenges.
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
-
     private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
-    static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String BEARER_TOKEN_PREFIX = "Bearer";
+    private static final String RESOURCE_ID = "resource_id";
+    private static final String AUTHORIZATION_URI = "authorization_uri";
 
-    private String[] scopes;
+    // Immutable constructor scopes (base class retains them); challenge may supply new scopes dynamically.
+    private final String[] initialScopes;
 
     /**
      * Creates StorageBearerTokenChallengeAuthorizationPolicy.
@@ -40,134 +41,167 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
      */
     public StorageBearerTokenChallengeAuthorizationPolicy(TokenCredential credential, String... scopes) {
         super(credential, scopes);
-        this.scopes = scopes;
+        this.initialScopes = CoreUtils.clone(scopes);
     }
 
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
-        String[] scopes = this.scopes;
-        scopes = getScopes(context, scopes);
-        if (scopes == null) {
-            return Mono.empty();
-        } else {
-            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
-        }
+        // Delegate to superclass to maintain previous behavior
+        return super.authorizeRequest(context);
     }
 
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-        String[] scopes = this.scopes;
-        scopes = getScopes(context, scopes);
-
-        if (scopes != null) {
-            setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
-        }
+        // Delegate to superclass to maintain previous behavior
+        super.authorizeRequestSync(context);
     }
 
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        TokenRequestContext tokenRequestContext = processBearerChallenge(authHeader);
 
-        String scope = getScopeFromChallenges(challenges);
-        String authorization = getAuthorizationFromChallenges(challenges);
-
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+        if (tokenRequestContext == null) {
+            return Mono.just(false);
         }
 
-        if (authorization != null) {
-            String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
-            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
-        }
-
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
-            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
-        }
-
-        return Mono.just(false);
-    }
-
-    String extractTenantIdFromUri(String uri) {
-        try {
-            String[] segments = new URI(uri).getPath().split("/");
-            if (segments.length > 1) {
-                return segments[1];
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
-            }
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
-        }
+        return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
     }
 
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
+        TokenRequestContext tokenRequestContext = processBearerChallenge(authHeader);
 
-        String scope = getScopeFromChallenges(challenges);
-        String authorization = getAuthorizationFromChallenges(challenges);
-
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+        if (tokenRequestContext == null) {
+            return false;
         }
 
-        if (authorization != null) {
-            String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
-            setAuthorizationHeaderSync(context, tokenRequestContext);
-            return true;
+        setAuthorizationHeaderSync(context, tokenRequestContext);
+        return true;
+    }
+
+    // Processes the bearer challenge from the authentication header.
+    TokenRequestContext processBearerChallenge(String authHeader) {
+        Map<String, String> challengeAttributes = extractChallengeAttributes(authHeader);
+        if (challengeAttributes == null || challengeAttributes.isEmpty()) {
+            return null;
         }
 
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
-            setAuthorizationHeaderSync(context, tokenRequestContext);
-            return true;
+        return createTokenRequestContext(challengeAttributes);
+    }
+
+    // Creates a token request context from challenge attributes.
+    TokenRequestContext createTokenRequestContext(Map<String, String> attributes) {
+        String resource = attributes.get(RESOURCE_ID);
+        String authUrl = attributes.get(AUTHORIZATION_URI);
+
+        // Determine scopes to use based on resource
+        String[] scopesToUse = determineScopesToUse(resource);
+
+        // Build the token request context
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesToUse).setCaeEnabled(true);
+
+        // Set tenant ID if authorization URI is available
+        if (!CoreUtils.isNullOrEmpty(authUrl)) {
+            tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
         }
 
-        return false;
+        return tokenRequestContext;
     }
 
-    String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
-        return CoreUtils.clone(scopes);
-    }
-
-    Map<String, String> extractChallengeAttributes(String header, String authChallengePrefix) {
-        if (!isBearerChallenge(header, authChallengePrefix)) {
-            return Collections.emptyMap();
+    // Determines which scopes to use based on the resource.
+    String[] determineScopesToUse(String resource) {
+        if (CoreUtils.isNullOrEmpty(resource)) {
+            return initialScopes;
         }
 
-        header = header.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+        String scope = resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE;
+        return new String[] { scope };
+    }
 
-        String[] attributes = header.split(" ");
-        Map<String, String> attributeMap = new HashMap<>();
-
-        for (String pair : attributes) {
-            String[] keyValue = pair.split("=");
-
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+    // Extracts challenge attributes from the authentication header and parses them into a map.
+    static Map<String, String> extractChallengeAttributes(String header) {
+        if (header == null) {
+            return null;
         }
 
-        return attributeMap;
+        // Find the beginning of the Bearer challenge even if it is not the first challenge.
+        int bearerIndex = indexOfBearerChallenge(header);
+        if (bearerIndex < 0) {
+            return null;
+        }
+
+        // Substring starting at "Bearer"
+        String bearerPortion = header.substring(bearerIndex);
+
+        if (!bearerPortion.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length())) {
+            return null; // Defensive, should not happen.
+        }
+
+        // Remove "Bearer" prefix and trim any leading whitespace
+        String remainingHeader = bearerPortion.substring(BEARER_TOKEN_PREFIX.length()).trim();
+
+        // Split on commas first; if no commas present fall back to spaces.
+        String[] parts = remainingHeader.contains(",") ? remainingHeader.split(",") : remainingHeader.split(" ");
+
+        Map<String, String> output = new HashMap<>();
+        for (String pair : parts) {
+            String part = pair.trim();
+            if (part.isEmpty()) {
+                continue;
+            }
+            // Validate presence of '=' and that it's not the last character
+            int eq = part.indexOf('=');
+            if (eq < 0 || eq == part.length() - 1) {
+                continue; // ignore malformed
+            }
+
+            // Extract key/value, trim, lowercase key
+            // Strip surrounding quotes from value if present
+            String key = part.substring(0, eq).trim().toLowerCase(Locale.ROOT);
+            String value = stripQuotes(part.substring(eq + 1).trim());
+
+            output.put(key, value);
+        }
+        return output;
     }
 
-    static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
-        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+    // Finds the index of a Bearer challenge token with a valid boundary (start, space, or comma before).
+    private static int indexOfBearerChallenge(String header) {
+        String lower = header.toLowerCase(Locale.ROOT);
+        String needle = BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT);
+        for (int i = 0; i <= lower.length() - needle.length(); i++) {
+            if (lower.regionMatches(i, needle, 0, needle.length())) {
+                // Ensure boundary before (start, space, or comma)
+                if (i == 0) {
+                    return i;
+                }
+                char prev = header.charAt(i - 1);
+                if (Character.isWhitespace(prev) || prev == ',') {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
-    String getScopeFromChallenges(Map<String, String> challenges) {
-        return challenges.get("resource_id");
+    private static String stripQuotes(String v) {
+        if (v.length() >= 2 && v.startsWith("\"") && v.endsWith("\"")) {
+            return v.substring(1, v.length() - 1);
+        }
+        return v;
     }
 
-    String getAuthorizationFromChallenges(Map<String, String> challenges) {
-        return challenges.get("authorization_uri");
+    String extractTenantIdFromUri(String uri) {
+        try {
+            String[] segments = new URI(uri).getPath().split("/");
+            if (segments.length > 1 && !segments[1].isEmpty()) {
+                return segments[1];
+            }
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
+        }
     }
 }
