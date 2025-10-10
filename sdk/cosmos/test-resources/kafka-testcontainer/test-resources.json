@@ -120,19 +120,6 @@
         "capabilities": [],
         "ipRules": []
       }
-    },
-    {
-      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[concat(variables('accountName'), '/',guid(parameters('baseName')))]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
-      ],
-      "properties": {
-        "principalId": "[parameters('kafkaTestApplicationOid')]",
-        "roleDefinitionId": "[variables('azureCosmosRoleId')]",
-        "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
-      }
     }
   ],
   "outputs": {

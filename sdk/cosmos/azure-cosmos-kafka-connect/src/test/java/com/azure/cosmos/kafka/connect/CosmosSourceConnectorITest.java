@@ -26,6 +26,7 @@ import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -86,6 +87,46 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         };
     }
 
+    @DataProvider(name = "sourceWithWrongContainerNameConfig")
+    public static Object[][] sourceWithWrongContainerNameConfig() {
+        return new Object[][]
+            {
+                // configs, error message
+                // test case1: wrong container name in includedList
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "false");
+                            put("azure.cosmos.source.containers.includedList", "wrongContainerName");
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account."
+                },
+                // test case2: includeAll true
+                // wrong container name in includeList will be ignored
+                // wrong container name in topic map config will throw exception
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "true");
+                            put("azure.cosmos.source.containers.includedList", "wrongContainerName");
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the topic map do not exist in the CosmosDB account."
+                },
+                // test case3: wrong container name in topic map
+                {
+                    new HashMap<String, String>() {
+                        {
+                            put("azure.cosmos.source.containers.includeAll", "false");
+                            put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+                            put("azure.cosmos.source.containers.topicMap", "testTopic#WrongContainerName");
+                        }},
+                    "java.lang.IllegalStateException: Containers specified in the topic map do not exist in the CosmosDB account."
+                },
+            };
+    }
+
     @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         logger.info("read from single container " + useMasterKey);
@@ -108,6 +149,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -256,50 +298,23 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         }
     }
 
-    @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider")
-    public void createConnectorWithWrongContainerName(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
+    @Test(groups = { "kafka-integration" }, dataProvider = "sourceWithWrongContainerNameConfig")
+    public void createConnectorWithWrongContainerName(Map<String, String> configs, String errorMessage) {
 
-        logger.info("createConnectorWithWrongContainerName " + useMasterKey);
-        String wrongContainerName = "wrongContainerName";
-        String topicName = wrongContainerName + "-" + UUID.randomUUID();
-        String metadataStorageName = "Metadata-" + UUID.randomUUID();
+        logger.info("createConnectorWithWrongContainerName");
 
         Map<String, String> sourceConnectorConfig = new HashMap<>();
         sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
         sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConnectorConfig.put("azure.cosmos.application.name", "Test");
         sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
-        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
-        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", wrongContainerName);
-        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + wrongContainerName);
-
-        if (useMasterKey) {
-            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
-        } else {
-            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
-            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
-            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
-            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
-        }
-
-        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
-            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
-        }
+        sourceConnectorConfig.putAll(configs);
 
         // Create topic ahead of time
-        kafkaCosmosConnectContainer.createTopic(topicName, 1);
         String connectorName = "simpleTest-" + UUID.randomUUID();
 
         try {
-            // if using cosmos container to persiste the metadata, pre-create it
-            if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                logger.info("Creating metadata container");
-                client.getDatabase(databaseName)
-                    .createContainerIfNotExists(metadataStorageName, "/id")
-                    .block();
-            }
-
             kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
 
             // give some time for the connector to start up
@@ -307,18 +322,9 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             // verify connector tasks
             ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
-            assertThat(connectorStatus.getConnector().get("trace")
-                .contains("java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account.")).isTrue();
+            assertThat(connectorStatus.getConnector().get("trace").contains(errorMessage)).isTrue();
         }  catch (InterruptedException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (client != null) {
-
-                // delete the metadata container if created
-                if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                    client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
-                }
-            }
         }
     }
 
@@ -346,6 +352,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
@@ -415,6 +422,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            throw new SkipException("ServicePrincipal-based auth has been disabled in the live tests for the time-being. See - https://github.com/Azure/azure-sdk-for-java/issues/46639");
         }
 
         // Create topic ahead of time
