@@ -9,11 +9,11 @@ trigger:
   paths:
     include:
       - sdk/planetarycomputer/ci.yml
-      - sdk/planetarycomputer/azure-planetary-computer/
+      - sdk/planetarycomputer/azure-analytics-planetarycomputer/
       - sdk/planetarycomputer/azure-resourcemanager-planetarycomputer/
     exclude:
       - sdk/planetarycomputer/pom.xml
-      - sdk/planetarycomputer/azure-planetary-computer/pom.xml
+      - sdk/planetarycomputer/azure-analytics-planetarycomputer/pom.xml
       - sdk/planetarycomputer/azure-resourcemanager-planetarycomputer/pom.xml
 
 pr:
@@ -26,16 +26,16 @@ pr:
   paths:
     include:
       - sdk/planetarycomputer/ci.yml
-      - sdk/planetarycomputer/azure-planetary-computer/
+      - sdk/planetarycomputer/azure-analytics-planetarycomputer/
       - sdk/planetarycomputer/azure-resourcemanager-planetarycomputer/
     exclude:
       - sdk/planetarycomputer/pom.xml
-      - sdk/planetarycomputer/azure-planetary-computer/pom.xml
+      - sdk/planetarycomputer/azure-analytics-planetarycomputer/pom.xml
       - sdk/planetarycomputer/azure-resourcemanager-planetarycomputer/pom.xml
 
 parameters:
-  - name: release_azureplanetarycomputer
-    displayName: azure-planetary-computer
+  - name: release_azureanalyticsplanetarycomputer
+    displayName: azure-analytics-planetarycomputer
     type: boolean
     default: false
   - name: release_azureresourcemanagerplanetarycomputer
@@ -48,10 +48,10 @@ extends:
   parameters:
     ServiceDirectory: planetarycomputer
     Artifacts:
-      - name: azure-planetary-computer
-        groupId: com.azure
-        safeName: azureplanetarycomputer
-        releaseInBatch: ${{ parameters.release_azureplanetarycomputer }}
+      - name: azure-analytics-planetarycomputer
+        groupId: com.azure.analytics
+        safeName: azureanalyticsplanetarycomputer
+        releaseInBatch: ${{ parameters.release_azureanalyticsplanetarycomputer }}
       - name: azure-resourcemanager-planetarycomputer
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerplanetarycomputer
