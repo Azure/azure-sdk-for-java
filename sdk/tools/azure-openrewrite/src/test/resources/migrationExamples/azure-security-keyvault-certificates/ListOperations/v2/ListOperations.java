@@ -62,7 +62,7 @@ public class ListOperations {
 
         // Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
-            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
+                new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
 
