@@ -191,7 +191,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     }
                 }
 
-                logger.error("Failed to create lease document for {}.", leaseToken, ex);
+                logger.error("Failed to create lease document for " + leaseToken + ".", ex);
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> {

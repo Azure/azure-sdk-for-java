@@ -53,6 +53,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
             String sanitizedJson = fallbackCharsetDecoder.decode(ByteBuffer.wrap(bytes)).toString();
             return Utils.getSimpleObjectMapper().readTree(sanitizedJson);
         } catch (IOException e) {
+            logger.warn("Unable to parse JSON, fallback failed.", e);
             throw new IllegalStateException(
                 String.format(
                     "Unable to parse JSON with fallback charset decoder[OnMalformedInput %s, OnUnmappedCharacter %s]",
