@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.secrets;
-
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.secrets.SecretClient;
+import com.azure.v2.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.v2.security.keyvault.secrets.models.DeletedSecret;
+import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -37,7 +37,7 @@ public class ManagingDeletedSecrets {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
         for links and instructions. */
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -52,7 +52,7 @@ public class ManagingDeletedSecrets {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
-        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
+        Poller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
 
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
@@ -64,7 +64,7 @@ public class ManagingDeletedSecrets {
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-        SyncPoller<KeyVaultSecret, Void> recoverSecretPoller =
+        Poller<KeyVaultSecret, Void> recoverSecretPoller =
             client.beginRecoverDeletedSecret("BankAccountPassword");
 
         PollResponse<KeyVaultSecret> recoverSecretResponse = recoverSecretPoller.poll();
@@ -77,7 +77,7 @@ public class ManagingDeletedSecrets {
 
         // The bank account and storage accounts got closed.
         // Let's delete bank and storage accounts secrets.
-        SyncPoller<DeletedSecret, Void> deletedBankPwdSecretPoller =
+        Poller<DeletedSecret, Void> deletedBankPwdSecretPoller =
             client.beginDeleteSecret("BankAccountPassword");
         PollResponse<DeletedSecret> deletedBankPwdSecretPollResponse = deletedBankPwdSecretPoller.poll();
 
@@ -88,7 +88,7 @@ public class ManagingDeletedSecrets {
         // The secret is being deleted on the server.
         deletedBankPwdSecretPoller.waitForCompletion();
 
-        SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller =
+        Poller<DeletedSecret, Void> deletedStorageSecretPoller =
             client.beginDeleteSecret("StorageAccountPassword");
         PollResponse<DeletedSecret> deletedStorageSecretPollResponse = deletedStorageSecretPoller.poll();
 
