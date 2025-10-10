@@ -1,5 +1,55 @@
 # Release History
 
+## 11.8.0 (2025-10-09)
+
+### Features Added
+
+- Added support for `2025-09-01` service version.
+  - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
+    boosted scores in `SemanticConfiguration.rankingOrder`.
+  - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
+    vector when indexing and how vectors are used during rescoring.
+  - Added `SearchIndex.description` to provide a textual description of the index.
+  - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
+    use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
+  - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
+  - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
+    supported for `QueryDebugMode`.
+
+### Breaking Changes
+
+- All features from `11.8.0-beta.x` versions that weren't GA'd in `2025-09-01` were removed.
+- `VectorSearchCompression.rerankWithOriginalVectors` and `VectorSearchCompression.defaultOversampling` don't work with
+  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and 
+  `VectorSearchCompression.RescoringOptions.defaultOversampling`. If using `2024-07-01` continue using the old properties,
+  otherwise if using `2025-09-01` use the new properties in `RescoringOptions`.
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.1` to version `1.6.2`.
+
+## 11.7.10 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.0` to version `1.6.1`.
+
+## 11.7.9 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.10` to version `1.6.0`.
+
 ## 11.7.8 (2025-07-29)
 
 ### Other Changes

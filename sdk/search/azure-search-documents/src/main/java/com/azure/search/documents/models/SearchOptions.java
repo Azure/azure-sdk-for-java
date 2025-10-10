@@ -147,6 +147,11 @@ public final class SearchOptions {
      */
     private Integer top;
 
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    private QueryDebugMode debug;
+
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
 
@@ -573,6 +578,26 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebugMode() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setDebugMode(QueryDebugMode debug) {
+        this.debug = debug;
         return this;
     }
 

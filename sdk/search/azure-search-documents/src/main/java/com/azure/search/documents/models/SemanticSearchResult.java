@@ -15,13 +15,21 @@ public final class SemanticSearchResult {
     private final Double rerankerScore;
 
     /*
+     * The relevance score computed by boosting the Reranker Score. Search results are sorted by the
+     * RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the Semantic Config.
+     * RerankerBoostedScore is only returned for queries of type 'semantic'
+     */
+    private final Double rerankerBoostedScore;
+
+    /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
      * used as document summary.
      */
     private final List<QueryCaptionResult> queryCaptions;
 
-    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions) {
+    SemanticSearchResult(Double rerankerScore, Double rerankerBoostedScore, List<QueryCaptionResult> queryCaptions) {
         this.rerankerScore = rerankerScore;
+        this.rerankerBoostedScore = rerankerBoostedScore;
         this.queryCaptions = queryCaptions;
     }
 
@@ -34,6 +42,17 @@ public final class SemanticSearchResult {
      */
     public Double getRerankerScore() {
         return this.rerankerScore;
+    }
+
+    /**
+     * Get the rerankerBoostedScore property: The relevance score computed by boosting the Reranker Score. Search
+     * results are sorted by the RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the
+     * Semantic Config. RerankerBoostedScore is only returned for queries of type 'semantic'.
+     *
+     * @return the rerankerBoostedScore value.
+     */
+    public Double getRerankerBoostedScore() {
+        return this.rerankerBoostedScore;
     }
 
     /**

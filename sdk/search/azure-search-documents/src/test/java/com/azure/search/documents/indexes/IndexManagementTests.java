@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
@@ -66,15 +66,17 @@ public class IndexManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .buildClient();
-
         sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
 
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
         }
+
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .buildClient();
+
+        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
     }
 
     @AfterAll

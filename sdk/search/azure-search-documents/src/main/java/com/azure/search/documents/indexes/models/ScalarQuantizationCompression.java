@@ -79,6 +79,26 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      */
     @Generated
     @Override
+    public ScalarQuantizationCompression setRescoringOptions(RescoringOptions rescoringOptions) {
+        super.setRescoringOptions(rescoringOptions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public ScalarQuantizationCompression setTruncationDimension(Integer truncationDimension) {
+        super.setTruncationDimension(truncationDimension);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public ScalarQuantizationCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         super.setRerankWithOriginalVectors(rerankWithOriginalVectors);
         return this;
@@ -102,6 +122,8 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getCompressionName());
+        jsonWriter.writeJsonField("rescoringOptions", getRescoringOptions());
+        jsonWriter.writeNumberField("truncationDimension", getTruncationDimension());
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", isRerankWithOriginalVectors());
         jsonWriter.writeNumberField("defaultOversampling", getDefaultOversampling());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
@@ -123,6 +145,8 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;
             String compressionName = null;
+            RescoringOptions rescoringOptions = null;
+            Integer truncationDimension = null;
             Boolean rerankWithOriginalVectors = null;
             Double defaultOversampling = null;
             VectorSearchCompressionKind kind = VectorSearchCompressionKind.SCALAR_QUANTIZATION;
@@ -134,6 +158,10 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
                 if ("name".equals(fieldName)) {
                     compressionName = reader.getString();
                     compressionNameFound = true;
+                } else if ("rescoringOptions".equals(fieldName)) {
+                    rescoringOptions = RescoringOptions.fromJson(reader);
+                } else if ("truncationDimension".equals(fieldName)) {
+                    truncationDimension = reader.getNullable(JsonReader::getInt);
                 } else if ("rerankWithOriginalVectors".equals(fieldName)) {
                     rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
@@ -149,6 +177,8 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
             if (compressionNameFound) {
                 ScalarQuantizationCompression deserializedScalarQuantizationCompression
                     = new ScalarQuantizationCompression(compressionName);
+                deserializedScalarQuantizationCompression.setRescoringOptions(rescoringOptions);
+                deserializedScalarQuantizationCompression.setTruncationDimension(truncationDimension);
                 deserializedScalarQuantizationCompression.setRerankWithOriginalVectors(rerankWithOriginalVectors);
                 deserializedScalarQuantizationCompression.setDefaultOversampling(defaultOversampling);
                 deserializedScalarQuantizationCompression.kind = kind;

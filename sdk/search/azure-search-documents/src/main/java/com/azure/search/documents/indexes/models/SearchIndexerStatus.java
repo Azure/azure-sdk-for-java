@@ -22,6 +22,12 @@ import java.util.List;
 @Immutable
 public final class SearchIndexerStatus implements JsonSerializable<SearchIndexerStatus> {
     /*
+     * The name of the indexer.
+     */
+    @Generated
+    private String name;
+
+    /*
      * Overall indexer status.
      */
     @Generated
@@ -58,6 +64,16 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
         this.status = status;
         this.executionHistory = executionHistory;
         this.limits = limits;
+    }
+
+    /**
+     * Get the name property: The name of the indexer.
+     * 
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -129,6 +145,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             List<IndexerExecutionResult> executionHistory = null;
             boolean limitsFound = false;
             SearchIndexerLimits limits = null;
+            String name = null;
             IndexerExecutionResult lastResult = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -143,6 +160,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 } else if ("limits".equals(fieldName)) {
                     limits = SearchIndexerLimits.fromJson(reader);
                     limitsFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
                 } else if ("lastResult".equals(fieldName)) {
                     lastResult = IndexerExecutionResult.fromJson(reader);
                 } else {
@@ -152,6 +171,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             if (statusFound && executionHistoryFound && limitsFound) {
                 SearchIndexerStatus deserializedSearchIndexerStatus
                     = new SearchIndexerStatus(status, executionHistory, limits);
+                deserializedSearchIndexerStatus.name = name;
                 deserializedSearchIndexerStatus.lastResult = lastResult;
 
                 return deserializedSearchIndexerStatus;

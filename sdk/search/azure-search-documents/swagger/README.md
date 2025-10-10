@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bfb929ca5fd9e73258071724b440ae244e084c56/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -266,6 +266,7 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
+      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -444,18 +445,58 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### Fix for 206 response
+### Make `SearchIndexerStatus.name` optional
 
-```yaml $(tag) == 'searchindex'
+```yaml $(tag) == 'searchservice'
 directive:
-  - from: "searchindex.json"
-    where: $.paths
-    transform: >
-      let response206 = {
-        "description": "Response containing partial documents that match the search criteria.",
-        "schema": {
-          "$ref": "#/definitions/SearchDocumentsResult"
-        }
-      };
-      $["/docs/search.post.search"].post.responses["206"] = response206;
+- from: swagger-document
+  where: $.definitions.SearchIndexerStatus
+  transform: >
+    $.required = $.required.filter((required) => required !== "name");
+```
+
+### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.VectorSearchCompressionConfiguration
+  transform: >
+    $.properties.rerankWithOriginalVectors = {
+      "type": "boolean",
+      "description": "If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be reranked again by recalculating the full-precision similarity scores. This will improve recall at the expense of latency.\nFor use with only service version 2024-07-01. If using 2025-09-01 or later, use RescoringOptions.rescoringEnabled.",
+      "x-nullable": true
+    };
+    $.properties.defaultOversampling = {
+      "type": "number",
+      "format": "double",
+      "description": "Default oversampling factor. Oversampling will internally request more documents (specified by this multiplier) in the initial search. This increases the set of results that will be reranked using recomputed similarity scores from full-precision vectors. Minimum value is 1, meaning no oversampling (1x). This parameter can only be set when rerankWithOriginalVectors is true. Higher values improve recall at the expense of latency.\nFor use with only service version 2024-07-01. If using 2025-09-01 or later, use RescoringOptions.defaultOversampling.",
+      "x-nullable": true
+    };
+```
+
+### Archboard feedback for 2025-09-01
+
+#### `RE_RANKER_SCORE` -> `RERANKER_SCORE`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.RankingOrder
+  transform: >
+    $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
+      value: v.value,
+      name: v.name === "ReRankerScore" ? "RerankerScore" : v.name,
+      description: v.description
+    }));
+```
+
+#### `RescoringOptions.isEnableRescoring` -> `RescoringOptions.isRescoringEnabled`
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.RescoringOptions
+  transform: >
+    $.properties["enableRescoring"]["x-ms-client-name"] = "rescoringEnabled";
 ```

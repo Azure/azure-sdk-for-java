@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
@@ -29,8 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,7 +53,6 @@ import static com.azure.search.documents.implementation.batching.SearchBatchingU
  */
 public final class SearchIndexingPublisher<T> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
-    private static final ExecutorService EXECUTOR = getThreadPoolWithShutdownHook();
 
     private final SearchIndexClientImpl restClient;
     private final JsonSerializer serializer;
@@ -154,7 +152,8 @@ public final class SearchIndexingPublisher<T> {
     private void flushLoop(boolean isClosed, Duration timeout, Context context) {
         if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
             final AtomicReference<List<TryTrackingIndexAction<T>>> batchActions = new AtomicReference<>();
-            Future<?> future = EXECUTOR.submit(() -> flushLoopHelper(isClosed, context, batchActions));
+            Future<?> future
+                = SharedExecutorService.getInstance().submit(() -> flushLoopHelper(isClosed, context, batchActions));
 
             try {
                 CoreUtils.getResultWithTimeout(future, timeout);
@@ -357,9 +356,5 @@ public final class SearchIndexingPublisher<T> {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {
         }
-    }
-
-    private static ExecutorService getThreadPoolWithShutdownHook() {
-        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(), Duration.ofSeconds(5));
     }
 }

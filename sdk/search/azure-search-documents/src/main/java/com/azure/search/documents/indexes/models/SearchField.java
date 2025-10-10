@@ -138,6 +138,14 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private LexicalAnalyzerName indexAnalyzerName;
 
     /*
+     * The name of the normalizer to use for the field. This option can be used only with fields with filterable,
+     * sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for the field. Must be null
+     * for complex fields.
+     */
+    @Generated
+    private LexicalNormalizerName normalizerName;
+
+    /*
      * The dimensionality of the vector field.
      */
     @Generated
@@ -516,6 +524,32 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
+     * Get the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
+     *
+     * @return the normalizerName value.
+     */
+    @Generated
+    public LexicalNormalizerName getNormalizerName() {
+        return this.normalizerName;
+    }
+
+    /**
+     * Set the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
+     *
+     * @param normalizerName the normalizerName value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setNormalizerName(LexicalNormalizerName normalizerName) {
+        this.normalizerName = normalizerName;
+        return this;
+    }
+
+    /**
      * Get the vectorSearchDimensions property: The dimensionality of the vector field.
      *
      * @return the vectorSearchDimensions value.
@@ -658,6 +692,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
         jsonWriter.writeStringField("indexAnalyzer",
             this.indexAnalyzerName == null ? null : this.indexAnalyzerName.toString());
+        jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
         jsonWriter.writeStringField("vectorEncoding",
@@ -694,6 +729,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
+            LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
             VectorEncodingFormat vectorEncodingFormat = null;
@@ -728,6 +764,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("indexAnalyzer".equals(fieldName)) {
                     indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
+                } else if ("normalizer".equals(fieldName)) {
+                    normalizerName = LexicalNormalizerName.fromString(reader.getString());
                 } else if ("dimensions".equals(fieldName)) {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
@@ -754,6 +792,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.analyzerName = analyzerName;
                 deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                 deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
+                deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
                 deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;

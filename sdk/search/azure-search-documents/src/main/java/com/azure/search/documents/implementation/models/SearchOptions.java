@@ -7,6 +7,7 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -198,6 +199,12 @@ public final class SearchOptions {
      */
     @Generated
     private String semanticQuery;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    @Generated
+    private QueryDebugMode debug;
 
     /**
      * Creates an instance of SearchOptions class.
@@ -815,6 +822,28 @@ public final class SearchOptions {
     @Generated
     public SearchOptions setSemanticQuery(String semanticQuery) {
         this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    @Generated
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    @Generated
+    public SearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
         return this;
     }
 

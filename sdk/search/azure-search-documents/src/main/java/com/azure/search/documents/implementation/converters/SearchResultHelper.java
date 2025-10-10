@@ -5,6 +5,7 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
+import com.azure.search.documents.models.DocumentDebugInfo;
 import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.SearchResult;
 
@@ -30,8 +31,10 @@ public final class SearchResultHelper {
 
         void setJsonSerializer(SearchResult searchResult, JsonSerializer jsonSerializer);
 
-        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore, Double rerankerBoostedScore,
             List<QueryCaptionResult> captions);
+
+        void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo);
     }
 
     /**
@@ -55,8 +58,12 @@ public final class SearchResultHelper {
         accessor.setJsonSerializer(searchResult, jsonSerializer);
     }
 
-    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore, Double rerankerBoostedScore,
         List<QueryCaptionResult> captions) {
-        accessor.setSemanticSearchResults(searchResult, rerankerScore, captions);
+        accessor.setSemanticSearchResults(searchResult, rerankerScore, rerankerBoostedScore, captions);
+    }
+
+    static void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
+        accessor.setDocumentDebugInfo(searchResult, documentDebugInfo);
     }
 }

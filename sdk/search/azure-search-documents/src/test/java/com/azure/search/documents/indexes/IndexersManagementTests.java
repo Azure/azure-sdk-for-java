@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexerExecutionResult;
 import com.azure.search.documents.indexes.models.IndexerExecutionStatus;
@@ -22,12 +22,19 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.sas.SasProtocol;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -120,22 +127,24 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
-        sharedIndexerClient = new SearchIndexerClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .buildClient();
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .buildClient();
-
         sharedSkillset = createSkillsetObject();
         sharedDatasource = createSharedDataSource();
         sharedIndex = createTestIndexForLiveDatasource();
 
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
-            sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
-            sharedIndex = sharedIndexClient.createIndex(sharedIndex);
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
         }
+
+        sharedIndexerClient = new SearchIndexerClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .buildClient();
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .buildClient();
+
+        sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
+        sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
+        sharedIndex = sharedIndexClient.createIndex(sharedIndex);
     }
 
     @AfterAll
@@ -1149,11 +1158,39 @@ public class IndexersManagementTests extends SearchTestBase {
     }
 
     private static SearchIndexerDataSourceConnection createSharedDataSource() {
+        // Get a Managed Identity SAS token with access to the Storage container.
+        String sasConnectionString;
+        if (TEST_MODE != TestMode.LIVE && TEST_MODE != TestMode.RECORD) {
+            // Not running against the live service, use a dummy value.
+            sasConnectionString = "BlobEndpoint=https://account.blob.core.windows.net/;"
+                + "SharedAccessSignature=?sv=2022-11-02&spr=https&se=2025-12-09T12%3A00%3A00Z&sr=c&sp=rwl&sig=sasToken";
+        } else {
+            BlobServiceClient blobServiceClient
+                = new BlobServiceClientBuilder().endpoint("https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/")
+                    .credential(getTestTokenCredential())
+                    .buildClient();
+
+            UserDelegationKey userDelegationKey = blobServiceClient
+                .getUserDelegationKey(OffsetDateTime.now().minusMinutes(5), OffsetDateTime.now().plusHours(1));
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+                    new BlobContainerSasPermission().setReadPermission(true)
+                        .setWritePermission(true)
+                        .setListPermission(true)).setStartTime(OffsetDateTime.now().minusMinutes(5))
+                            .setProtocol(SasProtocol.HTTPS_ONLY);
+
+            String sas = blobServiceClient.getBlobContainerClient(BLOB_CONTAINER_NAME)
+                .generateUserDelegationSas(sasValues, userDelegationKey);
+            sasConnectionString = "BlobEndpoint=https://" + STORAGE_ACCOUNT_NAME + ".blob.core.windows.net/;"
+                + "SharedAccessSignature=?" + sas;
+        }
+
         // create the new data source object for this storage account and container
-        return SearchIndexerDataSources.createFromAzureBlobStorage("shared-" + BLOB_DATASOURCE_NAME,
-            STORAGE_CONNECTION_STRING, BLOB_CONTAINER_NAME, "/", "real live blob",
-            new SoftDeleteColumnDeletionDetectionPolicy().setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"));
+        return new SearchIndexerDataSourceConnection("shared-" + BLOB_DATASOURCE_NAME)
+            .setType(SearchIndexerDataSourceType.AZURE_BLOB)
+            .setDescription("real live blob")
+            .setConnectionString(sasConnectionString)
+            .setContainer(new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/"));
     }
 
     SearchIndexer createBaseTestIndexerObject(String targetIndexName, String dataSourceName) {
