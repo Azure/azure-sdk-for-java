@@ -115,7 +115,6 @@ public final class ScheduledOperationsTypeUpdate implements JsonSerializable<Sch
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScheduledOperationsTypeUpdate if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScheduledOperationsTypeUpdate.
      */
     public static ScheduledOperationsTypeUpdate fromJson(JsonReader jsonReader) throws IOException {
