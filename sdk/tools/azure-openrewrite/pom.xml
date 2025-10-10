@@ -276,6 +276,12 @@
           <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-security-keyvault-administration</artifactId>
+          <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-administration;dependency} -->
+          <scope>test</scope>
+        </dependency>
       </dependencies>
     </profile>
 
@@ -370,6 +376,12 @@
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-identity</artifactId>
           <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-security-keyvault-administration</artifactId>
+          <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-administration;dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>
