@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.71.2-hotfix (Unreleased)
+### 4.71.2-hotfix0 (2025-10-15)
 
 #### Bugs Fixed
 * Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
@@ -13,6 +13,11 @@
 
 #### Bugs Fixed
 * Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
+
+### 4.68.2-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.71.0 (2025-06-04)
 
@@ -39,11 +44,6 @@
 
 #### Other Changes
 * Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
-
-### 4.68.2-hotfix (2025-08-04)
-
-#### Bugs Fixed
-* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.68.1 (2025-05-16)
 > [!IMPORTANT]
