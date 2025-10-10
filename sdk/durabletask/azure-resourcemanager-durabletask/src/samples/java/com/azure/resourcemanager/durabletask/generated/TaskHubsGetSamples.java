@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class TaskHubsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Get.json
+     * x-ms-original-file: 2025-11-01/TaskHubs_Get.json
      */
     /**
      * Sample code: TaskHubs_Get.
