@@ -185,7 +185,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (clientException != null
             && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)
-            && (clientException.getSubStatusCode() >= 21000 || clientException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN)) {
+            && !Exceptions.isClientAssignedSubStatusCode(clientException.getSubStatusCode())) {
 
             if (logger.isDebugEnabled()) {
                 logger.info("Internal server error - IsReadRequest {}", this.isReadRequest, e);
