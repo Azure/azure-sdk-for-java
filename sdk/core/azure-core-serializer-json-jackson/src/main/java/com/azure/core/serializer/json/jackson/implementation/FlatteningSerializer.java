@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ser.AnyGetterWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
@@ -305,12 +305,14 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         if (anyGetter != null && anyGetter.getAnnotation(JsonAnyGetter.class).enabled()) {
             BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
                 anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
-            JsonSerializer<Object> anySerializer
-                = provider.findTypedValueSerializer(anyGetter.getType(), true, anyProperty);
-            AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
-
+            JsonSerializer<?> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true, anyProperty);
             try {
-                anyGetterWriter.getAndSerialize(value, gen, provider);
+                Object anyValue = anyGetter.getValue(value);
+                if (anySerializer instanceof MapSerializer) {
+                    ((MapSerializer) anySerializer).serializeWithoutTypeInfo((Map<?, ?>) anyValue, gen, provider);
+                } else {
+                    ((JsonSerializer<Object>) anySerializer).serialize(anyValue, gen, provider);
+                }
             } catch (IOException exception) {
                 throw LOGGER.logThrowableAsError(exception);
             } catch (Exception exception) {
