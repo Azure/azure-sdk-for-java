@@ -55,3 +55,11 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.KeyVaultBackupClient
       newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.KeyVaultBackupClient
+
+  # --------------------------------------------------------------------
+  # KeyVaultSettingsClient
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.KeyVaultSettingsClient
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient
