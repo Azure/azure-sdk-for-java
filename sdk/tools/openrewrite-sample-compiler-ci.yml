@@ -45,7 +45,7 @@ extends:
                     - "/sdk/tools/"
                     - "/sdk/core-v2/"
                     - "/sdk/identity-v2/"
-                    - "/sdk/keyvault-v2/azure-security-keyvault-secrets"
+                    - "/sdk/keyvault-v2/azure-security-keyvault-secrets/"
                     - "/eng/"
                     - "/common/perf-test-core/"
                     - "**/*.xml"
