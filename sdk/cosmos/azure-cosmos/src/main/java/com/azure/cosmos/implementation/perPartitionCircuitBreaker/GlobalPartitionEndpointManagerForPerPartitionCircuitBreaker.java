@@ -35,8 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
@@ -70,10 +68,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         }
     }
 
-    public void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest request, RegionalRoutingContext failedRegionalRoutingContext) {
+    public void handleLocationExceptionForPartitionKeyRange(
+        RxDocumentServiceRequest request,
+        RegionalRoutingContext failedRegionalRoutingContext,
+        boolean isCancellationException) {
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request, "Argument 'request' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
         PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
         PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
@@ -84,10 +85,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             return;
         }
 
-        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
+        // in scenarios where resolvedPartitionKeyRangeForCircuitBreaker is null, we cannot circuit break at partition level
+        // if the exception is due to a cancellation, then we don't have enough information to decide if we should circuit break or not
+        // so we skip circuit breaking in this case if cancellation kick in ungracefully (e.g. user cancelled the request, or end-to-end timeout on the operation before routing decision is made)
+        // if the exception is not due to a cancellation, then we should have enough information to decide if we should circuit break or not
+        // so we proceed with circuit breaking in this case
+        if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
+            return;
+        }
+
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
         String collectionResourceId = request.getResourceId();
-        checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, collectionResourceId);
 
@@ -142,8 +152,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
     public void handleLocationSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request, "Argument 'request' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
         PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
         PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
@@ -154,7 +164,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             return;
         }
 
-        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
         String resourceId = request.getResourceId();
 
@@ -186,8 +196,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             return Collections.emptyList();
         }
 
-        checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
-        checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
+        PerPartitionCircuitBreakerUtilities.checkNotNull(request, collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId);
 
