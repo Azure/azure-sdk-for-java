@@ -1,0 +1,15 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for Azure security-keyvault-keys Library
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.security.keyvault.keys
+displayName: Migrate from azure-security-keyvault-keys to next generation stack
+description: This recipe migrates the Azure keyvault-keys library to the next generation stack.
+recipeList:
+
+  - com.azure.openrewrite.recipe.azure.security.keyvault.keys
+  - com.azure.openrewrite.recipe.azure.security.keyvault.keys.models
+  - com.azure.openrewrite.recipe.azure.security.keyvault.keys.cryptography
+  - com.azure.openrewrite.recipe.azure.security.keyvault.keys.cryptography.models
