@@ -12,8 +12,8 @@ recipeList:
   # Code Migration Recipes
   - com.azure.openrewrite.migration.core
   - com.azure.openrewrite.migration.identity
+  - com.azure.openrewrite.migration.security.keyvault.certificates
 
   # Code Styling recipes
   - org.openrewrite.java.OrderImports:
       removeUnused: false
-
