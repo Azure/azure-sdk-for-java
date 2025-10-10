@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
-import com.azure.security.keyvault.administration.models.KeyVaultSetting;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient;
+import com.azure.v2.security.keyvault.administration.KeyVaultSettingsClientBuilder;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultGetSettingsResult;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SettingsHelloWorld {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl("<your-managed-hsm-url>")
+            .endpoint("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 

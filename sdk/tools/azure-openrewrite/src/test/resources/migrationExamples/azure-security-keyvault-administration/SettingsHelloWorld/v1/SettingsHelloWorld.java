@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.administration.KeyVaultSettingsClient;
+import com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 

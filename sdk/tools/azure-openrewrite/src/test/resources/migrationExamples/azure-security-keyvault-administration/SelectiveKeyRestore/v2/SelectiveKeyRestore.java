@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.administration.KeyVaultBackupClient;
+import com.azure.v2.security.keyvault.administration.KeyVaultBackupClientBuilder;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 
 /**
  * This sample demonstrates how to selectively restore a key from key vault backup.
@@ -29,7 +29,7 @@ public class SelectiveKeyRestore {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("<your-managed-hsm-url>")
+            .endpoint("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -39,7 +39,7 @@ public class SelectiveKeyRestore {
         String backupFolderUrl = "<backup-folder-url>";
         String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
+        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
             backupClient.beginSelectiveKeyRestore(keyName, backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();

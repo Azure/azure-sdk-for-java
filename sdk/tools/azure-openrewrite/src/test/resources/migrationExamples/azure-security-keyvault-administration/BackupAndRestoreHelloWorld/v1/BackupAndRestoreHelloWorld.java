@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
+import com.azure.security.keyvault.administration.KeyVaultBackupClientBuilder;
+import com.azure.security.keyvault.administration.KeyVaultBackupClient;
 
 /**
  * This sample demonstrates how to fully backup and restore a key vault synchronously.
