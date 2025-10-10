@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
 
 public class WorkloadIdentityTokenProxyPolicy implements HttpPipelinePolicy {
 
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCustomProxyConfiguration.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityTokenProxyPolicy.class);
     
     public static final String AZURE_KUBERNETES_TOKEN_PROXY = "AZURE_KUBERNETES_TOKEN_PROXY";
     public static final String AZURE_KUBERNETES_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
