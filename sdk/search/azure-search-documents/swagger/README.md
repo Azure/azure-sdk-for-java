@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5fda13cee42cecc2e7da20bb4fd82bec5be9d0c7/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb2bf7ec6635f4dca9ebe505af5eda0534c377d9/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5fda13cee42cecc2e7da20bb4fd82bec5be9d0c7/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException

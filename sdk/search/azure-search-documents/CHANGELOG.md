@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0 (2025-10-09)
+## 11.8.0 (2025-10-10)
 
 ### Features Added
 

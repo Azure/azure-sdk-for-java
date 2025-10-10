@@ -11,8 +11,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Enables a debugging tool that can be used to further explore your search results. You can enable multiple debug modes
- * simultaneously by separating them with a | character, for example: semantic|queryRewrites.
+ * Enables a debugging tool that can be used to further explore your search results.
  */
 public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     /**
