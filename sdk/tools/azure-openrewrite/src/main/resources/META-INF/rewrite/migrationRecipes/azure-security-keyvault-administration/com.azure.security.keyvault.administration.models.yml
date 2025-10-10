@@ -1,0 +1,96 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.security.keyvault.administration.models
+displayName: Migrate from azure.security.keyvault.administration.models to next generation stack
+description: This recipe migrates the azure.security.keyvault.administration.models package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # KeyVaultRoleAssignment
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRoleAssignment
+
+  # --------------------------------------------------------------------
+  # KeyVaultRoleDefinition
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRoleDefinition
+
+  # --------------------------------------------------------------------
+  # KeyVaultBackupOperation
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultBackupOperation
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultBackupOperation
+
+  # --------------------------------------------------------------------
+  # KeyVaultRestoreOperation
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreOperation
+
+  # --------------------------------------------------------------------
+  # KeyVaultRestoreResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRestoreResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResult
+
+  # --------------------------------------------------------------------
+  # KeyVaultRoleAssignment
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRoleAssignment
+
+  # --------------------------------------------------------------------
+  # KeyVaultRoleScope
+  # --------------------------------------------------------------------
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultRoleScope
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultRoleScope
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: "*..KeyVaultRoleScope fromString(..)"
+      newMethodName: fromValue
+
+  # --------------------------------------------------------------------
+  # KeyVaultGetSettingsResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultGetSettingsResult
+
+  # --------------------------------------------------------------------
+  # KeyVaultSetting
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultSetting
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultSetting
+
+  # --------------------------------------------------------------------
+  # KeyVaultSelectiveKeyRestoreResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult
+
+  # --------------------------------------------------------------------
+  # KeyVaultSelectiveKeyRestoreOperation
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation
