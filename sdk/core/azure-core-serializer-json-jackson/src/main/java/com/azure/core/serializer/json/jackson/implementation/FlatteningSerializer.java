@@ -247,6 +247,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
         ObjectNode node) throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
