@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExascaleDbStorageVaultTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExascaleDbStorageVaultTagsUpdate model = BinaryData
-            .fromString("{\"tags\":{\"ouwivkxoyzunbixx\":\"yvi\",\"vcpwpgclrc\":\"ti\",\"kenx\":\"vtsoxf\"}}")
+        ExascaleDbStorageVaultTagsUpdate model = BinaryData.fromString("{\"tags\":{\"zybbj\":\"ahhvjhhna\"}}")
             .toObject(ExascaleDbStorageVaultTagsUpdate.class);
-        Assertions.assertEquals("yvi", model.tags().get("ouwivkxoyzunbixx"));
+        Assertions.assertEquals("ahhvjhhna", model.tags().get("zybbj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExascaleDbStorageVaultTagsUpdate model = new ExascaleDbStorageVaultTagsUpdate()
-            .withTags(mapOf("ouwivkxoyzunbixx", "yvi", "vcpwpgclrc", "ti", "kenx", "vtsoxf"));
+        ExascaleDbStorageVaultTagsUpdate model
+            = new ExascaleDbStorageVaultTagsUpdate().withTags(mapOf("zybbj", "ahhvjhhna"));
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageVaultTagsUpdate.class);
-        Assertions.assertEquals("yvi", model.tags().get("ouwivkxoyzunbixx"));
+        Assertions.assertEquals("ahhvjhhna", model.tags().get("zybbj"));
     }
 
     // Use "Map.of" if available
