@@ -112,7 +112,7 @@ mvn -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end test
 - Version files are located in `/eng/versioning/`
 - Follow semantic versioning: `major.minor.patch[-beta.N]`
 - Use the `update_versions.py` script for version updates
-- See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed versioning guidelines
+- See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) for detailed versioning guidelines
 
 ### SDK Generation
 
@@ -165,11 +165,11 @@ The repository uses Azure Pipelines for continuous integration:
 - Use Azure Identity for authentication in samples
 - Follow secure coding practices
 - Report security issues to <secure@microsoft.com>
-- See [SECURITY.md](SECURITY.md) for more information
+- See [SECURITY.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SECURITY.md) for more information
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines, including:
+See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) for detailed contribution guidelines, including:
 
 - Pull request requirements
 - Code review process
@@ -179,7 +179,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines, inc
 
 ## Agent-Specific Instructions
 
-For detailed GitHub Copilot-specific instructions, including behavior guidelines, data sources, and SDK-specific patterns, see [.github/copilot-instructions.md](.github/copilot-instructions.md).
+For detailed GitHub Copilot-specific instructions, including behavior guidelines, data sources, and SDK-specific patterns, see [.github/copilot-instructions.md](https://github.com/Azure/azure-sdk-for-java/blob/main/.github/copilot-instructions.md).
 
 ## Resources
 
@@ -196,7 +196,7 @@ For detailed GitHub Copilot-specific instructions, including behavior guidelines
 - [Latest Releases](https://azure.github.io/azure-sdk/releases/latest/java.html)
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/azure-java-sdk)
-- [Support](SUPPORT.md)
+- [Support](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md)
 
 ### External References
 
@@ -209,7 +209,7 @@ For detailed GitHub Copilot-specific instructions, including behavior guidelines
 
 - For issues or feature requests, file a [GitHub Issue](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - For questions, use [Stack Overflow with the `azure-java-sdk` tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
-- For contributions, see [CONTRIBUTING.md](CONTRIBUTING.md)
+- For contributions, see [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md)
 
 ---
 
