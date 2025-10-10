@@ -5,7 +5,7 @@
 ### Breaking Changes
 
 - Removed the following libraries from the BOM:
-    - `azure-mixedreality-remoterendering` - Service is deprecated and non-functional since 2025-10-01 see: [retirement notice](https://azure.microsoft.com/en-us/updates?id=azure-remote-rendering-retirement)
+    - `azure-mixedreality-remoterendering` - Service is deprecated and non-functional since 2025-10-01 see: [retirement notice](https://azure.microsoft.com/updates?id=azure-remote-rendering-retirement)
 
 
 ## 1.3.0 (2025-10-02)
