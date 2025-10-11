@@ -680,7 +680,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
-        // zone explicitly, even if he does its a constrain as user can set only one zone at this time]
+        // zone explicitly, even if he does it's a constrain as user can set only one zone at this time]
 
         Region region2 = Region.US_EAST2;
 

@@ -11,7 +11,7 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - After cloning the repo, copy the [pre-commit hooks file](https://github.com/Azure/azure-sdk-for-java/tree/main/eng/scripts/pre-commit) (located at `eng/scripts/pre-commit`) to your local `.git/hooks/` directory. This will run some validations before your changes are committed.
 
-- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
+- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
 
 - There are two Maven projects in the repo. Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) to learn about project structure for each.
 

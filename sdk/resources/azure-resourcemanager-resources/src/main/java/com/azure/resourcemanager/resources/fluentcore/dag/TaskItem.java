@@ -30,7 +30,7 @@ public interface TaskItem {
      * Check whether is a hot observable.
      *
      * @return true if the publisher returned by invokeAsync(cxt) is a hot observable,
-     * false if its a cold publisher.
+     * false if it's a cold publisher.
      */
     boolean isHot();
 

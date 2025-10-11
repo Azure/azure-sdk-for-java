@@ -114,7 +114,7 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * 	                - Possible that acquisition order might differ the ChannelWrite order
  * 	    - MAX_REQUESTS_ENDPOINT: Truth managed by RntbdRequestManager in Channel.Pipeline
  * 	        - RequestManager only known when the Channel process them.
- * 	        - In-flight scheduled ones are unknown -> its a SOFT BOUND
+ * 	        - In-flight scheduled ones are unknown -> it's a SOFT BOUND
  *
  */
 @JsonSerialize(using = RntbdClientChannelPool.JsonSerializer.class)

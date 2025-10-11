@@ -119,7 +119,7 @@ public class TestDataCreationHelper {
     }
 
     /**
-     * Generate random string of given {@code targetLength length}. The string will only have lower case alphabets.
+     * Generate random string of given {@code targetLength}. The string will only have lower case alphabets.
      *
      * @param targetLength of the string to be generated.
      * @return the generated string.
@@ -139,7 +139,7 @@ public class TestDataCreationHelper {
     /**
      * Writes contents of the specified size to the specified file path.
      *
-     * @param filePath the path of the file to write to contents to
+     * @param filePath the path of the file to write contents to
      * @param size the size of the contents to write to the file.
      * @param bufferSize the size of the buffer to use to write to the file.
      * @throws IOException when an error occurs when writing to the file.
