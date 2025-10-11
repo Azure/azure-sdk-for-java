@@ -13,10 +13,10 @@ public final class SubscriptionTermTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionTerm model = BinaryData.fromString(
-            "{\"termUnit\":\"ltrpmopj\",\"startDate\":\"2021-03-14T07:19:34Z\",\"endDate\":\"2021-01-13T06:54:34Z\"}")
+            "{\"termUnit\":\"whybcib\",\"startDate\":\"2021-05-14T16:24:46Z\",\"endDate\":\"2021-01-31T06:13:45Z\"}")
             .toObject(SubscriptionTerm.class);
-        Assertions.assertEquals("ltrpmopj", model.termUnit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T07:19:34Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T06:54:34Z"), model.endDate());
+        Assertions.assertEquals("whybcib", model.termUnit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T16:24:46Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T06:13:45Z"), model.endDate());
     }
 }

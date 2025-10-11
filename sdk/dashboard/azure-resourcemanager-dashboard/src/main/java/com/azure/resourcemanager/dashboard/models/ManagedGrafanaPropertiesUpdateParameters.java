@@ -29,6 +29,11 @@ public final class ManagedGrafanaPropertiesUpdateParameters
     private ApiKey apiKey;
 
     /*
+     * The creator will have admin access for the Grafana instance.
+     */
+    private CreatorCanAdmin creatorCanAdmin;
+
+    /*
      * Whether a Grafana instance uses deterministic outbound IPs.
      */
     private DeterministicOutboundIp deterministicOutboundIp;
@@ -108,6 +113,26 @@ public final class ManagedGrafanaPropertiesUpdateParameters
      */
     public ManagedGrafanaPropertiesUpdateParameters withApiKey(ApiKey apiKey) {
         this.apiKey = apiKey;
+        return this;
+    }
+
+    /**
+     * Get the creatorCanAdmin property: The creator will have admin access for the Grafana instance.
+     * 
+     * @return the creatorCanAdmin value.
+     */
+    public CreatorCanAdmin creatorCanAdmin() {
+        return this.creatorCanAdmin;
+    }
+
+    /**
+     * Set the creatorCanAdmin property: The creator will have admin access for the Grafana instance.
+     * 
+     * @param creatorCanAdmin the creatorCanAdmin value to set.
+     * @return the ManagedGrafanaPropertiesUpdateParameters object itself.
+     */
+    public ManagedGrafanaPropertiesUpdateParameters withCreatorCanAdmin(CreatorCanAdmin creatorCanAdmin) {
+        this.creatorCanAdmin = creatorCanAdmin;
         return this;
     }
 
@@ -269,6 +294,8 @@ public final class ManagedGrafanaPropertiesUpdateParameters
         jsonWriter.writeStringField("zoneRedundancy",
             this.zoneRedundancy == null ? null : this.zoneRedundancy.toString());
         jsonWriter.writeStringField("apiKey", this.apiKey == null ? null : this.apiKey.toString());
+        jsonWriter.writeStringField("creatorCanAdmin",
+            this.creatorCanAdmin == null ? null : this.creatorCanAdmin.toString());
         jsonWriter.writeStringField("deterministicOutboundIP",
             this.deterministicOutboundIp == null ? null : this.deterministicOutboundIp.toString());
         jsonWriter.writeStringField("publicNetworkAccess",
@@ -302,6 +329,9 @@ public final class ManagedGrafanaPropertiesUpdateParameters
                         = ZoneRedundancy.fromString(reader.getString());
                 } else if ("apiKey".equals(fieldName)) {
                     deserializedManagedGrafanaPropertiesUpdateParameters.apiKey = ApiKey.fromString(reader.getString());
+                } else if ("creatorCanAdmin".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.creatorCanAdmin
+                        = CreatorCanAdmin.fromString(reader.getString());
                 } else if ("deterministicOutboundIP".equals(fieldName)) {
                     deserializedManagedGrafanaPropertiesUpdateParameters.deterministicOutboundIp
                         = DeterministicOutboundIp.fromString(reader.getString());

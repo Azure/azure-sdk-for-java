@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class IntegrationFabricsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Delete.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Delete.json
      */
     /**
      * Sample code: IntegrationFabrics_Delete.
