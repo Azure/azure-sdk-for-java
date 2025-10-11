@@ -68,7 +68,7 @@ Always cite the specific sections of documentation you've referenced in your res
 ### Java Version Compatibility
 
 - Code should be compatible with Java 8 as the baseline
-- Testing and forward support should work up to the latest Java LTS release (currently Java 21)
+- Testing and forward support should work up to the latest Java LTS release
 
 ### Documentation Requirements
 
