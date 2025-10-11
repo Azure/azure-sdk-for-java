@@ -22,7 +22,7 @@ public final class AutonomousDatabaseCharacterSetsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"characterSet\":\"enky\"},\"id\":\"qzvs\",\"name\":\"xfxjelgcmpzqj\",\"type\":\"hhqxuwyvcacoyviv\"}]}";
+            = "{\"value\":[{\"properties\":{\"characterSet\":\"xcpwzvmdok\"},\"id\":\"dt\",\"name\":\"wlwxlboncqbazqic\",\"type\":\"chygtvxbyjane\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AutonomousDatabaseCharacterSetsListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AutonomousDatabaseCharacterSet> response
-            = manager.autonomousDatabaseCharacterSets().listByLocation("ypsjoq", com.azure.core.util.Context.NONE);
+            = manager.autonomousDatabaseCharacterSets().listByLocation("rhcekxgnly", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("enky", response.iterator().next().properties().characterSet());
+        Assertions.assertEquals("xcpwzvmdok", response.iterator().next().properties().characterSet());
     }
 }

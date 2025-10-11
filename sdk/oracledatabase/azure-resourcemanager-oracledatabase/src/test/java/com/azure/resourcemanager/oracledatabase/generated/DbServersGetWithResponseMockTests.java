@@ -20,7 +20,7 @@ public final class DbServersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"wrus\",\"displayName\":\"qbhsyrq\",\"compartmentId\":\"jqhden\",\"exadataInfrastructureId\":\"ulkpakd\",\"cpuCoreCount\":466096532,\"dbServerPatchingDetails\":{\"estimatedPatchDuration\":1987062682,\"patchingStatus\":\"Complete\",\"timePatchingEnded\":\"2021-04-26T17:24:10Z\",\"timePatchingStarted\":\"2021-10-12T12:03:50Z\"},\"maxMemoryInGbs\":141599202,\"dbNodeStorageSizeInGbs\":1329519591,\"vmClusterIds\":[\"p\",\"gqoweyirdhlisn\",\"wfl\"],\"dbNodeIds\":[\"pizruwnpqxpxiw\",\"cng\"],\"lifecycleDetails\":\"aas\",\"lifecycleState\":\"Deleted\",\"maxCpuCount\":352154258,\"autonomousVmClusterIds\":[\"jvkviirhgfgrws\",\"pgratzvzbglbyvi\",\"tctbrxkjzwrgxffm\",\"hkwfbkgozxwop\"],\"autonomousVirtualMachineIds\":[\"dpizq\"],\"maxDbNodeStorageInGbs\":500776725,\"memorySizeInGbs\":1182183471,\"shape\":\"xbiygnugjknfsmf\",\"timeCreated\":\"2021-11-18T08:04:29Z\",\"provisioningState\":\"Succeeded\",\"computeModel\":\"OCPU\"},\"id\":\"i\",\"name\":\"flqo\",\"type\":\"quvre\"}";
+            = "{\"properties\":{\"ocid\":\"frdbiqmrjgeihf\",\"displayName\":\"ggwfiwz\",\"compartmentId\":\"mjpb\",\"exadataInfrastructureId\":\"phmgtvljvrcmyfq\",\"cpuCoreCount\":1540718771,\"dbServerPatchingDetails\":{\"estimatedPatchDuration\":1341200966,\"patchingStatus\":\"Complete\",\"timePatchingEnded\":\"2021-03-15T22:12:36Z\",\"timePatchingStarted\":\"2021-02-05T16:45:52Z\"},\"maxMemoryInGbs\":866269149,\"dbNodeStorageSizeInGbs\":2025357675,\"vmClusterIds\":[\"ilee\"],\"dbNodeIds\":[\"wlpaugmrmfjlrxwt\",\"aukhfkvcisiz\",\"oaedsxjwuivedwcg\"],\"lifecycleDetails\":\"ewxeiqbpsm\",\"lifecycleState\":\"Unavailable\",\"maxCpuCount\":9587252,\"autonomousVmClusterIds\":[\"ljdlrgmspl\",\"gaufcs\",\"hvn\",\"wgnxkympqanxrj\"],\"autonomousVirtualMachineIds\":[\"tw\",\"taoypnyghshxc\"],\"maxDbNodeStorageInGbs\":1743709158,\"memorySizeInGbs\":52524988,\"shape\":\"nsghp\",\"timeCreated\":\"2021-02-16T02:21:14Z\",\"provisioningState\":\"Canceled\",\"computeModel\":\"OCPU\"},\"id\":\"jjkhvyomaclu\",\"name\":\"vxnqmhrpqpd\",\"type\":\"wmkoisq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DbServersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DbServer response = manager.dbServers()
-            .getWithResponse("wtlmjjyuo", "qtobaxkjeyt", "nlb", com.azure.core.util.Context.NONE)
+            .getWithResponse("phavpmhbrb", "gvgovpbbttefjo", "nssqyzqed", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
