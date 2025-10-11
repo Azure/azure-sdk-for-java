@@ -63,6 +63,7 @@
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicenodecustomization</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
