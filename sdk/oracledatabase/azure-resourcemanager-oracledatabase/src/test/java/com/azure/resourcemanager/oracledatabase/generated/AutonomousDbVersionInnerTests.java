@@ -13,13 +13,13 @@ public final class AutonomousDbVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"ril\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"ktwkuziyc\",\"name\":\"levufuztcktyhj\",\"type\":\"qedcgzulwm\"}")
+            "{\"properties\":{\"version\":\"xsspuunnoxyhk\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false},\"id\":\"qcaaewdaomdjvl\",\"name\":\"jxxkzbrmsgei\",\"type\":\"siykzkdncjdxonbz\"}")
             .toObject(AutonomousDbVersionInner.class);
-        Assertions.assertEquals("ril", model.properties().version());
-        Assertions.assertEquals(WorkloadType.AJD, model.properties().dbWorkload());
+        Assertions.assertEquals("xsspuunnoxyhk", model.properties().version());
+        Assertions.assertEquals(WorkloadType.APEX, model.properties().dbWorkload());
         Assertions.assertTrue(model.properties().isDefaultForFree());
         Assertions.assertFalse(model.properties().isDefaultForPaid());
         Assertions.assertTrue(model.properties().isFreeTierEnabled());
-        Assertions.assertTrue(model.properties().isPaidEnabled());
+        Assertions.assertFalse(model.properties().isPaidEnabled());
     }
 }

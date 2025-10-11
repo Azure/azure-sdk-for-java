@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-03-01/autonomousDatabaseBackup_listByParent.json
+     * x-ms-original-file: 2025-09-01/autonomousDatabaseBackup_listByParent.json
      */
     /**
      * Sample code: AutonomousDatabaseBackups_ListByAutonomousDatabase.

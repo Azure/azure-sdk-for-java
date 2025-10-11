@@ -22,7 +22,7 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"czezkhhlt\",\"displayName\":\"jadhqoawj\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"ueayfbpcmsplb\",\"timeCreated\":\"2021-05-18T23:27:10Z\",\"timeUpdated\":\"2021-05-11T05:49:59Z\",\"provisioningState\":\"Canceled\"},\"id\":\"thwmgnmbsc\",\"name\":\"bxigdhxiidlo\",\"type\":\"edbw\"}";
+            = "{\"properties\":{\"ocid\":\"labnsmjkwynq\",\"displayName\":\"aekqsykvwj\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"kev\",\"timeCreated\":\"2021-06-30T20:04:20Z\",\"timeUpdated\":\"2021-09-09T16:32:42Z\",\"provisioningState\":\"Canceled\"},\"id\":\"rspxklur\",\"name\":\"clf\",\"type\":\"xa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DnsPrivateView response = manager.dnsPrivateViews()
-            .getWithResponse("qagwwrxaomz", "sgl", com.azure.core.util.Context.NONE)
+            .getWithResponse("gzdyimsfayorp", "avkjog", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("czezkhhlt", response.properties().ocid());
-        Assertions.assertEquals("jadhqoawj", response.properties().displayName());
+        Assertions.assertEquals("labnsmjkwynq", response.properties().ocid());
+        Assertions.assertEquals("aekqsykvwj", response.properties().displayName());
         Assertions.assertTrue(response.properties().isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, response.properties().lifecycleState());
-        Assertions.assertEquals("ueayfbpcmsplb", response.properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T23:27:10Z"), response.properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T05:49:59Z"), response.properties().timeUpdated());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETED, response.properties().lifecycleState());
+        Assertions.assertEquals("kev", response.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T20:04:20Z"), response.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T16:32:42Z"), response.properties().timeUpdated());
     }
 }
