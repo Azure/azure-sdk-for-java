@@ -325,7 +325,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(createdCollection.getId(),
                                                                            BridgeInternal
                                                                                .getContextClient(this.client));
-        // Ensure its a cross partition query
+        // Ensure it's a cross partition query
         assertThat(partitionKeyRanges.size()).isGreaterThan(1);
         // We are inserting documents with int, float, string, array, object and missing propMixed.
         String query = "SELECT * FROM r ORDER BY r.propMixed ";

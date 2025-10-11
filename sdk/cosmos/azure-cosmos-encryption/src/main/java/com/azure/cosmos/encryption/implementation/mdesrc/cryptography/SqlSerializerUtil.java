@@ -1312,7 +1312,7 @@ final class SqlSerializerUtil {
                 if (SSType.TIME == ssType) {
                     --scaledNanos;
                 }
-                // If the type is datetime2 or datetimeoffset, truncate only if its the max value supported
+                // If the type is datetime2 or datetimeoffset, truncate only if it's the max value supported
                 else {
                     assert SSType.DATETIME2 == ssType || SSType.DATETIMEOFFSET == ssType : "Unexpected SSType: "
                             + ssType;
