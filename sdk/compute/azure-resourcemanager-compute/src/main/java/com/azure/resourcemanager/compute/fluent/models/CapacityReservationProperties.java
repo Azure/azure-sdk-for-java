@@ -4,13 +4,14 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
+import com.azure.resourcemanager.compute.models.ScheduleProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Properties of the Capacity reservation.
  */
-@Immutable
+@Fluent
 public final class CapacityReservationProperties implements JsonSerializable<CapacityReservationProperties> {
     /*
      * A unique id generated and assigned to the capacity reservation by the platform which does not change throughout
@@ -58,6 +59,15 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
      * Specifies the time at which the Capacity Reservation resource was created. Minimum api-version: 2021-11-01.
      */
     private OffsetDateTime timeCreated;
+
+    /*
+     * Defines the schedule for Block-type capacity reservations. Specifies the schedule during which capacity
+     * reservation is active and VM or VMSS resource can be allocated using reservation. This property is required and
+     * only supported when the capacity reservation group type is 'Block'. The scheduleProfile, start, and end fields
+     * are immutable after creation. Minimum API version: 2025-04-01. Please refer to
+     * https://aka.ms/blockcapacityreservation for more details.
+     */
+    private ScheduleProfile scheduleProfile;
 
     /**
      * Creates an instance of CapacityReservationProperties class.
@@ -135,6 +145,34 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
     }
 
     /**
+     * Get the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @return the scheduleProfile value.
+     */
+    public ScheduleProfile scheduleProfile() {
+        return this.scheduleProfile;
+    }
+
+    /**
+     * Set the scheduleProfile property: Defines the schedule for Block-type capacity reservations. Specifies the
+     * schedule during which capacity reservation is active and VM or VMSS resource can be allocated using reservation.
+     * This property is required and only supported when the capacity reservation group type is 'Block'. The
+     * scheduleProfile, start, and end fields are immutable after creation. Minimum API version: 2025-04-01. Please
+     * refer to https://aka.ms/blockcapacityreservation for more details.
+     * 
+     * @param scheduleProfile the scheduleProfile value to set.
+     * @return the CapacityReservationProperties object itself.
+     */
+    public CapacityReservationProperties withScheduleProfile(ScheduleProfile scheduleProfile) {
+        this.scheduleProfile = scheduleProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -146,6 +184,9 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
         if (instanceView() != null) {
             instanceView().validate();
         }
+        if (scheduleProfile() != null) {
+            scheduleProfile().validate();
+        }
     }
 
     /**
@@ -154,6 +195,7 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("scheduleProfile", this.scheduleProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -193,6 +235,8 @@ public final class CapacityReservationProperties implements JsonSerializable<Cap
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedCapacityReservationProperties.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduleProfile".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.scheduleProfile = ScheduleProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

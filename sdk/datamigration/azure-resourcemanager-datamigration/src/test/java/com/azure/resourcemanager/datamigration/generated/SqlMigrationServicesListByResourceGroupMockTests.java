@@ -22,7 +22,7 @@ public final class SqlMigrationServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"cxfnondegjdydhqk\",\"integrationRuntimeState\":\"bjuckc\"},\"systemData\":{\"createdBy\":\"qbhpowcnx\",\"createdByType\":\"Application\",\"createdAt\":\"2021-03-06T15:22:37Z\",\"lastModifiedBy\":\"seidtoakatpr\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-02-28T18:57:07Z\"},\"location\":\"zbqfdpfawrptvcsh\",\"tags\":{\"tbqgdirdamm\":\"tzc\",\"bwjjirmuydgf\":\"zjgcfjfx\",\"uoft\":\"tmdofgeoag\",\"aj\":\"xodwxm\"},\"id\":\"iygmgs\",\"name\":\"vmdmzenlr\",\"type\":\"tgfczljdncidtjva\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"xoau\",\"integrationRuntimeState\":\"suykznhrfgsl\"},\"location\":\"hpryjfzihuioa\",\"tags\":{\"dd\":\"pajtfeyvkbd\",\"cxbeuuqutkzwtjww\":\"rhd\"},\"id\":\"uzy\",\"name\":\"ijcxfno\",\"type\":\"deg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class SqlMigrationServicesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SqlMigrationService> response
-            = manager.sqlMigrationServices().listByResourceGroup("uzy", com.azure.core.util.Context.NONE);
+            = manager.sqlMigrationServices().listByResourceGroup("lrat", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zbqfdpfawrptvcsh", response.iterator().next().location());
-        Assertions.assertEquals("tzc", response.iterator().next().tags().get("tbqgdirdamm"));
+        Assertions.assertEquals("hpryjfzihuioa", response.iterator().next().location());
+        Assertions.assertEquals("pajtfeyvkbd", response.iterator().next().tags().get("dd"));
     }
 }

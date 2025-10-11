@@ -65,8 +65,7 @@ public class FileTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
             // Create task
-            BatchTaskCreateParameters taskToCreate
-                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
 
             SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
                 () -> batchAsyncClient.createTask(jobId, taskToCreate));
@@ -97,14 +96,14 @@ public class FileTests extends BatchClientTestBase {
                         () -> batchAsyncClient.getTaskFile(jobId, taskId, "stdout.txt"));
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assertions.assertEquals("hello\n", fileContent);
+                Assertions.assertEquals("hello\r\n", fileContent);
 
                 // Get task file properties
                 Response<Void> getFilePropertiesResponse = SyncAsyncExtension.execute(
                     () -> batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null),
                     () -> batchAsyncClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null));
 
-                Assertions.assertEquals("6",
+                Assertions.assertEquals("7",
                     getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");
@@ -142,8 +141,7 @@ public class FileTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
             // Create task
-            BatchTaskCreateParameters taskToCreate
-                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
 
             SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
                 () -> batchAsyncClient.createTask(jobId, taskToCreate));
@@ -188,14 +186,14 @@ public class FileTests extends BatchClientTestBase {
                             .getValue()));
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assertions.assertEquals("hello\n", fileContent);
+                Assertions.assertEquals("hello\r\n", fileContent);
 
                 // Get node file properties
                 BatchFileProperties fileProperties
                     = SyncAsyncExtension.execute(() -> batchClient.getNodeFileProperties(poolId, nodeId, finalFileName),
                         () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, finalFileName));
 
-                Assertions.assertEquals(6, fileProperties.getContentLength());
+                Assertions.assertEquals(7, fileProperties.getContentLength());
 
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");

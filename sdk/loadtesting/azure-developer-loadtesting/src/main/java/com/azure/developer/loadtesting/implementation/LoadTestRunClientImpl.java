@@ -1384,7 +1384,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1457,7 +1457,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1530,7 +1530,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body Server metric configuration model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1604,7 +1604,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body Server metric configuration model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -11,7 +11,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevelTests 
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-04-08T18:01:03Z\",\"endedOn\":\"2021-11-10T07:11:50Z\",\"sourceServerVersion\":\"akgacyrcmjdm\",\"sourceServer\":\"of\",\"targetServerVersion\":\"vuhrylni\",\"targetServer\":\"rz\",\"id\":\"zjedmstkvnlv\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-01-26T14:06:14Z\",\"endedOn\":\"2021-02-10T08:00:40Z\",\"sourceServerVersion\":\"w\",\"sourceServer\":\"wl\",\"targetServerVersion\":\"jwetnpsihcla\",\"targetServer\":\"va\",\"id\":\"pt\"}")
             .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel.class);
     }
 

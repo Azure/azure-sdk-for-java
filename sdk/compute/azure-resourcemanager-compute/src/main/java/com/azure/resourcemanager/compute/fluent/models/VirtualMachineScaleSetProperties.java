@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
@@ -154,6 +155,11 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
      * Specifies the sku profile for the virtual machine scale set.
      */
     private SkuProfile skuProfile;
+
+    /*
+     * Specifies the high speed interconnect placement for the virtual machine scale set.
+     */
+    private HighSpeedInterconnectPlacement highSpeedInterconnectPlacement;
 
     /**
      * Creates an instance of VirtualMachineScaleSetProperties class.
@@ -619,6 +625,29 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
     }
 
     /**
+     * Get the highSpeedInterconnectPlacement property: Specifies the high speed interconnect placement for the virtual
+     * machine scale set.
+     * 
+     * @return the highSpeedInterconnectPlacement value.
+     */
+    public HighSpeedInterconnectPlacement highSpeedInterconnectPlacement() {
+        return this.highSpeedInterconnectPlacement;
+    }
+
+    /**
+     * Set the highSpeedInterconnectPlacement property: Specifies the high speed interconnect placement for the virtual
+     * machine scale set.
+     * 
+     * @param highSpeedInterconnectPlacement the highSpeedInterconnectPlacement value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties
+        withHighSpeedInterconnectPlacement(HighSpeedInterconnectPlacement highSpeedInterconnectPlacement) {
+        this.highSpeedInterconnectPlacement = highSpeedInterconnectPlacement;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -685,6 +714,8 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
         jsonWriter.writeStringField("zonalPlatformFaultDomainAlignMode",
             this.zonalPlatformFaultDomainAlignMode == null ? null : this.zonalPlatformFaultDomainAlignMode.toString());
         jsonWriter.writeJsonField("skuProfile", this.skuProfile);
+        jsonWriter.writeStringField("highSpeedInterconnectPlacement",
+            this.highSpeedInterconnectPlacement == null ? null : this.highSpeedInterconnectPlacement.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -763,6 +794,9 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
                         = ZonalPlatformFaultDomainAlignMode.fromString(reader.getString());
                 } else if ("skuProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetProperties.skuProfile = SkuProfile.fromJson(reader);
+                } else if ("highSpeedInterconnectPlacement".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.highSpeedInterconnectPlacement
+                        = HighSpeedInterconnectPlacement.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
