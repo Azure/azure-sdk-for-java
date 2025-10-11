@@ -70,4 +70,8 @@ public class Exceptions {
         return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE)
             && Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
     }
+
+    public static boolean isClientAssignedSubStatusCode(int subStatusCode) {
+        return subStatusCode >= 20_000 && subStatusCode < 21_000;
+    }
 }

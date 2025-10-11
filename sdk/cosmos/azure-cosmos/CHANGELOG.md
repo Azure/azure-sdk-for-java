@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where Per-Partition Circuit Breaker was hitting `NullPointerException` in e2e timeout scenarios. - [PR 46968](https://github.com/Azure/azure-sdk-for-java/pull/46968/files)
 
 #### Other Changes
 * Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
