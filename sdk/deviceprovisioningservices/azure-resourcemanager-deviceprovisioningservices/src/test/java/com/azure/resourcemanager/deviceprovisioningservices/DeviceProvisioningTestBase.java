@@ -19,6 +19,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropert
 import com.azure.resourcemanager.deviceprovisioningservices.models.NameAvailabilityInfo;
 import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInputs;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ProvisioningServiceDescription;
+import com.azure.resourcemanager.deviceprovisioningservices.DeviceProvisioningServicesManager;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -46,8 +47,8 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
             .withDefaultSubscription();
     }
 
-    public IotDpsManager createIotDpsManager() {
-        return IotDpsManager.configure()
+    public DeviceProvisioningServicesManager createIotDpsManager() {
+        return DeviceProvisioningServicesManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
@@ -73,7 +74,7 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
-    public ProvisioningServiceDescriptionInner createProvisioningService(IotDpsManager iotDpsManager,
+    public ProvisioningServiceDescriptionInner createProvisioningService(DeviceProvisioningServicesManager iotDpsManager,
         ResourceGroup resourceGroup) {
         String serviceName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
 
