@@ -53,7 +53,9 @@ public final class VpnClientConfiguration implements JsonSerializable<VpnClientC
     private String radiusServerAddress;
 
     /*
-     * The radius secret property of the VirtualNetworkGateway resource for vpn client connection.
+     * The radius secret property of the VirtualNetworkGateway resource for vpn client connection. We will no longer
+     * return radiusServerSecret in VirtualNetworkGateway Create/Update/Get/List/UpdateTags APIs response. Please use
+     * VirtualNetworkGateway ListRadiusSecrets API to fetch radius server secrets.
      */
     private String radiusServerSecret;
 
@@ -239,7 +241,9 @@ public final class VpnClientConfiguration implements JsonSerializable<VpnClientC
 
     /**
      * Get the radiusServerSecret property: The radius secret property of the VirtualNetworkGateway resource for vpn
-     * client connection.
+     * client connection. We will no longer return radiusServerSecret in VirtualNetworkGateway
+     * Create/Update/Get/List/UpdateTags APIs response. Please use VirtualNetworkGateway ListRadiusSecrets API to fetch
+     * radius server secrets.
      * 
      * @return the radiusServerSecret value.
      */
@@ -249,7 +253,9 @@ public final class VpnClientConfiguration implements JsonSerializable<VpnClientC
 
     /**
      * Set the radiusServerSecret property: The radius secret property of the VirtualNetworkGateway resource for vpn
-     * client connection.
+     * client connection. We will no longer return radiusServerSecret in VirtualNetworkGateway
+     * Create/Update/Get/List/UpdateTags APIs response. Please use VirtualNetworkGateway ListRadiusSecrets API to fetch
+     * radius server secrets.
      * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the VpnClientConfiguration object itself.

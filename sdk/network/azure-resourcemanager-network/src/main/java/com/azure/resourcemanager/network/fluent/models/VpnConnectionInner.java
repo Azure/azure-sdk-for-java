@@ -237,7 +237,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the sharedKey property: SharedKey for the vpn connection.
+     * Get the sharedKey property: Deprecated: SharedKey for the vpn connection. This is no more used.
      * 
      * @return the sharedKey value.
      */
@@ -246,7 +246,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Set the sharedKey property: SharedKey for the vpn connection.
+     * Set the sharedKey property: Deprecated: SharedKey for the vpn connection. This is no more used.
      * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnConnectionInner object itself.

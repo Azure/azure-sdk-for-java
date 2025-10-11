@@ -64,7 +64,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkSecurityPerimeterAccessRules")
     public interface NetworkSecurityPerimeterAccessRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}/accessRules/{accessRuleName}")
@@ -170,7 +170,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (accessRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -218,7 +218,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (accessRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -326,7 +326,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -380,7 +380,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -486,7 +486,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (accessRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -533,7 +533,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (accessRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -635,7 +635,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (profileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -686,7 +686,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (profileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -850,7 +850,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reconcile(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -902,7 +902,7 @@ public final class NetworkSecurityPerimeterAccessRulesClientImpl implements Netw
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reconcile(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,

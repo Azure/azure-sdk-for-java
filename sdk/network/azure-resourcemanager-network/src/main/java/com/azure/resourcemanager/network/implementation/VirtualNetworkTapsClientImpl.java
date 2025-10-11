@@ -74,7 +74,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientVirtualNetworkTaps")
     public interface VirtualNetworkTapsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkTaps/{tapName}")
@@ -174,7 +174,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, tapName, apiVersion,
@@ -211,7 +211,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, tapName, apiVersion,
@@ -376,7 +376,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, tapName,
@@ -414,7 +414,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, tapName, apiVersion,
@@ -503,7 +503,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, tapName,
@@ -546,7 +546,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, tapName, apiVersion,
@@ -736,7 +736,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
         } else {
             tapParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, tapName,
@@ -779,7 +779,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
         } else {
             tapParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, tapName, apiVersion,
@@ -856,7 +856,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -886,7 +886,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -971,7 +971,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1007,7 +1007,7 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1084,8 +1084,8 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListVirtualNetworkTap API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the VirtualNetworkTaps in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkTapInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1112,8 +1112,8 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListVirtualNetworkTap API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the VirtualNetworkTaps in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkTapInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -1138,8 +1138,8 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListVirtualNetworkTap API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the VirtualNetworkTaps in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkTapInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1167,8 +1167,8 @@ public final class VirtualNetworkTapsClientImpl implements InnerSupportsGet<Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListVirtualNetworkTap API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the VirtualNetworkTaps in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkTapInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

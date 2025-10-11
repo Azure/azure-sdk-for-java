@@ -329,7 +329,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the sharedKey property: The IPSec shared key.
+     * Get the sharedKey property: The IPSec shared key. We will no longer return sharedKey in
+     * VirtualNetworkGatewayConnection Create/Update/Get/List/UpdateTags APIs response. Please use
+     * VirtualNetworkGatewayConnection GetSharedKey API to fetch connection sharedKey.
      * 
      * @return the sharedKey value.
      */
@@ -338,7 +340,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the sharedKey property: The IPSec shared key.
+     * Set the sharedKey property: The IPSec shared key. We will no longer return sharedKey in
+     * VirtualNetworkGatewayConnection Create/Update/Get/List/UpdateTags APIs response. Please use
+     * VirtualNetworkGatewayConnection GetSharedKey API to fetch connection sharedKey.
      * 
      * @param sharedKey the sharedKey value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.

@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class NatGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NatGatewayCreateOrUpdate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayCreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway.
@@ -38,7 +38,7 @@ public final class NatGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * NatGatewayCreateOrUpdateStandardV2Sku.json
      */
     /**

@@ -65,7 +65,9 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
     private Integer connectionBandwidth;
 
     /*
-     * SharedKey for the vpn connection.
+     * SharedKey for the vpn link connection. We will no longer return sharedKey in any
+     * Create/Update/Get/List/UpdateTags VpnGateway/VpnConnection/VpnLinkConnection APIs response. Please use 'Vpn Link
+     * Connections - List Default Shared Key' API to fetch Vpn link connection sharedKey.
      */
     private String sharedKey;
 
@@ -254,7 +256,9 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
     }
 
     /**
-     * Get the sharedKey property: SharedKey for the vpn connection.
+     * Get the sharedKey property: SharedKey for the vpn link connection. We will no longer return sharedKey in any
+     * Create/Update/Get/List/UpdateTags VpnGateway/VpnConnection/VpnLinkConnection APIs response. Please use 'Vpn Link
+     * Connections - List Default Shared Key' API to fetch Vpn link connection sharedKey.
      * 
      * @return the sharedKey value.
      */
@@ -263,7 +267,9 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
     }
 
     /**
-     * Set the sharedKey property: SharedKey for the vpn connection.
+     * Set the sharedKey property: SharedKey for the vpn link connection. We will no longer return sharedKey in any
+     * Create/Update/Get/List/UpdateTags VpnGateway/VpnConnection/VpnLinkConnection APIs response. Please use 'Vpn Link
+     * Connections - List Default Shared Key' API to fetch Vpn link connection sharedKey.
      * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
