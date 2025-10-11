@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExascaleDbStorageVaultTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExascaleDbStorageVaultTagsUpdate model = BinaryData.fromString("{\"tags\":{\"zybbj\":\"ahhvjhhna\"}}")
+        ExascaleDbStorageVaultTagsUpdate model = BinaryData.fromString("{\"tags\":{\"lj\":\"hxkizvytnrzv\"}}")
             .toObject(ExascaleDbStorageVaultTagsUpdate.class);
-        Assertions.assertEquals("ahhvjhhna", model.tags().get("zybbj"));
+        Assertions.assertEquals("hxkizvytnrzv", model.tags().get("lj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExascaleDbStorageVaultTagsUpdate model
-            = new ExascaleDbStorageVaultTagsUpdate().withTags(mapOf("zybbj", "ahhvjhhna"));
+            = new ExascaleDbStorageVaultTagsUpdate().withTags(mapOf("lj", "hxkizvytnrzv"));
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageVaultTagsUpdate.class);
-        Assertions.assertEquals("ahhvjhhna", model.tags().get("zybbj"));
+        Assertions.assertEquals("hxkizvytnrzv", model.tags().get("lj"));
     }
 
     // Use "Map.of" if available

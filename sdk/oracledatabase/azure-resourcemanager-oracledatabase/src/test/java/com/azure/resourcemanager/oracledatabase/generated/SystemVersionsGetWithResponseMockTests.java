@@ -21,7 +21,7 @@ public final class SystemVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"systemVersion\":\"nsjlpjrtws\"},\"id\":\"vv\",\"name\":\"icphvtrrmhw\",\"type\":\"bfdpyflubhv\"}";
+            = "{\"properties\":{\"systemVersion\":\"aoyte\"},\"id\":\"puvjmvqmtd\",\"name\":\"ckygroejnndljdju\",\"type\":\"kb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,9 @@ public final class SystemVersionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SystemVersion response = manager.systemVersions()
-            .getWithResponse("rdfjmzsyzfhotl", "ikcyyc", com.azure.core.util.Context.NONE)
-            .getValue();
+        SystemVersion response
+            = manager.systemVersions().getWithResponse("yf", "x", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("nsjlpjrtws", response.properties().systemVersion());
+        Assertions.assertEquals("aoyte", response.properties().systemVersion());
     }
 }
