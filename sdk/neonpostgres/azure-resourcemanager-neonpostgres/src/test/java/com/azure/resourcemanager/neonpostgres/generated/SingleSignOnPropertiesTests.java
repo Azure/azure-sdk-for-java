@@ -14,24 +14,24 @@ public final class SingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SingleSignOnProperties model = BinaryData.fromString(
-            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"zzlvmbmpaxmodfv\",\"singleSignOnUrl\":\"fy\",\"aadDomains\":[\"pfvmwyhrfou\",\"ft\"]}")
+            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"btndo\",\"singleSignOnUrl\":\"n\",\"aadDomains\":[\"cn\",\"ujitcjedftww\"]}")
             .toObject(SingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("zzlvmbmpaxmodfv", model.enterpriseAppId());
-        Assertions.assertEquals("fy", model.singleSignOnUrl());
-        Assertions.assertEquals("pfvmwyhrfou", model.aadDomains().get(0));
+        Assertions.assertEquals("btndo", model.enterpriseAppId());
+        Assertions.assertEquals("n", model.singleSignOnUrl());
+        Assertions.assertEquals("cn", model.aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SingleSignOnProperties model = new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-            .withEnterpriseAppId("zzlvmbmpaxmodfv")
-            .withSingleSignOnUrl("fy")
-            .withAadDomains(Arrays.asList("pfvmwyhrfou", "ft"));
+            .withEnterpriseAppId("btndo")
+            .withSingleSignOnUrl("n")
+            .withAadDomains(Arrays.asList("cn", "ujitcjedftww"));
         model = BinaryData.fromObject(model).toObject(SingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("zzlvmbmpaxmodfv", model.enterpriseAppId());
-        Assertions.assertEquals("fy", model.singleSignOnUrl());
-        Assertions.assertEquals("pfvmwyhrfou", model.aadDomains().get(0));
+        Assertions.assertEquals("btndo", model.enterpriseAppId());
+        Assertions.assertEquals("n", model.singleSignOnUrl());
+        Assertions.assertEquals("cn", model.aadDomains().get(0));
     }
 }

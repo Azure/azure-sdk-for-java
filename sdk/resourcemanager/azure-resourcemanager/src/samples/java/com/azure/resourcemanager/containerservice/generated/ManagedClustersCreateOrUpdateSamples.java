@@ -70,7 +70,7 @@ import java.util.Map;
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_CRG.json
      */
     /**
@@ -121,7 +121,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_CustomCATrustCertificates.json
      */
     /**
@@ -172,7 +172,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_DualStackNetworking.json
      */
     /**
@@ -234,7 +234,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_PodIdentity.json
      */
     /**
@@ -285,7 +285,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_UserAssignedNATGateway.json
      */
     /**
@@ -333,7 +333,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_Update.json
      */
     /**
@@ -396,7 +396,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
      */
     /**
@@ -447,7 +447,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_ManagedNATGateway.json
      */
     /**
@@ -497,7 +497,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_Premium.json
      */
     /**
@@ -546,7 +546,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_NodePublicIPPrefix.json
      */
     /**
@@ -597,7 +597,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_EnableEncryptionAtHost.json
      */
     /**
@@ -647,7 +647,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_PrivateClusterPublicFQDN.json
      */
     /**
@@ -697,7 +697,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_HTTPProxy.json
      */
     /**
@@ -750,7 +750,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_DedicatedHostGroup.json
      */
     /**
@@ -800,7 +800,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_EnabledFIPS.json
      */
     /**
@@ -849,7 +849,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_SecurityProfile.json
      */
     /**
@@ -894,7 +894,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_PPG.json
      */
     /**
@@ -944,7 +944,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_IngressProfile_WebAppRouting.json
      */
     /**
@@ -987,7 +987,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
@@ -1041,7 +1041,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_DisableRunCommand.json
      */
     /**
@@ -1090,7 +1090,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_Snapshot.json
      */
     /**
@@ -1142,7 +1142,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_AzureServiceMesh.json
      */
     /**
@@ -1211,7 +1211,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
      */
     /**
@@ -1267,7 +1267,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_OSSKU.json
      */
     /**
@@ -1320,7 +1320,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
@@ -1371,7 +1371,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
@@ -1420,7 +1420,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
@@ -1475,7 +1475,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-07-01/examples/
      * ManagedClustersCreate_GPUMIG.json
      */
     /**

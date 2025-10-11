@@ -23,7 +23,7 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
     @Test
     public void testListPrivateIpAddressesWithResponse() throws Exception {
         String responseStr
-            = "[{\"displayName\":\"nbldxeaclgschori\",\"hostnameLabel\":\"krsrrmoucs\",\"ocid\":\"fldpuviyfc\",\"ipAddress\":\"abeolhbhlvbm\",\"subnetId\":\"uqibsxtkcu\"},{\"displayName\":\"fbsfarfsiow\",\"hostnameLabel\":\"kjxnqpvwgfstmhq\",\"ocid\":\"kizmdksaoafclu\",\"ipAddress\":\"v\",\"subnetId\":\"xmycjimryvwgcw\"}]";
+            = "[{\"displayName\":\"annggiy\",\"hostnameLabel\":\"wkdtaawxwf\",\"ocid\":\"ka\",\"ipAddress\":\"mrrqmbzmqkratb\",\"subnetId\":\"xwbjs\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateIpAddressProperties> response = manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("gahxkumasjcaa", "fdmmcpug",
-                new PrivateIpAddressesFilter().withSubnetId("ehqepvufhbzehe").withVnicId("hoqhnl"),
+            .listPrivateIpAddressesWithResponse("xxahmrnadzyqegxy", "vpinbmhwbj",
+                new PrivateIpAddressesFilter().withSubnetId("jkgqxnhmbkez").withVnicId("jauj"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nbldxeaclgschori", response.get(0).displayName());
-        Assertions.assertEquals("krsrrmoucs", response.get(0).hostnameLabel());
-        Assertions.assertEquals("fldpuviyfc", response.get(0).ocid());
-        Assertions.assertEquals("abeolhbhlvbm", response.get(0).ipAddress());
-        Assertions.assertEquals("uqibsxtkcu", response.get(0).subnetId());
+        Assertions.assertEquals("annggiy", response.get(0).displayName());
+        Assertions.assertEquals("wkdtaawxwf", response.get(0).hostnameLabel());
+        Assertions.assertEquals("ka", response.get(0).ocid());
+        Assertions.assertEquals("mrrqmbzmqkratb", response.get(0).ipAddress());
+        Assertions.assertEquals("xwbjs", response.get(0).subnetId());
     }
 }

@@ -26,10 +26,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +43,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DocumentModelAdministrationClientTest extends DocumentAdministrationClientTestBase {
     private DocumentIntelligenceAdministrationClient client;
+    private final List<String> modelIdsToDelete = new ArrayList<>();
 
     private DocumentIntelligenceAdministrationClient getModelAdministrationClient(HttpClient httpClient,
         DocumentIntelligenceServiceVersion serviceVersion) {
         return getModelAdminClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, serviceVersion)
                 .buildClient();
+    }
+
+    @AfterEach
+    public void cleanupModels() {
+        for (String modelId : modelIdsToDelete) {
+            client.deleteModel(modelId);
+        }
     }
 
     /**
@@ -57,18 +67,17 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void getModelWithResponse(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        buildModelRunner((trainingDataSasUrl) -> {
-            DocumentModelDetails documentModelDetails = client
-                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
-                .setPollInterval(durationTestMode)
-                .getFinalResult();
-            Response<BinaryData> documentModelResponse
-                = client.getModelWithResponse(documentModelDetails.getModelId(), null);
-            client.deleteModel(documentModelDetails.getModelId());
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
+        DocumentModelDetails documentModelDetails = client
+            .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
+                .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
+            .setPollInterval(durationTestMode)
+            .getFinalResult();
+        modelIdsToDelete.add(documentModelDetails.getModelId());
+        Response<BinaryData> documentModelResponse
+            = client.getModelWithResponse(documentModelDetails.getModelId(), null);
 
-            assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-        });
+        assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
     }
 
     /**
@@ -99,19 +108,18 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller = client
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller
+            = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
-            DocumentModelDetails createdModel = syncPoller.getFinalResult();
+        syncPoller.waitForCompletion();
+        DocumentModelDetails createdModel = syncPoller.getFinalResult();
 
-            final Response<Void> deleteModelWithResponse
-                = client.deleteModelWithResponse(createdModel.getModelId(), null);
+        final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(), null);
 
-            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
-        });
+        assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
     }
 
     /**
@@ -148,8 +156,9 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         for (PagedResponse<BinaryData> documentModelDetailsPagedResponse : client.listModels(null).iterableByPage()) {
             List<BinaryData> modelInfoList = documentModelDetailsPagedResponse.getValue();
             modelInfoList.forEach(modelInfo -> {
-                assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getModelId());
-                assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getCreatedOn());
+                DocumentModelDetails modelDetails = modelInfo.toObject(DocumentModelDetails.class);
+                assertNotNull(modelDetails.getModelId());
+                assertNotNull(modelDetails.getCreatedOn());
             });
             pageCount++;
             if (pageCount > 4) {
@@ -167,26 +176,26 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void beginCopy(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller = client
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller
+            = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
-            DocumentModelDetails actualModel = syncPoller.getFinalResult();
+        syncPoller.waitForCompletion();
+        DocumentModelDetails actualModel = syncPoller.getFinalResult();
+        modelIdsToDelete.add(actualModel.getModelId());
 
-            ModelCopyAuthorization target = client.authorizeModelCopy(
-                new AuthorizeModelCopyOptions("copyModelId" + UUID.randomUUID()).setTags(actualModel.getTags())
-                    .setDescription(actualModel.getDescription()));
+        ModelCopyAuthorization target = client.authorizeModelCopy(
+            new AuthorizeModelCopyOptions("copyModelId" + UUID.randomUUID()).setTags(actualModel.getTags())
+                .setDescription(actualModel.getDescription()));
 
-            SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> copyPoller
-                = client.beginCopyModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
-            DocumentModelDetails copiedModel = copyPoller.getFinalResult();
+        SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> copyPoller
+            = client.beginCopyModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
+        DocumentModelDetails copiedModel = copyPoller.getFinalResult();
+        modelIdsToDelete.add(copiedModel.getModelId());
 
-            Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
-            client.deleteModel(actualModel.getModelId());
-            client.deleteModel(copiedModel.getModelId());
-        });
+        Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
     }
 
     /**
@@ -198,15 +207,15 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
+        String trainingDataSasUrl = getTrainingFilesContainerUrl();
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
+            = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
+        buildModelPoller.waitForCompletion();
 
-            validateDocumentModelData(buildModelPoller.getFinalResult());
-        });
+        validateDocumentModelData(buildModelPoller.getFinalResult());
     }
 
     /**
@@ -218,15 +227,15 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        multipageTrainingRunner(trainingDataSasUrl -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
+        String trainingDataSasUrl = getMultipageTrainingSasUri();
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller
+            = client
                 .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
+        buildModelPoller.waitForCompletion();
 
-            validateDocumentModelData(buildModelPoller.getFinalResult());
-        });
+        validateDocumentModelData(buildModelPoller.getFinalResult());
     }
 
     /**
@@ -238,15 +247,14 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        selectionMarkTrainingRunner(trainingFilesUrl -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
-                    .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "filelist.jsonl")))
-                .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
+        String trainingFilesUrl = getSelectionMarkTrainingSasUri();
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
+            .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
+                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "filelist.jsonl")))
+            .setPollInterval(durationTestMode);
+        buildModelPoller.waitForCompletion();
 
-            validateDocumentModelData(buildModelPoller.getFinalResult());
-        });
+        validateDocumentModelData(buildModelPoller.getFinalResult());
     }
 
     /**
@@ -261,39 +269,31 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
 
         try {
-            buildModelRunner((trainingDataSasUrl) -> {
-                client
-                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
-                        .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
-                    .setPollInterval(durationTestMode)
-                    .getFinalResult();
+            String trainingDataSasUrl = getTrainingFilesContainerUrl();
+            client
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
+                    .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
+                .setPollInterval(durationTestMode)
+                .getFinalResult();
 
-                client
-                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId2, DocumentBuildMode.TEMPLATE)
-                        .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
-                    .setPollInterval(durationTestMode)
-                    .getFinalResult();
-            });
+            client
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId2, DocumentBuildMode.TEMPLATE)
+                    .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
+                .setPollInterval(durationTestMode)
+                .getFinalResult();
 
-            beginClassifierRunner((trainingFilesUrl) -> {
-                Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsClassifierMap
-                    = new HashMap<String, ClassifierDocumentTypeDetails>();
-                documentTypeDetailsClassifierMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails()
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
-                documentTypeDetailsClassifierMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails()
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
-                documentTypeDetailsClassifierMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails()
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
-                documentTypeDetailsClassifierMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails()
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
-                documentTypeDetailsClassifierMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
-                    .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
-                SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildClassifier = client
-                    .beginBuildClassifier(
-                        new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsClassifierMap))
+            String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
+            Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
+            documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
+            documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
+            documentTypes.put("IRS-1040-C", createBlobContentSource(trainingFilesUrl, "IRS-1040-C/train"));
+            documentTypes.put("IRS-1040-D", createBlobContentSource(trainingFilesUrl, "IRS-1040-D/train"));
+            documentTypes.put("IRS-1040-E", createBlobContentSource(trainingFilesUrl, "IRS-1040-E/train"));
+            SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildClassifier
+                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypes))
                     .setPollInterval(durationTestMode);
-                buildClassifier.getFinalResult();
-            });
+            buildClassifier.getFinalResult();
+
             String composedModelId
                 = interceptorManager.isPlaybackMode() ? "REDACTED" : "composedModelId" + UUID.randomUUID();
             Map<String, DocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
@@ -328,29 +328,22 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void beginBuildClassifier(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
-        beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails()
-                .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails()
-                .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails()
-                .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails()
-                .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
-                .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
-            SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
-                    .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
-            DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
-            validateClassifierModelData(documentClassifierDetails);
-            documentClassifierDetails.getDocumentTypes()
-                .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
-                    classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl()));
-        });
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
+        Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
+        documentTypes.put("IRS-1040-A", createBlobContentSource(trainingFilesUrl, "IRS-1040-A/train"));
+        documentTypes.put("IRS-1040-B", createBlobContentSource(trainingFilesUrl, "IRS-1040-B/train"));
+        documentTypes.put("IRS-1040-C", createBlobContentSource(trainingFilesUrl, "IRS-1040-C/train"));
+        documentTypes.put("IRS-1040-D", createBlobContentSource(trainingFilesUrl, "IRS-1040-D/train"));
+        documentTypes.put("IRS-1040-E", createBlobContentSource(trainingFilesUrl, "IRS-1040-E/train"));
+        SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
+            = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypes))
+                .setPollInterval(durationTestMode);
+        buildModelPoller.waitForCompletion();
+        DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
+        validateClassifierModelData(documentClassifierDetails);
+        documentClassifierDetails.getDocumentTypes()
+            .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
+                classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl()));
     }
 
     /**
@@ -363,30 +356,23 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         DocumentIntelligenceServiceVersion serviceVersion) {
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails()
-                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails()
-                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails()
-                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails()
-                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
-                .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
-            SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
-                    .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
-            DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
+        String trainingFilesUrl = getClassifierTrainingFilesContainerUrl();
+        Map<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
+        documentTypes.put("IRS-1040-A", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl"));
+        documentTypes.put("IRS-1040-B", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl"));
+        documentTypes.put("IRS-1040-C", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl"));
+        documentTypes.put("IRS-1040-D", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl"));
+        documentTypes.put("IRS-1040-E", createBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl"));
+        SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
+            = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypes))
+                .setPollInterval(durationTestMode);
+        buildModelPoller.waitForCompletion();
+        DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
-            documentClassifierDetails.getDocumentTypes()
-                .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
-                    classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl()));
+        documentClassifierDetails.getDocumentTypes()
+            .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
+                classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl()));
 
-            validateClassifierModelData(documentClassifierDetails);
-        });
+        validateClassifierModelData(documentClassifierDetails);
     }
 }

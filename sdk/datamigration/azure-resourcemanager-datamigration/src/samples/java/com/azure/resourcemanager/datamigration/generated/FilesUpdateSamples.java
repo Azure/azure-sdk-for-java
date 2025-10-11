@@ -13,7 +13,8 @@ import com.azure.resourcemanager.datamigration.models.ProjectFileProperties;
 public final class FilesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Files_Update.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * Files_Update.json
      */
     /**
      * Sample code: Files_Update.

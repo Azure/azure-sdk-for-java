@@ -80,6 +80,11 @@ public final class ManagedClusterInner extends Resource {
     private ManagedClusterProperties innerProperties;
 
     /*
+     * This is primarily used to expose different UI experiences in the portal for different kinds
+     */
+    private String kind;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -183,6 +188,28 @@ public final class ManagedClusterInner extends Resource {
      */
     private ManagedClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the kind property: This is primarily used to expose different UI experiences in the portal for different
+     * kinds.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: This is primarily used to expose different UI experiences in the portal for different
+     * kinds.
+     * 
+     * @param kind the kind value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 
     /**
@@ -1253,6 +1280,7 @@ public final class ManagedClusterInner extends Resource {
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -1293,6 +1321,8 @@ public final class ManagedClusterInner extends Resource {
                     deserializedManagedClusterInner.identity = ManagedClusterIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagedClusterInner.innerProperties = ManagedClusterProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedManagedClusterInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedManagedClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

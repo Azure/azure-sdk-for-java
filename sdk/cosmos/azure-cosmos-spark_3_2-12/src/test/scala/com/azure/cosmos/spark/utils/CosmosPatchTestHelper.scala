@@ -6,7 +6,7 @@ package com.azure.cosmos.spark.utils
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.PartitionKeyDefinition
-import com.azure.cosmos.spark.{BulkWriter, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
+import com.azure.cosmos.spark.{BulkWriter, CosmosContainerConfig, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -162,6 +162,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
 
  def getBulkWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,
+                           containerConfig: CosmosContainerConfig,
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None,
                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): BulkWriter = {
@@ -174,6 +175,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
 
   new BulkWriter(
     container,
+    containerConfig,
     partitionKeyDefinition,
     writeConfigForPatch,
     DiagnosticsConfig(),
@@ -183,6 +185,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
 
  def getBulkWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,
+                           containerConfig: CosmosContainerConfig,
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None): BulkWriter = {
      val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
@@ -194,6 +197,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
 
      new BulkWriter(
        container,
+       containerConfig,
        partitionKeyDefinition,
        writeConfigForPatch,
        DiagnosticsConfig(),

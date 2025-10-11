@@ -25,7 +25,7 @@ public final class DbNodesActionMockTests {
     @Test
     public void testAction() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"c\",\"additionalDetails\":\"srlzknmzlan\",\"backupIpId\":\"pdwvnphcn\",\"backupVnic2Id\":\"tpjhm\",\"backupVnicId\":\"hvthlaiwdcxsm\",\"cpuCoreCount\":1945539207,\"dbNodeStorageSizeInGbs\":361565143,\"dbServerId\":\"txetlgydl\",\"dbSystemId\":\"qvlnnpxybafiqgea\",\"faultDomain\":\"bgj\",\"hostIpId\":\"glklb\",\"hostname\":\"lidwcwvmzegjon\",\"lifecycleState\":\"Terminated\",\"lifecycleDetails\":\"irwgdnqzbrf\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":2106653482,\"softwareStorageSizeInGb\":1147399422,\"timeCreated\":\"2021-02-24T15:57:42Z\",\"timeMaintenanceWindowEnd\":\"2021-10-07T03:11:56Z\",\"timeMaintenanceWindowStart\":\"2021-02-11T21:16:47Z\",\"vnic2Id\":\"tdigsxcdglj\",\"vnicId\":\"lkeuac\",\"provisioningState\":\"Succeeded\"},\"id\":\"flrytswfpfm\",\"name\":\"gycxnmskwhqjjys\",\"type\":\"urlpshh\"}";
+            = "{\"properties\":{\"ocid\":\"uqwqulsutrjbhxyk\",\"additionalDetails\":\"y\",\"backupIpId\":\"zvqqugdrftbcvexr\",\"backupVnic2Id\":\"quowtljvfwhrea\",\"backupVnicId\":\"hyxvrqt\",\"cpuCoreCount\":363321222,\"dbNodeStorageSizeInGbs\":1247418691,\"dbServerId\":\"lmdgglmepjp\",\"dbSystemId\":\"s\",\"faultDomain\":\"kgsangpszng\",\"hostIpId\":\"p\",\"hostname\":\"lkvec\",\"lifecycleState\":\"Stopped\",\"lifecycleDetails\":\"cngoadyedmzrg\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":778834076,\"softwareStorageSizeInGb\":1135424096,\"timeCreated\":\"2021-05-21T12:15:27Z\",\"timeMaintenanceWindowEnd\":\"2021-11-26T00:13:36Z\",\"timeMaintenanceWindowStart\":\"2021-05-30T18:27:51Z\",\"vnic2Id\":\"pz\",\"vnicId\":\"rgdg\",\"provisioningState\":\"Succeeded\"},\"id\":\"qraswugyxpqitwei\",\"name\":\"l\",\"type\":\"vskbuhzacaq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,32 +35,32 @@ public final class DbNodesActionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DbNode response = manager.dbNodes()
-            .action("pafolp", "mwamxqzragpgdph", "vdulajv", new DbNodeAction().withAction(DbNodeActionEnum.SOFT_RESET),
+            .action("vyfijdkzuqnw", "it", "uqoly", new DbNodeAction().withAction(DbNodeActionEnum.SOFT_RESET),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("c", response.properties().ocid());
-        Assertions.assertEquals("srlzknmzlan", response.properties().additionalDetails());
-        Assertions.assertEquals("pdwvnphcn", response.properties().backupIpId());
-        Assertions.assertEquals("tpjhm", response.properties().backupVnic2Id());
-        Assertions.assertEquals("hvthlaiwdcxsm", response.properties().backupVnicId());
-        Assertions.assertEquals(1945539207, response.properties().cpuCoreCount());
-        Assertions.assertEquals(361565143, response.properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("txetlgydl", response.properties().dbServerId());
-        Assertions.assertEquals("qvlnnpxybafiqgea", response.properties().dbSystemId());
-        Assertions.assertEquals("bgj", response.properties().faultDomain());
-        Assertions.assertEquals("glklb", response.properties().hostIpId());
-        Assertions.assertEquals("lidwcwvmzegjon", response.properties().hostname());
-        Assertions.assertEquals(DbNodeProvisioningState.TERMINATED, response.properties().lifecycleState());
-        Assertions.assertEquals("irwgdnqzbrf", response.properties().lifecycleDetails());
+        Assertions.assertEquals("uqwqulsutrjbhxyk", response.properties().ocid());
+        Assertions.assertEquals("y", response.properties().additionalDetails());
+        Assertions.assertEquals("zvqqugdrftbcvexr", response.properties().backupIpId());
+        Assertions.assertEquals("quowtljvfwhrea", response.properties().backupVnic2Id());
+        Assertions.assertEquals("hyxvrqt", response.properties().backupVnicId());
+        Assertions.assertEquals(363321222, response.properties().cpuCoreCount());
+        Assertions.assertEquals(1247418691, response.properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("lmdgglmepjp", response.properties().dbServerId());
+        Assertions.assertEquals("s", response.properties().dbSystemId());
+        Assertions.assertEquals("kgsangpszng", response.properties().faultDomain());
+        Assertions.assertEquals("p", response.properties().hostIpId());
+        Assertions.assertEquals("lkvec", response.properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.STOPPED, response.properties().lifecycleState());
+        Assertions.assertEquals("cngoadyedmzrg", response.properties().lifecycleDetails());
         Assertions.assertEquals(DbNodeMaintenanceType.VMDB_REBOOT_MIGRATION, response.properties().maintenanceType());
-        Assertions.assertEquals(2106653482, response.properties().memorySizeInGbs());
-        Assertions.assertEquals(1147399422, response.properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T15:57:42Z"), response.properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T03:11:56Z"),
+        Assertions.assertEquals(778834076, response.properties().memorySizeInGbs());
+        Assertions.assertEquals(1135424096, response.properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-21T12:15:27Z"), response.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T00:13:36Z"),
             response.properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T21:16:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T18:27:51Z"),
             response.properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals("tdigsxcdglj", response.properties().vnic2Id());
-        Assertions.assertEquals("lkeuac", response.properties().vnicId());
+        Assertions.assertEquals("pz", response.properties().vnic2Id());
+        Assertions.assertEquals("rgdg", response.properties().vnicId());
     }
 }

@@ -23,7 +23,7 @@ public final class GiMinorVersionsListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"kmdyomkxfbvfbh\",\"gridImageOcid\":\"i\"},\"id\":\"pwpgddei\",\"name\":\"awzovgkk\",\"type\":\"muikjcjcaztbws\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"atvcrkdlbnbq\",\"gridImageOcid\":\"h\"},\"id\":\"yhzlwxaeaovurexd\",\"name\":\"d\",\"type\":\"bdweade\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class GiMinorVersionsListByParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GiMinorVersion> response = manager.giMinorVersions()
-            .listByParent("crse", "wjksghudgzhxo", ShapeFamily.EXADATA, "ggsvoujkxibdaf",
+            .listByParent("byubhiqdxyurnpn", "hza", ShapeFamily.EXADATA, "cnuhiigbylbuigv",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kmdyomkxfbvfbh", response.iterator().next().properties().version());
-        Assertions.assertEquals("i", response.iterator().next().properties().gridImageOcid());
+        Assertions.assertEquals("atvcrkdlbnbq", response.iterator().next().properties().version());
+        Assertions.assertEquals("h", response.iterator().next().properties().gridImageOcid());
     }
 }

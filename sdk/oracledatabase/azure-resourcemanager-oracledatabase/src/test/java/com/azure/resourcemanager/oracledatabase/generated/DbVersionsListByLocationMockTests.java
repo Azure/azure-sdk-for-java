@@ -25,7 +25,7 @@ public final class DbVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"qfaqnvzoqg\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":false,\"supportsPdb\":true},\"id\":\"sczuejdtxptlghwz\",\"name\":\"omew\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"m\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":false,\"isUpgradeSupported\":false,\"supportsPdb\":false},\"id\":\"zfbmjxuv\",\"name\":\"ipfdvhaxdvwzaehp\",\"type\":\"hthdklmvetatlakf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class DbVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DbVersion> response = manager.dbVersions()
-            .listByLocation("pbeme", BaseDbSystemShapes.VMSTANDARD_X86, "clvdjjukyrdnqod", StorageManagementType.LVM,
-                false, false, ShapeFamilyType.EXADATA, com.azure.core.util.Context.NONE);
+            .listByLocation("qhnmhk", BaseDbSystemShapes.VMSTANDARD_X86, "zsdsuxheqdgcrux", StorageManagementType.LVM,
+                true, true, ShapeFamilyType.SINGLE_NODE, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qfaqnvzoqg", response.iterator().next().properties().version());
+        Assertions.assertEquals("m", response.iterator().next().properties().version());
         Assertions.assertFalse(response.iterator().next().properties().isLatestForMajorVersion());
-        Assertions.assertTrue(response.iterator().next().properties().isPreviewDbVersion());
+        Assertions.assertFalse(response.iterator().next().properties().isPreviewDbVersion());
         Assertions.assertFalse(response.iterator().next().properties().isUpgradeSupported());
-        Assertions.assertTrue(response.iterator().next().properties().supportsPdb());
+        Assertions.assertFalse(response.iterator().next().properties().supportsPdb());
     }
 }

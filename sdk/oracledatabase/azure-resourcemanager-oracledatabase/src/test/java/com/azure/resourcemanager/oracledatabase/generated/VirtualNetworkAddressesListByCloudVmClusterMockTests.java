@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
     @Test
     public void testListByCloudVmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ipAddress\":\"dsxwefoh\",\"vmOcid\":\"bvopwndyqle\",\"ocid\":\"lklmtkhlo\",\"domain\":\"x\",\"lifecycleDetails\":\"vbrdfjmzsyzfho\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-05-22T00:59:04Z\"},\"id\":\"ch\",\"name\":\"nsjlpjrtws\",\"type\":\"hv\"}]}";
+            = "{\"value\":[{\"properties\":{\"ipAddress\":\"wmoaiancznvodrrs\",\"vmOcid\":\"lxydkxrxv\",\"ocid\":\"xiwkgfbql\",\"domain\":\"qkhychocok\",\"lifecycleDetails\":\"ehurqlr\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-09-28T05:58:32Z\"},\"id\":\"rkphyjdxr\",\"name\":\"vjuqdbrxmrgchb\",\"type\":\"pxkiyf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<VirtualNetworkAddress> response
-            = manager.virtualNetworkAddresses().listByCloudVmCluster("pbmz", "w", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualNetworkAddress> response = manager.virtualNetworkAddresses()
+            .listByCloudVmCluster("h", "zhomewjjstliu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dsxwefoh", response.iterator().next().properties().ipAddress());
-        Assertions.assertEquals("bvopwndyqle", response.iterator().next().properties().vmOcid());
+        Assertions.assertEquals("wmoaiancznvodrrs", response.iterator().next().properties().ipAddress());
+        Assertions.assertEquals("lxydkxrxv", response.iterator().next().properties().vmOcid());
     }
 }
