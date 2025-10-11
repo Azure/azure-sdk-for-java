@@ -5,7 +5,7 @@ in Azure. Service directories that include a `test-resources.json` or `test-reso
 file require running [New-TestResources.ps1][] to create these resources and output
 environment variables you must set.
 
-The following scripts can be used both in on your desktop for developer
+The following scripts can be used both on your desktop for developer
 scenarios as well as on hosted agents for continuous integration testing.
 
 * [New-TestResources.ps1][] - Creates new test resources for a given service.

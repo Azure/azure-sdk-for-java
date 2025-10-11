@@ -58,7 +58,7 @@ public class PerfStressProgram {
      * Runs the performance tests passed to be executed.
      *
      * @param classes the performance test classes to execute.
-     * @param args the command line arguments ro run performance tests with.
+     * @param args the command line arguments to run performance tests with.
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?>[] classes, String[] args) {
@@ -111,7 +111,7 @@ public class PerfStressProgram {
      * Run the performance test passed to be executed.
      *
      * @param testClass the performance test class to execute.
-     * @param options the configuration ro run performance test with.
+     * @param options the configuration to run performance test with.
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
@@ -257,12 +257,12 @@ public class PerfStressProgram {
      * Runs the performance tests passed to be executed.
      *
      * @param tests the performance tests to be executed.
-     * @param sync indicate if synchronous test should be run.
-     * @param completableFuture indicate if completable future test should be run.
-     * @param executorService indicate if executor service test should be run.
-     * @param virtualThread indicate if virtual thread test should be run.
+     * @param sync indicates if synchronous test should be run.
+     * @param completableFuture indicates if completable future test should be run.
+     * @param executorService indicates if executor service test should be run.
+     * @param virtualThread indicates if virtual thread test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
-     * @param durationSeconds the duration for which performance test should be run on.
+     * @param durationSeconds the duration for which performance test should be run for.
      * @param title the title of the performance tests.
      *
      * @throws RuntimeException if the execution fails.
@@ -307,7 +307,7 @@ public class PerfStressProgram {
                     = CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
                 allFutures.get(); // Wait for all futures to complete
             } else if (executorService) {
-                // when updated to concurrentTaskLimit, the performance drops?
+                // When updated to concurrentTaskLimit, the performance drops.
                 ExecutorService executor = Executors.newFixedThreadPool(tests.length);
                 try {
                     for (PerfTestBase<?> test : tests) {
@@ -358,7 +358,7 @@ public class PerfStressProgram {
 
         long totalOperations = getCompletedOperations(tests);
         if (totalOperations == 0) {
-            throw new IllegalStateException("Zero operations has been completed");
+            throw new IllegalStateException("Zero operations have been completed");
         }
         double operationsPerSecond = getOperationsPerSecond(tests);
         double secondsPerOperation = 1 / operationsPerSecond;

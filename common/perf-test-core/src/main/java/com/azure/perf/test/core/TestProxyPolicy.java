@@ -102,7 +102,7 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpPipelinePosition getPipelinePosition() {
-        // The policy should be ran per retry in case calls are made to a secondary, fail-over host.
+        // The policy should be run per retry in case calls are made to a secondary, fail-over host.
         return HttpPipelinePosition.PER_RETRY;
     }
 }

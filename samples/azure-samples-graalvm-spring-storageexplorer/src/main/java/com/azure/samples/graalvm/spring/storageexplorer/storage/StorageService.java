@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public interface StorageService {
 
     /**
-     * This method is called once when the web app starts to allow for initialisation of resources.
+     * This method is called once when the web app starts to allow for initialization of resources.
      */
     void init();
 
@@ -27,7 +27,7 @@ public interface StorageService {
     /**
      * This method returns a stream of all files stored in the storage service.
      *
-     * @return
+     * @return A stream of all files stored in the storage service.
      */
     Stream<StorageItem> listAllFiles();
 

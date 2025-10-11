@@ -10,7 +10,7 @@ This folder contains dockerfiles for private container images used in Azure SDKs
    * `docker build . -t {registry}/java-tools/mvn:{new tag} -f jdk-mariner-mvn-dockerfile --build-arg MAVEN_VERSION={new version}`
      * Supported parameters:
        * `OPEN_JDK_MARINER_TAG`: one of the [JDK Mariner image tags](https://learn.microsoft.com/java/openjdk/containers#linux-based-images)
-       * `MAVEN_VERSION`: specifies verssion to download Maven from `https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz`
+       * `MAVEN_VERSION`: specifies version to download Maven from `https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz`
        * `MAVEN_URL`: override full URL to download `maven*.tar.gz` from.
    * `{new tag}` should contain JDK and maven versions. Follow the `jdk11-mvn3.9.5` naming pattern.
 

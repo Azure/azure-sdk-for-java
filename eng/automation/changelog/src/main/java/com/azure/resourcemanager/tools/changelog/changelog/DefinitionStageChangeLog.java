@@ -40,7 +40,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
      *
      * @param blankStage The start point for BFS, which is the first stage.
      * @param stageToMethods contains all stages. Map from Stage name to all methods it has.
-     * @param getReturnType The function to map a JApiMethod to its according return type, which is the next stage name.
+     * @param getReturnType The function to map a JApiMethod to its corresponding return type, which is the next stage name.
      * @param resultForMethodsByStageIndex The result contains list of methods. The index represents which stage the method locates.
      */
     private void calcMethodStages(AllMethods blankStage, Map<String, AllMethods> stageToMethods, Function<JApiMethod, String> getReturnType, List<Set<JApiMethod>> resultForMethodsByStageIndex) {
