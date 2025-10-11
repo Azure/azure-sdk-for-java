@@ -26,7 +26,7 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         final String asgName4 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
         final String asgName5 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
         final String asgName6 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String nsgName = generateRandomResourceName("nsg", 8).toUpperCase(Locale.ROOT);
+        final String nsgName = generateRandomResourceName("nsg", 8);
 
         final Region region = Region.US_SOUTH_CENTRAL;
 
