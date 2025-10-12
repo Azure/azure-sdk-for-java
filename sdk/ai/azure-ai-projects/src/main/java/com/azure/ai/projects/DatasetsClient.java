@@ -553,4 +553,116 @@ public final class DatasetsClient {
             .getValue()
             .toObject(DatasetVersion.class);
     }
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Creates or updates a DatasetVersion from a local file in a single call, handling upload and registration.
+     *
+     * @param name The name of the dataset resource.
+     * @param version The version id of the DatasetVersion to create or update.
+     * @param filePath The path to the file to upload.
+     * @return The created or updated FileDatasetVersion.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    public FileDatasetVersion uploadFileAsDatasetVersion(String name, String version, Path filePath) {
+        /*
+          Combined Methods: pendingUpload, BlobClient.upload, createOrUpdateDatasetVersionWithResponse
+          Reason: This wrapper automates the multi-step workflow of uploading a file as a dataset version, including obtaining upload credentials, uploading the file, and registering the dataset version. It eliminates repetitive, error-prone boilerplate and exposes the common user intent as a single operation.
+        */
+        if (!Files.isRegularFile(filePath)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
+        }
+        PendingUploadRequest pendingUploadRequest = new PendingUploadRequest();
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, pendingUploadRequest);
+        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
+        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
+        blobClient.upload(BinaryData.fromFile(filePath));
+        RequestOptions requestOptions = new RequestOptions();
+        FileDatasetVersion datasetVersion = this
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
+            .getValue()
+            .toObject(FileDatasetVersion.class);
+        return datasetVersion;
+    }
+    
+    /**
+     * Creates or updates a DatasetVersion from a local folder in a single call, handling upload and registration.
+     *
+     * @param name The name of the dataset resource.
+     * @param version The version id of the DatasetVersion to create or update.
+     * @param folderPath The path to the folder containing files to upload.
+     * @return The created or updated FolderDatasetVersion.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     * @throws IOException if an I/O error occurs when accessing the files.
+     */
+    public FolderDatasetVersion uploadFolderAsDatasetVersion(String name, String version, Path folderPath) throws IOException {
+        /*
+          Combined Methods: pendingUpload, BlobClient.upload (per file), createOrUpdateDatasetVersionWithResponse
+          Reason: This wrapper automates the multi-step workflow of uploading a folder as a dataset version, including obtaining upload credentials, uploading all files, and registering the dataset version. It encapsulates a common, but otherwise complex, developer task into a single, intention-revealing method.
+        */
+        if (!Files.isDirectory(folderPath)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
+        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
+        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
+        Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
+            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+            BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
+            blobClient.upload(BinaryData.fromFile(filePath), true);
+        });
+        RequestOptions requestOptions = new RequestOptions();
+        FolderDatasetVersion datasetVersion = this
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
+            .getValue()
+            .toObject(FolderDatasetVersion.class);
+        return datasetVersion;
+    }
+    
+    /**
+     * Deletes all versions of a Dataset by name.
+     *
+     * @param name The name of the dataset resource.
+     */
+    public void deleteAllDatasetVersions(String name) {
+        /*
+          Combined Methods: listDatasetVersions, deleteDatasetVersion
+          Reason: This wrapper enables a common bulk operation—deleting all versions of a dataset—by internally listing all versions and deleting each one. It saves developers from writing repetitive code and ensures correct sequencing.
+        */
+        for (DatasetVersion version : listDatasetVersions(name)) {
+            deleteDatasetVersion(name, version.getVersion());
+        }
+    }
+    
+    /**
+     * Retrieves the latest version of a Dataset by name.
+     *
+     * @param name The name of the dataset resource.
+     * @return The latest DatasetVersion, or null if none exist.
+     */
+    public DatasetVersion getLatestDatasetVersion(String name) {
+        /*
+          Combined Methods: listDatasetVersions, getDatasetVersion
+          Reason: This wrapper expresses the intent to fetch the latest version of a dataset, hiding the need to manually enumerate and select the latest version. It streamlines a frequent lookup pattern.
+        */
+        DatasetVersion latest = null;
+        for (DatasetVersion version : listDatasetVersions(name)) {
+            if (latest == null || version.getVersion().compareTo(latest.getVersion()) > 0) {
+                latest = version;
+            }
+        }
+        if (latest == null) {
+            return null;
+        }
+        return getDatasetVersion(name, latest.getVersion());
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }
