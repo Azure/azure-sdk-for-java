@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NetworkSecurityGroupTests extends NetworkManagementTest {
 
@@ -88,17 +89,19 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .attach()
             .create();
 
-        Set<String> sourceApplicationSecurityGroupIds = new HashSet<>();
-        nsg.securityRules()
+        Set<String> sourceApplicationSecurityGroupIds = nsg.securityRules()
             .get("rule2")
             .sourceApplicationSecurityGroupIds()
-            .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+            .stream()
+            .map(id -> id.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toSet());
 
-        Set<String> destinationApplicationSecurityGroupIds = new HashSet<>();
-        nsg.securityRules()
+        Set<String> destinationApplicationSecurityGroupIds = nsg.securityRules()
             .get("rule3")
             .destinationApplicationSecurityGroupIds()
-            .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+            .stream()
+            .map(id -> id.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toSet());
 
         Assertions.assertEquals(2, sourceApplicationSecurityGroupIds.size());
         Assertions.assertEquals(2, destinationApplicationSecurityGroupIds.size());
@@ -132,17 +135,19 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .parent()
             .apply();
 
-        sourceApplicationSecurityGroupIds.clear();
-        nsg.securityRules()
+        sourceApplicationSecurityGroupIds = nsg.securityRules()
             .get("rule2")
             .sourceApplicationSecurityGroupIds()
-            .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+            .stream()
+            .map(id -> id.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toSet());
 
-        destinationApplicationSecurityGroupIds.clear();
-        nsg.securityRules()
+        destinationApplicationSecurityGroupIds = nsg.securityRules()
             .get("rule3")
             .destinationApplicationSecurityGroupIds()
-            .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+            .stream()
+            .map(id -> id.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toSet());
 
         Assertions.assertEquals(2, sourceApplicationSecurityGroupIds.size());
         Assertions.assertEquals(2, destinationApplicationSecurityGroupIds.size());
