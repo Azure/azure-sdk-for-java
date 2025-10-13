@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class NetworkSecurityGroupTests extends NetworkManagementTest {
 
@@ -87,12 +88,25 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .attach()
             .create();
 
+        Set<String> sourceApplicationSecurityGroupIds = new HashSet<>();
+        nsg.securityRules()
+            .get("rule2")
+            .sourceApplicationSecurityGroupIds()
+            .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+        Set<String> destinationApplicationSecurityGroupIds = new HashSet<>();
+        nsg.securityRules()
+            .get("rule3")
+            .destinationApplicationSecurityGroupIds()
+            .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+
         Assertions.assertEquals(2, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
         Assertions.assertEquals(2, nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds().size());
-        Assertions.assertEquals(new HashSet<>(Arrays.asList(asg.id(), asg2.id())),
-            nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds());
-        Assertions.assertEquals(new HashSet<>(Arrays.asList(asg3.id(), asg4.id())),
-            nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds());
+        Assertions.assertEquals(
+            new HashSet<>(Arrays.asList(asg.id().toLowerCase(Locale.ROOT), asg2.id().toLowerCase(Locale.ROOT))),
+            sourceApplicationSecurityGroupIds);
+        Assertions.assertEquals(
+            new HashSet<>(Arrays.asList(asg3.id().toLowerCase(Locale.ROOT), asg4.id().toLowerCase(Locale.ROOT))),
+            destinationApplicationSecurityGroupIds);
 
         ApplicationSecurityGroup asg5 = networkManager.applicationSecurityGroups()
             .define(asgName5)
@@ -117,12 +131,25 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .parent()
             .apply();
 
+        sourceApplicationSecurityGroupIds.clear();
+        nsg.securityRules()
+            .get("rule2")
+            .sourceApplicationSecurityGroupIds()
+            .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+        destinationApplicationSecurityGroupIds.clear();
+        nsg.securityRules()
+            .get("rule3")
+            .destinationApplicationSecurityGroupIds()
+            .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+
         Assertions.assertEquals(2, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
         Assertions.assertEquals(2, nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds().size());
-        Assertions.assertEquals(new HashSet<>(Arrays.asList(asg.id(), asg5.id())),
-            nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds());
-        Assertions.assertEquals(new HashSet<>(Arrays.asList(asg3.id(), asg6.id())),
-            nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds());
+        Assertions.assertEquals(
+            new HashSet<>(Arrays.asList(asg.id().toLowerCase(Locale.ROOT), asg5.id().toLowerCase(Locale.ROOT))),
+            sourceApplicationSecurityGroupIds);
+        Assertions.assertEquals(
+            new HashSet<>(Arrays.asList(asg3.id().toLowerCase(Locale.ROOT), asg6.id().toLowerCase(Locale.ROOT))),
+            destinationApplicationSecurityGroupIds);
 
         nsg.update()
             .updateRule("rule2")

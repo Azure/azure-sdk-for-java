@@ -304,7 +304,14 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withoutSourceApplicationSecurityGroup(String id) {
-        sourceAsgs.remove(id);
+        String entryKey = null;
+        for (Map.Entry<String, ApplicationSecurityGroupInner> entry : sourceAsgs.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(id)) {
+                entryKey = entry.getKey();
+                break;
+            }
+        }
+        sourceAsgs.remove(entryKey);
         return this;
     }
 
@@ -327,7 +334,14 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withoutDestinationApplicationSecurityGroup(String id) {
-        destinationAsgs.remove(id);
+        String entryKey = null;
+        for (Map.Entry<String, ApplicationSecurityGroupInner> entry : destinationAsgs.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(id)) {
+                entryKey = entry.getKey();
+                break;
+            }
+        }
+        destinationAsgs.remove(entryKey);
         return this;
     }
 
