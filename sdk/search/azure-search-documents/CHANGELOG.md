@@ -1,12 +1,50 @@
 # Release History
 
-## 11.8.0-beta.9 (Unreleased)
+## 11.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added back all service preview features dropped in `2025-09-01` service version release.
+
 ### Breaking Changes
 
+- Updated `RescoringOptions` to match what was changed in `11.8.0` release.
+    - `isEnableRescoring` -> `isRescoringEnabled`
+    - `setEnableRescoring` -> `setRescoringEnabled`
+- Changed `RankingOrder.RE_RANKER_SCORE` to `RankingOrder.RERANKER_SCORE`.
+- Default `SearchServiceVersion` changed from `2025_09_01` to `V2025_08_01_PREVIEW`.
+
 ### Bugs Fixed
+
+## 11.8.0 (2025-10-10)
+
+### Features Added
+
+- Added support for `2025-09-01` service version.
+    - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
+      boosted scores in `SemanticConfiguration.rankingOrder`.
+    - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
+      vector when indexing and how vectors are used during rescoring.
+    - Added `SearchIndex.description` to provide a textual description of the index.
+    - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
+      use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
+    - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
+    - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
+      supported for `QueryDebugMode`.
+
+### Breaking Changes
+
+- All features from `11.8.0-beta.x` versions that weren't GA'd in `2025-09-01` were removed.
+- `VectorSearchCompression.rerankWithOriginalVectors` and `VectorSearchCompression.defaultOversampling` don't work with
+  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and
+  `VectorSearchCompression.RescoringOptions.defaultOversampling`. If using `2024-07-01` continue using the old properties,
+  otherwise if using `2025-09-01` use the new properties in `RescoringOptions`.
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.1` to version `1.6.2`.
 
 ## 11.7.10 (2025-09-25)
 
