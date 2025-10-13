@@ -68,6 +68,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String resource = attributes.get(RESOURCE_ID);
         String authUrl = attributes.get(AUTHORIZATION_URI);
 
+        // Create new scopes array to avoid mutating the original
         String[] scopesToUse = initialScopes;
         if (!CoreUtils.isNullOrEmpty(resource)) {
             scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
@@ -79,6 +80,18 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
             tokenRequestContext.setTenantId(extractTenantIdFromUri(authUrl));
         }
         return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
+    }
+
+    String extractTenantIdFromUri(String uri) {
+        try {
+            String[] segments = new URI(uri).getPath().split("/");
+            if (segments.length > 1 && !segments[1].isEmpty()) {
+                return segments[1];
+            }
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
+        }
     }
 
     @Override
@@ -93,6 +106,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String resource = attributes.get(RESOURCE_ID);
         String authUrl = attributes.get(AUTHORIZATION_URI);
 
+        // Create new scopes array to avoid mutating the original
         String[] scopesToUse = initialScopes;
         if (!CoreUtils.isNullOrEmpty(resource)) {
             scopesToUse = new String[] { resource.endsWith(DEFAULT_SCOPE) ? resource : resource + DEFAULT_SCOPE };
@@ -106,18 +120,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
-    }
-
-    String extractTenantIdFromUri(String uri) {
-        try {
-            String[] segments = new URI(uri).getPath().split("/");
-            if (segments.length > 1 && !segments[1].isEmpty()) {
-                return segments[1];
-            }
-            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
-        }
     }
 
     Map<String, String> extractChallengeAttributes(String header) {
