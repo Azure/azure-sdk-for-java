@@ -21,7 +21,7 @@ public class MessageItem extends ConversationRequestItem {
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MESSAGE;
+    private final ItemType type = ItemType.MESSAGE;
 
     /*
      * The role of the message origionator.
@@ -43,7 +43,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Creates an instance of MessageItem class.
-     * 
+     *
      * @param content the content value to set.
      */
     @Generated
@@ -53,7 +53,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -64,7 +64,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Get the role property: The role of the message origionator.
-     * 
+     *
      * @return the role value.
      */
     @Generated
@@ -74,7 +74,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Get the content property: The content parts of the message.
-     * 
+     *
      * @return the content value.
      */
     @Generated
@@ -84,7 +84,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Get the status property: Processing status of the message item.
-     * 
+     *
      * @return the status value.
      */
     @Generated
@@ -94,7 +94,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Set the status property: Processing status of the message item.
-     * 
+     *
      * @param status the status value to set.
      * @return the MessageItem object itself.
      */
@@ -131,7 +131,7 @@ public class MessageItem extends ConversationRequestItem {
 
     /**
      * Reads an instance of MessageItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MessageItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

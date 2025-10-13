@@ -52,7 +52,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Creates an instance of ServerEventConversationItemTruncated class.
-     * 
+     *
      * @param itemId the itemId value to set.
      * @param contentIndex the contentIndex value to set.
      * @param audioEndMs the audioEndMs value to set.
@@ -66,7 +66,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Get the type property: The type of event.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -77,7 +77,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Get the itemId property: The ID of the assistant message item that was truncated.
-     * 
+     *
      * @return the itemId value.
      */
     @Generated
@@ -87,7 +87,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Get the contentIndex property: The index of the content part that was truncated.
-     * 
+     *
      * @return the contentIndex value.
      */
     @Generated
@@ -97,7 +97,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Get the audioEndMs property: The duration up to which the audio was truncated, in milliseconds.
-     * 
+     *
      * @return the audioEndMs value.
      */
     @Generated
@@ -107,7 +107,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Get the eventId property: The event_id property.
-     * 
+     *
      * @return the eventId value.
      */
     @Generated
@@ -134,7 +134,7 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
 
     /**
      * Reads an instance of ServerEventConversationItemTruncated from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServerEventConversationItemTruncated if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
@@ -149,7 +149,6 @@ public final class ServerEventConversationItemTruncated extends ServerEvent {
             int contentIndex = 0;
             int audioEndMs = 0;
             ServerEventType type = ServerEventType.CONVERSATION_ITEM_TRUNCATED;
-            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

@@ -5,7 +5,6 @@
 module com.azure.ai.voicelive {
     requires transitive com.azure.core;
 
-    exports com.azure.ai.voicelive;
     exports com.azure.ai.voicelive.models;
 
     opens com.azure.ai.voicelive.models to com.azure.core;

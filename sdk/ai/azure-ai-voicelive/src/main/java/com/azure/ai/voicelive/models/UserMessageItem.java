@@ -21,7 +21,7 @@ public final class UserMessageItem extends MessageItem {
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MESSAGE;
+    private final ItemType type = ItemType.MESSAGE;
 
     /*
      * The role of the message origionator.
@@ -31,7 +31,7 @@ public final class UserMessageItem extends MessageItem {
 
     /**
      * Creates an instance of UserMessageItem class.
-     * 
+     *
      * @param content the content value to set.
      */
     @Generated
@@ -41,7 +41,7 @@ public final class UserMessageItem extends MessageItem {
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -52,7 +52,7 @@ public final class UserMessageItem extends MessageItem {
 
     /**
      * Get the role property: The role of the message origionator.
-     * 
+     *
      * @return the role value.
      */
     @Generated
@@ -98,7 +98,7 @@ public final class UserMessageItem extends MessageItem {
 
     /**
      * Reads an instance of UserMessageItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of UserMessageItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

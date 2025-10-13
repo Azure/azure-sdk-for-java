@@ -38,7 +38,7 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
 
     /**
      * Creates an instance of ServerEventConversationItemDeleted class.
-     * 
+     *
      * @param itemId the itemId value to set.
      */
     @Generated
@@ -48,7 +48,7 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
 
     /**
      * Get the type property: The type of event.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -59,7 +59,7 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
 
     /**
      * Get the itemId property: The ID of the item that was deleted.
-     * 
+     *
      * @return the itemId value.
      */
     @Generated
@@ -69,7 +69,7 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
 
     /**
      * Get the eventId property: The event_id property.
-     * 
+     *
      * @return the eventId value.
      */
     @Generated
@@ -94,7 +94,7 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
 
     /**
      * Reads an instance of ServerEventConversationItemDeleted from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServerEventConversationItemDeleted if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -107,7 +107,6 @@ public final class ServerEventConversationItemDeleted extends ServerEvent {
             String eventId = null;
             String itemId = null;
             ServerEventType type = ServerEventType.CONVERSATION_ITEM_DELETED;
-            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
