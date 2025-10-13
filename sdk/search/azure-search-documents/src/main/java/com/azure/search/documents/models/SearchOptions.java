@@ -575,7 +575,7 @@ public final class SearchOptions {
      *
      * @return the debug value.
      */
-    public QueryDebugMode getDebug() {
+    public QueryDebugMode getDebugMode() {
         return this.debug;
     }
 
@@ -585,7 +585,7 @@ public final class SearchOptions {
      * @param debug the debug value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setDebug(QueryDebugMode debug) {
+    public SearchOptions setDebugMode(QueryDebugMode debug) {
         this.debug = debug;
         return this;
     }
