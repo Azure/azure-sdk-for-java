@@ -37,35 +37,19 @@ steps:
       parameters:
         WorkingDirectory: ${{ parameters.SourceRootPath }}
 
-    - pwsh: |
-        # If the Artifacts array is set create the list PackageInfo files from them otherwise use
-        # the PackageInfoFiles that were passed in to create the list.
-        $artifactsList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
-        $PackageInfoFiles = @()
-        if ($artifactsList.Count -gt 0) {
-          $configDir = '${{ parameters.ConfigFileDir }}'
-          foreach ($artifact in $artifactsList) {
-            $PackageInfoFiles += "$configDir/$($artifact.Name).json".Replace("\", "\\").Replace("\\", "/")
-          }
-          $PackageInfoFilesList = $PackageInfoFiles -join ","
-        } else {
-          $PackageInfoFiles = ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate)
-          $PackageInfoFilesList = $PackageInfoFiles -join ","
-        }
-        Write-Host "PackageInfoFiles=$PackageInfoFilesList"
-        Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFilesList"
-      displayName: Set PackageInfoFiles list
-
     - task: Powershell@2
       inputs:
         filePath: ${{ parameters.SourceRootPath }}/eng/common/scripts/Create-APIReview.ps1
         arguments: >
-          -PackageInfoFiles $(PackageInfoFiles)
+          -PackageInfoFiles ('${{ convertToJson(parameters.PackageInfoFiles) }}' | ConvertFrom-Json -NoEnumerate)
+          -ArtifactList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
           -ArtifactPath '${{parameters.ArtifactPath}}'
           -ArtifactName ${{ parameters.ArtifactName }}
           -APIKey '$(azuresdk-apiview-apikey)'
+          -PackageName '${{parameters.PackageName}}'
           -SourceBranch '$(Build.SourceBranchName)'
           -DefaultBranch '$(DefaultBranch)'
+          -ConfigFileDir '${{parameters.ConfigFileDir}}'
           -BuildId '$(Build.BuildId)'
           -RepoName '$(Build.Repository.Name)'
           -MarkPackageAsShipped $${{parameters.MarkPackageAsShipped}}

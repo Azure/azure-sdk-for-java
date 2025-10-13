@@ -1,7 +1,7 @@
 [CmdletBinding()]
 Param (
-  [Parameter(Mandatory=$True)]
-  [array] $PackageInfoFiles,
+  [Parameter(Mandatory=$False)]
+  [array] $ArtifactList,
   [Parameter(Mandatory=$True)]
   [string] $ArtifactPath,
   [Parameter(Mandatory=$True)]
@@ -10,9 +10,13 @@ Param (
   [string] $DefaultBranch,
   [string] $RepoName,
   [string] $BuildId,
+  [string] $PackageName = "",
+  [string] $ConfigFileDir = "",
   [string] $APIViewUri = "https://apiview.dev/AutoReview",
   [string] $ArtifactName = "packages",
-  [bool] $MarkPackageAsShipped = $false
+  [bool] $MarkPackageAsShipped = $false,
+  [Parameter(Mandatory=$False)]
+  [array] $PackageInfoFiles
 )
 
 Set-StrictMode -Version 3
@@ -175,7 +179,26 @@ function ProcessPackage($packageInfo)
     if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
     {
         $pkgArtifactName = $packageInfo.ArtifactName ?? $packageInfo.Name
-        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName $packageInfo
+
+        # Check if the function supports the packageInfo parameter
+        $functionInfo = Get-Command $FindArtifactForApiReviewFn -ErrorAction SilentlyContinue
+        $supportsPackageInfoParam = $false
+        
+        if ($functionInfo -and $functionInfo.Parameters) {
+            # Check if function specifically supports packageInfo parameter
+            $parameterNames = $functionInfo.Parameters.Keys
+            $supportsPackageInfoParam = $parameterNames -contains 'packageInfo'
+        }
+        
+        # Call function with appropriate parameters
+        if ($supportsPackageInfoParam) {
+            LogInfo "Calling $FindArtifactForApiReviewFn with packageInfo parameter"
+            $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName $packageInfo
+        }
+        else {
+            LogInfo "Calling $FindArtifactForApiReviewFn with legacy parameters"
+            $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName
+        }
     }
     else
     {
@@ -286,14 +309,70 @@ function ProcessPackage($packageInfo)
     return 0
 }
 
-$responses = @{}
-
 Write-Host "Artifact path: $($ArtifactPath)"
 Write-Host "Source branch: $($SourceBranch)"
+Write-Host "Package Info Files: $($PackageInfoFiles)"
+Write-Host "Artifact List: $($ArtifactList)"
+Write-Host "Package Name: $($PackageName)"
 
-# if package name param is not empty then process only that package
-# process all packages in the artifact
-foreach ($packageInfoFile in $PackageInfoFiles)
+# Parameter priority and backward compatibility logic
+# Priority order: PackageName > Artifacts > PackageInfoFiles (for backward compatibility)
+
+if (-not $ConfigFileDir) {
+    $ConfigFileDir = Join-Path -Path $ArtifactPath "PackageInfo"
+}
+
+Write-Host "Config File directory: $($ConfigFileDir)"
+
+# Initialize working variable
+$ProcessedPackageInfoFiles = @()
+
+if ($PackageName -and $PackageName -ne "") {
+    # Highest Priority: Single package mode (existing usage)
+    Write-Host "Using PackageName parameter: $PackageName"
+    $pkgPropPath = Join-Path -Path $ConfigFileDir "$PackageName.json"
+    if (Test-Path $pkgPropPath) {
+        $ProcessedPackageInfoFiles = @($pkgPropPath)
+    }
+    else {
+        Write-Error "Package property file path $pkgPropPath is invalid."
+        exit 1
+    }
+}
+elseif ($ArtifactList -and $ArtifactList.Count -gt 0) {
+    # Second Priority: Multiple artifacts mode (existing usage)
+    Write-Host "Using ArtifactList parameter with $($ArtifactList.Count) artifacts"
+    foreach ($artifact in $ArtifactList) {
+        $pkgPropPath = Join-Path -Path $ConfigFileDir "$($artifact.name).json"
+        if (Test-Path $pkgPropPath) {
+            $ProcessedPackageInfoFiles += $pkgPropPath
+        }
+        else {
+            Write-Warning "Package property file path $pkgPropPath is invalid."
+        }
+    }
+}
+elseif ($PackageInfoFiles -and $PackageInfoFiles.Count -gt 0) {
+    # Lowest Priority: Direct PackageInfoFiles (new method)
+    Write-Host "Using PackageInfoFiles parameter with $($PackageInfoFiles.Count) files"
+    $ProcessedPackageInfoFiles = $PackageInfoFiles  # Use as-is
+}
+else {
+    Write-Error "No package information provided. Please provide either 'PackageName', 'ArtifactList', or 'PackageInfoFiles' parameters."
+    exit 1
+}
+
+# Validate that we have package info files to process
+if (-not $ProcessedPackageInfoFiles -or $ProcessedPackageInfoFiles.Count -eq 0) {
+    Write-Error "No package info files found after processing parameters."
+    exit 1
+}
+
+$responses = @{}
+Write-Host "Processed Package Info Files: $($ProcessedPackageInfoFiles -join ', ')"
+
+# Process all packages using the processed PackageInfoFiles array
+foreach ($packageInfoFile in $ProcessedPackageInfoFiles)
 {
     $packageInfo = Get-Content $packageInfoFile | ConvertFrom-Json
     Write-Host "Processing $($packageInfo.ArtifactName)"
