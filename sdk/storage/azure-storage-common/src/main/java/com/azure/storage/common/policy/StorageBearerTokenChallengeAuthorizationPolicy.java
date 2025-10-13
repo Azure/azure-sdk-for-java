@@ -137,7 +137,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
         for (String pair : attributes) {
             // Skip empty strings and any strings that don't contain '='.
-            // Allows scenarios where there is only an auth URI and no resource ID. 
+            // Allows scenarios where there is only an auth URI and no resource ID.
             if (CoreUtils.isNullOrEmpty(pair) || !pair.contains("=")) {
                 continue;
             }
