@@ -1,6 +1,10 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0 (2025-10-13)
+
+### Bugs Fixed
+
+- Fixed a bug that `ApplicationGateway.availabilityZones()` throws exception.
 
 ### Other Changes
 
