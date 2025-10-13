@@ -520,13 +520,13 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             .withExistingPublicIpAddress(pip)
             .withTier(ApplicationGatewayTier.WAF_V2)
             .withSize(ApplicationGatewaySkuName.WAF_V2)
-            .withPredefinedSslPolicy(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501)
+            .withPredefinedSslPolicy(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20170401S)
             .create();
 
         ApplicationGatewaySslPolicy sslPolicy = appGateway.sslPolicy();
         Assertions.assertNotNull(sslPolicy);
         Assertions.assertEquals(ApplicationGatewaySslPolicyType.PREDEFINED, sslPolicy.policyType());
-        Assertions.assertEquals(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501, sslPolicy.policyName());
+        Assertions.assertEquals(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20170401S, sslPolicy.policyName());
 
         // update with custom ssl policy
         appGateway.update()
