@@ -2,13 +2,11 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-10-01`.
 
 ## 2.53.4 (2025-09-24)
 
