@@ -485,8 +485,16 @@ function Get-java-GithubIoDocIndex()
 
 # function is used to filter packages to submit to API view tool
 # Function pointer name: FindArtifactForApiReviewFn
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName, $packageInfo = $null)
+function Find-java-Artifacts-For-Apireview($artifactDir, $packageInfo)
 {
+  # Check if packageInfo is null first
+  if (!$packageInfo) {
+    Write-Host "Package info is null, skipping API review artifact search"
+    return $null
+  }
+
+  $pkgName = $packageInfo.ArtifactName ?? $packageInfo.Name
+
   # skip spark packages
   if ($pkgName.Contains("-spark")) {
     return $null
@@ -497,7 +505,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName, $packageInfo 
   }
 
   if ($packageInfo) {
-    $artifactPath = Join-Path $artifactDir $packageInfo.Group $packageInfo.ArtifactName
+    $artifactPath = Join-Path $artifactDir $packageInfo.Group $pkgName
     $files = @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   } else {
     # Find all source jar files in given artifact directory
