@@ -93,14 +93,15 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .get("rule2")
             .sourceApplicationSecurityGroupIds()
             .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+
         Set<String> destinationApplicationSecurityGroupIds = new HashSet<>();
         nsg.securityRules()
             .get("rule3")
             .destinationApplicationSecurityGroupIds()
             .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
 
-        Assertions.assertEquals(2, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
-        Assertions.assertEquals(2, nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds().size());
+        Assertions.assertEquals(2, sourceApplicationSecurityGroupIds.size());
+        Assertions.assertEquals(2, destinationApplicationSecurityGroupIds.size());
         Assertions.assertEquals(
             new HashSet<>(Arrays.asList(asg.id().toLowerCase(Locale.ROOT), asg2.id().toLowerCase(Locale.ROOT))),
             sourceApplicationSecurityGroupIds);
@@ -136,14 +137,15 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
             .get("rule2")
             .sourceApplicationSecurityGroupIds()
             .forEach(id -> sourceApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
+
         destinationApplicationSecurityGroupIds.clear();
         nsg.securityRules()
             .get("rule3")
             .destinationApplicationSecurityGroupIds()
             .forEach(id -> destinationApplicationSecurityGroupIds.add(id.toLowerCase(Locale.ROOT)));
 
-        Assertions.assertEquals(2, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
-        Assertions.assertEquals(2, nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds().size());
+        Assertions.assertEquals(2, sourceApplicationSecurityGroupIds.size());
+        Assertions.assertEquals(2, destinationApplicationSecurityGroupIds.size());
         Assertions.assertEquals(
             new HashSet<>(Arrays.asList(asg.id().toLowerCase(Locale.ROOT), asg5.id().toLowerCase(Locale.ROOT))),
             sourceApplicationSecurityGroupIds);
