@@ -12,14 +12,14 @@ public final class ExascaleDbStorageInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageInputDetails model
-            = BinaryData.fromString("{\"totalSizeInGbs\":1761289407}").toObject(ExascaleDbStorageInputDetails.class);
-        Assertions.assertEquals(1761289407, model.totalSizeInGbs());
+            = BinaryData.fromString("{\"totalSizeInGbs\":1638767964}").toObject(ExascaleDbStorageInputDetails.class);
+        Assertions.assertEquals(1638767964, model.totalSizeInGbs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExascaleDbStorageInputDetails model = new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1761289407);
+        ExascaleDbStorageInputDetails model = new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1638767964);
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageInputDetails.class);
-        Assertions.assertEquals(1761289407, model.totalSizeInGbs());
+        Assertions.assertEquals(1638767964, model.totalSizeInGbs());
     }
 }

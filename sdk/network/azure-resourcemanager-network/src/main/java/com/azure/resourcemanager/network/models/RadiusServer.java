@@ -28,7 +28,9 @@ public final class RadiusServer implements JsonSerializable<RadiusServer> {
     private Long radiusServerScore;
 
     /*
-     * The secret used for this radius server.
+     * The secret used for this radius server. We will no longer return radiusServerSecret in VirtualNetworkGateway
+     * Create/Update/Get/List/UpdateTags APIs response. Please use VirtualNetworkGateway ListRadiusSecrets API to fetch
+     * radius server secrets.
      */
     private String radiusServerSecret;
 
@@ -79,7 +81,9 @@ public final class RadiusServer implements JsonSerializable<RadiusServer> {
     }
 
     /**
-     * Get the radiusServerSecret property: The secret used for this radius server.
+     * Get the radiusServerSecret property: The secret used for this radius server. We will no longer return
+     * radiusServerSecret in VirtualNetworkGateway Create/Update/Get/List/UpdateTags APIs response. Please use
+     * VirtualNetworkGateway ListRadiusSecrets API to fetch radius server secrets.
      * 
      * @return the radiusServerSecret value.
      */
@@ -88,7 +92,9 @@ public final class RadiusServer implements JsonSerializable<RadiusServer> {
     }
 
     /**
-     * Set the radiusServerSecret property: The secret used for this radius server.
+     * Set the radiusServerSecret property: The secret used for this radius server. We will no longer return
+     * radiusServerSecret in VirtualNetworkGateway Create/Update/Get/List/UpdateTags APIs response. Please use
+     * VirtualNetworkGateway ListRadiusSecrets API to fetch radius server secrets.
      * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the RadiusServer object itself.

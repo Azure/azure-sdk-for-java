@@ -11,7 +11,7 @@ public final class EstimatedPatchingTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EstimatedPatchingTime model = BinaryData.fromString(
-            "{\"estimatedDbServerPatchingTime\":626726522,\"estimatedNetworkSwitchesPatchingTime\":1997522468,\"estimatedStorageServerPatchingTime\":523665642,\"totalEstimatedPatchingTime\":665345383}")
+            "{\"estimatedDbServerPatchingTime\":1536043390,\"estimatedNetworkSwitchesPatchingTime\":1474551833,\"estimatedStorageServerPatchingTime\":1609170177,\"totalEstimatedPatchingTime\":489125368}")
             .toObject(EstimatedPatchingTime.class);
     }
 }
