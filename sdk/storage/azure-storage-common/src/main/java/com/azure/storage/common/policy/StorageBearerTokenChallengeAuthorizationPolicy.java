@@ -122,8 +122,8 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return true;
     }
 
-    Map<String, String> extractChallengeAttributes(String header) {
-        if (header == null || !header.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length())) {
+    static Map<String, String> extractChallengeAttributes(String header) {
+        if (!isBearerChallenge(header)) {
             return Collections.emptyMap();
         }
 
@@ -137,9 +137,14 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         for (String pair : attributes) {
             String[] keyValue = pair.split("=");
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            attributeMap.put(keyValue[0].replaceAll("\"", "").trim(), keyValue[1].replaceAll("\"", "").trim());
         }
 
         return attributeMap;
+    }
+
+    static boolean isBearerChallenge(String authenticateHeader) {
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length()));
     }
 }

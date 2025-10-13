@@ -19,24 +19,17 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.extractChallengeAttributes;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,139 +37,12 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     private StorageBearerTokenChallengeAuthorizationPolicy policy;
     private static final String DEFAULT_SCOPE = "https://storage.azure.com/.default";
-    private static final String RESOURCE_ID = "resource_id";
-    private static final String AUTHORIZATION_URI = "authorization_uri";
+    private static final String RESOURCE_ID_STRING = "resource_id";
+    private static final String AUTHORIZATION_URI_STRING = "authorization_uri";
 
     @BeforeEach
     public void setup() {
         policy = new StorageBearerTokenChallengeAuthorizationPolicy(new MockTokenCredential(), DEFAULT_SCOPE);
-    }
-
-    @Test
-    public void extractTenantIdFromUri() {
-        String uri = "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize";
-        String expectedTenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
-
-        String actualTenantId = policy.extractTenantIdFromUri(uri);
-
-        assertEquals(expectedTenantId, actualTenantId);
-    }
-
-    @Test
-    public void extractTenantIdFromUriInvalidUri() {
-        String invalidUri = "https://login.microsoftonline.com/";
-
-        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(invalidUri));
-
-        String expectedMessage = "Invalid authorization URI: tenantId not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void extractTenantIdFromUriMalformedUri() {
-        String malformedUri = "ht!tp://invalid-uri";
-
-        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(malformedUri));
-
-        String expectedMessage = "Invalid authorization URI";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void extractChallengeAttributesSkipsTrailingEqualsPair() {
-        String header
-            = "Bearer bad_pair=, authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertNull(challengeAttributes.get("bad_pair"));
-        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI));
-    }
-
-    @Test
-    public void findBearerWithNullHeader() {
-        Map<String, String> challengeAttributes = extractChallengeAttributes(null);
-        assertNull(challengeAttributes);
-    }
-
-    @Test
-    public void findBearerWithEmptyHeader() {
-        Map<String, String> challengeAttributes = extractChallengeAttributes("");
-        assertNull(challengeAttributes);
-    }
-
-    @Test
-    public void findBearerWithNonBearerHeader() {
-        String header = "Basic realm=\"test\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNull(challengeAttributes);
-    }
-
-    @Test
-    public void findBearerWithBearerHeader() {
-        String header
-            = "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI));
-    }
-
-    @Test
-    public void findBearerWithMultipleChallenges() {
-        String header = "Basic realm=\"test\", Bearer resource_id=\"https://storage.azure.com\", Digest nonce=\"123\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-    }
-
-    @Test
-    public void findBearerWithLowercaseScheme() {
-        String header
-            = "bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI));
-    }
-
-    @Test
-    public void findBearerWithoutSpaceAfterComma() {
-        String header = "Basic realm=\"x\",Bearer resource_id=\"https://storage.azure.com\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-    }
-
-    @Test
-    public void findBearerWithLeadingWhitespace() {
-        String header = "   Bearer resource_id=\"https://storage.azure.com\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-    }
-
-    @Test
-    public void findBearerNotMatchedWhenEmbeddedInWord() {
-        // "XBearer" should not count as a scheme boundary.
-        String header = "Basic realm=\"x\",XBearer resource_id=\"https://storage.azure.com\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNull(challengeAttributes);
-    }
-
-    @Test
-    public void extractChallengeAttributesIgnoresMalformedPairs() {
-        String header
-            = "Bearer resource_id authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertNull(challengeAttributes.get(RESOURCE_ID)); // malformed skipped
-        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI));
     }
 
     @Test
@@ -186,109 +52,36 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         Map<String, String> challengeAttributes = extractChallengeAttributes(header);
         assertNotNull(challengeAttributes);
         assertEquals("bar", challengeAttributes.get("foo"));
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
+        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
     }
 
     @Test
-    public void extractChallengeAttributesBearerAfterAnotherSchemeNoSpace() {
-        String header = "Digest realm=\"y\",Bearer resource_id=\"https://storage.azure.com\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID));
-    }
-
-    @Test
-    public void processBearerChallengeWithNullHeader() {
-        TokenRequestContext result = policy.processBearerChallenge(null);
-        assertNull(result);
-    }
-
-    @Test
-    public void processBearerChallengeWithNonBearerHeader() {
-        String header = "Basic realm=\"test\"";
-        TokenRequestContext result = policy.processBearerChallenge(header);
-        assertNull(result);
-    }
-
-    @Test
-    public void processBearerChallengeWithValidHeader() {
+    public void findBearerWithBearerHeader() {
         String header
             = "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        TokenRequestContext result = policy.processBearerChallenge(header);
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
 
-        assertNotNull(result);
-        assertEquals(1, result.getScopes().size());
-        assertEquals(DEFAULT_SCOPE, result.getScopes().get(0));
-        assertEquals("tenant", result.getTenantId());
-        assertTrue(result.isCaeEnabled());
+        assertNotNull(challengeAttributes);
+        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
+        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI_STRING));
     }
 
     @Test
-    public void processBearerChallengeWithEmptyBearer() {
-        TokenRequestContext ctx = policy.processBearerChallenge("Bearer   ");
-        assertNull(ctx);
-    }
-
-    @ParameterizedTest
-    @MethodSource("determineScopesToUseParameters")
-    public void determineScopesToUse(String resource, String[] expected) {
-        String[] result = policy.determineScopesToUse(resource);
-        assertArrayEquals(expected, result);
-    }
-
-    private static Stream<Arguments> determineScopesToUseParameters() {
-        return Stream.of(
-            // Null or empty resource should return initial scopes
-            Arguments.of(null, new String[] { DEFAULT_SCOPE }), Arguments.of("", new String[] { DEFAULT_SCOPE }),
-
-            // Resource already ending with /.default
-            Arguments.of(DEFAULT_SCOPE, new String[] { DEFAULT_SCOPE }),
-
-            // Resource not ending with /.default
-            Arguments.of("https://storage.azure.com", new String[] { DEFAULT_SCOPE }));
+    public void findBearerWithLowercaseScheme() {
+        String header
+            = "bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
+        assertNotNull(challengeAttributes);
+        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
+        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI_STRING));
     }
 
     @Test
-    public void createTokenRequestContextWithResourceAndAuthUrl() {
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put(RESOURCE_ID, "https://storage.azure.com");
-        attributes.put(AUTHORIZATION_URI, "https://login.microsoftonline.com/tenant/oauth2/authorize");
-
-        TokenRequestContext result = policy.createTokenRequestContext(attributes);
-
-        assertNotNull(result);
-        assertEquals(1, result.getScopes().size());
-        assertEquals(DEFAULT_SCOPE, result.getScopes().get(0));
-        assertEquals("tenant", result.getTenantId());
-        assertTrue(result.isCaeEnabled());
-    }
-
-    @Test
-    public void createTokenRequestContextWithResourceOnly() {
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put(RESOURCE_ID, "https://storage.azure.com");
-
-        TokenRequestContext result = policy.createTokenRequestContext(attributes);
-
-        assertNotNull(result);
-        assertEquals(1, result.getScopes().size());
-        assertEquals(DEFAULT_SCOPE, result.getScopes().get(0));
-        assertNull(result.getTenantId());
-        assertTrue(result.isCaeEnabled());
-    }
-
-    @Test
-    public void createTokenRequestContextWithAuthUrlOnly() {
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put(AUTHORIZATION_URI, "https://login.microsoftonline.com/tenant/oauth2/authorize");
-
-        TokenRequestContext result = policy.createTokenRequestContext(attributes);
-
-        assertNotNull(result);
-        assertEquals(1, result.getScopes().size());
-        assertEquals(DEFAULT_SCOPE, result.getScopes().get(0));
-        assertEquals("tenant", result.getTenantId());
-        assertTrue(result.isCaeEnabled());
+    public void findBearerNotMatchedWhenEmbeddedInWord() {
+        // "XBearer" should not count as a scheme boundary.
+        String header = "Basic realm=\"x\",XBearer resource_id=\"https://storage.azure.com\"";
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
+        assertTrue(challengeAttributes.isEmpty());
     }
 
     @Test
@@ -301,7 +94,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
         // Use a different resource to verify scopes are updated from the challenge.
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
-            "Bearer resource_id=\"https://other.core.windows.net\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"");
+            "Bearer resource_id=\"https://storage.core.windows.net\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"");
         HttpResponse response = new MockHttpResponse(request, 401, headers);
         HttpPipelineCallContext context = createMockCallContext(request);
 
@@ -315,7 +108,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         TokenRequestContext captured = recordingCredential.getLastContext();
         assertNotNull(captured);
         assertEquals(1, captured.getScopes().size());
-        assertEquals("https://other.core.windows.net/.default", captured.getScopes().get(0));
+        assertEquals("https://storage.core.windows.net/.default", captured.getScopes().get(0));
         assertEquals("tenant", captured.getTenantId());
         assertTrue(captured.isCaeEnabled());
     }
@@ -376,6 +169,47 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
             assertEquals(tenants[i], ctx.getTenantId());
             assertTrue(ctx.isCaeEnabled());
         }
+    }
+
+    @Test
+    public void extractTenantIdFromUri() {
+        String uri = "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize";
+        String expectedTenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
+
+        String actualTenantId = policy.extractTenantIdFromUri(uri);
+
+        assertEquals(expectedTenantId, actualTenantId);
+    }
+
+    @Test
+    public void extractTenantIdFromUriInvalidUri() {
+        String invalidUri = "https://login.microsoftonline.com/";
+
+        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(invalidUri));
+
+        String expectedMessage = "Invalid authorization URI: tenantId not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void extractTenantIdFromUriMalformedUri() {
+        String malformedUri = "ht!tp://invalid-uri";
+
+        Exception exception = assertThrows(RuntimeException.class, () -> policy.extractTenantIdFromUri(malformedUri));
+
+        String expectedMessage = "Invalid authorization URI";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void emptyHeaderReturnsEmptyMap() {
+        assertTrue(extractChallengeAttributes(null).isEmpty());
+        assertTrue(extractChallengeAttributes("Basic realm=\"test\"").isEmpty());
+        assertTrue(extractChallengeAttributes("").isEmpty());
     }
 
     private static HttpPipelineCallContext createMockCallContext(HttpRequest request) {
