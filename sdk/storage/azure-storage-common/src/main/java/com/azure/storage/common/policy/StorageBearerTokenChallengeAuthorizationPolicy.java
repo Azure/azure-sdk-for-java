@@ -85,10 +85,11 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     String extractTenantIdFromUri(String uri) {
         try {
             String[] segments = new URI(uri).getPath().split("/");
-            if (segments.length > 1 && !segments[1].isEmpty()) {
+            if (segments.length > 1) {
                 return segments[1];
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
             }
-            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
         }
@@ -128,15 +129,21 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         }
 
         // Don't lowercase the entire header as values can be corrupted. Also don't mutate the original header.
-        String remainingHeader = header.substring(BEARER_TOKEN_PREFIX.length()).trim();
+        String remainingHeader = header.substring(BEARER_TOKEN_PREFIX.length());
 
         // Split on commas first; if no commas present fall back to spaces.
         String[] attributes = remainingHeader.contains(",") ? remainingHeader.split(",") : remainingHeader.split(" ");
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
+            // Skip empty strings and any strings that don't contain '='.
+            // Allows scenarios where there is only an auth URI and no resource ID. 
+            if (CoreUtils.isNullOrEmpty(pair) || !pair.contains("=")) {
+                continue;
+            }
             String[] keyValue = pair.split("=");
 
+            // Support spaces after commas by trimming.
             attributeMap.put(keyValue[0].replaceAll("\"", "").trim(), keyValue[1].replaceAll("\"", "").trim());
         }
 

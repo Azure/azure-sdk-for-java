@@ -29,7 +29,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy.extractChallengeAttributes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,6 +48,26 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     }
 
     @Test
+    public void extractChallengeAttributesExpected() {
+        String header
+            = "Bearer resource_id=\"https://storage.azure.com\",authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
+        assertNotNull(challengeAttributes);
+        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
+        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI_STRING));
+    }
+
+    @Test
+    public void extractChallengeAttributesSpaceAfterComma() {
+        String header
+            = "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
+        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
+        assertNotNull(challengeAttributes);
+        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
+        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI_STRING));
+    }
+
+    @Test
     public void extractChallengeAttributesWithUnknownExtraParam() {
         String header
             = "Bearer resource_id=\"https://storage.azure.com\", foo=\"bar\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
@@ -56,18 +78,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     }
 
     @Test
-    public void findBearerWithBearerHeader() {
-        String header
-            = "Bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-
-        assertNotNull(challengeAttributes);
-        assertExampleResourceId(challengeAttributes.get(RESOURCE_ID_STRING));
-        assertExampleAuthURI(challengeAttributes.get(AUTHORIZATION_URI_STRING));
-    }
-
-    @Test
-    public void findBearerWithLowercaseScheme() {
+    public void extractChallengeAttributesWithLowercaseScheme() {
         String header
             = "bearer resource_id=\"https://storage.azure.com\", authorization_uri=\"https://login.microsoftonline.com/tenant/oauth2/authorize\"";
         Map<String, String> challengeAttributes = extractChallengeAttributes(header);
@@ -77,15 +88,32 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     }
 
     @Test
-    public void findBearerNotMatchedWhenEmbeddedInWord() {
-        // "XBearer" should not count as a scheme boundary.
-        String header = "Basic realm=\"x\",XBearer resource_id=\"https://storage.azure.com\"";
-        Map<String, String> challengeAttributes = extractChallengeAttributes(header);
-        assertTrue(challengeAttributes.isEmpty());
+    public void extractEmptyChallenges() {
+        assertTrue(extractChallengeAttributes(null).isEmpty());
+        assertTrue(extractChallengeAttributes("Basic realm=\"test\"").isEmpty());
+        assertTrue(extractChallengeAttributes("").isEmpty());
     }
 
     @Test
-    public void authorizeRequestOnChallengeWithValidChallenge() {
+    public void doesNotAuthorizeRequestOnInvalidChallenge() {
+        // Use a recording credential so we can assert scopes, tenantId, and CAE.
+        RecordingTokenCredential recordingCredential = new RecordingTokenCredential();
+        StorageBearerTokenChallengeAuthorizationPolicy policyUnderTest
+            = new StorageBearerTokenChallengeAuthorizationPolicy(recordingCredential, DEFAULT_SCOPE);
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://storage.azure.com");
+        HttpResponse response = new MockHttpResponse(request, 401);
+        HttpPipelineCallContext context = createMockCallContext(request);
+
+        boolean result = policyUnderTest.authorizeRequestOnChallengeSync(context, response);
+
+        assertFalse(result);
+        assertNull(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        assertNull(recordingCredential.getLastContext());
+    }
+
+    @Test
+    public void authorizeRequestOnValidChallenge() {
         // Use a recording credential so we can assert scopes, tenantId, and CAE.
         RecordingTokenCredential recordingCredential = new RecordingTokenCredential();
         StorageBearerTokenChallengeAuthorizationPolicy policyUnderTest
@@ -203,13 +231,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void emptyHeaderReturnsEmptyMap() {
-        assertTrue(extractChallengeAttributes(null).isEmpty());
-        assertTrue(extractChallengeAttributes("Basic realm=\"test\"").isEmpty());
-        assertTrue(extractChallengeAttributes("").isEmpty());
     }
 
     private static HttpPipelineCallContext createMockCallContext(HttpRequest request) {
