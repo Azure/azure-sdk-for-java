@@ -5,6 +5,13 @@
 ### Features Added
 - Fixed `DefaultAzureCredential` behavior when `AZURE_TOKEN_CREDENTIALS` environment variable is explicitly set to `ManagedIdentityCredential`. The credential now skips unnecessary probe requests and enables retry logic with exponential backoff for improved resiliency in environments where the managed identity endpoint may be temporarily unavailable.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 ## 1.18.0 (2025-09-16)
 
 ### Features Added
