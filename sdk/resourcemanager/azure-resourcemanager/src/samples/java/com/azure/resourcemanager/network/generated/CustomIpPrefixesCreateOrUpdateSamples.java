@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
  */
 public final class CustomIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * CustomIpPrefixCreateCustomizedValues.json
      */
     /**

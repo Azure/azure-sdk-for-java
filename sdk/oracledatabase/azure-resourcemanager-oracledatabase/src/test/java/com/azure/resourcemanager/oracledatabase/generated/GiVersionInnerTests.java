@@ -12,8 +12,8 @@ public final class GiVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"pusdstt\"},\"id\":\"ogvbbejdcngq\",\"name\":\"m\",\"type\":\"akufgmjz\"}")
+            "{\"properties\":{\"version\":\"lmnguxaw\"},\"id\":\"ldsyuuximerqfob\",\"name\":\"yznkby\",\"type\":\"utwpfhp\"}")
             .toObject(GiVersionInner.class);
-        Assertions.assertEquals("pusdstt", model.properties().version());
+        Assertions.assertEquals("lmnguxaw", model.properties().version());
     }
 }
