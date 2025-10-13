@@ -17,6 +17,8 @@ parameters:
 - name: TestPipeline
   type: boolean
   default: false
+- name: ServiceDirectory
+  type: string
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -61,8 +63,8 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                ArtifactsJson: '${{ convertToJson(parameters.Artifacts) }}'
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: UsePythonVersion@0
@@ -203,8 +205,8 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                ArtifactsJson: '${{ convertToJson(parameters.Artifacts) }}'
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: PythonScript@0

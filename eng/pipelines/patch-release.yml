@@ -3,6 +3,7 @@ pr: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
+    serviceDirectory: template
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
@@ -19,4 +20,3 @@ extends:
       safeName: azuresdktemplatethree
       skipPublishDocMs: true
       ServiceDirectory: template
-

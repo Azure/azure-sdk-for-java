@@ -132,8 +132,8 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                ArtifactsJson: '${{ convertToJson(parameters.Artifacts) }}'
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparse-checkout
