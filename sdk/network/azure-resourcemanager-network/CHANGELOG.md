@@ -1,10 +1,16 @@
 # Release History
 
-## 2.53.5 (2025-10-11)
+## 2.54.0 (2025-10-13)
 
 ### Bugs Fixed
 
 - Fixed a bug that `ApplicationGateway.availabilityZones()` throws exception.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-10-01`.
 
 ## 2.53.4 (2025-09-24)
 

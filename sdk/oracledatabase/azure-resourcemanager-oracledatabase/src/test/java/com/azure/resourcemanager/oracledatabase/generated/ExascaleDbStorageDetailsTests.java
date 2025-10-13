@@ -12,9 +12,9 @@ public final class ExascaleDbStorageDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageDetails model
-            = BinaryData.fromString("{\"availableSizeInGbs\":2049829405,\"totalSizeInGbs\":481036102}")
+            = BinaryData.fromString("{\"availableSizeInGbs\":287245464,\"totalSizeInGbs\":1670865281}")
                 .toObject(ExascaleDbStorageDetails.class);
-        Assertions.assertEquals(2049829405, model.availableSizeInGbs());
-        Assertions.assertEquals(481036102, model.totalSizeInGbs());
+        Assertions.assertEquals(287245464, model.availableSizeInGbs());
+        Assertions.assertEquals(1670865281, model.totalSizeInGbs());
     }
 }

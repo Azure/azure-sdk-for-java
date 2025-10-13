@@ -22,7 +22,7 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"ookrtalvnbw\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"jjukyrdnqodxah\",\"name\":\"xhqf\",\"type\":\"qnvzoqgyipemch\"}";
+            = "{\"properties\":{\"version\":\"dgvpyig\",\"dbWorkload\":\"OLTP\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"joedx\",\"name\":\"gucaif\",\"type\":\"aurwwgilfjq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AutonomousDbVersion response = manager.autonomousDatabaseVersions()
-            .getWithResponse("a", "wxudgn", com.azure.core.util.Context.NONE)
+            .getWithResponse("rpdltbq", "tqjfgxxsaet", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ookrtalvnbw", response.properties().version());
-        Assertions.assertEquals(WorkloadType.AJD, response.properties().dbWorkload());
+        Assertions.assertEquals("dgvpyig", response.properties().version());
+        Assertions.assertEquals(WorkloadType.OLTP, response.properties().dbWorkload());
         Assertions.assertTrue(response.properties().isDefaultForFree());
         Assertions.assertTrue(response.properties().isDefaultForPaid());
         Assertions.assertTrue(response.properties().isFreeTierEnabled());

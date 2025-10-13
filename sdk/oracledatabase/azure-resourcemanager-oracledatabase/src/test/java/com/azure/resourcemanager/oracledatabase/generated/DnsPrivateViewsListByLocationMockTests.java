@@ -23,7 +23,7 @@ public final class DnsPrivateViewsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"xubmdnafcbqw\",\"displayName\":\"e\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"laqacigele\",\"timeCreated\":\"2021-11-13T22:21:28Z\",\"timeUpdated\":\"2021-10-21T16:22:49Z\",\"provisioningState\":\"Canceled\"},\"id\":\"vwzkj\",\"name\":\"pwbeonr\",\"type\":\"kwzdqybxcea\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"ytzpo\",\"displayName\":\"ewxigpxvk\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"upxvpifd\",\"timeCreated\":\"2021-06-19T22:08:59Z\",\"timeUpdated\":\"2021-10-06T15:52:18Z\",\"provisioningState\":\"Failed\"},\"id\":\"yzeyuubeid\",\"name\":\"zlfytoit\",\"type\":\"gygvfltgvdiho\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DnsPrivateViewsListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DnsPrivateView> response
-            = manager.dnsPrivateViews().listByLocation("pyqy", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateViews().listByLocation("n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xubmdnafcbqw", response.iterator().next().properties().ocid());
-        Assertions.assertEquals("e", response.iterator().next().properties().displayName());
-        Assertions.assertTrue(response.iterator().next().properties().isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.ACTIVE,
+        Assertions.assertEquals("ytzpo", response.iterator().next().properties().ocid());
+        Assertions.assertEquals("ewxigpxvk", response.iterator().next().properties().displayName());
+        Assertions.assertFalse(response.iterator().next().properties().isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETED,
             response.iterator().next().properties().lifecycleState());
-        Assertions.assertEquals("laqacigele", response.iterator().next().properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T22:21:28Z"),
+        Assertions.assertEquals("upxvpifd", response.iterator().next().properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T22:08:59Z"),
             response.iterator().next().properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T16:22:49Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T15:52:18Z"),
             response.iterator().next().properties().timeUpdated());
     }
 }

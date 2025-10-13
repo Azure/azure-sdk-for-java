@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"hqykizmdk\",\"vmOcid\":\"oafcluqvox\",\"ocid\":\"cjimryvwgcwwpbmz\",\"domain\":\"esyds\",\"lifecycleDetails\":\"efoh\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-01-07T15:19:45Z\"},\"id\":\"dy\",\"name\":\"leallklm\",\"type\":\"khlowkxxpv\"}";
+            = "{\"properties\":{\"ipAddress\":\"iswskuk\",\"vmOcid\":\"asbvw\",\"ocid\":\"pkxkdtxfk\",\"domain\":\"lq\",\"lifecycleDetails\":\"w\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-06-28T03:53:06Z\"},\"id\":\"gtywatmqaqkue\",\"name\":\"tgroesh\",\"type\":\"ygzc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .define("hqepvufhbzehewh")
-            .withExistingCloudVmCluster("kuma", "jcaacfdmmcpugm")
-            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("nlbqnbldxeaclg").withVmOcid("horimkr"))
+            .define("ycblevpmcl")
+            .withExistingCloudVmCluster("j", "bajbuscgduusi")
+            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("xkyxlzgs").withVmOcid("kzzltafhbzf"))
             .create();
 
-        Assertions.assertEquals("hqykizmdk", response.properties().ipAddress());
-        Assertions.assertEquals("oafcluqvox", response.properties().vmOcid());
+        Assertions.assertEquals("iswskuk", response.properties().ipAddress());
+        Assertions.assertEquals("asbvw", response.properties().vmOcid());
     }
 }
