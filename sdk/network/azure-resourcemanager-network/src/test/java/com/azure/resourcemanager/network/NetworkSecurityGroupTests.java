@@ -21,12 +21,12 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
     @Test
     public void canCRUDNetworkSecurityGroup() {
 
-        final String asgName = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String asgName2 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String asgName3 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String asgName4 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String asgName5 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
-        final String asgName6 = generateRandomResourceName("asg", 8).toUpperCase(Locale.ROOT);
+        final String asgName = generateRandomResourceName("asg", 8);
+        final String asgName2 = generateRandomResourceName("asg", 8);
+        final String asgName3 = generateRandomResourceName("asg", 8);
+        final String asgName4 = generateRandomResourceName("asg", 8);
+        final String asgName5 = generateRandomResourceName("asg", 8);
+        final String asgName6 = generateRandomResourceName("asg", 8);
         final String nsgName = generateRandomResourceName("nsg", 8);
 
         final Region region = Region.US_SOUTH_CENTRAL;
@@ -34,31 +34,31 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         ApplicationSecurityGroup asg = networkManager.applicationSecurityGroups()
             .define(asgName)
             .withRegion(region)
-            .withNewResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withNewResourceGroup(rgName)
             .create();
 
         ApplicationSecurityGroup asg2 = networkManager.applicationSecurityGroups()
             .define(asgName2)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .create();
 
         ApplicationSecurityGroup asg3 = networkManager.applicationSecurityGroups()
             .define(asgName3)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .create();
 
         ApplicationSecurityGroup asg4 = networkManager.applicationSecurityGroups()
             .define(asgName4)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .create();
 
         NetworkSecurityGroup nsg = networkManager.networkSecurityGroups()
             .define(nsgName)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .defineRule("rule1")
             .allowOutbound()
             .fromAnyAddress()
@@ -111,13 +111,13 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         ApplicationSecurityGroup asg5 = networkManager.applicationSecurityGroups()
             .define(asgName5)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .create();
 
         ApplicationSecurityGroup asg6 = networkManager.applicationSecurityGroups()
             .define(asgName6)
             .withRegion(region)
-            .withExistingResourceGroup(rgName.toUpperCase(Locale.ROOT))
+            .withExistingResourceGroup(rgName)
             .create();
 
         nsg.update()
