@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0 (2025-10-13)
 
 ### Other Changes
 
