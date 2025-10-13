@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.71.2-hotfix0 (2025-10-15)
+### 4.71.2-hotfix (2025-10-15)
 
 #### Bugs Fixed
 * Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
