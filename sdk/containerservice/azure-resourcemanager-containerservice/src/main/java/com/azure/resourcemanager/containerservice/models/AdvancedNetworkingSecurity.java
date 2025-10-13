@@ -22,6 +22,14 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
      */
     private Boolean enabled;
 
+    /*
+     * Enable advanced network policies. This allows users to configure Layer 7 network policies (FQDN, HTTP, Kafka).
+     * Policies themselves must be configured via the Cilium Network Policy resources, see
+     * https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on cilium-based clusters.
+     * If not specified, the default value is FQDN if security.enabled is set to true.
+     */
+    private AdvancedNetworkPolicies advancedNetworkPolicies;
+
     /**
      * Creates an instance of AdvancedNetworkingSecurity class.
      */
@@ -51,6 +59,32 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     }
 
     /**
+     * Get the advancedNetworkPolicies property: Enable advanced network policies. This allows users to configure Layer
+     * 7 network policies (FQDN, HTTP, Kafka). Policies themselves must be configured via the Cilium Network Policy
+     * resources, see https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on
+     * cilium-based clusters. If not specified, the default value is FQDN if security.enabled is set to true.
+     * 
+     * @return the advancedNetworkPolicies value.
+     */
+    public AdvancedNetworkPolicies advancedNetworkPolicies() {
+        return this.advancedNetworkPolicies;
+    }
+
+    /**
+     * Set the advancedNetworkPolicies property: Enable advanced network policies. This allows users to configure Layer
+     * 7 network policies (FQDN, HTTP, Kafka). Policies themselves must be configured via the Cilium Network Policy
+     * resources, see https://docs.cilium.io/en/latest/security/policy/index.html. This can be enabled only on
+     * cilium-based clusters. If not specified, the default value is FQDN if security.enabled is set to true.
+     * 
+     * @param advancedNetworkPolicies the advancedNetworkPolicies value to set.
+     * @return the AdvancedNetworkingSecurity object itself.
+     */
+    public AdvancedNetworkingSecurity withAdvancedNetworkPolicies(AdvancedNetworkPolicies advancedNetworkPolicies) {
+        this.advancedNetworkPolicies = advancedNetworkPolicies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -65,6 +99,8 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("advancedNetworkPolicies",
+            this.advancedNetworkPolicies == null ? null : this.advancedNetworkPolicies.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +121,9 @@ public final class AdvancedNetworkingSecurity implements JsonSerializable<Advanc
 
                 if ("enabled".equals(fieldName)) {
                     deserializedAdvancedNetworkingSecurity.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("advancedNetworkPolicies".equals(fieldName)) {
+                    deserializedAdvancedNetworkingSecurity.advancedNetworkPolicies
+                        = AdvancedNetworkPolicies.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
