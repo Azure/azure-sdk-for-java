@@ -313,7 +313,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             try {
                 this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
             } catch (CosmosException e) {
-                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+                logger.warn("Per-partition circuit breaker hit an exception ", e);
             }
         }
 
@@ -383,7 +383,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                     .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.regionalRoutingContextToRoute, false);
             } catch (CosmosException e) {
-                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+                logger.warn("Per-partition circuit breaker hit an exception ", e);
             }
         }
 
@@ -462,7 +462,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                             this.request.requestContext.regionalRoutingContextToRoute,
                             false);
                     } catch (CosmosException e) {
-                        return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+                        logger.warn("Per-partition circuit breaker hit an exception ", e);
                     }
                 }
             }
@@ -484,7 +484,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     this.request.requestContext.regionalRoutingContextToRoute,
                     false);
             } catch (CosmosException e) {
-                return Mono.just(ShouldRetryResult.errorOnNonRelatedException(e));
+                logger.warn("Per-partition circuit breaker hit an exception ", e);
             }
         }
 
