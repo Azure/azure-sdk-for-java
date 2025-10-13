@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
@@ -28,14 +29,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link StructuredMessageDecoderPolicy}.
+ * Unit tests for {@link StorageContentValidationDecoderPolicy}.
  */
-public class StructuredMessageDecoderPolicyTest {
+public class StorageContentValidationDecoderPolicyTest {
 
     @Test
     public void shouldNotApplyDecodingWhenContextKeyNotPresent() throws MalformedURLException {
         // Arrange
-        StructuredMessageDecoderPolicy policy = new StructuredMessageDecoderPolicy();
+        StorageContentValidationDecoderPolicy policy = new StorageContentValidationDecoderPolicy();
         HttpPipelineCallContext context = createMockContext(null, null);
         HttpPipelineNextPolicy nextPolicy = createMockNextPolicy();
 
@@ -54,8 +55,8 @@ public class StructuredMessageDecoderPolicyTest {
     @Test
     public void shouldNotApplyDecodingWhenContextKeyIsFalse() throws MalformedURLException {
         // Arrange
-        StructuredMessageDecoderPolicy policy = new StructuredMessageDecoderPolicy();
-        Context ctx = new Context(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, false);
+        StorageContentValidationDecoderPolicy policy = new StorageContentValidationDecoderPolicy();
+        Context ctx = new Context(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, false);
         HttpPipelineCallContext context = createMockContext(ctx, null);
         HttpPipelineNextPolicy nextPolicy = createMockNextPolicy();
 
@@ -74,12 +75,12 @@ public class StructuredMessageDecoderPolicyTest {
     @Test
     public void shouldApplyDecodingWhenContextKeyIsTrue() throws MalformedURLException {
         // Arrange
-        StructuredMessageDecoderPolicy policy = new StructuredMessageDecoderPolicy();
+        StorageContentValidationDecoderPolicy policy = new StorageContentValidationDecoderPolicy();
         DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
             .setStructuredMessageValidationEnabled(true);
         
-        Context ctx = new Context(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
-            .addData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, validationOptions);
+        Context ctx = new Context(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+            .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, validationOptions);
         
         HttpPipelineCallContext context = createMockContext(ctx, 1024L);
         HttpPipelineNextPolicy nextPolicy = createMockNextPolicy();
@@ -93,7 +94,7 @@ public class StructuredMessageDecoderPolicyTest {
                 assertNotNull(response);
                 assertEquals(200, response.getStatusCode());
                 // Verify it's a DecodedResponse
-                assertTrue(response instanceof StructuredMessageDecoderPolicy.DecodedResponse);
+                assertTrue(response instanceof StorageContentValidationDecoderPolicy.DecodedResponse);
             })
             .verifyComplete();
     }
@@ -101,12 +102,12 @@ public class StructuredMessageDecoderPolicyTest {
     @Test
     public void shouldNotApplyDecodingForNonDownloadResponse() throws MalformedURLException {
         // Arrange
-        StructuredMessageDecoderPolicy policy = new StructuredMessageDecoderPolicy();
+        StorageContentValidationDecoderPolicy policy = new StorageContentValidationDecoderPolicy();
         DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
             .setStructuredMessageValidationEnabled(true);
         
-        Context ctx = new Context(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
-            .addData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, validationOptions);
+        Context ctx = new Context(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+            .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, validationOptions);
         
         HttpPipelineCallContext context = createMockContext(ctx, null);
         // Create a non-GET request (POST)
@@ -126,7 +127,7 @@ public class StructuredMessageDecoderPolicyTest {
                 assertNotNull(response);
                 assertEquals(200, response.getStatusCode());
                 // Should not be a DecodedResponse
-                assertFalse(response instanceof StructuredMessageDecoderPolicy.DecodedResponse);
+                assertFalse(response instanceof StorageContentValidationDecoderPolicy.DecodedResponse);
             })
             .verifyComplete();
     }
@@ -138,10 +139,10 @@ public class StructuredMessageDecoderPolicyTest {
         when(context.getHttpRequest()).thenReturn(request);
         
         if (ctx != null) {
-            when(context.getData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY))
-                .thenReturn(ctx.getData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY));
-            when(context.getData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY))
-                .thenReturn(ctx.getData(StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY));
+            when(context.getData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY))
+                .thenReturn(ctx.getData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY));
+            when(context.getData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY))
+                .thenReturn(ctx.getData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY));
         } else {
             when(context.getData(any())).thenReturn(java.util.Optional.empty());
         }

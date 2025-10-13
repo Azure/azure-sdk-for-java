@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecodingStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,24 +25,13 @@ import java.nio.charset.Charset;
  * This is a decoding policy in an {@link com.azure.core.http.HttpPipeline} to decode structured messages in blob
  * download requests. The policy checks for a context value to determine when to apply structured message decoding.
  */
-public class StructuredMessageDecoderPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageDecoderPolicy.class);
+public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
 
     /**
-     * Context key used to signal that structured message decoding should be applied.
+     * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
      */
-    public static final String STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY = "azure-storage-structured-message-decoding";
-
-    /**
-     * Context key used to pass DownloadContentValidationOptions to the policy.
-     */
-    public static final String STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY =
-        "azure-storage-structured-message-validation-options";
-
-    /**
-     * Creates a new instance of {@link StructuredMessageDecoderPolicy}.
-     */
-    public StructuredMessageDecoderPolicy() {
+    public StorageContentValidationDecoderPolicy() {
     }
 
     @Override
@@ -75,7 +65,7 @@ public class StructuredMessageDecoderPolicy implements HttpPipelinePolicy {
      * @return true if decoding should be applied, false otherwise.
      */
     private boolean shouldApplyDecoding(HttpPipelineCallContext context) {
-        return context.getData(STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY)
+        return context.getData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY)
             .map(value -> value instanceof Boolean && (Boolean) value)
             .orElse(false);
     }
@@ -87,7 +77,7 @@ public class StructuredMessageDecoderPolicy implements HttpPipelinePolicy {
      * @return The validation options or null if not present.
      */
     private DownloadContentValidationOptions getValidationOptions(HttpPipelineCallContext context) {
-        return context.getData(STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY)
+        return context.getData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY)
             .filter(value -> value instanceof DownloadContentValidationOptions)
             .map(value -> (DownloadContentValidationOptions) value)
             .orElse(null);

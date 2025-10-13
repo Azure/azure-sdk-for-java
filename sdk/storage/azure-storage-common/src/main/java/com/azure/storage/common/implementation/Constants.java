@@ -94,6 +94,17 @@ public final class Constants {
 
     public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
 
+    /**
+     * Context key used to signal that structured message decoding should be applied.
+     */
+    public static final String STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY = "azure-storage-structured-message-decoding";
+
+    /**
+     * Context key used to pass DownloadContentValidationOptions to the policy.
+     */
+    public static final String STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY =
+        "azure-storage-structured-message-validation-options";
+
     private Constants() {
     }
 

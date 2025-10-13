@@ -46,7 +46,6 @@ import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.implementation.util.StructuredMessageDecoderPolicy;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -82,6 +81,7 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.DownloadContentValidationOptions;
@@ -1341,9 +1341,9 @@ public class BlobAsyncClientBase {
         if (contentValidationOptions != null
             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
             firstRangeContext = firstRangeContext.addData(
-                StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+                Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
             firstRangeContext = firstRangeContext.addData(
-                StructuredMessageDecoderPolicy.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY,
+                Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY,
                 contentValidationOptions);
         }
 
