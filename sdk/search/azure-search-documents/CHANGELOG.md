@@ -12,6 +12,7 @@
     - `isEnableRescoring` -> `isRescoringEnabled`
     - `setEnableRescoring` -> `setRescoringEnabled`
 - Changed `RankingOrder.RE_RANKER_SCORE` to `RankingOrder.RERANKER_SCORE`.
+- Changed `SearchOptions.getDebug` and `.setDebug` to `.getDebugMode` and `.setDebugMode`.
 - Default `SearchServiceVersion` changed from `2025_09_01` to `V2025_08_01_PREVIEW`.
 
 ### Bugs Fixed
