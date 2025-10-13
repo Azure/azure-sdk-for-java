@@ -131,7 +131,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), null, null);
+        return deleteBlobHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName), null, null);
     }
 
     /**
@@ -158,7 +158,7 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName, DeleteSnapshotsOptionType deleteOptions,
         BlobRequestConditions blobRequestConditions) {
-        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), deleteOptions,
+        return deleteBlobHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName), deleteOptions,
             blobRequestConditions);
     }
 
@@ -234,8 +234,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
-            null, null, null);
+        return setBlobAccessTierHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName),
+            accessTier, null, null, null);
     }
 
     /**
@@ -260,8 +260,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         String leaseId) {
-        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
-            null, leaseId, null);
+        return setBlobAccessTierHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName),
+            accessTier, null, leaseId, null);
     }
 
     /**

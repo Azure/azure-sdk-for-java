@@ -43,6 +43,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
@@ -1702,6 +1703,32 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(decodedName, blobs.next().getName());
         assertEquals(decodedName + "2", blobs.next().getName());
         assertEquals(decodedName + "3", blobs.next().getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+/$,/?#[]" })
+    public void getNonEncodedContainerName(String originalContainerName) {
+        BlobContainerClient client = primaryBlobServiceClient.getBlobContainerClient(originalContainerName);
+        assertEquals(originalContainerName, client.getBlobContainerName());
+
+
+        // see if the container name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalContainerName);
+        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName).getBlobContainerUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedContainerClient() {
+        String originalContainerName = "test%test";
+        BlobContainerClientBuilder blobContainerClientBuilder = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl());
+        blobContainerClientBuilder.containerName(originalContainerName);
+
+        BlobContainerClient blobContainerClient = blobContainerClientBuilder.buildClient();
+        assertEquals(originalContainerName, blobContainerClient.getBlobContainerName());
+
+        // see if the container name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalContainerName);
+        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName).getBlobContainerUrl().contains(encodedName));
     }
 
     @Test
