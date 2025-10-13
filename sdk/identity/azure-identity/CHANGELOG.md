@@ -1,15 +1,9 @@
 # Release History
 
-## 1.19.0-beta.1 (Unreleased)
+## 1.18.1 (2025-10-13)
 
 ### Features Added
 - Fixed `DefaultAzureCredential` behavior when `AZURE_TOKEN_CREDENTIALS` environment variable is explicitly set to `ManagedIdentityCredential`. The credential now skips unnecessary probe requests and enables retry logic with exponential backoff for improved resiliency in environments where the managed identity endpoint may be temporarily unavailable.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.18.0 (2025-09-16)
 
