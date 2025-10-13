@@ -86,7 +86,7 @@ function Should-Process-Package($packageInfo)
     $modifiedFiles  = @(Get-ChangedFiles -DiffPath "$packagePath/*" -DiffFilterType '')
     $filteredFileCount = $modifiedFiles.Count
     LogInfo "Number of modified files for package: $filteredFileCount"
-    return ($filteredFileCount -gt 0 -and $pkgInfo.IsNewSdk)
+    return ($filteredFileCount -gt 0 -and $packageInfo.IsNewSdk)
 }
 
 function Log-Input-Params()
@@ -129,7 +129,25 @@ foreach ($packageInfoFile in $packageInfoFiles)
 
     LogInfo "Processing $($pkgArtifactName)"
 
-    $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName $packageInfo
+    # Check if the function supports the packageInfo parameter
+    $functionInfo = Get-Command $FindArtifactForApiReviewFn -ErrorAction SilentlyContinue
+    $supportsPackageInfoParam = $false
+
+    if ($functionInfo -and $functionInfo.Parameters) {
+        # Check if function specifically supports packageInfo parameter
+        $parameterNames = $functionInfo.Parameters.Keys
+        $supportsPackageInfoParam = $parameterNames -contains 'packageInfo'
+    }
+
+    # Call function with appropriate parameters
+    if ($supportsPackageInfoParam) {
+        LogInfo "Calling $FindArtifactForApiReviewFn with packageInfo parameter"
+        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $packageInfo
+    }
+    else {
+        LogInfo "Calling $FindArtifactForApiReviewFn with legacy parameters"
+        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName
+    }
 
     if ($packages)
     {
@@ -147,7 +165,7 @@ foreach ($packageInfoFile in $packageInfoFiles)
         }
         else
         {
-            LogInfo "Pull request does not have any change for $($pkgArtifactName)). Skipping API change detect."
+            LogInfo "Pull request does not have any change for $($pkgArtifactName). Skipping API change detect."
         }
     }
     else

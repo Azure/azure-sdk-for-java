@@ -292,7 +292,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
       }
 
       Write-Host "Checking published package at $uri"
-      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
 
       if ($response.BaseResponse.IsSuccessStatusCode)
       {
@@ -350,7 +350,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
-    ReleaseTag     = "$($groupId)+$($pkgId)_$($pkgVersion)"
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -485,8 +485,16 @@ function Get-java-GithubIoDocIndex()
 
 # function is used to filter packages to submit to API view tool
 # Function pointer name: FindArtifactForApiReviewFn
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName, $packageInfo = $null)
+function Find-java-Artifacts-For-Apireview($artifactDir, $packageInfo)
 {
+  # Check if packageInfo is null first
+  if (!$packageInfo) {
+    Write-Host "Package info is null, skipping API review artifact search"
+    return $null
+  }
+
+  $pkgName = $packageInfo.ArtifactName ?? $packageInfo.Name
+
   # skip spark packages
   if ($pkgName.Contains("-spark")) {
     return $null
@@ -497,8 +505,8 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName, $packageInfo 
   }
 
   if ($packageInfo) {
-    $artifactPath = Join-Path $artifactDir $packageInfo.Group $packageInfo.ArtifactName
-    $files += @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+    $artifactPath = Join-Path $artifactDir $packageInfo.Group $pkgName
+    $files = @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   } else {
     # Find all source jar files in given artifact directory
     # Filter for package in "com.azure*" groupId.
