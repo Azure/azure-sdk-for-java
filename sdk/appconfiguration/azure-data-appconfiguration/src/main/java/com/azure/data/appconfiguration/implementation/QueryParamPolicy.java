@@ -28,15 +28,19 @@ public final class QueryParamPolicy extends HttpPipelineSyncPolicy {
             String queryString = builder.getQueryString();
             builder.clearQuery();
             TreeMap<String, List<String>> orderedQuery = new TreeMap<>(String::compareTo);
-            CoreUtils.parseQueryParameters(queryString)
-                .forEachRemaining(kvp -> orderedQuery.compute(kvp.getKey(), (ignored, values) -> {
+            CoreUtils.parseQueryParameters(queryString).forEachRemaining(kvp -> {
+                String lowercaseKey = kvp.getKey().toLowerCase();
+                orderedQuery.compute(lowercaseKey, (ignored, values) -> {
                     if (values == null) {
                         values = new ArrayList<>();
                     }
                     values.add(kvp.getValue());
                     return values;
-                }));
+                });
+            });
             for (Map.Entry<String, List<String>> ordered : orderedQuery.entrySet()) {
+                // Sort values for each parameter key to ensure consistent ordering
+                ordered.getValue().sort(String::compareTo);
                 for (String val : ordered.getValue()) {
                     builder.addQueryParameter(ordered.getKey(), val);
                 }
