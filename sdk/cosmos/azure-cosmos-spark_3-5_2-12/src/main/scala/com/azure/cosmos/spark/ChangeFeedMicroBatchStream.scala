@@ -117,6 +117,7 @@ private class ChangeFeedMicroBatchStream
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
+    val parsedStartChangeFeedState = SparkBridgeImplementationInternal.parseChangeFeedState(start.changeFeedState)
     end
       .inputPartitions
       .get
@@ -125,7 +126,7 @@ private class ChangeFeedMicroBatchStream
         partition
          .withContinuationState(
            SparkBridgeImplementationInternal
-            .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
+            .extractChangeFeedStateForRange(parsedStartChangeFeedState, partition.feedRange),
            clearEndLsn = false)
          .withIndex(index)
       })
@@ -211,7 +212,7 @@ private class ChangeFeedMicroBatchStream
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
       val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-        container, changeFeedConfig, partitioningConfig, Some(streamId))
+        container, containerConfig, changeFeedConfig, partitioningConfig, Some(streamId))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }

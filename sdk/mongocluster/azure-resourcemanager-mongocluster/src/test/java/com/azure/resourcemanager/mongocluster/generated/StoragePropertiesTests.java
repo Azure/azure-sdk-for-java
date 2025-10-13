@@ -12,25 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProperties model = BinaryData.fromString(
-            "{\"sizeGb\":2292906968066822359,\"type\":\"PremiumSSD\",\"iops\":8978817048670462489,\"throughput\":4178518730504659772}")
+        StorageProperties model = BinaryData.fromString("{\"sizeGb\":2292906968066822359,\"type\":\"PremiumSSD\"}")
             .toObject(StorageProperties.class);
         Assertions.assertEquals(2292906968066822359L, model.sizeGb());
         Assertions.assertEquals(StorageType.PREMIUM_SSD, model.type());
-        Assertions.assertEquals(8978817048670462489L, model.iops());
-        Assertions.assertEquals(4178518730504659772L, model.throughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProperties model = new StorageProperties().withSizeGb(2292906968066822359L)
-            .withType(StorageType.PREMIUM_SSD)
-            .withIops(8978817048670462489L)
-            .withThroughput(4178518730504659772L);
+        StorageProperties model
+            = new StorageProperties().withSizeGb(2292906968066822359L).withType(StorageType.PREMIUM_SSD);
         model = BinaryData.fromObject(model).toObject(StorageProperties.class);
         Assertions.assertEquals(2292906968066822359L, model.sizeGb());
         Assertions.assertEquals(StorageType.PREMIUM_SSD, model.type());
-        Assertions.assertEquals(8978817048670462489L, model.iops());
-        Assertions.assertEquals(4178518730504659772L, model.throughput());
     }
 }

@@ -1079,7 +1079,8 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Database Migrations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return database Migration resources for the scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseMigrationCosmosDbMongoInner>> getForScopeNextSinglePageAsync(String nextLink) {
@@ -1105,7 +1106,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Database Migrations along with {@link PagedResponse}.
+     * @return database Migration resources for the scope along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseMigrationCosmosDbMongoInner> getForScopeNextSinglePage(String nextLink) {
@@ -1133,7 +1134,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Database Migrations along with {@link PagedResponse}.
+     * @return database Migration resources for the scope along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatabaseMigrationCosmosDbMongoInner> getForScopeNextSinglePage(String nextLink,

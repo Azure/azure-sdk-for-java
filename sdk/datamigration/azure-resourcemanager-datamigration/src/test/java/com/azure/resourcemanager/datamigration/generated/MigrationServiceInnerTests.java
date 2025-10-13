@@ -14,19 +14,19 @@ public final class MigrationServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationServiceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"hqkvpuvksgplsak\"},\"location\":\"n\",\"tags\":{\"jphuopxodlqi\":\"n\"},\"id\":\"ntorzihleosjswsr\",\"name\":\"slyzrpzbchckqq\",\"type\":\"qioxi\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"integrationRuntimeState\":\"joxafnndlpi\"},\"location\":\"koymkcd\",\"tags\":{\"reqnovvqfov\":\"pkkpw\",\"rsndsytgadgvra\":\"jxywsuws\",\"uu\":\"aeneqnzarrwl\"},\"id\":\"jfqka\",\"name\":\"e\",\"type\":\"iipfpubj\"}")
             .toObject(MigrationServiceInner.class);
-        Assertions.assertEquals("n", model.location());
-        Assertions.assertEquals("n", model.tags().get("jphuopxodlqi"));
+        Assertions.assertEquals("koymkcd", model.location());
+        Assertions.assertEquals("pkkpw", model.tags().get("reqnovvqfov"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationServiceInner model
-            = new MigrationServiceInner().withLocation("n").withTags(mapOf("jphuopxodlqi", "n"));
+        MigrationServiceInner model = new MigrationServiceInner().withLocation("koymkcd")
+            .withTags(mapOf("reqnovvqfov", "pkkpw", "rsndsytgadgvra", "jxywsuws", "uu", "aeneqnzarrwl"));
         model = BinaryData.fromObject(model).toObject(MigrationServiceInner.class);
-        Assertions.assertEquals("n", model.location());
-        Assertions.assertEquals("n", model.tags().get("jphuopxodlqi"));
+        Assertions.assertEquals("koymkcd", model.location());
+        Assertions.assertEquals("pkkpw", model.tags().get("reqnovvqfov"));
     }
 
     // Use "Map.of" if available

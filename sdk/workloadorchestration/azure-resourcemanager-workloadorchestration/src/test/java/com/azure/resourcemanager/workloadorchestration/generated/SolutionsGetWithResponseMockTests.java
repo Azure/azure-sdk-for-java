@@ -22,7 +22,7 @@ public final class SolutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionTemplateId\":\"pol\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"evboclzhzjknyuxg\",\"latestConfigRevision\":\"ttxpnrupza\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"rdixt\",\"latestConfigRevision\":\"ekidswyskb\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"ffg\",\"latestConfigRevision\":\"lukkutvlxhrpqhvm\",\"isConfigured\":true}],\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"qehbhbcds\",\"type\":\"EdgeZone\"},\"eTag\":\"yr\",\"id\":\"doypm\",\"name\":\"ltoormkfqlwxldyk\",\"type\":\"lsygaol\"}";
+            = "{\"properties\":{\"solutionTemplateId\":\"fqz\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"njyixh\",\"latestConfigRevision\":\"fratqxmbjroumzz\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"al\",\"latestConfigRevision\":\"jrhuzgf\",\"isConfigured\":false}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"pusllywpv\",\"type\":\"CustomLocation\"},\"eTag\":\"tzbpdbollgry\",\"id\":\"iuas\",\"name\":\"growsoc\",\"type\":\"equygdjboqgrmtq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SolutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Solution response = manager.solutions()
-            .getWithResponse("jogjonmc", "e", "oyzbamwineofvf", com.azure.core.util.Context.NONE)
+            .getWithResponse("blgmokzkltrfowtd", "rfmvlihcvjdrqcrj", "dhftukvhdxlwy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qehbhbcds", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
+        Assertions.assertEquals("pusllywpv", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

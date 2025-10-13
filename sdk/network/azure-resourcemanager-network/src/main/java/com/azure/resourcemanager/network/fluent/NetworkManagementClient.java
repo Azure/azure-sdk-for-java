@@ -693,6 +693,13 @@ public interface NetworkManagementClient {
     NetworkSecurityPerimeterOperationStatusesClient getNetworkSecurityPerimeterOperationStatuses();
 
     /**
+     * Gets the NetworkSecurityPerimeterServiceTagsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterServiceTagsClient object.
+     */
+    NetworkSecurityPerimeterServiceTagsClient getNetworkSecurityPerimeterServiceTags();
+
+    /**
      * Gets the ReachabilityAnalysisIntentsClient object to access its operations.
      * 
      * @return the ReachabilityAnalysisIntentsClient object.

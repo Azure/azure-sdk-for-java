@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -172,31 +171,6 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
         this.companyDetails = companyDetails;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (firstName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property firstName in model UserDetails"));
-        }
-        if (lastName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property lastName in model UserDetails"));
-        }
-        if (emailAddress() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property emailAddress in model UserDetails"));
-        }
-        if (companyDetails() != null) {
-            companyDetails().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UserDetails.class);
 
     /**
      * {@inheritDoc}

@@ -21,8 +21,9 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
-    <module>sdk/appservice</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appplatform</module>
+    <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
@@ -51,15 +52,14 @@
     <module>sdk/communication</module>
     <module>sdk/compute</module>
     <module>sdk/computefleet</module>
-    <module>sdk/computerecommender</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
     <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
-    <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerinstance</module>
+    <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
@@ -97,6 +97,7 @@
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
+    <module>sdk/disconnectedoperations</module>
     <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
@@ -249,6 +250,7 @@
     <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
+    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -257,6 +259,7 @@
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
+    <module>sdk/template-v2</module>
     <module>sdk/terraform</module>
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>

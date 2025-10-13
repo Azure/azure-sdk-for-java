@@ -9,15 +9,15 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/List_AssetEndpointProfiles_ResourceGroup.json
+     * x-ms-original-file: 2025-07-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
      */
     /**
-     * Sample code: List_AssetEndpointProfiles_ResourceGroup.
+     * Sample code: List_AssetEndpointProfiles_ByResourceGroup.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        listAssetEndpointProfilesResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void listAssetEndpointProfilesByResourceGroup(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assetEndpointProfiles().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

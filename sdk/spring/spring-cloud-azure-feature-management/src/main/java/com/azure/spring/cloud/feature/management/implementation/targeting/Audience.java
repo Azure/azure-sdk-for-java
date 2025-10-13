@@ -29,9 +29,11 @@ public class Audience {
 
     /**
      * @param users the users to set
+     * @return the updated Audience object
      */
-    public void setUsers(List<String> users) {
+    public Audience setUsers(List<String> users) {
         this.users = users;
+        return this;
     }
 
     /**
@@ -43,9 +45,11 @@ public class Audience {
 
     /**
      * @param groups the audiences to set
+     * @return the updated Audience object
      */
-    public void setGroups(List<GroupRollout> groups) {
+    public Audience setGroups(List<GroupRollout> groups) {
         this.groups = groups;
+        return this;
     }
 
     /**
@@ -57,9 +61,11 @@ public class Audience {
 
     /**
      * @param defaultRolloutPercentage the defaultRolloutPercentage to set
+     * @return the updated Audience object
      */
-    public void setDefaultRolloutPercentage(double defaultRolloutPercentage) {
+    public Audience setDefaultRolloutPercentage(double defaultRolloutPercentage) {
         this.defaultRolloutPercentage = defaultRolloutPercentage;
+        return this;
     }
 
     /**
@@ -71,9 +77,11 @@ public class Audience {
 
     /**
      * @param exclusion the exclusion to set
+     * @return the updated Audience object
      */
-    public void setExclusion(Exclusion exclusion) {
+    public Audience setExclusion(Exclusion exclusion) {
         this.exclusion = exclusion;
+        return this;
     }
 
 }

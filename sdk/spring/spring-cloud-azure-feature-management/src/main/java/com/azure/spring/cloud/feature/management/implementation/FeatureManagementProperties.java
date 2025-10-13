@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,11 +20,11 @@ public class FeatureManagementProperties {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @JsonProperty("feature-flags")
-    private List<Feature> featureFlags;
+    private List<FeatureDefinition> featureFlags;
 
     //private List<Feature> convertedFeatureFlags;
 
-    public List<Feature> getFeatureFlags() {
+    public List<FeatureDefinition> getFeatureFlags() {
         return featureFlags;
     }
 
@@ -33,19 +33,19 @@ public class FeatureManagementProperties {
      *
      * @param featureFlags the feature flags to set
      */
-    public void setFeatureFlags(List<Feature> featureFlags) {
+    public void setFeatureFlags(List<FeatureDefinition> featureFlags) {
         if (featureFlags == null || featureFlags.isEmpty()) {
             this.featureFlags = List.of();
             return;
         }
         
         // Check if the first element is a Feature instance to determine if we need conversion
-        if (featureFlags.get(0) instanceof Feature) {
-            List<Feature> features = new ArrayList<>();
+        if (featureFlags.get(0) instanceof FeatureDefinition) {
+            List<FeatureDefinition> features = new ArrayList<>();
             for (Object flag : featureFlags) {
                 // This should always be true based on our check, but we verify each element to be safe
-                if (flag instanceof Feature) {
-                    features.add((Feature) flag);
+                if (flag instanceof FeatureDefinition) {
+                    features.add((FeatureDefinition) flag);
                 }
             }
 
@@ -56,9 +56,9 @@ public class FeatureManagementProperties {
         }
 
         // Convert the feature flags to the correct type
-        List<Feature> convertedFlags = new ArrayList<>();
+        List<FeatureDefinition> convertedFlags = new ArrayList<>();
         for (Object feature : featureFlags) {
-            Feature convertedFeature = OBJECT_MAPPER.convertValue(feature, Feature.class);
+            FeatureDefinition convertedFeature = OBJECT_MAPPER.convertValue(feature, FeatureDefinition.class);
             convertedFlags.add(convertedFeature);
         }
         this.featureFlags = convertedFlags;

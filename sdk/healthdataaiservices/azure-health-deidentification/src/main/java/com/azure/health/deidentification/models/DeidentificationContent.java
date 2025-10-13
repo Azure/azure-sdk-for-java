@@ -80,6 +80,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("inputText", this.inputText);
         jsonWriter.writeStringField("operation", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeJsonField("taggedEntities", this.taggedEntities);
         jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
@@ -98,6 +99,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
         return jsonReader.readObject(reader -> {
             String inputText = null;
             DeidentificationOperationType operationType = null;
+            TaggedPhiEntities taggedEntities = null;
             DeidentificationCustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -106,6 +108,8 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                     inputText = reader.getString();
                 } else if ("operation".equals(fieldName)) {
                     operationType = DeidentificationOperationType.fromString(reader.getString());
+                } else if ("taggedEntities".equals(fieldName)) {
+                    taggedEntities = TaggedPhiEntities.fromJson(reader);
                 } else if ("customizations".equals(fieldName)) {
                     customizations = DeidentificationCustomizationOptions.fromJson(reader);
                 } else {
@@ -114,6 +118,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
             }
             DeidentificationContent deserializedDeidentificationContent = new DeidentificationContent(inputText);
             deserializedDeidentificationContent.operationType = operationType;
+            deserializedDeidentificationContent.taggedEntities = taggedEntities;
             deserializedDeidentificationContent.customizations = customizations;
             return deserializedDeidentificationContent;
         });
@@ -144,6 +149,36 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     @Generated
     public DeidentificationContent setOperationType(DeidentificationOperationType operationType) {
         this.operationType = operationType;
+        return this;
+    }
+
+    /*
+     * Grouped PHI entities with single encoding specification for SurrogateOnly operation.
+     */
+    @Generated
+    private TaggedPhiEntities taggedEntities;
+
+    /**
+     * Get the taggedEntities property: Grouped PHI entities with single encoding specification for SurrogateOnly
+     * operation.
+     *
+     * @return the taggedEntities value.
+     */
+    @Generated
+    public TaggedPhiEntities getTaggedEntities() {
+        return this.taggedEntities;
+    }
+
+    /**
+     * Set the taggedEntities property: Grouped PHI entities with single encoding specification for SurrogateOnly
+     * operation.
+     *
+     * @param taggedEntities the taggedEntities value to set.
+     * @return the DeidentificationContent object itself.
+     */
+    @Generated
+    public DeidentificationContent setTaggedEntities(TaggedPhiEntities taggedEntities) {
+        this.taggedEntities = taggedEntities;
         return this;
     }
 }

@@ -17,7 +17,8 @@ import java.io.IOException;
 @Immutable
 public final class VirtualApplianceNicProperties implements JsonSerializable<VirtualApplianceNicProperties> {
     /*
-     * NIC type - PublicNic, PrivateNic, or AdditionalNic.
+     * NIC type - PublicNic, PrivateNic, or AdditionalNic; AdditionalPrivateNic and AdditionalPublicNic are only
+     * supported for NVAs deployed in VNets.
      */
     private NicTypeInResponse nicType;
 
@@ -48,7 +49,8 @@ public final class VirtualApplianceNicProperties implements JsonSerializable<Vir
     }
 
     /**
-     * Get the nicType property: NIC type - PublicNic, PrivateNic, or AdditionalNic.
+     * Get the nicType property: NIC type - PublicNic, PrivateNic, or AdditionalNic; AdditionalPrivateNic and
+     * AdditionalPublicNic are only supported for NVAs deployed in VNets.
      * 
      * @return the nicType value.
      */

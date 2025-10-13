@@ -238,7 +238,7 @@
           "code": "java.method.addedToInterface",
           "new": {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*"
+            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform\\.|appservice\\.|authorization\\.|cdn\\.|compute\\.|containerinstance\\.|containerregistry\\.|containerservice\\.|cosmos\\.|dns\\.|eventhubs\\.|keyvault\\.|monitor\\.|msi\\.|network\\.|privatedns\\.|redis\\.|resources\\.|search\\.|servicebus\\.|sql\\.|storage\\.|trafficmanager\\.).*"
           },
           "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
         },
@@ -580,12 +580,12 @@
           "justification": "Migration to azure-json."
         },
         {
-          "code": "java.class.nowFinal",
+          "code": "java.method.removed",
           "old": {
             "matcher": "regex",
-            "match": "class com.azure.resourcemanager.(eventhubs|servicebus).models.(Identity|UserAssignedIdentity)"
+            "match": "method void com\\.azure\\.resourcemanager\\..*\\.models.*::validate\\(\\)"
           },
-          "justification": "Class is now final."
+          "justification": "Do not include client-side validation for SDK generated from TypeSpec."
         },
         {
           "code": "java.method.returnTypeErasureChanged",
@@ -598,116 +598,6 @@
           "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
           "new": "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.sql\\.models\\.(DatabaseIdentity|DatabaseUserIdentity|ResourceIdentity|UserIdentity)"
-          },
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
-          "justification": "Service changed the property to readOnly."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.field.addedStaticField",
-          "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
-          "justification": "Additional protocols are supported by Web PubSub."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
         },
         {
           "ignore": true,

@@ -15,155 +15,113 @@ public final class BulkPublishSolutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkPublishSolutionParameter model = BinaryData.fromString(
-            "{\"targets\":[{\"targetId\":\"tpp\",\"solutionInstanceName\":\"o\"},{\"targetId\":\"xorjaltolmncwsob\",\"solutionInstanceName\":\"csdbnwdcfhuc\"},{\"targetId\":\"dpfuvg\",\"solutionInstanceName\":\"bjj\"},{\"targetId\":\"anvx\",\"solutionInstanceName\":\"t\"}],\"solutionInstanceName\":\"dut\",\"solutionDependencies\":[{\"solutionVersionId\":\"mr\",\"solutionTemplateId\":\"qtvcofudflvkgj\",\"solutionTemplateVersion\":\"gdknnqv\",\"solutionInstanceName\":\"znqntoru\",\"targetId\":\"gsahmkycgrauw\",\"dependencies\":[{\"solutionVersionId\":\"aeburuvdmo\",\"solutionTemplateId\":\"mz\",\"solutionTemplateVersion\":\"wabm\",\"solutionInstanceName\":\"efkifr\",\"targetId\":\"puqujmqlgkfbtn\",\"dependencies\":[{},{}]},{\"solutionVersionId\":\"n\",\"solutionTemplateId\":\"jcntuj\",\"solutionTemplateVersion\":\"c\",\"solutionInstanceName\":\"df\",\"targetId\":\"waezkojvd\",\"dependencies\":[{},{},{},{}]}]},{\"solutionVersionId\":\"oqouicybxarzgszu\",\"solutionTemplateId\":\"x\",\"solutionTemplateVersion\":\"q\",\"solutionInstanceName\":\"idoamciodhkha\",\"targetId\":\"khnzbonlw\",\"dependencies\":[{\"solutionVersionId\":\"gokdwbwhks\",\"solutionTemplateId\":\"cmrvexzt\",\"solutionTemplateVersion\":\"t\",\"solutionInstanceName\":\"sfraoyzko\",\"targetId\":\"tlmngu\",\"dependencies\":[{},{}]},{\"solutionVersionId\":\"aldsy\",\"solutionTemplateId\":\"ximerqfobwyznk\",\"solutionTemplateVersion\":\"kutwpf\",\"solutionInstanceName\":\"a\",\"targetId\":\"hrskdsnfd\",\"dependencies\":[{},{},{},{}]},{\"solutionVersionId\":\"kgtdlmkkze\",\"solutionTemplateId\":\"l\",\"solutionTemplateVersion\":\"wpusdsttwvogv\",\"solutionInstanceName\":\"ejdcngqqmoakuf\",\"targetId\":\"jzrwrdgrtw\",\"dependencies\":[{},{},{}]}]},{\"solutionVersionId\":\"uzkopbminrfd\",\"solutionTemplateId\":\"yuhhziu\",\"solutionTemplateVersion\":\"fozbhdmsmlmzqhof\",\"solutionInstanceName\":\"maequiahxicslfa\",\"targetId\":\"z\",\"dependencies\":[{\"solutionVersionId\":\"lhalnswh\",\"solutionTemplateId\":\"sp\",\"solutionTemplateVersion\":\"aivwitqscywu\",\"solutionInstanceName\":\"woluhczbwemhair\",\"targetId\":\"rgzdwmsweyp\",\"dependencies\":[{},{},{},{}]},{\"solutionVersionId\":\"ggicccnxqhue\",\"solutionTemplateId\":\"ktt\",\"solutionTemplateVersion\":\"tvlz\",\"solutionInstanceName\":\"emhzrncsdtc\",\"targetId\":\"siypbs\",\"dependencies\":[{},{}]},{\"solutionVersionId\":\"gusl\",\"solutionTemplateId\":\"adcy\",\"solutionTemplateVersion\":\"ukyhejhzis\",\"solutionInstanceName\":\"fpel\",\"targetId\":\"p\",\"dependencies\":[{},{}]},{\"solutionVersionId\":\"r\",\"solutionTemplateId\":\"vu\",\"solutionTemplateVersion\":\"raehtwdwrft\",\"solutionInstanceName\":\"iby\",\"targetId\":\"dl\",\"dependencies\":[{},{},{},{}]}]},{\"solutionVersionId\":\"fwpracstwi\",\"solutionTemplateId\":\"khevxccedc\",\"solutionTemplateVersion\":\"md\",\"solutionInstanceName\":\"dnwzxltjcvnhltiu\",\"targetId\":\"xnavvwxq\",\"dependencies\":[{\"solutionVersionId\":\"unyowxwl\",\"solutionTemplateId\":\"jrkvfgbvfvpdbo\",\"solutionTemplateVersion\":\"cizsjqlhkrribdei\",\"solutionInstanceName\":\"ipqkghvxndzwm\",\"targetId\":\"efajpj\",\"dependencies\":[{},{}]}]}]}")
+            "{\"targets\":[{\"targetId\":\"bdeibqipqk\",\"solutionInstanceName\":\"vxndz\"},{\"targetId\":\"mkrefajpjorwkq\",\"solutionInstanceName\":\"hgbijt\"}],\"solutionInstanceName\":\"vfxzsjab\",\"solutionDependencies\":[{\"solutionVersionId\":\"stawfsdjpvkv\",\"solutionTemplateId\":\"jxbkzbzkdvn\",\"solutionTemplateVersion\":\"abudurgk\",\"solutionInstanceName\":\"mokzhjjklf\",\"targetId\":\"mouwqlgzrfzeey\",\"dependencies\":[{\"solutionVersionId\":\"ikayuhqlbjbsybb\",\"solutionTemplateId\":\"r\",\"solutionTemplateVersion\":\"ldgmfpgvmpip\",\"solutionInstanceName\":\"ltha\",\"targetId\":\"x\",\"dependencies\":[{},{},{}]},{\"solutionVersionId\":\"u\",\"solutionTemplateId\":\"bdsrez\",\"solutionTemplateVersion\":\"rhneuyowq\",\"solutionInstanceName\":\"wyt\",\"targetId\":\"ib\",\"dependencies\":[{},{}]},{\"solutionVersionId\":\"pikpz\",\"solutionTemplateId\":\"ejzanlfz\",\"solutionTemplateVersion\":\"av\",\"solutionInstanceName\":\"bzonok\",\"targetId\":\"rjqc\",\"dependencies\":[{},{}]}]},{\"solutionVersionId\":\"pfrlazsz\",\"solutionTemplateId\":\"woiindf\",\"solutionTemplateVersion\":\"pj\",\"solutionInstanceName\":\"wbtlhflsjcdh\",\"targetId\":\"fjvfbgofeljagr\",\"dependencies\":[{\"solutionVersionId\":\"ldvriiiojnalghfk\",\"solutionTemplateId\":\"vsexsowuelu\",\"solutionTemplateVersion\":\"hahhxvrhmzkwpj\",\"solutionInstanceName\":\"wspughftqsxhqx\",\"targetId\":\"xukndxdigr\",\"dependencies\":[{},{},{},{}]}]},{\"solutionVersionId\":\"fzdm\",\"solutionTemplateId\":\"qtfihwhbotzinga\",\"solutionTemplateVersion\":\"pph\",\"solutionInstanceName\":\"zqzudph\",\"targetId\":\"mvdk\",\"dependencies\":[{\"solutionVersionId\":\"wcvtbvkayhmtnvyq\",\"solutionTemplateId\":\"tkzwpcnpwzc\",\"solutionTemplateVersion\":\"esgvvsccyaj\",\"solutionInstanceName\":\"qfhwyg\",\"targetId\":\"vdnkfxusem\",\"dependencies\":[{},{},{},{}]},{\"solutionVersionId\":\"muhapfcqdpsqxqv\",\"solutionTemplateId\":\"vuoy\",\"solutionTemplateVersion\":\"ccelve\",\"solutionInstanceName\":\"ypql\",\"targetId\":\"eokerqwkyhkobopg\",\"dependencies\":[{}]}]}]}")
             .toObject(BulkPublishSolutionParameter.class);
-        Assertions.assertEquals("tpp", model.targets().get(0).targetId());
-        Assertions.assertEquals("o", model.targets().get(0).solutionInstanceName());
-        Assertions.assertEquals("dut", model.solutionInstanceName());
-        Assertions.assertEquals("mr", model.solutionDependencies().get(0).solutionVersionId());
-        Assertions.assertEquals("qtvcofudflvkgj", model.solutionDependencies().get(0).solutionTemplateId());
-        Assertions.assertEquals("gdknnqv", model.solutionDependencies().get(0).solutionTemplateVersion());
-        Assertions.assertEquals("znqntoru", model.solutionDependencies().get(0).solutionInstanceName());
-        Assertions.assertEquals("gsahmkycgrauw", model.solutionDependencies().get(0).targetId());
-        Assertions.assertEquals("aeburuvdmo",
+        Assertions.assertEquals("bdeibqipqk", model.targets().get(0).targetId());
+        Assertions.assertEquals("vxndz", model.targets().get(0).solutionInstanceName());
+        Assertions.assertEquals("vfxzsjab", model.solutionInstanceName());
+        Assertions.assertEquals("stawfsdjpvkv", model.solutionDependencies().get(0).solutionVersionId());
+        Assertions.assertEquals("jxbkzbzkdvn", model.solutionDependencies().get(0).solutionTemplateId());
+        Assertions.assertEquals("abudurgk", model.solutionDependencies().get(0).solutionTemplateVersion());
+        Assertions.assertEquals("mokzhjjklf", model.solutionDependencies().get(0).solutionInstanceName());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.solutionDependencies().get(0).targetId());
+        Assertions.assertEquals("ikayuhqlbjbsybb",
             model.solutionDependencies().get(0).dependencies().get(0).solutionVersionId());
-        Assertions.assertEquals("mz", model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateId());
-        Assertions.assertEquals("wabm",
+        Assertions.assertEquals("r", model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateId());
+        Assertions.assertEquals("ldgmfpgvmpip",
             model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateVersion());
-        Assertions.assertEquals("efkifr",
+        Assertions.assertEquals("ltha",
             model.solutionDependencies().get(0).dependencies().get(0).solutionInstanceName());
-        Assertions.assertEquals("puqujmqlgkfbtn", model.solutionDependencies().get(0).dependencies().get(0).targetId());
+        Assertions.assertEquals("x", model.solutionDependencies().get(0).dependencies().get(0).targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkPublishSolutionParameter model = new BulkPublishSolutionParameter()
-            .withTargets(Arrays.asList(new BulkPublishTargetDetails().withTargetId("tpp").withSolutionInstanceName("o"),
-                new BulkPublishTargetDetails().withTargetId("xorjaltolmncwsob")
-                    .withSolutionInstanceName("csdbnwdcfhuc"),
-                new BulkPublishTargetDetails().withTargetId("dpfuvg").withSolutionInstanceName("bjj"),
-                new BulkPublishTargetDetails().withTargetId("anvx").withSolutionInstanceName("t")))
-            .withSolutionInstanceName("dut")
+            .withTargets(Arrays.asList(
+                new BulkPublishTargetDetails().withTargetId("bdeibqipqk").withSolutionInstanceName("vxndz"),
+                new BulkPublishTargetDetails().withTargetId("mkrefajpjorwkq").withSolutionInstanceName("hgbijt")))
+            .withSolutionInstanceName("vfxzsjab")
             .withSolutionDependencies(
                 Arrays
                     .asList(
-                        new SolutionDependencyParameter().withSolutionVersionId("mr")
-                            .withSolutionTemplateId("qtvcofudflvkgj")
-                            .withSolutionTemplateVersion("gdknnqv")
-                            .withSolutionInstanceName("znqntoru")
-                            .withTargetId("gsahmkycgrauw")
+                        new SolutionDependencyParameter().withSolutionVersionId("stawfsdjpvkv")
+                            .withSolutionTemplateId("jxbkzbzkdvn")
+                            .withSolutionTemplateVersion("abudurgk")
+                            .withSolutionInstanceName("mokzhjjklf")
+                            .withTargetId("mouwqlgzrfzeey")
                             .withDependencies(Arrays.asList(
-                                new SolutionDependencyParameter().withSolutionVersionId("aeburuvdmo")
-                                    .withSolutionTemplateId("mz")
-                                    .withSolutionTemplateVersion("wabm")
-                                    .withSolutionInstanceName("efkifr")
-                                    .withTargetId("puqujmqlgkfbtn")
+                                new SolutionDependencyParameter().withSolutionVersionId("ikayuhqlbjbsybb")
+                                    .withSolutionTemplateId("r")
+                                    .withSolutionTemplateVersion("ldgmfpgvmpip")
+                                    .withSolutionInstanceName("ltha")
+                                    .withTargetId("x")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("u")
+                                    .withSolutionTemplateId("bdsrez")
+                                    .withSolutionTemplateVersion("rhneuyowq")
+                                    .withSolutionInstanceName("wyt")
+                                    .withTargetId("ib")
                                     .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("n")
-                                    .withSolutionTemplateId("jcntuj")
-                                    .withSolutionTemplateVersion("c")
-                                    .withSolutionInstanceName("df")
-                                    .withTargetId("waezkojvd")
+                                new SolutionDependencyParameter().withSolutionVersionId("pikpz")
+                                    .withSolutionTemplateId("ejzanlfz")
+                                    .withSolutionTemplateVersion("av")
+                                    .withSolutionInstanceName("bzonok")
+                                    .withTargetId("rjqc")
                                     .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter(), new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter())))),
-                        new SolutionDependencyParameter()
-                            .withSolutionVersionId("oqouicybxarzgszu")
-                            .withSolutionTemplateId("x")
-                            .withSolutionTemplateVersion("q")
-                            .withSolutionInstanceName("idoamciodhkha")
-                            .withTargetId("khnzbonlw")
+                        new SolutionDependencyParameter().withSolutionVersionId("pfrlazsz")
+                            .withSolutionTemplateId("woiindf")
+                            .withSolutionTemplateVersion("pj")
+                            .withSolutionInstanceName("wbtlhflsjcdh")
+                            .withTargetId("fjvfbgofeljagr")
                             .withDependencies(Arrays.asList(
-                                new SolutionDependencyParameter().withSolutionVersionId("gokdwbwhks")
-                                    .withSolutionTemplateId("cmrvexzt")
-                                    .withSolutionTemplateVersion("t")
-                                    .withSolutionInstanceName("sfraoyzko")
-                                    .withTargetId("tlmngu")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("aldsy")
-                                    .withSolutionTemplateId("ximerqfobwyznk")
-                                    .withSolutionTemplateVersion("kutwpf")
-                                    .withSolutionInstanceName("a")
-                                    .withTargetId("hrskdsnfd")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                new SolutionDependencyParameter().withSolutionVersionId("ldvriiiojnalghfk")
+                                    .withSolutionTemplateId("vsexsowuelu")
+                                    .withSolutionTemplateVersion("hahhxvrhmzkwpj")
+                                    .withSolutionInstanceName("wspughftqsxhqx")
+                                    .withTargetId("xukndxdigr")
+                                    .withDependencies(Arrays.asList(
                                         new SolutionDependencyParameter(), new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("kgtdlmkkze")
-                                    .withSolutionTemplateId("l")
-                                    .withSolutionTemplateVersion("wpusdsttwvogv")
-                                    .withSolutionInstanceName("ejdcngqqmoakuf")
-                                    .withTargetId("jzrwrdgrtw")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter(), new SolutionDependencyParameter())))),
-                        new SolutionDependencyParameter().withSolutionVersionId("uzkopbminrfd")
-                            .withSolutionTemplateId("yuhhziu")
-                            .withSolutionTemplateVersion("fozbhdmsmlmzqhof")
-                            .withSolutionInstanceName("maequiahxicslfa")
-                            .withTargetId("z")
+                        new SolutionDependencyParameter().withSolutionVersionId("fzdm")
+                            .withSolutionTemplateId("qtfihwhbotzinga")
+                            .withSolutionTemplateVersion("pph")
+                            .withSolutionInstanceName("zqzudph")
+                            .withTargetId("mvdk")
                             .withDependencies(Arrays.asList(
-                                new SolutionDependencyParameter().withSolutionVersionId("lhalnswh")
-                                    .withSolutionTemplateId("sp")
-                                    .withSolutionTemplateVersion("aivwitqscywu")
-                                    .withSolutionInstanceName("woluhczbwemhair")
-                                    .withTargetId("rgzdwmsweyp")
+                                new SolutionDependencyParameter().withSolutionVersionId("wcvtbvkayhmtnvyq")
+                                    .withSolutionTemplateId("tkzwpcnpwzc")
+                                    .withSolutionTemplateVersion("esgvvsccyaj")
+                                    .withSolutionInstanceName("qfhwyg")
+                                    .withTargetId("vdnkfxusem")
                                     .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter(), new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("ggicccnxqhue")
-                                    .withSolutionTemplateId("ktt")
-                                    .withSolutionTemplateVersion("tvlz")
-                                    .withSolutionInstanceName("emhzrncsdtc")
-                                    .withTargetId("siypbs")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("gusl")
-                                    .withSolutionTemplateId("adcy")
-                                    .withSolutionTemplateVersion("ukyhejhzis")
-                                    .withSolutionInstanceName("fpel")
-                                    .withTargetId("p")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter()
-                                    .withSolutionVersionId("r")
-                                    .withSolutionTemplateId("vu")
-                                    .withSolutionTemplateVersion("raehtwdwrft")
-                                    .withSolutionInstanceName("iby")
-                                    .withTargetId("dl")
-                                    .withDependencies(
-                                        Arrays.asList(
-                                            new SolutionDependencyParameter(), new SolutionDependencyParameter(),
-                                            new SolutionDependencyParameter(), new SolutionDependencyParameter())))),
-                        new SolutionDependencyParameter().withSolutionVersionId("fwpracstwi")
-                            .withSolutionTemplateId("khevxccedc")
-                            .withSolutionTemplateVersion("md")
-                            .withSolutionInstanceName("dnwzxltjcvnhltiu")
-                            .withTargetId("xnavvwxq")
-                            .withDependencies(
-                                Arrays.asList(new SolutionDependencyParameter().withSolutionVersionId("unyowxwl")
-                                    .withSolutionTemplateId("jrkvfgbvfvpdbo")
-                                    .withSolutionTemplateVersion("cizsjqlhkrribdei")
-                                    .withSolutionInstanceName("ipqkghvxndzwm")
-                                    .withTargetId("efajpj")
-                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter()))))));
+                                new SolutionDependencyParameter().withSolutionVersionId("muhapfcqdpsqxqv")
+                                    .withSolutionTemplateId("vuoy")
+                                    .withSolutionTemplateVersion("ccelve")
+                                    .withSolutionInstanceName("ypql")
+                                    .withTargetId("eokerqwkyhkobopg")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter()))))));
         model = BinaryData.fromObject(model).toObject(BulkPublishSolutionParameter.class);
-        Assertions.assertEquals("tpp", model.targets().get(0).targetId());
-        Assertions.assertEquals("o", model.targets().get(0).solutionInstanceName());
-        Assertions.assertEquals("dut", model.solutionInstanceName());
-        Assertions.assertEquals("mr", model.solutionDependencies().get(0).solutionVersionId());
-        Assertions.assertEquals("qtvcofudflvkgj", model.solutionDependencies().get(0).solutionTemplateId());
-        Assertions.assertEquals("gdknnqv", model.solutionDependencies().get(0).solutionTemplateVersion());
-        Assertions.assertEquals("znqntoru", model.solutionDependencies().get(0).solutionInstanceName());
-        Assertions.assertEquals("gsahmkycgrauw", model.solutionDependencies().get(0).targetId());
-        Assertions.assertEquals("aeburuvdmo",
+        Assertions.assertEquals("bdeibqipqk", model.targets().get(0).targetId());
+        Assertions.assertEquals("vxndz", model.targets().get(0).solutionInstanceName());
+        Assertions.assertEquals("vfxzsjab", model.solutionInstanceName());
+        Assertions.assertEquals("stawfsdjpvkv", model.solutionDependencies().get(0).solutionVersionId());
+        Assertions.assertEquals("jxbkzbzkdvn", model.solutionDependencies().get(0).solutionTemplateId());
+        Assertions.assertEquals("abudurgk", model.solutionDependencies().get(0).solutionTemplateVersion());
+        Assertions.assertEquals("mokzhjjklf", model.solutionDependencies().get(0).solutionInstanceName());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.solutionDependencies().get(0).targetId());
+        Assertions.assertEquals("ikayuhqlbjbsybb",
             model.solutionDependencies().get(0).dependencies().get(0).solutionVersionId());
-        Assertions.assertEquals("mz", model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateId());
-        Assertions.assertEquals("wabm",
+        Assertions.assertEquals("r", model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateId());
+        Assertions.assertEquals("ldgmfpgvmpip",
             model.solutionDependencies().get(0).dependencies().get(0).solutionTemplateVersion());
-        Assertions.assertEquals("efkifr",
+        Assertions.assertEquals("ltha",
             model.solutionDependencies().get(0).dependencies().get(0).solutionInstanceName());
-        Assertions.assertEquals("puqujmqlgkfbtn", model.solutionDependencies().get(0).dependencies().get(0).targetId());
+        Assertions.assertEquals("x", model.solutionDependencies().get(0).dependencies().get(0).targetId());
     }
 }

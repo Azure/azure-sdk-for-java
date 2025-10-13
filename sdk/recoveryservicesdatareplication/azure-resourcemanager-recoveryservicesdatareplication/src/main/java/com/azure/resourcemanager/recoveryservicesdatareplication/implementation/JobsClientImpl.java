@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.JobsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.JobModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.models.JobModelListResult;
@@ -129,24 +128,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
         String jobName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -186,28 +167,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobModelInner> getWithResponse(String resourceGroupName, String vaultName, String jobName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, vaultName, jobName, accept, context);
@@ -246,21 +205,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
         String odataOptions, String continuationToken, Integer pageSize) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -328,24 +272,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listSinglePage(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<JobModelListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -371,24 +297,6 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listSinglePage(String resourceGroupName, String vaultName, String odataOptions,
         String continuationToken, Integer pageSize, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<JobModelListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -451,13 +359,6 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobModelInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -476,15 +377,6 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<JobModelListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -504,20 +396,9 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobModelInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<JobModelListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(JobsClientImpl.class);
 }
