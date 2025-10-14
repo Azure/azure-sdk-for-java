@@ -49,7 +49,7 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	DBG_JSON="{\"job_id\": $JOB_ID, \"notebook_params\": {\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}"
+	DBG_JSON="\"{\\\"job_id\\\": $JOB_ID, \\\"notebook_params\\\": {\\\"cosmosEndpoint\\\": \\\"$COSMOSENDPOINT\\\",\\\"cosmosMasterKey\\\": \\\"$COSMOSKEY\\\",\\\"subscriptionId\\\": \\\"$SUBSCRIPTIONID\\\",\\\"tenantId\\\": \\\"$TENANTID\\\",\\\"resourceGroupName\\\": \\\"$RESOURCEGROUPNAME\\\",\\\"clientId\\\": \\\"$CLIENTID\\\",\\\"clientSecret\\\": \\\"$CLIENTSECRET\\\",\\\"cosmosContainerName\\\": \\\"$COSMOSCONTAINERNAME\\\", \\\"cosmosDatabaseName\\\": \\\"$COSMOSDATABASENAME\\\"}}\""
 	echo "DBG_JSON: $DBG_JSON"
 	RUN_ID=$(databricks jobs run-now --json $DBG_JSON | jq -r '.run_id')
 
