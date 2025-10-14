@@ -6,4 +6,15 @@
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Class name="com.azure.storage.blob.changefeed.Changefeed" />
   </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.storage.blob.changefeed.BlobChangefeedPagedResponse" />
+      <Class name="com.azure.storage.blob.changefeed.implementation.models.SegmentCursor" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Class name="com.azure.storage.blob.changefeed.implementation.models.SegmentCursor" />
+  </Match>
 </FindBugsFilter>

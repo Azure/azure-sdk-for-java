@@ -108,7 +108,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -3370,16 +3369,5 @@ class FileApiTests extends FileShareTestBase {
 
         // Cleanup
         shareClient.delete();
-    }
-
-    @Test
-    public void fileExistsHandlesParentNotFound() {
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("fakeDir");
-        ShareFileClient fileClient = directoryClient.getFileClient(generatePathName());
-
-        Response<Boolean> response = fileClient.existsWithResponse(null, Context.NONE);
-        assertFalse(response.getValue());
-        assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(),
-            response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 }

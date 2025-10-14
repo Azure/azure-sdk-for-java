@@ -53,7 +53,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
         try {
             props = resource.getBlobClient().getProperties();
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 404 && this.resource.isVirtualDirectory()) {
+            if (e.getStatusCode() == 404 && this.resource.checkVirtualDirectoryExists()) {
                 this.isVirtualDirectory = true;
                 this.properties = null;
                 return;

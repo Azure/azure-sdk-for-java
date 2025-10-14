@@ -89,9 +89,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,16 +106,6 @@ public class ModelHelper {
     public static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
-
-    private static final Set<ShareErrorCode> GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES;
-
-    static {
-        Set<ShareErrorCode> shareErrorCodes = new HashSet<>();
-        shareErrorCodes.add(ShareErrorCode.RESOURCE_NOT_FOUND);
-        shareErrorCodes.add(ShareErrorCode.PARENT_NOT_FOUND);
-        shareErrorCodes.add(ShareErrorCode.SHARE_NOT_FOUND);
-        GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES = Collections.unmodifiableSet(shareErrorCodes);
-    }
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
@@ -358,16 +346,17 @@ public class ModelHelper {
     public static boolean checkDoesNotExistStatusCode(Throwable t) {
         if (t instanceof ShareStorageException) {
             ShareStorageException s = (ShareStorageException) t;
-            return s.getStatusCode() == 404 && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.contains(s.getErrorCode());
+            return s.getStatusCode() == 404
+                && (s.getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+                    || s.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
         } else if (t instanceof HttpResponseException) {
             HttpResponseException h = (HttpResponseException) t;
             String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
             return h.getResponse().getStatusCode() == 404
-                && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.stream()
-                    .map(ShareErrorCode::toString)
-                    .anyMatch(errorCode::equals);
+                && (ShareErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
+                    || ShareErrorCode.SHARE_NOT_FOUND.toString().equals(errorCode));
         } else {
             return false;
         }

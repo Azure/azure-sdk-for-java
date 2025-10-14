@@ -51,10 +51,8 @@ Merging Pull Requests (for project contributors with write access)
 
 
 >**Note:** If you are on `Windows`, enable paths longer than 260 characters by:   
-1.- Run this as Administrator on a command prompt:
-<!--- cSpell:disable -->
+1.- Run this as Administrator on a command prompt:  
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1` *(might need to type `yes` to override key if it already exists)*  
-<!--- cSpell:enable -->
 2.- Set up `git` by running:  `git config --system core.longpaths true`
 
 ### Building and Testing
@@ -157,10 +155,8 @@ I need to tick up the version of azure-storage libraries how would I do it? Guid
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory.It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Once we GA, these build dependencies for library components outside a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
 2. Execute the update_versions python script from the root of the enlistment
-
 `python eng/versioning/update_versions.py --skip-readme`
 This will go through the entire source tree and update all the references in the POM and README files with the updated versions. Git status will show all of the modified files.
-
 3. Review and submit a PR with the modified files.
 
 ### Next steps: External dependencies and Management plane
@@ -168,7 +164,7 @@ This will go through the entire source tree and update all the references in the
 - External dependencies. Right now there are only version files for client and data (eng\versioning\version_\[client|data\].txt) which only encompass the built binaries for their respective tracks. External dependencies for both client and data are next on the list which should allow modification of the parent/pom.xml to remove the list of version properties and dependency management sections which brings things one step closer to not having to publish the parent pom.
 - Management plane. Management is in the process of being moved to service pipeline builds. The versioning work needs to wait until that work is finished.
 
-### How are versioning and dependencies going to impact development?
+### How are versioning and dependencies going to impact development ?
 
 As mentioned above, in the service pipeline changes, the plan after we GA is to start targeting the released version of the packages and pulling them from Maven. This is going to fundamentally change some aspects of the development process especially when work needs to be done on given library that requires dependency changes in one or more libraries.
 
