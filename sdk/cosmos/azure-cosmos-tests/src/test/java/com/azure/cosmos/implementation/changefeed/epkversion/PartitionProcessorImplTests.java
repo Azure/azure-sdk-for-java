@@ -65,7 +65,7 @@ public class PartitionProcessorImplTests {
             Thread.sleep(500);
             return counter.getAndIncrement() < 10 ? results : new ArrayList<>();
         });
-        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationToken();
+        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
         Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(changeFeedState.toString());
 
         // The processor will continuously fetch, but we will cancel shortly after first batch
@@ -167,5 +167,43 @@ public class PartitionProcessorImplTests {
             continuation);
 
         return state;
+    }
+
+    private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        String continuationDummy = UUID.randomUUID().toString();
+
+        StringBuilder continuationBuilder = new StringBuilder();
+        continuationBuilder.append("{\"V\":1,")
+            .append("\"Rid\":\"").append(containerRid).append("\",")
+            .append("\"Continuation\":[");
+
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationBuilder.append(",");
+            }
+            char minRange = (char)('A' + (i * 2));
+            char maxRange = (char)('B' + (i * 2));
+            continuationBuilder.append("{\"token\":\"").append(continuationDummy)
+                .append("\",\"range\":{\"min\":\"").append(minRange).append(minRange)
+                .append("\",\"max\":\"").append(maxRange).append(maxRange).append("\"}}");
+        }
+
+        continuationBuilder.append("],")
+            .append("\"PKRangeId\":\"").append(pkRangeId).append("\"}");
+
+        String continuationJson = continuationBuilder.toString();
+
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+        ChangeFeedStartFromInternal startFromSettings = ChangeFeedStartFromInternal.createFromNow();
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            startFromSettings,
+            continuation);
     }
 }
