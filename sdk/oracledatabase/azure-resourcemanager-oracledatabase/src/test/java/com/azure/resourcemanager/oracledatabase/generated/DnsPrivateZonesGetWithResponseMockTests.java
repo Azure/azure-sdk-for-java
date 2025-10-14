@@ -23,7 +23,7 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"azisgyk\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"mvanbwzo\",\"serial\":717470407,\"version\":\"nrxxbsojklin\",\"viewId\":\"dptysprqs\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-03-17T04:51:43Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"pslsvjg\",\"name\":\"liufiqwoyxq\",\"type\":\"apcohhouc\"}";
+            = "{\"properties\":{\"ocid\":\"naie\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"h\",\"serial\":668159944,\"version\":\"ndnelqkaadlknw\",\"viewId\":\"anniyopetxivcnr\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-06-10T00:54:20Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"aephblkw\",\"name\":\"pat\",\"type\":\"bqsdtcjbctvi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DnsPrivateZone response = manager.dnsPrivateZones()
-            .getWithResponse("xcptsoqfyiaseqc", "krtt", com.azure.core.util.Context.NONE)
+            .getWithResponse("nkrxwetwkdrcy", "ucpcunnuzdqumoen", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("azisgyk", response.properties().ocid());
+        Assertions.assertEquals("naie", response.properties().ocid());
         Assertions.assertFalse(response.properties().isProtected());
-        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING, response.properties().lifecycleState());
-        Assertions.assertEquals("mvanbwzo", response.properties().self());
-        Assertions.assertEquals(717470407, response.properties().serial());
-        Assertions.assertEquals("nrxxbsojklin", response.properties().version());
-        Assertions.assertEquals("dptysprqs", response.properties().viewId());
-        Assertions.assertEquals(ZoneType.SECONDARY, response.properties().zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T04:51:43Z"), response.properties().timeCreated());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETED, response.properties().lifecycleState());
+        Assertions.assertEquals("h", response.properties().self());
+        Assertions.assertEquals(668159944, response.properties().serial());
+        Assertions.assertEquals("ndnelqkaadlknw", response.properties().version());
+        Assertions.assertEquals("anniyopetxivcnr", response.properties().viewId());
+        Assertions.assertEquals(ZoneType.PRIMARY, response.properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T00:54:20Z"), response.properties().timeCreated());
     }
 }

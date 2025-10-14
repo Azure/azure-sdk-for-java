@@ -170,7 +170,7 @@ com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.7.10;11.8.0-beta.9
+com.azure:azure-search-documents;11.8.0;11.9.0-beta.1
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.36;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.32;1.1.0-beta.2
@@ -276,14 +276,14 @@ com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.4;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.53.3;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.54.1;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.55.0;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.3;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-network;2.53.4;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-network;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources;2.53.3;2.54.0-beta.1
@@ -463,7 +463,7 @@ com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.1.0;1.2.0
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
@@ -472,7 +472,7 @@ com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computeschedule;1.1.0;1.2.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
@@ -545,6 +545,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
+unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
