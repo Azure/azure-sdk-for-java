@@ -10,6 +10,7 @@ variables:
 stages:
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
@@ -25,6 +26,7 @@ stages:
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
@@ -40,6 +42,7 @@ stages:
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
@@ -56,6 +59,7 @@ stages:
       AvoidDBFS: false
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
+      CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
