@@ -2,17 +2,19 @@
 
 CLUSTER_NAME=$1
 NOTEBOOKSFOLDER=$2
-COSMOSENDPOINT=$3
-COSMOSKEY=$4
-SUBSCRIPTIONID=$5
-TENANTID=$6
-RESOURCEGROUPNAME=$7
-CLIENTID=$8
-CLIENTSECRET=$9
-COSMOSCONTAINERNAME=${10}
-COSMOSDATABASENAME=${11}
+COSMOSENDPOINTMSI=$3
+COSMOSENDPOINT=$4
+COSMOSKEY=$5
+SUBSCRIPTIONID=$6
+TENANTID=$7
+RESOURCEGROUPNAME=$8
+CLIENTID=$9
+CLIENTSECRET=${10}
+COSMOSCONTAINERNAME=${11}
+COSMOSDATABASENAME=${12}
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$NOTEBOOKSFOLDER" ]] && exit 1
+[[ -z "$COSMOSENDPOINTMSI" ]] && exit 1
 [[ -z "$COSMOSENDPOINT" ]] && exit 1
 [[ -z "$COSMOSKEY" ]] && exit 1
 [[ -z "$SUBSCRIPTIONID" ]] && exit 1
@@ -50,8 +52,8 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	echo "DBG_JSON: {\"job_id\": \"$JOB_ID\", \"notebook_params\": {\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}"
-	RUN_ID=$(databricks jobs run-now --json "{\"job_id\": \"$JOB_ID\", \"notebook_params\": {\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}" | jq -r '.run_id')
+	echo "DBG_JSON: {\"job_id\": \"$JOB_ID\", \"notebook_params\": {\"cosmosEndpointMsi\": \"$COSMOSENDPOINTMSI\",\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}"
+	RUN_ID=$(databricks jobs run-now --json "{\"job_id\": \"$JOB_ID\", \"notebook_params\": {\"cosmosEndpointMsi\": \"$COSMOSENDPOINTMSI\",\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}" | jq -r '.run_id')
 
 	if [[ -z "$RUN_ID" ]]
 	then
