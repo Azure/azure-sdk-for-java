@@ -34,9 +34,9 @@ echo "Importing notebooks from $NOTEBOOKSFOLDER"
 databricks workspace import-dir "$NOTEBOOKSFOLDER" /notebooks
 
 echo "Validating Notebooks in workspace"
-databricks workspace list /notebooks
+$(databricks workspace list /notebooks -o json | jq -r '.[].object_id')
 
-NOTEBOOKS=$(databricks workspace list /notebooks -o json | jq -r '.object_id')
+NOTEBOOKS=$(databricks workspace list /notebooks -o json | jq -r '.[].object_id')
 for f in $NOTEBOOKS
 do
 	echo "Creating job for $f"
