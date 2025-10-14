@@ -96,8 +96,8 @@ public class AzureResourceTests extends BlobNioTestBase {
         }
 
         boolean directoryExists = status == DirectoryStatus.EMPTY || status == DirectoryStatus.NOT_EMPTY;
-        assertEquals(status, new AzureResource(parentPath1).getDirectoryStatus());
-        assertEquals(status, new AzureResource(parentPath2).getDirectoryStatus());
+        assertEquals(status, new AzureResource(parentPath1).checkDirStatus());
+        assertEquals(status, new AzureResource(parentPath2).checkDirStatus());
         assertEquals(directoryExists, new AzureResource(parentPath1).checkDirectoryExists());
         assertEquals(directoryExists, new AzureResource(parentPath2).checkDirectoryExists());
     }
@@ -118,8 +118,8 @@ public class AzureResourceTests extends BlobNioTestBase {
         Files.createFile(path1);
         Files.createFile(path2);
 
-        assertEquals(DirectoryStatus.NOT_A_DIRECTORY, new AzureResource(path1).getDirectoryStatus());
-        assertEquals(DirectoryStatus.NOT_A_DIRECTORY, new AzureResource(path2).getDirectoryStatus());
+        assertEquals(DirectoryStatus.NOT_A_DIRECTORY, new AzureResource(path1).checkDirStatus());
+        assertEquals(DirectoryStatus.NOT_A_DIRECTORY, new AzureResource(path2).checkDirStatus());
     }
 
     @Test
@@ -132,8 +132,8 @@ public class AzureResourceTests extends BlobNioTestBase {
         Files.createDirectory(fs.getPath(pathName2));
 
         // Both should be empty
-        assertEquals(DirectoryStatus.EMPTY, new AzureResource(fs.getPath(pathName)).getDirectoryStatus());
-        assertEquals(DirectoryStatus.EMPTY, new AzureResource(fs.getPath(pathName2)).getDirectoryStatus());
+        assertEquals(DirectoryStatus.EMPTY, new AzureResource(fs.getPath(pathName)).checkDirStatus());
+        assertEquals(DirectoryStatus.EMPTY, new AzureResource(fs.getPath(pathName2)).checkDirStatus());
     }
 
     @Test
@@ -151,12 +151,13 @@ public class AzureResourceTests extends BlobNioTestBase {
         Files.createFile(childPath);
         Files.createFile(middlePath);
 
-        assertEquals(DirectoryStatus.NOT_EMPTY, new AzureResource(dirPath).getDirectoryStatus());
+        assertEquals(DirectoryStatus.NOT_EMPTY, new AzureResource(dirPath).checkDirStatus());
     }
 
     @Test
     public void parentDirExistsFalse() throws IOException {
-        assertFalse(new AzureResource(createFS(config).getPath(generateBlobName(), "bar")).parentDirectoryExists());
+        assertFalse(
+            new AzureResource(createFS(config).getPath(generateBlobName(), "bar")).checkParentDirectoryExists());
     }
 
     @Test
@@ -168,7 +169,7 @@ public class AzureResourceTests extends BlobNioTestBase {
             .getAppendBlobClient()
             .create();
 
-        assertTrue(new AzureResource(fs.getPath(fileName, childName)).parentDirectoryExists());
+        assertTrue(new AzureResource(fs.getPath(fileName, childName)).checkParentDirectoryExists());
     }
 
     @Test
@@ -177,13 +178,13 @@ public class AzureResourceTests extends BlobNioTestBase {
         String fileName = generateBlobName();
         putDirectoryBlob(rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(fileName).getBlockBlobClient());
 
-        assertTrue(new AzureResource(fs.getPath(fileName, "bar")).parentDirectoryExists());
+        assertTrue(new AzureResource(fs.getPath(fileName, "bar")).checkParentDirectoryExists());
     }
 
     @Test
     public void parentDirExistsRoot() throws IOException {
         // No parent means the parent is implicitly the default root, which always exists
-        assertTrue(new AzureResource(createFS(config).getPath("foo")).parentDirectoryExists());
+        assertTrue(new AzureResource(createFS(config).getPath("foo")).checkParentDirectoryExists());
 
     }
 
@@ -194,7 +195,7 @@ public class AzureResourceTests extends BlobNioTestBase {
         String rootName = getNonDefaultRootDir(fs);
         rootNameToContainerClient(rootName).getBlobClient("fizz/buzz/bazz").getAppendBlobClient().create();
 
-        assertTrue(new AzureResource(fs.getPath(rootName, "fizz/buzz")).parentDirectoryExists());
+        assertTrue(new AzureResource(fs.getPath(rootName, "fizz/buzz")).checkParentDirectoryExists());
     }
 
     @ParameterizedTest
