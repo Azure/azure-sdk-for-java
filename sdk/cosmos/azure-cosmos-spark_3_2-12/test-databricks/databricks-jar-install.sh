@@ -6,7 +6,7 @@ JARPATH=$3
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$JARPATH" ]] && exit 1
 
-echo "Looking for cluster '$CLUSTER_NAME'"
+echo "Looking for cluster '$CLUSTER_NAME' - Avoid DBFS '$AVOID_DBFS'"
 
 echo "Dumping clusters as JSON"
 databricks clusters list --output json
