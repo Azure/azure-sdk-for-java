@@ -41,7 +41,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
      * The voice configuration for the session.
      */
     @Generated
-    private BinaryData voice;
+    private VoiceProvider voice;
 
     /*
      * Optional instructions to guide the model's behavior throughout the session.
@@ -51,9 +51,9 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /*
      * Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000
      */
     @Generated
@@ -140,7 +140,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the model property: The model for the session.
-     * 
+     *
      * @return the model value.
      */
     @Generated
@@ -150,7 +150,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the model property: The model for the session.
-     * 
+     *
      * @param model the model value to set.
      * @return the RequestSession object itself.
      */
@@ -162,7 +162,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the modalities property: The modalities to be used in the session.
-     * 
+     *
      * @return the modalities value.
      */
     @Generated
@@ -172,7 +172,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the modalities property: The modalities to be used in the session.
-     * 
+     *
      * @param modalities the modalities value to set.
      * @return the RequestSession object itself.
      */
@@ -184,7 +184,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the animation property: The animation configuration for the session.
-     * 
+     *
      * @return the animation value.
      */
     @Generated
@@ -194,7 +194,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the animation property: The animation configuration for the session.
-     * 
+     *
      * @param animation the animation value to set.
      * @return the RequestSession object itself.
      */
@@ -206,29 +206,29 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the voice property: The voice configuration for the session.
-     * 
+     *
      * @return the voice value.
      */
     @Generated
-    public BinaryData getVoice() {
+    public VoiceProvider getVoice() {
         return this.voice;
     }
 
     /**
      * Set the voice property: The voice configuration for the session.
-     * 
+     *
      * @param voice the voice value to set.
      * @return the RequestSession object itself.
      */
     @Generated
-    public RequestSession setVoice(BinaryData voice) {
+    public RequestSession setVoice(VoiceProvider voice) {
         this.voice = voice;
         return this;
     }
 
     /**
      * Get the instructions property: Optional instructions to guide the model's behavior throughout the session.
-     * 
+     *
      * @return the instructions value.
      */
     @Generated
@@ -238,7 +238,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the instructions property: Optional instructions to guide the model's behavior throughout the session.
-     * 
+     *
      * @param instructions the instructions value to set.
      * @return the RequestSession object itself.
      */
@@ -250,11 +250,11 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the inputAudioSamplingRate property: Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000.
-     * 
+     *
      * @return the inputAudioSamplingRate value.
      */
     @Generated
@@ -264,11 +264,11 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the inputAudioSamplingRate property: Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000.
-     * 
+     *
      * @param inputAudioSamplingRate the inputAudioSamplingRate value to set.
      * @return the RequestSession object itself.
      */
@@ -280,7 +280,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the inputAudioFormat property: Input audio format. Default is 'pcm16'.
-     * 
+     *
      * @return the inputAudioFormat value.
      */
     @Generated
@@ -290,7 +290,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the inputAudioFormat property: Input audio format. Default is 'pcm16'.
-     * 
+     *
      * @param inputAudioFormat the inputAudioFormat value to set.
      * @return the RequestSession object itself.
      */
@@ -302,7 +302,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the outputAudioFormat property: Output audio format. Default is 'pcm16'.
-     * 
+     *
      * @return the outputAudioFormat value.
      */
     @Generated
@@ -312,7 +312,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the outputAudioFormat property: Output audio format. Default is 'pcm16'.
-     * 
+     *
      * @param outputAudioFormat the outputAudioFormat value to set.
      * @return the RequestSession object itself.
      */
@@ -324,7 +324,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the turnDetection property: Type of turn detection to use.
-     * 
+     *
      * @return the turnDetection value.
      */
     @Generated
@@ -334,7 +334,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the turnDetection property: Type of turn detection to use.
-     * 
+     *
      * @param turnDetection the turnDetection value to set.
      * @return the RequestSession object itself.
      */
@@ -346,7 +346,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the inputAudioNoiseReduction property: Configuration for input audio noise reduction.
-     * 
+     *
      * @return the inputAudioNoiseReduction value.
      */
     @Generated
@@ -356,7 +356,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the inputAudioNoiseReduction property: Configuration for input audio noise reduction.
-     * 
+     *
      * @param inputAudioNoiseReduction the inputAudioNoiseReduction value to set.
      * @return the RequestSession object itself.
      */
@@ -369,7 +369,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
     /**
      * Get the inputAudioEchoCancellation property: Configuration for echo cancellation during server-side audio
      * processing.
-     * 
+     *
      * @return the inputAudioEchoCancellation value.
      */
     @Generated
@@ -380,7 +380,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
     /**
      * Set the inputAudioEchoCancellation property: Configuration for echo cancellation during server-side audio
      * processing.
-     * 
+     *
      * @param inputAudioEchoCancellation the inputAudioEchoCancellation value to set.
      * @return the RequestSession object itself.
      */
@@ -392,7 +392,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the avatar property: Configuration for avatar streaming and behavior during the session.
-     * 
+     *
      * @return the avatar value.
      */
     @Generated
@@ -402,7 +402,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the avatar property: Configuration for avatar streaming and behavior during the session.
-     * 
+     *
      * @param avatar the avatar value to set.
      * @return the RequestSession object itself.
      */
@@ -414,7 +414,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the inputAudioTranscription property: Configuration for input audio transcription.
-     * 
+     *
      * @return the inputAudioTranscription value.
      */
     @Generated
@@ -424,7 +424,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the inputAudioTranscription property: Configuration for input audio transcription.
-     * 
+     *
      * @param inputAudioTranscription the inputAudioTranscription value to set.
      * @return the RequestSession object itself.
      */
@@ -436,7 +436,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the outputAudioTimestampTypes property: Types of timestamps to include in audio response content.
-     * 
+     *
      * @return the outputAudioTimestampTypes value.
      */
     @Generated
@@ -446,7 +446,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the outputAudioTimestampTypes property: Types of timestamps to include in audio response content.
-     * 
+     *
      * @param outputAudioTimestampTypes the outputAudioTimestampTypes value to set.
      * @return the RequestSession object itself.
      */
@@ -458,7 +458,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the tools property: Configuration for tools to be used during the session, if applicable.
-     * 
+     *
      * @return the tools value.
      */
     @Generated
@@ -468,7 +468,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the tools property: Configuration for tools to be used during the session, if applicable.
-     * 
+     *
      * @param tools the tools value to set.
      * @return the RequestSession object itself.
      */
@@ -480,7 +480,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the toolChoice property: Specifies which tools the model is allowed to call during the session.
-     * 
+     *
      * @return the toolChoice value.
      */
     @Generated
@@ -490,7 +490,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the toolChoice property: Specifies which tools the model is allowed to call during the session.
-     * 
+     *
      * @param toolChoice the toolChoice value to set.
      * @return the RequestSession object itself.
      */
@@ -502,7 +502,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Get the temperature property: Controls the randomness of the model's output. Range: 0.0 to 1.0. Default is 0.7.
-     * 
+     *
      * @return the temperature value.
      */
     @Generated
@@ -512,7 +512,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Set the temperature property: Controls the randomness of the model's output. Range: 0.0 to 1.0. Default is 0.7.
-     * 
+     *
      * @param temperature the temperature value to set.
      * @return the RequestSession object itself.
      */
@@ -525,7 +525,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
     /**
      * Get the maxResponseOutputTokens property: Maximum number of tokens to generate in the response. Default is
      * unlimited.
-     * 
+     *
      * @return the maxResponseOutputTokens value.
      */
     @Generated
@@ -536,7 +536,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
     /**
      * Set the maxResponseOutputTokens property: Maximum number of tokens to generate in the response. Default is
      * unlimited.
-     * 
+     *
      * @param maxResponseOutputTokens the maxResponseOutputTokens value to set.
      * @return the RequestSession object itself.
      */
@@ -559,7 +559,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
         jsonWriter.writeJsonField("animation", this.animation);
         if (this.voice != null) {
             jsonWriter.writeFieldName("voice");
-            this.voice.writeTo(jsonWriter);
+            this.voice.toJson(jsonWriter);
         }
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeNumberField("input_audio_sampling_rate", this.inputAudioSamplingRate);
@@ -589,7 +589,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
 
     /**
      * Reads an instance of RequestSession from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequestSession if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -611,8 +611,7 @@ public final class RequestSession implements JsonSerializable<RequestSession> {
                 } else if ("animation".equals(fieldName)) {
                     deserializedRequestSession.animation = Animation.fromJson(reader);
                 } else if ("voice".equals(fieldName)) {
-                    deserializedRequestSession.voice
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedRequestSession.voice = VoiceProvider.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
                     deserializedRequestSession.instructions = reader.getString();
                 } else if ("input_audio_sampling_rate".equals(fieldName)) {

@@ -16,7 +16,7 @@ import java.io.IOException;
  * Base for Azure voice configurations.
  */
 @Immutable
-public class AzureVoice implements JsonSerializable<AzureVoice> {
+public class AzureVoice extends VoiceProvider implements JsonSerializable<AzureVoice> {
     /*
      * The type of the Azure voice.
      */
@@ -32,7 +32,7 @@ public class AzureVoice implements JsonSerializable<AzureVoice> {
 
     /**
      * Get the type property: The type of the Azure voice.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -53,7 +53,7 @@ public class AzureVoice implements JsonSerializable<AzureVoice> {
 
     /**
      * Reads an instance of AzureVoice from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureVoice if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.

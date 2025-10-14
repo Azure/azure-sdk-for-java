@@ -14,12 +14,12 @@ import java.io.IOException;
 
 /**
  * OpenAI voice configuration with explicit type field.
- * 
+ *
  * This provides a unified interface for OpenAI voices, complementing the
  * existing string-based OAIVoice for backward compatibility.
  */
 @Immutable
-public final class OpenAIVoice implements JsonSerializable<OpenAIVoice> {
+public final class OpenAIVoice extends VoiceProvider implements JsonSerializable<OpenAIVoice> {
     /*
      * The type of the voice.
      */
@@ -34,7 +34,7 @@ public final class OpenAIVoice implements JsonSerializable<OpenAIVoice> {
 
     /**
      * Creates an instance of OpenAIVoice class.
-     * 
+     *
      * @param name the name value to set.
      */
     @Generated
@@ -44,7 +44,7 @@ public final class OpenAIVoice implements JsonSerializable<OpenAIVoice> {
 
     /**
      * Get the type property: The type of the voice.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -54,7 +54,7 @@ public final class OpenAIVoice implements JsonSerializable<OpenAIVoice> {
 
     /**
      * Get the name property: The name of the OpenAI voice.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -76,7 +76,7 @@ public final class OpenAIVoice implements JsonSerializable<OpenAIVoice> {
 
     /**
      * Reads an instance of OpenAIVoice from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OpenAIVoice if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
