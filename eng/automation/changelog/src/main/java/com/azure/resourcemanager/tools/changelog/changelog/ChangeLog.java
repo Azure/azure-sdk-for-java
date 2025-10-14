@@ -11,6 +11,7 @@ import japicmp.model.JApiChangeStatus;
 import japicmp.model.JApiClass;
 import japicmp.model.JApiConstructor;
 import japicmp.model.JApiMethod;
+import javassist.bytecode.AccessFlag;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,7 +167,11 @@ public class ChangeLog {
                 breakingChange.addMethodLevelChange(String.format("`%s` was removed", MethodName.name(constructor.getOldConstructor().get())));
                 break;
             case MODIFIED:
-                breakingChange.addMethodLevelChange(String.format("`%s` -> `%s`", MethodName.name(constructor.getOldConstructor().get()), MethodName.name(constructor.getNewConstructor().get())));
+                if ((constructor.getOldConstructor().get().getModifiers() & AccessFlag.PUBLIC) == AccessFlag.PUBLIC
+                        && (constructor.getNewConstructor().get().getModifiers() & AccessFlag.PRIVATE) == AccessFlag.PRIVATE) {
+                    breakingChange.addMethodLevelChange(String.format("`%s` was changed to private access", MethodName.name(constructor.getOldConstructor().get())));
+                }
+                // breakingChange.addMethodLevelChange(String.format("`%s` -> `%s`", MethodName.name(constructor.getOldConstructor().get()), MethodName.name(constructor.getNewConstructor().get())));
                 break;
         }
     }
