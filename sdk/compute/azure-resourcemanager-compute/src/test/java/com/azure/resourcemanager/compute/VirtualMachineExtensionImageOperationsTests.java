@@ -38,6 +38,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true) // This test took over 1 minute to finish in playback
     public void canGetExtensionTypeVersionAndImage() throws Exception {
         PagedIterable<VirtualMachineExtensionImage> extensionImages
             = computeManager.virtualMachineExtensionImages().listByRegion(Region.US_EAST);
