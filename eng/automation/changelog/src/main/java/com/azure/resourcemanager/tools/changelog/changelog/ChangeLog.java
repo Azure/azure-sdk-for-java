@@ -171,7 +171,6 @@ public class ChangeLog {
                         && (constructor.getNewConstructor().get().getModifiers() & AccessFlag.PRIVATE) == AccessFlag.PRIVATE) {
                     breakingChange.addMethodLevelChange(String.format("`%s` was changed to private access", MethodName.name(constructor.getOldConstructor().get())));
                 }
-                // breakingChange.addMethodLevelChange(String.format("`%s` -> `%s`", MethodName.name(constructor.getOldConstructor().get()), MethodName.name(constructor.getNewConstructor().get())));
                 break;
         }
     }
