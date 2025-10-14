@@ -10,6 +10,6 @@
       }
     },
     "TestFromSource": [true, false],
-    "JavaTestVersion": ["1.17", "1.21", "1.25"]
+    "JavaTestVersion": ["1.17", "1.25"]
   }
 }
